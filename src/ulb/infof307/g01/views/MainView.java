@@ -3,6 +3,9 @@ package ulb.infof307.g01.views;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
+/**
+ * The main view of the application
+ */
 public class MainView implements View{
 
     Pane centerView;

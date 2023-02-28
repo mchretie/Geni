@@ -3,6 +3,11 @@ package ulb.infof307.g01.components;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+/**
+ * A component that displays a card upon getPane() call
+ * @Param question The question of the card
+ * @Param answer The answer of the card
+ */
 public class CardComponent implements Component {
     final String question;
     final String answer;

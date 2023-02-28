@@ -4,6 +4,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+/**
+ * The view of the menu
+ */
 public class MenuView implements View{
     MainViewHandler mainViewHandler = MainViewHandler.getInstance();
 

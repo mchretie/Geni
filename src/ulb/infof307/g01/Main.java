@@ -9,14 +9,16 @@ import ulb.infof307.g01.views.MainView;
 import ulb.infof307.g01.views.MainViewHandler;
 import ulb.infof307.g01.views.MenuView;
 
+/**
+ * Main class of the application which initializes the main view using the main view handler and loads a menu view.
+ */
 public class Main extends Application {
     @Override
     public void start(Stage stage) {
-        StackPane root = new StackPane();
         MainViewHandler mainViewHandler = MainViewHandler.getInstance();
-        MainView mainView = mainViewHandler.getMainView();
-        mainView.setCenterView(new MenuView());
-        root.getChildren().add(mainView.getPane());
+        mainViewHandler.setCenterView(new MenuView());
+
+        StackPane root = new StackPane(mainViewHandler.getMainView().getPane());
         Scene scene = new Scene(root, 640, 480, Color.web("#635f63"));
         stage.setScene(scene);
         stage.show();
