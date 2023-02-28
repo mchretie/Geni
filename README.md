@@ -18,7 +18,7 @@ library.
 Finally, add this line to the run configuration VM options:
 
 ```bash
---module-path _JAVAFXSDK_ --add-modules javafx.controls
+--module-path JAVAFXSDK --add-modules javafx.controls
 ```
 
 ### Mac
