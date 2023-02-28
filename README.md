@@ -1,3 +1,34 @@
 # Genius Project 2023
 
-![](https://www.google.com/url?sa=i&url=https%3A%2F%2Ftenor.com%2Fsearch%2Fgenie-aladdin-gifs&psig=AOvVaw2x3fHNrdfXnmgytqRP1bXz&ust=1677704260524000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCPDK5MWNuf0CFQAAAAAdAAAAABAj)
+## Pre install
+
+### Linux
+
+**[Official doc](https://openjfx.io/openjfx-docs/#install-javafx)**
+
+Download JavaFX SDK 19 from [here](https://gluonhq.com/products/javafx/) and extract it.
+
+Get the path to the lib folder (f.e. JAVAFXSDK = /home/user/Downloads/javafx-sdk-19/lib)
+
+Go to ```File -> Project Structure -> Project```, and set the project SDK to 19.
+
+Still in the Project Structure, go to ```Libraries```, and add the JavaFX SDK, which was downloaded earlier, as a
+library.
+
+Finally, add this line to the run configuration VM options:
+
+```bash
+--module-path _JAVAFXSDK_ --add-modules javafx.controls
+```
+
+### Mac
+
+no
+
+### Windows
+
+triple no
+
+#### Still stuck ?
+
+that sucks
