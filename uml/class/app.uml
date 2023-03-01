@@ -1,0 +1,173 @@
+@startuml
+
+title "App"
+
+class App {
+
+}
+
+interface CardDrawer {
+    + isEmpty() -> boolean
+    + drawNextCard() -> Card
+    + remainingCards() -> int
+    + {static} getInstance(deck: Deck) -> CardDrawer
+}
+
+class RandomDrawer {
+}
+
+class LeastKnownDrawer {
+}
+
+class Database {
+    + open(db: File) -> void
+    + singleton() -> Database
+
+    + executeQuery(String) -> Result
+    + executeUpdate(String) -> int
+
+    + executeUpdates(List<String>) -> int
+}
+
+class DeckManager {
+    + getDeck(name: String) -> Deck
+    + getAllDecks() -> List<Deck>
+
+    + createDeck(name: String) -> void
+    + addToDeck(cards: List<Cards>) -> void
+}
+
+class CardManager {
+    + addCard(card: Card) -> void
+    + delCard(card: Card) -> void
+    + updateCard(card: Card) -> void
+
+    + getCard(uuid: UUID) -> Card
+    + getCardsFrom(deckUuid: UUID) -> List<Card>
+}
+
+class TagManager {
+    + addTag(tag: Tag) -> void
+    + delTag(tag: Tag) -> void
+
+    + getTag(uuid: UUID) -> Tag
+    + getTagsFor(deckUuid: UUID) -> List<Tag>
+
+    + getAllTags() -> List<Tag>
+}
+
+class StatManager {
+
+}
+
+class Deck {
+    + id : UUID
+    + name : Sting
+    + tags : List<Tag>
+    + cards : List<Card>
+
+    + cardsCount() -> int
+}
+
+class Card {
+    + id : UUID
+    + question : CardContent
+    + answer : CardContent
+    + knowledgeFactor : KnowledgeFactor
+}
+
+enum KnowledgeFactor {
+    Box1
+    Box2
+    Box3
+    Box4
+    Box5
+}
+
+interface CardContent {
+}
+
+class TextContent {
+}
+
+class MainWindow {
+    + currentView : View
+}
+
+class MainViewHandler {
+
+}
+
+interface View {
+    + draw() -> void
+}
+
+class GameView {
+    + model : GameModel
+}
+
+class BrowseView {
+}
+
+class StatView {
+}
+
+class GameModel {
+    + drawer : CardDrawer
+    + currentCard : Card
+    + isCurrentCardFlipped : boolean
+}
+
+class BrowseModel {
+}
+
+class StatModel {
+}
+
+enum Color {
+    Red
+    Yellow
+    Blue
+    Green
+}
+
+class Tag {
+    + id : UUID
+    + color : Color
+    + label : String
+}
+
+CardDrawer <|-- RandomDrawer
+CardDrawer <|-- LeastKnownDrawer
+
+Deck *-- Card
+Card *- CardContent
+CardContent <|- TextContent
+Card -- KnowledgeFactor
+
+App - MainWindow
+MainWindow - MainViewHandler
+MainViewHandler - View
+
+View <|-- StatView
+View <|-- GameView
+View <|-- BrowseView
+
+Database -- DeckManager
+Database -- CardManager
+Database -- TagManager
+Database -- StatManager
+
+Tag - Color
+Deck - Tag
+
+GameView --- GameModel
+CardDrawer - GameModel
+GameModel - Deck
+
+BrowseView -- BrowseModel
+
+StatView -- StatModel
+
+@enduml
+
