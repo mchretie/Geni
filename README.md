@@ -65,7 +65,22 @@ Finally, add this line to the run configuration VM options:
 
 ### Mac
 
-no
+I don't see why this wouldn't work for all operating systems but I only did this on macOS.
+
+1. Download JavaFX SDK 19 from [here](https://gluonhq.com/products/javafx/) and extract it.
+
+2. Get the path to the lib folder which is inside the extracted file (e.g ```/home/user/Downloads/javafx-sdk-19/lib```)
+
+3. Go to ```File -> Project Structure -> Project``` and set the project SDK to 19 (normally should be done already).
+
+4. Then go to ```Project Struture -> Libraries``` and add the path to the JavaFX SDK lib that you got in step 1.
+
+5. Once that is done go to ```Run -> Edit Configuration```. If you don't already have a configuration set up click
+   ```+ -> Application ```and enter the path to the ```Main``` class.
+
+6. Finally, still in the ```Edit Configuration``` window, press ```Modify options``` which is to the left of
+   ```Build and run```. In the text box that appears, paste the following command:
+   ```--module-path {Path to JavaFX lib file (step 1)} --add-modules javafx.controls ```
 
 ### Windows
 
