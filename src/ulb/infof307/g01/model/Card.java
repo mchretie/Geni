@@ -4,6 +4,8 @@ public class Card {
     private String front;
     private String back;
 
+    public Card() {}
+
     public Card(String front, String back) {
         this.front = front;
         this.back = back;
