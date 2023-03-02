@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import ulb.infof307.g01.views.GameView;
 import ulb.infof307.g01.views.MainView;
 import ulb.infof307.g01.views.MainViewHandler;
 import ulb.infof307.g01.views.MenuView;
@@ -16,7 +17,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         MainViewHandler mainViewHandler = MainViewHandler.getInstance();
-        mainViewHandler.setCenterView(new MenuView());
+        mainViewHandler.setCenterView(new GameView());
 
         StackPane root = new StackPane(mainViewHandler.getMainView().getPane());
         Scene scene = new Scene(root, 640, 480, Color.web("#635f63"));

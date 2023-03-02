@@ -1,5 +1,7 @@
 package ulb.infof307.g01.views;
 
+import javafx.scene.control.Label;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
@@ -13,6 +15,8 @@ public class MainView implements View{
 
     public MainView() {
         view = new BorderPane();
+        ToolBar toolbar = new ToolBar(new Label("Toolbar"));
+        view.setTop(toolbar);
     }
 
     public void setCenterView(View _centerView) {

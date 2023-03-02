@@ -44,9 +44,10 @@ Voir [1] pour bien écrire des commits.
 
 ## Adding JavaFX to Intellij
 
+**[Official doc](https://openjfx.io/openjfx-docs/#install-javafx)**
+
 ### Linux
 
-**[Official doc](https://openjfx.io/openjfx-docs/#install-javafx)**
 
 Download JavaFX SDK 19 from [here](https://gluonhq.com/products/javafx/) and extract it.
 

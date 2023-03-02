@@ -1,7 +1,10 @@
 package ulb.infof307.g01.components;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
 
 /**
  * A component that displays a card upon getPane() call
@@ -18,9 +21,18 @@ public class CardComponent implements Component {
     }
 
     public VBox getPane() {
-        VBox view = new VBox();
-        view.getChildren().add(new Label(question));
-        view.getChildren().add(new Label(answer));
+        VBox view = new VBox(100);
+//        view.setAlignment(Pos.CENTER);
+
+        Label label = new Label("Centered Label");
+
+//        HBox hbox = new HBox(10);
+//        hbox.setAlignment(Pos.CENTER);
+//
+//        Button button = new Button("Button");
+//        hbox.getChildren().add(button);
+
+        view.getChildren().addAll(label);
         return view;
     }
 }
