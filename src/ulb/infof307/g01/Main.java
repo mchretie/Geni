@@ -16,10 +16,9 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         MainViewHandler mainViewHandler = MainViewHandler.getInstance();
-        mainViewHandler.setCenterView(new MenuView());
 
         StackPane root = new StackPane(mainViewHandler.getMainView().getPane());
-        Scene scene = new Scene(root, 640, 480, Color.web("#635f63"));
+        Scene scene = new Scene(root, 900, 600); //635f63
         stage.setScene(scene);
         stage.show();
     }
