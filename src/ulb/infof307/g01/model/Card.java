@@ -3,7 +3,7 @@ package ulb.infof307.g01.model;
 import java.util.UUID;
 
 public class Card {
-    private UUID id = UUID.randomUUID();
+    private final UUID id = UUID.randomUUID();
     private String front;
     private String back;
 

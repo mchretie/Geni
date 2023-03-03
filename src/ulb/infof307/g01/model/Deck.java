@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class Deck {
     private String name;
-    private UUID id = UUID.randomUUID();
+    private final UUID id = UUID.randomUUID();
     private List<Card> cards = new ArrayList<>();
     private List<Tag> tags = new ArrayList<>();
 
