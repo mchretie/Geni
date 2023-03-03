@@ -1,7 +1,6 @@
 package ulb.infof307.g01.views;
 
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -29,10 +28,10 @@ public class MainView implements View{
         leftView.setBackground(Background.fill(Color.web("#444444")));
         leftView.setPrefWidth(230);
 
-        leftBarButtons = new ArrayList<Button>();
+        leftBarButtons = new ArrayList<>();
         leftBarButtons.add(new Button("Welcome"));
         leftBarButtons.add(new Button("Play deck"));
-        leftBarButtons.add(new Button("Edit deck"));
+        leftBarButtons.add(new Button("Manage decks"));
         leftBarButtons.add(new Button("About us"));
 
         // set width and height
@@ -67,7 +66,7 @@ public class MainView implements View{
 
         leftBarButtons.get(2).setOnAction(e -> {
             switchTab(2);
-            setCenterView(new EditView());
+            setCenterView(new ManageDecksView());
         });
 
         leftBarButtons.get(3).setOnAction(e -> {
@@ -82,9 +81,9 @@ public class MainView implements View{
         leftBarButtons.get(tabIndex).setStyle("-fx-background-color: #666666; -fx-text-fill: white");
     }
 
-    public void setCenterView(View _centerView) {
-        centerView = _centerView.getPane();
-        this.view.setCenter(centerView);
+    public void setCenterView(View centerView) {
+        this.centerView = centerView.getPane();
+        this.view.setCenter(this.centerView);
     }
 
     public Pane getPane() {
