@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * A component that displays a card upon getPane() call
@@ -25,6 +26,8 @@ public class CardComponent implements Component {
 //        view.setAlignment(Pos.CENTER);
 
         Label label = new Label("Centered Label");
+        Button button = new Button("User Account");
+        button.setGraphic(new FontIcon());
 
 //        HBox hbox = new HBox(10);
 //        hbox.setAlignment(Pos.CENTER);
@@ -32,7 +35,7 @@ public class CardComponent implements Component {
 //        Button button = new Button("Button");
 //        hbox.getChildren().add(button);
 
-        view.getChildren().addAll(label);
+        view.getChildren().addAll(label, button);
         return view;
     }
 }

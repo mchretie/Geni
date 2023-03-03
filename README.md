@@ -70,3 +70,8 @@ triple no
 #### Still stuck ?
 
 that sucks
+
+
+## Using icons
+
+Cheatsheet: https://kordamp.org/ikonli/cheat-sheet-materialdesign2.html

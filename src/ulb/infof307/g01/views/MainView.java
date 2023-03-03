@@ -7,13 +7,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The main view of the application
  */
-public class MainView implements View{
+public class MainView implements View {
 
     Pane centerView;
     BorderPane view;
@@ -30,13 +33,27 @@ public class MainView implements View{
         leftView.setPrefWidth(230);
 
         leftBarButtons = new ArrayList<Button>();
-        leftBarButtons.add(new Button("Welcome"));
-        leftBarButtons.add(new Button("Play deck"));
-        leftBarButtons.add(new Button("Edit deck"));
-        leftBarButtons.add(new Button("About us"));
+
+        String iconColor = "#AAAAAA";
+        String[][] leftBarButtonsData = new String[][]{
+                {"Welcome", "mdi2h-home"},
+                {"Play deck", "mdi2p-play"},
+                {"Edit deck", "mdi2p-pencil"},
+                {"About us", "mdi2i-information"}};
+
+        for (String[] buttonData : leftBarButtonsData) {
+            Button button = new Button(buttonData[0]);
+            FontIcon icon = new FontIcon(buttonData[1]);
+            icon.setIconColor(Color.web(iconColor));
+            button.setGraphic(icon);
+            button.setPrefWidth(230);
+            button.setPrefHeight(40);
+            button.setStyle("-fx-background-radius: 0");
+            leftBarButtons.add(button);
+        }
 
         // set width and height
-        for (Button button: leftBarButtons) {
+        for (Button button : leftBarButtons) {
             button.setPrefWidth(230);
             button.setPrefHeight(40);
             button.setStyle("-fx-background-radius: 0");
