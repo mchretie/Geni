@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class Tag {
     private String name;
-    private UUID id = UUID.randomUUID();
+    private final UUID id = UUID.randomUUID();
 
     public Tag(String name) {
         this.name = name;

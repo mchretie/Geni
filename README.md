@@ -44,27 +44,7 @@ Voir [1] pour bien écrire des commits.
 
 ## Adding JavaFX to Intellij
 
-**[Official doc](https://openjfx.io/openjfx-docs/#install-javafx)**
-
-### Linux
-
-
-Download JavaFX SDK 19 from [here](https://gluonhq.com/products/javafx/) and extract it.
-
-Get the path to the lib folder (f.e. JAVAFXSDK = /home/user/Downloads/javafx-sdk-19/lib)
-
-Go to ```File -> Project Structure -> Project```, and set the project SDK to 19.
-
-Still in the Project Structure, go to ```Libraries```, and add the JavaFX SDK, which was downloaded earlier, as a
-library.
-
-Finally, add this line to the run configuration VM options:
-
-```bash
---module-path JAVAFXSDK --add-modules javafx.controls
-```
-
-### Mac
+### Linux / macOS
 
 I don't see why this wouldn't work for all operating systems but I only did this on macOS.
 
