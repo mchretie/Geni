@@ -17,7 +17,8 @@ public class CardComponent implements Component {
         this.answer = answer;
     }
 
-    public VBox getPane() {
+    @Override public VBox getPane()
+    {
         VBox view = new VBox();
         view.getChildren().add(new Label(question));
         view.getChildren().add(new Label(answer));
