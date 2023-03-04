@@ -10,6 +10,7 @@ Les librairies suivantes sont utilisées :
 
 - JavaFX (19.0.2.1)
 - Junit (5.9.2)
+- SQLite-JDBC (3.41.0.0)
 
 ### JavaFX
 
@@ -31,3 +32,7 @@ Configurer le lancement de l’application :
 1. `File > Project Structure… > Libraries`
 2. `+ > Java > lib/junit`
 
+### SQLiteJDBC
+
+1. `File > Project Structure… > Libraries`
+2. `+ > Java > lib/sqlite-jdbc`
