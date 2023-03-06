@@ -23,19 +23,12 @@ public class CardComponent implements Component {
 
     public VBox getPane() {
         VBox view = new VBox(100);
-//        view.setAlignment(Pos.CENTER);
 
-        Label label = new Label("Centered Label");
-        Button button = new Button("User Account");
-        button.setGraphic(new FontIcon());
+        Label questionLabel = new Label(question);
+        Label answerLabel = new Label(answer);
 
-//        HBox hbox = new HBox(10);
-//        hbox.setAlignment(Pos.CENTER);
-//
-//        Button button = new Button("Button");
-//        hbox.getChildren().add(button);
-
-        view.getChildren().addAll(label, button);
+        view.getChildren().addAll(questionLabel, answerLabel);
+        view.setAlignment(Pos.CENTER);
         return view;
     }
 }
