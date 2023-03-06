@@ -25,8 +25,9 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="kordamp.ikonli.javafx" level="project" />
-    <orderEntry type="library" name="kordamp.ikonli.materialdesign2.pack" level="project" />
+    <orderEntry type="library" name="ikonli" level="project" />
+    <orderEntry type="library" name="junit" level="project" />
+    <orderEntry type="library" name="sqlite-jdbc" level="project" />
+    <orderEntry type="library" name="linux-x64" level="project" />
   </component>
 </module>

@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * The main view of the application
  */
-public class MainView implements View {
+public class MainView implements View{
 
     Pane centerView;
     BorderPane view;
@@ -84,7 +84,7 @@ public class MainView implements View {
 
         leftBarButtons.get(2).setOnAction(e -> {
             switchTab(2);
-            setCenterView(new EditView());
+            setCenterView(new ManageDecksView());
         });
 
         leftBarButtons.get(3).setOnAction(e -> {
@@ -99,9 +99,9 @@ public class MainView implements View {
         leftBarButtons.get(tabIndex).setStyle("-fx-background-color: #666666; -fx-text-fill: white");
     }
 
-    public void setCenterView(View _centerView) {
-        centerView = _centerView.getPane();
-        this.view.setCenter(centerView);
+    public void setCenterView(View centerView) {
+        this.centerView = centerView.getPane();
+        this.view.setCenter(this.centerView);
     }
 
     public Pane getPane() {
