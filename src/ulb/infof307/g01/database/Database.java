@@ -57,73 +57,12 @@ public class Database
 
         connection =
           DriverManager.getConnection("jdbc:sqlite:" + dbname.toPath());
-        initTables();
     }
 
-    public void initTables() throws SQLException {
-        //language=SQL
-        String sql = "CREATE TABLE IF NOT EXISTS deck (\n" +
-                "    deck_id TEXT PRIMARY KEY,\n" +
-                "    name TEXT NOT NULL\n" +
-                ");\n" +
-                "\n" +
-                "CREATE TABLE IF NOT EXISTS card (\n" +
-                "    card_id TEXT PRIMARY KEY,\n" +
-                "    front TEXT,\n" +
-                "    back TEXT\n" +
-                ");\n" +
-                "\n" +
-                "CREATE TABLE IF NOT EXISTS deck_card (\n" +
-                "    deck_id TEXT,\n" +
-                "    card_id TEXT,\n" +
-                "    PRIMARY KEY (deck_id, card_id),\n" +
-                "    FOREIGN KEY (deck_id)\n" +
-                "        REFERENCES Deck(deck_id)\n" +
-                "    FOREIGN KEY (card_id)\n" +
-                "        REFERENCES Card(card_id)\n" +
-                "        ON DELETE CASCADE\n" +
-                ");\n" +
-                "\n" +
-                "CREATE TABLE IF NOT EXISTS tag (\n" +
-                "    tag_id TEXT PRIMARY KEY,\n" +
-                "    name TEXT UNIQUE NOT NULL,\n" +
-                "    color TEXT NOT NULL\n" +
-                ");\n" +
-                "\n" +
-                "CREATE TABLE IF NOT EXISTS deck_tag (\n" +
-                "    deck_id TEXT,\n" +
-                "    tag_id TEXT,\n" +
-                "    PRIMARY KEY (deck_id, tag_id),\n" +
-                "    FOREIGN KEY (deck_id)\n" +
-                "        REFERENCES Deck(deck_id)\n" +
-                "        ON DELETE CASCADE\n" +
-                "    FOREIGN KEY (tag_id)\n" +
-                "        REFERENCES Tag(tag_id)\n" +
-                ");\n" +
-                "\n" +
-                "CREATE TABLE IF NOT EXISTS user (\n" +
-                "    user_id TEXT PRIMARY KEY,\n" +
-                "    username TEXT NOT NULL,\n" +
-                "    password TEXT NOT NULL\n" +
-                ");\n" +
-                "\n" +
-                "CREATE TABLE IF NOT EXISTS card_knowledge (\n" +
-                "    user_id TEXT,\n" +
-                "    card_id TEXT,\n" +
-                "    knowledge INTEGER,\n" +
-                "    PRIMARY KEY (user_id, card_id),\n" +
-                "    FOREIGN KEY (user_id)\n" +
-                "        REFERENCES User(user_id)\n" +
-                "        ON DELETE CASCADE\n" +
-                "    FOREIGN KEY (card_id)\n" +
-                "        REFERENCES Card(card_id)\n" +
-                "        ON DELETE CASCADE\n" +
-                ");";
-        try {
-            executeUpdate(sql);
-        } catch (DatabaseNotInitException e) {
-            System.err.println(e.getMessage());
-        }
+    public void initTables(String[] tables)
+      throws DatabaseNotInitException, SQLException
+    {
+        executeUpdates(tables);
     }
 
     /**
@@ -177,7 +116,7 @@ public class Database
      *
      * @param updates a SQL statement to be executed
      */
-    public void executeUpdates(List<String> updates)
+    public void executeUpdates(String[] updates)
       throws SQLException, DatabaseNotInitException
     {
         assertOpened();

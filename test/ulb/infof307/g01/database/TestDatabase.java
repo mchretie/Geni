@@ -15,12 +15,14 @@ import org.junit.jupiter.api.Test;
 class TestDatabase
 {
     // clang-format off
-    final String createStmt = """
+    final String[] createStmt = new String [] {
+        """
         CREATE TABLE A (
             a    INTEGER    NOT NULL,
             b    TEXT       NOT NULL,
             PRIMARY KEY (a)
-        )""";
+        )"""
+    };
 
     final String insertStmt = """
         INSERT INTO A (a, b)
@@ -72,7 +74,7 @@ class TestDatabase
       throws SQLException, DatabaseNotInitException, OpenedDatabaseException
     {
         Database.singleton().open(dbname);
-        Database.singleton().executeUpdate(createStmt);
+        Database.singleton().initTables(createStmt);
         Database.singleton().close();
 
         assertTrue(dbname.exists());
@@ -83,7 +85,7 @@ class TestDatabase
       throws SQLException, DatabaseNotInitException, OpenedDatabaseException
     {
         Database.singleton().open(dbname);
-        Database.singleton().executeUpdate(createStmt);
+        Database.singleton().initTables(createStmt);
 
         String stmt =
           "SELECT name FROM sqlite_master WHERE type='table' AND name='A'";
@@ -97,7 +99,7 @@ class TestDatabase
       throws SQLException, DatabaseNotInitException, OpenedDatabaseException
     {
         Database.singleton().open(dbname);
-        Database.singleton().executeUpdate(createStmt);
+        Database.singleton().initTables(createStmt);
         Database.singleton().executeUpdate(insertStmt);
 
         ResultSet res = Database.singleton().executeQuery(queryStmt);
@@ -112,7 +114,7 @@ class TestDatabase
       throws SQLException, DatabaseNotInitException, OpenedDatabaseException
     {
         Database.singleton().open(dbname);
-        Database.singleton().executeUpdate(createStmt);
+        Database.singleton().initTables(createStmt);
         Database.singleton().executeUpdate(insertStmt);
         Database.singleton().executeUpdate(delStmt);
 
