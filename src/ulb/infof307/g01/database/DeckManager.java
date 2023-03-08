@@ -3,6 +3,7 @@ package ulb.infof307.g01.database;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.database.DeckNotExistsException;
+import ulb.infof307.g01.model.Tag;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +26,9 @@ public class DeckManager {
         try {
             ResultSet response = Database.singleton().executeQuery("SELECT name, deck_id FROM deck WHERE deck_id = " + uuid);
             if (response.next()) {
-                return new Deck(response.getString("name"), UUID.fromString(response.getString("deck_id")));
+                List<Card> cards = CardManager.singleton().getCardsFrom(uuid);
+                List<Tag> tags = TagManager.singleton().getTagsFor(uuid);
+                return new Deck(response.getString("name"), UUID.fromString(response.getString("deck_id")), cards, tags);
             }
         } catch (SQLException e) {
             throw new DeckNotExistsException("Could not find requested deck");

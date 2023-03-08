@@ -25,6 +25,13 @@ public class Deck {
         this.tags = new ArrayList<>();
     }
 
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags) {
+        this.name = name;
+        this.id = id;
+        this.cards = cards;
+        this.tags = tags;
+    }
+
     public List<Tag> getTags() { return tags; }
     public UUID getId() { return id; }
     public String getName() { return name; }
