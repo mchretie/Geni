@@ -6,14 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class TagManager {
-    public void addTag(Tag tag){
-        return;
-    }
-
-    public void delTag(Tag tag){
-        return;
-    }
-
     public Tag getTag(UUID uuid){
         return null;
     }
@@ -24,6 +16,14 @@ public class TagManager {
 
     public List<Tag> getAllTags(){
         return null;
+    }
+
+    public void addTag(Tag tag){
+        return;
+    }
+
+    public void delTag(Tag tag){
+        return;
     }
 
 }
