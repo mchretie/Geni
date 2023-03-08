@@ -61,6 +61,7 @@ public class Database
     }
 
     public void initTables() throws SQLException {
+        //language=SQL
         String sql = "CREATE TABLE IF NOT EXISTS deck (\n" +
                 "    deck_id TEXT PRIMARY KEY,\n" +
                 "    name TEXT NOT NULL\n" +
