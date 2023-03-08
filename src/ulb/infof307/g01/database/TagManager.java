@@ -20,22 +20,40 @@ public class TagManager {
         return tm;
     }
 
-    public Tag getTag(UUID uuid) throws TagNotExistsException, DatabaseNotInitException {
+    boolean tagNotExists(UUID uuid) throws DatabaseNotInitException {
         try {
-            ResultSet response = Database.singleton().executeQuery("SELECT name, tag_id, color FROM tag WHERE tag_id = " + uuid);
+            ResultSet response = Database.singleton().executeQuery("SELECT count(*) FROM tag WHERE tag_id = " + '"' + uuid + '"');
+            if (response.next()) {
+                return response.getInt("count(*)") == 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
+
+    public Tag getTag(UUID uuid) throws TagNotExistsException, DatabaseNotInitException {
+        if (tagNotExists(uuid)) {
+            throw new TagNotExistsException("Could not find requested tag");
+        }
+        try {
+            ResultSet response = Database.singleton().executeQuery("SELECT name, tag_id, color FROM tag WHERE tag_id = " + '"' + uuid + '"');
             if (response.next()) {
                 return new Tag(response.getString("name"), UUID.fromString(response.getString("tag_id")), response.getString("color"));
             }
         } catch (SQLException e) {
-            throw new TagNotExistsException("Could not find requested tag");
+            throw new RuntimeException(e);
         }
         return null;
     }
 
-    public List<Tag> getTagsFor(UUID deckUuid) throws DatabaseNotInitException {
+    public List<Tag> getTagsFor(UUID deckUuid) throws DatabaseNotInitException, DeckNotExistsException {
         List<Tag> tags = new ArrayList<>();
         try {
-            ResultSet response = Database.singleton().executeQuery("SELECT name, tag_id, color FROM tag WHERE tag_id IN (SELECT tag_id FROM deck_tag WHERE deck_id = " + deckUuid + ")");
+            if (DeckManager.singleton().deckNotExists(deckUuid)) {
+                throw new DeckNotExistsException("Could not find requested deck");
+            }
+            ResultSet response = Database.singleton().executeQuery("SELECT name, tag_id, color FROM tag WHERE tag_id IN (SELECT tag_id FROM deck_tag WHERE deck_id = " + '"' + deckUuid + '"' + ")");
             while (response.next()) {
                 tags.add(new Tag(response.getString("name"), UUID.fromString(response.getString("tag_id")), response.getString("color")));
             }
@@ -67,12 +85,15 @@ public class TagManager {
         }
     }
 
-    public void delTag(Tag tag) throws DatabaseNotInitException {
+    public void delTag(Tag tag) throws DatabaseNotInitException, TagNotExistsException {
+        if (tagNotExists(tag.getId())) {
+            throw new TagNotExistsException("Could not find requested tag");
+        }
         try {
-            Database.singleton().executeUpdate("DELETE FROM deck_tag WHERE tag_id = '" + tag.getId() + "'");
-            Database.singleton().executeUpdate("DELETE FROM tag WHERE tag_id = '" + tag.getId() + "'");
+            Database.singleton().executeUpdate("DELETE FROM deck_tag WHERE tag_id = '" + '"' + tag.getId() + '"' + "'");
+            Database.singleton().executeUpdate("DELETE FROM tag WHERE tag_id = '" + '"' + tag.getId() + '"' + "'");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new TagNotExistsException("Error deleting requested tag");
         }
     }
 

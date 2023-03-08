@@ -1,8 +1,13 @@
 package ulb.infof307.g01.database;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
+
+import java.io.File;
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,12 +16,29 @@ public class TestTagManager {
     TagManager tm = TagManager.singleton();
     DeckManager dm = DeckManager.singleton();
 
+    static File dbname = new File("test.db");
+
+    @BeforeAll
+    static void init() throws SQLException, OpenedDatabaseException {
+        if (dbname.exists()) {
+            dbname.delete();
+        }
+        Database.singleton().open(dbname);
+        Database.singleton().initTables();
+    }
+
+    @AfterAll
+    static void close() throws SQLException {
+        Database.singleton().close();
+        dbname.delete();
+    }
+
     @Test
     void getTag_TagExists_ReturnTag() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
         Deck deck = dm.createDeck("test");
         Tag tag = new Tag("test");
         tm.addTag(deck, tag);
-        assertEquals(tm.getTag(tag.getId()), tag);
+        assertEquals(tag.getId(), tm.getTag(tag.getId()).getId());
         tm.delTag(tag);
         dm.delDeck(deck);
     }
@@ -28,12 +50,14 @@ public class TestTagManager {
 
 
     @Test
-    void getTagsFor_DeckExists_ReturnListTags() throws DatabaseNotInitException, DeckNotExistsException {
+    void getTagsFor_DeckExists_ReturnListTags() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
         Deck deck = dm.createDeck("test");
         Tag tag = new Tag("test");
         tm.addTag(deck, tag);
         assertEquals(tm.getTagsFor(deck.getId()).size(), 1);
-        assertEquals(tm.getTagsFor(deck.getId()).get(0), tag);
+        assertEquals(tm.getTagsFor(deck.getId()).get(0).getId(), tag.getId());
+        assertEquals(tm.getTagsFor(deck.getId()).get(0).getName(), tag.getName());
+        assertEquals(tm.getTagsFor(deck.getId()).get(0).getColor(), tag.getColor());
         tm.delTag(tag);
         dm.delDeck(deck);
     }
@@ -44,12 +68,14 @@ public class TestTagManager {
     }
 
     @Test
-    void getAllTags_ReturnListTags() throws DatabaseNotInitException, DeckNotExistsException {
+    void getAllTags_ReturnListTags() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
         Deck deck = dm.createDeck("test");
         Tag tag = new Tag("test");
         tm.addTag(deck, tag);
         assertEquals(tm.getAllTags().size(), 1);
-        assertEquals(tm.getAllTags().get(0), tag);
+        assertEquals(tm.getAllTags().get(0).getId(), tag.getId());
+        assertEquals(tm.getAllTags().get(0).getName(), tag.getName());
+        assertEquals(tm.getAllTags().get(0).getColor(), tag.getColor());
         tm.delTag(tag);
         dm.delDeck(deck);
     }
@@ -66,7 +92,7 @@ public class TestTagManager {
 
 
     @Test
-    void delTag_TagExists_TagNotInDB() throws DatabaseNotInitException, DeckNotExistsException {
+    void delTag_TagExists_TagNotInDB() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
         Deck deck = dm.createDeck("test");
         Tag tag = new Tag("test");
         tm.addTag(deck, tag);

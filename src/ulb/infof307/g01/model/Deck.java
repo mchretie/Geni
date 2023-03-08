@@ -33,6 +33,8 @@ public class Deck {
     }
 
     public List<Tag> getTags() { return tags; }
+
+    public List<Card> getCards() { return cards; }
     public UUID getId() { return id; }
     public String getName() { return name; }
 

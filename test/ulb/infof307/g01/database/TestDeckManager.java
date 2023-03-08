@@ -1,10 +1,14 @@
 package ulb.infof307.g01.database;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Card;
 
+import java.io.File;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,10 +19,30 @@ public class TestDeckManager {
     DeckManager dm = DeckManager.singleton();
     CardManager cm = CardManager.singleton();
 
+    static File dbname = new File("test.db");
+
+    @BeforeAll
+    static void init() throws SQLException, OpenedDatabaseException {
+        if (dbname.exists()) {
+            dbname.delete();
+        }
+        Database.singleton().open(dbname);
+        Database.singleton().initTables();
+    }
+
+    @AfterAll
+    static void close() throws SQLException {
+        Database.singleton().close();
+        dbname.delete();
+    }
+
     @Test
     void getDeck_DeckExists_ReturnDeck() throws DatabaseNotInitException, DeckNotExistsException {
         Deck deck = dm.createDeck("testExists");
-        assertEquals(deck.getName(), new Deck("testExists").getName());
+        assertEquals(deck.getId(), dm.getDeck(deck.getId()).getId());
+        assertEquals(deck.getName(), dm.getDeck(deck.getId()).getName());
+        assertEquals(deck.getTags(), dm.getDeck(deck.getId()).getTags());
+        assertEquals(deck.getCards(), dm.getDeck(deck.getId()).getCards());
         dm.delDeck(deck);
     }
 
@@ -64,9 +88,8 @@ public class TestDeckManager {
     @Test
     void delDeck_DeckExists_DeckNotInDB() throws DatabaseNotInitException, DeckNotExistsException {
         Deck deck = dm.createDeck("testDel");
-        UUID uuid = deck.getId();
         dm.delDeck(deck);
-        assertThrows(DeckNotExistsException.class, () -> dm.getDeck(uuid));
+        assertThrows(DeckNotExistsException.class, () -> dm.getDeck(deck.getId()));
     }
 
     @Test
