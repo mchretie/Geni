@@ -1,5 +1,6 @@
 package ulb.infof307.g01.database;
 
+import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class TagManager {
         return null;
     }
 
-    public void addTag(Tag tag){
+    public void addTag(Deck deck, Tag tag){
         return;
     }
 
