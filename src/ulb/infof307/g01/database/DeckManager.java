@@ -28,7 +28,11 @@ public class DeckManager {
         return;
     }
 
-    public void addToDeck(List<Card> cards){
+    public void addToDeck(Deck deck, List<Card> cards){
+        return;
+    }
+
+    public void delDeck(Deck deck){
         return;
     }
 }
