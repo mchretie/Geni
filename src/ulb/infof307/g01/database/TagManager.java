@@ -6,6 +6,15 @@ import java.util.List;
 import java.util.UUID;
 
 public class TagManager {
+
+    private static TagManager tm;
+
+    public static TagManager singleton(){
+        if (tm == null){
+            tm = new TagManager();
+        }
+        return tm;
+    }
     public Tag getTag(UUID uuid){
         return null;
     }

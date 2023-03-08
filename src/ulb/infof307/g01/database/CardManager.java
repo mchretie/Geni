@@ -6,6 +6,15 @@ import java.util.List;
 import java.util.UUID;
 
 public class CardManager {
+
+    private static CardManager cm;
+
+    public static CardManager singleton(){
+        if (cm == null){
+            cm = new CardManager();
+        }
+        return cm;
+    }
     public Card getCard(UUID uuid){
         return null;
     }

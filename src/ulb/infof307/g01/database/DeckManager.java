@@ -6,6 +6,16 @@ import ulb.infof307.g01.model.Deck;
 import java.util.List;
 
 public class DeckManager {
+
+    private static DeckManager dm;
+
+    public static DeckManager singleton(){
+        if (dm == null){
+            dm = new DeckManager();
+        }
+        return dm;
+    }
+
     public Deck getDeck(String name){
         return null;
     }
