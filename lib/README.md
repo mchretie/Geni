@@ -36,3 +36,17 @@ Configurer le lancement de l’application :
 
 1. `File > Project Structure… > Libraries`
 2. `+ > Java > lib/sqlite-jdbc`
+
+### Ikonli
+
+1. `File > Project Structure… > Libraries`
+2. `+ > Java > lib/ikonli`
+
+## Utilisation de Ikonli
+Nom des icônes: https://kordamp.org/ikonli/cheat-sheet-materialdesign2.html
+
+## Exemple d’utilisation
+```java
+FontIcon icon = new FontIcon(buttonData[1]);
+button.setGraphic(icon);
+```

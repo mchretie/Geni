@@ -1,7 +1,11 @@
 package ulb.infof307.g01.components;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * A component that displays a card upon getPane() call
@@ -17,11 +21,14 @@ public class CardComponent implements Component {
         this.answer = answer;
     }
 
-    @Override public VBox getPane()
-    {
-        VBox view = new VBox();
-        view.getChildren().add(new Label(question));
-        view.getChildren().add(new Label(answer));
+    public VBox getPane() {
+        VBox view = new VBox(100);
+
+        Label questionLabel = new Label(question);
+        Label answerLabel = new Label(answer);
+
+        view.getChildren().addAll(questionLabel, answerLabel);
+        view.setAlignment(Pos.CENTER);
         return view;
     }
 }
