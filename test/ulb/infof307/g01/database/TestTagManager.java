@@ -12,7 +12,7 @@ public class TestTagManager {
     DeckManager dm = DeckManager.singleton();
 
     @Test
-    void getTag_TagExists_ReturnTag() throws DatabaseNotInitException, DeckNotExistsException {
+    void getTag_TagExists_ReturnTag() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
         Deck deck = dm.createDeck("test");
         Tag tag = new Tag("test");
         tm.addTag(deck, tag);

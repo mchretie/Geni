@@ -30,7 +30,6 @@ public class DeckManager {
         } catch (SQLException e) {
             throw new DeckNotExistsException("Could not find requested deck");
         }
-        return null;
     }
 
     public List<Deck> getAllDecks() throws DeckNotExistsException, DatabaseNotInitException {
@@ -52,7 +51,7 @@ public class DeckManager {
             Database.singleton().executeUpdate("INSERT INTO deck (name, deck_id) VALUES ('" + deck.getName() + "', '" + deck.getId() + "')");
             return deck;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Deck already in DB");
         }
     }
 
