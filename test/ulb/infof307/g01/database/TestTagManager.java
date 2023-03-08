@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -14,13 +12,13 @@ public class TestTagManager {
     DeckManager dm = DeckManager.singleton();
 
     @Test
-    void getTag_TagExists_ReturnTag() {
-        dm.createDeck("test");
-        Deck deck = dm.getDeck("test");
+    void getTag_TagExists_ReturnTag() throws DatabaseNotInitException, DeckNotExistsException {
+        Deck deck = dm.createDeck("test");
         Tag tag = new Tag("test");
         tm.addTag(deck, tag);
         assertEquals(tm.getTag(tag.getId()), tag);
         tm.delTag(tag);
+        dm.delDeck(deck);
     }
 
     @Test
@@ -30,14 +28,14 @@ public class TestTagManager {
 
 
     @Test
-    void getTagsFor_DeckExists_ReturnListTags() {
-        dm.createDeck("test");
-        Deck deck = dm.getDeck("test");
+    void getTagsFor_DeckExists_ReturnListTags() throws DatabaseNotInitException, DeckNotExistsException {
+        Deck deck = dm.createDeck("test");
         Tag tag = new Tag("test");
         tm.addTag(deck, tag);
         assertEquals(tm.getTagsFor(deck.getId()).size(), 1);
         assertEquals(tm.getTagsFor(deck.getId()).get(0), tag);
         tm.delTag(tag);
+        dm.delDeck(deck);
     }
 
     @Test
@@ -46,14 +44,14 @@ public class TestTagManager {
     }
 
     @Test
-    void getAllTags_ReturnListTags() {
-        dm.createDeck("test");
-        Deck deck = dm.getDeck("test");
+    void getAllTags_ReturnListTags() throws DatabaseNotInitException, DeckNotExistsException {
+        Deck deck = dm.createDeck("test");
         Tag tag = new Tag("test");
         tm.addTag(deck, tag);
         assertEquals(tm.getAllTags().size(), 1);
         assertEquals(tm.getAllTags().get(0), tag);
         tm.delTag(tag);
+        dm.delDeck(deck);
     }
 
 //    @Test
@@ -68,13 +66,13 @@ public class TestTagManager {
 
 
     @Test
-    void delTag_TagExists_TagNotInDB() {
-        dm.createDeck("test");
-        Deck deck = dm.getDeck("test");
+    void delTag_TagExists_TagNotInDB() throws DatabaseNotInitException, DeckNotExistsException {
+        Deck deck = dm.createDeck("test");
         Tag tag = new Tag("test");
         tm.addTag(deck, tag);
         tm.delTag(tag);
         assertThrows(TagNotExistsException.class, () -> tm.getTag(tag.getId()));
+        dm.delDeck(deck);
     }
 
     @Test

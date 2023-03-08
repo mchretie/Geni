@@ -23,9 +23,8 @@ public class TestCardManager {
         assertThrows(CardNotExistsException.class, () -> cm.getCard(new Card("Front", "Back").getId()));
     }
 
-    @Test void getCardsFrom_DeckExists_ReturnListCard(){
-        dm.createDeck("test");
-        Deck deck = dm.getDeck("test");
+    @Test void getCardsFrom_DeckExists_ReturnListCard() throws DatabaseNotInitException, DeckNotExistsException {
+        Deck deck = dm.createDeck("test");
         Card card = new Card("Front", "Back");
         dm.addToDeck(deck, List.of(card));
         assertEquals(cm.getCardsFrom(deck.getId()).size(), 1);

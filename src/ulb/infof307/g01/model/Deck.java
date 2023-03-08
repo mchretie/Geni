@@ -7,12 +7,22 @@ import java.util.UUID;
 
 public class Deck {
     private String name;
-    private final UUID id = UUID.randomUUID();
-    private List<Card> cards = new ArrayList<>();
-    private List<Tag> tags = new ArrayList<>();
+    private UUID id;
+    private List<Card> cards;
+    private List<Tag> tags;
 
     public Deck(String name) {
         this.name = name;
+        this.id = UUID.randomUUID();
+        this.cards = new ArrayList<>();
+        this.tags = new ArrayList<>();
+    }
+
+    public Deck(String name, UUID id) {
+        this.name = name;
+        this.id = id;
+        this.cards = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 
     public List<Tag> getTags() { return tags; }
@@ -23,6 +33,8 @@ public class Deck {
 
     public void addTag(Tag tag) { tags.add(tag); }
     public void addCard(Card card) { cards.add(card); }
+
+    public void addCards(List<Card> cards) { this.cards.addAll(cards); }
 
     public void removeTag(Tag tag) { tags.remove(tag); }
     public void removeCard(Card card) { cards.remove(card); }

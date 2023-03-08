@@ -143,7 +143,7 @@ public class Database
      * Execute any SQL statement returning a result
      * <p>
      * @param query a SQL statement to be executed
-     * @return A java.sql.ResultSet with the reluting rows
+     * @return A java.sql.ResultSet with the resulting rows
      */
     public ResultSet executeQuery(String query)
       throws SQLException, DatabaseNotInitException
