@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-// clang-format off
 public class CardManager {
 
     private static CardManager cm;
@@ -19,6 +18,24 @@ public class CardManager {
             cm = new CardManager();
         }
         return cm;
+    }
+
+    public boolean cardExists(Card card) {
+        String sql = """
+                    SELECT *
+                    FROM card
+                    WHERE card_id = '%s'
+                """.formatted(card.getId().toString());
+
+        boolean exists = false;
+
+        try {
+            exists = db.executeQuery(sql).next();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return exists;
     }
 
     public Card getCard(UUID uuid)
