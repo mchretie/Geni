@@ -41,7 +41,10 @@ public class DeckManager {
         try {
             ResultSet response = Database.singleton().executeQuery("SELECT name, deck_id FROM deck");
             while (response.next()) {
-                decks.add(new Deck(response.getString("name"),  UUID.fromString(response.getString("deck_id"))));
+                UUID uuid = UUID.fromString(response.getString("deck_id"));
+                List<Card> cards = CardManager.singleton().getCardsFrom(uuid);
+                List<Tag> tags = TagManager.singleton().getTagsFor(uuid);
+                decks.add(new Deck(response.getString("name"), uuid, cards, tags));
             }
         } catch (SQLException e) {
             throw new DeckNotExistsException("Could not find requested deck");
