@@ -12,6 +12,7 @@ import java.util.UUID;
 public class TagManager {
 
     private static TagManager tm;
+    private Database db = Database.singleton();
 
     public static TagManager singleton() {
         if (tm == null) {
@@ -22,7 +23,7 @@ public class TagManager {
 
     boolean tagNotExists(UUID uuid) throws DatabaseNotInitException {
         try {
-            ResultSet response = Database.singleton().executeQuery("SELECT count(*) FROM tag WHERE tag_id = " + '"' + uuid + '"');
+            ResultSet response = db.executeQuery("SELECT count(*) FROM tag WHERE tag_id = " + '"' + uuid + '"');
             if (response.next()) {
                 return response.getInt("count(*)") == 0;
             }
@@ -37,7 +38,7 @@ public class TagManager {
             throw new TagNotExistsException("Could not find requested tag");
         }
         try {
-            ResultSet response = Database.singleton().executeQuery("SELECT name, tag_id, color FROM tag WHERE tag_id = " + '"' + uuid + '"');
+            ResultSet response = db.executeQuery("SELECT name, tag_id, color FROM tag WHERE tag_id = " + '"' + uuid + '"');
             if (response.next()) {
                 return new Tag(response.getString("name"), UUID.fromString(response.getString("tag_id")), response.getString("color"));
             }
@@ -53,7 +54,7 @@ public class TagManager {
             if (DeckManager.singleton().deckNotExists(deckUuid)) {
                 throw new DeckNotExistsException("Could not find requested deck");
             }
-            ResultSet response = Database.singleton().executeQuery("SELECT name, tag_id, color FROM tag WHERE tag_id IN (SELECT tag_id FROM deck_tag WHERE deck_id = " + '"' + deckUuid + '"' + ")");
+            ResultSet response = db.executeQuery("SELECT name, tag_id, color FROM tag WHERE tag_id IN (SELECT tag_id FROM deck_tag WHERE deck_id = " + '"' + deckUuid + '"' + ")");
             while (response.next()) {
                 tags.add(new Tag(response.getString("name"), UUID.fromString(response.getString("tag_id")), response.getString("color")));
             }
@@ -65,7 +66,7 @@ public class TagManager {
 
     public List<Tag> getAllTags() throws DatabaseNotInitException {
         try {
-            ResultSet response = Database.singleton().executeQuery("SELECT name, tag_id, color FROM tag");
+            ResultSet response = db.executeQuery("SELECT name, tag_id, color FROM tag");
             List<Tag> tags = new ArrayList<>();
             while (response.next()) {
                 tags.add(new Tag(response.getString("name"), UUID.fromString(response.getString("tag_id")), response.getString("color")));
@@ -78,8 +79,8 @@ public class TagManager {
 
     public void addTag(Deck deck, Tag tag) throws DatabaseNotInitException {
         try {
-            Database.singleton().executeUpdate("INSERT INTO tag (name, tag_id, color) VALUES ('" + tag.getName() + "', '" + tag.getId() + "', '" + tag.getColor() + "')");
-            Database.singleton().executeUpdate("INSERT INTO deck_tag (deck_id, tag_id) VALUES ('" + deck.getId() + "', '" + tag.getId() + "')");
+            db.executeUpdate("INSERT INTO tag (name, tag_id, color) VALUES ('" + tag.getName() + "', '" + tag.getId() + "', '" + tag.getColor() + "')");
+            db.executeUpdate("INSERT INTO deck_tag (deck_id, tag_id) VALUES ('" + deck.getId() + "', '" + tag.getId() + "')");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -90,8 +91,8 @@ public class TagManager {
             throw new TagNotExistsException("Could not find requested tag");
         }
         try {
-            Database.singleton().executeUpdate("DELETE FROM deck_tag WHERE tag_id = " + '"' + tag.getId() + '"');
-            Database.singleton().executeUpdate("DELETE FROM tag WHERE tag_id = " + '"' + tag.getId() + '"');
+            db.executeUpdate("DELETE FROM deck_tag WHERE tag_id = " + '"' + tag.getId() + '"');
+            db.executeUpdate("DELETE FROM tag WHERE tag_id = " + '"' + tag.getId() + '"');
         } catch (SQLException e) {
             throw new TagNotExistsException("Error deleting requested tag");
         }

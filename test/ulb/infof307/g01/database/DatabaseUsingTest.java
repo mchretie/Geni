@@ -12,6 +12,9 @@ public class DatabaseUsingTest {
 
     @BeforeEach
     void init() throws OpenedDatabaseException, SQLException {
+        if (dbfile.exists()) {
+            dbfile.delete();
+        }
         db.open(dbfile);
     }
 

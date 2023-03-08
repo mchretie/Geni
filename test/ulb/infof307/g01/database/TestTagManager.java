@@ -1,7 +1,7 @@
 package ulb.infof307.g01.database;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
@@ -12,25 +12,15 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TestTagManager {
+public class TestTagManager extends DatabaseUsingTest {
     TagManager tm = TagManager.singleton();
     DeckManager dm = DeckManager.singleton();
 
-    static File dbname = new File("test.db");
-
-    @BeforeAll
-    static void init() throws SQLException, OpenedDatabaseException {
-        if (dbname.exists()) {
-            dbname.delete();
-        }
-        Database.singleton().open(dbname);
-        Database.singleton().initTables();
-    }
-
-    @AfterAll
-    static void close() throws SQLException {
-        Database.singleton().close();
-        dbname.delete();
+    @Override
+    @BeforeEach
+    void init() throws SQLException, OpenedDatabaseException {
+        super.init();
+        db.initTables(DatabaseScheme.CLIENT);
     }
 
     @Test
