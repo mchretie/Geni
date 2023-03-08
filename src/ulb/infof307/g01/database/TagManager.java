@@ -29,6 +29,7 @@ public class TagManager {
         } catch (SQLException e) {
             throw new TagNotExistsException("Could not find requested tag");
         }
+        return null;
     }
 
     public List<Tag> getTagsFor(UUID deckUuid) throws DatabaseNotInitException {

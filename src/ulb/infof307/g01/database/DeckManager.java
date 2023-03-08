@@ -33,6 +33,7 @@ public class DeckManager {
         } catch (SQLException e) {
             throw new DeckNotExistsException("Could not find requested deck");
         }
+        return null;
     }
 
     public List<Deck> getAllDecks() throws DeckNotExistsException, DatabaseNotInitException {
