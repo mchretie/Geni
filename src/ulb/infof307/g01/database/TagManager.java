@@ -90,8 +90,8 @@ public class TagManager {
             throw new TagNotExistsException("Could not find requested tag");
         }
         try {
-            Database.singleton().executeUpdate("DELETE FROM deck_tag WHERE tag_id = '" + '"' + tag.getId() + '"' + "'");
-            Database.singleton().executeUpdate("DELETE FROM tag WHERE tag_id = '" + '"' + tag.getId() + '"' + "'");
+            Database.singleton().executeUpdate("DELETE FROM deck_tag WHERE tag_id = " + '"' + tag.getId() + '"');
+            Database.singleton().executeUpdate("DELETE FROM tag WHERE tag_id = " + '"' + tag.getId() + '"');
         } catch (SQLException e) {
             throw new TagNotExistsException("Error deleting requested tag");
         }
