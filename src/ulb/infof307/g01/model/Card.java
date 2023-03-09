@@ -2,7 +2,7 @@ package ulb.infof307.g01.model;
 
 import java.util.UUID;
 
-public class Card implements Comparable<Card> {
+public class Card {
     private final UUID id = UUID.randomUUID();
     private String front;
     private String back;
@@ -47,9 +47,4 @@ public class Card implements Comparable<Card> {
 
     public void setFront(String front) { this.front = front; }
     public void setBack(String back) { this.back = back; }
-
-    @Override
-    public int compareTo(Card otherCard) {
-        return Integer.compare(this.knowledge.getValue(), otherCard.getKnowledge().getValue());
-    }
 }

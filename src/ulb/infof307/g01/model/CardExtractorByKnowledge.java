@@ -1,8 +1,6 @@
 package ulb.infof307.g01.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
 
 public class CardExtractorByKnowledge extends CardExtractor {
 
@@ -11,7 +9,8 @@ public class CardExtractorByKnowledge extends CardExtractor {
     }
     @Override
     void sortDeck() {
-        Collections.sort(this.sortedCards);
+        Comparator<Card> cardComparatorByKnowledge = (card1, card2) -> Integer.compare(card1.getKnowledge().getValue(),
+                card2.getKnowledge().getValue());
+        this.sortedCards.sort(cardComparatorByKnowledge);
     }
-
 }
