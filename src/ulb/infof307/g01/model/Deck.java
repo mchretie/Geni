@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.Iterator;
 
-public class Deck {
+public class Deck implements Iterable<Card> {
     private String name;
     private final UUID id = UUID.randomUUID();
     private List<Card> cards = new ArrayList<>();
@@ -18,6 +19,10 @@ public class Deck {
     public List<Tag> getTags() { return tags; }
     public UUID getId() { return id; }
     public String getName() { return name; }
+
+    public List<Card> getCards() {
+        return this.cards;
+    }
 
     public int cardCount() { return cards.size(); }
 
@@ -33,5 +38,10 @@ public class Deck {
         List<Card> copy = new ArrayList<>( cards );
         Collections.shuffle(copy);
         return copy;
+    }
+
+    @Override
+    public Iterator<Card> iterator() {
+        return cards.iterator();
     }
 }
