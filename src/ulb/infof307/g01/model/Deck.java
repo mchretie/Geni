@@ -36,7 +36,9 @@ public class Deck {
 
     public List<Card> getCards() { return cards; }
     public UUID getId() { return id; }
+
     public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
     public int cardCount() { return cards.size(); }
 
@@ -54,5 +56,19 @@ public class Deck {
         List<Card> copy = new ArrayList<>( cards );
         Collections.shuffle(copy);
         return copy;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || this.getClass() != obj.getClass())
+            return false;
+
+        Deck other = (Deck) obj;
+        return this.id.equals(other.id)
+            && this.name.equals(other.name)
+            && this.cards.equals(other.cards)
+            && this.tags.equals(other.tags);
     }
 }
