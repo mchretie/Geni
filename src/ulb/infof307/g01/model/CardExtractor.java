@@ -1,16 +1,15 @@
 package ulb.infof307.g01.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-abstract public class CardExtractor {
+abstract public class CardExtractor implements Iterable<Card> {
 
     final List<Card> sortedCards;
-    private Integer currentCardIndex; // to know where we are in the deck during the drawing
 
     public CardExtractor(Deck deck) {
         this.sortedCards = new ArrayList<>(deck.getCards());
-        this.currentCardIndex = -1;
         this.sortDeck();
     }
 
@@ -20,14 +19,23 @@ abstract public class CardExtractor {
         return sortedCards;
     }
 
-    public Card getNextCard() {
-        this.currentCardIndex += 1;
+    @Override
+    public Iterator<Card> iterator() {
+        return new Iterator<>() {
 
-        if (this.currentCardIndex == this.sortedCards.size()) {
-            this.currentCardIndex = 0;
-            this.sortDeck();
+            private int currentIndex = 0;
 
-        }
-        return this.sortedCards.get(currentCardIndex);
+            @Override
+            public boolean hasNext() {
+                return currentIndex < sortedCards.size() && sortedCards.get(currentIndex) != null;
+            }
+
+            @Override
+            public Card next() {
+                return sortedCards.get(currentIndex++);
+            }
+        };
     }
+
+
 }

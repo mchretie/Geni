@@ -18,6 +18,9 @@ class CardExtractorByKnowledgeTest {
     Card cardGood;
     Card cardVeryGood;
 
+    ArrayList<Card> rightOrder;
+
+
     @BeforeEach
     void init() {
         deck = new Deck("sorted deck test");
@@ -35,27 +38,28 @@ class CardExtractorByKnowledgeTest {
         deck.addCard(cardVeryGood);
         deck.addCard(cardAverage);
         deck.addCard(cardBad);
+
+        rightOrder = new ArrayList<>(Arrays.asList(cardUnseen, cardVeryBad, cardBad, cardAverage, cardGood, cardVeryGood));
+
     }
 
     @Test
     void sortDeckTest() {
-        CardExtractorByKnowledge t = new CardExtractorByKnowledge(deck);
+        CardExtractorByKnowledge extractor = new CardExtractorByKnowledge(deck);
 
         ArrayList<Card> rightOrder = new ArrayList<>(Arrays.asList(cardUnseen, cardVeryBad, cardBad, cardAverage, cardGood, cardVeryGood));
-        assertEquals(rightOrder, t.getSortedCards());
+        assertEquals(rightOrder, extractor.getSortedCards());
     }
 
     @Test
     void getNextCardTest() {
-        CardExtractorByKnowledge t = new CardExtractorByKnowledge(deck);
+        CardExtractorByKnowledge extractor = new CardExtractorByKnowledge(deck);
 
-        assertEquals(cardUnseen, t.getNextCard());
-        assertEquals(cardVeryBad, t.getNextCard());
-        assertEquals(cardBad, t.getNextCard());
-        assertEquals(cardAverage, t.getNextCard());
-        assertEquals(cardGood, t.getNextCard());
-        assertEquals(cardVeryGood, t.getNextCard());
-        assertEquals(cardUnseen, t.getNextCard());
+        int currentIndex = 0;
 
+        for (Card c : extractor) {
+            assertEquals(c.getKnowledge(), rightOrder.get(currentIndex).getKnowledge());
+            currentIndex++;
+        }
     }
 }
