@@ -8,13 +8,14 @@ import ulb.infof307.g01.model.Tag;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTagManager extends DatabaseUsingTest {
-    TagManager tm = TagManager.singleton();
-    DeckManager dm = DeckManager.singleton();
+
+    TagManager tagManager = TagManager.singleton();
+    DeckManager deckManager = DeckManager.singleton();
 
     @Override
     @BeforeEach
@@ -24,76 +25,90 @@ public class TestTagManager extends DatabaseUsingTest {
     }
 
     @Test
-    void getTag_TagExists_ReturnTag() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
-        Deck deck = dm.createDeck("test");
-        Tag tag = new Tag("test");
-        tm.addTag(deck, tag);
-        assertEquals(tag.getId(), tm.getTag(tag.getId()).getId());
-        tm.delTag(tag);
-        dm.delDeck(deck);
+    void getTag_TagNotExists_ReturnsNull() {
+        Tag tag = new Tag("name");
+        assertEquals(null, tagManager.getTag(tag.getId()));
     }
 
     @Test
-    void getTag_TagNotExists_ThrowsException() {
-        assertThrows(TagNotExistsException.class, () -> tm.getTag(new Tag("test").getId()));
-    }
+    void saveTag_TagNotExists_TagExists() {
+        Tag tag = new Tag("name");
+        tagManager.saveTag(tag);
 
-
-    @Test
-    void getTagsFor_DeckExists_ReturnListTags() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
-        Deck deck = dm.createDeck("test");
-        Tag tag = new Tag("test");
-        tm.addTag(deck, tag);
-        assertEquals(tm.getTagsFor(deck.getId()).size(), 1);
-        assertEquals(tm.getTagsFor(deck.getId()).get(0).getId(), tag.getId());
-        assertEquals(tm.getTagsFor(deck.getId()).get(0).getName(), tag.getName());
-        assertEquals(tm.getTagsFor(deck.getId()).get(0).getColor(), tag.getColor());
-        tm.delTag(tag);
-        dm.delDeck(deck);
+        assertEquals(tag, tagManager.getTag(tag.getId()));
     }
 
     @Test
-    void getTagsFor_DeckNotExists_ThrowsException() {
-        assertThrows(DeckNotExistsException.class, () -> tm.getTagsFor(new Deck("test").getId()));
+    void getAllTags_NoTags_EmptyList() {
+        assertTrue(tagManager.getAllTags().isEmpty());
     }
 
     @Test
-    void getAllTags_ReturnListTags() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
-        Deck deck = dm.createDeck("test");
-        Tag tag = new Tag("test");
-        tm.addTag(deck, tag);
-        assertEquals(tm.getAllTags().size(), 1);
-        assertEquals(tm.getAllTags().get(0).getId(), tag.getId());
-        assertEquals(tm.getAllTags().get(0).getName(), tag.getName());
-        assertEquals(tm.getAllTags().get(0).getColor(), tag.getColor());
-        tm.delTag(tag);
-        dm.delDeck(deck);
+    void getAllTags_ManyTags_AllReturned() {
+        List<Tag> tags = new ArrayList();
+        tags.add(new Tag("name1"));
+        tags.add(new Tag("name2"));
+        tags.add(new Tag("name3"));
+
+        tags.forEach((d) -> tagManager.saveTag(d));
+
+        assertEquals(new HashSet(tags), new HashSet(tagManager.getAllTags()));
     }
+
+    @Test
+    void getAllTags_SameTagAddedMultipleTimes_OneReturned() {
+        Tag tag = new Tag("name");
+        tagManager.saveTag(tag);
+        tagManager.saveTag(tag);
+        tagManager.saveTag(tag);
+
+        assertEquals(Set.of(tag), new HashSet(tagManager.getAllTags()));
+    }
+
+    @Test
+    void deleteTag_TagExists_TagNotExists() {
+        Tag tag = new Tag("name");
+        tagManager.saveTag(tag);
+        tagManager.deleteTag(tag);
+
+        assertEquals(null, tagManager.getTag(tag.getId()));
+    }
+
+    @Test
+    void deleteTag_TagNotExists_NoThrow() {
+        Tag tag = new Tag("name");
+        assertDoesNotThrow(() -> tagManager.deleteTag(tag));
+    }
+
 
 //    @Test
-//    void addTag_TagUnique_TagInDB() {
-//
+//    void getTagsFor_DeckExists_ReturnListTags() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
+//        Deck deck = deckManager.createDeck("test");
+//        Tag tag = new Tag("test");
+//        tagManager.addTag(deck, tag);
+//        assertEquals(tagManager.getTagsFor(deck.getId()).size(), 1);
+//        assertEquals(tagManager.getTagsFor(deck.getId()).get(0).getId(), tag.getId());
+//        assertEquals(tagManager.getTagsFor(deck.getId()).get(0).getName(), tag.getName());
+//        assertEquals(tagManager.getTagsFor(deck.getId()).get(0).getColor(), tag.getColor());
+//        tagManager.delTag(tag);
+//        deckManager.delDeck(deck);
 //    }
-//
+
 //    @Test
-//    void addTag_TagNotUnique_ThrowsException() {
-//
+//    void getTagsFor_DeckNotExists_ThrowsException() {
+//        assertThrows(DeckNotExistsException.class, () -> tagManager.getTagsFor(new Deck("test").getId()));
 //    }
 
-
-    @Test
-    void delTag_TagExists_TagNotInDB() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
-        Deck deck = dm.createDeck("test");
-        Tag tag = new Tag("test");
-        tm.addTag(deck, tag);
-        tm.delTag(tag);
-        assertThrows(TagNotExistsException.class, () -> tm.getTag(tag.getId()));
-        dm.delDeck(deck);
-    }
-
-    @Test
-    void delTag_TagNotExists_ThrowsException() {
-        assertThrows(TagNotExistsException.class, () -> tm.delTag(new Tag("test")));
-    }
-
+//    @Test
+//    void getAllTags_ReturnListTags() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
+//        Deck deck = deckManager.createDeck("test");
+//        Tag tag = new Tag("test");
+//        tagManager.addTag(deck, tag);
+//        assertEquals(tagManager.getAllTags().size(), 1);
+//        assertEquals(tagManager.getAllTags().get(0).getId(), tag.getId());
+//        assertEquals(tagManager.getAllTags().get(0).getName(), tag.getName());
+//        assertEquals(tagManager.getAllTags().get(0).getColor(), tag.getColor());
+//        tagManager.delTag(tag);
+//        deckManager.delDeck(deck);
+//    }
 }
