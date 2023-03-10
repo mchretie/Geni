@@ -1,6 +1,7 @@
 package ulb.infof307.g01.model;
 
 import java.util.UUID;
+import java.util.Objects;
 
 public class Tag {
     private String name;
@@ -32,4 +33,22 @@ public class Tag {
     public UUID getId() { return id; }
 
     public void setName(String name) { this.name = name; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        if (obj == null || obj.getClass() != this.getClass())
+            return false;
+
+        Tag other = (Tag) obj;
+        return id.equals(other.id)
+            && name.equals(other.name)
+            && color.equals(other.color);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, color);
+    }
 }
