@@ -13,7 +13,10 @@ import java.util.UUID;
 public class DeckManager {
 
     private static DeckManager dm;
+
     private final Database db = Database.singleton();
+    private final CardManager cm = CardManager.singleton();
+    private final TagManager tm = TagManager.singleton();
 
     public static DeckManager singleton() {
         if (dm == null) {
@@ -77,7 +80,41 @@ public class DeckManager {
         }
     }
 
-    public void addToDeck(Deck deck, List<Card> cards) throws DeckNotExistsException, DatabaseNotInitException {
+    public void updateDeck(Deck deck) {
+        updateDeckIdentity(deck);
+        updateDeckTags(deck);
+        updateDeckCards(deck);
+    }
+
+    private void updateDeckIdentity(Deck deck) {
+        String sql = """
+            INSERT INTO deck (deck_id, name)
+            VALUES ('%1$s', '%2$s')
+            ON CONFLICT(deck_id)
+            DO UPDATE SET name = '%2$s'
+            """.formatted(
+                    deck.getId().toString(),
+                    deck.getName());
+
+        try {
+            db.executeUpdate(sql);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    private void updateDeckTags(Deck deck) {
+        // deck.getTags().forEach((t) -> tm.updateTag(t));
+        deck.getTags().forEach((t) -> tm.addTag(deck, t));
+    }
+
+    private void updateDeckCards(Deck deck) {
+        deck.getCards().forEach((c) -> cm.updateCard(c));
+        // deck.getCards().forEach((c) -> cm.addCardTo(deck, c));
+    }
+
+    public void addToDeck(Deck deck, List<Card> cards) throws DeckNotExistsException
+    {
         deck.addCards(cards);
     }
 
