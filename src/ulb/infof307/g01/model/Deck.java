@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.Objects;
 
 public class Deck {
     private String name;
@@ -43,9 +44,15 @@ public class Deck {
     public int cardCount() { return cards.size(); }
 
     public void addTag(Tag tag) { tags.add(tag); }
-    public void addCard(Card card) { cards.add(card); }
 
-    public void addCards(List<Card> cards) { this.cards.addAll(cards); }
+    public void addCard(Card card) {
+        card.setDeckId(id);
+        cards.add(card);
+    }
+
+    public void addCards(List<Card> cards) {
+        cards.forEach((c) -> addCard(c));
+    }
 
     public void removeTag(Tag tag) { tags.remove(tag); }
     public void removeCard(Card card) { cards.remove(card); }
@@ -70,5 +77,10 @@ public class Deck {
             && this.name.equals(other.name)
             && this.cards.equals(other.cards)
             && this.tags.equals(other.tags);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, id, cards, tags);
     }
 }
