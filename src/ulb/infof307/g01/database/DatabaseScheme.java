@@ -12,19 +12,11 @@ public class DatabaseScheme {
             """
         CREATE TABLE IF NOT EXISTS card (
             card_id TEXT PRIMARY KEY,
-            front TEXT,
-            back TEXT
-        );""",
-
-            """
-        CREATE TABLE IF NOT EXISTS deck_card (
             deck_id TEXT,
-            card_id TEXT,
-            PRIMARY KEY (deck_id, card_id),
+            front TEXT,
+            back TEXT,
             FOREIGN KEY (deck_id)
                 REFERENCES Deck(deck_id)
-            FOREIGN KEY (card_id)
-                REFERENCES Card(card_id)
                 ON DELETE CASCADE
         );""",
 

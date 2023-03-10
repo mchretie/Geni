@@ -1,23 +1,21 @@
 package ulb.infof307.g01.database;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Card;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.*;
 
 public class TestDeckManager extends DatabaseUsingTest {
-    DeckManager dm = DeckManager.singleton();
-    CardManager cm = CardManager.singleton();
+
+    DeckManager deckManager = DeckManager.singleton();
 
     @Override
     @BeforeEach
@@ -27,64 +25,102 @@ public class TestDeckManager extends DatabaseUsingTest {
     }
 
     @Test
-    void getDeck_DeckExists_ReturnDeck() throws DatabaseNotInitException, DeckNotExistsException {
-        Deck deck = dm.createDeck("testExists");
-        assertEquals(deck.getId(), dm.getDeck(deck.getId()).getId());
-        assertEquals(deck.getName(), dm.getDeck(deck.getId()).getName());
-        assertEquals(deck.getTags(), dm.getDeck(deck.getId()).getTags());
-        assertEquals(deck.getCards(), dm.getDeck(deck.getId()).getCards());
-        dm.delDeck(deck);
-    }
-
-    @Test
     void getDeck_DeckNotExists_ThrowsException() {
-        assertThrows(DeckNotExistsException.class, () -> dm.getDeck(new Deck("testNotExists").getId()));
+        assertEquals(null, deckManager.getDeck(new Deck("name").getId()));
     }
 
     @Test
-    void getAllDecks_ReturnListDeck() throws DeckNotExistsException, DatabaseNotInitException {
-        Deck deck1 = dm.createDeck("test1");
-        Deck deck2 = dm.createDeck("test2");
-        assertEquals(dm.getAllDecks().size(), 2);
-        assertEquals(dm.getAllDecks().get(0).getId(), deck1.getId());
-        dm.delDeck(deck1);
-        dm.delDeck(deck2);
-    }
+    void saveDeck_DeckNotExists_CreatesDeck() {
+        Deck deck = new Deck("name");
+        deckManager.saveDeck(deck);
 
-    // we using uuids so obsolete tests ?
-//    @Test void createDeck_DeckUnique_DeckInDB(){
-//        dm.createDeck("testUnique");
-//        assertEquals(dm.getDeck("testUnique").getName(), new Deck("testUnique").getName());
-//        dm.delDeck(dm.getDeck("testUnique"));
-//    }
-//
-//    @Test void createDeck_DeckNotUnique_ThrowsException(){
-//
-//    }
-
-    @Test
-    void addToDeck_DeckExistsAndCardsNotInDeck_CardsInDeck() throws DatabaseNotInitException, DeckNotExistsException {
-        Deck deck = dm.createDeck("testAdd");
-        dm.addToDeck(deck, List.of(new Card("front", "back"), new Card("front2", "back2")));
-        assertEquals(cm.getCardsFrom(deck.getId()).size(), 2);
-        dm.delDeck(deck);
+        assertEquals(deck, deckManager.getDeck(deck.getId()));
     }
 
     @Test
-    void addToDeck_DeckNotExistsOrCardsInDeck_ThrowsException() {
-        assertThrows(DeckNotExistsException.class, () -> dm.addToDeck(new Deck("testNotExists"), List.of(new Card("front", "back"))));
+    void saveDeck_DeckNameChanged_RenameDeck() {
+        Deck deck = new Deck("name");
+        deckManager.saveDeck(deck);
+
+        deck.setName("name_01");
+        deckManager.saveDeck(deck);
+
+        assertEquals(deck, deckManager.getDeck(deck.getId()));
     }
 
     @Test
-    void delDeck_DeckExists_DeckNotInDB() throws DatabaseNotInitException, DeckNotExistsException {
-        Deck deck = dm.createDeck("testDel");
-        dm.delDeck(deck);
-        assertThrows(DeckNotExistsException.class, () -> dm.getDeck(deck.getId()));
+    void saveDeck_DeckNameNotUpdated_DeckNotUpdated() {
+        Deck deck = new Deck("name");
+        deckManager.saveDeck(deck);
+
+        deck.setName("name_01");
+
+        assertNotEquals(deck, deckManager.getDeck(deck.getId()));
     }
 
     @Test
-    void delDeck_DeckNotExists_ThrowsException() {
-        assertThrows(DeckNotExistsException.class, () -> dm.delDeck(new Deck("testNotExists")));
+    void saveDeck_CardAdded_DeckAddedWithCard() {
+        Deck deck = new Deck("name");
+        Card card = new Card("front", "back");
+
+        deck.addCard(card);
+        deckManager.saveDeck(deck);
+
+        assertEquals(deck, deckManager.getDeck(deck.getId()));
     }
 
+    @Test
+    void saveDeck_CardDeleted_DeckUpdated() {
+        Deck deck = new Deck("name");
+        Card card = new Card("front", "back");
+
+        deck.addCard(card);
+        deckManager.saveDeck(deck);
+        deck.removeCard(card);
+        deckManager.saveDeck(deck);
+
+        assertEquals(deck, deckManager.getDeck(deck.getId()));
+    }
+
+    @Test
+    void getAllDecks_NoDecks_EmptyList() {
+        assertTrue(deckManager.getAllDecks().isEmpty());
+    }
+
+    @Test
+    void getAllDecks_ManyDecks_AllReturned() {
+        List<Deck> decks = new ArrayList();
+        decks.add(new Deck("name1"));
+        decks.add(new Deck("name2"));
+        decks.add(new Deck("name3"));
+
+        decks.forEach((d) -> deckManager.saveDeck(d));
+
+        assertEquals(new HashSet(decks), new HashSet(deckManager.getAllDecks()));
+    }
+
+    @Test
+    void getAllDecks_SameDeckAddedMultipleTimes_OneReturned() {
+        Deck deck = new Deck("name");
+        deckManager.saveDeck(deck);
+        deckManager.saveDeck(deck);
+        deckManager.saveDeck(deck);
+
+        assertEquals(Set.of(deck), new HashSet(deckManager.getAllDecks()));
+    }
+
+    @Test
+    void deleteDeck_DeckExists_DeckNotExists() {
+        Deck deck = new Deck("name");
+        deckManager.saveDeck(deck);
+        deckManager.deleteDeck(deck);
+
+        assertEquals(null, deckManager.getDeck(deck.getId()));
+    }
+
+    @Test
+    void deleteDeck_DeckNotExists_NoThrow() {
+        Deck deck = new Deck("name");
+        assertDoesNotThrow(() -> deckManager.deleteDeck(deck));
+    }
 }

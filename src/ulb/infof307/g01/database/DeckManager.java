@@ -3,90 +3,41 @@ package ulb.infof307.g01.database;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
+import ulb.infof307.g01.util.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class DeckManager {
 
-    private static DeckManager dm;
+    // Singleton
+    private static DeckManager instance;
 
-    private final Database db = Database.singleton();
-    private final CardManager cm = CardManager.singleton();
-    private final TagManager tm = TagManager.singleton();
+    private final Database database = Database.singleton();
+    private final TagManager tagManager = TagManager.singleton();
+
+    protected DeckManager() {}
 
     public static DeckManager singleton() {
-        if (dm == null) {
-            dm = new DeckManager();
-        }
-        return dm;
+        if (instance == null)
+            instance = new DeckManager();
+        return instance;
     }
 
-    boolean deckNotExists(UUID uuid) throws DatabaseNotInitException {
-        try {
-            ResultSet response = db.executeQuery("SELECT count(*) FROM deck WHERE deck_id = " + '"' + uuid + '"');
-            if (response.next()) {
-                return response.getInt("count(*)") == 0;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return true;
+    /**
+     * Write to longterm memory the contents of a deck
+     */
+    public void saveDeck(Deck deck) {
+        saveDeckIdentity(deck);
+        saveDeckTags(deck);
+        saveDeckCards(deck);
     }
 
-    public Deck getDeck(UUID uuid) throws DeckNotExistsException, DatabaseNotInitException {
-        if (deckNotExists(uuid)) {
-            throw new DeckNotExistsException("Could not find requested deck");
-        }
-        try {
-            ResultSet response = db.executeQuery("SELECT name, deck_id FROM deck WHERE deck_id = " + '"' + uuid + '"');
-            if (response.next()) {
-                List<Card> cards = CardManager.singleton().getCardsFrom(uuid);
-                List<Tag> tags = TagManager.singleton().getTagsFor(uuid);
-                return new Deck(response.getString("name"), UUID.fromString(response.getString("deck_id")), cards, tags);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    public List<Deck> getAllDecks() throws DeckNotExistsException, DatabaseNotInitException {
-        List<Deck> decks = new ArrayList<>();
-        try {
-            ResultSet response = db.executeQuery("SELECT name, deck_id FROM deck");
-            while (response.next()) {
-                UUID uuid = UUID.fromString(response.getString("deck_id"));
-                List<Card> cards = CardManager.singleton().getCardsFrom(uuid);
-                List<Tag> tags = TagManager.singleton().getTagsFor(uuid);
-                decks.add(new Deck(response.getString("name"), uuid, cards, tags));
-            }
-        } catch (SQLException e) {
-            throw new DeckNotExistsException("Could not find requested deck");
-        }
-        return decks;
-    }
-
-    public Deck createDeck(String name) throws DatabaseNotInitException {
-        try {
-            Deck deck = new Deck(name);
-            db.executeUpdate("INSERT INTO deck (name, deck_id) VALUES ('" + deck.getName() + "', '" + deck.getId() + "')");
-            return deck;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void updateDeck(Deck deck) {
-        updateDeckIdentity(deck);
-        updateDeckTags(deck);
-        updateDeckCards(deck);
-    }
-
-    private void updateDeckIdentity(Deck deck) {
+    /**
+     * Update a deck’s name
+     */
+    private void saveDeckIdentity(Deck deck) {
         String sql = """
             INSERT INTO deck (deck_id, name)
             VALUES ('%1$s', '%2$s')
@@ -97,37 +48,167 @@ public class DeckManager {
                     deck.getName());
 
         try {
-            db.executeUpdate(sql);
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
-    private void updateDeckTags(Deck deck) {
-        // deck.getTags().forEach((t) -> tm.updateTag(t));
-        deck.getTags().forEach((t) -> tm.addTag(deck, t));
-    }
-
-    private void updateDeckCards(Deck deck) {
-        deck.getCards().forEach((c) -> cm.updateCard(c));
-        // deck.getCards().forEach((c) -> cm.addCardTo(deck, c));
-    }
-
-    public void addToDeck(Deck deck, List<Card> cards) throws DeckNotExistsException
-    {
-        deck.addCards(cards);
-    }
-
-    public void delDeck(Deck deck) throws DatabaseNotInitException, DeckNotExistsException {
-        if (deckNotExists(deck.getId())) {
-            throw new DeckNotExistsException("Could not find requested deck");
-        }
-        try {
-            db.executeUpdate("DELETE FROM deck_tag WHERE deck_id = " + '"' + deck.getId() + '"');
-            db.executeUpdate("DELETE FROM deck_card WHERE deck_id = " + '"' + deck.getId() + '"');
-            db.executeUpdate("DELETE FROM deck WHERE deck_id = " + '"' + deck.getId() + '"');
+            database.executeUpdate(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    // TODO
+    private void saveDeckTags(Deck deck) {
+        // deck.getTags().forEach((t) -> tagManager.updateTag(t));
+        // deck.getTags().forEach((t) -> tagManager.addTag(deck, t));
+    }
+
+    /**
+     * Update the database with the data from the deck
+     */
+    private void saveDeckCards(Deck deck) {
+        HashSet<Card> currentCards = new HashSet<Card>(getCardsFor(deck.getId()));
+        HashSet<Card> newCards = new HashSet<Card>(deck.getCards());
+
+        Set<Card> addedCards = (Set<Card>) newCards.clone();
+        addedCards.removeAll(currentCards);
+
+        Set<Card> deletedCards = (Set<Card>) currentCards.clone();
+        deletedCards.removeAll(newCards);
+
+        addedCards.forEach((c) -> saveCard(c));
+        deletedCards.forEach((c) -> deleteCard(c));
+    }
+
+    private void saveCard(Card card) {
+        String sql = """
+            INSERT INTO card (card_id, deck_id, front, back)
+            VALUES ('%1$s', '%2$s', '%3$s', '%4$s')
+            ON CONFLICT(card_id)
+            DO UPDATE SET front = '%3$s', back = '%4$s'
+            """.formatted(
+                    card.getId().toString(),
+                    card.getDeckId().toString(),
+                    card.getFront(),
+                    card.getBack());
+
+        try {
+            database.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void deleteCard(Card card) {
+        String sql = """
+            DELETE FROM card
+            WHERE card.card_id = '%s'
+            """.formatted(card.getId().toString());
+
+        try {
+            database.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get the deck identified by the given UUID
+     *
+     * @return The deck requested or null if it doesn’t exist.
+     */
+    public Deck getDeck(UUID uuid) {
+        String sql = """
+            SELECT deck_id, name
+            FROM deck
+            WHERE deck_id = '%s'
+            """.formatted(uuid);
+
+        Deck deck = null;
+
+        try {
+            ResultSet res = database.executeQuery(sql);
+            if (res.next()) {
+                String name = res.getString("name");
+                List<Card> cards = getCardsFor(uuid);
+                List<Tag> tags = new ArrayList<Tag>();  // TODO: get tags
+                deck = new Deck(name, uuid, cards, tags);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return deck;
+    }
+
+    /**
+     * Get all decks present in the database
+     * @return A list of all decks, empty if none are saved.
+     */
+    public List<Deck> getAllDecks() {
+        String sql = """
+            SELECT deck_id
+            FROM deck
+            """;
+
+        List<Deck> decks = new ArrayList<>();
+
+        try {
+            ResultSet res = database.executeQuery(sql);
+            while (res.next()) {
+                UUID deckId = UUID.fromString(res.getString("deck_id"));
+                decks.add(getDeck(deckId));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return decks;
+    }
+
+    /**
+     * Get all cards associated with given deck
+     */
+    private List<Card> getCardsFor(UUID deckUuid) {
+        String sql = """
+            SELECT card_id, deck_id, front, back
+            FROM card
+            WHERE deck_id = '%s'
+            """.formatted(deckUuid.toString());
+
+        List<Card> cards = new ArrayList<Card>();
+
+        try {
+            ResultSet res = database.executeQuery(sql);
+            while (res.next()) {
+                cards.add(getCardFromResultSet(res));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return cards;
+    }
+
+    private Card getCardFromResultSet(ResultSet res) throws SQLException {
+            return new Card(
+                    UUID.fromString(res.getString("card_id")),
+                    UUID.fromString(res.getString("deck_id")),
+                    res.getString("front"),
+                    res.getString("back"));
+    }
+
+    /**
+     * Delete a deck along with its cards from the database.
+     */
+    public void deleteDeck(Deck deck) {
+        String sql = """
+            DELETE FROM deck
+            WHERE deck_id = '%s'
+            """.formatted(deck.getId());
+
+        try {
+            database.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
