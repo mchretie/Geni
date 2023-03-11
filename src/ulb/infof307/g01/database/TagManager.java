@@ -5,15 +5,14 @@ import ulb.infof307.g01.model.Tag;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class TagManager {
 
     private static TagManager instance;
 
-    private Database database = Database.singleton();
+    private final static Database database = Database.singleton();
+    private final static DeckManager deckManager = DeckManager.singleton();
 
     public static TagManager singleton() {
         if (instance == null)
@@ -97,51 +96,105 @@ public class TagManager {
     }
 
     /**
-     * Should not be called directly from client code.
+     * Saves tags associated with a given deck
+     * <p>
+     * If the tags do not exist before the call,
+     * they are created.
+     * <p>
+     * Should not be called directly from client code,
+     * use the facilities from DeckManager such
+     * as saveDeck.
      *
      * @see ulb.infof307.g01.database.DeckManager;
      */
-    public void saveTagsFor(Deck deck);
+    public void saveTagsFor(Deck deck) {
+        deck.getTags().forEach((t) -> saveTag(t));
 
-    public void getTagsFor(UUID deckId);
+        HashSet<Tag> currentTags = new HashSet<Tag>(getTagsFor(deck.getId()));
+        HashSet<Tag> newTags = new HashSet<Tag>(deck.getTags());
 
+        Set<Tag> addedTags = (Set<Tag>) newTags.clone();
+        addedTags.removeAll(currentTags);
 
-//     public List<Tag> getTagsFor(UUID deckUuid) throws DatabaseNotInitException, DeckNotExistsException {
-//         List<Tag> tags = new ArrayList<>();
-//         try {
-//             // if (DeckManager.singleton().deckNotExists(deckUuid)) {
-//             //     throw new DeckNotExistsException("Could not find requested deck");
-//             // }
-//             ResultSet response = database.executeQuery("SELECT name, tag_id, color FROM tag WHERE tag_id IN (SELECT tag_id FROM deck_tag WHERE deck_id = " + '"' + deckUuid + '"' + ")");
-//             while (response.next()) {
-//                 tags.add(new Tag(response.getString("name"), UUID.fromString(response.getString("tag_id")), response.getString("color")));
-//             }
-//         } catch (SQLException e) {
-//             throw new RuntimeException(e);
-//         }
-//         return tags;
-//     }
+        Set<Tag> deletedTags = (Set<Tag>) currentTags.clone();
+        deletedTags.removeAll(newTags);
 
+        addedTags.forEach((t) -> addTagTo(deck, t));
+        deletedTags.forEach((t) -> removeTagFrom(deck, t));
+    }
 
-//     public void addTag(Deck deck, Tag tag) throws DatabaseNotInitException {
-//         try {
-//             database.executeUpdate("INSERT INTO tag (name, tag_id, color) VALUES ('" + tag.getName() + "', '" + tag.getId() + "', '" + tag.getColor() + "')");
-//             database.executeUpdate("INSERT INTO deck_tag (deck_id, tag_id) VALUES ('" + deck.getId() + "', '" + tag.getId() + "')");
-//         } catch (SQLException e) {
-//             throw new RuntimeException(e);
-//         }
-//     }
+    /**
+     * Assumes the association doesn’t exist in the database.
+     */
+    private void addTagTo(Deck deck, Tag tag) {
+        String sql = """
+            INSERT INTO deck_tag (deck_id, tag_id)
+            VALUES ('%1$s', '%2$s')
+            """.formatted(
+                    deck.getId().toString(),
+                    tag.getId().toString());
 
-//     public void delTag(Tag tag) throws DatabaseNotInitException, TagNotExistsException {
-//         if (tagNotExists(tag.getId())) {
-//             throw new TagNotExistsException("Could not find requested tag");
-//         }
-//         try {
-//             database.executeUpdate("DELETE FROM deck_tag WHERE tag_id = " + '"' + tag.getId() + '"');
-//             database.executeUpdate("DELETE FROM tag WHERE tag_id = " + '"' + tag.getId() + '"');
-//         } catch (SQLException e) {
-//             throw new TagNotExistsException("Error deleting requested tag");
-//         }
-//     }
+        try {
+            database.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    private void removeTagFrom(Deck deck, Tag tag) {
+        String sql = """
+            DELETE FROM deck_tag
+            WHERE deck_id = '%1$s'
+            """.formatted(deck.getId().toString());
+
+        try {
+            database.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Tag> getTagsFor(UUID deckId) {
+        String sql = """
+            SELECT deck_id, tag_id
+            FROM deck_tag
+            WHERE deck_id = '%1$s'
+            """.formatted(deckId.toString());
+
+        List<Tag> tags = new ArrayList();
+
+        try {
+            ResultSet res = database.executeQuery(sql);
+            while (res.next()) {
+                UUID tagId = UUID.fromString(res.getString("tag_id"));
+                tags.add(getTag(tagId));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return tags;
+    }
+
+    public List<Deck> getDecksHavingTag(Tag tag) {
+        String sql = """
+            SELECT deck_id, tag_id
+            FROM deck_tag
+            WHERE tag_id = '%1$s'
+            """.formatted(tag.getId().toString());
+
+        List<Deck> decks = new ArrayList();
+
+        try {
+            ResultSet res = database.executeQuery(sql);
+            while (res.next()) {
+                UUID deckId = UUID.fromString(res.getString("deck_id"));
+                decks.add(deckManager.getDeck(deckId));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return decks;
+    }
 }

@@ -14,8 +14,8 @@ public class DeckManager {
     // Singleton
     private static DeckManager instance;
 
-    private final Database database = Database.singleton();
-    private final TagManager tagManager = TagManager.singleton();
+    private final static Database database = Database.singleton();
+    private final static TagManager tagManager = TagManager.singleton();
 
     protected DeckManager() {}
 
@@ -54,10 +54,8 @@ public class DeckManager {
         }
     }
 
-    // TODO
     private void saveDeckTags(Deck deck) {
-        // deck.getTags().forEach((t) -> tagManager.updateTag(t));
-        // deck.getTags().forEach((t) -> tagManager.addTag(deck, t));
+        tagManager.saveTagsFor(deck);
     }
 
     /**
@@ -128,7 +126,7 @@ public class DeckManager {
             if (res.next()) {
                 String name = res.getString("name");
                 List<Card> cards = getCardsFor(uuid);
-                List<Tag> tags = new ArrayList<Tag>();  // TODO: get tags
+                List<Tag> tags = tagManager.getTagsFor(uuid);
                 deck = new Deck(name, uuid, cards, tags);
             }
         } catch (SQLException e) {

@@ -66,6 +66,74 @@ public class TestTagManager extends DatabaseUsingTest {
     }
 
     @Test
+    void saveTagsFor_TagsAddedToDeck_SaveTags() {
+        Deck deck = new Deck("name");
+        Tag tag = new Tag("name");
+        deck.addTag(tag);
+        tagManager.saveTagsFor(deck);
+
+        assertEquals(new HashSet(deck.getTags()),
+                new HashSet(tagManager.getTagsFor(deck.getId())));
+    }
+
+    @Test
+    void saveTagsFor_TagsRemovedFromDeck_SaveTags() {
+        Deck deck = new Deck("name");
+        Tag tag = new Tag("name");
+        deck.addTag(tag);
+        tagManager.saveTagsFor(deck);
+        deck.removeTag(tag);
+        tagManager.saveTagsFor(deck);
+
+        assertEquals(new HashSet(deck.getTags()),
+                new HashSet(tagManager.getTagsFor(deck.getId())));
+    }
+
+    @Test
+    void getTagsFor_NoTags_EmptyList() {
+        Deck deck = new Deck("name");
+        deckManager.saveDeck(deck);
+        tagManager.saveTagsFor(deck);
+        assertTrue(tagManager.getTagsFor(deck.getId()).isEmpty());
+    }
+
+    @Test
+    void getTagsFor_DeckNotExist_EmptyList() {
+        Deck deck = new Deck("name");
+        assertTrue(tagManager.getTagsFor(deck.getId()).isEmpty());
+    }
+
+    @Test
+    void getDecksHavingTag_NoDecks_EmptyList() {
+        Tag tag = new Tag("name");
+        assertTrue(tagManager.getDecksHavingTag(tag).isEmpty());
+    }
+
+    @Test
+    void getDecksHavingTag_MultipleDecks_OnlyThoseReturned() {
+        Deck deck1 = new Deck("name1");
+        Deck deck2 = new Deck("name2");
+        Deck deck3 = new Deck("name3");
+
+        deckManager.saveDeck(deck1);
+        deckManager.saveDeck(deck2);
+        deckManager.saveDeck(deck3);
+
+        Tag tag = new Tag("name");
+        deck1.addTag(tag);
+        deck2.addTag(tag);
+
+        tagManager.saveTagsFor(deck1);
+        tagManager.saveTagsFor(deck2);
+        tagManager.saveTagsFor(deck3);
+
+        var expectedSet = Set.of(deck1, deck2);
+        var receivedSet = new HashSet<Deck>(tagManager.getDecksHavingTag(tag));
+
+        assertEquals(expectedSet, receivedSet);
+    }
+
+    @Test
     void deleteTag_TagExists_TagNotExists() {
         Tag tag = new Tag("name");
         tagManager.saveTag(tag);
@@ -79,36 +147,4 @@ public class TestTagManager extends DatabaseUsingTest {
         Tag tag = new Tag("name");
         assertDoesNotThrow(() -> tagManager.deleteTag(tag));
     }
-
-
-//    @Test
-//    void getTagsFor_DeckExists_ReturnListTags() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
-//        Deck deck = deckManager.createDeck("test");
-//        Tag tag = new Tag("test");
-//        tagManager.addTag(deck, tag);
-//        assertEquals(tagManager.getTagsFor(deck.getId()).size(), 1);
-//        assertEquals(tagManager.getTagsFor(deck.getId()).get(0).getId(), tag.getId());
-//        assertEquals(tagManager.getTagsFor(deck.getId()).get(0).getName(), tag.getName());
-//        assertEquals(tagManager.getTagsFor(deck.getId()).get(0).getColor(), tag.getColor());
-//        tagManager.delTag(tag);
-//        deckManager.delDeck(deck);
-//    }
-
-//    @Test
-//    void getTagsFor_DeckNotExists_ThrowsException() {
-//        assertThrows(DeckNotExistsException.class, () -> tagManager.getTagsFor(new Deck("test").getId()));
-//    }
-
-//    @Test
-//    void getAllTags_ReturnListTags() throws DatabaseNotInitException, DeckNotExistsException, TagNotExistsException {
-//        Deck deck = deckManager.createDeck("test");
-//        Tag tag = new Tag("test");
-//        tagManager.addTag(deck, tag);
-//        assertEquals(tagManager.getAllTags().size(), 1);
-//        assertEquals(tagManager.getAllTags().get(0).getId(), tag.getId());
-//        assertEquals(tagManager.getAllTags().get(0).getName(), tag.getName());
-//        assertEquals(tagManager.getAllTags().get(0).getColor(), tag.getColor());
-//        tagManager.delTag(tag);
-//        deckManager.delDeck(deck);
-//    }
 }
