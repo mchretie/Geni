@@ -2,6 +2,7 @@ package ulb.infof307.g01.database;
 
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Card;
+import ulb.infof307.g01.model.Tag;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -77,6 +78,30 @@ public class TestDeckManager extends DatabaseUsingTest {
         deck.addCard(card);
         deckManager.saveDeck(deck);
         deck.removeCard(card);
+        deckManager.saveDeck(deck);
+
+        assertEquals(deck, deckManager.getDeck(deck.getId()));
+    }
+
+    @Test
+    void saveDeck_TagAdded_DeckUpdated() {
+        Deck deck = new Deck("name");
+        Tag tag = new Tag("name");
+
+        deck.addTag(tag);
+        deckManager.saveDeck(deck);
+
+        assertEquals(deck, deckManager.getDeck(deck.getId()));
+    }
+
+    @Test
+    void saveDeck_TagRemoved_DeckUpdated() {
+        Deck deck = new Deck("name");
+        Tag tag = new Tag("name");
+
+        deck.addTag(tag);
+        deckManager.saveDeck(deck);
+        deck.removeTag(tag);
         deckManager.saveDeck(deck);
 
         assertEquals(deck, deckManager.getDeck(deck.getId()));
