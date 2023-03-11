@@ -71,8 +71,7 @@ public class Database {
      * @param query a SQL statement to be executed
      * @return A java.sql.ResultSet with the resulting rows
      */
-    public ResultSet executeQuery(String query)
-            throws SQLException, DatabaseNotInitException {
+    public ResultSet executeQuery(String query) throws DatabaseNotInitException {
         assertOpened();
 
         try {

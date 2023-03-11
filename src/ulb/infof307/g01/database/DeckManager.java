@@ -182,7 +182,7 @@ public class DeckManager {
         try {
             ResultSet res = database.executeQuery(sql);
             while (res.next()) {
-                cards.add(getCardFromResultSet(res));
+                cards.add(extractCardFromResultSet(res));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -191,7 +191,7 @@ public class DeckManager {
         return cards;
     }
 
-    private Card getCardFromResultSet(ResultSet res) throws SQLException {
+    private Card extractCardFromResultSet(ResultSet res) throws SQLException {
             return new Card(
                     UUID.fromString(res.getString("card_id")),
                     UUID.fromString(res.getString("deck_id")),
