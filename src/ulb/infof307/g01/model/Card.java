@@ -8,6 +8,18 @@ public class Card {
     private UUID deckId;
     private String front;
     private String back;
+    private KnowledgeLevel knowledge;
+
+    public enum KnowledgeLevel {
+        NEVER_SEEN(0), VERY_BAD(1), BAD(2), AVERAGE(3), GOOD(4), VERY_GOOD(5);
+
+        private final int value;
+
+        KnowledgeLevel(int value) { this.value = value;}
+        public int getValue() {
+            return value;
+        }
+    }
 
     public Card(String front, String back) {
         this(UUID.randomUUID(), null, front, back);
@@ -19,6 +31,21 @@ public class Card {
         this.deckId = deckId;
         this.front = front;
         this.back = back;
+        this.knowledge = KnowledgeLevel.NEVER_SEEN;
+    }
+
+    public Card(String front, String back, KnowledgeLevel knowledge) {
+        this.front = front;
+        this.back = back;
+        this.knowledge = knowledge;
+    }
+
+    public KnowledgeLevel getKnowledge() {
+        return knowledge;
+    }
+
+    public void setKnowledge(KnowledgeLevel knowledge) {
+        this.knowledge = knowledge;
     }
 
     public String getFront() { return front; }

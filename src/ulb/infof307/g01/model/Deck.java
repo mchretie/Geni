@@ -5,8 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.Objects;
+import java.util.Iterator;
 
-public class Deck {
+
+public class Deck implements Iterable<Card> {
     private String name;
     private UUID id;
     private List<Card> cards;
@@ -40,6 +42,10 @@ public class Deck {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public List<Card> getCards() {
+        return this.cards;
+    }
 
     public int cardCount() { return cards.size(); }
 
@@ -82,5 +88,10 @@ public class Deck {
     @Override
     public int hashCode() {
         return Objects.hash(name, id, cards, tags);
+    }
+
+    public Iterator<Card> iterator() {
+        return cards.iterator();
+
     }
 }
