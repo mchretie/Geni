@@ -1,0 +1,50 @@
+@startuml
+
+title "Actions interacting with database"
+
+left to right direction
+
+:User: as U
+
+rectangle Flashcards {
+    (CreateDeck)
+    (EditDeck)
+    (StudyDeck)
+    (EditCard)
+    (RemoveCard)
+
+    U -- (CreateDeck)
+    U -- (EditDeck)
+    U -- (StudyDeck)
+    U -- (DeleteDeck)
+
+    (EditDeck) <.. (EditCard)
+    (EditCard) --> (SaveDeck)
+
+    (EditDeck) <.. (AddCard)
+    (AddCard) --> (SaveDeck)
+
+    (EditDeck) <.. (RemoveCard)
+    (RemoveCard) --> (SaveDeck)
+
+    (EditDeck) <.. (AddTag)
+    (EditDeck) <.. (RemoveTag)
+    (AddTag) --> (SaveDeck)
+    (RemoveTag) --> (SaveDeck)
+
+    (EditDeck) <.. (MoveCardBetweenDeck)
+    (MoveCardBetweenDeck) --> (SaveDeck)
+
+    U -- (ManageTags)
+    (ManageTags) -- (CreateTag)
+    (ManageTags) -- (DeleteTag)
+    (ManageTags) -- (EditTag)
+    (EditTag) <.. (RenameTag)
+    (EditTag) <.. (ChangeTagColor)
+
+    (CreateTag) --> (SaveTag)
+    (EditTag) --> (SaveTag)
+}
+
+@enduml
+
