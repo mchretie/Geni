@@ -1,6 +1,5 @@
 package ulb.infof307.g01.database;
 
-// clang-format off
 public class DatabaseScheme {
     public static final String[] CLIENT = new String[]{
             """

@@ -3,7 +3,6 @@ package ulb.infof307.g01.database;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
-import ulb.infof307.g01.util.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +24,8 @@ public class DeckManager {
     private final static Database database = Database.singleton();
     private final static TagManager tagManager = TagManager.singleton();
 
-    protected DeckManager() {}
+    protected DeckManager() {
+    }
 
     public static DeckManager singleton() {
         if (instance == null)
@@ -51,15 +51,15 @@ public class DeckManager {
      */
     private void saveDeckIdentity(Deck deck) {
         String sql = """
-            INSERT INTO deck (deck_id, name)
-            VALUES ('%1$s', '%2$s')
-            ON CONFLICT(deck_id)
-            DO UPDATE SET name = '%2$s'
-            ON CONFLICT(name)
-            DO NOTHING
-            """.formatted(
-                    deck.getId().toString(),
-                    deck.getName());
+                INSERT INTO deck (deck_id, name)
+                VALUES ('%1$s', '%2$s')
+                ON CONFLICT(deck_id)
+                DO UPDATE SET name = '%2$s'
+                ON CONFLICT(name)
+                DO NOTHING
+                """.formatted(
+                deck.getId().toString(),
+                deck.getName());
 
         database.executeUpdate(sql);
     }
@@ -87,24 +87,24 @@ public class DeckManager {
 
     private void saveCard(Card card) {
         String sql = """
-            INSERT INTO card (card_id, deck_id, front, back)
-            VALUES ('%1$s', '%2$s', '%3$s', '%4$s')
-            ON CONFLICT(card_id)
-            DO UPDATE SET front = '%3$s', back = '%4$s'
-            """.formatted(
-                    card.getId().toString(),
-                    card.getDeckId().toString(),
-                    card.getFront(),
-                    card.getBack());
+                INSERT INTO card (card_id, deck_id, front, back)
+                VALUES ('%1$s', '%2$s', '%3$s', '%4$s')
+                ON CONFLICT(card_id)
+                DO UPDATE SET front = '%3$s', back = '%4$s'
+                """.formatted(
+                card.getId().toString(),
+                card.getDeckId().toString(),
+                card.getFront(),
+                card.getBack());
 
         database.executeUpdate(sql);
     }
 
     private void deleteCard(Card card) {
         String sql = """
-            DELETE FROM card
-            WHERE card.card_id = '%s'
-            """.formatted(card.getId().toString());
+                DELETE FROM card
+                WHERE card.card_id = '%s'
+                """.formatted(card.getId().toString());
 
         database.executeUpdate(sql);
     }
@@ -116,14 +116,15 @@ public class DeckManager {
      * To retieve decks from memory, use getAllDecks
      * or other managers returning decks.
      * <p>
+     *
      * @return The deck requested or null if it doesn’t exist.
      */
     public Deck getDeck(UUID uuid) {
         String sql = """
-            SELECT deck_id, name
-            FROM deck
-            WHERE deck_id = '%s'
-            """.formatted(uuid);
+                SELECT deck_id, name
+                FROM deck
+                WHERE deck_id = '%s'
+                """.formatted(uuid);
 
         Deck deck = null;
 
@@ -144,13 +145,14 @@ public class DeckManager {
 
     /**
      * Get all decks present in the database
+     *
      * @return A list of all decks, empty if none are saved.
      */
     public List<Deck> getAllDecks() {
         String sql = """
-            SELECT deck_id
-            FROM deck
-            """;
+                SELECT deck_id
+                FROM deck
+                """;
 
         List<Deck> decks = new ArrayList<>();
 
@@ -172,10 +174,10 @@ public class DeckManager {
      */
     private List<Card> getCardsFor(UUID deckUuid) {
         String sql = """
-            SELECT card_id, deck_id, front, back
-            FROM card
-            WHERE deck_id = '%s'
-            """.formatted(deckUuid.toString());
+                SELECT card_id, deck_id, front, back
+                FROM card
+                WHERE deck_id = '%s'
+                """.formatted(deckUuid.toString());
 
         List<Card> cards = new ArrayList<Card>();
 
@@ -192,11 +194,11 @@ public class DeckManager {
     }
 
     private Card extractCardFromResultSet(ResultSet res) throws SQLException {
-            return new Card(
-                    UUID.fromString(res.getString("card_id")),
-                    UUID.fromString(res.getString("deck_id")),
-                    res.getString("front"),
-                    res.getString("back"));
+        return new Card(
+                UUID.fromString(res.getString("card_id")),
+                UUID.fromString(res.getString("deck_id")),
+                res.getString("front"),
+                res.getString("back"));
     }
 
     /**
@@ -204,9 +206,9 @@ public class DeckManager {
      */
     public void deleteDeck(Deck deck) {
         String sql = """
-            DELETE FROM deck
-            WHERE deck_id = '%s'
-            """.formatted(deck.getId());
+                DELETE FROM deck
+                WHERE deck_id = '%s'
+                """.formatted(deck.getId());
 
         database.executeUpdate(sql);
     }

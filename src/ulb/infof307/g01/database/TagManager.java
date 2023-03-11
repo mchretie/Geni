@@ -16,6 +16,7 @@ import java.util.*;
  * with saveTag or deleteTag.
  * <p>
  * To add tags to decks, see DeckManager.
+ *
  * @see ulb.infof307.g01.database.DeckManager;
  */
 public class TagManager {
@@ -26,7 +27,8 @@ public class TagManager {
     private final static Database database = Database.singleton();
     private final static DeckManager deckManager = DeckManager.singleton();
 
-    protected TagManager() {}
+    protected TagManager() {
+    }
 
     public static TagManager singleton() {
         if (instance == null)
@@ -42,26 +44,26 @@ public class TagManager {
      */
     public void saveTag(Tag tag) {
         String sql = """
-            INSERT INTO tag (tag_id, name, color)
-            VALUES ('%1$s', '%2$s', '%3$s')
-            ON CONFLICT (tag_id)
-            DO UPDATE SET name = '%2$s', color = '%3$s'
-            ON CONFLICT(name)
-            DO NOTHING
-            """.formatted(
-                    tag.getId(),
-                    tag.getName(),
-                    tag.getColor());
+                INSERT INTO tag (tag_id, name, color)
+                VALUES ('%1$s', '%2$s', '%3$s')
+                ON CONFLICT (tag_id)
+                DO UPDATE SET name = '%2$s', color = '%3$s'
+                ON CONFLICT(name)
+                DO NOTHING
+                """.formatted(
+                tag.getId(),
+                tag.getName(),
+                tag.getColor());
 
         database.executeUpdate(sql);
     }
 
     public Tag getTag(UUID uuid) {
         String sql = """
-            SELECT tag_id, name, color
-            FROM tag
-            WHERE tag_id = '%1$s'
-            """.formatted(uuid.toString());
+                SELECT tag_id, name, color
+                FROM tag
+                WHERE tag_id = '%1$s'
+                """.formatted(uuid.toString());
 
         Tag tag = null;
 
@@ -81,9 +83,9 @@ public class TagManager {
 
     public List<Tag> getAllTags() {
         String sql = """
-            SELECT tag_id
-            FROM tag
-            """;
+                SELECT tag_id
+                FROM tag
+                """;
 
         List<Tag> tags = new ArrayList<Tag>();
 
@@ -105,9 +107,9 @@ public class TagManager {
      */
     public void deleteTag(Tag tag) {
         String sql = """
-            DELETE FROM tag
-            WHERE tag_id = '%1$s'
-            """.formatted(tag.getId());
+                DELETE FROM tag
+                WHERE tag_id = '%1$s'
+                """.formatted(tag.getId());
 
         database.executeUpdate(sql);
     }
@@ -145,20 +147,20 @@ public class TagManager {
      */
     private void addTagTo(Deck deck, Tag tag) {
         String sql = """
-            INSERT INTO deck_tag (deck_id, tag_id)
-            VALUES ('%1$s', '%2$s')
-            """.formatted(
-                    deck.getId().toString(),
-                    tag.getId().toString());
+                INSERT INTO deck_tag (deck_id, tag_id)
+                VALUES ('%1$s', '%2$s')
+                """.formatted(
+                deck.getId().toString(),
+                tag.getId().toString());
 
         database.executeUpdate(sql);
     }
 
     private void removeTagFrom(Deck deck, Tag tag) {
         String sql = """
-            DELETE FROM deck_tag
-            WHERE deck_id = '%1$s'
-            """.formatted(deck.getId().toString());
+                DELETE FROM deck_tag
+                WHERE deck_id = '%1$s'
+                """.formatted(deck.getId().toString());
 
         database.executeUpdate(sql);
     }
@@ -169,10 +171,10 @@ public class TagManager {
      */
     public List<Tag> getTagsFor(UUID deckId) {
         String sql = """
-            SELECT deck_id, tag_id
-            FROM deck_tag
-            WHERE deck_id = '%1$s'
-            """.formatted(deckId.toString());
+                SELECT deck_id, tag_id
+                FROM deck_tag
+                WHERE deck_id = '%1$s'
+                """.formatted(deckId.toString());
 
         List<Tag> tags = new ArrayList();
 
@@ -194,10 +196,10 @@ public class TagManager {
      */
     public List<Deck> getDecksHavingTag(Tag tag) {
         String sql = """
-            SELECT deck_id, tag_id
-            FROM deck_tag
-            WHERE tag_id = '%1$s'
-            """.formatted(tag.getId().toString());
+                SELECT deck_id, tag_id
+                FROM deck_tag
+                WHERE tag_id = '%1$s'
+                """.formatted(tag.getId().toString());
 
         List<Deck> decks = new ArrayList();
 

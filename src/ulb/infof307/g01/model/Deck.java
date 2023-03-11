@@ -43,10 +43,6 @@ public class Deck implements Iterable<Card> {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public List<Card> getCards() {
-        return this.cards;
-    }
-
     public int cardCount() { return cards.size(); }
 
     public void addTag(Tag tag) { tags.add(tag); }

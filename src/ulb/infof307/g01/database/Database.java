@@ -45,7 +45,7 @@ public class Database {
         }
 
         connection = DriverManager
-            .getConnection("jdbc:sqlite:" + dbname.toPath());
+                .getConnection("jdbc:sqlite:" + dbname.toPath());
     }
 
     public void initTables(String[] tables) throws DatabaseNotInitException {
