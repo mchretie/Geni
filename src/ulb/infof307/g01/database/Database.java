@@ -1,13 +1,7 @@
 package ulb.infof307.g01.database;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-import java.util.concurrent.Semaphore;
+import java.sql.*;
 
 /**
  * Provide global access to database
@@ -19,44 +13,43 @@ import java.util.concurrent.Semaphore;
  * At the moment, only one database can be open at a given time. Two databases
  * cannot be open at the same time.
  */
-public class Database
-{
-
-    private static Database db;
+public class Database {
+    private static Database instance;
     private Connection connection = null;
 
-    private void assertOpened() throws DatabaseNotInitException
-    {
-        if (connection == null) {
+    private void assertOpened() throws DatabaseNotInitException {
+        if (connection == null)
             throw new DatabaseNotInitException(
-              "Database must be opened before use");
-        }
+                    "Database must be opened before use");
     }
 
     /**
      * Get access to the Database object
      */
-    public static Database singleton()
-    {
-        if (db == null)
-            db = new Database();
-        return db;
+    public static Database singleton() {
+        if (instance == null)
+            instance = new Database();
+        return instance;
     }
 
     /**
      * Open a database
      * <p>
+     *
      * @param dbname filename used for the database
      */
-    public void open(File dbname) throws OpenedDatabaseException, SQLException
-    {
+    public void open(File dbname) throws OpenedDatabaseException, SQLException {
         if (connection != null) {
             throw new OpenedDatabaseException(
-              "Cannot open two databases at the same time");
+                    "Cannot open two databases at the same time");
         }
 
-        connection =
-          DriverManager.getConnection("jdbc:sqlite:" + dbname.toPath());
+        connection = DriverManager
+                .getConnection("jdbc:sqlite:" + dbname.toPath());
+    }
+
+    public void initTables(String[] tables) throws DatabaseNotInitException {
+        executeUpdates(tables);
     }
 
     /**
@@ -64,8 +57,7 @@ public class Database
      * <p>
      * End gracefully, before shutdown.
      */
-    public void close() throws SQLException
-    {
+    public void close() throws SQLException {
         if (connection != null) {
             connection.close();
             connection = null;
@@ -75,16 +67,19 @@ public class Database
     /**
      * Execute any SQL statement returning a result
      * <p>
+     *
      * @param query a SQL statement to be executed
-     * @return A java.sql.ResultSet with the reluting rows
+     * @return A java.sql.ResultSet with the resulting rows
      */
-    public ResultSet executeQuery(String query)
-      throws SQLException, DatabaseNotInitException
-    {
+    public ResultSet executeQuery(String query) throws DatabaseNotInitException {
         assertOpened();
 
-        Statement stmt = connection.createStatement();
-        return stmt.executeQuery(query);
+        try {
+            Statement stmt = connection.createStatement();
+            return stmt.executeQuery(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -94,13 +89,15 @@ public class Database
      *
      * @param update a SQL statement to be executed
      */
-    public void executeUpdate(String update)
-      throws SQLException, DatabaseNotInitException
-    {
+    public void executeUpdate(String update) throws DatabaseNotInitException {
         assertOpened();
 
-        Statement stmt = connection.createStatement();
-        stmt.executeUpdate(update);
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(update);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -110,15 +107,16 @@ public class Database
      *
      * @param updates a SQL statement to be executed
      */
-    public void executeUpdates(List<String> updates)
-      throws SQLException, DatabaseNotInitException
-    {
+    public void executeUpdates(String[] updates) throws DatabaseNotInitException {
         assertOpened();
 
-        Statement stmt = connection.createStatement();
-        for (String sql : updates)
-            stmt.addBatch(sql);
-
-        stmt.executeBatch();
+        try {
+            Statement stmt = connection.createStatement();
+            for (String sql : updates)
+                stmt.addBatch(sql);
+            stmt.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
