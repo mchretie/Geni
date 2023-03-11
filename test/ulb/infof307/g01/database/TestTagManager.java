@@ -31,6 +31,17 @@ public class TestTagManager extends DatabaseUsingTest {
     }
 
     @Test
+    void saveTag_TagsWithSameNameDiffId_OnlyFirstAdded() {
+        Tag tag1 = new Tag("name");
+        Tag tag2 = new Tag("name");
+
+        tagManager.saveTag(tag1);
+        tagManager.saveTag(tag2);
+
+        assertEquals(Set.of(tag1), new HashSet(tagManager.getAllTags()));
+    }
+
+    @Test
     void saveTag_TagNotExists_TagExists() {
         Tag tag = new Tag("name");
         tagManager.saveTag(tag);

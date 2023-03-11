@@ -36,6 +36,10 @@ public class DeckManager {
 
     /**
      * Update a deck’s name
+     * <p>
+     * Upon the saving of multiple decks with the same name,
+     * but with different ids, only the first will be saved while
+     * the following will be ignored.
      */
     private void saveDeckIdentity(Deck deck) {
         String sql = """
@@ -43,6 +47,8 @@ public class DeckManager {
             VALUES ('%1$s', '%2$s')
             ON CONFLICT(deck_id)
             DO UPDATE SET name = '%2$s'
+            ON CONFLICT(name)
+            DO NOTHING
             """.formatted(
                     deck.getId().toString(),
                     deck.getName());

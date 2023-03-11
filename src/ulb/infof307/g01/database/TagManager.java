@@ -20,12 +20,20 @@ public class TagManager {
         return instance;
     }
 
+    /**
+     * <p>
+     * Upon the saving of multiple tags with the same name,
+     * but with different ids, only the first will be saved while
+     * the following will be ignored.
+     */
     public void saveTag(Tag tag) {
         String sql = """
             INSERT INTO tag (tag_id, name, color)
             VALUES ('%1$s', '%2$s', '%3$s')
             ON CONFLICT (tag_id)
             DO UPDATE SET name = '%2$s', color = '%3$s'
+            ON CONFLICT(name)
+            DO NOTHING
             """.formatted(
                     tag.getId(),
                     tag.getName(),

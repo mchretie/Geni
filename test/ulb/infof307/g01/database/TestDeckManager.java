@@ -31,6 +31,17 @@ public class TestDeckManager extends DatabaseUsingTest {
     }
 
     @Test
+    void saveDeck_DecksWithSameNameDiffId_OnlyFirstAdded() {
+        Deck deck1 = new Deck("name");
+        Deck deck2 = new Deck("name");
+
+        deckManager.saveDeck(deck1);
+        deckManager.saveDeck(deck2);
+
+        assertEquals(Set.of(deck1), new HashSet(deckManager.getAllDecks()));
+    }
+
+    @Test
     void saveDeck_DeckNotExists_CreatesDeck() {
         Deck deck = new Deck("name");
         deckManager.saveDeck(deck);

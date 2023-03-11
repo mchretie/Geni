@@ -6,7 +6,7 @@ public class DatabaseScheme {
             """
         CREATE TABLE IF NOT EXISTS deck (
             deck_id TEXT PRIMARY KEY,
-            name TEXT NOT NULL
+            name TEXT UNIQUE NOT NULL
         );""",
 
             """
