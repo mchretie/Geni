@@ -14,23 +14,22 @@ import java.sql.*;
  * cannot be open at the same time.
  */
 public class Database {
-    private static Database db;
+    private static Database instance;
     private Connection connection = null;
 
     private void assertOpened() throws DatabaseNotInitException {
-        if (connection == null) {
+        if (connection == null)
             throw new DatabaseNotInitException(
                     "Database must be opened before use");
-        }
     }
 
     /**
      * Get access to the Database object
      */
     public static Database singleton() {
-        if (db == null)
-            db = new Database();
-        return db;
+        if (instance == null)
+            instance = new Database();
+        return instance;
     }
 
     /**
@@ -45,12 +44,11 @@ public class Database {
                     "Cannot open two databases at the same time");
         }
 
-        connection =
-                DriverManager.getConnection("jdbc:sqlite:" + dbname.toPath());
+        connection = DriverManager
+            .getConnection("jdbc:sqlite:" + dbname.toPath());
     }
 
-    public void initTables(String[] tables)
-            throws DatabaseNotInitException, SQLException {
+    public void initTables(String[] tables) throws DatabaseNotInitException {
         executeUpdates(tables);
     }
 
@@ -77,8 +75,12 @@ public class Database {
             throws SQLException, DatabaseNotInitException {
         assertOpened();
 
-        Statement stmt = connection.createStatement();
-        return stmt.executeQuery(query);
+        try {
+            Statement stmt = connection.createStatement();
+            return stmt.executeQuery(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -88,12 +90,15 @@ public class Database {
      *
      * @param update a SQL statement to be executed
      */
-    public void executeUpdate(String update)
-            throws SQLException, DatabaseNotInitException {
+    public void executeUpdate(String update) throws DatabaseNotInitException {
         assertOpened();
 
-        Statement stmt = connection.createStatement();
-        stmt.executeUpdate(update);
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(update);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -103,14 +108,16 @@ public class Database {
      *
      * @param updates a SQL statement to be executed
      */
-    public void executeUpdates(String[] updates)
-            throws SQLException, DatabaseNotInitException {
+    public void executeUpdates(String[] updates) throws DatabaseNotInitException {
         assertOpened();
 
-        Statement stmt = connection.createStatement();
-        for (String sql : updates)
-            stmt.addBatch(sql);
-
-        stmt.executeBatch();
+        try {
+            Statement stmt = connection.createStatement();
+            for (String sql : updates)
+                stmt.addBatch(sql);
+            stmt.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

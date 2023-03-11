@@ -61,11 +61,7 @@ public class DeckManager {
                     deck.getId().toString(),
                     deck.getName());
 
-        try {
-            database.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        database.executeUpdate(sql);
     }
 
     private void saveDeckTags(Deck deck) {
@@ -101,11 +97,7 @@ public class DeckManager {
                     card.getFront(),
                     card.getBack());
 
-        try {
-            database.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        database.executeUpdate(sql);
     }
 
     private void deleteCard(Card card) {
@@ -114,11 +106,7 @@ public class DeckManager {
             WHERE card.card_id = '%s'
             """.formatted(card.getId().toString());
 
-        try {
-            database.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        database.executeUpdate(sql);
     }
 
     /**
@@ -220,11 +208,6 @@ public class DeckManager {
             WHERE deck_id = '%s'
             """.formatted(deck.getId());
 
-        try {
-            database.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        database.executeUpdate(sql);
     }
-
 }

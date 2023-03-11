@@ -53,11 +53,7 @@ public class TagManager {
                     tag.getName(),
                     tag.getColor());
 
-        try {
-            database.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        database.executeUpdate(sql);
     }
 
     public Tag getTag(UUID uuid) {
@@ -113,11 +109,7 @@ public class TagManager {
             WHERE tag_id = '%1$s'
             """.formatted(tag.getId());
 
-        try {
-            database.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        database.executeUpdate(sql);
     }
 
     /**
@@ -159,11 +151,7 @@ public class TagManager {
                     deck.getId().toString(),
                     tag.getId().toString());
 
-        try {
-            database.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        database.executeUpdate(sql);
     }
 
     private void removeTagFrom(Deck deck, Tag tag) {
@@ -172,11 +160,7 @@ public class TagManager {
             WHERE deck_id = '%1$s'
             """.formatted(deck.getId().toString());
 
-        try {
-            database.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        database.executeUpdate(sql);
     }
 
     /**
