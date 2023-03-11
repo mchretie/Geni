@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * Save and retrieve decks from long-term memory
+ * Save and retrieve tags from long-term memory
  * <p>
  * The aimed workflow with this manager is to
  * use an object of class Tag, apply changes
@@ -17,7 +17,7 @@ import java.util.*;
  * <p>
  * To add tags to decks, see DeckManager.
  *
- * @see ulb.infof307.g01.database.DeckManager;
+ * @see ulb.infof307.g01.database.DeckManager
  */
 public class TagManager {
 
@@ -38,11 +38,55 @@ public class TagManager {
 
     /**
      * <p>
+     * A tag is invalid if there exists a tag with
+     * the same name but a different id in the database.
+     * <p>
+     * This may happen when a tag created outside
+     * this class has the same name as one in the database.
+     * This can be avoided by checking for uniqueness
+     * beforehand.
+     *
+     * @see ulb.infof307.g01.database.TagManager.tagNameExists
+     */
+    public boolean isTagValid(Tag tag) {
+        String sql = """
+            SELECT tag_id, name
+            FROM tag
+            WHERE NOT tag_id = '%1$s' AND name = '%2$s'
+            """.formatted(tag.getId().toString(),
+            tag.getName());
+
+        try {
+            return !database.executeQuery(sql).next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean tagNameExists(String name) {
+        String sql = """
+            SELECT name
+            FROM tag
+            WHERE name = '%1$s'
+            """.formatted(name);
+
+        try {
+            return database.executeQuery(sql).next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * <p>
      * Upon the saving of multiple tags with the same name,
      * but with different ids, only the first will be saved while
      * the following will be ignored.
      */
     public void saveTag(Tag tag) {
+        if (!isTagValid(tag))
+            return;
+
         String sql = """
                 INSERT INTO tag (tag_id, name, color)
                 VALUES ('%1$s', '%2$s', '%3$s')
@@ -124,7 +168,7 @@ public class TagManager {
      * use the facilities from DeckManager such
      * as saveDeck.
      *
-     * @see ulb.infof307.g01.database.DeckManager;
+     * @see ulb.infof307.g01.database.DeckManager
      */
     public void saveTagsFor(Deck deck) {
         deck.getTags().forEach((t) -> saveTag(t));

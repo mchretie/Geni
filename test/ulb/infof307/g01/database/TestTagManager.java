@@ -32,6 +32,37 @@ public class TestTagManager extends DatabaseUsingTest {
     }
 
     @Test
+    void tagNameExists_NameNotExists_ReturnsFalse() {
+        assertFalse(tagManager.tagNameExists("name"));
+    }
+
+    @Test
+    void tagNameExists_NameExists_ReturnsTrue() {
+        Tag tag = new Tag("name");
+        tagManager.saveTag(tag);
+
+        assertTrue(tagManager.tagNameExists("name"));
+    }
+
+    @Test
+    void isTagValid_TagInvalid_ReturnsFalse() {
+        Tag tag1 = new Tag("name");
+        Tag tag2 = new Tag("name");
+        tagManager.saveTag(tag1);
+
+        assertFalse(tagManager.isTagValid(tag2));
+    }
+
+    @Test
+    void isTagValid_TagValid_ReturnsTrue() {
+        Tag tag = new Tag("name");
+        assertTrue(tagManager.isTagValid(tag));
+
+        tagManager.saveTag(tag);
+        assertTrue(tagManager.isTagValid(tag));
+    }
+
+    @Test
     void saveTag_TagsWithSameNameDiffId_OnlyFirstAdded() {
         Tag tag1 = new Tag("name");
         Tag tag2 = new Tag("name");
