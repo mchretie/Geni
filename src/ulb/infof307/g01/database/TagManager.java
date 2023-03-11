@@ -7,12 +7,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * Save and retrieve decks from long-term memory
+ * <p>
+ * The aimed workflow with this manager is to
+ * use an object of class Tag, apply changes
+ * on it before commiting them to long-term
+ * with saveTag or deleteTag.
+ * <p>
+ * To add tags to decks, see DeckManager.
+ * @see ulb.infof307.g01.database.DeckManager;
+ */
 public class TagManager {
 
+    // Singleton
     private static TagManager instance;
 
     private final static Database database = Database.singleton();
     private final static DeckManager deckManager = DeckManager.singleton();
+
+    protected TagManager() {}
 
     public static TagManager singleton() {
         if (instance == null)
@@ -90,6 +104,9 @@ public class TagManager {
         return tags;
     }
 
+    /**
+     * Delete tag and all its associations to decks
+     */
     public void deleteTag(Tag tag) {
         String sql = """
             DELETE FROM tag
@@ -162,6 +179,10 @@ public class TagManager {
         }
     }
 
+    /**
+     * <p>
+     * Should only be used by other managers.
+     */
     public List<Tag> getTagsFor(UUID deckId) {
         String sql = """
             SELECT deck_id, tag_id
@@ -184,6 +205,9 @@ public class TagManager {
         return tags;
     }
 
+    /**
+     * For filtering purposes
+     */
     public List<Deck> getDecksHavingTag(Tag tag) {
         String sql = """
             SELECT deck_id, tag_id

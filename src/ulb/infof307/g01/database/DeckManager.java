@@ -9,6 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * Save and retrieve decks from long-term memory
+ * <p>
+ * The aimed workflow with this manager is to
+ * use an object of class Deck, apply changes
+ * on it before commiting them to long-term
+ * with saveDeck or deleteDeck.
+ */
 public class DeckManager {
 
     // Singleton
@@ -115,7 +123,11 @@ public class DeckManager {
 
     /**
      * Get the deck identified by the given UUID
-     *
+     * <p>
+     * This should only be used by other managers.
+     * To retieve decks from memory, use getAllDecks
+     * or other managers returning decks.
+     * <p>
      * @return The deck requested or null if it doesn’t exist.
      */
     public Deck getDeck(UUID uuid) {
