@@ -13,21 +13,21 @@
     <!--Upper Border-->
         <BorderPane prefHeight="55.0" prefWidth="850.0" style="-fx-background-color: #449a6c;">
             <center>
-                <Label id="deckName" alignment="CENTER" text="Deck Name" textAlignment="CENTER" BorderPane.alignment="CENTER">
+                <Label fx:id="deckName" alignment="CENTER" text="Deck Name" textAlignment="CENTER" BorderPane.alignment="CENTER">
                     <font>
                         <Font name="System Italic" size="23.0" />
                     </font>
                 </Label>
             </center>
             <right>
-                <ImageView id="user" fitHeight="100.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                <ImageView fx:id="user" fitHeight="100.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                     <image>
                         <Image url="@../../../../img/user.png" />
                     </image>
                 </ImageView>
             </right>
             <left>
-                <ImageView id="goBack" fitHeight="100.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                <ImageView fx:id="goBack" fitHeight="100.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                     <image>
                         <Image url="@../../../../img/back.png" />
                     </image>
@@ -37,17 +37,17 @@
     <!--Lower Border-->
         <Pane layoutY="545.0" prefHeight="55.0" prefWidth="850.0" style="-fx-background-color: #449a6c;">
          <children>
-             <ImageView id="home" fitHeight="55.0" fitWidth="55.0" layoutX="300.0" pickOnBounds="true">
+             <ImageView fx:id="home" fitHeight="55.0" fitWidth="55.0" layoutX="300.0" pickOnBounds="true">
                  <image>
                      <Image url="@../../../../img/home.png" />
                  </image>
              </ImageView>
-             <ImageView id="deck" fitHeight="55.0" fitWidth="55.0" layoutX="400.0" pickOnBounds="true">
+             <ImageView fx:id="deck" fitHeight="55.0" fitWidth="55.0" layoutX="400.0" pickOnBounds="true">
                  <image>
                      <Image url="@../../../../img/deck.png" />
                  </image>
              </ImageView>
-             <ImageView id="about" fitHeight="55.0" fitWidth="55.0" layoutX="500.0" pickOnBounds="true">
+             <ImageView fx:id="about" fitHeight="55.0" fitWidth="55.0" layoutX="500.0" pickOnBounds="true">
                  <image>
                      <Image url="@../../../../img/about.png" />
                  </image>
@@ -57,36 +57,37 @@
     <!--Tags management-->
         <HBox layoutX="14.0" layoutY="78.0" prefHeight="20.0" prefWidth="351.0" style="-fx-background-color: #f0f0f0;">
             <children>
-                <Label id="tagsLabel" alignment="CENTER" text="#Tags  " textAlignment="CENTER" BorderPane.alignment="CENTER">
+                <Label fx:id="tagsLabel" alignment="CENTER" text="#Tags  " textAlignment="CENTER" BorderPane.alignment="CENTER">
                <font>
                   <Font name="System Bold Italic" size="15.0" />
                </font></Label>
-            <TextField id="tagsInput" prefHeight="24.0" prefWidth="289.0" />
+            <TextField fx:id="tagsInput" prefHeight="24.0" prefWidth="289.0" />
             </children>
         </HBox>
-        <HBox id="tagsCompartment" layoutX="14.0" layoutY="102.0" prefHeight="38.0" prefWidth="351.0" style="-fx-background-color: #f0f0f0;" />
+        <HBox fx:id="tagsCompartment" layoutX="14.0" layoutY="102.0" prefHeight="38.0" prefWidth="351.0" style="-fx-background-color: #f0f0f0;" />
 
 
     <!--Cards Manager-->
-        <VBox id="cardsManager" layoutX="15.0" layoutY="151.0" prefHeight="310.0" prefWidth="351.0" style="-fx-background-color: #f0f0f0;" />
-        <Button id="addCard" layoutX="15.0" layoutY="460.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="351.0" style="-fx-background-color: #5ab970;" text="+">
+        <VBox fx:id="cardsContainer" layoutX="15.0" layoutY="151.0" prefHeight="310.0" prefWidth="350.0" style="-fx-background-color: #f0f0f0;" />
+        <Button fx:id="addCard" text="+"  onAction="#onAddCardButton"  layoutX="15.0" layoutY="460.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="351.0"   style="-fx-background-color: #5ab970;" >
          <font>
             <Font name="Fira Sans Compressed ExtraBold Italic" size="29.0" />
         </font></Button>
 
 
+
     <!--Card-->
-        <StackPane id="frontCard" layoutX="400.0" layoutY="77.0">
-            <Rectangle id="frontCard" arcHeight="20.0" arcWidth="20.0" fill="#f0f0f0" height="205.0" width="425.0" x="50.0" y="50.0" />
-            <Text id="frontCardText" text="Front">
+        <StackPane fx:id="frontCard" layoutX="400.0" layoutY="77.0">
+            <Rectangle fx:id="frontCardRect" arcHeight="20.0" arcWidth="20.0" fill="#f0f0f0" height="205.0" width="425.0" x="50.0" y="50.0" />
+            <Text fx:id="frontCardText" text="Front">
             <font>
                <Font size="27.0" />
             </font></Text>
         </StackPane>
 
-        <StackPane id="BackCard" layoutX="400.0" layoutY="310.0">
-            <Rectangle id="frontCard" arcHeight="20.0" arcWidth="20.0" fill="#f0f0f0" height="205.0" width="425.0" x="50.0" y="50.0" />
-            <Text id="frontCardText" text="Back">
+        <StackPane fx:id="BackCard" layoutX="400.0" layoutY="310.0">
+            <Rectangle fx:id="backCardRect" arcHeight="20.0" arcWidth="20.0" fill="#f0f0f0" height="205.0" width="425.0" x="50.0" y="50.0" />
+            <Text fx:id="backCardText" text="Back">
                 <font>
                     <Font size="27.0" />
                 </font></Text>
