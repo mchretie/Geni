@@ -46,6 +46,5 @@ public class EditDeckController extends Application implements EditDeckViewContr
 
     public void onAddCardButton() {
         //  TODO add Card ...
-        System.out.printf("here ");
     }
 }

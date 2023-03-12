@@ -26,7 +26,7 @@ public class EditDeckViewController {
 
     /*
     Allows EditDeck not to depend on a single controller
-    (only depends on an interface that defines it itself)
+    (only depends on an interface that defines itself)
      */
     public interface EditDeckListener{
         void onAddCardButton();
