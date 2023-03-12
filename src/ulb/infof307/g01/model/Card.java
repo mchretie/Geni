@@ -35,6 +35,7 @@ public class Card {
     }
 
     public Card(String front, String back, KnowledgeLevel knowledge) {
+        this.id = UUID.randomUUID();
         this.front = front;
         this.back = back;
         this.knowledge = knowledge;

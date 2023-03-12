@@ -34,9 +34,55 @@ public class DeckManager {
     }
 
     /**
+     * <p>
+     * A deck is invalid if there exists a deck with
+     * the same name but a different id in the database.
+     * <p>
+     * This may happen when a deck created outside
+     * this class has the same name as one in the database.
+     * This can be avoided by checking for uniqueness
+     * beforehand.
+     *
+     * @see ulb.infof307.g01.database.DeckManager.deckNameExists
+     */
+    public boolean isDeckValid(Deck deck) {
+        String sql = """
+            SELECT deck_id, name
+            FROM deck
+            WHERE NOT deck_id = '%1$s' AND name = '%2$s'
+            """.formatted(deck.getId().toString(),
+                          deck.getName());
+
+        try {
+            return !database.executeQuery(sql).next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean deckNameExists(String name) {
+        String sql = """
+            SELECT name
+            FROM deck
+            WHERE name = '%1$s'
+            """.formatted(name);
+
+        try {
+            return database.executeQuery(sql).next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Write to longterm memory the contents of a deck
+     * <p>
+     * If the given deck is not valid, it will be ignored.
+     * @see ulb.infof307.g01.database.DeckManager.isDeckValid
      */
     public void saveDeck(Deck deck) {
+        if (!isDeckValid(deck))
+            return;
         saveDeckIdentity(deck);
         saveDeckTags(deck);
         saveDeckCards(deck);
@@ -171,6 +217,10 @@ public class DeckManager {
 
     /**
      * Get all cards associated with given deck
+     *
+     * @return The cards of the deck. If the id
+     * is not in the database, an empty list is
+     * returned.
      */
     private List<Card> getCardsFor(UUID deckUuid) {
         String sql = """

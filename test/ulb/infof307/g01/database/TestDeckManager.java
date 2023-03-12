@@ -31,6 +31,37 @@ public class TestDeckManager extends DatabaseUsingTest {
     }
 
     @Test
+    void deckNameExists_NameNotExists_ReturnsFalse() {
+        assertFalse(deckManager.deckNameExists("name"));
+    }
+
+    @Test
+    void deckNameExists_NameExists_ReturnsTrue() {
+        Deck deck = new Deck("name");
+        deckManager.saveDeck(deck);
+
+        assertTrue(deckManager.deckNameExists("name"));
+    }
+
+    @Test
+    void isDeckValid_DeckInvalid_ReturnsFalse() {
+        Deck deck1 = new Deck("name");
+        Deck deck2 = new Deck("name");
+        deckManager.saveDeck(deck1);
+
+        assertFalse(deckManager.isDeckValid(deck2));
+    }
+
+    @Test
+    void isDeckValid_DeckValid_ReturnsTrue() {
+        Deck deck = new Deck("name");
+        assertTrue(deckManager.isDeckValid(deck));
+
+        deckManager.saveDeck(deck);
+        assertTrue(deckManager.isDeckValid(deck));
+    }
+
+    @Test
     void saveDeck_DecksWithSameNameDiffId_OnlyFirstAdded() {
         Deck deck1 = new Deck("name");
         Deck deck2 = new Deck("name");
