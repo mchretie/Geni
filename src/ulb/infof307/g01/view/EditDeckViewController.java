@@ -17,7 +17,7 @@ public class EditDeckViewController {
 
     @FXML
     public void onAddCardButton(){
-        Rectangle cardContainer = new Rectangle(350,25,  Color.WHITE);
+        Rectangle cardContainer = new Rectangle(330,25,  Color.WHITE);
         cardContainer.setStroke(Color.BLACK);
 
         cardsContainer.getChildren().add(cardContainer);
@@ -31,6 +31,4 @@ public class EditDeckViewController {
     public interface EditDeckListener{
         void onAddCardButton();
     }
-
-
 }
