@@ -13,11 +13,13 @@
     <Rectangle arcHeight="20" arcWidth="20" height="150" width="225" fill="lightgray" stroke="black"
                strokeWidth="1"/>
 
+    <VBox layoutX="30" layoutY="10" spacing="10">
+        <Button fx:id="deckButton" prefHeight="50" prefWidth="150"
+                style="-fx-background-color: transparent;"/>
+        <FlowPane fx:id="deckTags" hgap="5" vgap="5" maxWidth="200"/>
+    </VBox>
 
-    <Button fx:id="deckButton" layoutX="30" layoutY="50" prefHeight="50" prefWidth="150"
-            style="-fx-background-color: transparent;"/>
-
-    <StackPane fx:id="optionsOverlay" AnchorPane.rightAnchor="0">
+    <StackPane fx:id="optionsOverlay" AnchorPane.leftAnchor="175">
         <Rectangle fx:id="optionsOverlayRect" arcHeight="5" arcWidth="5" height="40" width="50" stroke="black"
                    fill="lightgray" visible="false"/>
         <Button fx:id="toggleOptions" layoutX="180" prefHeight="25" prefWidth="25"
@@ -29,7 +31,7 @@
         </Button>
     </StackPane>
 
-    <StackPane fx:id="optionsPanel" AnchorPane.rightAnchor="-70" visible="false">
+    <StackPane fx:id="optionsPanel" AnchorPane.leftAnchor="225" visible="false">
         <Rectangle arcHeight="5" arcWidth="5" height="150" width="75" fill="lightgray" stroke="black"/>
         <VBox>
             <StackPane>

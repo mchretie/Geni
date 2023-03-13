@@ -1,18 +1,17 @@
 package ulb.infof307.g01.view;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import ulb.infof307.g01.model.Card;
+import javafx.scene.paint.Color;
+import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +28,9 @@ public class MainViewController implements Initializable {
     public Pane homeView;
     public Pane editDeckView;
     public AnchorPane mainAnchorPane;
+    public FontIcon goBackIcon;
+    public FontIcon homeIcon;
+    public FontIcon cardsIcon;
     public BorderPane playDeckBack;
     public PlayDeckBackViewController playDeckBackController;
     // public AnchorPane playDeckFront;
@@ -50,12 +52,14 @@ public class MainViewController implements Initializable {
     public void setMainView() {
         topBar.setText("Main View");
         goBack.setVisible(false);
+        homeIcon.setIconColor(Color.web("#FFFFFF"));
         hideViewsExcept(homeView);
     }
 
     public void setEditDeckView() {
         topBar.setText("Edit Deck");
         goBack.setVisible(true);
+        homeIcon.setIconColor(Color.web("#000000"));
         hideViewsExcept(editDeckView);
     }
 
@@ -83,6 +87,18 @@ public class MainViewController implements Initializable {
         setEditDeckView();
         EditDeckViewController controller = (EditDeckViewController) editDeckView.getUserData();
         controller.setDeck(deck);
+    }
+
+    public void handleGoBack(MouseEvent mouseEvent) {
+        setMainView();
+    }
+
+    public void handleGoBackHover(MouseEvent mouseEvent) {
+        goBackIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    public void handleGoBackExitHover(MouseEvent mouseEvent) {
+        goBackIcon.setIconColor(Color.web("#000000"));
     }
 
 
