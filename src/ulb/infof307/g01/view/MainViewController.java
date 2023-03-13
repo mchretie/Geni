@@ -2,10 +2,13 @@ package ulb.infof307.g01.view;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import ulb.infof307.g01.model.Deck;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ public class MainViewController implements Initializable {
     public Button about;
     public Pane homeView;
     public Pane editDeckView;
+    public AnchorPane mainAnchorPane;
 
     private List<Pane> views;
 
@@ -55,8 +59,14 @@ public class MainViewController implements Initializable {
         views = new ArrayList<>(Arrays.asList(homeView, editDeckView));
         setMainView();
 //        setEditDeckView();
+        mainAnchorPane.setUserData(this);
     }
 
+    public void loadEditDeckView(Deck deck) {
+        setEditDeckView();
+        EditDeckViewController controller = (EditDeckViewController) editDeckView.getUserData();
+        controller.setDeck(deck);
+    }
 
 
     public interface MainViewListener {

@@ -6,7 +6,9 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="850.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.EditDeckViewController">
+<BorderPane prefHeight="600.0" prefWidth="850.0" style="-fx-background-color: #ffffff;"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ulb.infof307.g01.view.EditDeckViewController" fx:id="editDeckPane">
     <center>
         <Label text="Edit deck view"/>
     </center>

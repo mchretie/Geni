@@ -2,13 +2,20 @@ package ulb.infof307.g01.components;
 
 import javafx.beans.value.ObservableStringValue;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.database.DeckManager;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.view.MainViewController;
+
+import java.io.IOException;
 
 public class HomeDeckComponentController {
     @FXML
@@ -29,8 +36,12 @@ public class HomeDeckComponentController {
     public Rectangle optionsOverlayRect;
     @FXML
     public Button deckButton;
+    @FXML
+    public AnchorPane homeDeck;
 
     private Deck deck;
+
+    private final DeckManager dm = DeckManager.singleton();
 
     public void setDeck(Deck deck) {
         this.deck = deck;
@@ -40,7 +51,6 @@ public class HomeDeckComponentController {
     private void updateDeckButtonName() {
         this.deckButton.setText(this.deck.getName());
     }
-
 
     public void handleHoverOptions(MouseEvent mouseEvent) {
         threeDotIcon.setIconColor(Color.web("#FFFFFF"));
@@ -55,7 +65,14 @@ public class HomeDeckComponentController {
         optionsPanel.setVisible(!optionsPanel.isVisible());
     }
 
-    public void handleToggleEditDeckClicked(MouseEvent mouseEvent) {
+    public void handleToggleEditDeckClicked(MouseEvent mouseEvent) throws IOException {
+        Parent root = homeDeck.getScene().getRoot();
+        MainViewController mainViewController = (MainViewController) root.getUserData();
+        if (mainViewController == null) {
+            System.out.println("MainViewController is null");
+            return;
+        }
+        mainViewController.loadEditDeckView(deck);
     }
 
     public void handleHoverEditDeck(MouseEvent mouseEvent) {

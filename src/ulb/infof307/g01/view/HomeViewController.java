@@ -26,7 +26,7 @@ public class HomeViewController implements Initializable {
     @FXML
     private FontIcon createDeckIcon;
 
-    DeckManager dm = DeckManager.singleton();
+    private final DeckManager dm = DeckManager.singleton();
 
     @FXML
     public void handleSearchHover() {
@@ -46,8 +46,7 @@ public class HomeViewController implements Initializable {
         createDeckIcon.setIconColor(Color.web("#000000"));
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    private void loadDecks(){
         List<Deck> allDecks = dm.getAllDecks();
         for (int i = 0; i < 3; i++) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ulb/infof307/g01/components/HomeDeckComponent.fxml"));
@@ -59,5 +58,10 @@ public class HomeViewController implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.loadDecks();
     }
 }
