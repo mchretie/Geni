@@ -1,14 +1,10 @@
 package ulb.infof307.g01.components;
 
-import javafx.beans.value.ObservableStringValue;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -81,20 +77,20 @@ public class HomeDeckComponentController {
         }
     }
 
-    public void handleHoverOptions(MouseEvent mouseEvent) {
+    public void handleHoverOptions() {
         threeDotIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
-    public void handleHoverOptionsExit(MouseEvent mouseEvent) {
+    public void handleHoverOptionsExit() {
         threeDotIcon.setIconColor(Color.web("#000000"));
     }
 
-    public void handleToggleOptionClicked(MouseEvent mouseEvent) {
+    public void handleToggleOptionClicked() {
         optionsOverlayRect.setVisible(!optionsOverlayRect.isVisible());
         optionsPanel.setVisible(!optionsPanel.isVisible());
     }
 
-    public void handleToggleEditDeckClicked(MouseEvent mouseEvent) throws IOException {
+    public void handleToggleEditDeckClicked() {
         Parent root = homeDeckPane.getScene().getRoot();
         MainViewController mainViewController = (MainViewController) root.getUserData();
         if (mainViewController == null) {
@@ -144,7 +140,7 @@ public class HomeDeckComponentController {
 
     public void handleDoubleDeckClicked(MouseEvent mouseEvent) throws IOException {
         if (mouseEvent.getClickCount() == 2) {
-            handleToggleEditDeckClicked(mouseEvent);
+            handleToggleEditDeckClicked();
         }
     }
 }
