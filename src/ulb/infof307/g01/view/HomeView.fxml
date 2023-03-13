@@ -28,13 +28,17 @@
         <StackPane>
             <Rectangle arcHeight="20" arcWidth="20" height="150" width="225" fill="lightgray" stroke="black"
                        strokeDashArray="5"/>
-            <Button fx:id="createDeckButton" layoutX="50" layoutY="50" prefHeight="50" prefWidth="150"
-                    style="-fx-background-color: transparent;">
-                <graphic>
-                    <FontIcon fx:id="createDeckIcon" iconLiteral="mdi2p-plus" iconSize="50"
-                              onMouseEntered="#handleCreateDeckHover" onMouseExited="#handleCreateDeckExit"/>
-                </graphic>
-            </Button>
+            <VBox>
+                <TextField fx:id="createDeckField" prefHeight="50" prefWidth="225"
+                           style="-fx-background-color: transparent;" promptText="Entrez un nom de deck"/>
+                <Button fx:id="createDeckButton" layoutX="50" layoutY="50" prefHeight="100" prefWidth="225"
+                        style="-fx-background-color: transparent;" onMouseClicked="#handleCreateDeck">
+                    <graphic>
+                        <FontIcon fx:id="createDeckIcon" iconLiteral="mdi2p-plus" iconSize="50"
+                                  onMouseEntered="#handleCreateDeckHover" onMouseExited="#handleCreateDeckExit"/>
+                    </graphic>
+                </Button>
+            </VBox>
         </StackPane>
     </FlowPane>
 </VBox>
