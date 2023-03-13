@@ -53,8 +53,10 @@ public class MainViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         views = new ArrayList<>(Arrays.asList(homeView, editDeckView));
-        setMainView();
+//        setMainView();
+        setEditDeckView();
     }
+
 
 
     public interface MainViewListener {

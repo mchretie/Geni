@@ -7,8 +7,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.components.HomeDeckComponentController;
+import ulb.infof307.g01.database.DeckManager;
+import ulb.infof307.g01.model.Deck;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class HomeViewController implements Initializable {
@@ -24,6 +27,8 @@ public class HomeViewController implements Initializable {
     HomeDeckComponentController deck2Controller;
     @FXML
     HomeDeckComponentController deck3Controller;
+
+    DeckManager dm = DeckManager.singleton();
 
     @FXML
     public void handleSearchHover() {
@@ -45,6 +50,10 @@ public class HomeViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+//        List<Deck> allDecks = dm.getAllDecks();
+
+
+
         deck1Controller.setDeckName("Deck 1");
         deck2Controller.setDeckName("Deck 2");
         deck3Controller.setDeckName("Deck 3");
