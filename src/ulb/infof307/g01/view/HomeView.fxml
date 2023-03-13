@@ -24,10 +24,10 @@
         </Button>
     </AnchorPane>
 
-    <FlowPane fx:id="" vgap="45" hgap="45">
+    <FlowPane fx:id="deckPane" vgap="45" hgap="45">
         <StackPane>
             <Rectangle arcHeight="20" arcWidth="20" height="150" width="225" fill="lightgray" stroke="black"
-                       strokeWidth="1" strokeDashArray="5"/>
+                       strokeDashArray="5"/>
             <Button fx:id="createDeckButton" layoutX="50" layoutY="50" prefHeight="50" prefWidth="150"
                     style="-fx-background-color: transparent;">
                 <graphic>
@@ -36,8 +36,5 @@
                 </graphic>
             </Button>
         </StackPane>
-        <fx:include fx:id="deck1" source="../components/HomeDeckComponent.fxml"/>
-        <fx:include fx:id="deck2" source="../components/HomeDeckComponent.fxml"/>
-        <fx:include fx:id="deck3" source="../components/HomeDeckComponent.fxml"/>
     </FlowPane>
 </VBox>

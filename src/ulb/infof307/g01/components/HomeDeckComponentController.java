@@ -8,6 +8,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.model.Deck;
 
 public class HomeDeckComponentController {
     @FXML
@@ -29,9 +30,15 @@ public class HomeDeckComponentController {
     @FXML
     public Button deckButton;
 
+    private Deck deck;
 
-    public void setDeckName(String deckName) {
-        this.deckButton.setText(deckName);
+    public void setDeck(Deck deck) {
+        this.deck = deck;
+        this.updateDeckButtonName();
+    }
+
+    private void updateDeckButtonName() {
+        this.deckButton.setText(this.deck.getName());
     }
 
 
