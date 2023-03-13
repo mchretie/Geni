@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,10 +20,10 @@ public class MainViewController implements Initializable {
     public Button home;
     public Button deck;
     public Button about;
-    public BorderPane homeView;
-    public BorderPane editDeckView;
+    public Pane homeView;
+    public Pane editDeckView;
 
-    private List<BorderPane> views;
+    private List<Pane> views;
 
     private MainViewListener listener;
 
@@ -31,8 +32,8 @@ public class MainViewController implements Initializable {
         this.listener = listener;
     }
 
-    private void hideViewsExcept(BorderPane view) {
-        for (BorderPane v : views) {
+    private void hideViewsExcept(Pane view) {
+        for (Pane v : views) {
             v.setVisible(v == view);
         }
     }

@@ -6,12 +6,14 @@
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.MainViewController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" fx:id="mainAnchorPane" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.MainViewController">
     <children>
         <!--Upper Border-->
         <BorderPane prefHeight="55.0" prefWidth="850.0" style="-fx-background-color: #449a6c;">
             <left>
-                <Button fx:id="goBack" mnemonicParsing="false" prefHeight="100.0" prefWidth="61.0" BorderPane.alignment="CENTER"  style="-fx-background-color: transparent;">
+                <Button fx:id="goBack" mnemonicParsing="false" prefHeight="100.0" prefWidth="61.0"
+                        BorderPane.alignment="CENTER" style="-fx-background-color: transparent;">
                     <graphic>
                         <FontIcon iconLiteral="mdi2k-keyboard-backspace" iconSize="48"/>
                     </graphic>
@@ -20,12 +22,13 @@
             <center>
                 <Label fx:id="topBar" alignment="CENTER" textAlignment="CENTER" BorderPane.alignment="CENTER">
                     <font>
-                        <Font name="System Italic" size="23.0" />
+                        <Font name="System Italic" size="23.0"/>
                     </font>
                 </Label>
             </center>
             <right>
-                <Button fx:id="user" mnemonicParsing="false" prefHeight="100.0" prefWidth="61.0" BorderPane.alignment="CENTER"  style="-fx-background-color: transparent;">
+                <Button fx:id="user" mnemonicParsing="false" prefHeight="100.0" prefWidth="61.0"
+                        BorderPane.alignment="CENTER" style="-fx-background-color: transparent;">
                     <graphic>
                         <FontIcon iconLiteral="mdi2a-account" iconSize="48"/>
                     </graphic>
@@ -33,24 +36,32 @@
             </right>
         </BorderPane>
 
-        <!--Main Content-->
-        <fx:include fx:id="homeView" source="HomeView.fxml" />
-        <fx:include fx:id="editDeckView" source="EditDeckView.fxml" />
+        <Pane AnchorPane.topAnchor="200" AnchorPane.leftAnchor="300" AnchorPane.rightAnchor="300"
+              AnchorPane.bottomAnchor="200">
+            <children>
+                <!--Main Content-->
+                <fx:include fx:id="homeView" source="HomeView.fxml"/>
+                <fx:include fx:id="editDeckView" source="EditDeckView.fxml"/>
+            </children>
+        </Pane>
 
         <!--Lower Border-->
         <Pane layoutY="545.0" prefHeight="55.0" prefWidth="850.0" style="-fx-background-color: #449a6c;">
             <children>
-                <Button fx:id="home" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" layoutX="300.0" style="-fx-background-color: transparent;">
+                <Button fx:id="home" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" layoutX="300.0"
+                        style="-fx-background-color: transparent;">
                     <graphic>
                         <FontIcon iconLiteral="mdi2h-home" iconSize="48"/>
                     </graphic>
                 </Button>
-                <Button fx:id="deck" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" layoutX="400.0" style="-fx-background-color: transparent;">
+                <Button fx:id="deck" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" layoutX="400.0"
+                        style="-fx-background-color: transparent;">
                     <graphic>
                         <FontIcon iconLiteral="mdi2c-cards" iconSize="48"/>
                     </graphic>
                 </Button>
-                <Button fx:id="about" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" layoutX="500.0" style="-fx-background-color: transparent;">
+                <Button fx:id="about" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" layoutX="500.0"
+                        style="-fx-background-color: transparent;">
                     <graphic>
                         <FontIcon iconLiteral="mdi2i-information-outline" iconSize="48"/>
                     </graphic>
