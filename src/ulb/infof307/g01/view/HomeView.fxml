@@ -6,8 +6,40 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<FlowPane xmlns="http://javafx.com/javafx"
-          xmlns:fx="http://javafx.com/fxml"
-          fx:controller="ulb.infof307.g01.view.HomeViewController">
-    <Label text="Home view"/>
-</FlowPane>
+<?import javafx.scene.shape.Rectangle?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ulb.infof307.g01.view.HomeViewController" spacing="50">
+    <AnchorPane>
+        <Rectangle fx:id="searchBox" arcHeight="20" arcWidth="20" height="50" width="500" fill="gray"/>
+        <TextField fx:id="searchBar" layoutX="10" layoutY="10" prefHeight="30" prefWidth="480"
+                   style="-fx-background-color: gray" promptText="Search tags / decks"/>
+        <Button fx:id="searchButton" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
+                style="-fx-background-color: transparent;">
+            <graphic>
+                <FontIcon fx:id="searchIcon" iconLiteral="mdi2m-magnify" iconSize="30"
+                          onMouseEntered="#handleSearchHover" onMouseExited="#handleSearchExit"/>
+            </graphic>
+        </Button>
+    </AnchorPane>
+
+    <HBox spacing="50">
+        <AnchorPane>
+            <Rectangle arcHeight="20" arcWidth="20" height="150" width="225" fill="lightgray" stroke="black"
+                       strokeWidth="1" strokeDashArray="5"/>
+            <Button fx:id="createDeckButton" layoutX="50" layoutY="50" prefHeight="50" prefWidth="150"
+                    style="-fx-background-color: transparent;">
+                <graphic>
+                    <FontIcon fx:id="createDeckIcon" iconLiteral="mdi2p-plus" iconSize="50"
+                              onMouseEntered="#handleCreateDeckHover" onMouseExited="#handleCreateDeckExit"/>
+                </graphic>
+            </Button>
+        </AnchorPane>
+        <fx:include fx:id="deck1" source="../components/HomeDeckComponent.fxml"/>
+    </HBox>
+    <HBox spacing="50">
+        <fx:include fx:id="deck2" source="../components/HomeDeckComponent.fxml"/>
+        <fx:include fx:id="deck3" source="../components/HomeDeckComponent.fxml"/>
+    </HBox>
+</VBox>

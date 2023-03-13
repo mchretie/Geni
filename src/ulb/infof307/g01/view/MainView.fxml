@@ -36,7 +36,7 @@
             </right>
         </BorderPane>
 
-        <Pane AnchorPane.topAnchor="200" AnchorPane.leftAnchor="300" AnchorPane.rightAnchor="300"
+        <Pane AnchorPane.topAnchor="75" AnchorPane.leftAnchor="200" AnchorPane.rightAnchor="200"
               AnchorPane.bottomAnchor="200">
             <children>
                 <!--Main Content-->
