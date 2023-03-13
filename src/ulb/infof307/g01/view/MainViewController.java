@@ -28,7 +28,7 @@ public class MainViewController implements Initializable {
     public Button about;
     public Pane homeView;
     public Pane editDeckView;
-    public AnchorPane mainAnchorPane;
+    public BorderPane mainBorderPain;
     public FontIcon goBackIcon;
     public FontIcon homeIcon;
     public FontIcon cardsIcon;
@@ -45,9 +45,8 @@ public class MainViewController implements Initializable {
     }
 
     private void hideViewsExcept(Pane view) {
-        for (Pane v : views) {
+        for (Pane v : views)
             v.setVisible(v == view);
-        }
     }
 
     public void setMainView() {
@@ -65,11 +64,11 @@ public class MainViewController implements Initializable {
     }
 
     public void setPlayDeckBackView(Card card) {
-        topBar.setText("Testing");
+        topBar.setText("Play");
         goBack.setVisible(true);
+        homeIcon.setIconColor(Color.web("#000000"));
 
         playDeckBackController.setCard(card);
-
         hideViewsExcept(playDeckBack);
     }
 
@@ -77,11 +76,11 @@ public class MainViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         views = new ArrayList<>(Arrays.asList(homeView, editDeckView, playDeckBack));
-        setMainView();
-//        setEditDeckView();
+        //setMainView();
+        //setEditDeckView();
         setPlayDeckBackView(new Card("Hi", "Hello"));
 
-        mainAnchorPane.setUserData(this);
+        mainBorderPain.setUserData(this);
     }
 
     public void loadEditDeckView(Deck deck) {
@@ -101,7 +100,6 @@ public class MainViewController implements Initializable {
     public void handleGoBackExitHover(MouseEvent mouseEvent) {
         goBackIcon.setIconColor(Color.web("#000000"));
     }
-
 
     public interface MainViewListener {
         void onAddCardButton();
