@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -24,7 +25,9 @@ public class PlayDeckBackViewController {
     public Button average;
     public Button good;
     public Button veryGood;
-    public Rectangle answer;
+    public Button cardButton;
+
+    @FXML
     public TextFlow cardText;
 
     private Card card;
@@ -35,10 +38,10 @@ public class PlayDeckBackViewController {
     }
 
     private void setText(String text) {
-        //Text fxText = new Text(text);
-        //cardText.getChildren().add(fxText);
+        cardButton.setText(text);
     }
 
+    public void onCardClicked(MouseEvent mouseEvent) {
 
-
+    }
 }

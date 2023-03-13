@@ -3,7 +3,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
 <BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.PlayDeckBackViewController">
@@ -30,14 +29,11 @@
 
     <center>
         <HBox alignment="CENTER" prefHeight="315.0" prefWidth="732.0">
-
-            <StackPane prefHeight="225.0" prefWidth="467.0">
-                <Rectangle fx:id="answer" arcHeight="10" arcWidth="10" fill="#ffffff" height="174.0" stroke="#000000" strokeType="INSIDE" width="408.0">
-                    <effect>
-                        <DropShadow color="#000000" radius="5" spread="0.5" />
-                    </effect>
-                </Rectangle>
-            </StackPane>
+            <Button fx:id="cardButton" prefHeight="196.0" prefWidth="433.0" onMouseClicked="#onCardClicked">
+                <effect>
+                    <DropShadow color="#000000" radius="5" spread="0.5" />
+                </effect>
+            </Button>
         </HBox>
     </center>
 

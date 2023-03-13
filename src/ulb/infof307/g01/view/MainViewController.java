@@ -26,15 +26,19 @@ public class MainViewController implements Initializable {
     public Button home;
     public Button deck;
     public Button about;
-    public Pane homeView;
-    public Pane editDeckView;
-    public BorderPane mainBorderPain;
+    public Button user;
+
     public FontIcon goBackIcon;
     public FontIcon homeIcon;
     public FontIcon cardsIcon;
+
+    public Pane homeView;
+    public Pane editDeckView;
+    public BorderPane mainBorderPain;
     public BorderPane playDeckBack;
-    public PlayDeckBackViewController playDeckBackController;
     // public AnchorPane playDeckFront;
+
+    public PlayDeckBackViewController playDeckBackController;
 
     private List<Pane> views;
     private MainViewListener listener;
