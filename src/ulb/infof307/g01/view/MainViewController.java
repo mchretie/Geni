@@ -5,9 +5,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
 
 import java.net.URL;
@@ -26,6 +29,9 @@ public class MainViewController implements Initializable {
     public Pane homeView;
     public Pane editDeckView;
     public AnchorPane mainAnchorPane;
+    public FontIcon goBackIcon;
+    public FontIcon homeIcon;
+    public FontIcon cardsIcon;
 
     private List<Pane> views;
 
@@ -45,12 +51,14 @@ public class MainViewController implements Initializable {
     public void setMainView() {
         topBar.setText("Main View");
         goBack.setVisible(false);
+        homeIcon.setIconColor(Color.web("#FFFFFF"));
         hideViewsExcept(homeView);
     }
 
     public void setEditDeckView() {
         topBar.setText("Edit Deck");
         goBack.setVisible(true);
+        homeIcon.setIconColor(Color.web("#000000"));
         hideViewsExcept(editDeckView);
     }
 
@@ -58,7 +66,6 @@ public class MainViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         views = new ArrayList<>(Arrays.asList(homeView, editDeckView));
         setMainView();
-//        setEditDeckView();
         mainAnchorPane.setUserData(this);
     }
 
@@ -66,6 +73,18 @@ public class MainViewController implements Initializable {
         setEditDeckView();
         EditDeckViewController controller = (EditDeckViewController) editDeckView.getUserData();
         controller.setDeck(deck);
+    }
+
+    public void handleGoBack(MouseEvent mouseEvent) {
+        setMainView();
+    }
+
+    public void handleGoBackHover(MouseEvent mouseEvent) {
+        goBackIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    public void handleGoBackExitHover(MouseEvent mouseEvent) {
+        goBackIcon.setIconColor(Color.web("#000000"));
     }
 
 

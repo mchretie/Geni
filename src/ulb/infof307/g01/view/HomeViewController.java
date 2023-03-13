@@ -62,7 +62,6 @@ public class HomeViewController implements Initializable {
         }
     }
 
-
     public void loadDecks() {
         deckPane.getChildren().remove(1, deckPane.getChildren().size());
         List<Deck> allDecks = dm.getAllDecks();

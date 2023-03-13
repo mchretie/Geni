@@ -13,9 +13,11 @@
         <BorderPane prefHeight="55.0" prefWidth="850.0" style="-fx-background-color: #449a6c;">
             <left>
                 <Button fx:id="goBack" mnemonicParsing="false" prefHeight="100.0" prefWidth="61.0"
-                        BorderPane.alignment="CENTER" style="-fx-background-color: transparent;">
+                        BorderPane.alignment="CENTER" style="-fx-background-color: transparent;"
+                        onMouseClicked="#handleGoBack">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2k-keyboard-backspace" iconSize="48"/>
+                        <FontIcon fx:id="goBackIcon" iconLiteral="mdi2k-keyboard-backspace" iconSize="48"
+                                  onMouseEntered="#handleGoBackHover" onMouseExited="#handleGoBackExitHover"/>
                     </graphic>
                 </Button>
             </left>
@@ -51,19 +53,19 @@
                 <Button fx:id="home" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" layoutX="300.0"
                         style="-fx-background-color: transparent;">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2h-home" iconSize="48"/>
+                        <FontIcon fx:id="homeIcon" iconLiteral="mdi2h-home" iconSize="48"/>
                     </graphic>
                 </Button>
                 <Button fx:id="deck" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" layoutX="400.0"
                         style="-fx-background-color: transparent;">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2c-cards" iconSize="48"/>
+                        <FontIcon fx:id="cardsIcon" iconLiteral="mdi2c-cards" iconSize="48"/>
                     </graphic>
                 </Button>
                 <Button fx:id="about" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" layoutX="500.0"
                         style="-fx-background-color: transparent;">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2i-information-outline" iconSize="48"/>
+                        <FontIcon fx:id="informationIcon" iconLiteral="mdi2i-information-outline" iconSize="48"/>
                     </graphic>
                 </Button>
             </children>
