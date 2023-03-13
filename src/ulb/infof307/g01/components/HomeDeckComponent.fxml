@@ -22,7 +22,7 @@
         </graphic>
     </Button>
 
-    <StackPane fx:id="optionsOverlay" layoutX="180" visible="false">
+    <StackPane fx:id="optionsOverlay"  AnchorPane.rightAnchor="0" visible="false">
         <Rectangle arcHeight="5" arcWidth="5" height="40" width="50" stroke="black" fill="lightgray"
                    strokeWidth="1"/>
         <Button fx:id="toggleOptionsShown" layoutX="180" prefHeight="25" prefWidth="25"
@@ -34,9 +34,8 @@
         </Button>
     </StackPane>
 
-    <StackPane fx:id="optionsPanel" layoutX="225" visible="false">
-        <Rectangle arcHeight="5" arcWidth="5" height="150" width="75" fill="lightgray" stroke="black"
-                   strokeWidth="1"/>
+    <StackPane fx:id="optionsPanel" AnchorPane.rightAnchor="-70" visible="false">
+        <Rectangle arcHeight="5" arcWidth="5" height="150" width="75" fill="lightgray" stroke="black"/>
         <Label text="Options" style="-fx-text-fill: black; -fx-font-size: 20px;"/>
     </StackPane>
 </AnchorPane>
