@@ -4,6 +4,7 @@ import javafx.beans.value.ObservableStringValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +14,7 @@ import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.database.DeckManager;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.view.HomeViewController;
 import ulb.infof307.g01.view.MainViewController;
 
 import java.io.IOException;
@@ -37,7 +39,7 @@ public class HomeDeckComponentController {
     @FXML
     public Button deckButton;
     @FXML
-    public AnchorPane homeDeck;
+    public AnchorPane homeDeckPane;
 
     private Deck deck;
 
@@ -66,7 +68,7 @@ public class HomeDeckComponentController {
     }
 
     public void handleToggleEditDeckClicked(MouseEvent mouseEvent) throws IOException {
-        Parent root = homeDeck.getScene().getRoot();
+        Parent root = homeDeckPane.getScene().getRoot();
         MainViewController mainViewController = (MainViewController) root.getUserData();
         if (mainViewController == null) {
             System.out.println("MainViewController is null");
@@ -84,6 +86,14 @@ public class HomeDeckComponentController {
     }
 
     public void handleToggleRemoveDeckClicked(MouseEvent mouseEvent) {
+        dm.deleteDeck(deck);
+        Parent parent = homeDeckPane.getParent();
+        HomeViewController homeViewController = (HomeViewController) parent.getUserData();
+        if (homeViewController == null) {
+            System.out.println("HomeViewController is null");
+            return;
+        }
+        homeViewController.loadDecks();
     }
 
     public void handleHoverRemoveDeck(MouseEvent mouseEvent) {

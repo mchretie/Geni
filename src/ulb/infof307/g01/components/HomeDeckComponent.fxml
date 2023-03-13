@@ -9,7 +9,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ulb.infof307.g01.components.HomeDeckComponentController" fx:id="homeDeck">
+            fx:controller="ulb.infof307.g01.components.HomeDeckComponentController" fx:id="homeDeckPane">
     <Rectangle arcHeight="20" arcWidth="20" height="150" width="225" fill="lightgray" stroke="black"
                strokeWidth="1"/>
 

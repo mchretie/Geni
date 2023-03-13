@@ -10,7 +10,7 @@
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="ulb.infof307.g01.view.HomeViewController" spacing="50">
+      fx:controller="ulb.infof307.g01.view.HomeViewController" spacing="50" fx:id="homeViewPane">
     <AnchorPane>
         <Rectangle fx:id="searchBox" arcHeight="20" arcWidth="20" height="50" width="500" fill="gray"/>
         <TextField fx:id="searchBar" layoutX="10" layoutY="10" prefHeight="30" prefWidth="480"

@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.components.HomeDeckComponentController;
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class HomeViewController implements Initializable {
+    @FXML
+    public VBox homeViewPane;
     @FXML
     private FlowPane deckPane;
     @FXML
@@ -46,9 +49,14 @@ public class HomeViewController implements Initializable {
         createDeckIcon.setIconColor(Color.web("#000000"));
     }
 
-    private void loadDecks(){
+    public void loadDecks() {
+        deckPane.getChildren().remove(1, deckPane.getChildren().size());
         List<Deck> allDecks = dm.getAllDecks();
-        for (int i = 0; i < 3; i++) {
+        int deckCount = 3;
+        if (allDecks.size() < deckCount) {
+            deckCount = allDecks.size();
+        }
+        for (int i = 0; i < deckCount; i++) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ulb/infof307/g01/components/HomeDeckComponent.fxml"));
             try {
                 deckPane.getChildren().add(loader.load());
@@ -62,6 +70,7 @@ public class HomeViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        deckPane.setUserData(this);
         this.loadDecks();
     }
 }
