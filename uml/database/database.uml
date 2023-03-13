@@ -1,0 +1,56 @@
+@startuml
+
+title "Database schema diagram"
+
+left to right direction
+skinparam roundcorner 5
+skinparam linetype ortho
+skinparam shadowing false
+skinparam handwritten false
+
+!define primary_key(x) <b><color:#b8861b><&key></color> x</b>
+!define foreign_key(x) <color:#aaaaaa><&key></color> x
+!define column(x) <color:#efefef><&media-record></color> x
+!define table(x) entity x << (T, white) >>
+
+table( deck ) {
+  primary_key( deck_id ): TEXT
+  column( name ): TEXT
+}
+
+table( card ) {
+  primary_key( card_id ): TEXT
+  foreign_key( deck_id ): TEXT
+  column( front ): TEXT
+  column( back ): TEXT
+}
+card }|--|| deck
+
+table( tag ) {
+  primary_key( tag_id ): TEXT
+  column( name ): TEXT
+  column( color ): TEXT
+}
+
+table( deck_tag ) {
+  primary_key( deck_id ): TEXT
+  primary_key( tag_id ): TEXT
+}
+deck_tag }|--|| deck
+deck_tag }|--|| tag
+
+table( user ) {
+  primary_key( user_id ): TEXT
+  column( username ): TEXT
+  column( password ): TEXT
+}
+
+table( card_knowledge ) {
+  primary_key( user_id ): TEXT
+  primary_key( card_id ): TEXT
+  column( knowledge ): INTEGER
+}
+card_knowledge }|--|| user
+card_knowledge }|--|| card
+
+@enduml
