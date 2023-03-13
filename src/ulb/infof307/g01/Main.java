@@ -1,25 +1,24 @@
 package ulb.infof307.g01;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import ulb.infof307.g01.views.MainView;
-import ulb.infof307.g01.views.MainViewHandler;
-import ulb.infof307.g01.views.MenuView;
+import ulb.infof307.g01.view.MainViewController;
+
+
+import java.io.IOException;
 
 /**
  * Main class of the application which initializes the main view using the main view handler and loads a menu view.
  */
 public class Main extends Application {
     @Override
-    public void start(Stage stage) {
-        MainViewHandler mainViewHandler = MainViewHandler.getInstance();
-
-        StackPane root = new StackPane(mainViewHandler.getMainView().getPane());
-        Scene scene = new Scene(root, 900, 600); //635f63
-        stage.setScene(scene);
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainViewController.class.getResource("MainView.fxml"));
+        Parent root = fxmlLoader.load();
+        stage.setScene(new Scene(root));
         stage.show();
     }
 
