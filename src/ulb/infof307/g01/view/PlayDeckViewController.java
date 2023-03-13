@@ -28,6 +28,8 @@ public class PlayDeckViewController {
     public HBox cardRatingBox;
     public FontIcon previousCardIcon;
     public FontIcon nextCardIcon;
+    public Button nextCardButton;
+    public Button previousCardButton;
 
     private Card card;
 
@@ -36,13 +38,16 @@ public class PlayDeckViewController {
     private Deck deck;
 
     private boolean isFront = true;
+    private boolean emptyDeck = false;
 
     private void flipCard() {
+        if (emptyDeck) return;
         updateView();
         isFront = !isFront;
     }
 
     private void updateView() {
+        if (emptyDeck) return;
         if (isFront) {
             setText(card.getFront());
             cardRatingBox.setVisible(false);
@@ -51,18 +56,34 @@ public class PlayDeckViewController {
             cardRatingBox.setVisible(true);
         }
 
-        previousCardIcon.setVisible(cardIndex != 0);
+        previousCardButton.setVisible(cardIndex != 0);
 
-        nextCardIcon.setVisible(cardIndex != deck.getCards().size() - 1);
+        nextCardButton.setVisible(cardIndex != deck.getCards().size() - 1);
+    }
+
+    private void hideInteractive() {
+        cardRatingBox.setVisible(false);
+        previousCardButton.setVisible(false);
+        nextCardButton.setVisible(false);
     }
 
     private void updateCard() {
+        if (this.deck.getCards().size() == 0) {
+            setText("No cards in deck");
+            emptyDeck = true;
+            hideInteractive();
+            return;
+        }
         this.card = this.deck.getCards().get(cardIndex);
         updateView();
     }
 
     public void setDeck(Deck deck) {
         this.deck = deck;
+        // for testing purposes
+        deck.addCard(new Card("Front", "Back"));
+        deck.addCard(new Card("Front2", "Back2"));
+        deck.addCard(new Card("Front3", "Back3"));
         updateCard();
     }
 

@@ -95,13 +95,17 @@ public class HomeDeckComponentController {
     }
 
     public void handleToggleEditDeckClicked(MouseEvent mouseEvent) throws IOException {
-        Parent root = homeDeckPane.getScene().getRoot();
-        MainViewController mainViewController = (MainViewController) root.getUserData();
+        MainViewController mainViewController = getMainViewController();
         if (mainViewController == null) {
             System.out.println("MainViewController is null");
             return;
         }
         mainViewController.loadEditDeckView(deck);
+    }
+
+    private MainViewController getMainViewController() {
+        Parent root = homeDeckPane.getScene().getRoot();
+        return (MainViewController) root.getUserData();
     }
 
     public void handleHoverEditDeck(MouseEvent mouseEvent) {
@@ -144,7 +148,9 @@ public class HomeDeckComponentController {
 
     public void handleDoubleDeckClicked(MouseEvent mouseEvent) throws IOException {
         if (mouseEvent.getClickCount() == 2) {
-            handleToggleEditDeckClicked(mouseEvent);
+            MainViewController mainViewController = getMainViewController();
+            mainViewController.setPlayDeckView(deck);
+
         }
     }
 }

@@ -15,7 +15,7 @@
 
     <left>
         <VBox alignment="CENTER" prefHeight="363.0">
-            <Button fx:id="previousCard" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
+            <Button fx:id="previousCardButton" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
                     style="-fx-background-color: transparent;" onMouseClicked="#handlePreviousCardClicked">
                 <graphic>
                     <FontIcon fx:id="previousCardIcon" iconLiteral="mdi2c-chevron-left" iconSize="50"
@@ -27,7 +27,7 @@
 
     <right>
         <VBox alignment="CENTER" prefHeight="363.0">
-            <Button fx:id="nextCard" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
+            <Button fx:id="nextCardButton" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
                     style="-fx-background-color: transparent" onMouseClicked="#handleNextCardClicked"
                     onMouseEntered="#handleNextButtonEnter" onMouseExited="#handleNextButtonExited">
                 <graphic>
