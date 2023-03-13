@@ -1,5 +1,6 @@
 package ulb.infof307.g01.components;
 
+import javafx.beans.value.ObservableStringValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -26,11 +27,11 @@ public class HomeDeckComponentController {
     @FXML
     public Rectangle optionsOverlayRect;
     @FXML
-    private String deckName = "Deck Name";
+    public Button deckButton;
+
 
     public void setDeckName(String deckName) {
-        // TODO fix this
-        this.deckName = deckName;
+        this.deckButton.setText(deckName);
     }
 
 

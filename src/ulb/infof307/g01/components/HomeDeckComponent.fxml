@@ -5,17 +5,21 @@
 
 <?import javafx.scene.shape.Rectangle?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import java.lang.String?>
+
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="ulb.infof307.g01.components.HomeDeckComponentController">
     <Rectangle arcHeight="20" arcWidth="20" height="150" width="225" fill="lightgray" stroke="black"
                strokeWidth="1"/>
 
-    <Button layoutX="30" layoutY="50" prefHeight="50" prefWidth="150"
-            style="-fx-background-color: transparent;" text="$deckName"/>
+
+    <Button fx:id="deckButton" layoutX="30" layoutY="50" prefHeight="50" prefWidth="150"
+            style="-fx-background-color: transparent;"/>
 
     <StackPane fx:id="optionsOverlay" AnchorPane.rightAnchor="0">
-        <Rectangle fx:id="optionsOverlayRect" arcHeight="5" arcWidth="5" height="40" width="50" stroke="black" fill="lightgray" visible="false"/>
+        <Rectangle fx:id="optionsOverlayRect" arcHeight="5" arcWidth="5" height="40" width="50" stroke="black"
+                   fill="lightgray" visible="false"/>
         <Button fx:id="toggleOptions" layoutX="180" prefHeight="25" prefWidth="25"
                 style="-fx-background-color: transparent;" onMouseClicked="#handleToggleOptionClicked">
             <graphic>

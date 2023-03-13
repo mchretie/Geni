@@ -25,7 +25,7 @@
     </AnchorPane>
 
     <HBox spacing="50">
-        <AnchorPane>
+        <StackPane>
             <Rectangle arcHeight="20" arcWidth="20" height="150" width="225" fill="lightgray" stroke="black"
                        strokeWidth="1" strokeDashArray="5"/>
             <Button fx:id="createDeckButton" layoutX="50" layoutY="50" prefHeight="50" prefWidth="150"
@@ -35,7 +35,7 @@
                               onMouseEntered="#handleCreateDeckHover" onMouseExited="#handleCreateDeckExit"/>
                 </graphic>
             </Button>
-        </AnchorPane>
+        </StackPane>
         <fx:include fx:id="deck1" source="../components/HomeDeckComponent.fxml"/>
     </HBox>
     <HBox spacing="50">
