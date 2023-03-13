@@ -55,9 +55,7 @@ public class PlayDeckViewController {
             setText(card.getBack());
             cardRatingBox.setVisible(true);
         }
-
         previousCardButton.setVisible(cardIndex != 0);
-
         nextCardButton.setVisible(cardIndex != deck.getCards().size() - 1);
     }
 

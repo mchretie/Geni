@@ -36,9 +36,8 @@ public class MainViewController implements Initializable {
     public Pane editDeckView;
     public BorderPane mainBorderPain;
     public BorderPane playDeckView;
-    // public AnchorPane playDeckFront;
-
     public PlayDeckViewController playDeckViewController;
+    public EditDeckViewController editDeckViewController;
 
     private List<Pane> views;
     private MainViewListener listener;
@@ -60,10 +59,11 @@ public class MainViewController implements Initializable {
         hideViewsExcept(homeView);
     }
 
-    public void setEditDeckView() {
-        topBar.setText("Edit Deck");
+    public void setEditDeckView(Deck deck) {
+        topBar.setText("Modifier deck");
         goBack.setVisible(true);
         homeIcon.setIconColor(Color.web("#000000"));
+        editDeckViewController.setDeck(deck);
         hideViewsExcept(editDeckView);
     }
 
@@ -79,20 +79,14 @@ public class MainViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         views = new ArrayList<>(Arrays.asList(homeView, editDeckView, playDeckView));
-        setMainView();
-        //setEditDeckView();
-//        Deck testDeck = new Deck("test");
-//        testDeck.addCard(new Card("front", "back"));
-//        testDeck.addCard(new Card("front2", "back2"));
-//        testDeck.addCard(new Card("front3", "back3"));
+//        setMainView();
+        Deck testDeck = new Deck("test");
+        testDeck.addCard(new Card("front", "back"));
+        testDeck.addCard(new Card("front2", "back2"));
+        testDeck.addCard(new Card("front3", "back3"));
+        setEditDeckView(testDeck);
 //        setPlayDeckView(testDeck);
         mainBorderPain.setUserData(this);
-    }
-
-    public void loadEditDeckView(Deck deck) {
-        setEditDeckView();
-        EditDeckViewController controller = (EditDeckViewController) editDeckView.getUserData();
-        controller.setDeck(deck);
     }
 
     public void handleGoBack(MouseEvent mouseEvent) {

@@ -100,7 +100,7 @@ public class HomeDeckComponentController {
             System.out.println("MainViewController is null");
             return;
         }
-        mainViewController.loadEditDeckView(deck);
+        mainViewController.setEditDeckView(deck);
     }
 
     private MainViewController getMainViewController() {
