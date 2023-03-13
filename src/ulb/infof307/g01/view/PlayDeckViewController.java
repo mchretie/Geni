@@ -78,10 +78,6 @@ public class PlayDeckViewController {
 
     public void setDeck(Deck deck) {
         this.deck = deck;
-        // for testing purposes
-        deck.addCard(new Card("Front", "Back"));
-        deck.addCard(new Card("Front2", "Back2"));
-        deck.addCard(new Card("Front3", "Back3"));
         updateCard();
     }
 
