@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -26,6 +27,8 @@ public class HomeViewController implements Initializable {
     public BorderPane homeViewPane;
     @FXML
     public TextField createDeckField;
+    @FXML
+    public ScrollPane scrollPane;
     @FXML
     private FlowPane deckPane;
     @FXML
@@ -76,6 +79,7 @@ public class HomeViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        scrollPane.setFitToWidth(true);
         deckPane.setUserData(this);
         this.loadDecks();
     }

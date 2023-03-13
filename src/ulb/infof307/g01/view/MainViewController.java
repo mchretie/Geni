@@ -79,12 +79,12 @@ public class MainViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         views = new ArrayList<>(Arrays.asList(homeView, editDeckView, playDeckView));
-//        setMainView();
-        Deck testDeck = new Deck("test");
-        testDeck.addCard(new Card("front", "back"));
-        testDeck.addCard(new Card("front2", "back2"));
-        testDeck.addCard(new Card("front3", "back3"));
-        setEditDeckView(testDeck);
+        setMainView();
+//        Deck testDeck = new Deck("test");
+//        testDeck.addCard(new Card("front", "back"));
+//        testDeck.addCard(new Card("front2", "back2"));
+//        testDeck.addCard(new Card("front3", "back3"));
+//        setEditDeckView(testDeck);
 //        setPlayDeckView(testDeck);
         mainBorderPain.setUserData(this);
     }

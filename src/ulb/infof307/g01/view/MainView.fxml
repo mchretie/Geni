@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" fx:id="mainBorderPain" xmlns="http://javafx.com/javafx/17.0.2-ea"
+<BorderPane prefHeight="600.0" prefWidth="800.0" fx:id="mainBorderPain" xmlns="http://javafx.com/javafx/17.0.2-ea"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.MainViewController">
     <top>
         <HBox prefHeight="55.0" prefWidth="850.0" style="-fx-background-color: #449a6c;" alignment="CENTER">
