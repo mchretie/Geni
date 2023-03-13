@@ -14,21 +14,12 @@
     <Button layoutX="30" layoutY="50" prefHeight="50" prefWidth="150"
             style="-fx-background-color: transparent;" text="$deckName"/>
 
-    <Button fx:id="toggleOptions" layoutX="180" prefHeight="25" prefWidth="25"
-            style="-fx-background-color: transparent;" onMouseClicked="#handleToggleOptionClicked">
-        <graphic>
-            <FontIcon fx:id="threeDotIcon" iconLiteral="mdi2d-dots-horizontal" iconSize="25"
-                      onMouseEntered="#handleHoverOptions" onMouseExited="#handleHoverOptionsExit"/>
-        </graphic>
-    </Button>
-
-    <StackPane fx:id="optionsOverlay"  AnchorPane.rightAnchor="0" visible="false">
-        <Rectangle arcHeight="5" arcWidth="5" height="40" width="50" stroke="black" fill="lightgray"
-                   strokeWidth="1"/>
-        <Button fx:id="toggleOptionsShown" layoutX="180" prefHeight="25" prefWidth="25"
+    <StackPane fx:id="optionsOverlay" AnchorPane.rightAnchor="0">
+        <Rectangle fx:id="optionsOverlayRect" arcHeight="5" arcWidth="5" height="40" width="50" stroke="black" fill="lightgray" visible="false"/>
+        <Button fx:id="toggleOptions" layoutX="180" prefHeight="25" prefWidth="25"
                 style="-fx-background-color: transparent;" onMouseClicked="#handleToggleOptionClicked">
             <graphic>
-                <FontIcon fx:id="threeDotIconShown" iconLiteral="mdi2d-dots-horizontal" iconSize="25"
+                <FontIcon fx:id="threeDotIcon" iconLiteral="mdi2d-dots-horizontal" iconSize="25"
                           onMouseEntered="#handleHoverOptions" onMouseExited="#handleHoverOptionsExit"/>
             </graphic>
         </Button>
@@ -36,6 +27,35 @@
 
     <StackPane fx:id="optionsPanel" AnchorPane.rightAnchor="-70" visible="false">
         <Rectangle arcHeight="5" arcWidth="5" height="150" width="75" fill="lightgray" stroke="black"/>
-        <Label text="Options" style="-fx-text-fill: black; -fx-font-size: 20px;"/>
+        <VBox>
+            <StackPane>
+                <Button fx:id="editDeck" layoutX="180" prefHeight="50" prefWidth="75"
+                        style="-fx-background-color: transparent;" onMouseClicked="#handleToggleEditDeckClicked">
+                    <graphic>
+                        <FontIcon fx:id="editDeckIcon" iconLiteral="mdi2p-pencil" iconSize="25"
+                                  onMouseEntered="#handleHoverEditDeck" onMouseExited="#handleHoverEditDeckExit"/>
+                    </graphic>
+                </Button>
+            </StackPane>
+            <StackPane>
+                <Rectangle arcHeight="5" arcWidth="5" height="50" width="75" fill="lightgray" stroke="black"/>
+                <Button fx:id="removeDeck" layoutX="180" prefHeight="50" prefWidth="75"
+                        style="-fx-background-color: transparent;" onMouseClicked="#handleToggleRemoveDeckClicked">
+                    <graphic>
+                        <FontIcon fx:id="removeDeckIcon" iconLiteral="mdi2d-delete" iconSize="25"
+                                  onMouseEntered="#handleHoverRemoveDeck" onMouseExited="#handleHoverRemoveDeckExit"/>
+                    </graphic>
+                </Button>
+            </StackPane>
+            <StackPane>
+                <Button fx:id="shareDeck" layoutX="180" prefHeight="50" prefWidth="75"
+                        style="-fx-background-color: transparent;" onMouseClicked="#handleToggleShareDeckClicked">
+                    <graphic>
+                        <FontIcon fx:id="shareDeckIcon" iconLiteral="mdi2s-share" iconSize="25"
+                                  onMouseEntered="#handleHoverShareDeck" onMouseExited="#handleHoverShareDeckExit"/>
+                    </graphic>
+                </Button>
+            </StackPane>
+        </VBox>
     </StackPane>
 </AnchorPane>
