@@ -20,31 +20,30 @@ import java.io.IOException;
 import java.util.List;
 
 public class HomeDeckComponentController {
-    @FXML
-    public Button toggleOptions;
-    @FXML
-    public FontIcon threeDotIcon;
-    @FXML
-    public StackPane optionsOverlay;
-    @FXML
-    public StackPane optionsPanel;
-    @FXML
-    public FontIcon editDeckIcon;
-    @FXML
-    public FontIcon removeDeckIcon;
-    @FXML
-    public FontIcon shareDeckIcon;
+
     @FXML
     public Rectangle optionsOverlayRect;
+
     @FXML
     public Button deckButton;
+    public Button shareDeckButton;
+    public Button deleteDeckButton;
+    public Button editDeck;
+    public Button toggleOptions;
+
     @FXML
+    public FontIcon editDeckIcon;
+    public FontIcon removeDeckIcon;
+    public FontIcon shareDeckIcon;
+    public FontIcon threeDotIcon;
+
+    @FXML
+    public StackPane optionsOverlay;
     public StackPane homeDeckPane;
-    @FXML
     public FlowPane deckTags;
+    public StackPane optionsPanel;
 
     private Deck deck;
-
     private final DeckManager dm = DeckManager.singleton();
 
     public void setDeck(Deck deck) {

@@ -5,42 +5,7 @@
 <?import javafx.scene.shape.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<!--
-<StackPane fx:id="optionsPanel" visible="false"  layoutX="200">
-            <Rectangle arcHeight="5" arcWidth="5" height="150" width="75" fill="lightgray" stroke="black"/>
-            <VBox>
-                <StackPane>
-                    <Button fx:id="editDeck" layoutX="180" prefHeight="50" prefWidth="75"
-                            style="-fx-background-color: transparent;" onMouseClicked="#handleToggleEditDeckClicked">
-                        <graphic>
-                            <FontIcon fx:id="editDeckIcon" iconLiteral="mdi2p-pencil" iconSize="25"
-                                      onMouseEntered="#handleHoverEditDeck" onMouseExited="#handleHoverEditDeckExit"/>
-                        </graphic>
-                    </Button>
-                </StackPane>
-                <StackPane>
-                    <Rectangle arcHeight="5" arcWidth="5" height="50" width="75" fill="lightgray" stroke="black"/>
-                    <Button fx:id="removeDeck" layoutX="180" prefHeight="50" prefWidth="75"
-                            style="-fx-background-color: transparent;" onMouseClicked="#handleToggleRemoveDeckClicked">
-                        <graphic>
-                            <FontIcon fx:id="removeDeckIcon" iconLiteral="mdi2d-delete" iconSize="25"
-                                      onMouseEntered="#handleHoverRemoveDeck"
-                                      onMouseExited="#handleHoverRemoveDeckExit"/>
-                        </graphic>
-                    </Button>
-                </StackPane>
-                <StackPane>
-                    <Button fx:id="shareDeck" layoutX="180" prefHeight="50" prefWidth="75"
-                            style="-fx-background-color: transparent;" onMouseClicked="#handleToggleShareDeckClicked">
-                        <graphic>
-                            <FontIcon fx:id="shareDeckIcon" iconLiteral="mdi2s-share" iconSize="25"
-                                      onMouseEntered="#handleHoverShareDeck" onMouseExited="#handleHoverShareDeckExit"/>
-                        </graphic>
-                    </Button>
-                </StackPane>
-            </VBox>
-        </StackPane>
-       -->
+
 <StackPane fx:id="homeDeckPane" onMouseClicked="#handleDoubleDeckClicked" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.components.HomeDeckComponentController">
 
         <Rectangle arcHeight="20" arcWidth="20" fill="lightgray" height="150" stroke="black" width="225" />
@@ -87,7 +52,6 @@
             </Button>
 
         </HBox>
-
 
 </StackPane>
 
