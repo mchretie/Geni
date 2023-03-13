@@ -53,9 +53,6 @@ public class HomeDeckComponentController {
 
     public void setDeck(Deck deck) {
         this.deck = deck;
-        this.deck.addTag(new Tag("test", "677c9e"));
-        this.deck.addTag(new Tag("test2", "e0123f"));
-        this.deck.addTag(new Tag("test3", "f011d9"));
         this.updateDeckButtonName();
         this.updateDeckTags();
     }
