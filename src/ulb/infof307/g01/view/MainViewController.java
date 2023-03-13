@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 
 import java.net.URL;
