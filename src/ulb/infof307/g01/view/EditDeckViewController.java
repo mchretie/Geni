@@ -98,7 +98,7 @@ public class EditDeckViewController {
     }
 
     public void handleBackEdit(KeyEvent actionEvent) {
-        selectedCard.setBack(frontCardText.getText());
+        selectedCard.setBack(backCardText.getText());
         deckManager.saveDeck(deck);
     }
 

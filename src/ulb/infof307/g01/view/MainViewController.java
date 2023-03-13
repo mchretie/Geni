@@ -38,6 +38,7 @@ public class MainViewController implements Initializable {
     public BorderPane playDeckView;
     public PlayDeckViewController playDeckViewController;
     public EditDeckViewController editDeckViewController;
+    public HomeViewController homeViewController;
 
     private List<Pane> views;
     private MainViewListener listener;
@@ -77,20 +78,14 @@ public class MainViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         views = new ArrayList<>(Arrays.asList(homeView, editDeckView, playDeckView));
         setMainView();
-//        Deck testDeck = new Deck("test");
-//        testDeck.addCard(new Card("front", "back"));
-//        testDeck.addCard(new Card("front2", "back2"));
-//        testDeck.addCard(new Card("front3", "back3"));
-//        setEditDeckView(testDeck);
-//        setPlayDeckView(testDeck);
         mainBorderPain.setUserData(this);
     }
 
     public void handleGoBack(MouseEvent mouseEvent) {
         setMainView();
+        homeViewController.loadDecks();
     }
 
     public void handleGoBackHover(MouseEvent mouseEvent) {
