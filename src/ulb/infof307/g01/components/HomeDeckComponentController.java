@@ -43,7 +43,7 @@ public class HomeDeckComponentController {
     @FXML
     public Button deckButton;
     @FXML
-    public AnchorPane homeDeckPane;
+    public StackPane homeDeckPane;
     @FXML
     public FlowPane deckTags;
 
@@ -140,5 +140,11 @@ public class HomeDeckComponentController {
 
     public void handleHoverShareDeckExit(MouseEvent mouseEvent) {
         shareDeckIcon.setIconColor(Color.web("#000000"));
+    }
+
+    public void handleDoubleDeckClicked(MouseEvent mouseEvent) throws IOException {
+        if (mouseEvent.getClickCount() == 2) {
+            handleToggleEditDeckClicked(mouseEvent);
+        }
     }
 }
