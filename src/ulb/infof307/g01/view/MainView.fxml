@@ -42,6 +42,7 @@
                 <!--Main Content-->
                 <fx:include fx:id="homeView" source="HomeView.fxml"/>
                 <fx:include fx:id="editDeckView" source="EditDeckView.fxml"/>
+                <fx:include fx:id="playDeckBack" source="PlayDeckBackView.fxml"/>
             </children>
         </Pane>
 

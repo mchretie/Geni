@@ -27,7 +27,7 @@
     </orderEntry>
     <orderEntry type="library" name="ikonli" level="project" />
     <orderEntry type="library" name="junit" level="project" />
-    <orderEntry type="library" name="sqlite-jdbc" level="project" />
     <orderEntry type="library" name="linux-x64" level="project" />
+    <orderEntry type="library" name="sqlite-jdbc" level="project" />
   </component>
 </module>

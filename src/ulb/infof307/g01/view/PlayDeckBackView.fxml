@@ -6,44 +6,35 @@
 <?import javafx.scene.shape.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
-<BorderPane prefHeight="288.0" prefWidth="467.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.PlayDeckBackViewController">
-
-    <left>
-        <Button fx:id="previousCard" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent;">
-            <graphic>
-                <FontIcon fx:id="previousCardIcon" iconLiteral="mdi2c-chevron-left" iconSize="30" />
-            </graphic>
-        </Button>
-    </left>
-
-    <right>
-        <Button fx:id="nextCard" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent;">
-            <graphic>
-                <FontIcon fx:id="nextCardIcon" iconLiteral="mdi2c-chevron-right" iconSize="30" />
-            </graphic>
-        </Button>
-    </right>
+<BorderPane prefHeight="363.0" prefWidth="598.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.PlayDeckBackViewController">
 
     <center>
+        <HBox alignment="CENTER" prefHeight="315.0" prefWidth="732.0">
+            <Button fx:id="previousCard" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent;">
+                <graphic>
+                    <FontIcon fx:id="previousCardIcon" iconLiteral="mdi2c-chevron-left" iconSize="50" />
+                </graphic>
+            </Button>
 
-        <StackPane prefHeight="225.0" prefWidth="467.0">
-            <Rectangle fx:id="answer" arcHeight="10" arcWidth="10" fill="#ffffff" height="174.0" stroke="#000000" strokeType="INSIDE" width="408.0">
-                <effect>
-                    <DropShadow color="#000000" radius="5" spread="0.5" />
-                </effect>
-            </Rectangle>
+            <StackPane prefHeight="225.0" prefWidth="467.0">
+                <Rectangle fx:id="answer" arcHeight="10" arcWidth="10" fill="#ffffff" height="174.0" stroke="#000000" strokeType="INSIDE" width="408.0">
+                    <effect>
+                        <DropShadow color="#000000" radius="5" spread="0.5" />
+                    </effect>
+                </Rectangle>
+            </StackPane>
 
-            <TextFlow fx:id="cardText" lineSpacing="5" />
-
-        </StackPane>
-        
+            <Button fx:id="nextCard" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent">
+                <graphic>
+                    <FontIcon fx:id="nextCardIcon" iconLiteral="mdi2c-chevron-right" iconSize="50" />
+                </graphic>
+            </Button>
+        </HBox>
     </center>
 
 
     <bottom>
-        <HBox alignment="CENTER" layoutY="300.0" prefHeight="59.0" prefWidth="467.0" spacing="10">
+        <HBox alignment="CENTER" layoutY="300.0" prefHeight="48.0" prefWidth="520.0" spacing="10">
 
             <Button fx:id="neverSeen" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent;">
                 <graphic>
