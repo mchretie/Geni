@@ -42,7 +42,7 @@
     <center>
         <StackPane>
             <fx:include fx:id="editDeckView" source="EditDeckView.fxml"/>
-            <fx:include fx:id="playDeckBack" source="PlayDeckBackView.fxml"/>
+            <fx:include fx:id="playDeckView" source="PlayDeckView.fxml"/>
             <fx:include fx:id="homeView" source="HomeView.fxml"/>
         </StackPane>
     </center>

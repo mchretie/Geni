@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+
+<?import javafx.scene.effect.DropShadow?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ulb.infof307.g01.view.PlayDeckViewController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <left>
+        <VBox alignment="CENTER" prefHeight="363.0">
+            <Button fx:id="previousCard" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
+                    style="-fx-background-color: transparent;" onMouseClicked="#handlePreviousCardClicked">
+                <graphic>
+                    <FontIcon fx:id="previousCardIcon" iconLiteral="mdi2c-chevron-left" iconSize="50"
+                              onMouseEntered="#handlePreviousButtonEnter" onMouseExited="#handlePreviousButtonExited"/>
+                </graphic>
+            </Button>
+        </VBox>
+    </left>
+
+    <right>
+        <VBox alignment="CENTER" prefHeight="363.0">
+            <Button fx:id="nextCard" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
+                    style="-fx-background-color: transparent" onMouseClicked="#handleNextCardClicked"
+                    onMouseEntered="#handleNextButtonEnter" onMouseExited="#handleNextButtonExited">
+                <graphic>
+                    <FontIcon fx:id="nextCardIcon" iconLiteral="mdi2c-chevron-right" iconSize="50"/>
+                </graphic>
+            </Button>
+        </VBox>
+    </right>
+
+    <center>
+        <HBox alignment="CENTER" prefHeight="315.0" prefWidth="732.0">
+            <Button fx:id="cardButton" prefHeight="196.0" prefWidth="433.0" onMouseClicked="#onCardClicked">
+                <effect>
+                    <DropShadow color="#000000" radius="5" spread="0.5"/>
+                </effect>
+            </Button>
+        </HBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER" layoutY="300.0" prefHeight="48.0" prefWidth="520.0" spacing="10" fx:id="cardRatingBox"
+              visible="false">
+            <Button fx:id="neverSeen" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
+                    style="-fx-background-color: transparent;">
+                <graphic>
+                    <FontIcon fx:id="neverSeenIcon" iconLiteral="mdi2e-eye-remove" iconSize="30"/>
+                </graphic>
+            </Button>
+
+            <Button fx:id="veryBad" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
+                    style="-fx-background-color: transparent;">
+                <graphic>
+                    <FontIcon fx:id="veryBadIcon" iconLiteral="mdi2e-emoticon-cry" iconSize="30"/>
+                </graphic>
+            </Button>
+
+            <Button fx:id="bad" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
+                    style="-fx-background-color: transparent;">
+                <graphic>
+                    <FontIcon fx:id="badIcon" iconLiteral="mdi2e-emoticon-confused" iconSize="30"/>
+                </graphic>
+            </Button>
+
+            <Button fx:id="average" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
+                    style="-fx-background-color: transparent;">
+                <graphic>
+                    <FontIcon fx:id="mediumIcon" iconLiteral="mdi2e-emoticon-neutral" iconSize="30"/>
+                </graphic>
+            </Button>
+
+            <Button fx:id="good" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
+                    style="-fx-background-color: transparent;">
+                <graphic>
+                    <FontIcon fx:id="goodIcon" iconLiteral="mdi2e-emoticon-happy" iconSize="30"/>
+                </graphic>
+            </Button>
+
+            <Button fx:id="veryGood" layoutX="450" layoutY="5" prefHeight="30" prefWidth="30"
+                    style="-fx-background-color: transparent;">
+                <graphic>
+                    <FontIcon fx:id="veryGoodIcon" iconLiteral="mdi2e-emoticon-excited" iconSize="30"/>
+                </graphic>
+            </Button>
+        </HBox>
+    </bottom>
+
+</BorderPane>

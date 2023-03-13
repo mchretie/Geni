@@ -35,10 +35,10 @@ public class MainViewController implements Initializable {
     public Pane homeView;
     public Pane editDeckView;
     public BorderPane mainBorderPain;
-    public BorderPane playDeckBack;
+    public BorderPane playDeckView;
     // public AnchorPane playDeckFront;
 
-    public PlayDeckBackViewController playDeckBackController;
+    public PlayDeckViewController playDeckViewController;
 
     private List<Pane> views;
     private MainViewListener listener;
@@ -67,23 +67,25 @@ public class MainViewController implements Initializable {
         hideViewsExcept(editDeckView);
     }
 
-    public void setPlayDeckBackView(Card card) {
-        topBar.setText("Play");
+    public void setPlayDeckView(Deck deck) {
+        topBar.setText("Jouer");
         goBack.setVisible(true);
         homeIcon.setIconColor(Color.web("#000000"));
-
-        playDeckBackController.setCard(card);
-        hideViewsExcept(playDeckBack);
+        playDeckViewController.setDeck(deck);
+        hideViewsExcept(playDeckView);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        views = new ArrayList<>(Arrays.asList(homeView, editDeckView, playDeckBack));
+        views = new ArrayList<>(Arrays.asList(homeView, editDeckView, playDeckView));
 //        setMainView();
         //setEditDeckView();
-        setPlayDeckBackView(new Card("Hi", "Hello"));
-
+        Deck testDeck = new Deck("test");
+        testDeck.addCard(new Card("front", "back"));
+        testDeck.addCard(new Card("front2", "back2"));
+        testDeck.addCard(new Card("front3", "back3"));
+        setPlayDeckView(testDeck);
         mainBorderPain.setUserData(this);
     }
 
