@@ -2,11 +2,15 @@ package ulb.infof307.g01.view.deckmenu;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
@@ -18,7 +22,6 @@ public class DeckMenuViewController {
 
     @FXML
     public BorderPane homeViewPane;
-    public FlowPane deckPane;
     public ScrollPane scrollPane;
 
     @FXML
@@ -31,35 +34,49 @@ public class DeckMenuViewController {
     public FontIcon searchIcon;
     public FontIcon createDeckIcon;
 
+    @FXML
+    public HBox topBar;
+    public HBox bottomBar;
+    public GridPane gridPane;
+
     private Listener listener;
 
     public void setListener(Listener listener) {
         this.listener = listener;
     }
 
-    private void loadDeck(Deck deck) throws IOException {
-        String deckViewPath = "/ulb/infof307/g01/view/deckmenu/DeckView.fxml";
+    /* ============================================================================================================== */
+    /*                                                  Deck displaying                                               */
+    /* ============================================================================================================== */
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(deckViewPath));
-        deckPane.getChildren().add(loader.load());
-
-        DeckViewController controller = loader.getController();
-        controller.setDeck(deck);
+    private int nextCol(int currentCol) {
+        return (currentCol + 1) % 3;
     }
 
-    public void loadDecks(List<Deck> decks) {
-        for (Deck deck : decks) {
-            try {
-                loadDeck(deck);
+    private int nextRow(int currentRow, int currentCol) {
+        return currentCol == 0 ? currentRow + 1 : currentRow;
+    }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public void setDecks(List<Node> decks) {
+        int col = 1;
+        int row = 0;
+
+        for (Node deck : decks) {
+            gridPane.add(deck, col, row);
+
+            col = nextCol(col);
+            row = nextRow(row, col);
         }
     }
 
+    /* ============================================================================================================== */
+    /*                                                  Click handlers                                                */
+    /* ============================================================================================================== */
+
+    @FXML
     public void handleCreateDeckClicked() {
         listener.createDeckClicked(createDeckField.getText());
+        createDeckField.clear();
     }
 
 
@@ -67,16 +84,20 @@ public class DeckMenuViewController {
     /*                                                  Hover handlers                                                */
     /* ============================================================================================================== */
 
+    @FXML
     public void handleSearchHover() {
         searchIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
+    @FXML
     public void handleSearchExit() {
         searchIcon.setIconColor(Color.web("#000000"));
     }
 
+    @FXML
     public void handleCreateDeckHover() { createDeckIcon.setIconColor(Color.web("#FFFFFF")); }
 
+    @FXML
     public void handleCreateDeckExit() {
         createDeckIcon.setIconColor(Color.web("#000000"));
     }

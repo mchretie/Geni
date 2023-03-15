@@ -29,17 +29,15 @@ public class DeckViewController {
     public FontIcon editDeckIcon;
     public FontIcon removeDeckIcon;
     public FontIcon shareDeckIcon;
-    public FontIcon threeDotIcon;
 
     @FXML
     public StackPane homeDeckPane;
-    public StackPane optionsPanel;
     public FlowPane deckTags;
 
-    private Listener listener;
     private Deck deck;
     private final DeckDAO dm = DeckDAO.singleton();
 
+    private Listener listener;
 
     public void setListener(Listener listener) {
         this.listener = listener;
@@ -80,48 +78,59 @@ public class DeckViewController {
     }
 
     /* ============================================================================================================== */
-    /*                                                  Hover handlers                                                */
-    /* ============================================================================================================== */
-
-    public void handleHoverEditDeck() {
-        editDeckIcon.setIconColor(Color.web("#FFFFFF"));
-    }
-
-    public void handleHoverEditDeckExit() {
-        editDeckIcon.setIconColor(Color.web("#000000"));
-    }
-
-    public void handleHoverRemoveDeck() {
-        removeDeckIcon.setIconColor(Color.web("#FFFFFF"));
-    }
-
-    public void handleHoverRemoveDeckExit() {
-        removeDeckIcon.setIconColor(Color.web("#000000"));
-    }
-
-    public void handleHoverShareDeck() {
-        shareDeckIcon.setIconColor(Color.web("#FFFFFF"));
-    }
-
-    public void handleHoverShareDeckExit() {
-        shareDeckIcon.setIconColor(Color.web("#000000"));
-    }
-
-    /* ============================================================================================================== */
     /*                                                  Click handlers                                                */
     /* ============================================================================================================== */
 
-    public void handleToggleEditDeckClicked() {
+    @FXML
+    public void handleEditDeckClicked() {
         listener.editDeckClicked(deck);
     }
 
+    @FXML
     public void handleDoubleDeckClicked() {
         listener.deckDoubleClicked(deck);
     }
 
+    @FXML
     public void handleRemoveDeckClicked() {
         listener.deckRemoved(deck);
     }
+
+
+    /* ============================================================================================================== */
+    /*                                                  Hover handlers                                                */
+    /* ============================================================================================================== */
+
+    @FXML
+    public void handleHoverEditDeck() {
+        editDeckIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    public void handleHoverEditDeckExit() {
+        editDeckIcon.setIconColor(Color.web("#000000"));
+    }
+
+    @FXML
+    public void handleHoverRemoveDeck() {
+        removeDeckIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    public void handleHoverRemoveDeckExit() {
+        removeDeckIcon.setIconColor(Color.web("#000000"));
+    }
+
+    @FXML
+    public void handleHoverShareDeck() {
+        shareDeckIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    public void handleHoverShareDeckExit() {
+        shareDeckIcon.setIconColor(Color.web("#000000"));
+    }
+
 
     /* ============================================================================================================== */
     /*                                                Listener interface                                              */

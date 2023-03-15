@@ -19,7 +19,7 @@
         <HBox alignment="TOP_RIGHT">
 
             <!-- Edit deck button -->
-            <Button fx:id="editDeck" layoutX="180" onMouseClicked="#handleToggleEditDeckClicked" prefHeight="25"
+            <Button fx:id="editDeck" layoutX="180" onMouseClicked="#handleEditDeckClicked" prefHeight="25"
                     prefWidth="25" style="-fx-background-color: transparent;">
 
                 <graphic>
