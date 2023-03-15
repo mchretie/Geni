@@ -1,47 +1,45 @@
 # Génie des cartes
 
-## Conventions Java
+Une application d’étude à répétition espacée.
 
-Ceci sont des conventions pour tout le code, que ce soit dans `src` ou `test`. S’il y a des conventions spécifiques pour l’une ou l’autre partie, celles-ci sont mentionnées dans le dossier approprié.
 
-### Formatage
+## Compilation et lancement
 
-Le formatage du code source est géré par `clang-format`. Pour ne jamais l’oublier, exécutez ces commandes :
+### CLI
 
-```bash
-chmod +x hooks/pre-commit
-ln hooks/pre-commit .git/hooks
-```
-
-Vous pouvez formater le code ajouté à Git avec :
+La compilation et la gestion des dépendances sont gérées par `maven`. Ainsi, exécuter :
 
 ```bash
-git clang-format -v -f
+mvn test        # pour tester le programme
+mvn package     # pour générer le .jar
+mvn javafx:run  # pour lancer l’application
 ```
 
-### Structure du code
+Un makefile avec les cibles `test`, `pack` et `run` est également fourni.
 
-Veillez à suivre les conventions/pratiques suivantes :
+### IntelliJ
 
-- chaque classe, interface ou énumération doit être dans son propre fichier du même nom ;
-- évitez les `import java.*`, seulement ce dont vous avez besoin ;
-- ne mettez en `public` que le strict minimum dans vos classes ;
-- mettez en `final` le plus de variables possible (si approprié) ;
-- commentez le strict minimum nécessaire pour comprendre le code ;
-- créez un nouveau `package` si plusieurs classes peuvent être groupées.
+Il faut rajouter une configuration de lancement comme suit :
 
-## Conventions Git
+`Run` → `Edit Configurations…` → `+` → `Maven`
 
-Veillez à suivre les conventions/pratiques suivantes :
+Et mettre la commande suivante dans le champ `Command line` :
 
-- tout est en anglais ;
-- utilisez une nouvelle branche pour tout travail ;
-- mergez dès que vous avez fini et que les tests passent.
+```bash
+javafx:run
+```
 
-Voir [1] pour bien écrire des commits.
 
-[1] https://cbea.ms/git-commit/#seven-rules
+## Librairies externes
 
-## Librairies additionnelles
+Les librairies suivantes sont utilisées :
 
-Voir dans le dossier `lib` pour plus d’informations.
+- Junit (5.9.2)
+- SQLite-JDBC (3.41)
+- OpenJFX (19)
+- Ikonli (12.3.1)
+
+
+## Contributions
+
+Voir le fichier `CONTRIBUTING.md`.
