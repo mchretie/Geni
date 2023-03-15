@@ -12,23 +12,23 @@
     </top>
 
     <center>
+        <AnchorPane>
 
-        <AnchorPane >
-
-            <!--Tags management-->
+            <!--Deck name-->
             <TextField fx:id="deckName" alignment="CENTER" onKeyReleased="#handleUpdateDeckName" style="-fx-background-color: #00000000;" text="Deck Name">
                 <font>
                     <Font name="System Italic" size="28.0" />
                 </font>
             </TextField>
 
+            <!-- Tags -->
             <HBox layoutX="14.0" layoutY="78.0" prefHeight="20.0" prefWidth="351.0" style="-fx-background-color: #f0f0f0;">
-                <Label fx:id="tagsLabel" alignment="CENTER" text="#Tags  " textAlignment="CENTER" BorderPane.alignment="CENTER">
+                <Label alignment="CENTER" text="#Tags  " textAlignment="CENTER" BorderPane.alignment="CENTER">
                     <font>
                         <Font name="System Bold Italic" size="15.0" />
                     </font>
                 </Label>
-                <TextField fx:id="tagsInput" onKeyPressed="#handleTagAdd" prefHeight="24.0" prefWidth="289.0" />
+                <TextField fx:id="tagsInput" onKeyPressed="#handleTagAdded" prefHeight="24.0" prefWidth="289.0" />
             </HBox>
 
             <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="102.0" prefHeight="38.0" prefWidth="351.0" vbarPolicy="NEVER">
@@ -40,7 +40,7 @@
                 <VBox fx:id="cardsContainer" style="-fx-background-color: #f0f0f0;" />
             </ScrollPane>
 
-            <Button fx:id="addCard" layoutX="15.0" layoutY="460.0" mnemonicParsing="false" onAction="#handleAddCard" prefHeight="55.0" prefWidth="351.0" style="-fx-background-color: #5ab970;" text="+">
+            <Button fx:id="addCard" layoutX="15.0" layoutY="460.0" mnemonicParsing="false" onAction="#handleAddCardClicked" prefHeight="55.0" prefWidth="351.0" style="-fx-background-color: #5ab970;" text="+">
                 <font>
                     <Font name="Fira Sans Compressed ExtraBold Italic" size="29.0" />
                 </font>
@@ -66,7 +66,6 @@
             <HBox layoutY="545.0" prefHeight="55.0" prefWidth="850.0" />
 
         </AnchorPane>
-
     </center>
 
     <bottom>

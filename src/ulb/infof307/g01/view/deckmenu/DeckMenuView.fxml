@@ -6,10 +6,10 @@
 <?import org.kordamp.ikonli.javafx.*?>
 
 <?import javafx.geometry.Insets?>
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.deckmenu.DeckMenuViewController">
 
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.deckmenu.DeckMenuViewController">
     <top>
-        <fx:include source="../navigation/UpperNavigationBarView.fxml"/>
+        <fx:include fx:id="topBar" source="../navigation/UpperNavigationBarView.fxml"/>
     </top>
 
     <center>
@@ -27,12 +27,12 @@
             </top>
 
             <center>
-                <ScrollPane fx:id="scrollPane" >
+                <ScrollPane fx:id="scrollPane" vbarPolicy="ALWAYS">
                     <BorderPane.margin>
                         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                     </BorderPane.margin>
 
-                    <FlowPane fx:id="deckPane" alignment="CENTER_LEFT" vgap="20" hgap="30">
+                    <GridPane fx:id="gridPane" alignment="CENTER_LEFT" vgap="20" hgap="20">
                         <StackPane>
                             <Rectangle arcHeight="20" arcWidth="20" fill="lightgray" height="150" stroke="black" strokeDashArray="5" width="225" />
                             <VBox>
@@ -44,7 +44,7 @@
                                 </Button>
                             </VBox>
                         </StackPane>
-                    </FlowPane>
+                    </GridPane>
 
                 </ScrollPane>
             </center>
@@ -54,7 +54,7 @@
     </center>
 
     <bottom>
-        <fx:include source="../navigation/LowerNavigationBarView.fxml"/>
+        <fx:include fx:id="bottomBar" source="../navigation/LowerNavigationBarView.fxml"/>
     </bottom>
 
 </BorderPane>

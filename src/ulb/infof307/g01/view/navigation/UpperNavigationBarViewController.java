@@ -19,7 +19,11 @@ public class UpperNavigationBarViewController {
     public FontIcon goBackIcon;
     public FontIcon userProfileIcon;
 
+    /* ============================================================================================================== */
+    /*                                                  Click handlers                                                */
+    /* ============================================================================================================== */
 
+    @FXML
     public void handleGoBackClicked() {
 
     }
@@ -28,18 +32,22 @@ public class UpperNavigationBarViewController {
     /*                                                  Hover handlers                                                */
     /* ============================================================================================================== */
 
+    @FXML
     public void handleGoBackHover() {
         goBackIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
+    @FXML
     public void handleGoBackExitHover() {
         goBackIcon.setIconColor(Color.web("#000000"));
     }
 
+    @FXML
     public void handleUserProfileHover() {
         userProfileIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
+    @FXML
     public void handleUserProfileExitHover() {
         userProfileIcon.setIconColor(Color.web("#000000"));
     }
