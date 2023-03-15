@@ -6,7 +6,7 @@
 <?import org.kordamp.ikonli.javafx.*?>
 
 
-<StackPane fx:id="homeDeckPane" onMouseClicked="#handleDoubleDeckClicked" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.components.HomeDeckComponentController">
+<StackPane fx:id="homeDeckPane" onMouseClicked="#handleDoubleDeckClicked" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.deckmenu.DeckViewController">
 
         <Rectangle arcHeight="20" arcWidth="20" fill="lightgray" height="150" stroke="black" width="225" />
 
@@ -30,7 +30,7 @@
             </Button>
 
             <!-- Remove deck button -->
-            <Button fx:id="deleteDeckButton" layoutX="180" onMouseClicked="#handleToggleRemoveDeckClicked"
+            <Button fx:id="deleteDeckButton" layoutX="180" onMouseClicked="#handleRemoveDeckClicked"
                     prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
 
                 <graphic>
@@ -41,7 +41,7 @@
             </Button>
 
             <!-- Share deck button -->
-            <Button fx:id="shareDeckButton" layoutX="180" onMouseClicked="#handleToggleShareDeckClicked" prefHeight="25"
+            <Button fx:id="shareDeckButton" layoutX="180" prefHeight="25"
                     prefWidth="25" style="-fx-background-color: transparent;">
 
                 <graphic>

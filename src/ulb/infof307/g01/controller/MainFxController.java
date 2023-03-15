@@ -1,4 +1,4 @@
-package ulb.infof307.g01;
+package ulb.infof307.g01.controller;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.database.Database;
 import ulb.infof307.g01.database.DatabaseScheme;
+import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.view.MainViewController;
 
 import java.io.File;
@@ -15,17 +16,24 @@ import java.io.IOException;
 /**
  * Main class of the application which initializes the main view using the main view handler and loads a menu view.
  */
-public class Main extends Application {
+public class MainFxController extends Application implements DeckMenuController.ControllerListener {
+
+    private DeckMenuController deckMenuController;
+    private PlayDeckController playDeckController;
+
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         initDatabase();
-        FXMLLoader fxmlLoader = new FXMLLoader(MainViewController.class.getResource("MainView.fxml"));
-        Parent root = fxmlLoader.load();
-        stage.setScene(new Scene(root));
-        stage.show();
+
+        deckMenuController = new DeckMenuController(stage, this);
+        deckMenuController.show();
     }
 
-    public void initDatabase() {
+    private void initDatabase() {
         File dbfile = new File("demo.db");
         Database db = Database.singleton();
         try {
@@ -36,7 +44,14 @@ public class Main extends Application {
         }
     }
 
-    public static void main(String[] args) {
-        launch();
+    @Override
+    public void editDeckClicked(Deck deck) {
+
+    }
+
+    @Override
+    public void playDeckClicked(Deck deck) {
+        playDeckController = new PlayDeckController();
+
     }
 }
