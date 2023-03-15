@@ -1,4 +1,4 @@
-package ulb.infof307.g01.view;
+package ulb.infof307.g01.view.editdeck;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +26,6 @@ import java.util.ResourceBundle;
 public class EditDeckViewController {
 
     @FXML
-    public AnchorPane editDeckPane;
     public VBox cardsContainer;
     public TextField frontCardText;
     public StackPane frontCard;

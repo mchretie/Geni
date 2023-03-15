@@ -1,4 +1,4 @@
-package ulb.infof307.g01.view;
+package ulb.infof307.g01.view.playdeck;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

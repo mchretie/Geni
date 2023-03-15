@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.scene.text.Font?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ulb.infof307.g01.view.navigation.UpperNavigationBarViewController"
+      prefHeight="55.0" prefWidth="850.0" alignment="CENTER" style="-fx-background-color: #449a6c;">
+
+    <!-- Go back button -->
+    <Button fx:id="goBack" mnemonicParsing="false" prefHeight="100.0" prefWidth="61.0"
+            BorderPane.alignment="CENTER_LEFT" style="-fx-background-color: transparent;"
+            onMouseClicked="#handleGoBackClicked">
+
+        <graphic>
+            <FontIcon fx:id="goBackIcon" iconLiteral="mdi2k-keyboard-backspace" iconSize="48"
+                      onMouseEntered="#handleGoBackHover" onMouseExited="#handleGoBackExitHover"/>
+        </graphic>
+    </Button>
+
+    <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+
+    <!-- Menu title text -->
+    <Label fx:id="topBarText" alignment="CENTER" textAlignment="CENTER">
+        <font>
+            <Font name="System Italic" size="23.0"/>
+        </font>
+    </Label>
+
+    <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+
+    <!-- User profile button -->
+    <Button fx:id="userProfile" mnemonicParsing="false" prefHeight="100.0" prefWidth="61.0"
+            BorderPane.alignment="CENTER" style="-fx-background-color: transparent;">
+        <graphic>
+            <FontIcon fx:id="userProfileIcon" iconLiteral="mdi2a-account" iconSize="48"
+                      onMouseEntered="#handleUserProfileHover" onMouseExited="#handleUserProfileExitHover"/>
+        </graphic>
+    </Button>
+
+</HBox>
