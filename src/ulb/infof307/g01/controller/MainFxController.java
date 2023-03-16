@@ -23,13 +23,22 @@ public class MainFxController extends Application implements MainWindowViewContr
                                                                 DeckMenuController.ControllerListener {
 
     DeckMenuController deckMenuController;
-
     MainWindowViewController mainWindowViewController;
     private Stage stage;
+
+
+    /* ============================================================================================================== */
+    /*                                                   Main                                                         */
+    /* ============================================================================================================== */
 
     public static void main(String[] args) {
         launch();
     }
+
+
+    /* ============================================================================================================== */
+    /*                                          Application methods                                                   */
+    /* ============================================================================================================== */
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -38,7 +47,9 @@ public class MainFxController extends Application implements MainWindowViewContr
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainWindowViewController.class.getResource("MainWindowView.fxml"));
         Parent root = fxmlLoader.load();
+
         stage.setScene(new Scene(root));
+        stage.setResizable(false);
 
         try {
             initDatabase();
@@ -57,12 +68,22 @@ public class MainFxController extends Application implements MainWindowViewContr
         deckMenuController.show();
     }
 
+
+    /* ============================================================================================================== */
+    /*                                             Database methods                                                   */
+    /* ============================================================================================================== */
+
     private void initDatabase() throws SQLException, OpenedDatabaseException {
         File dbfile = new File("demo.db");
         Database db = Database.singleton();
         db.open(dbfile);
         db.initTables(DatabaseScheme.CLIENT);
     }
+
+
+    /* ============================================================================================================== */
+    /*                                        Controller Listener Methods                                             */
+    /* ============================================================================================================== */
 
     @Override
     public void editDeckClicked(Deck deck) {
@@ -81,6 +102,11 @@ public class MainFxController extends Application implements MainWindowViewContr
         PlayDeckController playDeckController = new PlayDeckController(stage, deck, mainWindowViewController);
         playDeckController.show();
     }
+
+
+    /* ============================================================================================================== */
+    /*                                        Navigation Listener Methods                                             */
+    /* ============================================================================================================== */
 
     @Override
     public void goBackClicked() {
