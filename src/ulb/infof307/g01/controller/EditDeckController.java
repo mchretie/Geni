@@ -1,29 +1,34 @@
 package ulb.infof307.g01.controller;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.database.DeckManager;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.view.editdeck.EditDeckViewController;
+import ulb.infof307.g01.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
 
 public class EditDeckController implements EditDeckViewController.Listener {
 
-
-    private final ControllerListener controllerListener;
     private final Stage stage;
     private final DeckManager dm = DeckManager.singleton();
 
+    private final MainWindowViewController mainWindowViewController;
+    private final ControllerListener controllerListener;
+    private EditDeckViewController editDeckViewController;
+
     private Deck deck;
 
-    public EditDeckController(Stage stage, Deck deck, ControllerListener controllerListener) {
+    public EditDeckController(Stage stage, Deck deck, MainWindowViewController mainWindowViewController, ControllerListener controllerListener) {
         this.stage = stage;
         this.deck = deck;
+        this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
+
+        this.editDeckViewController = mainWindowViewController.getEditDeckViewController();
+        editDeckViewController.setListener(this);
     }
 
 
@@ -33,13 +38,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(EditDeckViewController.class.getResource("EditDeckView.fxml"));
-        Parent root = fxmlLoader.load();
-
-        EditDeckViewController editDeckViewController = fxmlLoader.getController();
-        editDeckViewController.setListener(this);
-
-        stage.setScene(new Scene(root));
+        mainWindowViewController.setEditDeckViewVisible();
         stage.show();
     }
 
@@ -50,12 +49,14 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
     @Override
     public void deckNameModified(String newName) {
-
+        deck.setName(newName);
+        dm.saveDeck(deck);
     }
 
     @Override
     public void tagAddedToDeck(Deck deck, String tagName) {
-
+        deck.addTag(new Tag(tagName));
+        dm.saveDeck(deck);
     }
 
     @Override

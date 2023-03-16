@@ -17,6 +17,7 @@ import ulb.infof307.g01.model.Deck;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Function;
 
 public class DeckMenuViewController {
 
@@ -35,8 +36,6 @@ public class DeckMenuViewController {
     public FontIcon createDeckIcon;
 
     @FXML
-    public HBox topBar;
-    public HBox bottomBar;
     public GridPane gridPane;
 
     private Listener listener;
@@ -45,19 +44,30 @@ public class DeckMenuViewController {
         this.listener = listener;
     }
 
+
     /* ============================================================================================================== */
     /*                                                  Deck displaying                                               */
     /* ============================================================================================================== */
 
-    private int nextCol(int currentCol) {
-        return (currentCol + 1) % 3;
+    /**
+     * Clears the whole grid pane of decks. This circumvents a visual bug.
+     */
+    private void clearDecksFromGrid() {
+        gridPane.getChildren()
+                .removeIf(node -> GridPane.getRowIndex(node) != null
+                                    && GridPane.getColumnIndex(node) != null
+                                    && (GridPane.getRowIndex(node) > 0 || GridPane.getColumnIndex(node) > 0));
     }
 
-    private int nextRow(int currentRow, int currentCol) {
-        return currentCol == 0 ? currentRow + 1 : currentRow;
-    }
-
+    /**
+     * Initialises the grid of decks.
+     *
+     * @param decks loaded FXML deck files
+     */
     public void setDecks(List<Node> decks) {
+
+        clearDecksFromGrid();
+
         int col = 1;
         int row = 0;
 
@@ -68,6 +78,15 @@ public class DeckMenuViewController {
             row = nextRow(row, col);
         }
     }
+
+    private int nextCol(int currentCol) {
+        return (currentCol + 1) % 3;
+    }
+
+    private int nextRow(int currentRow, int currentCol) {
+        return currentCol == 0 ? currentRow + 1 : currentRow;
+    }
+
 
     /* ============================================================================================================== */
     /*                                                  Click handlers                                                */

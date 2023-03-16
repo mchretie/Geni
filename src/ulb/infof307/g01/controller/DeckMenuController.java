@@ -9,6 +9,7 @@ import ulb.infof307.g01.database.DeckManager;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.view.deckmenu.DeckViewController;
+import ulb.infof307.g01.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,16 +17,23 @@ import java.util.List;
 
 public class DeckMenuController implements DeckMenuViewController.Listener, DeckViewController.Listener {
 
+
     private final ControllerListener controllerListener;
     private final Stage stage;
 
     private DeckMenuViewController deckMenuViewController;
+    private MainWindowViewController mainWindowViewController;
+
 
     private final DeckManager dm = DeckManager.singleton();
 
-    public DeckMenuController(Stage stage, ControllerListener controllerListener) {
+    public DeckMenuController(Stage stage, MainWindowViewController mainWindowViewController,ControllerListener controllerListener) {
         this.stage = stage;
+        this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
+
+        this.deckMenuViewController = mainWindowViewController.getDeckMenuViewController();
+        deckMenuViewController.setListener(this);
     }
 
 
@@ -35,14 +43,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(DeckMenuViewController.class.getResource("DeckMenuView.fxml"));
-        Parent root = fxmlLoader.load();
-
-        deckMenuViewController = fxmlLoader.getController();
-        deckMenuViewController.setListener(this);
         deckMenuViewController.setDecks( loadDecks() );
-
-        stage.setScene(new Scene(root));
+        mainWindowViewController.setDeckMenuViewVisible();
         stage.show();
     }
 
@@ -91,11 +93,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
 
     @Override
     public void deckRemoved(Deck deck) {
-        System.out.println("removed");
         try {
             dm.deleteDeck(deck);
-            // deckMenuViewController.setDecks( loadDecks() );
-            show();
+            deckMenuViewController.setDecks( loadDecks() );
+            System.out.println("removed");
 
         } catch (IOException e) {
             e.printStackTrace();
