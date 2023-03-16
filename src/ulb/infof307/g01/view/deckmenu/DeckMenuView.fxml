@@ -15,12 +15,14 @@
     <top>
         <HBox alignment="CENTER" spacing="-40">
 
+            <!-- Search bar -->
             <TextField fx:id="searchBar"
                        prefHeight="30" prefWidth="207.0"
                        promptText="Search tags / decks"
                        style="-fx-background-color: gray" />
 
 
+            <!-- Search Button -->
             <Button fx:id="searchButton" layoutY="5"
                     prefHeight="30" prefWidth="30"
                     style="-fx-background-color: transparent;">
@@ -41,6 +43,7 @@
             <GridPane fx:id="gridPane" alignment="CENTER_LEFT" vgap="20">
                 <StackPane>
 
+                    <!-- Create deck rectangle -->
                     <Rectangle arcHeight="20" arcWidth="20" fill="lightgray"
                                height="150" stroke="black"
                                strokeDashArray="5" width="225"/>
