@@ -13,6 +13,7 @@
             fx:controller="ulb.infof307.g01.view.mainwindow.MainWindowViewController"
             prefHeight="600.0" prefWidth="800.0">
 
+    <!-- Top navigation bar -->
     <top>
         <HBox xmlns="http://javafx.com/javafx"
               xmlns:fx="http://javafx.com/fxml"
@@ -52,6 +53,7 @@
         </HBox>
     </top>
 
+    <!-- Center stage -->
     <center>
         <StackPane fx:id="centerStackPane">
             <fx:include fx:id="editDeckView" source="../editdeck/EditDeckView.fxml"/>
@@ -60,6 +62,8 @@
         </StackPane>
     </center>
 
+
+    <!-- Bottom navigation bar -->
     <bottom>
         <HBox prefHeight="55.0" prefWidth="850.0" alignment="CENTER" style="-fx-background-color: #449a6c;">
 

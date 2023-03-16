@@ -32,6 +32,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
         this.editDeckViewController = mainWindowViewController.getEditDeckViewController();
         editDeckViewController.setListener(this);
+        editDeckViewController.setDeck(deck);
     }
 
 
@@ -70,11 +71,27 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
     @Override
     public void frontOfCardModified(Card card, String newFront) {
-
+        card.setFront(newFront);
+        deck.addCard(card);
+        editDeckViewController.loadCardsFromDeck();
     }
 
     @Override
     public void backOfCardModified(Card card, String newBack) {
+        card.setBack(newBack);
+        deck.addCard(card);
+        editDeckViewController.loadCardsFromDeck();
+    }
 
+    @Override
+    public void newCard() {
+        deck.addCard(new Card("Avant", "Arrière"));
+        editDeckViewController.loadCardsFromDeck();
+        editDeckViewController.setSelectedCard(deck.getCards().get(deck.cardCount() - 1));
+    }
+
+    @Override
+    public void cardPreviewClicked(Card card) {
+        editDeckViewController.loadCardEditor(card);
     }
 }

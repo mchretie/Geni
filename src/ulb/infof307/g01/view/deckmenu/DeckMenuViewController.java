@@ -87,6 +87,7 @@ public class DeckMenuViewController {
         return currentCol == 0 ? currentRow + 1 : currentRow;
     }
 
+
     /* ============================================================================================================== */
     /*                                                  Click handlers                                                */
     /* ============================================================================================================== */
@@ -119,6 +120,7 @@ public class DeckMenuViewController {
     public void handleCreateDeckExit() {
         createDeckIcon.setIconColor(Color.web("#000000"));
     }
+
 
     /* ============================================================================================================== */
     /*                                                Listener interface                                              */

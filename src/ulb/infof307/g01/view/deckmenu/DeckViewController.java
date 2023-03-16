@@ -50,32 +50,12 @@ public class DeckViewController {
     public void setDeck(Deck deck) {
         this.deck = deck;
         this.updateDeckButtonName();
-        this.updateDeckTags();
     }
 
     private void updateDeckButtonName() {
         this.deckButton.setText(this.deck.getName());
     }
-
-    private void updateDeckTags() {
-        this.deckTags.getChildren().clear();
-        List<Tag> tags = this.deck.getTags();
-        int tagCount = 4;
-        if (tags.size() < tagCount) {
-            tagCount = this.deck.getTags().size();
-        }
-        for (int i = 0; i < tagCount; i++) {
-            Tag tag = tags.get(i);
-            StackPane tagPane = new StackPane();
-            tagPane.setPrefWidth(80);
-            tagPane.setPrefHeight(30);
-            tagPane.setStyle("-fx-background-color: #%s; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #000000; -fx-border-width: 1;".formatted(tag.getColor()));
-            Label tagLabel = new Label(tag.getName());
-            tagLabel.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 12;");
-            tagPane.getChildren().add(tagLabel);
-            this.deckTags.getChildren().add(tagPane);
-        }
-    }
+    
 
     /* ============================================================================================================== */
     /*                                                  Click handlers                                                */
