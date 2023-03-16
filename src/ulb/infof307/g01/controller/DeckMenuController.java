@@ -25,7 +25,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
     private final DeckMenuViewController deckMenuViewController;
     private final MainWindowViewController mainWindowViewController;
 
-
     private final DeckManager dm = DeckManager.singleton();
 
     /* ============================================================================================================== */
