@@ -2,8 +2,6 @@ package ulb.infof307.g01.controller;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.database.DeckManager;
 import ulb.infof307.g01.model.Deck;
@@ -21,16 +19,17 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
     private final ControllerListener controllerListener;
     private final Stage stage;
 
-    private DeckMenuViewController deckMenuViewController;
-    private MainWindowViewController mainWindowViewController;
+    private final DeckMenuViewController deckMenuViewController;
+    private final MainWindowViewController mainWindowViewController;
 
 
     private final DeckManager dm = DeckManager.singleton();
 
-    public DeckMenuController(Stage stage, MainWindowViewController mainWindowViewController,ControllerListener controllerListener) {
+    public DeckMenuController(Stage stage, ControllerListener controllerListener, MainWindowViewController mainWindowViewController) {
         this.stage = stage;
-        this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
+        this.mainWindowViewController = mainWindowViewController;
+
 
         this.deckMenuViewController = mainWindowViewController.getDeckMenuViewController();
         deckMenuViewController.setListener(this);
@@ -44,7 +43,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
      */
     public void show() throws IOException {
         deckMenuViewController.setDecks( loadDecks() );
+
         mainWindowViewController.setDeckMenuViewVisible();
+        mainWindowViewController.makeGoBackIconInvisible();
+
         stage.show();
     }
 
@@ -96,7 +98,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
         try {
             dm.deleteDeck(deck);
             deckMenuViewController.setDecks( loadDecks() );
-            System.out.println("removed");
 
         } catch (IOException e) {
             e.printStackTrace();

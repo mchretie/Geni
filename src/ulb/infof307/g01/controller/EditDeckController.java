@@ -16,16 +16,14 @@ public class EditDeckController implements EditDeckViewController.Listener {
     private final DeckManager dm = DeckManager.singleton();
 
     private final MainWindowViewController mainWindowViewController;
-    private final ControllerListener controllerListener;
     private EditDeckViewController editDeckViewController;
 
     private Deck deck;
 
-    public EditDeckController(Stage stage, Deck deck, MainWindowViewController mainWindowViewController, ControllerListener controllerListener) {
+    public EditDeckController(Stage stage, Deck deck, MainWindowViewController mainWindowViewController) {
         this.stage = stage;
         this.deck = deck;
         this.mainWindowViewController = mainWindowViewController;
-        this.controllerListener = controllerListener;
 
         this.editDeckViewController = mainWindowViewController.getEditDeckViewController();
         editDeckViewController.setListener(this);
@@ -39,6 +37,8 @@ public class EditDeckController implements EditDeckViewController.Listener {
      */
     public void show() throws IOException {
         mainWindowViewController.setEditDeckViewVisible();
+        mainWindowViewController.makeGoBackIconVisible();
+
         stage.show();
     }
 
@@ -66,15 +66,6 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
     @Override
     public void backOfCardModified(Card card, String newBack) {
-
-    }
-
-
-    /* ============================================================================================================== */
-    /*                                      Controller Listener Interface                                             */
-    /* ============================================================================================================== */
-
-    public interface ControllerListener {
 
     }
 }
