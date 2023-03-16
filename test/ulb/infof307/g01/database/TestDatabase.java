@@ -2,6 +2,7 @@ package ulb.infof307.g01.database;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import ulb.infof307.g01.database.exceptions.DatabaseException;
 
 import java.io.File;
 import java.sql.ResultSet;
@@ -46,27 +47,27 @@ class TestDatabase {
 
     @Test
     void executeQuery_NotOpened_ThrowsException() {
-        assertThrows(DatabaseNotInitException.class,
+        assertThrows(DatabaseException.class,
                 () -> Database.singleton().executeQuery("dummy"));
     }
 
     @Test
     void executeUpdate_NotOpened_ThrowsException() {
-        assertThrows(DatabaseNotInitException.class,
+        assertThrows(DatabaseException.class,
                 () -> Database.singleton().executeUpdate("dummy"));
     }
 
     @Test
     void open_TwiceOpened_ThrowsException()
-            throws SQLException, OpenedDatabaseException {
+            throws SQLException, DatabaseException {
         Database.singleton().open(dbname);
-        assertThrows(OpenedDatabaseException.class,
+        assertThrows(DatabaseException.class,
                 () -> Database.singleton().open(dbname));
     }
 
     @Test
     void close_NonEmptyDB_DBFileExistsAfterClose()
-            throws SQLException, DatabaseNotInitException, OpenedDatabaseException {
+            throws SQLException, DatabaseException {
         Database.singleton().open(dbname);
         Database.singleton().initTables(createStmt);
         Database.singleton().close();
@@ -76,7 +77,7 @@ class TestDatabase {
 
     @Test
     void executeUpdate_TableCreated_TablePresent()
-            throws SQLException, DatabaseNotInitException, OpenedDatabaseException {
+            throws SQLException, DatabaseException {
         Database.singleton().open(dbname);
         Database.singleton().initTables(createStmt);
 
@@ -89,7 +90,7 @@ class TestDatabase {
 
     @Test
     void executeUpdate_DataInserted_DataPresentAndRight()
-            throws SQLException, DatabaseNotInitException, OpenedDatabaseException {
+            throws SQLException, DatabaseException {
         Database.singleton().open(dbname);
         Database.singleton().initTables(createStmt);
         Database.singleton().executeUpdate(insertStmt);
@@ -103,7 +104,7 @@ class TestDatabase {
 
     @Test
     void executeUpdate_DataDeleted_DataNotPresent()
-            throws SQLException, DatabaseNotInitException, OpenedDatabaseException {
+            throws SQLException, DatabaseException {
         Database.singleton().open(dbname);
         Database.singleton().initTables(createStmt);
         Database.singleton().executeUpdate(insertStmt);

@@ -2,6 +2,7 @@ package ulb.infof307.g01.database;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ulb.infof307.g01.database.exceptions.DatabaseException;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 
@@ -20,7 +21,7 @@ public class TestTagDAO extends DatabaseUsingTest {
 
     @Override
     @BeforeEach
-    void init() throws SQLException, OpenedDatabaseException {
+    void init() throws SQLException, DatabaseException {
         super.init();
         db.initTables(DatabaseScheme.CLIENT);
     }
