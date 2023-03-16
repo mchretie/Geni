@@ -6,6 +6,8 @@ import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.view.playdeck.PlayDeckViewController;
 
+import java.util.Iterator;
+
 public class PlayDeckController implements PlayDeckViewController.Listener {
 
     private final Deck deck;
@@ -15,6 +17,11 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     private final MainWindowViewController mainWindowViewController;
     private final PlayDeckViewController playDeckViewController;
+
+
+    /* ============================================================================================================== */
+    /*                                                  Constructor                                                   */
+    /* ============================================================================================================== */
 
     public PlayDeckController(Stage stage, Deck deck, MainWindowViewController mainWindowViewController) {
         this.stage = stage;
@@ -27,12 +34,22 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         playDeckViewController.setListener(this);
     }
 
+
+    /* ============================================================================================================== */
+    /*                                            Stage manipulation                                                  */
+    /* ============================================================================================================== */
+
     public void show() {
         mainWindowViewController.setPlayDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
         stage.show();
     }
+
+
+    /* ============================================================================================================== */
+    /*                                          View Listener Methods                                                 */
+    /* ============================================================================================================== */
 
     @Override
     public void cardClicked() {

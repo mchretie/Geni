@@ -13,17 +13,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class responsible for display the deck menu and listening to DeckMenuViewController
+ */
 public class DeckMenuController implements DeckMenuViewController.Listener, DeckViewController.Listener {
 
+    private final Stage stage;
 
     private final ControllerListener controllerListener;
-    private final Stage stage;
 
     private final DeckMenuViewController deckMenuViewController;
     private final MainWindowViewController mainWindowViewController;
 
 
     private final DeckManager dm = DeckManager.singleton();
+
+    /* ============================================================================================================== */
+    /*                                                  Constructor                                                   */
+    /* ============================================================================================================== */
 
     public DeckMenuController(Stage stage, ControllerListener controllerListener, MainWindowViewController mainWindowViewController) {
         this.stage = stage;
@@ -35,6 +42,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
         deckMenuViewController.setListener(this);
     }
 
+
+    /* ============================================================================================================== */
+    /*                                            Stage manipulation                                                  */
+    /* ============================================================================================================== */
 
     /**
      * Loads and displays the Deck Menu onto the main scene
@@ -50,6 +61,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
         stage.show();
     }
 
+
+    /* ============================================================================================================== */
+    /*                                              Database Access                                                   */
+    /* ============================================================================================================== */
 
     /**
      *

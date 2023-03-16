@@ -13,12 +13,17 @@ import java.io.IOException;
 public class EditDeckController implements EditDeckViewController.Listener {
 
     private final Stage stage;
-    private final DeckManager dm = DeckManager.singleton();
+
+    private final Deck deck;
 
     private final MainWindowViewController mainWindowViewController;
-    private EditDeckViewController editDeckViewController;
+    private final EditDeckViewController editDeckViewController;
 
-    private Deck deck;
+    private final DeckManager dm = DeckManager.singleton();
+
+    /* ============================================================================================================== */
+    /*                                                  Constructor                                                   */
+    /* ============================================================================================================== */
 
     public EditDeckController(Stage stage, Deck deck, MainWindowViewController mainWindowViewController) {
         this.stage = stage;
@@ -29,6 +34,10 @@ public class EditDeckController implements EditDeckViewController.Listener {
         editDeckViewController.setListener(this);
     }
 
+
+    /* ============================================================================================================== */
+    /*                                            Stage manipulation                                                  */
+    /* ============================================================================================================== */
 
     /**
      * Loads and displays the Deck Menu onto the main scene
