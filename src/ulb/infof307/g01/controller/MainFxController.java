@@ -20,8 +20,7 @@ import java.sql.SQLException;
  * Main class of the application which initializes the main view using the main view handler and loads a menu view.
  */
 public class MainFxController extends Application implements MainWindowViewController.NavigationListener,
-                                                                DeckMenuController.ControllerListener,
-                                                                EditDeckController.ControllerListener {
+                                                                DeckMenuController.ControllerListener {
 
     DeckMenuController deckMenuController;
 
@@ -48,13 +47,13 @@ public class MainFxController extends Application implements MainWindowViewContr
             e.printStackTrace();
 
         } catch (OpenedDatabaseException e) {
-            // handle
+            // display error message
         }
 
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
 
-        deckMenuController = new DeckMenuController(stage, mainWindowViewController, this);
+        deckMenuController = new DeckMenuController(stage, this, mainWindowViewController);
         deckMenuController.show();
     }
 
@@ -67,7 +66,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     @Override
     public void editDeckClicked(Deck deck) {
-        EditDeckController editDeckController = new EditDeckController(stage, deck, mainWindowViewController, this);
+        EditDeckController editDeckController = new EditDeckController(stage, deck, mainWindowViewController);
 
         try {
             editDeckController.show();
@@ -79,7 +78,8 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     @Override
     public void playDeckClicked(Deck deck) {
-        PlayDeckController playDeckController = new PlayDeckController();
+        PlayDeckController playDeckController = new PlayDeckController(stage, deck, mainWindowViewController);
+        playDeckController.show();
     }
 
     @Override

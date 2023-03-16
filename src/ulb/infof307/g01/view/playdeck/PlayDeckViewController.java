@@ -21,99 +21,57 @@ public class PlayDeckViewController {
     public Button good;
     public Button veryGood;
     public Button cardButton;
-
-    @FXML
-    public TextFlow cardText;
-    @FXML
-    public HBox cardRatingBox;
-    public FontIcon previousCardIcon;
-    public FontIcon nextCardIcon;
     public Button nextCardButton;
     public Button previousCardButton;
 
-    private Card card;
+    @FXML
+    public FontIcon previousCardIcon;
+    public FontIcon nextCardIcon;
 
-    private int cardIndex = 0;
+    @FXML
+    public HBox cardRatingBox;
 
-    private Deck deck;
+    private Listener listener;
 
-    private boolean isFront = true;
-    private boolean emptyDeck = false;
-
-    private void flipCard() {
-        if (emptyDeck) return;
-        updateView();
-        isFront = !isFront;
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
 
-    private void updateView() {
-        if (emptyDeck) return;
-        if (isFront) {
-            setText(card.getFront());
-            cardRatingBox.setVisible(false);
-        } else {
-            setText(card.getBack());
-            cardRatingBox.setVisible(true);
-        }
-        previousCardButton.setVisible(cardIndex != 0);
-        nextCardButton.setVisible(cardIndex != deck.getCards().size() - 1);
+    /* ============================================================================================================== */
+    /*                                                  Click handlers                                                */
+    /* ============================================================================================================== */
+
+    public void handlePreviousCardClicked() {
+        listener.previousCardClicked();
     }
 
-    private void hideInteractive() {
-        cardRatingBox.setVisible(false);
-        previousCardButton.setVisible(false);
-        nextCardButton.setVisible(false);
+    public void handleNextCardClicked() {
+        listener.nextCardClicked();
     }
 
-    private void updateCard() {
-        if (this.deck.getCards().size() == 0) {
-            setText("No cards in deck");
-            emptyDeck = true;
-            hideInteractive();
-            return;
-        }
-        this.card = this.deck.getCards().get(cardIndex);
-        updateView();
+    public void onCardClicked() {
+        listener.cardClicked();
     }
 
-    public void setDeck(Deck deck) {
-        this.deck = deck;
-        updateCard();
+    /* ============================================================================================================== */
+    /*                                                  Hover handlers                                                */
+    /* ============================================================================================================== */
+
+    public void handlePreviousButtonEnter() {
     }
 
-    private void setText(String text) {
-        cardButton.setText(text);
+    public void handlePreviousButtonExited() {
     }
 
-    public void onCardClicked(MouseEvent mouseEvent) {
-        flipCard();
+    public void handleNextButtonEnter() {
     }
 
-    public void handlePreviousCardClicked(MouseEvent mouseEvent) {
-        cardIndex--;
-        isFront = true;
-        updateCard();
+    public void handleNextButtonExited() {
     }
 
-    public void handleNextCardClicked(MouseEvent mouseEvent) {
-        cardIndex++;
-        isFront = true;
-        updateCard();
-    }
-
-    public void handlePreviousButtonEnter(MouseEvent mouseEvent) {
-        previousCardIcon.setIconColor(Color.web("#FFFFFF"));
-    }
-
-    public void handlePreviousButtonExited(MouseEvent mouseEvent) {
-        previousCardIcon.setIconColor(Color.web("#000000"));
-    }
-
-    public void handleNextButtonEnter(MouseEvent mouseEvent) {
-        nextCardIcon.setIconColor(Color.web("#FFFFFF"));
-    }
-
-    public void handleNextButtonExited(MouseEvent mouseEvent) {
-        nextCardIcon.setIconColor(Color.web("#000000"));
+    public interface Listener {
+        void cardClicked();
+        void nextCardClicked();
+        void previousCardClicked();
     }
 }
