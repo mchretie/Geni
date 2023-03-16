@@ -6,8 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
@@ -15,13 +13,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import ulb.infof307.g01.database.DeckManager;
+import ulb.infof307.g01.database.DeckDAO;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class EditDeckViewController {
 
@@ -38,7 +34,7 @@ public class EditDeckViewController {
 
     private Card selectedCard;
 
-    private final DeckManager deckManager = DeckManager.singleton();
+    private final DeckDAO deckDAO = DeckDAO.singleton();
 
     public void setDeck(Deck deck) {
         this.deck = deck;
@@ -88,22 +84,22 @@ public class EditDeckViewController {
     public void handleAddCard(ActionEvent actionEvent) {
         selectedCard = new Card("Avant", "Arrière");
         deck.addCard(selectedCard);
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
         loadCards();
     }
 
     public void handleFrontEdit(KeyEvent actionEvent) {
         selectedCard.setFront(frontCardText.getText());
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
     }
 
     public void handleBackEdit(KeyEvent actionEvent) {
         selectedCard.setBack(backCardText.getText());
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
     }
 
     public void handleUpdateDeckName(KeyEvent keyEvent) {
         deck.setName(deckName.getText());
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
     }
 }
