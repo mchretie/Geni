@@ -22,28 +22,26 @@ import java.util.function.Function;
 public class DeckMenuViewController {
 
     @FXML
-    public BorderPane homeViewPane;
-    public ScrollPane scrollPane;
+    private GridPane gridPane;
 
     @FXML
-    public TextField createDeckField;
+    private TextField createDeckField;
 
     @FXML
-    public Button createDeckButton;
-
+    private FontIcon searchIcon;
     @FXML
-    public FontIcon searchIcon;
-    public FontIcon createDeckIcon;
-
-    @FXML
-    public GridPane gridPane;
+    private FontIcon createDeckIcon;
 
     private Listener listener;
+
+
+    /* ============================================================================================================== */
+    /*                                                      Setters                                                   */
+    /* ============================================================================================================== */
 
     public void setListener(Listener listener) {
         this.listener = listener;
     }
-
 
     /* ============================================================================================================== */
     /*                                                  Deck displaying                                               */
@@ -93,7 +91,7 @@ public class DeckMenuViewController {
     /* ============================================================================================================== */
 
     @FXML
-    public void handleCreateDeckClicked() {
+    private void handleCreateDeckClicked() {
         listener.createDeckClicked(createDeckField.getText());
         createDeckField.clear();
     }
@@ -104,20 +102,20 @@ public class DeckMenuViewController {
     /* ============================================================================================================== */
 
     @FXML
-    public void handleSearchHover() {
+    private void handleSearchHover() {
         searchIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    public void handleSearchExit() {
+    private void handleSearchExit() {
         searchIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
-    public void handleCreateDeckHover() { createDeckIcon.setIconColor(Color.web("#FFFFFF")); }
+    private void handleCreateDeckHover() { createDeckIcon.setIconColor(Color.web("#FFFFFF")); }
 
     @FXML
-    public void handleCreateDeckExit() {
+    private void handleCreateDeckExit() {
         createDeckIcon.setIconColor(Color.web("#000000"));
     }
 

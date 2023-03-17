@@ -13,23 +13,6 @@ import ulb.infof307.g01.model.Deck;
 import java.util.List;
 
 public class PlayDeckViewController {
-    @FXML
-    public Button neverSeen;
-    public Button veryBad;
-    public Button bad;
-    public Button average;
-    public Button good;
-    public Button veryGood;
-    public Button cardButton;
-    public Button nextCardButton;
-    public Button previousCardButton;
-
-    @FXML
-    public FontIcon previousCardIcon;
-    public FontIcon nextCardIcon;
-
-    @FXML
-    public HBox cardRatingBox;
 
     private Listener listener;
 
@@ -41,15 +24,18 @@ public class PlayDeckViewController {
     /*                                                  Click handlers                                                */
     /* ============================================================================================================== */
 
-    public void handlePreviousCardClicked() {
+    @FXML
+    private void handlePreviousCardClicked() {
         listener.previousCardClicked();
     }
 
-    public void handleNextCardClicked() {
+    @FXML
+    private void handleNextCardClicked() {
         listener.nextCardClicked();
     }
 
-    public void onCardClicked() {
+    @FXML
+    private void onCardClicked() {
         listener.cardClicked();
     }
 
@@ -57,17 +43,29 @@ public class PlayDeckViewController {
     /*                                                  Hover handlers                                                */
     /* ============================================================================================================== */
 
-    public void handlePreviousButtonEnter() {
+    @FXML
+    private void handlePreviousButtonEnter() {
+
     }
 
-    public void handlePreviousButtonExited() {
+    @FXML
+    private void handlePreviousButtonExited() {
+
     }
 
-    public void handleNextButtonEnter() {
+    @FXML
+    private void handleNextButtonEnter() {
+
     }
 
-    public void handleNextButtonExited() {
+    @FXML
+    private void handleNextButtonExited() {
+
     }
+
+    /* ============================================================================================================== */
+    /*                                              Listener interface                                                */
+    /* ============================================================================================================== */
 
     public interface Listener {
         void cardClicked();

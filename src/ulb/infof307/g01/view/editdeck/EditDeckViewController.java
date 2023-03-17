@@ -9,7 +9,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -23,18 +22,23 @@ import java.util.ResourceBundle;
 public class EditDeckViewController implements Initializable {
 
     @FXML
-    public StackPane frontCard;
-    public StackPane backCard;
-    public AnchorPane anchor;
+    private StackPane frontCard;
+    @FXML
+    private StackPane backCard;
+    @FXML
+    private AnchorPane anchor;
 
     @FXML
-    public TextField frontCardText;
-    public TextField backCardText;
-    public TextField deckNameText;
+    private TextField frontCardText;
+    @FXML
+    private TextField backCardText;
+    @FXML
+    private TextField deckNameText;
 
     @FXML
-    public FontIcon removeCardIcon;
-    public FontIcon addCardIcon;
+    private FontIcon removeCardIcon;
+    @FXML
+    private FontIcon addCardIcon;
 
     @FXML
     private ListView<String> cardsContainer;
@@ -85,7 +89,6 @@ public class EditDeckViewController implements Initializable {
     /* ============================================================================================================== */
 
     public void loadCardsFromDeck() {
-
         ObservableList<String> list = FXCollections.observableArrayList();
         cardsContainer.setItems(list);
 
@@ -119,15 +122,15 @@ public class EditDeckViewController implements Initializable {
     /* ============================================================================================================== */
 
     @FXML
-    public void handleAddCardClicked() {
+    private void handleAddCardClicked() {
         listener.newCard();
     }
 
     @FXML
-    public void handleRemoveCardClicked() { listener.removeCard(selectedCard);}
+    private void handleRemoveCardClicked() { listener.removeCard(selectedCard);}
 
     @FXML
-    public void handleCardPreviewClicked() {
+    private void handleCardPreviewClicked() {
         int cardIndex = cardsContainer.getSelectionModel().getSelectedIndex();
 
         if (cardIndex < 0)
@@ -138,22 +141,22 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
-    public void handleRemoveCardHover() {
+    private void handleRemoveCardHover() {
         removeCardIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    public void handleRemoveCardHoverExit() {
+    private void handleRemoveCardHoverExit() {
         removeCardIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
-    public void handleAddCardHover() {
+    private void handleAddCardHover() {
         addCardIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    public void handleAddHoverExit() {
+    private void handleAddHoverExit() {
         addCardIcon.setIconColor(Color.web("#000000"));
     }
 
@@ -164,27 +167,27 @@ public class EditDeckViewController implements Initializable {
     /* ============================================================================================================== */
 
     @FXML
-    public void handleUpdateDeckName() {
+    private void handleUpdateDeckName() {
         listener.deckNameModified(deckNameText.getText());
     }
 
     @FXML
-    public void handleTagAdded() {
+    private void handleTagAdded() {
         listener.tagAddedToDeck(deck, "Tag");
     }
 
     @FXML
-    public void handleFrontEdit() {
+    private void handleFrontEdit() {
         listener.frontOfCardModified(selectedCard, frontCardText.getText());
     }
 
     @FXML
-    public void handleBackEdit() {
+    private void handleBackEdit() {
         listener.backOfCardModified(selectedCard, backCardText.getText());
     }
 
     @FXML
-    public void handleTextFieldKeyPressed(KeyEvent keyEvent) {
+    private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
 
