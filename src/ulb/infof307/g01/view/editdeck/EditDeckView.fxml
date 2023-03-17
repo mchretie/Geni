@@ -3,13 +3,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.editdeck.EditDeckViewController">
 
     <!-- Deck name -->
-    <TextField fx:id="deckName" alignment="CENTER" onKeyReleased="#handleUpdateDeckName" style="-fx-background-color: #00000000;" text="Deck Name">
+    <TextField fx:id="deckNameText" alignment="CENTER" onKeyReleased="#handleUpdateDeckName" style="-fx-background-color: #00000000;" text="Deck Name">
         <font>
             <Font name="System Italic" size="28.0" />
         </font>
@@ -47,7 +48,7 @@
                 prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
 
             <graphic>
-                <FontIcon fx:id="AddCardIcon" iconLiteral="mdi2c-card-plus-outline" iconSize="25" />
+                <FontIcon fx:id="addCardIcon" iconLiteral="mdi2c-card-plus-outline" iconSize="25" />
             </graphic>
         </Button>
 
@@ -55,15 +56,17 @@
                 prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
 
             <graphic>
-                <FontIcon fx:id="RemoveCardIcon" iconLiteral="mdi2t-trash-can-outline" iconSize="25" />
+                <FontIcon fx:id="removeCardIcon" iconLiteral="mdi2t-trash-can-outline" iconSize="25" />
             </graphic>
         </Button>
     </HBox>
 
     <!-- Card -->
-    <StackPane fx:id="frontCard" layoutX="400.0" layoutY="77.0" visible="false">
+    <StackPane fx:id="frontCard" layoutX="400.0" layoutY="77.0">
 
-        <TextField fx:id="frontCardText" alignment="CENTER" onKeyPressed="#handleFrontEdit" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+        <TextField fx:id="frontCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed"
+                   prefHeight="205.0" prefWidth="425.0"
+                   style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px;">
 
             <font>
                 <Font size="24.0" />
@@ -71,9 +74,9 @@
         </TextField>
     </StackPane>
 
-    <StackPane fx:id="backCard" layoutX="400.0" layoutY="310.0" visible="false">
+    <StackPane fx:id="backCard" layoutX="400.0" layoutY="310.0">
 
-        <TextField fx:id="backCardText" alignment="CENTER" onKeyReleased="#handleBackEdit" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+        <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px;">
 
             <font>
                 <Font size="24.0" />
@@ -82,5 +85,6 @@
     </StackPane>
 
     <HBox layoutY="545.0" prefHeight="55.0" prefWidth="850.0" />
+   <HBox layoutX="15.0" layoutY="460.0" prefHeight="55.0" prefWidth="200.0" />
 
 </AnchorPane>
