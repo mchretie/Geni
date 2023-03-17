@@ -8,6 +8,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
@@ -77,6 +78,8 @@ public class EditDeckViewController {
         listener.newCard();
     }
 
+    public void handleRemoveCardClicked() { listener.removeCard(selectedCard);}
+
     @FXML
     public void handleCardPreviewClicked() {
         int cardIndex = cardsContainer.getSelectionModel().getSelectedIndex();
@@ -130,6 +133,8 @@ public class EditDeckViewController {
         void frontOfCardModified(Card card, String newFront);
         void backOfCardModified(Card card, String newBack);
         void newCard();
+        void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card);
+
     }
 }
