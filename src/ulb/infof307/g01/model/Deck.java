@@ -5,9 +5,9 @@ import java.util.*;
 
 public class Deck implements Iterable<Card> {
     private String name;
-    private UUID id;
-    private List<Card> cards;
-    private List<Tag> tags;
+    private final UUID id;
+    private final List<Card> cards;
+    private final List<Tag> tags;
 
     public Deck(String name) {
         this.name = name;
@@ -48,7 +48,7 @@ public class Deck implements Iterable<Card> {
     }
 
     public void addCards(List<Card> cards) {
-        cards.forEach((c) -> addCard(c));
+        cards.forEach(this::addCard);
     }
 
     public void removeTag(Tag tag) { tags.remove(tag); }
