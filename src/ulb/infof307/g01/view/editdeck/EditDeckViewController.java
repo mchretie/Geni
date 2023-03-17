@@ -9,8 +9,11 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 
@@ -28,6 +31,10 @@ public class EditDeckViewController implements Initializable {
     public TextField frontCardText;
     public TextField backCardText;
     public TextField deckNameText;
+
+    @FXML
+    public FontIcon removeCardIcon;
+    public FontIcon addCardIcon;
 
     @FXML
     private ListView<String> cardsContainer;
@@ -101,6 +108,11 @@ public class EditDeckViewController implements Initializable {
         loadCardEditor(selectedCard);
     }
 
+    public void hideSelectedCardEditor() {
+        frontCard.setVisible(false);
+        backCard.setVisible(false);
+    }
+
 
     /* ============================================================================================================== */
     /*                                                  Mouse clicked                                                 */
@@ -124,6 +136,27 @@ public class EditDeckViewController implements Initializable {
         selectedCard = deck.getCards().get(cardIndex);
         listener.cardPreviewClicked(selectedCard);
     }
+
+    @FXML
+    public void handleRemoveCardHover() {
+        removeCardIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    public void handleRemoveCardHoverExit() {
+        removeCardIcon.setIconColor(Color.web("#000000"));
+    }
+
+    @FXML
+    public void handleAddCardHover() {
+        addCardIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    public void handleAddHoverExit() {
+        addCardIcon.setIconColor(Color.web("#000000"));
+    }
+
 
 
     /* ============================================================================================================== */
@@ -156,11 +189,6 @@ public class EditDeckViewController implements Initializable {
             return;
 
         anchor.requestFocus();
-    }
-
-    public void hideSelectedCardEditor() {
-        frontCard.setVisible(false);
-        backCard.setVisible(false);
     }
 
 
