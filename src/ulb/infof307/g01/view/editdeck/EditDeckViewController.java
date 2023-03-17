@@ -2,33 +2,27 @@ package ulb.infof307.g01.view.editdeck;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class EditDeckViewController implements Initializable {
+public class EditDeckViewController {
 
     @FXML
     public StackPane frontCard;
     public StackPane backCard;
-    public AnchorPane anchor;
 
     @FXML
     public TextField frontCardText;
     public TextField backCardText;
-    public TextField deckNameText;
+    public TextField deckName;
 
     @FXML
     private ListView<String> cardsContainer;
@@ -38,41 +32,17 @@ public class EditDeckViewController implements Initializable {
 
     private Listener listener;
 
-    /* ============================================================================================================== */
-    /*                                                   Initializer                                                  */
-    /* ============================================================================================================== */
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        frontCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) handleFrontEdit();
-        });
-
-        backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) handleBackEdit();
-        });
-
-        deckNameText.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) handleUpdateDeckName();
-        });
-    }
-
-
-    /* ============================================================================================================== */
-    /*                                                  Setters                                                       */
-    /* ============================================================================================================== */
-
     public void setDeck(Deck deck) {
         this.deck = deck;
-        deckNameText.setText(deck.getName());
     }
 
     public void setListener(Listener listener) {
         this.listener = listener;
     }
 
-    public void setSelectedCard(Card selectedCard) { this.selectedCard = selectedCard; }
-
+    public void setSelectedCard(Card selectedCard) {
+        this.selectedCard = selectedCard;
+    }
 
     /* ============================================================================================================== */
     /*                                               Card and deck loading                                            */
@@ -91,15 +61,11 @@ public class EditDeckViewController implements Initializable {
         cardsContainer.refresh();
     }
 
-    private void loadCardEditor(Card card) {
+    public void loadCardEditor(Card card) {
         frontCardText.setText(card.getFront());
         backCardText.setText(card.getBack());
         frontCard.setVisible(true);
         backCard.setVisible(true);
-    }
-
-    public void loadSelectedCardEditor() {
-        loadCardEditor(selectedCard);
     }
 
 
@@ -111,6 +77,8 @@ public class EditDeckViewController implements Initializable {
     public void handleAddCardClicked() {
         listener.newCard();
     }
+
+    public void handleRemoveCardClicked() { listener.removeCard(selectedCard);}
 
     @FXML
     public void handleCardPreviewClicked() {
@@ -129,30 +97,29 @@ public class EditDeckViewController implements Initializable {
     /* ============================================================================================================== */
 
     @FXML
-    public void handleUpdateDeckName() {
-        listener.deckNameModified(deckNameText.getText());
+    public void handleUpdateDeckName(KeyEvent keyEvent) {
+        listener.deckNameModified(keyEvent.getText());
     }
 
     @FXML
-    public void handleTagAdded() {
-        listener.tagAddedToDeck(deck, "Tag");
+    public void handleTagAdded(KeyEvent keyEvent) {
+        listener.tagAddedToDeck(deck, keyEvent.getText());
     }
 
     @FXML
-    public void handleFrontEdit() {
+    public void handleFrontEdit(KeyEvent keyEvent) {
+        if (!keyEvent.getCode().equals(KeyCode.ENTER))
+            return;
+
         listener.frontOfCardModified(selectedCard, frontCardText.getText());
     }
 
     @FXML
-    public void handleBackEdit() {
-        listener.backOfCardModified(selectedCard, backCardText.getText());
-    }
-
-    public void handleTextFieldKeyPressed(KeyEvent keyEvent) {
+    public void handleBackEdit(KeyEvent keyEvent) {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
 
-        anchor.requestFocus();
+        listener.backOfCardModified(selectedCard, backCardText.getText());
     }
 
 
@@ -166,6 +133,8 @@ public class EditDeckViewController implements Initializable {
         void frontOfCardModified(Card card, String newFront);
         void backOfCardModified(Card card, String newBack);
         void newCard();
+        void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card);
+
     }
 }
