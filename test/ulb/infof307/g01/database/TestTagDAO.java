@@ -2,6 +2,7 @@ package ulb.infof307.g01.database;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ulb.infof307.g01.database.exceptions.DatabaseException;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 
@@ -13,14 +14,14 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestTagManager extends DatabaseUsingTest {
+public class TestTagDAO extends DatabaseUsingTest {
 
-    TagManager tagManager = TagManager.singleton();
-    DeckManager deckManager = DeckManager.singleton();
+    TagDAO tagDAO = TagDAO.singleton();
+    DeckDAO deckDAO = DeckDAO.singleton();
 
     @Override
     @BeforeEach
-    void init() throws SQLException, OpenedDatabaseException {
+    void init() throws SQLException, DatabaseException {
         super.init();
         db.initTables(DatabaseScheme.CLIENT);
     }
@@ -28,38 +29,38 @@ public class TestTagManager extends DatabaseUsingTest {
     @Test
     void getTag_TagNotExists_ReturnsNull() {
         Tag tag = new Tag("name");
-        assertEquals(null, tagManager.getTag(tag.getId()));
+        assertEquals(null, tagDAO.getTag(tag.getId()));
     }
 
     @Test
     void tagNameExists_NameNotExists_ReturnsFalse() {
-        assertFalse(tagManager.tagNameExists("name"));
+        assertFalse(tagDAO.tagNameExists("name"));
     }
 
     @Test
     void tagNameExists_NameExists_ReturnsTrue() {
         Tag tag = new Tag("name");
-        tagManager.saveTag(tag);
+        tagDAO.saveTag(tag);
 
-        assertTrue(tagManager.tagNameExists("name"));
+        assertTrue(tagDAO.tagNameExists("name"));
     }
 
     @Test
     void isTagValid_TagInvalid_ReturnsFalse() {
         Tag tag1 = new Tag("name");
         Tag tag2 = new Tag("name");
-        tagManager.saveTag(tag1);
+        tagDAO.saveTag(tag1);
 
-        assertFalse(tagManager.isTagValid(tag2));
+        assertFalse(tagDAO.isTagValid(tag2));
     }
 
     @Test
     void isTagValid_TagValid_ReturnsTrue() {
         Tag tag = new Tag("name");
-        assertTrue(tagManager.isTagValid(tag));
+        assertTrue(tagDAO.isTagValid(tag));
 
-        tagManager.saveTag(tag);
-        assertTrue(tagManager.isTagValid(tag));
+        tagDAO.saveTag(tag);
+        assertTrue(tagDAO.isTagValid(tag));
     }
 
     @Test
@@ -67,23 +68,23 @@ public class TestTagManager extends DatabaseUsingTest {
         Tag tag1 = new Tag("name");
         Tag tag2 = new Tag("name");
 
-        tagManager.saveTag(tag1);
-        tagManager.saveTag(tag2);
+        tagDAO.saveTag(tag1);
+        tagDAO.saveTag(tag2);
 
-        assertEquals(Set.of(tag1), new HashSet(tagManager.getAllTags()));
+        assertEquals(Set.of(tag1), new HashSet(tagDAO.getAllTags()));
     }
 
     @Test
     void saveTag_TagNotExists_TagExists() {
         Tag tag = new Tag("name");
-        tagManager.saveTag(tag);
+        tagDAO.saveTag(tag);
 
-        assertEquals(tag, tagManager.getTag(tag.getId()));
+        assertEquals(tag, tagDAO.getTag(tag.getId()));
     }
 
     @Test
     void getAllTags_NoTags_EmptyList() {
-        assertTrue(tagManager.getAllTags().isEmpty());
+        assertTrue(tagDAO.getAllTags().isEmpty());
     }
 
     @Test
@@ -93,19 +94,19 @@ public class TestTagManager extends DatabaseUsingTest {
         tags.add(new Tag("name2"));
         tags.add(new Tag("name3"));
 
-        tags.forEach((d) -> tagManager.saveTag(d));
+        tags.forEach((d) -> tagDAO.saveTag(d));
 
-        assertEquals(new HashSet(tags), new HashSet(tagManager.getAllTags()));
+        assertEquals(new HashSet(tags), new HashSet(tagDAO.getAllTags()));
     }
 
     @Test
     void getAllTags_SameTagAddedMultipleTimes_OneReturned() {
         Tag tag = new Tag("name");
-        tagManager.saveTag(tag);
-        tagManager.saveTag(tag);
-        tagManager.saveTag(tag);
+        tagDAO.saveTag(tag);
+        tagDAO.saveTag(tag);
+        tagDAO.saveTag(tag);
 
-        assertEquals(Set.of(tag), new HashSet(tagManager.getAllTags()));
+        assertEquals(Set.of(tag), new HashSet(tagDAO.getAllTags()));
     }
 
     @Test
@@ -113,10 +114,10 @@ public class TestTagManager extends DatabaseUsingTest {
         Deck deck = new Deck("name");
         Tag tag = new Tag("name");
         deck.addTag(tag);
-        tagManager.saveTagsFor(deck);
+        tagDAO.saveTagsFor(deck);
 
         assertEquals(new HashSet(deck.getTags()),
-                new HashSet(tagManager.getTagsFor(deck.getId())));
+                new HashSet(tagDAO.getTagsFor(deck.getId())));
     }
 
     @Test
@@ -124,32 +125,32 @@ public class TestTagManager extends DatabaseUsingTest {
         Deck deck = new Deck("name");
         Tag tag = new Tag("name");
         deck.addTag(tag);
-        tagManager.saveTagsFor(deck);
+        tagDAO.saveTagsFor(deck);
         deck.removeTag(tag);
-        tagManager.saveTagsFor(deck);
+        tagDAO.saveTagsFor(deck);
 
         assertEquals(new HashSet(deck.getTags()),
-                new HashSet(tagManager.getTagsFor(deck.getId())));
+                new HashSet(tagDAO.getTagsFor(deck.getId())));
     }
 
     @Test
     void getTagsFor_NoTags_EmptyList() {
         Deck deck = new Deck("name");
-        deckManager.saveDeck(deck);
-        tagManager.saveTagsFor(deck);
-        assertTrue(tagManager.getTagsFor(deck.getId()).isEmpty());
+        deckDAO.saveDeck(deck);
+        tagDAO.saveTagsFor(deck);
+        assertTrue(tagDAO.getTagsFor(deck.getId()).isEmpty());
     }
 
     @Test
     void getTagsFor_DeckNotExist_EmptyList() {
         Deck deck = new Deck("name");
-        assertTrue(tagManager.getTagsFor(deck.getId()).isEmpty());
+        assertTrue(tagDAO.getTagsFor(deck.getId()).isEmpty());
     }
 
     @Test
     void getDecksHavingTag_NoDecks_EmptyList() {
         Tag tag = new Tag("name");
-        assertTrue(tagManager.getDecksHavingTag(tag).isEmpty());
+        assertTrue(tagDAO.getDecksHavingTag(tag).isEmpty());
     }
 
     @Test
@@ -158,20 +159,20 @@ public class TestTagManager extends DatabaseUsingTest {
         Deck deck2 = new Deck("name2");
         Deck deck3 = new Deck("name3");
 
-        deckManager.saveDeck(deck1);
-        deckManager.saveDeck(deck2);
-        deckManager.saveDeck(deck3);
+        deckDAO.saveDeck(deck1);
+        deckDAO.saveDeck(deck2);
+        deckDAO.saveDeck(deck3);
 
         Tag tag = new Tag("name");
         deck1.addTag(tag);
         deck2.addTag(tag);
 
-        tagManager.saveTagsFor(deck1);
-        tagManager.saveTagsFor(deck2);
-        tagManager.saveTagsFor(deck3);
+        tagDAO.saveTagsFor(deck1);
+        tagDAO.saveTagsFor(deck2);
+        tagDAO.saveTagsFor(deck3);
 
         var expectedSet = Set.of(deck1, deck2);
-        var receivedSet = new HashSet<Deck>(tagManager.getDecksHavingTag(tag));
+        var receivedSet = new HashSet<Deck>(tagDAO.getDecksHavingTag(tag));
 
         assertEquals(expectedSet, receivedSet);
     }
@@ -179,15 +180,15 @@ public class TestTagManager extends DatabaseUsingTest {
     @Test
     void deleteTag_TagExists_TagNotExists() {
         Tag tag = new Tag("name");
-        tagManager.saveTag(tag);
-        tagManager.deleteTag(tag);
+        tagDAO.saveTag(tag);
+        tagDAO.deleteTag(tag);
 
-        assertEquals(null, tagManager.getTag(tag.getId()));
+        assertEquals(null, tagDAO.getTag(tag.getId()));
     }
 
     @Test
     void deleteTag_TagNotExists_NoThrow() {
         Tag tag = new Tag("name");
-        assertDoesNotThrow(() -> tagManager.deleteTag(tag));
+        assertDoesNotThrow(() -> tagDAO.deleteTag(tag));
     }
 }
