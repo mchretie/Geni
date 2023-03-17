@@ -5,9 +5,9 @@ import java.util.Objects;
 
 public class Tag {
     private String name;
-    private UUID id;
+    private final UUID id;
 
-    private String color;
+    private final String color;
 
     public Tag(String name) {
         this.name = name;
