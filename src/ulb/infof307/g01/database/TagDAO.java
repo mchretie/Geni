@@ -17,22 +17,22 @@ import java.util.*;
  * <p>
  * To add tags to decks, see DeckManager.
  *
- * @see ulb.infof307.g01.database.DeckManager
+ * @see ulb.infof307.g01.database.DeckDAO
  */
-public class TagManager {
+public class TagDAO {
 
     // Singleton
-    private static TagManager instance;
+    private static TagDAO instance;
 
     private final static Database database = Database.singleton();
-    private final static DeckManager deckManager = DeckManager.singleton();
+    private final static DeckDAO deckDao = DeckDAO.singleton();
 
-    protected TagManager() {
+    protected TagDAO() {
     }
 
-    public static TagManager singleton() {
+    public static TagDAO singleton() {
         if (instance == null)
-            instance = new TagManager();
+            instance = new TagDAO();
         return instance;
     }
 
@@ -46,7 +46,7 @@ public class TagManager {
      * This can be avoided by checking for uniqueness
      * beforehand.
      *
-     * @see ulb.infof307.g01.database.TagManager.tagNameExists
+     * @see ulb.infof307.g01.database.TagDAO#tagNameExists
      */
     public boolean isTagValid(Tag tag) {
         String sql = """
@@ -168,7 +168,7 @@ public class TagManager {
      * use the facilities from DeckManager such
      * as saveDeck.
      *
-     * @see ulb.infof307.g01.database.DeckManager
+     * @see ulb.infof307.g01.database.DeckDAO
      */
     public void saveTagsFor(Deck deck) {
         deck.getTags().forEach((t) -> saveTag(t));
@@ -251,7 +251,7 @@ public class TagManager {
             ResultSet res = database.executeQuery(sql);
             while (res.next()) {
                 UUID deckId = UUID.fromString(res.getString("deck_id"));
-                decks.add(deckManager.getDeck(deckId));
+                decks.add(deckDao.getDeck(deckId));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

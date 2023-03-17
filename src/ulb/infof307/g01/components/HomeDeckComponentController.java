@@ -10,7 +10,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.database.DeckManager;
+import ulb.infof307.g01.database.DeckDAO;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.view.HomeViewController;
@@ -44,7 +44,7 @@ public class HomeDeckComponentController {
     public StackPane optionsPanel;
 
     private Deck deck;
-    private final DeckManager dm = DeckManager.singleton();
+    private final DeckDAO dm = DeckDAO.singleton();
 
     public void setDeck(Deck deck) {
         this.deck = deck;

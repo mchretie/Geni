@@ -2,6 +2,7 @@ package ulb.infof307.g01.database;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ulb.infof307.g01.database.exceptions.DatabaseException;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
@@ -14,51 +15,51 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestDeckManager extends DatabaseUsingTest {
+public class TestDeckDAO extends DatabaseUsingTest {
 
-    DeckManager deckManager = DeckManager.singleton();
+    DeckDAO deckDAO = DeckDAO.singleton();
 
     @Override
     @BeforeEach
-    void init() throws SQLException, OpenedDatabaseException {
+    void init() throws SQLException, DatabaseException {
         super.init();
         db.initTables(DatabaseScheme.CLIENT);
     }
 
     @Test
     void getDeck_DeckNotExists_ThrowsException() {
-        assertEquals(null, deckManager.getDeck(new Deck("name").getId()));
+        assertEquals(null, deckDAO.getDeck(new Deck("name").getId()));
     }
 
     @Test
     void deckNameExists_NameNotExists_ReturnsFalse() {
-        assertFalse(deckManager.deckNameExists("name"));
+        assertFalse(deckDAO.deckNameExists("name"));
     }
 
     @Test
     void deckNameExists_NameExists_ReturnsTrue() {
         Deck deck = new Deck("name");
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
 
-        assertTrue(deckManager.deckNameExists("name"));
+        assertTrue(deckDAO.deckNameExists("name"));
     }
 
     @Test
     void isDeckValid_DeckInvalid_ReturnsFalse() {
         Deck deck1 = new Deck("name");
         Deck deck2 = new Deck("name");
-        deckManager.saveDeck(deck1);
+        deckDAO.saveDeck(deck1);
 
-        assertFalse(deckManager.isDeckValid(deck2));
+        assertFalse(deckDAO.isDeckValid(deck2));
     }
 
     @Test
     void isDeckValid_DeckValid_ReturnsTrue() {
         Deck deck = new Deck("name");
-        assertTrue(deckManager.isDeckValid(deck));
+        assertTrue(deckDAO.isDeckValid(deck));
 
-        deckManager.saveDeck(deck);
-        assertTrue(deckManager.isDeckValid(deck));
+        deckDAO.saveDeck(deck);
+        assertTrue(deckDAO.isDeckValid(deck));
     }
 
     @Test
@@ -66,39 +67,39 @@ public class TestDeckManager extends DatabaseUsingTest {
         Deck deck1 = new Deck("name");
         Deck deck2 = new Deck("name");
 
-        deckManager.saveDeck(deck1);
-        deckManager.saveDeck(deck2);
+        deckDAO.saveDeck(deck1);
+        deckDAO.saveDeck(deck2);
 
-        assertEquals(Set.of(deck1), new HashSet(deckManager.getAllDecks()));
+        assertEquals(Set.of(deck1), new HashSet(deckDAO.getAllDecks()));
     }
 
     @Test
     void saveDeck_DeckNotExists_CreatesDeck() {
         Deck deck = new Deck("name");
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
 
-        assertEquals(deck, deckManager.getDeck(deck.getId()));
+        assertEquals(deck, deckDAO.getDeck(deck.getId()));
     }
 
     @Test
     void saveDeck_DeckNameChanged_RenameDeck() {
         Deck deck = new Deck("name");
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
 
         deck.setName("name_01");
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
 
-        assertEquals(deck, deckManager.getDeck(deck.getId()));
+        assertEquals(deck, deckDAO.getDeck(deck.getId()));
     }
 
     @Test
     void saveDeck_DeckNameNotUpdated_DeckNotUpdated() {
         Deck deck = new Deck("name");
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
 
         deck.setName("name_01");
 
-        assertNotEquals(deck, deckManager.getDeck(deck.getId()));
+        assertNotEquals(deck, deckDAO.getDeck(deck.getId()));
     }
 
     @Test
@@ -107,9 +108,9 @@ public class TestDeckManager extends DatabaseUsingTest {
         Card card = new Card("front", "back");
 
         deck.addCard(card);
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
 
-        assertEquals(deck, deckManager.getDeck(deck.getId()));
+        assertEquals(deck, deckDAO.getDeck(deck.getId()));
     }
 
     @Test
@@ -118,11 +119,11 @@ public class TestDeckManager extends DatabaseUsingTest {
         Card card = new Card("front", "back");
 
         deck.addCard(card);
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
         deck.removeCard(card);
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
 
-        assertEquals(deck, deckManager.getDeck(deck.getId()));
+        assertEquals(deck, deckDAO.getDeck(deck.getId()));
     }
 
     @Test
@@ -131,9 +132,9 @@ public class TestDeckManager extends DatabaseUsingTest {
         Tag tag = new Tag("name");
 
         deck.addTag(tag);
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
 
-        assertEquals(deck, deckManager.getDeck(deck.getId()));
+        assertEquals(deck, deckDAO.getDeck(deck.getId()));
     }
 
     @Test
@@ -142,16 +143,16 @@ public class TestDeckManager extends DatabaseUsingTest {
         Tag tag = new Tag("name");
 
         deck.addTag(tag);
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
         deck.removeTag(tag);
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
 
-        assertEquals(deck, deckManager.getDeck(deck.getId()));
+        assertEquals(deck, deckDAO.getDeck(deck.getId()));
     }
 
     @Test
     void getAllDecks_NoDecks_EmptyList() {
-        assertTrue(deckManager.getAllDecks().isEmpty());
+        assertTrue(deckDAO.getAllDecks().isEmpty());
     }
 
     @Test
@@ -161,33 +162,33 @@ public class TestDeckManager extends DatabaseUsingTest {
         decks.add(new Deck("name2"));
         decks.add(new Deck("name3"));
 
-        decks.forEach((d) -> deckManager.saveDeck(d));
+        decks.forEach((d) -> deckDAO.saveDeck(d));
 
-        assertEquals(new HashSet(decks), new HashSet(deckManager.getAllDecks()));
+        assertEquals(new HashSet(decks), new HashSet(deckDAO.getAllDecks()));
     }
 
     @Test
     void getAllDecks_SameDeckAddedMultipleTimes_OneReturned() {
         Deck deck = new Deck("name");
-        deckManager.saveDeck(deck);
-        deckManager.saveDeck(deck);
-        deckManager.saveDeck(deck);
+        deckDAO.saveDeck(deck);
+        deckDAO.saveDeck(deck);
+        deckDAO.saveDeck(deck);
 
-        assertEquals(Set.of(deck), new HashSet(deckManager.getAllDecks()));
+        assertEquals(Set.of(deck), new HashSet(deckDAO.getAllDecks()));
     }
 
     @Test
     void deleteDeck_DeckExists_DeckNotExists() {
         Deck deck = new Deck("name");
-        deckManager.saveDeck(deck);
-        deckManager.deleteDeck(deck);
+        deckDAO.saveDeck(deck);
+        deckDAO.deleteDeck(deck);
 
-        assertEquals(null, deckManager.getDeck(deck.getId()));
+        assertEquals(null, deckDAO.getDeck(deck.getId()));
     }
 
     @Test
     void deleteDeck_DeckNotExists_NoThrow() {
         Deck deck = new Deck("name");
-        assertDoesNotThrow(() -> deckManager.deleteDeck(deck));
+        assertDoesNotThrow(() -> deckDAO.deleteDeck(deck));
     }
 }

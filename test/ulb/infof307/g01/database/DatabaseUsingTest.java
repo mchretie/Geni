@@ -2,6 +2,7 @@ package ulb.infof307.g01.database;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import ulb.infof307.g01.database.exceptions.DatabaseException;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -11,7 +12,7 @@ public class DatabaseUsingTest {
     protected File dbfile = new File("test.db");
 
     @BeforeEach
-    void init() throws OpenedDatabaseException, SQLException {
+    void init() throws DatabaseException, SQLException {
         if (dbfile.exists()) {
             dbfile.delete();
         }

@@ -16,20 +16,20 @@ import java.util.*;
  * on it before commiting them to long-term
  * with saveDeck or deleteDeck.
  */
-public class DeckManager {
+public class DeckDAO {
 
     // Singleton
-    private static DeckManager instance;
+    private static DeckDAO instance;
 
     private final static Database database = Database.singleton();
-    private final static TagManager tagManager = TagManager.singleton();
+    private final static TagDAO tagDao = TagDAO.singleton();
 
-    protected DeckManager() {
+    protected DeckDAO() {
     }
 
-    public static DeckManager singleton() {
+    public static DeckDAO singleton() {
         if (instance == null)
-            instance = new DeckManager();
+            instance = new DeckDAO();
         return instance;
     }
 
@@ -43,7 +43,7 @@ public class DeckManager {
      * This can be avoided by checking for uniqueness
      * beforehand.
      *
-     * @see ulb.infof307.g01.database.DeckManager.deckNameExists
+     * @see ulb.infof307.g01.database.DeckDAO#deckNameExists
      */
     public boolean isDeckValid(Deck deck) {
         String sql = """
@@ -78,7 +78,7 @@ public class DeckManager {
      * Write to longterm memory the contents of a deck
      * <p>
      * If the given deck is not valid, it will be ignored.
-     * @see ulb.infof307.g01.database.DeckManager.isDeckValid
+     * @see ulb.infof307.g01.database.DeckDAO#isDeckValid
      */
     public void saveDeck(Deck deck) {
         if (!isDeckValid(deck))
@@ -111,7 +111,7 @@ public class DeckManager {
     }
 
     private void saveDeckTags(Deck deck) {
-        tagManager.saveTagsFor(deck);
+        tagDao.saveTagsFor(deck);
     }
 
     /**
@@ -179,7 +179,7 @@ public class DeckManager {
             if (res.next()) {
                 String name = res.getString("name");
                 List<Card> cards = getCardsFor(uuid);
-                List<Tag> tags = tagManager.getTagsFor(uuid);
+                List<Tag> tags = tagDao.getTagsFor(uuid);
                 deck = new Deck(name, uuid, cards, tags);
             }
         } catch (SQLException e) {

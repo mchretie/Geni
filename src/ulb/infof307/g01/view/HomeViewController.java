@@ -10,12 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.components.HomeDeckComponentController;
-import ulb.infof307.g01.database.DeckManager;
+import ulb.infof307.g01.database.DeckDAO;
 import ulb.infof307.g01.model.Deck;
 
 import java.net.URL;
@@ -38,7 +36,7 @@ public class HomeViewController implements Initializable {
     @FXML
     private FontIcon createDeckIcon;
 
-    private final DeckManager dm = DeckManager.singleton();
+    private final DeckDAO dm = DeckDAO.singleton();
 
     @FXML
     public void handleSearchHover() {
