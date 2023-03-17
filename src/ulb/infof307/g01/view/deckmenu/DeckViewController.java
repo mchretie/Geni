@@ -55,7 +55,7 @@ public class DeckViewController {
     private void updateDeckButtonName() {
         this.deckButton.setText(this.deck.getName());
     }
-    
+
 
     /* ============================================================================================================== */
     /*                                                  Click handlers                                                */

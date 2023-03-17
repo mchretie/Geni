@@ -2,25 +2,15 @@ package ulb.infof307.g01.view.editdeck;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
-
-import java.io.IOException;
-import java.util.List;
 
 public class EditDeckViewController {
 
@@ -90,6 +80,10 @@ public class EditDeckViewController {
     @FXML
     public void handleCardPreviewClicked() {
         int cardIndex = cardsContainer.getSelectionModel().getSelectedIndex();
+
+        if (cardIndex < 0)
+            return;
+
         selectedCard = deck.getCards().get(cardIndex);
         listener.cardPreviewClicked(selectedCard);
     }
