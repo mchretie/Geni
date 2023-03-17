@@ -49,6 +49,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
         mainWindowViewController.setEditDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
+        editDeckViewController.loadCardsFromDeck();
         stage.show();
     }
 
