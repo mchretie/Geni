@@ -18,42 +18,45 @@ import ulb.infof307.g01.view.playdeck.PlayDeckViewController;
 public class MainWindowViewController {
 
     @FXML
-    public Button homeButton;
-    public Button currentDeckButton;
-    public Button aboutButton;
-    public Button goBack;
-    public Button userProfile;
+    private FontIcon homeIcon;
+    @FXML
+    private FontIcon currentDeckIcon;
+    @FXML
+    private FontIcon aboutIcon;
+    @FXML
+    private FontIcon goBackIcon;
+    @FXML
+    private FontIcon userProfileIcon;
 
     @FXML
-    public FontIcon homeIcon;
-    public FontIcon currentDeckIcon;
-    public FontIcon aboutIcon;
-    public FontIcon goBackIcon;
-    public FontIcon userProfileIcon;
+    private StackPane centerStackPane;
+    @FXML
+    private BorderPane deckMenuView;
+    @FXML
+    private AnchorPane editDeckView;
+    @FXML
+    private BorderPane playDeckView;
 
     @FXML
-    public Label topBarText;
-
+    private DeckMenuViewController deckMenuViewController;
     @FXML
-    public StackPane centerStackPane;
-    public BorderPane deckMenuView;
-    public AnchorPane editDeckView;
-    public BorderPane playDeckView;
-
+    private EditDeckViewController editDeckViewController;
     @FXML
-    public DeckMenuViewController deckMenuViewController;
-    public EditDeckViewController editDeckViewController;
-    public PlayDeckViewController playDeckViewController;
+    private PlayDeckViewController playDeckViewController;
 
     private NavigationListener listener;
+
+
+    /* ============================================================================================================== */
+    /*                                                     Setter                                                     */
+    /* ============================================================================================================== */
 
     public void setListener(NavigationListener listener) {
         this.listener = listener;
     }
 
-
     /* ============================================================================================================== */
-    /*                                         Child view controllers getters                                          */
+    /*                                         Child view controllers getters                                         */
     /* ============================================================================================================== */
 
     public DeckMenuViewController getDeckMenuViewController() {
@@ -95,12 +98,10 @@ public class MainWindowViewController {
     /*                                                  Icon Visibility                                               */
     /* ============================================================================================================== */
 
-    @FXML
     public void makeGoBackIconVisible() {
         goBackIcon.setVisible(true);
     }
 
-    @FXML
     public void makeGoBackIconInvisible() {
         goBackIcon.setVisible(false);
     }
@@ -111,22 +112,22 @@ public class MainWindowViewController {
     /* ============================================================================================================== */
 
     @FXML
-    public void handleGoBackClicked() {
+    private void handleGoBackClicked() {
         listener.goBackClicked();
     }
 
     @FXML
-    public void goToHomeClicked() {
+    private void goToHomeClicked() {
         listener.goToHomeClicked();
     }
 
     @FXML
-    public void goToCurrentDeckClicked() {
+    private void goToCurrentDeckClicked() {
         listener.goToCurrentDeckClicked();
     }
 
     @FXML
-    public void goToAboutClicked() {
+    private void goToAboutClicked() {
         listener.goToAboutClicked();
     }
 
@@ -136,52 +137,52 @@ public class MainWindowViewController {
     /* ============================================================================================================== */
 
     @FXML
-    public void handleHomeHover() {
+    private void handleHomeHover() {
         homeIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    public void handleHomeExitHover() {
+    private void handleHomeExitHover() {
         homeIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
-    public void handleCurrentDeckHover() {
+    private void handleCurrentDeckHover() {
         currentDeckIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    public void handleCurrentDeckExitHover() {
+    private void handleCurrentDeckExitHover() {
         currentDeckIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
-    public void handleAboutHover() {
+    private void handleAboutHover() {
         aboutIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    public void handleAboutExitHover() {
+    private void handleAboutExitHover() {
         aboutIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
-    public void handleGoBackHover() {
+    private void handleGoBackHover() {
         goBackIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    public void handleGoBackExitHover() {
+    private void handleGoBackExitHover() {
         goBackIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
-    public void handleUserProfileHover() {
+    private void handleUserProfileHover() {
         userProfileIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    public void handleUserProfileExitHover() {
+    private void handleUserProfileExitHover() {
         userProfileIcon.setIconColor(Color.web("#000000"));
     }
 

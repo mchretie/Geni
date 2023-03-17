@@ -18,7 +18,7 @@
              <Insets left="40.0" top="25.0" />
           </StackPane.margin></Rectangle>
 
-        <Button fx:id="deckButton" onMouseClicked="#handleDoubleDeckClicked"
+        <Button fx:id="playDeckButton" onMouseClicked="#handleDoubleDeckClicked"
                 prefHeight="97.0" prefWidth="172.0" style="-fx-background-color: transparent;">
 
             <StackPane.margin>

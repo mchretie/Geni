@@ -2,40 +2,26 @@ package ulb.infof307.g01.view.deckmenu;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.database.DeckDAO;
+import ulb.infof307.g01.database.DeckManager;
 import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.Tag;
-
-import java.util.List;
 
 public class DeckViewController {
 
     @FXML
-    public Rectangle optionsOverlayRect;
+    private Button playDeckButton;
 
     @FXML
-    public Button deckButton;
-    public Button shareDeckButton;
-    public Button deleteDeckButton;
-    public Button editDeck;
-
+    private FontIcon editDeckIcon;
     @FXML
-    public FontIcon editDeckIcon;
-    public FontIcon removeDeckIcon;
-    public FontIcon shareDeckIcon;
-
+    private FontIcon removeDeckIcon;
     @FXML
-    public StackPane homeDeckPane;
-    public FlowPane deckTags;
+    private FontIcon shareDeckIcon;
 
     private Deck deck;
-    private final DeckDAO dm = DeckDAO.singleton();
 
     private Listener listener;
 
@@ -53,7 +39,7 @@ public class DeckViewController {
     }
 
     private void updateDeckButtonName() {
-        this.deckButton.setText(this.deck.getName());
+        this.playDeckButton.setText(this.deck.getName());
     }
 
 
@@ -62,17 +48,17 @@ public class DeckViewController {
     /* ============================================================================================================== */
 
     @FXML
-    public void handleEditDeckClicked() {
+    private void handleEditDeckClicked() {
         listener.editDeckClicked(deck);
     }
 
     @FXML
-    public void handleDoubleDeckClicked() {
+    private void handleDoubleDeckClicked() {
         listener.deckDoubleClicked(deck);
     }
 
     @FXML
-    public void handleRemoveDeckClicked() {
+    private void handleRemoveDeckClicked() {
         listener.deckRemoved(deck);
     }
 
@@ -82,32 +68,32 @@ public class DeckViewController {
     /* ============================================================================================================== */
 
     @FXML
-    public void handleHoverEditDeck() {
+    private void handleHoverEditDeck() {
         editDeckIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    public void handleHoverEditDeckExit() {
+    private void handleHoverEditDeckExit() {
         editDeckIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
-    public void handleHoverRemoveDeck() {
+    private void handleHoverRemoveDeck() {
         removeDeckIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    public void handleHoverRemoveDeckExit() {
+    private void handleHoverRemoveDeckExit() {
         removeDeckIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
-    public void handleHoverShareDeck() {
+    private void handleHoverShareDeck() {
         shareDeckIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    public void handleHoverShareDeckExit() {
+    private void handleHoverShareDeckExit() {
         shareDeckIcon.setIconColor(Color.web("#000000"));
     }
 
