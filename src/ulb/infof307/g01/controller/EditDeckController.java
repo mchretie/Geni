@@ -50,8 +50,14 @@ public class EditDeckController implements EditDeckViewController.Listener {
         mainWindowViewController.makeGoBackIconVisible();
 
         editDeckViewController.loadCardsFromDeck();
-        editDeckViewController.setSelectedCard(deck.getCards().get(0));
-        editDeckViewController.loadSelectedCardEditor();
+
+        if (deck.cardCount() > 0) {
+            editDeckViewController.setSelectedCard(deck.getCards().get(0));
+            editDeckViewController.loadSelectedCardEditor();
+        }
+
+        else
+            editDeckViewController.hideSelectedCardEditor();
 
         stage.show();
     }

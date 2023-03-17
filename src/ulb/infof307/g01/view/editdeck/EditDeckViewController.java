@@ -150,11 +150,17 @@ public class EditDeckViewController implements Initializable {
         listener.backOfCardModified(selectedCard, backCardText.getText());
     }
 
+    @FXML
     public void handleTextFieldKeyPressed(KeyEvent keyEvent) {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
 
         anchor.requestFocus();
+    }
+
+    public void hideSelectedCardEditor() {
+        frontCard.setVisible(false);
+        backCard.setVisible(false);
     }
 
 
