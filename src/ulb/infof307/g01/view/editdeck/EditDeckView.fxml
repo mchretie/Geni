@@ -3,8 +3,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
-
 <AnchorPane prefHeight="600.0" prefWidth="800.0"
             style="-fx-background-color: #ffffff;"
             xmlns="http://javafx.com/javafx/17.0.2-ea"
@@ -40,7 +38,6 @@
 
         <VBox style="-fx-background-color: #f0f0f0;">
             <ListView fx:id="cardsContainer" prefHeight="310.0" prefWidth="333.0" onMouseClicked="#handleCardPreviewClicked">
-
             </ListView>
         </VBox>
 
