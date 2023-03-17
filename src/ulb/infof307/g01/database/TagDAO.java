@@ -25,7 +25,7 @@ public class TagDAO {
     private static TagDAO instance;
 
     private final static Database database = Database.singleton();
-    private final static DeckDAO DECK_DAO = DeckDAO.singleton();
+    private final static DeckDAO deckDao = DeckDAO.singleton();
 
     protected TagDAO() {
     }
@@ -251,7 +251,7 @@ public class TagDAO {
             ResultSet res = database.executeQuery(sql);
             while (res.next()) {
                 UUID deckId = UUID.fromString(res.getString("deck_id"));
-                decks.add(DECK_DAO.getDeck(deckId));
+                decks.add(deckDao.getDeck(deckId));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

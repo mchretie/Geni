@@ -22,7 +22,7 @@ public class DeckDAO {
     private static DeckDAO instance;
 
     private final static Database database = Database.singleton();
-    private final static TagDAO TAG_DAO = TagDAO.singleton();
+    private final static TagDAO tagDao = TagDAO.singleton();
 
     protected DeckDAO() {
     }
@@ -111,7 +111,7 @@ public class DeckDAO {
     }
 
     private void saveDeckTags(Deck deck) {
-        TAG_DAO.saveTagsFor(deck);
+        tagDao.saveTagsFor(deck);
     }
 
     /**
@@ -179,7 +179,7 @@ public class DeckDAO {
             if (res.next()) {
                 String name = res.getString("name");
                 List<Card> cards = getCardsFor(uuid);
-                List<Tag> tags = TAG_DAO.getTagsFor(uuid);
+                List<Tag> tags = tagDao.getTagsFor(uuid);
                 deck = new Deck(name, uuid, cards, tags);
             }
         } catch (SQLException e) {
