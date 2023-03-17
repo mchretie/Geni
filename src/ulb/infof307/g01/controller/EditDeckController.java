@@ -50,6 +50,9 @@ public class EditDeckController implements EditDeckViewController.Listener {
         mainWindowViewController.makeGoBackIconVisible();
 
         editDeckViewController.loadCardsFromDeck();
+        editDeckViewController.setSelectedCard(deck.getCards().get(0));
+        editDeckViewController.loadSelectedCardEditor();
+
         stage.show();
     }
 
@@ -73,26 +76,28 @@ public class EditDeckController implements EditDeckViewController.Listener {
     @Override
     public void frontOfCardModified(Card card, String newFront) {
         card.setFront(newFront);
-        deck.addCard(card);
+        dm.saveDeck(deck);
         editDeckViewController.loadCardsFromDeck();
     }
 
     @Override
     public void backOfCardModified(Card card, String newBack) {
         card.setBack(newBack);
-        deck.addCard(card);
+        dm.saveDeck(deck);
         editDeckViewController.loadCardsFromDeck();
     }
 
     @Override
     public void newCard() {
         deck.addCard(new Card("Avant", "Arrière"));
+        dm.saveDeck(deck);
         editDeckViewController.loadCardsFromDeck();
         editDeckViewController.setSelectedCard(deck.getCards().get(deck.cardCount() - 1));
     }
 
     @Override
     public void cardPreviewClicked(Card card) {
-        editDeckViewController.loadCardEditor(card);
+        editDeckViewController.setSelectedCard(card);
+        editDeckViewController.loadSelectedCardEditor();
     }
 }
