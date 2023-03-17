@@ -2,7 +2,6 @@ package ulb.infof307.g01.view.editdeck;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -113,6 +112,9 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
+    public void handleRemoveCardClicked() { listener.removeCard(selectedCard);}
+
+    @FXML
     public void handleCardPreviewClicked() {
         int cardIndex = cardsContainer.getSelectionModel().getSelectedIndex();
 
@@ -166,6 +168,7 @@ public class EditDeckViewController implements Initializable {
         void frontOfCardModified(Card card, String newFront);
         void backOfCardModified(Card card, String newBack);
         void newCard();
+        void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card);
     }
 }

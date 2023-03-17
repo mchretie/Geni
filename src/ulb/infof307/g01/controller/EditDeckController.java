@@ -96,6 +96,14 @@ public class EditDeckController implements EditDeckViewController.Listener {
     }
 
     @Override
+    public void removeCard(Card selectedCard){
+        deck.removeCard(selectedCard);
+        dm.saveDeck(deck);
+        editDeckViewController.loadCardsFromDeck();
+        //editDeckViewController.setSelectedCard();
+    }
+
+    @Override
     public void cardPreviewClicked(Card card) {
         editDeckViewController.setSelectedCard(card);
         editDeckViewController.loadSelectedCardEditor();
