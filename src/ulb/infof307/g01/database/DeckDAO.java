@@ -43,7 +43,7 @@ public class DeckDAO {
      * This can be avoided by checking for uniqueness
      * beforehand.
      *
-     * @see DeckDAO.deckNameExists
+     * @see ulb.infof307.g01.database.DeckDAO#deckNameExists
      */
     public boolean isDeckValid(Deck deck) {
         String sql = """
@@ -78,7 +78,7 @@ public class DeckDAO {
      * Write to longterm memory the contents of a deck
      * <p>
      * If the given deck is not valid, it will be ignored.
-     * @see DeckDAO.isDeckValid
+     * @see ulb.infof307.g01.database.DeckDAO#isDeckValid
      */
     public void saveDeck(Deck deck) {
         if (!isDeckValid(deck))

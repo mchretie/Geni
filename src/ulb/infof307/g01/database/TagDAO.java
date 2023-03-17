@@ -17,7 +17,7 @@ import java.util.*;
  * <p>
  * To add tags to decks, see DeckManager.
  *
- * @see DeckDAO
+ * @see ulb.infof307.g01.database.DeckDAO
  */
 public class TagDAO {
 
@@ -46,7 +46,7 @@ public class TagDAO {
      * This can be avoided by checking for uniqueness
      * beforehand.
      *
-     * @see TagDAO.tagNameExists
+     * @see ulb.infof307.g01.database.TagDAO#tagNameExists
      */
     public boolean isTagValid(Tag tag) {
         String sql = """
@@ -168,7 +168,7 @@ public class TagDAO {
      * use the facilities from DeckManager such
      * as saveDeck.
      *
-     * @see DeckDAO
+     * @see ulb.infof307.g01.database.DeckDAO
      */
     public void saveTagsFor(Deck deck) {
         deck.getTags().forEach((t) -> saveTag(t));
