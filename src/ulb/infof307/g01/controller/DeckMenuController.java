@@ -3,7 +3,7 @@ package ulb.infof307.g01.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-import ulb.infof307.g01.database.DeckManager;
+import ulb.infof307.g01.database.DeckDAO;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.view.deckmenu.DeckViewController;
@@ -25,7 +25,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
     private final DeckMenuViewController deckMenuViewController;
     private final MainWindowViewController mainWindowViewController;
 
-    private final DeckManager dm = DeckManager.singleton();
+    private final DeckDAO dm = DeckDAO.singleton();
 
     /* ============================================================================================================== */
     /*                                                  Constructor                                                   */

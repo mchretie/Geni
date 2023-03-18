@@ -1,7 +1,7 @@
 package ulb.infof307.g01.controller;
 
 import javafx.stage.Stage;
-import ulb.infof307.g01.database.DeckManager;
+import ulb.infof307.g01.database.DeckDAO;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
@@ -19,7 +19,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
     private final MainWindowViewController mainWindowViewController;
     private final EditDeckViewController editDeckViewController;
 
-    private final DeckManager dm = DeckManager.singleton();
+    private final DeckDAO dm = DeckDAO.singleton();
 
     /* ============================================================================================================== */
     /*                                                  Constructor                                                   */
