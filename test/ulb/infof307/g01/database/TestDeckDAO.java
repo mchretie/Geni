@@ -28,7 +28,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
 
     @Test
     void getDeck_DeckNotExists_ThrowsException() {
-        assertEquals(null, deckDAO.getDeck(new Deck("name").getId()));
+        assertNull(deckDAO.getDeck(new Deck("name").getId()));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
         deckDAO.saveDeck(deck1);
         deckDAO.saveDeck(deck2);
 
-        assertEquals(Set.of(deck1), new HashSet(deckDAO.getAllDecks()));
+        assertEquals(Set.of(deck1), new HashSet<>(deckDAO.getAllDecks()));
     }
 
     @Test
@@ -157,14 +157,14 @@ public class TestDeckDAO extends DatabaseUsingTest {
 
     @Test
     void getAllDecks_ManyDecks_AllReturned() {
-        List<Deck> decks = new ArrayList();
+        List<Deck> decks = new ArrayList<>();
         decks.add(new Deck("name1"));
         decks.add(new Deck("name2"));
         decks.add(new Deck("name3"));
 
         decks.forEach((d) -> deckDAO.saveDeck(d));
 
-        assertEquals(new HashSet(decks), new HashSet(deckDAO.getAllDecks()));
+        assertEquals(new HashSet<>(decks), new HashSet<>(deckDAO.getAllDecks()));
     }
 
     @Test
@@ -174,7 +174,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
         deckDAO.saveDeck(deck);
         deckDAO.saveDeck(deck);
 
-        assertEquals(Set.of(deck), new HashSet(deckDAO.getAllDecks()));
+        assertEquals(Set.of(deck), new HashSet<>(deckDAO.getAllDecks()));
     }
 
     @Test
@@ -183,12 +183,24 @@ public class TestDeckDAO extends DatabaseUsingTest {
         deckDAO.saveDeck(deck);
         deckDAO.deleteDeck(deck);
 
-        assertEquals(null, deckDAO.getDeck(deck.getId()));
+        assertNull(deckDAO.getDeck(deck.getId()));
     }
 
     @Test
     void deleteDeck_DeckNotExists_NoThrow() {
         Deck deck = new Deck("name");
         assertDoesNotThrow(() -> deckDAO.deleteDeck(deck));
+    }
+
+    @Test
+    void searchTags() {
+        List<Deck> decks = new ArrayList<>();
+        decks.add(new Deck("name1"));
+        decks.add(new Deck("name2"));
+        decks.add(new Deck("name3"));
+
+        decks.forEach((d) -> deckDAO.saveDeck(d));
+
+        assertEquals(new HashSet<>(decks), new HashSet<>(deckDAO.searchDecks("name")));
     }
 }

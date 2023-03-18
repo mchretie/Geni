@@ -29,7 +29,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     @Test
     void getTag_TagNotExists_ReturnsNull() {
         Tag tag = new Tag("name");
-        assertEquals(null, tagDAO.getTag(tag.getId()));
+        assertNull(tagDAO.getTag(tag.getId()));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class TestTagDAO extends DatabaseUsingTest {
         tagDAO.saveTag(tag1);
         tagDAO.saveTag(tag2);
 
-        assertEquals(Set.of(tag1), new HashSet(tagDAO.getAllTags()));
+        assertEquals(Set.of(tag1), new HashSet<>(tagDAO.getAllTags()));
     }
 
     @Test
@@ -89,14 +89,14 @@ public class TestTagDAO extends DatabaseUsingTest {
 
     @Test
     void getAllTags_ManyTags_AllReturned() {
-        List<Tag> tags = new ArrayList();
+        List<Tag> tags = new ArrayList<>();
         tags.add(new Tag("name1"));
         tags.add(new Tag("name2"));
         tags.add(new Tag("name3"));
 
         tags.forEach((d) -> tagDAO.saveTag(d));
 
-        assertEquals(new HashSet(tags), new HashSet(tagDAO.getAllTags()));
+        assertEquals(new HashSet<>(tags), new HashSet<>(tagDAO.getAllTags()));
     }
 
     @Test
@@ -106,7 +106,7 @@ public class TestTagDAO extends DatabaseUsingTest {
         tagDAO.saveTag(tag);
         tagDAO.saveTag(tag);
 
-        assertEquals(Set.of(tag), new HashSet(tagDAO.getAllTags()));
+        assertEquals(Set.of(tag), new HashSet<>(tagDAO.getAllTags()));
     }
 
     @Test
@@ -116,8 +116,8 @@ public class TestTagDAO extends DatabaseUsingTest {
         deck.addTag(tag);
         tagDAO.saveTagsFor(deck);
 
-        assertEquals(new HashSet(deck.getTags()),
-                new HashSet(tagDAO.getTagsFor(deck.getId())));
+        assertEquals(new HashSet<>(deck.getTags()),
+                new HashSet<>(tagDAO.getTagsFor(deck.getId())));
     }
 
     @Test
@@ -129,8 +129,8 @@ public class TestTagDAO extends DatabaseUsingTest {
         deck.removeTag(tag);
         tagDAO.saveTagsFor(deck);
 
-        assertEquals(new HashSet(deck.getTags()),
-                new HashSet(tagDAO.getTagsFor(deck.getId())));
+        assertEquals(new HashSet<>(deck.getTags()),
+                new HashSet<>(tagDAO.getTagsFor(deck.getId())));
     }
 
     @Test
@@ -172,7 +172,7 @@ public class TestTagDAO extends DatabaseUsingTest {
         tagDAO.saveTagsFor(deck3);
 
         var expectedSet = Set.of(deck1, deck2);
-        var receivedSet = new HashSet<Deck>(tagDAO.getDecksHavingTag(tag));
+        var receivedSet = new HashSet<>(tagDAO.getDecksHavingTag(tag));
 
         assertEquals(expectedSet, receivedSet);
     }
@@ -183,12 +183,24 @@ public class TestTagDAO extends DatabaseUsingTest {
         tagDAO.saveTag(tag);
         tagDAO.deleteTag(tag);
 
-        assertEquals(null, tagDAO.getTag(tag.getId()));
+        assertNull(tagDAO.getTag(tag.getId()));
     }
 
     @Test
     void deleteTag_TagNotExists_NoThrow() {
         Tag tag = new Tag("name");
         assertDoesNotThrow(() -> tagDAO.deleteTag(tag));
+    }
+
+    @Test
+    void searchTags() {
+        List<Tag> tags = new ArrayList<>();
+        tags.add(new Tag("name1"));
+        tags.add(new Tag("name2"));
+        tags.add(new Tag("name3"));
+
+        tags.forEach((d) -> tagDAO.saveTag(d));
+
+        assertEquals(new HashSet<>(tags), new HashSet<>(tagDAO.searchTags("name")));
     }
 }

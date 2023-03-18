@@ -131,8 +131,12 @@ public class TagDAO {
                 FROM tag
                 """;
 
-        List<Tag> tags = new ArrayList<Tag>();
+        List<Tag> tags = new ArrayList<>();
 
+        return getTags(sql, tags);
+    }
+
+    private List<Tag> getTags(String sql, List<Tag> tags) {
         try {
             ResultSet res = database.executeQuery(sql);
             while (res.next()) {
@@ -171,10 +175,10 @@ public class TagDAO {
      * @see ulb.infof307.g01.database.DeckDAO
      */
     public void saveTagsFor(Deck deck) {
-        deck.getTags().forEach((t) -> saveTag(t));
+        deck.getTags().forEach(this::saveTag);
 
-        HashSet<Tag> currentTags = new HashSet<Tag>(getTagsFor(deck.getId()));
-        HashSet<Tag> newTags = new HashSet<Tag>(deck.getTags());
+        HashSet<Tag> currentTags = new HashSet<>(getTagsFor(deck.getId()));
+        HashSet<Tag> newTags = new HashSet<>(deck.getTags());
 
         Set<Tag> addedTags = (Set<Tag>) newTags.clone();
         addedTags.removeAll(currentTags);
@@ -220,19 +224,9 @@ public class TagDAO {
                 WHERE deck_id = '%1$s'
                 """.formatted(deckId.toString());
 
-        List<Tag> tags = new ArrayList();
+        List<Tag> tags = new ArrayList<>();
 
-        try {
-            ResultSet res = database.executeQuery(sql);
-            while (res.next()) {
-                UUID tagId = UUID.fromString(res.getString("tag_id"));
-                tags.add(getTag(tagId));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return tags;
+        return getTags(sql, tags);
     }
 
     /**
@@ -245,7 +239,7 @@ public class TagDAO {
                 WHERE tag_id = '%1$s'
                 """.formatted(tag.getId().toString());
 
-        List<Deck> decks = new ArrayList();
+        List<Deck> decks = new ArrayList<>();
 
         try {
             ResultSet res = database.executeQuery(sql);
@@ -259,4 +253,27 @@ public class TagDAO {
 
         return decks;
     }
+
+    public List<Tag> searchTags(String userSearch) {
+        String sql = """
+            SELECT tag_id
+            FROM tag
+            WHERE name LIKE '%s'
+            """.formatted(userSearch + "%");
+
+        List<Tag> tags = new ArrayList<>();
+
+        try {
+            ResultSet res = database.executeQuery(sql);
+            while (res.next()) {
+                UUID uuid = UUID.fromString(res.getString("tag_id"));
+                tags.add(getTag(uuid));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return tags;
+    }
+
 }
