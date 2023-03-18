@@ -32,6 +32,18 @@ public class Deck implements Iterable<Card> {
 
     public List<Tag> getTags() { return tags; }
 
+    public Card getCard(int index) throws IndexOutOfBoundsException {
+        return cards.get(index);
+    }
+
+    public Card getLastCard() throws  IndexOutOfBoundsException {
+        return getCard(cards.size() - 1);
+
+    }
+    public Card getFirstCard() throws  IndexOutOfBoundsException {
+        return getCard(0);
+    }
+
     public List<Card> getCards() { return cards; }
     public UUID getId() { return id; }
 

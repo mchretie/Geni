@@ -10,13 +10,16 @@ import ulb.infof307.g01.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class responsible for display the deck menu and listening to DeckMenuViewController
+ * Class responsible for display the deck menu and listening to
+ * DeckMenuViewController
  */
-public class DeckMenuController implements DeckMenuViewController.Listener, DeckViewController.Listener {
+public class DeckMenuController implements DeckMenuViewController.Listener,
+                                                DeckViewController.Listener {
 
     private final Stage stage;
 
@@ -27,24 +30,29 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
 
     private final DeckDAO dm = DeckDAO.singleton();
 
-    /* ============================================================================================================== */
-    /*                                                  Constructor                                                   */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                              Constructor                               */
+    /* ====================================================================== */
 
-    public DeckMenuController(Stage stage, ControllerListener controllerListener, MainWindowViewController mainWindowViewController) {
+    public DeckMenuController(Stage stage,
+                              ControllerListener controllerListener,
+                              MainWindowViewController mainWindowViewController) {
+
         this.stage = stage;
         this.controllerListener = controllerListener;
         this.mainWindowViewController = mainWindowViewController;
 
 
-        this.deckMenuViewController = mainWindowViewController.getDeckMenuViewController();
+        this.deckMenuViewController
+                = mainWindowViewController.getDeckMenuViewController();
+
         deckMenuViewController.setListener(this);
     }
 
 
-    /* ============================================================================================================== */
-    /*                                            Stage manipulation                                                  */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                         Stage Manipulation                             */
+    /* ====================================================================== */
 
     /**
      * Loads and displays the Deck Menu onto the main scene
@@ -61,9 +69,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
     }
 
 
-    /* ============================================================================================================== */
-    /*                                              Database Access                                                   */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                          Database Access                               */
+    /* ====================================================================== */
 
     /**
      *
@@ -74,7 +82,13 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
         List<Node> decks = new ArrayList<>();
 
         for (Deck deck : dm.getAllDecks()) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/deckmenu/DeckView.fxml"));
+
+            URL resource = DeckMenuViewController
+                                .class
+                                .getResource("DeckView.fxml");
+
+            FXMLLoader loader = new FXMLLoader(resource);
+
             Node node = loader.load();
 
             DeckViewController controller = loader.getController();
@@ -88,9 +102,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
     }
 
 
-    /* ============================================================================================================== */
-    /*                                          View Listener Methods                                                 */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                        View Listener Method                            */
+    /* ====================================================================== */
 
     @Override
     public void createDeckClicked(String name) {
@@ -129,9 +143,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener, Deck
     }
 
 
-    /* ============================================================================================================== */
-    /*                                      Controller Listener Interface                                             */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                   Controller Listener Interface                        */
+    /* ====================================================================== */
 
     public interface ControllerListener {
         void editDeckClicked(Deck deck);
