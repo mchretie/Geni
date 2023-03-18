@@ -35,7 +35,6 @@ public class EditDeckController implements EditDeckViewController.Listener {
         this.stage = stage;
         this.deck = deck;
         this.mainWindowViewController = mainWindowViewController;
-        this.controllerListener = controllerListener;
 
         this.editDeckViewController
                 = mainWindowViewController.getEditDeckViewController();
@@ -104,7 +103,6 @@ public class EditDeckController implements EditDeckViewController.Listener {
             card.setFront(newFront);
             dm.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
-            cardPreviewClicked(card);
 
         } catch (SQLException e) {
             controllerListener.savingError(e);
@@ -117,7 +115,6 @@ public class EditDeckController implements EditDeckViewController.Listener {
             card.setBack(newBack);
             dm.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
-            cardPreviewClicked(card);
 
         } catch (SQLException e) {
             controllerListener.savingError(e);
@@ -133,6 +130,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
             editDeckViewController.loadCardsFromDeck();
             editDeckViewController.setSelectedCard(deck.getLastCard());
+            cardPreviewClicked(deck.getLastCard());
 
         } catch (SQLException e) {
             controllerListener.savingError(e);
