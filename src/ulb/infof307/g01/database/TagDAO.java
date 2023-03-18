@@ -131,12 +131,12 @@ public class TagDAO {
                 FROM tag
                 """;
 
-        List<Tag> tags = new ArrayList<>();
-
-        return getTags(sql, tags);
+        return getTags(sql);
     }
 
-    private List<Tag> getTags(String sql, List<Tag> tags) {
+    private List<Tag> getTags(String sql) {
+        List<Tag> tags = new ArrayList<>();
+
         try {
             ResultSet res = database.executeQuery(sql);
             while (res.next()) {
@@ -227,9 +227,7 @@ public class TagDAO {
                 WHERE deck_id = '%1$s'
                 """.formatted(deckId.toString());
 
-        List<Tag> tags = new ArrayList<>();
-
-        return getTags(sql, tags);
+        return getTags(sql);
     }
 
     /**
@@ -264,9 +262,7 @@ public class TagDAO {
             WHERE name LIKE '%s'
             """.formatted(userSearch + "%");
 
-        List<Tag> tags = new ArrayList<>();
-
-        return getTags(sql, tags);
+        return getTags(sql);
     }
 
 }
