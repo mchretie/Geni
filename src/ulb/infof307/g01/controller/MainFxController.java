@@ -25,6 +25,8 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     DeckMenuController deckMenuController;
     MainWindowViewController mainWindowViewController;
+    PlayDeckController playDeckController;
+
     private Stage stage;
 
 
@@ -100,7 +102,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     @Override
     public void playDeckClicked(Deck deck) {
-        PlayDeckController playDeckController = new PlayDeckController(stage, deck, mainWindowViewController, this);
+        playDeckController = new PlayDeckController(stage, deck, mainWindowViewController, this);
         playDeckController.show();
     }
 
@@ -133,7 +135,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     @Override
     public void goToCurrentDeckClicked() {
-
+        playDeckController.show();
     }
 
     @Override

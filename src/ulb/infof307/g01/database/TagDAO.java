@@ -49,6 +49,10 @@ public class TagDAO {
      * @see ulb.infof307.g01.database.TagDAO#tagNameExists
      */
     public boolean isTagValid(Tag tag) {
+
+        if (tag == null)
+            return false;
+
         String sql = """
             SELECT tag_id, name
             FROM tag
