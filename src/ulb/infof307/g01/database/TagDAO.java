@@ -137,7 +137,17 @@ public class TagDAO {
     }
 
     private List<Tag> getTags(String sql, List<Tag> tags) {
-        return createListOfTags(sql, tags);
+        try {
+            ResultSet res = database.executeQuery(sql);
+            while (res.next()) {
+                UUID tagId = UUID.fromString(res.getString("tag_id"));
+                tags.add(getTag(tagId));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return tags;
     }
 
     /**
@@ -256,21 +266,7 @@ public class TagDAO {
 
         List<Tag> tags = new ArrayList<>();
 
-        return createListOfTags(sql, tags);
-    }
-
-    private List<Tag> createListOfTags(String sql, List<Tag> tags) {
-        try {
-            ResultSet res = database.executeQuery(sql);
-            while (res.next()) {
-                UUID uuid = UUID.fromString(res.getString("tag_id"));
-                tags.add(getTag(uuid));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return tags;
+        return getTags(sql, tags);
     }
 
 }
