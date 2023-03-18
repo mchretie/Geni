@@ -52,7 +52,7 @@ class CardExtractorByKnowledgeTest {
     }
 
     @Test
-    void getNextCardTest() {
+    void iteratorTest() {
         CardExtractorByKnowledge extractor = new CardExtractorByKnowledge(deck);
 
         int currentIndex = 0;
@@ -61,5 +61,23 @@ class CardExtractorByKnowledgeTest {
             assertEquals(c.getKnowledge(), rightOrder.get(currentIndex).getKnowledge());
             currentIndex++;
         }
+    }
+
+    @Test
+    void getPreviousAndNextCardTest() {
+        CardExtractorByKnowledge t = new CardExtractorByKnowledge(deck);
+
+        assertEquals(cardUnseen, t.getNextCard());
+        assertEquals(null, t.getPreviousCard());
+
+        assertEquals(cardVeryBad, t.getNextCard());
+        assertEquals(cardUnseen, t.getPreviousCard());
+        assertEquals(cardVeryBad, t.getNextCard());
+
+        assertEquals(cardBad, t.getNextCard());
+        assertEquals(cardAverage, t.getNextCard());
+        assertEquals(cardGood, t.getNextCard());
+        assertEquals(cardVeryGood, t.getNextCard());
+        assertEquals(null, t.getNextCard());
     }
 }
