@@ -1,5 +1,6 @@
 package ulb.infof307.g01.database;
 
+import ulb.infof307.g01.database.exceptions.DatabaseException;
 import java.io.File;
 import java.sql.*;
 
@@ -17,9 +18,9 @@ public class Database {
     private static Database instance;
     private Connection connection = null;
 
-    private void assertOpened() throws DatabaseNotInitException {
+    private void assertOpened() throws DatabaseException {
         if (connection == null)
-            throw new DatabaseNotInitException(
+            throw new DatabaseException(
                     "Database must be opened before use");
     }
 
@@ -38,9 +39,9 @@ public class Database {
      *
      * @param dbname filename used for the database
      */
-    public void open(File dbname) throws OpenedDatabaseException, SQLException {
+    public void open(File dbname) throws DatabaseException, SQLException {
         if (connection != null) {
-            throw new OpenedDatabaseException(
+            throw new DatabaseException(
                     "Cannot open two databases at the same time");
         }
 
@@ -48,7 +49,7 @@ public class Database {
                 .getConnection("jdbc:sqlite:" + dbname.toPath());
     }
 
-    public void initTables(String[] tables) throws DatabaseNotInitException {
+    public void initTables(String[] tables) throws DatabaseException {
         executeUpdates(tables);
     }
 
@@ -71,7 +72,7 @@ public class Database {
      * @param query a SQL statement to be executed
      * @return A java.sql.ResultSet with the resulting rows
      */
-    public ResultSet executeQuery(String query) throws DatabaseNotInitException {
+    public ResultSet executeQuery(String query) throws DatabaseException {
         assertOpened();
 
         try {
@@ -89,7 +90,7 @@ public class Database {
      *
      * @param update a SQL statement to be executed
      */
-    public void executeUpdate(String update) throws DatabaseNotInitException {
+    public void executeUpdate(String update) throws DatabaseException {
         assertOpened();
 
         try {
@@ -107,7 +108,7 @@ public class Database {
      *
      * @param updates a SQL statement to be executed
      */
-    public void executeUpdates(String[] updates) throws DatabaseNotInitException {
+    public void executeUpdates(String[] updates) throws DatabaseException {
         assertOpened();
 
         try {
