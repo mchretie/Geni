@@ -2,6 +2,8 @@ package ulb.infof307.g01.controller;
 
 import javafx.stage.Stage;
 import ulb.infof307.g01.model.Card;
+import ulb.infof307.g01.model.CardExtractor;
+import ulb.infof307.g01.model.CardExtractorRandom;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.view.playdeck.PlayDeckViewController;
@@ -10,14 +12,14 @@ import java.util.Iterator;
 
 public class PlayDeckController implements PlayDeckViewController.Listener {
 
-    private final Deck deck;
-    private Card currentCard;
+    private final CardExtractorRandom cardExtractor;
 
     private final Stage stage;
 
     private final MainWindowViewController mainWindowViewController;
     private final PlayDeckViewController playDeckViewController;
 
+    private boolean frontIsShown = true;
 
     /* ============================================================================================================== */
     /*                                                  Constructor                                                   */
@@ -25,7 +27,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     public PlayDeckController(Stage stage, Deck deck, MainWindowViewController mainWindowViewController) {
         this.stage = stage;
-        this.deck = deck;
+        this.cardExtractor = new CardExtractorRandom(deck);
         this.mainWindowViewController = mainWindowViewController;
 
         mainWindowViewController.makeGoBackIconVisible();
@@ -53,7 +55,9 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     @Override
     public void cardClicked() {
-
+        // cardExtractor.
+        if (frontIsShown)
+            playDeckViewController.showFrontOfCard()
     }
 
     @Override

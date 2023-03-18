@@ -127,5 +127,4 @@ public class DeckMenuViewController {
     public interface Listener {
         void createDeckClicked(String name);
     }
-
 }
