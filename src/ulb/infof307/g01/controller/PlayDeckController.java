@@ -8,16 +8,16 @@ import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.view.playdeck.PlayDeckViewController;
 
-import java.util.Iterator;
-
 public class PlayDeckController implements PlayDeckViewController.Listener {
 
-    private final CardExtractorRandom cardExtractor;
+    private final CardExtractor cardExtractor;
+    private Card currentCard;
 
     private final Stage stage;
 
     private final MainWindowViewController mainWindowViewController;
     private final PlayDeckViewController playDeckViewController;
+    private final ControllerListener controllerListener;
 
     private boolean frontIsShown = true;
 
@@ -25,15 +25,21 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     /*                                                  Constructor                                                   */
     /* ============================================================================================================== */
 
-    public PlayDeckController(Stage stage, Deck deck, MainWindowViewController mainWindowViewController) {
+    public PlayDeckController(Stage stage, Deck deck,
+                              MainWindowViewController mainWindowViewController,
+                              ControllerListener controllerListener) {
+
         this.stage = stage;
         this.cardExtractor = new CardExtractorRandom(deck);
-        this.mainWindowViewController = mainWindowViewController;
+        this.currentCard = cardExtractor.getNextCard();
+        this.controllerListener = controllerListener;
 
+        this.mainWindowViewController = mainWindowViewController;
         mainWindowViewController.makeGoBackIconVisible();
 
         this.playDeckViewController = mainWindowViewController.getPlayDeckViewController();
         playDeckViewController.setListener(this);
+        playDeckViewController.setDeckName(deck.getName());
     }
 
 
@@ -45,6 +51,8 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         mainWindowViewController.setPlayDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
+        playDeckViewController.showFrontOfCard(currentCard);
+
         stage.show();
     }
 
@@ -55,18 +63,48 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     @Override
     public void cardClicked() {
-        // cardExtractor.
-        if (frontIsShown)
-            playDeckViewController.showFrontOfCard()
+
+        if (frontIsShown) {
+            playDeckViewController.showBackOfCard(currentCard);
+            frontIsShown = false;
+        }
+
+        else {
+            playDeckViewController.showFrontOfCard(currentCard);
+            frontIsShown = true;
+        }
+
     }
 
     @Override
     public void nextCardClicked() {
+        currentCard = cardExtractor.getNextCard();
+        if (currentCard == null) {
+            controllerListener.finishedPlayingDeck();
+            return;
+        }
 
+        frontIsShown = true;
+        playDeckViewController.showFrontOfCard(currentCard);
     }
 
     @Override
     public void previousCardClicked() {
+        Card previousCard = cardExtractor.getPreviousCard();
+        if (previousCard == null)
+            return;
 
+        currentCard = previousCard;
+        frontIsShown = true;
+        playDeckViewController.showFrontOfCard(currentCard);
+    }
+
+
+    /* ============================================================================================================== */
+    /*                                      Controller Listener Interface                                             */
+    /* ============================================================================================================== */
+
+    public interface ControllerListener {
+        void finishedPlayingDeck();
     }
 }

@@ -20,7 +20,8 @@ import java.sql.SQLException;
  * Main class of the application which initializes the main view using the main view handler and loads a menu view.
  */
 public class MainFxController extends Application implements MainWindowViewController.NavigationListener,
-                                                                DeckMenuController.ControllerListener {
+                                                                DeckMenuController.ControllerListener,
+                                                                PlayDeckController.ControllerListener {
 
     DeckMenuController deckMenuController;
     MainWindowViewController mainWindowViewController;
@@ -99,7 +100,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     @Override
     public void playDeckClicked(Deck deck) {
-        PlayDeckController playDeckController = new PlayDeckController(stage, deck, mainWindowViewController);
+        PlayDeckController playDeckController = new PlayDeckController(stage, deck, mainWindowViewController, this);
         playDeckController.show();
     }
 
@@ -121,7 +122,13 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     @Override
     public void goToHomeClicked() {
+        try {
+            deckMenuController.show();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Display error
+        }
     }
 
     @Override
@@ -132,5 +139,16 @@ public class MainFxController extends Application implements MainWindowViewContr
     @Override
     public void goToAboutClicked() {
 
+    }
+
+    @Override
+    public void finishedPlayingDeck() {
+        try {
+            deckMenuController.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Display error
+        }
     }
 }

@@ -2,6 +2,7 @@ package ulb.infof307.g01.view.playdeck;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -14,10 +15,26 @@ import java.util.List;
 
 public class PlayDeckViewController {
 
+    @FXML
+    private Label deckNameLabel;
+
+    @FXML
+    private Button cardButton;
+
     private Listener listener;
 
     public void setListener(Listener listener) {
         this.listener = listener;
+    }
+
+    public void setDeckName(String deckName) { this.deckNameLabel.setText(deckName); }
+
+    public void showFrontOfCard(Card currentCard) {
+        cardButton.setText(currentCard.getFront());
+    }
+
+    public void showBackOfCard(Card currentCard) {
+        cardButton.setText(currentCard.getBack());
     }
 
     /* ============================================================================================================== */
