@@ -9,8 +9,7 @@ public class CardExtractorByKnowledge extends CardExtractor {
     }
     @Override
     void sortDeck() {
-        Comparator<Card> cardComparatorByKnowledge = (card1, card2) -> Integer.compare(card1.getKnowledge().getValue(),
-                card2.getKnowledge().getValue());
+        Comparator<Card> cardComparatorByKnowledge = Comparator.comparingInt(card -> card.getKnowledge().getValue());
         this.sortedCards.sort(cardComparatorByKnowledge);
     }
 }
