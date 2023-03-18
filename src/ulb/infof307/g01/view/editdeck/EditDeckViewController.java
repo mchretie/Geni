@@ -81,7 +81,14 @@ public class EditDeckViewController implements Initializable {
         this.listener = listener;
     }
 
-    public void setSelectedCard(Card selectedCard) { this.selectedCard = selectedCard; }
+    public void setSelectedCard(Card selectedCard) {
+        this.selectedCard = selectedCard;
+
+        int cardIndex = deck.getCards().indexOf(selectedCard);
+        if (cardIndex >= 0) {
+            cardsContainer.getSelectionModel().select(cardIndex);
+        }
+    }
 
 
     /* ============================================================================================================== */

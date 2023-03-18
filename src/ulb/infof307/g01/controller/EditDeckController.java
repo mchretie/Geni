@@ -84,6 +84,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
         card.setFront(newFront);
         dm.saveDeck(deck);
         editDeckViewController.loadCardsFromDeck();
+        cardPreviewClicked(card);
     }
 
     @Override
@@ -91,6 +92,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
         card.setBack(newBack);
         dm.saveDeck(deck);
         editDeckViewController.loadCardsFromDeck();
+        cardPreviewClicked(card);
     }
 
     @Override
@@ -98,7 +100,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
         deck.addCard(new Card("Avant", "Arrière"));
         dm.saveDeck(deck);
         editDeckViewController.loadCardsFromDeck();
-        editDeckViewController.setSelectedCard(deck.getCards().get(deck.cardCount() - 1));
+        cardPreviewClicked(deck.getCards().get(deck.cardCount() - 1));
     }
 
     @Override
@@ -107,6 +109,9 @@ public class EditDeckController implements EditDeckViewController.Listener {
         dm.saveDeck(deck);
         editDeckViewController.loadCardsFromDeck();
         editDeckViewController.hideSelectedCardEditor();
+        if (deck.cardCount() != 0) {
+            cardPreviewClicked(deck.getCards().get(deck.cardCount() - 1));
+        }
     }
 
     @Override
