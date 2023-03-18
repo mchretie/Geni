@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.database.Database;
 import ulb.infof307.g01.database.DatabaseScheme;
-import ulb.infof307.g01.database.OpenedDatabaseException;
+import ulb.infof307.g01.database.exceptions.DatabaseException;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.view.mainwindow.MainWindowViewController;
@@ -60,7 +60,7 @@ public class MainFxController extends Application implements MainWindowViewContr
         } catch (SQLException e) {
             e.printStackTrace();
 
-        } catch (OpenedDatabaseException e) {
+        } catch (DatabaseException e) {
             // display error message
         }
 
@@ -76,7 +76,7 @@ public class MainFxController extends Application implements MainWindowViewContr
     /*                                             Database methods                                                   */
     /* ============================================================================================================== */
 
-    private void initDatabase() throws SQLException, OpenedDatabaseException {
+    private void initDatabase() throws SQLException, DatabaseException {
         File dbfile = new File("demo.db");
         Database db = Database.singleton();
         db.open(dbfile);
