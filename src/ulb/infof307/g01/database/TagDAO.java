@@ -137,17 +137,7 @@ public class TagDAO {
     }
 
     private List<Tag> getTags(String sql, List<Tag> tags) {
-        try {
-            ResultSet res = database.executeQuery(sql);
-            while (res.next()) {
-                UUID tagId = UUID.fromString(res.getString("tag_id"));
-                tags.add(getTag(tagId));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return tags;
+        return createListOfTags(sql, tags);
     }
 
     /**
@@ -208,7 +198,10 @@ public class TagDAO {
         String sql = """
                 DELETE FROM deck_tag
                 WHERE deck_id = '%1$s'
-                """.formatted(deck.getId().toString());
+                AND tag_id = '%2$s'
+                """.formatted(
+                deck.getId().toString(),
+                tag.getId().toString());
 
         database.executeUpdate(sql);
     }
@@ -263,6 +256,10 @@ public class TagDAO {
 
         List<Tag> tags = new ArrayList<>();
 
+        return createListOfTags(sql, tags);
+    }
+
+    private List<Tag> createListOfTags(String sql, List<Tag> tags) {
         try {
             ResultSet res = database.executeQuery(sql);
             while (res.next()) {
