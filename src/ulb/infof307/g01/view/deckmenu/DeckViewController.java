@@ -2,11 +2,8 @@ package ulb.infof307.g01.view.deckmenu;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.database.DeckManager;
 import ulb.infof307.g01.model.Deck;
 
 public class DeckViewController {
