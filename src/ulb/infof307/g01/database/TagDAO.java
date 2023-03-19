@@ -48,7 +48,7 @@ public class TagDAO {
      *
      * @see ulb.infof307.g01.database.TagDAO#tagNameExists
      */
-    public boolean isTagValid(Tag tag) {
+    public boolean isTagValid(Tag tag) throws SQLException {
 
         if (tag == null)
             return false;
@@ -60,25 +60,17 @@ public class TagDAO {
             """.formatted(tag.getId().toString(),
             tag.getName());
 
-        try {
-            return !database.executeQuery(sql).next();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return !database.executeQuery(sql).next();
     }
 
-    public boolean tagNameExists(String name) {
+    public boolean tagNameExists(String name) throws SQLException {
         String sql = """
             SELECT name
             FROM tag
             WHERE name = '%1$s'
             """.formatted(name);
 
-        try {
-            return database.executeQuery(sql).next();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return database.executeQuery(sql).next();
     }
 
     /**
@@ -87,7 +79,8 @@ public class TagDAO {
      * but with different ids, only the first will be saved while
      * the following will be ignored.
      */
-    public void saveTag(Tag tag) {
+    public void saveTag(Tag tag) throws SQLException {
+
         if (!isTagValid(tag))
             return;
 
@@ -106,30 +99,28 @@ public class TagDAO {
         database.executeUpdate(sql);
     }
 
-    public Tag getTag(UUID uuid) {
+    public Tag getTag(UUID uuid) throws SQLException {
         String sql = """
                 SELECT tag_id, name, color
                 FROM tag
                 WHERE tag_id = '%1$s'
                 """.formatted(uuid.toString());
 
-        Tag tag = null;
+        Tag tag;
 
-        try {
-            ResultSet res = database.executeQuery(sql);
-            if (res.next()) {
-                String name = res.getString("name");
-                String color = res.getString("color");
-                tag = new Tag(name, uuid, color);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try (ResultSet res = database.executeQuery(sql)) {
+            if (!res.next())
+                return null;
+
+            String name = res.getString("name");
+            String color = res.getString("color");
+            tag = new Tag(name, uuid, color);
         }
 
         return tag;
     }
 
-    public List<Tag> getAllTags() {
+    public List<Tag> getAllTags() throws SQLException {
         String sql = """
                 SELECT tag_id
                 FROM tag
@@ -138,17 +129,14 @@ public class TagDAO {
         return getTags(sql);
     }
 
-    private List<Tag> getTags(String sql) {
+    private List<Tag> getTags(String sql) throws SQLException {
         List<Tag> tags = new ArrayList<>();
 
-        try {
-            ResultSet res = database.executeQuery(sql);
+        try(ResultSet res = database.executeQuery(sql)) {
             while (res.next()) {
                 UUID tagId = UUID.fromString(res.getString("tag_id"));
                 tags.add(getTag(tagId));
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
         return tags;
@@ -157,7 +145,7 @@ public class TagDAO {
     /**
      * Delete tag and all its associations to decks
      */
-    public void deleteTag(Tag tag) {
+    public void deleteTag(Tag tag) throws SQLException {
         String sql = """
                 DELETE FROM tag
                 WHERE tag_id = '%1$s'
@@ -178,8 +166,12 @@ public class TagDAO {
      *
      * @see ulb.infof307.g01.database.DeckDAO
      */
-    public void saveTagsFor(Deck deck) {
-        deck.getTags().forEach(this::saveTag);
+    @SuppressWarnings("unchecked")
+    public void saveTagsFor(Deck deck) throws SQLException {
+
+        for (Tag tag : deck.getTags()) {
+            saveTag(tag);
+        }
 
         HashSet<Tag> currentTags = new HashSet<>(getTagsFor(deck.getId()));
         HashSet<Tag> newTags = new HashSet<>(deck.getTags());
@@ -190,14 +182,17 @@ public class TagDAO {
         Set<Tag> deletedTags = (Set<Tag>) currentTags.clone();
         deletedTags.removeAll(newTags);
 
-        addedTags.forEach((t) -> addTagTo(deck, t));
-        deletedTags.forEach((t) -> removeTagFrom(deck, t));
+        for (Tag addedTag : addedTags)
+            addTagTo(deck, addedTag);
+
+        for (Tag t : deletedTags)
+            removeTagFrom(deck, t);
     }
 
     /**
      * Assumes the association doesn’t exist in the database.
      */
-    private void addTagTo(Deck deck, Tag tag) {
+    private void addTagTo(Deck deck, Tag tag) throws SQLException {
         String sql = """
                 INSERT INTO deck_tag (deck_id, tag_id)
                 VALUES ('%1$s', '%2$s')
@@ -208,7 +203,7 @@ public class TagDAO {
         database.executeUpdate(sql);
     }
 
-    private void removeTagFrom(Deck deck, Tag tag) {
+    private void removeTagFrom(Deck deck, Tag tag) throws SQLException {
         String sql = """
                 DELETE FROM deck_tag
                 WHERE deck_id = '%1$s'
@@ -224,7 +219,7 @@ public class TagDAO {
      * <p>
      * Should only be used by other managers.
      */
-    public List<Tag> getTagsFor(UUID deckId) {
+    public List<Tag> getTagsFor(UUID deckId) throws SQLException {
         String sql = """
                 SELECT deck_id, tag_id
                 FROM deck_tag
@@ -237,7 +232,7 @@ public class TagDAO {
     /**
      * For filtering purposes
      */
-    public List<Deck> getDecksHavingTag(Tag tag) {
+    public List<Deck> getDecksHavingTag(Tag tag) throws SQLException {
         String sql = """
                 SELECT deck_id, tag_id
                 FROM deck_tag
@@ -246,20 +241,17 @@ public class TagDAO {
 
         List<Deck> decks = new ArrayList<>();
 
-        try {
-            ResultSet res = database.executeQuery(sql);
+        try (ResultSet res = database.executeQuery(sql)) {
             while (res.next()) {
                 UUID deckId = UUID.fromString(res.getString("deck_id"));
                 decks.add(deckDao.getDeck(deckId));
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
         return decks;
     }
 
-    public List<Tag> searchTags(String userSearch) {
+    public List<Tag> searchTags(String userSearch) throws SQLException {
         String sql = """
             SELECT tag_id
             FROM tag

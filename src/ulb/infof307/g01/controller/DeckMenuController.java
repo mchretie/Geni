@@ -11,6 +11,7 @@ import ulb.infof307.g01.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,8 +118,12 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             deckMenuViewController.setDecks( loadDecks( dm.getAllDecks() ) );
 
         } catch (IOException e) {
-            e.printStackTrace();
+            controllerListener.fxmlLoadingError(e);
+
+        } catch (SQLException e) {
+            controllerListener.savingError(e);
         }
+
     }
 
     @Override
@@ -144,7 +149,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             deckMenuViewController.setDecks( loadDecks( dm.getAllDecks() ) );
 
         } catch (IOException e) {
-            e.printStackTrace();
+            controllerListener.fxmlLoadingError(e);
+
+        } catch (SQLException e) {
+            controllerListener.savingError(e);
         }
     }
 
@@ -166,5 +174,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     public interface ControllerListener {
         void editDeckClicked(Deck deck);
         void playDeckClicked(Deck deck);
+        void fxmlLoadingError(IOException e);
+        void savingError(SQLException e);
     }
 }

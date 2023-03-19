@@ -2,15 +2,13 @@ package ulb.infof307.g01.view.mainwindow;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
-
 import ulb.infof307.g01.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.view.playdeck.PlayDeckViewController;
@@ -69,6 +67,18 @@ public class MainWindowViewController {
 
     public PlayDeckViewController getPlayDeckViewController() {
         return playDeckViewController;
+    }
+
+
+    /* ====================================================================== */
+    /*                              Alerts                                    */
+    /* ====================================================================== */
+
+    public void alertError(String errorTitle, String errorDecription) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(errorTitle);
+        errorAlert.setContentText(errorDecription);
+        errorAlert.showAndWait();
     }
 
 
