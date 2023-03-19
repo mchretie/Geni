@@ -21,24 +21,28 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
     private final DeckDAO dm = DeckDAO.singleton();
 
-    /* ============================================================================================================== */
-    /*                                                  Constructor                                                   */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                              Constructor                               */
+    /* ====================================================================== */
 
-    public EditDeckController(Stage stage, Deck deck, MainWindowViewController mainWindowViewController) {
+    public EditDeckController(Stage stage, Deck deck,
+                              MainWindowViewController mainWindowViewController) {
+
         this.stage = stage;
         this.deck = deck;
         this.mainWindowViewController = mainWindowViewController;
 
-        this.editDeckViewController = mainWindowViewController.getEditDeckViewController();
+        this.editDeckViewController
+                = mainWindowViewController.getEditDeckViewController();
+
         editDeckViewController.setListener(this);
         editDeckViewController.setDeck(deck);
     }
 
 
-    /* ============================================================================================================== */
-    /*                                            Stage manipulation                                                  */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                         Stage Manipulation                             */
+    /* ====================================================================== */
 
     /**
      * Loads and displays the Deck Menu onto the main scene
@@ -52,7 +56,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
         editDeckViewController.loadCardsFromDeck();
 
         if (deck.cardCount() > 0) {
-            editDeckViewController.setSelectedCard(deck.getCards().get(0));
+            editDeckViewController.setSelectedCard(deck.getFirstCard());
             editDeckViewController.loadSelectedCardEditor();
         }
 
@@ -63,9 +67,9 @@ public class EditDeckController implements EditDeckViewController.Listener {
     }
 
 
-    /* ============================================================================================================== */
-    /*                                          View Listener Methods                                                 */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                        View Listener Method                            */
+    /* ====================================================================== */
 
     @Override
     public void deckNameModified(String newName) {
@@ -97,14 +101,16 @@ public class EditDeckController implements EditDeckViewController.Listener {
     public void newCard() {
         deck.addCard(new Card("Avant", "Arrière"));
         dm.saveDeck(deck);
+
         editDeckViewController.loadCardsFromDeck();
-        editDeckViewController.setSelectedCard(deck.getCards().get(deck.cardCount() - 1));
+        editDeckViewController.setSelectedCard(deck.getLastCard());
     }
 
     @Override
     public void removeCard(Card selectedCard){
         deck.removeCard(selectedCard);
         dm.saveDeck(deck);
+
         editDeckViewController.loadCardsFromDeck();
         editDeckViewController.hideSelectedCardEditor();
     }

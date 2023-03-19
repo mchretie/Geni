@@ -35,26 +35,36 @@ public class DeckMenuViewController {
     private Listener listener;
 
 
-    /* ============================================================================================================== */
-    /*                                                      Setters                                                   */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                                Setters                                 */
+    /* ====================================================================== */
 
     public void setListener(Listener listener) {
         this.listener = listener;
     }
 
-    /* ============================================================================================================== */
-    /*                                                  Deck displaying                                               */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                           Deck Displaying                              */
+    /* ====================================================================== */
+
+    /**
+     * Checks if the node is to be removed from the grid or not
+     *
+     * @param node Candidate for removal from grid pane
+     * @return true if to be removed or false otherwise
+     */
+    private boolean clearNodeFromGridCondition(Node node) {
+        return GridPane.getRowIndex(node) != null
+                && GridPane.getColumnIndex(node) != null
+                && (GridPane.getRowIndex(node) > 0
+                || GridPane.getColumnIndex(node) > 0);
+    }
 
     /**
      * Clears the whole grid pane of decks. This circumvents a visual bug.
      */
     private void clearDecksFromGrid() {
-        gridPane.getChildren()
-                .removeIf(node -> GridPane.getRowIndex(node) != null
-                                    && GridPane.getColumnIndex(node) != null
-                                    && (GridPane.getRowIndex(node) > 0 || GridPane.getColumnIndex(node) > 0));
+        gridPane.getChildren().removeIf(this::clearNodeFromGridCondition);
     }
 
     /**
@@ -86,9 +96,9 @@ public class DeckMenuViewController {
     }
 
 
-    /* ============================================================================================================== */
-    /*                                                  Click handlers                                                */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                             Click handlers                             */
+    /* ====================================================================== */
 
     @FXML
     private void handleCreateDeckClicked() {
@@ -97,9 +107,9 @@ public class DeckMenuViewController {
     }
 
 
-    /* ============================================================================================================== */
-    /*                                                  Hover handlers                                                */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                             Hover handlers                             */
+    /* ====================================================================== */
 
     @FXML
     private void handleSearchHover() {
@@ -112,7 +122,9 @@ public class DeckMenuViewController {
     }
 
     @FXML
-    private void handleCreateDeckHover() { createDeckIcon.setIconColor(Color.web("#FFFFFF")); }
+    private void handleCreateDeckHover() {
+        createDeckIcon.setIconColor(Color.web("#FFFFFF"));
+    }
 
     @FXML
     private void handleCreateDeckExit() {
@@ -120,9 +132,9 @@ public class DeckMenuViewController {
     }
 
 
-    /* ============================================================================================================== */
-    /*                                                Listener interface                                              */
-    /* ============================================================================================================== */
+    /* ====================================================================== */
+    /*                           Listener Interface                           */
+    /* ====================================================================== */
 
     public interface Listener {
         void createDeckClicked(String name);
