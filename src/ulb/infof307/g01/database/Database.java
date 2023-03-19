@@ -49,7 +49,7 @@ public class Database {
                 .getConnection("jdbc:sqlite:" + dbname.toPath());
     }
 
-    public void initTables(String[] tables) throws DatabaseException {
+    public void initTables(String[] tables) throws DatabaseException, SQLException {
         executeUpdates(tables);
     }
 
@@ -72,15 +72,11 @@ public class Database {
      * @param query a SQL statement to be executed
      * @return A java.sql.ResultSet with the resulting rows
      */
-    public ResultSet executeQuery(String query) throws DatabaseException {
+    public ResultSet executeQuery(String query) throws DatabaseException, SQLException {
         assertOpened();
 
-        try {
-            Statement stmt = connection.createStatement();
-            return stmt.executeQuery(query);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Statement stmt = connection.createStatement();
+        return stmt.executeQuery(query);
     }
 
     /**
@@ -90,15 +86,11 @@ public class Database {
      *
      * @param update a SQL statement to be executed
      */
-    public void executeUpdate(String update) throws DatabaseException {
+    public void executeUpdate(String update) throws DatabaseException, SQLException {
         assertOpened();
 
-        try {
-            Statement stmt = connection.createStatement();
-            stmt.executeUpdate(update);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Statement stmt = connection.createStatement();
+        stmt.executeUpdate(update);
     }
 
     /**
@@ -108,16 +100,14 @@ public class Database {
      *
      * @param updates a SQL statement to be executed
      */
-    public void executeUpdates(String[] updates) throws DatabaseException {
+    public void executeUpdates(String[] updates) throws DatabaseException, SQLException {
         assertOpened();
 
-        try {
-            Statement stmt = connection.createStatement();
-            for (String sql : updates)
-                stmt.addBatch(sql);
-            stmt.executeBatch();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+        Statement stmt = connection.createStatement();
+        for (String sql : updates)
+            stmt.addBatch(sql);
+        stmt.executeBatch();
+
     }
 }

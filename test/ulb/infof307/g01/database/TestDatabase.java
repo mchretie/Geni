@@ -40,6 +40,7 @@ class TestDatabase {
     // clang-format on
 
     @AfterEach
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     void teardown() throws SQLException {
         Database.singleton().close();
         dbname.delete();
