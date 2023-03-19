@@ -1,6 +1,7 @@
 package ulb.infof307.g01.controller;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,7 +22,8 @@ import java.sql.SQLException;
  */
 public class MainFxController extends Application implements MainWindowViewController.NavigationListener,
                                                                 DeckMenuController.ControllerListener,
-                                                                PlayDeckController.ControllerListener {
+                                                                PlayDeckController.ControllerListener,
+                                                                EditDeckController.ControllerListener {
 
     DeckMenuController deckMenuController;
     MainWindowViewController mainWindowViewController;
@@ -71,8 +73,8 @@ public class MainFxController extends Application implements MainWindowViewContr
 
             deckMenuController.show();
 
-        } catch (Exception e) {
-            communicateError(e, "Please restart the application.");
+        } catch (SQLException | DatabaseException e) {
+            restartApplicationError(e);
         }
     }
 
@@ -85,19 +87,42 @@ public class MainFxController extends Application implements MainWindowViewContr
      * Used to communicate errors that require the user to restart
      *  the application
      *
-     * @param e Exception raised
      */
     private void communicateError(Exception e, String messageToUser) {
         mainWindowViewController.alertError(e.toString(), messageToUser);
     }
 
+    /**
+     * For exceptions that indicate that the app cannot continue to
+     *  function properly
+     *
+     */
     private void restartApplicationError(Exception e) {
-        communicateError(e, "Please restart the application.");
+        communicateError(e, "Veuillez redémarrer l'application.");
+        Platform.exit();
     }
 
+    /**
+     * For when windows other than the main window fail to launch
+     *
+     */
     private void returnToMenuError(Exception e) {
-        communicateError(e, "You will be returned to the main menu.");
+        communicateError(e, "Vous reviendrez au menu principal.");
     }
+
+    /**
+     * For when changes to components (Decks, cards, etc.) fail to be saved in
+     *  the db
+     *
+     */
+    private void databaseModificationError(SQLException e) {
+        String message = "Vos modifications n’ont pas été enregistrées,"
+                            + "veuillez réessayer. Si le problème persiste,"
+                            + "redémarrez l’application";
+
+        communicateError(e, message);
+    }
+
 
     /* ====================================================================== */
     /*                       Database Access Methods                          */
@@ -120,7 +145,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
         try {
             EditDeckController editDeckController
-                    = new EditDeckController(stage, deck, mainWindowViewController);
+                    = new EditDeckController(stage, deck, mainWindowViewController, this);
 
             editDeckController.show();
 
@@ -140,6 +165,16 @@ public class MainFxController extends Application implements MainWindowViewContr
         playDeckController.show();
     }
 
+    @Override
+    public void fxmlLoadingError(IOException e) {
+        restartApplicationError(e);
+    }
+
+    @Override
+    public void savingError(SQLException e) {
+        databaseModificationError(e);
+    }
+
 
     /* ====================================================================== */
     /*                   Navigation Listener Methods                          */
@@ -150,7 +185,7 @@ public class MainFxController extends Application implements MainWindowViewContr
         try {
             deckMenuController.show();
 
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             restartApplicationError(e);
         }
     }
@@ -160,7 +195,7 @@ public class MainFxController extends Application implements MainWindowViewContr
         try {
             deckMenuController.show();
 
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             restartApplicationError(e);
         }
     }
@@ -180,7 +215,7 @@ public class MainFxController extends Application implements MainWindowViewContr
         try {
             deckMenuController.show();
 
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             restartApplicationError(e);
         }
     }

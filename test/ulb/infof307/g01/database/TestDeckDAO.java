@@ -27,17 +27,17 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getDeck_DeckNotExists_ThrowsException() {
+    void getDeck_DeckNotExists_ThrowsException() throws SQLException {
         assertNull(deckDAO.getDeck(new Deck("name").getId()));
     }
 
     @Test
-    void deckNameExists_NameNotExists_ReturnsFalse() {
+    void deckNameExists_NameNotExists_ReturnsFalse() throws SQLException {
         assertFalse(deckDAO.deckNameExists("name"));
     }
 
     @Test
-    void deckNameExists_NameExists_ReturnsTrue() {
+    void deckNameExists_NameExists_ReturnsTrue() throws SQLException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck);
 
@@ -45,7 +45,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void isDeckValid_DeckInvalid_ReturnsFalse() {
+    void isDeckValid_DeckInvalid_ReturnsFalse() throws SQLException {
         Deck deck1 = new Deck("name");
         Deck deck2 = new Deck("name");
         deckDAO.saveDeck(deck1);
@@ -54,7 +54,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void isDeckValid_DeckValid_ReturnsTrue() {
+    void isDeckValid_DeckValid_ReturnsTrue() throws SQLException {
         Deck deck = new Deck("name");
         assertTrue(deckDAO.isDeckValid(deck));
 
@@ -63,7 +63,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_DecksWithSameNameDiffId_OnlyFirstAdded() {
+    void saveDeck_DecksWithSameNameDiffId_OnlyFirstAdded() throws SQLException {
         Deck deck1 = new Deck("name");
         Deck deck2 = new Deck("name");
 
@@ -74,7 +74,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_DeckNotExists_CreatesDeck() {
+    void saveDeck_DeckNotExists_CreatesDeck() throws SQLException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck);
 
@@ -82,7 +82,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_DeckNameChanged_RenameDeck() {
+    void saveDeck_DeckNameChanged_RenameDeck() throws SQLException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck);
 
@@ -93,7 +93,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_DeckNameNotUpdated_DeckNotUpdated() {
+    void saveDeck_DeckNameNotUpdated_DeckNotUpdated() throws SQLException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck);
 
@@ -103,7 +103,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_CardAdded_DeckAddedWithCard() {
+    void saveDeck_CardAdded_DeckAddedWithCard() throws SQLException {
         Deck deck = new Deck("name");
         Card card = new Card("front", "back");
 
@@ -114,7 +114,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_CardDeleted_DeckUpdated() {
+    void saveDeck_CardDeleted_DeckUpdated() throws SQLException {
         Deck deck = new Deck("name");
         Card card = new Card("front", "back");
 
@@ -127,7 +127,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_TagAdded_DeckUpdated() {
+    void saveDeck_TagAdded_DeckUpdated() throws SQLException {
         Deck deck = new Deck("name");
         Tag tag = new Tag("name");
 
@@ -138,7 +138,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_TagRemoved_DeckUpdated() {
+    void saveDeck_TagRemoved_DeckUpdated() throws SQLException {
         Deck deck = new Deck("name");
         Tag tag = new Tag("name");
 
@@ -151,24 +151,26 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getAllDecks_NoDecks_EmptyList() {
+    void getAllDecks_NoDecks_EmptyList() throws SQLException {
         assertTrue(deckDAO.getAllDecks().isEmpty());
     }
 
     @Test
-    void getAllDecks_ManyDecks_AllReturned() {
+    void getAllDecks_ManyDecks_AllReturned() throws SQLException {
         List<Deck> decks = new ArrayList<>();
         decks.add(new Deck("name1"));
         decks.add(new Deck("name2"));
         decks.add(new Deck("name3"));
 
-        decks.forEach((d) -> deckDAO.saveDeck(d));
+        for (Deck d : decks) {
+            deckDAO.saveDeck(d);
+        }
 
         assertEquals(new HashSet<>(decks), new HashSet<>(deckDAO.getAllDecks()));
     }
 
     @Test
-    void getAllDecks_SameDeckAddedMultipleTimes_OneReturned() {
+    void getAllDecks_SameDeckAddedMultipleTimes_OneReturned() throws SQLException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck);
         deckDAO.saveDeck(deck);
@@ -178,7 +180,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void deleteDeck_DeckExists_DeckNotExists() {
+    void deleteDeck_DeckExists_DeckNotExists() throws SQLException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck);
         deckDAO.deleteDeck(deck);
@@ -193,13 +195,15 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void searchTags() {
+    void searchTags() throws SQLException {
         List<Deck> decks = new ArrayList<>();
         decks.add(new Deck("name1"));
         decks.add(new Deck("name2"));
         decks.add(new Deck("name3"));
 
-        decks.forEach((d) -> deckDAO.saveDeck(d));
+        for (Deck d : decks) {
+            deckDAO.saveDeck(d);
+        }
 
         assertEquals(new HashSet<>(decks), new HashSet<>(deckDAO.searchDecks("name")));
     }

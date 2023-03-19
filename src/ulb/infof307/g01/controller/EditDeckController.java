@@ -9,6 +9,7 @@ import ulb.infof307.g01.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class EditDeckController implements EditDeckViewController.Listener {
 
@@ -21,16 +22,20 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
     private final DeckDAO dm = DeckDAO.singleton();
 
+    private final ControllerListener controllerListener;
+
     /* ====================================================================== */
     /*                              Constructor                               */
     /* ====================================================================== */
 
     public EditDeckController(Stage stage, Deck deck,
-                              MainWindowViewController mainWindowViewController) {
+                              MainWindowViewController mainWindowViewController,
+                              ControllerListener controllerListener) {
 
         this.stage = stage;
         this.deck = deck;
         this.mainWindowViewController = mainWindowViewController;
+        this.controllerListener = controllerListener;
 
         this.editDeckViewController
                 = mainWindowViewController.getEditDeckViewController();
@@ -73,51 +78,89 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
     @Override
     public void deckNameModified(String newName) {
-        deck.setName(newName);
-        dm.saveDeck(deck);
+        try {
+            deck.setName(newName);
+            dm.saveDeck(deck);
+
+        } catch (SQLException e) {
+            controllerListener.savingError(e);
+        }
     }
 
     @Override
     public void tagAddedToDeck(Deck deck, String tagName) {
-        deck.addTag(new Tag(tagName));
-        dm.saveDeck(deck);
+        try {
+            deck.addTag(new Tag(tagName));
+            dm.saveDeck(deck);
+
+        } catch (SQLException e) {
+            controllerListener.savingError(e);
+        }
     }
 
     @Override
     public void frontOfCardModified(Card card, String newFront) {
-        card.setFront(newFront);
-        dm.saveDeck(deck);
-        editDeckViewController.loadCardsFromDeck();
+        try {
+            card.setFront(newFront);
+            dm.saveDeck(deck);
+            editDeckViewController.loadCardsFromDeck();
+
+        } catch (SQLException e) {
+            controllerListener.savingError(e);
+        }
     }
 
     @Override
     public void backOfCardModified(Card card, String newBack) {
-        card.setBack(newBack);
-        dm.saveDeck(deck);
-        editDeckViewController.loadCardsFromDeck();
+        try {
+            card.setBack(newBack);
+            dm.saveDeck(deck);
+            editDeckViewController.loadCardsFromDeck();
+
+        } catch (SQLException e) {
+            controllerListener.savingError(e);
+        }
+
     }
 
     @Override
     public void newCard() {
-        deck.addCard(new Card("Avant", "Arrière"));
-        dm.saveDeck(deck);
+        try {
+            deck.addCard(new Card("Avant", "Arrière"));
+            dm.saveDeck(deck);
 
-        editDeckViewController.loadCardsFromDeck();
-        editDeckViewController.setSelectedCard(deck.getLastCard());
+            editDeckViewController.loadCardsFromDeck();
+            editDeckViewController.setSelectedCard(deck.getLastCard());
+
+        } catch (SQLException e) {
+            controllerListener.savingError(e);
+        }
     }
 
     @Override
     public void removeCard(Card selectedCard){
-        deck.removeCard(selectedCard);
-        dm.saveDeck(deck);
+        try {
+            deck.removeCard(selectedCard);
+            dm.saveDeck(deck);
+            editDeckViewController.loadCardsFromDeck();
+            editDeckViewController.hideSelectedCardEditor();
 
-        editDeckViewController.loadCardsFromDeck();
-        editDeckViewController.hideSelectedCardEditor();
+        } catch (SQLException e) {
+            controllerListener.savingError(e);
+        }
     }
 
     @Override
     public void cardPreviewClicked(Card card) {
         editDeckViewController.setSelectedCard(card);
         editDeckViewController.loadSelectedCardEditor();
+    }
+
+    /* ====================================================================== */
+    /*                   Controller Listener Interface                        */
+    /* ====================================================================== */
+
+    public interface ControllerListener {
+        void savingError(SQLException e);
     }
 }
