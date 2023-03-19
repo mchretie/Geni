@@ -35,6 +35,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
         this.stage = stage;
         this.deck = deck;
         this.mainWindowViewController = mainWindowViewController;
+        this.controllerListener = controllerListener;
 
         this.editDeckViewController
                 = mainWindowViewController.getEditDeckViewController();
