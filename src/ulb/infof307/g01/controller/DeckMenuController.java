@@ -128,13 +128,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     @Override
     public void searchDeckClicked(String name) {
-        if (name.isEmpty())
-            try {
-                deckMenuViewController.setDecks( loadDecks( dm.getAllDecks() ) );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
         try {
             deckMenuViewController.setDecks( loadDecks( dm.searchDecks(name) ) );
         } catch (IOException e) {
