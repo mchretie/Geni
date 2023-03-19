@@ -52,8 +52,9 @@ public class DeckDAO {
             """.formatted(deck.getId().toString(),
                           deck.getName());
 
-
-        return !database.executeQuery(sql).next();
+        try (ResultSet res = database.executeQuery(sql)) {
+            return !res.next();
+        }
     }
 
     public boolean deckNameExists(String name) throws SQLException {
@@ -63,7 +64,9 @@ public class DeckDAO {
             WHERE name = '%1$s'
             """.formatted(name);
 
-        return database.executeQuery(sql).next();
+        try (ResultSet res = database.executeQuery(sql)) {
+            return res.next();
+        }
     }
 
     /**

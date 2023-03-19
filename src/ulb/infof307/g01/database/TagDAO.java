@@ -166,6 +166,7 @@ public class TagDAO {
      *
      * @see ulb.infof307.g01.database.DeckDAO
      */
+    @SuppressWarnings("unchecked")
     public void saveTagsFor(Deck deck) throws SQLException {
 
         for (Tag tag : deck.getTags()) {

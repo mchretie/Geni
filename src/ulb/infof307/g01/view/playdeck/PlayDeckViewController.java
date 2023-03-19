@@ -3,15 +3,7 @@ package ulb.infof307.g01.view.playdeck;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.TextFlow;
-import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.Deck;
-
-import java.util.List;
 
 public class PlayDeckViewController {
 
