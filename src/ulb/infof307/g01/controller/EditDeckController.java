@@ -131,6 +131,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
             editDeckViewController.loadCardsFromDeck();
             editDeckViewController.setSelectedCard(deck.getLastCard());
+            cardPreviewClicked(deck.getLastCard());
 
         } catch (SQLException e) {
             controllerListener.savingError(e);
@@ -144,6 +145,9 @@ public class EditDeckController implements EditDeckViewController.Listener {
             dm.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
             editDeckViewController.hideSelectedCardEditor();
+            if (deck.cardCount() != 0) {
+                cardPreviewClicked(deck.getLastCard());
+            }
 
         } catch (SQLException e) {
             controllerListener.savingError(e);
