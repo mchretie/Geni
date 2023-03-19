@@ -118,8 +118,8 @@ public class DeckDAO {
      * Update the database with the data from the deck
      */
     private void saveDeckCards(Deck deck) {
-        HashSet<Card> currentCards = new HashSet<Card>(getCardsFor(deck.getId()));
-        HashSet<Card> newCards = new HashSet<Card>(deck.getCards());
+        HashSet<Card> currentCards = new HashSet<>(getCardsFor(deck.getId()));
+        HashSet<Card> newCards = new HashSet<>(deck.getCards());
 
         Set<Card> addedCards = (Set<Card>) newCards.clone();
         addedCards.removeAll(currentCards);
@@ -127,8 +127,8 @@ public class DeckDAO {
         Set<Card> deletedCards = (Set<Card>) currentCards.clone();
         deletedCards.removeAll(newCards);
 
-        addedCards.forEach((c) -> saveCard(c));
-        deletedCards.forEach((c) -> deleteCard(c));
+        addedCards.forEach(this::saveCard);
+        deletedCards.forEach(this::deleteCard);
     }
 
     private void saveCard(Card card) {
@@ -229,7 +229,7 @@ public class DeckDAO {
                 WHERE deck_id = '%s'
                 """.formatted(deckUuid.toString());
 
-        List<Card> cards = new ArrayList<Card>();
+        List<Card> cards = new ArrayList<>();
 
         try {
             ResultSet res = database.executeQuery(sql);
@@ -261,5 +261,27 @@ public class DeckDAO {
                 """.formatted(deck.getId());
 
         database.executeUpdate(sql);
+    }
+
+    public List<Deck> searchDecks(String userSearch) {
+        String sql = """
+            SELECT deck_id
+            FROM deck
+            WHERE name LIKE '%s'
+            """.formatted(userSearch + "%");
+
+        List<Deck> decks = new ArrayList<>();
+
+        try {
+            ResultSet res = database.executeQuery(sql);
+            while (res.next()) {
+                UUID uuid = UUID.fromString(res.getString("deck_id"));
+                decks.add(getDeck(uuid));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return decks;
     }
 }
