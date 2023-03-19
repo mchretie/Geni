@@ -60,7 +60,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      *
      * @throws IOException if FXMLLoader.load() fails
      */
-    public void show() throws IOException {
+    public void show() throws IOException, SQLException {
         deckMenuViewController.setDecks( loadDecks( dm.getAllDecks() ) );
 
         mainWindowViewController.setDeckMenuViewVisible();
@@ -131,7 +131,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         try {
             deckMenuViewController.setDecks( loadDecks( dm.searchDecks(name) ) );
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            controllerListener.fxmlLoadingError(e);
+        } catch (SQLException e) {
+            controllerListener.savingError(e);
         }
     }
 
