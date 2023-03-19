@@ -2,6 +2,7 @@ package ulb.infof307.g01.view.mainwindow;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -69,6 +70,18 @@ public class MainWindowViewController {
 
     public PlayDeckViewController getPlayDeckViewController() {
         return playDeckViewController;
+    }
+
+
+    /* ====================================================================== */
+    /*                              Alerts                                    */
+    /* ====================================================================== */
+
+    public void alertError(String errorTitle, String errorDecription) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(errorTitle);
+        errorAlert.setContentText(errorDecription);
+        errorAlert.showAndWait();
     }
 
 

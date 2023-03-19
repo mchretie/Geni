@@ -59,27 +59,45 @@ public class MainFxController extends Application implements MainWindowViewContr
         stage.setScene(new Scene(root));
         stage.setResizable(false);
 
-        try {
-            initDatabase();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-        } catch (DatabaseException e) {
-            // display error message
-        }
-
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
 
-        deckMenuController = new DeckMenuController(
-                                        stage,
-                                        this,
-                                        mainWindowViewController);
+        try {
+            initDatabase();
+            deckMenuController = new DeckMenuController(
+                    stage,
+                    this,
+                    mainWindowViewController);
 
-        deckMenuController.show();
+            deckMenuController.show();
+
+        } catch (Exception e) {
+            communicateError(e, "Please restart the application.");
+        }
     }
 
+
+    /* ====================================================================== */
+    /*                      Error messages and handling                       */
+    /* ====================================================================== */
+
+    /**
+     * Used to communicate errors that require the user to restart
+     *  the application
+     *
+     * @param e Exception raised
+     */
+    private void communicateError(Exception e, String messageToUser) {
+        mainWindowViewController.alertError(e.toString(), messageToUser);
+    }
+
+    private void restartApplicationError(Exception e) {
+        communicateError(e, "Please restart the application.");
+    }
+
+    private void returnToMenuError(Exception e) {
+        communicateError(e, "You will be returned to the main menu.");
+    }
 
     /* ====================================================================== */
     /*                       Database Access Methods                          */
@@ -99,14 +117,15 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     @Override
     public void editDeckClicked(Deck deck) {
-        EditDeckController editDeckController
-                = new EditDeckController(stage, deck, mainWindowViewController);
 
         try {
+            EditDeckController editDeckController
+                    = new EditDeckController(stage, deck, mainWindowViewController);
+
             editDeckController.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            returnToMenuError(e);
         }
     }
 
@@ -132,8 +151,7 @@ public class MainFxController extends Application implements MainWindowViewContr
             deckMenuController.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
-            // Display error
+            restartApplicationError(e);
         }
     }
 
@@ -143,8 +161,7 @@ public class MainFxController extends Application implements MainWindowViewContr
             deckMenuController.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
-            // Display error
+            restartApplicationError(e);
         }
     }
 
@@ -164,8 +181,7 @@ public class MainFxController extends Application implements MainWindowViewContr
             deckMenuController.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
-            // Display error
+            restartApplicationError(e);
         }
     }
 }
