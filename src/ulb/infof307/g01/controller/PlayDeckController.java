@@ -51,7 +51,10 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         mainWindowViewController.setPlayDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
-        playDeckViewController.showFrontOfCard(currentCard);
+        if (currentCard == null)
+            controllerListener.finishedPlayingDeck();
+        else
+            playDeckViewController.showFrontOfCard(currentCard);
 
         stage.show();
     }
