@@ -1,8 +1,12 @@
 package ulb.infof307.g01.view.deckmenu;
 
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -16,6 +20,9 @@ public class DeckMenuViewController {
 
     @FXML
     private TextField createDeckField;
+
+    @FXML
+    private TextField searchBar;
 
     @FXML
     private FontIcon searchIcon;
@@ -96,6 +103,13 @@ public class DeckMenuViewController {
         createDeckField.clear();
     }
 
+    @FXML
+    private void handleSearchDeckEvent(Event event) {
+        if (event instanceof MouseEvent) {
+            searchBar.requestFocus();
+        }
+        listener.searchDeckClicked(searchBar.getText());
+    }
 
     /* ====================================================================== */
     /*                             Hover handlers                             */
@@ -128,5 +142,6 @@ public class DeckMenuViewController {
 
     public interface Listener {
         void createDeckClicked(String name);
+        void searchDeckClicked(String name);
     }
 }

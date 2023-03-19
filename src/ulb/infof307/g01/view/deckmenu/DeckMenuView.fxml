@@ -16,19 +16,18 @@
         <HBox alignment="CENTER" spacing="-40">
 
             <!-- Search bar -->
-            <TextField fx:id="searchBar"
-                       prefHeight="30" prefWidth="207.0"
-                       promptText="Search tags / decks"
-                       style="-fx-background-color: gray" />
+            <TextField fx:id="searchBar" onKeyReleased="#handleSearchDeckEvent"
+                       prefHeight="30" prefWidth="207" promptText="Search tags / decks"
+                       style="-fx-background-color: gray;" />
 
-
-            <!-- Search Button -->
+            <!-- Search Button-->
             <Button fx:id="searchButton" layoutY="5"
-                    prefHeight="30" prefWidth="30"
+                    onMouseClicked="#handleSearchDeckEvent" prefHeight="30" prefWidth="30"
                     style="-fx-background-color: transparent;">
 
                 <graphic>
                     <FontIcon fx:id="searchIcon" iconLiteral="mdi2m-magnify" iconSize="30"
+                              onMouseClicked="#handleSearchDeckEvent"
                               onMouseEntered="#handleSearchHover" onMouseExited="#handleSearchExit" />
                 </graphic>
 

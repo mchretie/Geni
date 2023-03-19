@@ -61,7 +61,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException, SQLException {
-        deckMenuViewController.setDecks( loadDecks() );
+        deckMenuViewController.setDecks( loadDecks( dm.getAllDecks() ) );
 
         mainWindowViewController.setDeckMenuViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
@@ -79,10 +79,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @return List of loaded nodes representing decks
      * @throws IOException if FXMLLoader.load() fails
      */
-    private List<Node> loadDecks() throws IOException, SQLException {
-        List<Node> decks = new ArrayList<>();
+    private List<Node> loadDecks(List<Deck> decks) throws IOException {
+        List<Node> decksLoaded = new ArrayList<>();
 
-        for (Deck deck : dm.getAllDecks()) {
+        for (Deck deck : decks) {
 
             URL resource = DeckMenuViewController
                                 .class
@@ -96,10 +96,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             controller.setDeck(deck);
             controller.setListener(this);
 
-            decks.add(node);
+            decksLoaded.add(node);
         }
 
-        return decks;
+        return decksLoaded;
     }
 
 
@@ -115,7 +115,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         try {
             dm.saveDeck(new Deck(name));
-            deckMenuViewController.setDecks(loadDecks());
+            deckMenuViewController.setDecks( loadDecks( dm.getAllDecks() ) );
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
@@ -127,10 +127,21 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
+    public void searchDeckClicked(String name) {
+        try {
+            deckMenuViewController.setDecks( loadDecks( dm.searchDecks(name) ) );
+        } catch (IOException e) {
+            controllerListener.fxmlLoadingError(e);
+        } catch (SQLException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
     public void deckRemoved(Deck deck) {
         try {
             dm.deleteDeck(deck);
-            deckMenuViewController.setDecks( loadDecks() );
+            deckMenuViewController.setDecks( loadDecks( dm.getAllDecks() ) );
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
