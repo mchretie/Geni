@@ -83,8 +83,6 @@ public class EditDeckViewController implements Initializable {
     public void setDeck(Deck deck) {
         this.deck = deck;
         deckNameText.setText(deck.getName());
-
-        LoadTagsFromDeck();
     }
 
     public void setListener(Listener listener) {
@@ -133,7 +131,7 @@ public class EditDeckViewController implements Initializable {
         backCard.setVisible(false);
     }
 
-    public void LoadTagsFromDeck(){
+    public void loadTagsFromDeck(){
         tagsBox.getChildren().clear();
         for (Tag tag: deck.getTags()) { addTagToView(tag.getName(), tag.getColor()); }
     }
@@ -150,7 +148,6 @@ public class EditDeckViewController implements Initializable {
                 "-fx-background-color: " + color);
 
         Text tagText = new Text(text);
-
         tagPane.getChildren().add(tagText);
         tagsBox.getChildren().add(tagPane);
     }
@@ -213,9 +210,11 @@ public class EditDeckViewController implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             Color color = Color.color(Math.random(), Math.random(), Math.random());
             String colorStr = color.toString().replace("0x", "#");
+
             String tagText = tagsInput.getText();
             addTagToView(tagText, colorStr);
             tagsInput.setText("");
+
             listener.tagAddedToDeck(deck ,tagText, colorStr);
         }
     }
