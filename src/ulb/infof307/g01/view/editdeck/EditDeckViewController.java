@@ -84,17 +84,11 @@ public class EditDeckViewController implements Initializable {
         this.deck = deck;
         deckNameText.setText(deck.getName());
 
-        setTags();
+        LoadTagsFromDeck();
     }
 
     public void setListener(Listener listener) {
         this.listener = listener;
-    }
-
-    public void setTags(){
-        for (Tag tag: deck.getTags()) {
-            addTagToView(tag.getName(), tag.getColor());
-        }
     }
 
     public void setSelectedCard(Card selectedCard) {
@@ -137,6 +131,28 @@ public class EditDeckViewController implements Initializable {
     public void hideSelectedCardEditor() {
         frontCard.setVisible(false);
         backCard.setVisible(false);
+    }
+
+    public void LoadTagsFromDeck(){
+        tagsBox.getChildren().clear();
+        for (Tag tag: deck.getTags()) { addTagToView(tag.getName(), tag.getColor()); }
+    }
+
+    private void addTagToView(String text, String color) {
+        StackPane tagPane = new StackPane();
+        tagPane.setMaxHeight(20);
+        tagPane.setStyle("-fx-border-color: #000000; " +
+                "-fx-padding: 6px 10px; " +
+                "-fx-border-insets: 3px 5px; " +
+                "-fx-background-insets: 3px 5px; " +
+                "-fx-border-radius: 15px; " +
+                "-fx-background-radius: 15px; " +
+                "-fx-background-color: " + color);
+
+        Text tagText = new Text(text);
+
+        tagPane.getChildren().add(tagText);
+        tagsBox.getChildren().add(tagPane);
     }
 
 
@@ -202,23 +218,6 @@ public class EditDeckViewController implements Initializable {
             tagsInput.setText("");
             listener.tagAddedToDeck(deck ,tagText, colorStr);
         }
-    }
-
-    private void addTagToView(String text, String color) {
-        StackPane tag = new StackPane();
-        tag.setMaxHeight(20);
-        tag.setStyle("-fx-border-color: #000000; " +
-                "-fx-padding: 6px 10px; " +
-                "-fx-border-insets: 3px 5px; " +
-                "-fx-background-insets: 3px 5px; " +
-                "-fx-border-radius: 15px; " +
-                "-fx-background-radius: 15px; " +
-                "-fx-background-color: " + color);
-
-        Text tagText = new Text(text);
-
-        tag.getChildren().add(tagText);
-        tagsBox.getChildren().add(tag);
     }
 
     @FXML
