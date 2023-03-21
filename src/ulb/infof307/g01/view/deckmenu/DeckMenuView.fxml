@@ -17,7 +17,8 @@
 
             <!-- Search bar -->
             <TextField fx:id="searchBar" onKeyReleased="#handleSearchDeckEvent"
-                       prefHeight="30" prefWidth="207" promptText="Search tags / decks"
+                       prefHeight="30" prefWidth="207"
+                       promptText="Rechercher des decks / tags"
                        style="-fx-background-color: gray;" />
 
             <!-- Search Button-->

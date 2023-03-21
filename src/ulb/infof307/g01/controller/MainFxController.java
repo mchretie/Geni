@@ -202,6 +202,9 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     @Override
     public void goToCurrentDeckClicked() {
+        if (playDeckController == null)
+            return;
+
         playDeckController.show();
     }
 
