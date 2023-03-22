@@ -2,7 +2,6 @@ package ulb.infof307.g01.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ulb.infof307.g01.frontend.model.AnswerValidator;
 
 import static org.junit.jupiter.api.Assertions.*;
 

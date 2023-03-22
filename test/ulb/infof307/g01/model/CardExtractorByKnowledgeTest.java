@@ -2,9 +2,6 @@ package ulb.infof307.g01.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ulb.infof307.g01.frontend.model.Card;
-import ulb.infof307.g01.frontend.model.CardExtractorByKnowledge;
-import ulb.infof307.g01.frontend.model.Deck;
 
 import java.util.ArrayList;
 import java.util.Arrays;

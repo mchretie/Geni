@@ -1,8 +1,6 @@
 package ulb.infof307.g01.model;
 
 import org.junit.jupiter.api.Test;
-import ulb.infof307.g01.frontend.model.Card;
-import ulb.infof307.g01.frontend.model.Deck;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
