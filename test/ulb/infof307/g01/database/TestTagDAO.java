@@ -2,9 +2,12 @@ package ulb.infof307.g01.database;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ulb.infof307.g01.database.exceptions.DatabaseException;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.Tag;
+import ulb.infof307.g01.frontend.database.DatabaseScheme;
+import ulb.infof307.g01.frontend.database.DeckDAO;
+import ulb.infof307.g01.frontend.database.TagDAO;
+import ulb.infof307.g01.frontend.database.exceptions.DatabaseException;
+import ulb.infof307.g01.frontend.model.Deck;
+import ulb.infof307.g01.frontend.model.Tag;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
