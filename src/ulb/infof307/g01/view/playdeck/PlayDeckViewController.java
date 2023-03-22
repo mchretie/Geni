@@ -6,10 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import ulb.infof307.g01.model.Card;
 
 public class PlayDeckViewController {
-
     @FXML
     private Label deckNameLabel;
 
@@ -82,30 +80,6 @@ public class PlayDeckViewController {
     @FXML
     private void onCardClicked() {
         listener.cardClicked();
-    }
-
-    /* ====================================================================== */
-    /*                              Hover handlers                            */
-    /* ====================================================================== */
-
-    @FXML
-    private void handlePreviousButtonEnter() {
-
-    }
-
-    @FXML
-    private void handlePreviousButtonExited() {
-
-    }
-
-    @FXML
-    private void handleNextButtonEnter() {
-
-    }
-
-    @FXML
-    private void handleNextButtonExited() {
-
     }
 
     /* ====================================================================== */

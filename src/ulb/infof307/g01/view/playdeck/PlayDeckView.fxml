@@ -21,10 +21,12 @@
 
     <left>
         <VBox alignment="CENTER" prefHeight="352.0" prefWidth="60.0">
-            <Button layoutX="450" layoutY="5" onMouseClicked="#handlePreviousCardClicked" prefHeight="30" prefWidth="30" style="-fx-border-radius: 50%;">
+            <Button fx:id="previousCardButton" layoutX="450" layoutY="5" onMouseClicked="#handlePreviousCardClicked"
+                    prefHeight="30" prefWidth="30" style="-fx-border-radius: 50%;">
 
                 <graphic>
-                    <FontIcon iconLiteral="mdi2c-chevron-left" iconSize="30" onMouseEntered="#handlePreviousButtonEnter" onMouseExited="#handlePreviousButtonExited" wrappingWidth="35.0" />
+                    <FontIcon iconLiteral="mdi2c-chevron-left" iconSize="30"
+                              wrappingWidth="35.0" />
 
                 </graphic>
 
@@ -38,7 +40,10 @@
 
     <right>
         <VBox alignment="CENTER" prefHeight="363.0">
-            <Button alignment="CENTER" layoutX="450" layoutY="5" onMouseClicked="#handleNextCardClicked" onMouseEntered="#handleNextButtonEnter" onMouseExited="#handleNextButtonExited" prefHeight="30" prefWidth="30" style="-fx-border-radius: 50%">
+            <Button fx:id="nextCardButton" alignment="CENTER"
+                    layoutX="450" layoutY="5"
+                    onMouseClicked="#handleNextCardClicked"
+                    prefHeight="30" prefWidth="30" style="-fx-border-radius: 50%">
 
                 <graphic>
                     <FontIcon iconLiteral="mdi2c-chevron-right" iconSize="30" />
