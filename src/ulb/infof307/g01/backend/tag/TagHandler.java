@@ -26,7 +26,6 @@ public class TagHandler implements Handler {
             });
         });
         logger.info("Tag handler started");
-
     }
 
     private Map<String, String> saveTag(Request req, Response res) {
