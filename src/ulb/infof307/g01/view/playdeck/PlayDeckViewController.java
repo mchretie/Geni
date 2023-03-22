@@ -6,13 +6,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import ulb.infof307.g01.model.Card;
 
 public class PlayDeckViewController {
+
     @FXML
     private Label deckNameLabel;
 
     @FXML
     private Button cardButton;
+
+    private Card currentCard;
 
     private Listener listener;
 
@@ -30,19 +34,28 @@ public class PlayDeckViewController {
         cardButton.setText(content);
     }
 
-
-    /* ====================================================================== */
-    /*                                 Getters                                */
-    /* ====================================================================== */
-
-    public String getCurrentContent() { return cardButton.getText(); }
+    public void setCurrentCard(Card currentCard) {
+        this.currentCard = currentCard;
+    }
 
 
     /* ====================================================================== */
-    /*                                Animation                               */
+    /*                     Card displaying and animation                      */
     /* ====================================================================== */
 
-    public void flipCard(String contentToShow) {
+    public void showFrontOfCard() {
+        cardButton.setText(currentCard.getFront());
+    }
+
+    public void flipToFrontOfCard() {
+        flipCard(currentCard.getFront());
+    }
+
+    public void flipToBackOfCard() {
+        flipCard(currentCard.getBack());
+    }
+
+    private void flipCard(String newContent) {
         RotateTransition rotateTransition
                 = new RotateTransition(Duration.millis(300), cardButton);
 
@@ -51,10 +64,11 @@ public class PlayDeckViewController {
         rotateTransition.setToAngle(90);
 
         rotateTransition.setOnFinished(e -> {
-            if (getCurrentContent().equals(contentToShow))
+            if (cardButton.getText().equals(newContent))
                 return;
 
-            showCardContent(contentToShow);
+            cardButton.setText(newContent);
+
             rotateTransition.setFromAngle(90);
             rotateTransition.setToAngle(0);
             rotateTransition.play();

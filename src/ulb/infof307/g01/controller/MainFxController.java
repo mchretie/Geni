@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ulb.infof307.g01.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.database.Database;
 import ulb.infof307.g01.database.DatabaseScheme;
 import ulb.infof307.g01.database.exceptions.DatabaseException;
@@ -116,8 +117,8 @@ public class MainFxController extends Application implements MainWindowViewContr
      *
      */
     private void databaseModificationError(SQLException e) {
-        String message = "Vos modifications n’ont pas été enregistrées,"
-                            + "veuillez réessayer. Si le problème persiste,"
+        String message = "Vos modifications n’ont pas été enregistrées, "
+                            + "veuillez réessayer. Si le problème persiste, "
                             + "redémarrez l’application";
 
         communicateError(e, message);
@@ -156,13 +157,21 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     @Override
     public void playDeckClicked(Deck deck) {
-        playDeckController = new PlayDeckController(
-                                        stage,
-                                        deck,
-                                        mainWindowViewController,
-                         this);
+        try {
+            playDeckController = new PlayDeckController(
+                    stage,
+                    deck,
+                    mainWindowViewController,
+                    this);
 
-        playDeckController.show();
+            playDeckController.show();
+        }
+
+        catch (EmptyDeckException e) {
+            String title = "Paquet vide.";
+            String description = "Le paquet que vous aviez ouvert est vide.";
+            mainWindowViewController.alertInformation(title, description);
+        }
     }
 
     @Override
