@@ -12,7 +12,8 @@ La compilation et la gestion des dépendances sont gérées par `maven`. Ainsi, 
 ```bash
 mvn test        # pour tester le programme
 mvn package     # pour générer le .jar
-mvn javafx:run  # pour lancer l’application
+mvn javafx:run  # pour lancer l’application frontend
+mvn compile exec:java -Dexec.mainClass="ulb.infof307.g01.backend.Server" # pour lancer le backend
 ```
 
 Un makefile avec les cibles `test`, `pack` et `run` est également fourni.
