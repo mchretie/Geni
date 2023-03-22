@@ -20,8 +20,8 @@ public class DeckHandler implements Handler {
         logger.info("Starting deck handler");
         path("/api", () -> {
             path("/deck", () -> {
-                get("/get", this::getDeck, json());
                 post("/save", this::saveDeck, json());
+                get("/get", this::getDeck, json());
                 delete("/delete", this::deleteDeck, json());
                 get("/all", this::getAllDecks, json());
                 get("/search", this::searchDecks, json());
@@ -29,16 +29,16 @@ public class DeckHandler implements Handler {
         });
         logger.info("Deck handler started");
     }
+    private Map<String, String> saveDeck(Request req, Response res) {
+        UUID userId = UUID.fromString(req.queryParams("user_id"));
+        return null;
+    }
 
     private Map<String, String> getDeck(Request req, Response res) {
         UUID userId = UUID.fromString(req.queryParams("user_id"));
         return null;
     }
 
-    private Map<String, String> saveDeck(Request req, Response res) {
-        UUID userId = UUID.fromString(req.queryParams("user_id"));
-        return null;
-    }
 
     private Map<String, String> deleteDeck(Request req, Response res) {
         UUID userId = UUID.fromString(req.queryParams("user_id"));
