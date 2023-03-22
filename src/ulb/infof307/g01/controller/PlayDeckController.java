@@ -59,7 +59,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         playDeckViewController.showFrontOfCard();
         stage.show();
-
     }
 
 
