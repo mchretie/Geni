@@ -30,6 +30,11 @@ Et mettre la commande suivante dans le champ `Command line` :
 javafx:run
 ```
 
+Vous pouvez aussi lancer le backend en créant une configuration de lancement comme suit :
+
+```bash
+compile exec:java -Dexec.mainClass="ulb.infof307.g01.backend.Server"
+```
 
 ## Librairies externes
 
