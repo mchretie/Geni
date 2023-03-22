@@ -54,7 +54,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         if (currentCard == null)
             controllerListener.finishedPlayingDeck();
         else
-            playDeckViewController.showFrontOfCard(currentCard);
+            playDeckViewController.showCardContent(currentCard.getFront());
 
         stage.show();
     }
@@ -68,12 +68,12 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     public void cardClicked() {
 
         if (frontIsShown) {
-            playDeckViewController.showBackOfCard(currentCard);
+            playDeckViewController.flipCard(currentCard.getBack());
             frontIsShown = false;
         }
 
         else {
-            playDeckViewController.showFrontOfCard(currentCard);
+            playDeckViewController.flipCard(currentCard.getFront());
             frontIsShown = true;
         }
 
@@ -82,24 +82,26 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     @Override
     public void nextCardClicked() {
         currentCard = cardExtractor.getNextCard();
+
         if (currentCard == null) {
             controllerListener.finishedPlayingDeck();
             return;
         }
 
         frontIsShown = true;
-        playDeckViewController.showFrontOfCard(currentCard);
+        playDeckViewController.showCardContent(currentCard.getFront());
     }
 
     @Override
     public void previousCardClicked() {
         Card previousCard = cardExtractor.getPreviousCard();
+
         if (previousCard == null)
             return;
 
         currentCard = previousCard;
         frontIsShown = true;
-        playDeckViewController.showFrontOfCard(currentCard);
+        playDeckViewController.showCardContent(currentCard.getFront());
     }
 
 
