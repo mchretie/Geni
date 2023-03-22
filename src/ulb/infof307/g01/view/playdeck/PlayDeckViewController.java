@@ -1,8 +1,11 @@
 package ulb.infof307.g01.view.playdeck;
 
+import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 import ulb.infof307.g01.model.Card;
 
 public class PlayDeckViewController {
@@ -13,7 +16,13 @@ public class PlayDeckViewController {
     @FXML
     private Button cardButton;
 
+    private Card currentCard;
+
     private Listener listener;
+
+    /* ====================================================================== */
+    /*                                 Setters                                */
+    /* ====================================================================== */
 
     public void setListener(Listener listener) {
         this.listener = listener;
@@ -21,12 +30,51 @@ public class PlayDeckViewController {
 
     public void setDeckName(String deckName) { this.deckNameLabel.setText(deckName); }
 
-    public void showFrontOfCard(Card currentCard) {
+    public void showCardContent(String content) {
+        cardButton.setText(content);
+    }
+
+    public void setCurrentCard(Card currentCard) {
+        this.currentCard = currentCard;
+    }
+
+
+    /* ====================================================================== */
+    /*                     Card displaying and animation                      */
+    /* ====================================================================== */
+
+    public void showFrontOfCard() {
         cardButton.setText(currentCard.getFront());
     }
 
-    public void showBackOfCard(Card currentCard) {
-        cardButton.setText(currentCard.getBack());
+    public void flipToFrontOfCard() {
+        flipCard(currentCard.getFront());
+    }
+
+    public void flipToBackOfCard() {
+        flipCard(currentCard.getBack());
+    }
+
+    private void flipCard(String newContent) {
+        RotateTransition rotateTransition
+                = new RotateTransition(Duration.millis(300), cardButton);
+
+        rotateTransition.setAxis(Rotate.Y_AXIS);
+        rotateTransition.setFromAngle(0);
+        rotateTransition.setToAngle(90);
+
+        rotateTransition.setOnFinished(e -> {
+            if (cardButton.getText().equals(newContent))
+                return;
+
+            cardButton.setText(newContent);
+
+            rotateTransition.setFromAngle(90);
+            rotateTransition.setToAngle(0);
+            rotateTransition.play();
+        });
+
+        rotateTransition.play();
     }
 
     /* ====================================================================== */
@@ -46,30 +94,6 @@ public class PlayDeckViewController {
     @FXML
     private void onCardClicked() {
         listener.cardClicked();
-    }
-
-    /* ====================================================================== */
-    /*                              Hover handlers                            */
-    /* ====================================================================== */
-
-    @FXML
-    private void handlePreviousButtonEnter() {
-
-    }
-
-    @FXML
-    private void handlePreviousButtonExited() {
-
-    }
-
-    @FXML
-    private void handleNextButtonEnter() {
-
-    }
-
-    @FXML
-    private void handleNextButtonExited() {
-
     }
 
     /* ====================================================================== */

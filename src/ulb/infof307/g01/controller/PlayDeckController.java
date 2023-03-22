@@ -1,6 +1,7 @@
 package ulb.infof307.g01.controller;
 
 import javafx.stage.Stage;
+import ulb.infof307.g01.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.CardExtractor;
 import ulb.infof307.g01.model.CardExtractorRandom;
@@ -12,6 +13,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     private final CardExtractor cardExtractor;
     private Card currentCard;
+    private boolean frontShown = true;
 
     private final Stage stage;
 
@@ -19,19 +21,22 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     private final PlayDeckViewController playDeckViewController;
     private final ControllerListener controllerListener;
 
-    private boolean frontIsShown = true;
-
     /* ====================================================================== */
     /*                              Constructor                               */
     /* ====================================================================== */
 
     public PlayDeckController(Stage stage, Deck deck,
                               MainWindowViewController mainWindowViewController,
-                              ControllerListener controllerListener) {
+                              ControllerListener controllerListener) throws EmptyDeckException {
 
         this.stage = stage;
+
         this.cardExtractor = new CardExtractorRandom(deck);
         this.currentCard = cardExtractor.getNextCard();
+
+        if (currentCard == null)
+            throw new EmptyDeckException("Deck does not contain any cards.");
+
         this.controllerListener = controllerListener;
 
         this.mainWindowViewController = mainWindowViewController;
@@ -39,6 +44,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         this.playDeckViewController = mainWindowViewController.getPlayDeckViewController();
         playDeckViewController.setListener(this);
+        playDeckViewController.setCurrentCard(currentCard);
         playDeckViewController.setDeckName(deck.getName());
     }
 
@@ -51,11 +57,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         mainWindowViewController.setPlayDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
-        if (currentCard == null)
-            controllerListener.finishedPlayingDeck();
-        else
-            playDeckViewController.showFrontOfCard(currentCard);
-
+        playDeckViewController.showFrontOfCard();
         stage.show();
     }
 
@@ -66,40 +68,33 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     @Override
     public void cardClicked() {
-
-        if (frontIsShown) {
-            playDeckViewController.showBackOfCard(currentCard);
-            frontIsShown = false;
-        }
-
-        else {
-            playDeckViewController.showFrontOfCard(currentCard);
-            frontIsShown = true;
-        }
-
+        frontShown = !frontShown;
+        if (frontShown)
+            playDeckViewController.flipToFrontOfCard();
+        else
+            playDeckViewController.flipToBackOfCard();
     }
 
     @Override
     public void nextCardClicked() {
         currentCard = cardExtractor.getNextCard();
-        if (currentCard == null) {
-            controllerListener.finishedPlayingDeck();
-            return;
-        }
 
-        frontIsShown = true;
-        playDeckViewController.showFrontOfCard(currentCard);
+        if (currentCard != null)
+            playDeckViewController.setCurrentCard(currentCard);
+
+        else
+            controllerListener.finishedPlayingDeck();
     }
 
     @Override
     public void previousCardClicked() {
         Card previousCard = cardExtractor.getPreviousCard();
+
         if (previousCard == null)
             return;
 
         currentCard = previousCard;
-        frontIsShown = true;
-        playDeckViewController.showFrontOfCard(currentCard);
+        playDeckViewController.showCardContent(currentCard.getFront());
     }
 
 
