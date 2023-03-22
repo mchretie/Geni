@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import static spark.Spark.*;
+import static ulb.infof307.g01.backend.utils.JsonUtil.json;
 
 public class GuestHandler implements Handler {
     private static final Logger logger = Logger.getLogger(GuestHandler.class.getName());
@@ -18,7 +19,7 @@ public class GuestHandler implements Handler {
         logger.info("Starting guest handler");
         path("/api", () -> {
             path("/guest", () -> {
-                get("/register", this::registerGuest);
+                get("/register", this::registerGuest, json());
             });
         });
         logger.info("Guest handler started");
@@ -26,8 +27,8 @@ public class GuestHandler implements Handler {
 
     private Map<String, String> registerGuest(Request req, Response res) {
         UUID uuid = UUID.randomUUID();
-        logger.info("Received request to register guest with uuid " + uuid);
-        res.type("text/json");
+        logger.info("Registered guest with uuid " + uuid);
+        res.type("application/json");
         return Map.of("uuid", uuid.toString());
     }
 
