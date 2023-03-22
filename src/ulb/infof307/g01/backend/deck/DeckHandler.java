@@ -30,9 +30,9 @@ public class DeckHandler implements Handler {
         logger.info("Deck handler started");
     }
 
-    private String getDeck(Request req, Response res) {
+    private Map<String, String> getDeck(Request req, Response res) {
         UUID userId = UUID.fromString(req.params(":user_id"));
-        return "You have reached the deck handler";
+        return null;
     }
 
     private Map<String, String> saveDeck(Request req, Response res) {
