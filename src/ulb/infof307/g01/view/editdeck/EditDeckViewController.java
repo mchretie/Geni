@@ -100,7 +100,7 @@ public class EditDeckViewController implements Initializable {
 
 
     /* ====================================================================== */
-    /*                         Card and deck loading                          */
+    /*                         Tags, Card, deck loading                       */
     /* ====================================================================== */
 
     public void loadCardsFromDeck() {
@@ -147,7 +147,7 @@ public class EditDeckViewController implements Initializable {
                 "-fx-background-radius: 15px; " +
                 "-fx-background-color: " + color);
 
-        Text tagText = new Text(text);
+        Text tagText = new Text(text.trim());
         tagPane.getChildren().add(tagText);
         tagsBox.getChildren().add(tagPane);
     }

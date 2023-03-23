@@ -61,7 +61,6 @@ public class EditDeckController implements EditDeckViewController.Listener {
         editDeckViewController.loadTagsFromDeck();
         editDeckViewController.loadCardsFromDeck();
 
-
         if (deck.cardCount() > 0) {
             editDeckViewController.setSelectedCard(deck.getFirstCard());
             editDeckViewController.loadSelectedCardEditor();
