@@ -12,6 +12,8 @@ import javafx.scene.paint.*;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
 
+import java.net.URL;
+
 public class DeckViewController {
 
     @FXML
@@ -62,14 +64,7 @@ public class DeckViewController {
     private void setBackGroundImage()  {
         // TODO: make image depend on deck image
 
-        // Temporary hard coded image
-        String imageURL
-                = "https://upload.wikimedia.org/wikipedia" +
-                        "/commons/2/28/Niels_Skovgaard_-_" +
-                        "Landscape_from_Foldalen_in_Norway_%281911%29.jpg";
-
-        Image img = new Image(imageURL);
-
+        Image img = new Image("file:res/img/tmpdeckimage.jpg");
         deckRect.setFill(new ImagePattern(img));
         deckRect.setOpacity(0.7);
     }
