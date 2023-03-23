@@ -5,7 +5,11 @@ public class DatabaseScheme {
             """
         CREATE TABLE IF NOT EXISTS deck (
             deck_id TEXT PRIMARY KEY,
-            name TEXT UNIQUE NOT NULL
+            user_id TEXT,
+            name TEXT UNIQUE NOT NULL,
+            FOREIGN KEY (user_id)
+                REFERENCES User(user_id)
+                ON DELETE CASCADE
         );""",
 
             """
@@ -57,7 +61,7 @@ public class DatabaseScheme {
             FOREIGN KEY (card_id)
                 REFERENCES Card(card_id)
                 ON DELETE CASCADE
-        );"""
+        );""",
     };
 }
 
