@@ -30,12 +30,9 @@ public class PlayDeckViewController {
 
     public void setDeckName(String deckName) { this.deckNameLabel.setText(deckName); }
 
-    public void showCardContent(String content) {
-        cardButton.setText(content);
-    }
-
     public void setCurrentCard(Card currentCard) {
         this.currentCard = currentCard;
+        showFrontOfCard();
     }
 
 
@@ -43,7 +40,7 @@ public class PlayDeckViewController {
     /*                     Card displaying and animation                      */
     /* ====================================================================== */
 
-    public void showFrontOfCard() {
+    private void showFrontOfCard() {
         cardButton.setText(currentCard.getFront());
     }
 
