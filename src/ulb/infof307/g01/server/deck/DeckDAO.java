@@ -77,10 +77,10 @@ public class DeckDAO {
      * If the given deck is not valid, it will be ignored.
      * @see DeckDAO#isDeckValid
      */
-    public void saveDeck(Deck deck) throws SQLException {
+    public void saveDeck(Deck deck, UUID userId) throws SQLException {
         if (!isDeckValid(deck))
             return;
-        saveDeckIdentity(deck);
+        saveDeckIdentity(deck, userId);
         saveDeckTags(deck);
         saveDeckCards(deck);
     }
@@ -92,16 +92,17 @@ public class DeckDAO {
      * but with different ids, only the first will be saved while
      * the following will be ignored.
      */
-    private void saveDeckIdentity(Deck deck)  throws SQLException{
+    private void saveDeckIdentity(Deck deck, UUID userId)  throws SQLException{
         String sql = """
-                INSERT INTO deck (deck_id, name)
-                VALUES ('%1$s', '%2$s')
+                INSERT INTO deck (deck_id, user_id, name)
+                VALUES ('%1$s', '%2$s', '%3$s')
                 ON CONFLICT(deck_id)
                 DO UPDATE SET name = '%2$s'
                 ON CONFLICT(name)
                 DO NOTHING
                 """.formatted(
                 deck.getId().toString(),
+                userId.toString(),
                 deck.getName());
 
         database.executeUpdate(sql);
@@ -274,11 +275,11 @@ public class DeckDAO {
     /**
      * Delete a deck along with its cards from the database.
      */
-    public void deleteDeck(Deck deck) throws SQLException {
+    public void deleteDeck(Deck deck, UUID userId) throws SQLException {
         String sql = """
                 DELETE FROM deck
-                WHERE deck_id = '%s'
-                """.formatted(deck.getId());
+                WHERE deck_id = '%1$s' and user_id = '%2$s'
+                """.formatted(deck.getId().toString(), userId.toString());
 
         database.executeUpdate(sql);
     }

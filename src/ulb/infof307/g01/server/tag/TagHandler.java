@@ -33,7 +33,7 @@ public class TagHandler implements Handler {
     }
 
     private Map<String, String> getTagFor(Request req, Response res) {
-        UUID deckId = UUID.fromString(req.queryParams("deckId"));
+        UUID deckId = UUID.fromString(req.queryParams("deck_id"));
         return null;
     }
 
@@ -48,7 +48,7 @@ public class TagHandler implements Handler {
     }
 
     private Map<String, String> searchTag(Request req, Response res) {
-        String userSearch = req.queryParams("userSearch");
+        String userSearch = req.queryParams("user_search");
         return null;
     }
 

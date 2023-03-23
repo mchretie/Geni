@@ -75,6 +75,21 @@ public class TagDAO {
         return database.executeQuery(sql).next();
     }
 
+    private Tag replaceIdIfAlreadyExist(Tag tag) throws SQLException {
+        String sql = """
+                SELECT tag_id
+                FROM tag
+                WHERE name = '%1$s'
+                """.formatted(tag.getName());
+        try (ResultSet res = database.executeQuery(sql)) {
+            if (res.next()) {
+                tag = new Tag(tag.getName(), UUID.fromString(res.getString("tag_id")), tag.getColor());
+            }
+        }
+        return tag;
+    }
+
+
     /**
      * <p>
      * Upon the saving of multiple tags with the same name,
@@ -185,7 +200,7 @@ public class TagDAO {
         deletedTags.removeAll(newTags);
 
         for (Tag addedTag : addedTags)
-            addTagTo(deck, addedTag);
+            addTagTo(deck, replaceIdIfAlreadyExist(addedTag));
 
         for (Tag t : deletedTags)
             removeTagFrom(deck, t);
