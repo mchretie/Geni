@@ -3,13 +3,21 @@ package ulb.infof307.g01.view.deckmenu;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
+
+import java.awt.*;
 
 public class DeckViewController {
 
     @FXML
     private Button playDeckButton;
+
+    @FXML
+    public javafx.scene.shape.Rectangle gradientRect;
 
     @FXML
     private FontIcon editDeckIcon;
@@ -33,6 +41,17 @@ public class DeckViewController {
     public void setDeck(Deck deck) {
         this.deck = deck;
         this.updateDeckButtonName();
+
+        //TODO: make gradient color depend on deck color
+        gradientRect.setFill(makeGradient(Color.color(Math.random(), Math.random(), Math.random())));
+    }
+
+    private LinearGradient makeGradient(Color color) {
+        float gradientHeight = 0.6f;
+        float gradientStrengthInverted = 1.2f;
+
+        Stop[] stops = new Stop[] { new Stop(0, color), new Stop(gradientHeight, Color.web("#FFFFFF"))};
+        return new LinearGradient(1, gradientStrengthInverted, 1, 0, true, CycleMethod.NO_CYCLE, stops);
     }
 
     private void updateDeckButtonName() {
