@@ -8,11 +8,15 @@
 
 <StackPane fx:id="homeDeckPane" onMouseClicked="#handleDoubleDeckClicked" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.deckmenu.DeckViewController">
 
-    <Rectangle fx:id="gradientRect" arcHeight="20" arcWidth="20" fill="WHITE" height="150" stroke="black" width="225">
+    <Rectangle fx:id="deckRect" arcHeight="20" arcWidth="20" fill="WHITE" height="150" stroke="TRANSPARENT" width="225">
 
           <StackPane.margin>
              <Insets left="40.0" top="25.0" />
           </StackPane.margin></Rectangle>
+   <Rectangle fx:id="deckGradientRect" arcHeight="20" arcWidth="20" fill="#ffffff00" height="150" stroke="BLACK" width="225">
+      <StackPane.margin>
+         <Insets left="40.0" top="24.0" />
+      </StackPane.margin></Rectangle>
 
         <Button fx:id="playDeckButton" onMouseClicked="#handleDoubleDeckClicked" prefHeight="97.0" prefWidth="172.0" style="-fx-background-color: transparent;">
 

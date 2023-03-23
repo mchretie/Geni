@@ -2,14 +2,15 @@ package ulb.infof307.g01.view.deckmenu;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.paint.*;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
-
-import java.awt.*;
 
 public class DeckViewController {
 
@@ -17,7 +18,10 @@ public class DeckViewController {
     private Button playDeckButton;
 
     @FXML
-    public javafx.scene.shape.Rectangle gradientRect;
+    public javafx.scene.shape.Rectangle deckRect;
+
+    @FXML
+    public javafx.scene.shape.Rectangle deckGradientRect;
 
     @FXML
     private FontIcon editDeckIcon;
@@ -42,15 +46,28 @@ public class DeckViewController {
         this.deck = deck;
         this.updateDeckButtonName();
 
-        //TODO: make gradient color depend on deck color
-        gradientRect.setFill(makeGradient(Color.color(Math.random(), Math.random(), Math.random())));
+        this.setDeckColor();
+        this.setBackGroundImage();
+    }
+
+    private void setDeckColor() {
+        // TODO: make gradient color depend on deck color
+        deckGradientRect.setFill(makeGradient(Color.color(Math.random(), Math.random(), Math.random())));
+    }
+
+    private void setBackGroundImage() {
+        // TODO: make image depend on deck image
+        // this ugly image link is for testing purposes
+        Image img = new Image("https://upload.wikimedia.org/wikipedia/commons/2/28/Niels_Skovgaard_-_Landscape_from_Foldalen_in_Norway_%281911%29.jpg");
+        deckRect.setFill(new ImagePattern(img));
+        deckRect.setOpacity(0.7);
     }
 
     private LinearGradient makeGradient(Color color) {
         float gradientHeight = 0.6f;
         float gradientStrengthInverted = 1.2f;
 
-        Stop[] stops = new Stop[] { new Stop(0, color), new Stop(gradientHeight, Color.web("#FFFFFF"))};
+        Stop[] stops = new Stop[] { new Stop(0, color), new Stop(gradientHeight, Color.web("#FFFFFF00"))};
         return new LinearGradient(1, gradientStrengthInverted, 1, 0, true, CycleMethod.NO_CYCLE, stops);
     }
 
