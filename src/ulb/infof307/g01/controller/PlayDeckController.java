@@ -57,7 +57,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         mainWindowViewController.setPlayDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
-        playDeckViewController.showFrontOfCard();
         stage.show();
     }
 
@@ -94,7 +93,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             return;
 
         currentCard = previousCard;
-        playDeckViewController.showCardContent(currentCard.getFront());
+        playDeckViewController.setCurrentCard(currentCard);
     }
 
 
