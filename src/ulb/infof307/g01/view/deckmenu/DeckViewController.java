@@ -12,6 +12,8 @@ import javafx.scene.paint.*;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
 
+import java.net.URL;
+
 public class DeckViewController {
 
     @FXML
@@ -52,13 +54,17 @@ public class DeckViewController {
 
     private void setDeckColor() {
         // TODO: make gradient color depend on deck color
-        deckGradientRect.setFill(makeGradient(Color.color(Math.random(), Math.random(), Math.random())));
+
+        Color color
+                = Color.color(Math.random(), Math.random(), Math.random());
+
+        deckGradientRect.setFill(makeGradient(color));
     }
 
-    private void setBackGroundImage() {
+    private void setBackGroundImage()  {
         // TODO: make image depend on deck image
-        // this ugly image link is for testing purposes
-        Image img = new Image("https://upload.wikimedia.org/wikipedia/commons/2/28/Niels_Skovgaard_-_Landscape_from_Foldalen_in_Norway_%281911%29.jpg");
+
+        Image img = new Image("file:res/img/tmpdeckimage.jpg");
         deckRect.setFill(new ImagePattern(img));
         deckRect.setOpacity(0.7);
     }
@@ -67,8 +73,18 @@ public class DeckViewController {
         float gradientHeight = 0.6f;
         float gradientStrengthInverted = 1.2f;
 
-        Stop[] stops = new Stop[] { new Stop(0, color), new Stop(gradientHeight, Color.web("#FFFFFF00"))};
-        return new LinearGradient(1, gradientStrengthInverted, 1, 0, true, CycleMethod.NO_CYCLE, stops);
+        Stop[] stops = { new Stop(0, color),
+                         new Stop(gradientHeight, Color.web("#FFFFFF00"))};
+
+        return new LinearGradient(
+                1,
+                gradientStrengthInverted,
+                1,
+                0,
+                true,
+                CycleMethod.NO_CYCLE,
+                stops);
+
     }
 
     private void updateDeckButtonName() {
