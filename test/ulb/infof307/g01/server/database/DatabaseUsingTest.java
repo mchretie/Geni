@@ -1,4 +1,4 @@
-package ulb.infof307.g01.database;
+package ulb.infof307.g01.server.database;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.database.Database;
-import ulb.infof307.g01.gui.database.DatabaseScheme;
 import ulb.infof307.g01.gui.database.exceptions.DatabaseException;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -129,10 +128,6 @@ public class MainFxController extends Application implements MainWindowViewContr
     /* ====================================================================== */
 
     private void initDatabase() throws SQLException, DatabaseException {
-        File dbfile = new File("demo.db");
-        Database db = Database.singleton();
-        db.open(dbfile);
-        db.initTables(DatabaseScheme.CLIENT);
     }
 
 
