@@ -1,29 +1,27 @@
-package ulb.infof307.g01.server.deck;
+package ulb.infof307.g01.server.handler;
 
 import com.google.gson.Gson;
-import org.apache.commons.httpclient.NameValuePair;
 import spark.Request;
 import spark.Response;
-import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.Tag;
-import ulb.infof307.g01.server.Handler;
+import ulb.infof307.g01.server.database.dao.DeckDAO;
 
-import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
 import static spark.Spark.*;
-import static ulb.infof307.g01.server.utils.JsonUtil.json;
 
-public class DeckHandler implements Handler {
-    private static final Logger logger = Logger.getLogger("DeckHandler");
+public class DeckReceptionHandler extends Handler {
+    private static final Logger logger
+            = Logger.getLogger("DeckHandler");
 
-    private final Map<String, String> successfulResponse = Map.of("success", "true");
-    private final Map<String, String> failedResponse = Map.of("success", "false");
+    private final Map<String, String> successfulResponse
+            = Map.of("success", "true");
+
+    private final Map<String, String> failedResponse
+            = Map.of("success", "false");
 
     private final DeckDAO deckDAO = DeckDAO.singleton();
 
@@ -32,11 +30,11 @@ public class DeckHandler implements Handler {
         logger.info("Starting deck handler");
         path("/api", () -> {
             path("/deck", () -> {
-                get("/get", this::getDeck, json());
-                post("/save", this::saveDeck, json());
-                delete("/delete", this::deleteDeck, json());
-                get("/all", this::getAllDecks, json());
-                get("/search", this::searchDecks, json());
+                get("/get", this::getDeck, toJson());
+                post("/save", this::saveDeck, toJson());
+                delete("/delete", this::deleteDeck, toJson());
+                get("/all", this::getAllDecks, toJson());
+                get("/search", this::searchDecks, toJson());
             });
         });
 
@@ -56,15 +54,10 @@ public class DeckHandler implements Handler {
         logger.info("Deck handler started");
     }
 
-    private Deck bodyToDeck(Request req, Response res) {
-        Map deckMap = new Gson().fromJson(req.body(), Map.class);
-        return new Deck(deckMap);
-    }
-
     private Map<String, String> saveDeck(Request req, Response res) {
         try {
             UUID userId = UUID.fromString(req.queryParams("user_id"));
-            Deck deck = bodyToDeck(req, res);
+            Deck deck = new Gson().fromJson(req.body(), Deck.class);
             deckDAO.saveDeck(deck, userId);
             return successfulResponse;
 
@@ -75,15 +68,15 @@ public class DeckHandler implements Handler {
     }
 
     private String getDeck(Request req, Response res) {
-        UUID userId = UUID.fromString(req.queryParams("user_id"));
+        UUID userId = UUID.fromString(req.queryParams("userid"));
         return null;
     }
 
 
     private Map<String, String> deleteDeck(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("user_id"));
-            Deck deck = bodyToDeck(req, res);
+            UUID userId = UUID.fromString(req.queryParams("userid"));
+            Deck deck = new Gson().fromJson(req.body(), Deck.class);
             deckDAO.deleteDeck(deck, userId);
             return successfulResponse;
 
@@ -98,16 +91,7 @@ public class DeckHandler implements Handler {
             UUID userId = UUID.fromString(req.queryParams("userid"));
             System.out.println(userId);
 
-            List<Deck> decks = new ArrayList<>();
-
-            decks.add(new Deck("Deck 1"));
-            decks.add(new Deck("Deck 2"));
-            decks.add(new Deck("Deck 3"));
-
-            decks.get(0).addCard(new Card("Card 1", "Definition 1"));
-
-
-            return decks;
+            return deckDAO.getAllDecks();
 
         } catch (Exception e) {
             logger.warning("Failed to get all decks: " + e.getMessage());

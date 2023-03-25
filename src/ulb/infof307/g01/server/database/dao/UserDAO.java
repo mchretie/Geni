@@ -1,4 +1,4 @@
-package ulb.infof307.g01.server.user;
+package ulb.infof307.g01.server.database.dao;
 
 import ulb.infof307.g01.server.database.Database;
 

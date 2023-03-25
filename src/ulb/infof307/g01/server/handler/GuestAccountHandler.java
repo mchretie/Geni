@@ -1,18 +1,17 @@
-package ulb.infof307.g01.server.user;
+package ulb.infof307.g01.server.handler;
 
 import spark.Request;
 import spark.Response;
-import ulb.infof307.g01.server.Handler;
+import ulb.infof307.g01.server.database.dao.UserDAO;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
 import static spark.Spark.*;
-import static ulb.infof307.g01.server.utils.JsonUtil.json;
 
-public class GuestHandler implements Handler {
-    private static final Logger logger = Logger.getLogger(GuestHandler.class.getName());
+public class GuestAccountHandler extends Handler {
+    private static final Logger logger = Logger.getLogger(GuestAccountHandler.class.getName());
 
     private final UserDAO userDAO = new UserDAO();
 
@@ -21,7 +20,7 @@ public class GuestHandler implements Handler {
         logger.info("Starting guest handler");
         path("/api", () -> {
             path("/guest", () -> {
-                get("/register", this::registerGuest, json());
+                get("/register", this::registerGuest, toJson());
             });
         });
         logger.info("Guest handler started");

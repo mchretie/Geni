@@ -1,8 +1,7 @@
-package ulb.infof307.g01.server.tag;
+package ulb.infof307.g01.server.handler;
 
 import spark.Request;
 import spark.Response;
-import ulb.infof307.g01.server.Handler;
 
 import java.util.Map;
 import java.util.UUID;
@@ -10,9 +9,9 @@ import java.util.logging.Logger;
 
 import static spark.Spark.*;
 
-public class TagHandler implements Handler {
+public class TagReceptionHandler extends Handler {
 
-    private final Logger logger = Logger.getLogger(TagHandler.class.getName());
+    private final Logger logger = Logger.getLogger(TagReceptionHandler.class.getName());
     @Override
     public void init() {
         logger.info("Starting tag handler");

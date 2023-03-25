@@ -1,9 +1,8 @@
-package ulb.infof307.g01.server.tag;
+package ulb.infof307.g01.server.database.dao;
 
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.server.database.Database;
-import ulb.infof307.g01.server.deck.DeckDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

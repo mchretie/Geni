@@ -90,8 +90,4 @@ public abstract class HttpClientAPI {
         T[] arr = new Gson().fromJson(s, elementClass);
         return Arrays.asList(arr);
     }
-
-    protected String reformatString(String s) {
-        return s.substring(1, s.length() - 1).replaceAll("\\\\", "");
-    }
 }
