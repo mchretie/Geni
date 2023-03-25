@@ -74,11 +74,18 @@ public class MainWindowViewController {
     /*                              Alerts                                    */
     /* ====================================================================== */
 
-    public void alertError(String errorTitle, String errorDecription) {
+    public void alertError(String errorTitle, String errorDescription) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setHeaderText(errorTitle);
-        errorAlert.setContentText(errorDecription);
+        errorAlert.setContentText(errorDescription);
         errorAlert.showAndWait();
+    }
+
+    public void alertInformation(String infoTitle, String infoDescription) {
+        Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+        infoAlert.setHeaderText(infoTitle);
+        infoAlert.setContentText(infoDescription);
+        infoAlert.showAndWait();
     }
 
 
