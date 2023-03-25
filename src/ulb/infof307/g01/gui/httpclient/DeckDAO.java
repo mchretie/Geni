@@ -39,7 +39,7 @@ public class DeckDAO extends HttpClientAPI {
      * Set the user id to the query string. To be called before any DAO method.
      */
     public void setUser(UUID user) {
-        this.user = "?user=" + user;
+        this.user = "?userid=" + user;
     }
 
     /* ====================================================================== */
@@ -53,7 +53,7 @@ public class DeckDAO extends HttpClientAPI {
 
         checkResponseCode(response.statusCode());
 
-        return stringToArray(reformatString(response.body()), Deck[].class);
+        return stringToArray(response.body(), Deck[].class);
     }
 
     public List<Deck> searchDecks(String deckName) throws IOException, InterruptedException {
@@ -66,7 +66,7 @@ public class DeckDAO extends HttpClientAPI {
 
         checkResponseCode(response.statusCode());
 
-        return stringToArray(reformatString(response.body()), Deck[].class);
+        return stringToArray(response.body(), Deck[].class);
     }
 
     public void deleteDeck(Deck deck)

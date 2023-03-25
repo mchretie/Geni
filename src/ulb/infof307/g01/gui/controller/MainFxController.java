@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.database.exceptions.DatabaseException;
 import ulb.infof307.g01.gui.httpclient.DeckDAO;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -73,7 +72,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
             deckMenuController.show();
 
-        } catch (InterruptedException | DatabaseException e) {
+        } catch (InterruptedException e) {
             restartApplicationError(e);
         }
     }

@@ -76,8 +76,6 @@ public class DeckHandler implements Handler {
 
     private String getDeck(Request req, Response res) {
         UUID userId = UUID.fromString(req.queryParams("user_id"));
-
-
         return null;
     }
 
@@ -95,9 +93,10 @@ public class DeckHandler implements Handler {
         }
     }
 
-    private String getAllDecks(Request req, Response res) {
+    private List<Deck> getAllDecks(Request req, Response res) {
         try {
-            // UUID userId = UUID.fromString(req.queryParams("user_id"));
+            UUID userId = UUID.fromString(req.queryParams("userid"));
+            System.out.println(userId);
 
             List<Deck> decks = new ArrayList<>();
 
@@ -107,11 +106,12 @@ public class DeckHandler implements Handler {
 
             decks.get(0).addCard(new Card("Card 1", "Definition 1"));
 
-            return new Gson().toJson(decks);
+
+            return decks;
 
         } catch (Exception e) {
             logger.warning("Failed to get all decks: " + e.getMessage());
-            return new Gson().toJson(failedResponse);
+            return null;
         }
 
     }
