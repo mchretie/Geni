@@ -9,13 +9,10 @@ import ulb.infof307.g01.server.database.dao.DeckDAO;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import static spark.Spark.*;
 
-public class DeckReceptionHandler extends Handler {
-    private static final Logger logger
-            = Logger.getLogger("DeckHandler");
+public class DeckRequestHandler extends Handler {
 
     private final Map<String, String> successfulResponse
             = Map.of("success", "true");
@@ -48,7 +45,7 @@ public class DeckReceptionHandler extends Handler {
         });
 
         after("/api/deck/*", (req, res) -> {
-            logger.info("Sent response: " + res.body());
+            logger.info("Sent response code: " + res.status());
         });
 
         logger.info("Deck handler started");
@@ -89,8 +86,6 @@ public class DeckReceptionHandler extends Handler {
     private List<Deck> getAllDecks(Request req, Response res) {
         try {
             UUID userId = UUID.fromString(req.queryParams("userid"));
-            System.out.println(userId);
-
             return deckDAO.getAllDecks();
 
         } catch (Exception e) {
@@ -100,10 +95,10 @@ public class DeckReceptionHandler extends Handler {
 
     }
 
-    private List<String> searchDecks(Request req, Response res) {
+    private List<Deck> searchDecks(Request req, Response res) {
         try {
-            String userSearch = req.queryParams("user_search");
-            return null;
+            String userSearch = req.queryParams("name");
+            return deckDAO.searchDecks(userSearch);
 
         } catch (Exception e) {
             logger.warning("Failed to search decks: " + e.getMessage());

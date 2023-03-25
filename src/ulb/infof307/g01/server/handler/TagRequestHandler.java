@@ -9,9 +9,8 @@ import java.util.logging.Logger;
 
 import static spark.Spark.*;
 
-public class TagReceptionHandler extends Handler {
+public class TagRequestHandler extends Handler {
 
-    private final Logger logger = Logger.getLogger(TagReceptionHandler.class.getName());
     @Override
     public void init() {
         logger.info("Starting tag handler");
