@@ -51,7 +51,7 @@ public class DeckDAO extends HttpClientAPI {
 
         HttpResponse<String> response = get("/api/deck/all" + user);
 
-        checkResponseCode(response);
+        checkResponseCode(response.statusCode());
 
         return stringToArray(reformatString(response.body()), Deck[].class);
     }
