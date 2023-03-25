@@ -183,13 +183,13 @@ public class TagDAO {
         deletedTags.removeAll(newTags);
 
         for (Tag addedTag : addedTags)
-            addTagTo(deck, replaceIdIfAlreadyExist(addedTag));
+            addTagTo(deck, getTagIfAlreadyExists(addedTag));
 
         for (Tag deletedTag : deletedTags)
             removeTagFrom(deck, deletedTag);
     }
 
-    private Tag replaceIdIfAlreadyExist(Tag tag) throws SQLException {
+    private Tag getTagIfAlreadyExists(Tag tag) throws SQLException {
         String sql = """
                 SELECT tag_id
                 FROM tag

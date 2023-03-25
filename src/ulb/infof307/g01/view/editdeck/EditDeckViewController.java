@@ -212,10 +212,13 @@ public class EditDeckViewController implements Initializable {
             String colorStr = color.toString().replace("0x", "#");
 
             String tagText = tagsInput.getText();
-            addTagToView(tagText, colorStr);
-            tagsInput.setText("");
 
-            listener.tagAddedToDeck(deck ,tagText, colorStr);
+            if (!deck.tagExists(tagText)) {
+                addTagToView(tagText, colorStr);
+                tagsInput.setText("");
+
+                listener.tagAddedToDeck(deck, tagText, colorStr);
+            }
         }
     }
 
