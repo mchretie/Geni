@@ -1,6 +1,7 @@
 package ulb.infof307.g01.gui.httpclient;
 
 import com.google.gson.Gson;
+import ulb.infof307.g01.gui.httpclient.exceptions.ServerRequestFailed;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
@@ -9,10 +10,20 @@ import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class is the base class for all the DAO classes. It contains the
+ *  methods to send HTTP requests to the server.
+ *
+ */
 public abstract class HttpClientAPI {
 
     protected final HttpClient httpClient = HttpClient.newBuilder().build();
     protected final String baseUrl = "http://localhost:8080";
+
+
+    /* ====================================================================== */
+    /*                            HTTP methods                                */
+    /* ====================================================================== */
 
     protected HttpResponse<String> get(String path)
             throws IOException, InterruptedException {
@@ -58,6 +69,22 @@ public abstract class HttpClientAPI {
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
+
+
+    /* ====================================================================== */
+    /*                          Response code reaction                        */
+    /* ====================================================================== */
+
+    protected void checkResponseCode(int responseCode) throws ServerRequestFailed {
+        if (responseCode != 200)
+            throw new ServerRequestFailed("Server request failed: "
+                    + responseCode);
+    }
+
+
+    /* ====================================================================== */
+    /*                        JSON string interpreters                        */
+    /* ====================================================================== */
 
     protected <T> List<T> stringToArray(String s, Class<T[]> elementClass) {
         T[] arr = new Gson().fromJson(s, elementClass);

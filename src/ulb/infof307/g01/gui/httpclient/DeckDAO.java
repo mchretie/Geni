@@ -13,6 +13,11 @@ public class DeckDAO extends HttpClientAPI {
 
     private String user;
 
+
+    /* ====================================================================== */
+    /*                           Singleton pattern                            */
+    /* ====================================================================== */
+
     private static DeckDAO instance;
 
     private DeckDAO() {
@@ -25,36 +30,41 @@ public class DeckDAO extends HttpClientAPI {
         return instance;
     }
 
+
+    /* ====================================================================== */
+    /*                                  Setter                                */
+    /* ====================================================================== */
+
+    /**
+     * Set the user id to the query string. To be called before any DAO method.
+     */
     public void setUser(UUID user) {
         this.user = "?user=" + user;
     }
+
+    /* ====================================================================== */
+    /*                               DAO methods                              */
+    /* ====================================================================== */
 
     public List<Deck> getAllDecks()
             throws IOException, InterruptedException {
 
         HttpResponse<String> response = get("/api/deck/all" + user);
 
-        if (response.statusCode() != 200)
-            throw new ServerRequestFailed("Server request failed: "
-                    + response.statusCode());
+        checkResponseCode(response);
 
         return stringToArray(reformatString(response.body()), Deck[].class);
     }
 
-    public List<Deck> searchDecks(String deckName)
-            throws IOException, InterruptedException {
+    public List<Deck> searchDecks(String deckName) throws IOException, InterruptedException {
 
         if (deckName.isEmpty())
             return getAllDecks();
 
-        String path = "/api/deck/search";
         String query = user + "&name=" + deckName;
+        HttpResponse<String> response = get("/api/deck/search" + query);
 
-        HttpResponse<String> response = get(path + query);
-
-        if (response.statusCode() != 200)
-            throw new ServerRequestFailed("Server request failed: "
-                    + response.statusCode());
+        checkResponseCode(response.statusCode());
 
         return stringToArray(reformatString(response.body()), Deck[].class);
     }
@@ -62,16 +72,13 @@ public class DeckDAO extends HttpClientAPI {
     public void deleteDeck(Deck deck)
             throws IOException, InterruptedException {
 
-        String path = "/api/deck/delete";
         String query = user + "&id=" + deck.getId();
 
-        delete(path + query);
+        delete("/api/deck/delete" + query);
     }
 
     public void saveDeck(Deck deck)
             throws IOException, InterruptedException {
-
-        String path = "/api/deck/save";
 
         post("/api/deck/save" + user, new Gson().toJson(deck));
     }

@@ -5,7 +5,10 @@ import ulb.infof307.g01.model.Deck;
 import java.util.List;
 import java.util.UUID;
 
-
+/**
+ * This class is used to test the HttpClientAPI class.
+ *  Will be removed later.
+ */
 public class HttpClientVerifier {
 
     private static void getAllDecksVerifier() {
