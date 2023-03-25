@@ -9,12 +9,8 @@ public abstract class Handler {
 
     protected final Logger logger = Logger.getLogger(getClass().getName());
 
-    public String toJson(Object object) {
-        return new Gson().toJson(object);
-    }
-
     public ResponseTransformer toJson() {
-        return this::toJson;
+        return (object) -> new Gson().toJson(this);
     }
 
     public abstract void init();
