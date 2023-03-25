@@ -66,6 +66,13 @@ public class Deck implements Iterable<Card> {
     public void removeTag(Tag tag) { tags.remove(tag); }
     public void removeCard(Card card) { cards.remove(card); }
 
+    public boolean tagExists(String newTagName){
+        for (Tag tag: tags){
+            if (tag.getName().equals(newTagName)) return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

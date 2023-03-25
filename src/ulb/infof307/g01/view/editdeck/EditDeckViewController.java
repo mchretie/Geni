@@ -11,10 +11,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.Tag;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -43,9 +46,14 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private ListView<String> cardsContainer;
 
+    @FXML
+    private HBox tagsBox;
+
+    @FXML
+    private TextField tagsInput;
+
     private Deck deck;
     private Card selectedCard;
-
     private Listener listener;
 
     /* ====================================================================== */
@@ -92,7 +100,7 @@ public class EditDeckViewController implements Initializable {
 
 
     /* ====================================================================== */
-    /*                         Card and deck loading                          */
+    /*                         Tags, Card, deck loading                       */
     /* ====================================================================== */
 
     public void loadCardsFromDeck() {
@@ -123,15 +131,34 @@ public class EditDeckViewController implements Initializable {
         backCard.setVisible(false);
     }
 
+    public void loadTagsFromDeck(){
+        tagsBox.getChildren().clear();
+        for (Tag tag: deck.getTags()) { addTagToView(tag.getName(), tag.getColor()); }
+    }
+
+    private void addTagToView(String text, String color) {
+        StackPane tagPane = new StackPane();
+        tagPane.setMaxHeight(20);
+        tagPane.setStyle("-fx-border-color: #000000; " +
+                "-fx-padding: 6px 10px; " +
+                "-fx-border-insets: 3px 5px; " +
+                "-fx-background-insets: 3px 5px; " +
+                "-fx-border-radius: 15px; " +
+                "-fx-background-radius: 15px; " +
+                "-fx-background-color: " + color);
+
+        Text tagText = new Text(text.trim());
+        tagPane.getChildren().add(tagText);
+        tagsBox.getChildren().add(tagPane);
+    }
+
 
     /* ====================================================================== */
     /*                             Click handlers                             */
     /* ====================================================================== */
 
     @FXML
-    private void handleAddCardClicked() {
-        listener.newCard();
-    }
+    private void handleAddCardClicked() { listener.newCard();}
 
     @FXML
     private void handleRemoveCardClicked() { listener.removeCard(selectedCard);}
@@ -179,8 +206,20 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
-    private void handleTagAdded() {
-        listener.tagAddedToDeck(deck, "Tag");
+    private void handleTagAdded(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            Color color = Color.color(Math.random(), Math.random(), Math.random());
+            String colorStr = color.toString().replace("0x", "#");
+
+            String tagText = tagsInput.getText();
+
+            if (!deck.tagExists(tagText)) {
+                addTagToView(tagText, colorStr);
+                tagsInput.setText("");
+
+                listener.tagAddedToDeck(deck, tagText, colorStr);
+            }
+        }
     }
 
     @FXML
@@ -208,7 +247,7 @@ public class EditDeckViewController implements Initializable {
 
     public interface Listener {
         void deckNameModified(String newName);
-        void tagAddedToDeck(Deck deck, String tagName);
+        void tagAddedToDeck(Deck deck, String tagName, String color);
         void frontOfCardModified(Card card, String newFront);
         void backOfCardModified(Card card, String newBack);
         void newCard();

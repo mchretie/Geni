@@ -54,21 +54,21 @@ public class TagDAO {
             return false;
 
         String sql = """
-            SELECT tag_id, name
-            FROM tag
-            WHERE NOT tag_id = '%1$s' AND name = '%2$s'
-            """.formatted(tag.getId().toString(),
-            tag.getName());
+                SELECT tag_id, name
+                FROM tag
+                WHERE NOT tag_id = '%1$s' AND name = '%2$s'
+                """.formatted(tag.getId().toString(),
+                tag.getName());
 
         return !database.executeQuery(sql).next();
     }
 
     public boolean tagNameExists(String name) throws SQLException {
         String sql = """
-            SELECT name
-            FROM tag
-            WHERE name = '%1$s'
-            """.formatted(name);
+                SELECT name
+                FROM tag
+                WHERE name = '%1$s'
+                """.formatted(name);
 
         return database.executeQuery(sql).next();
     }
@@ -132,7 +132,7 @@ public class TagDAO {
     private List<Tag> getTags(String sql) throws SQLException {
         List<Tag> tags = new ArrayList<>();
 
-        try(ResultSet res = database.executeQuery(sql)) {
+        try (ResultSet res = database.executeQuery(sql)) {
             while (res.next()) {
                 UUID tagId = UUID.fromString(res.getString("tag_id"));
                 tags.add(getTag(tagId));
@@ -183,10 +183,24 @@ public class TagDAO {
         deletedTags.removeAll(newTags);
 
         for (Tag addedTag : addedTags)
-            addTagTo(deck, addedTag);
+            addTagTo(deck, getTagIfAlreadyExists(addedTag));
 
-        for (Tag t : deletedTags)
-            removeTagFrom(deck, t);
+        for (Tag deletedTag : deletedTags)
+            removeTagFrom(deck, deletedTag);
+    }
+
+    private Tag getTagIfAlreadyExists(Tag tag) throws SQLException {
+        String sql = """
+                SELECT tag_id
+                FROM tag
+                WHERE name = '%1$s'
+                """.formatted(tag.getName());
+        try (ResultSet res = database.executeQuery(sql)) {
+            if (res.next()) {
+                tag = new Tag(tag.getName(), UUID.fromString(res.getString("tag_id")), tag.getColor());
+            }
+        }
+        return tag;
     }
 
     /**
@@ -253,10 +267,10 @@ public class TagDAO {
 
     public List<Tag> searchTags(String userSearch) throws SQLException {
         String sql = """
-            SELECT tag_id
-            FROM tag
-            WHERE name LIKE '%s'
-            """.formatted(userSearch + "%");
+                SELECT tag_id
+                FROM tag
+                WHERE name LIKE '%s'
+                """.formatted(userSearch + "%");
 
         return getTags(sql);
     }

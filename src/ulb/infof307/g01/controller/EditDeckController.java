@@ -58,6 +58,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
         mainWindowViewController.setEditDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
+        editDeckViewController.loadTagsFromDeck();
         editDeckViewController.loadCardsFromDeck();
 
         if (deck.cardCount() > 0) {
@@ -88,9 +89,9 @@ public class EditDeckController implements EditDeckViewController.Listener {
     }
 
     @Override
-    public void tagAddedToDeck(Deck deck, String tagName) {
+    public void tagAddedToDeck(Deck deck, String tagName, String color) {
         try {
-            deck.addTag(new Tag(tagName));
+            deck.addTag(new Tag(tagName, color));
             dm.saveDeck(deck);
 
         } catch (SQLException e) {
