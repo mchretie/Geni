@@ -38,6 +38,15 @@ public class DeckHandler implements Handler {
                 get("/search", this::searchDecks, json());
             });
         });
+
+        before("/api/deck/*", (req, res) -> {
+            logger.info("Received request: " + req.requestMethod() + " " + req.pathInfo());
+        });
+
+        after("/api/deck/*", (req, res) -> {
+            logger.info("Sent response: " + res.status());
+        });
+
         logger.info("Deck handler started");
     }
 
