@@ -1,7 +1,7 @@
 package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.database.DeckDAO;
+import ulb.infof307.g01.gui.httpclient.DeckDAO;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
@@ -9,7 +9,6 @@ import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class EditDeckController implements EditDeckViewController.Listener {
 
@@ -20,7 +19,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
     private final MainWindowViewController mainWindowViewController;
     private final EditDeckViewController editDeckViewController;
 
-    private final DeckDAO dm = DeckDAO.singleton();
+    private final DeckDAO dm = DeckDAO.getInstance();
 
     private final ControllerListener controllerListener;
 
@@ -82,7 +81,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
             deck.setName(newName);
             dm.saveDeck(deck);
 
-        } catch (SQLException e) {
+        } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
         }
     }
@@ -93,7 +92,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
             deck.addTag(new Tag(tagName));
             dm.saveDeck(deck);
 
-        } catch (SQLException e) {
+        } catch (IOException | InterruptedException e) {
             controllerListener.savingError(e);
         }
     }
@@ -105,7 +104,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
             dm.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
 
-        } catch (SQLException e) {
+        } catch (IOException | InterruptedException e) {
             controllerListener.savingError(e);
         }
     }
@@ -117,7 +116,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
             dm.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
 
-        } catch (SQLException e) {
+        } catch (IOException | InterruptedException e) {
             controllerListener.savingError(e);
         }
 
@@ -133,7 +132,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
             editDeckViewController.setSelectedCard(deck.getLastCard());
             cardPreviewClicked(deck.getLastCard());
 
-        } catch (SQLException e) {
+        } catch (IOException | InterruptedException e) {
             controllerListener.savingError(e);
         }
     }
@@ -149,7 +148,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
                 cardPreviewClicked(deck.getLastCard());
             }
 
-        } catch (SQLException e) {
+        } catch (IOException | InterruptedException e) {
             controllerListener.savingError(e);
         }
     }
@@ -165,6 +164,6 @@ public class EditDeckController implements EditDeckViewController.Listener {
     /* ====================================================================== */
 
     public interface ControllerListener {
-        void savingError(SQLException e);
+        void savingError(Exception e);
     }
 }

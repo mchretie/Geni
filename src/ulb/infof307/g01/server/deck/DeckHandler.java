@@ -41,7 +41,12 @@ public class DeckHandler implements Handler {
         });
 
         before("/api/deck/*", (req, res) -> {
-            logger.info("Received request: " + req.requestMethod() + " " + req.pathInfo());
+            logger.info("Received request: "
+                    + req.requestMethod()
+                    + " "
+                    + req.pathInfo()
+                    + " "
+                    + req.queryParams());
         });
 
         after("/api/deck/*", (req, res) -> {

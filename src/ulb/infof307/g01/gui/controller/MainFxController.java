@@ -6,15 +6,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.database.Database;
 import ulb.infof307.g01.gui.database.exceptions.DatabaseException;
+import ulb.infof307.g01.gui.httpclient.DeckDAO;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
+import java.util.UUID;
 
 /**
  * Main class of the application which initializes the main view using the main view handler and loads a menu view.
@@ -49,6 +48,9 @@ public class MainFxController extends Application implements MainWindowViewContr
 
         this.stage = stage;
 
+        // TODO: Remove this line when the login is implemented
+        DeckDAO.getInstance().setUser(UUID.randomUUID());
+
         URL resource = MainWindowViewController
                             .class
                             .getResource("MainWindowView.fxml");
@@ -64,7 +66,6 @@ public class MainFxController extends Application implements MainWindowViewContr
         mainWindowViewController.setListener(this);
 
         try {
-            initDatabase();
             deckMenuController = new DeckMenuController(
                     stage,
                     this,
@@ -72,7 +73,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
             deckMenuController.show();
 
-        } catch (SQLException | DatabaseException e) {
+        } catch (InterruptedException | DatabaseException e) {
             restartApplicationError(e);
         }
     }
@@ -114,20 +115,12 @@ public class MainFxController extends Application implements MainWindowViewContr
      *  the db
      *
      */
-    private void databaseModificationError(SQLException e) {
+    private void databaseModificationError(Exception e) {
         String message = "Vos modifications n’ont pas été enregistrées,"
                             + "veuillez réessayer. Si le problème persiste,"
                             + "redémarrez l’application";
 
         communicateError(e, message);
-    }
-
-
-    /* ====================================================================== */
-    /*                       Database Access Methods                          */
-    /* ====================================================================== */
-
-    private void initDatabase() throws SQLException, DatabaseException {
     }
 
 
@@ -166,7 +159,7 @@ public class MainFxController extends Application implements MainWindowViewContr
     }
 
     @Override
-    public void savingError(SQLException e) {
+    public void savingError(Exception e) {
         databaseModificationError(e);
     }
 
@@ -180,7 +173,7 @@ public class MainFxController extends Application implements MainWindowViewContr
         try {
             deckMenuController.show();
 
-        } catch (IOException | SQLException e) {
+        } catch (IOException | InterruptedException e) {
             restartApplicationError(e);
         }
     }
@@ -190,7 +183,7 @@ public class MainFxController extends Application implements MainWindowViewContr
         try {
             deckMenuController.show();
 
-        } catch (IOException | SQLException e) {
+        } catch (IOException | InterruptedException e) {
             restartApplicationError(e);
         }
     }
@@ -213,7 +206,7 @@ public class MainFxController extends Application implements MainWindowViewContr
         try {
             deckMenuController.show();
 
-        } catch (IOException | SQLException e) {
+        } catch (IOException | InterruptedException e) {
             restartApplicationError(e);
         }
     }

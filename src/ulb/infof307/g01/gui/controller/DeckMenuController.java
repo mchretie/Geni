@@ -3,7 +3,7 @@ package ulb.infof307.g01.gui.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.database.DeckDAO;
+import ulb.infof307.g01.gui.httpclient.DeckDAO;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
@@ -29,7 +29,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     private final DeckMenuViewController deckMenuViewController;
     private final MainWindowViewController mainWindowViewController;
 
-    private final DeckDAO dm = DeckDAO.singleton();
+    private final DeckDAO dm = DeckDAO.getInstance();
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -60,7 +60,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      *
      * @throws IOException if FXMLLoader.load() fails
      */
-    public void show() throws IOException, SQLException {
+    public void show() throws IOException, InterruptedException {
         deckMenuViewController.setDecks( loadDecks( dm.getAllDecks() ) );
 
         mainWindowViewController.setDeckMenuViewVisible();
@@ -120,7 +120,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
 
-        } catch (SQLException e) {
+        } catch (InterruptedException e) {
             controllerListener.savingError(e);
         }
 
@@ -130,9 +130,11 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     public void searchDeckClicked(String name) {
         try {
             deckMenuViewController.setDecks( loadDecks( dm.searchDecks(name) ) );
+
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
-        } catch (SQLException e) {
+
+        } catch (InterruptedException e) {
             controllerListener.savingError(e);
         }
     }
@@ -146,7 +148,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
 
-        } catch (SQLException e) {
+        } catch (InterruptedException e) {
             controllerListener.savingError(e);
         }
     }
@@ -170,6 +172,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         void editDeckClicked(Deck deck);
         void playDeckClicked(Deck deck);
         void fxmlLoadingError(IOException e);
-        void savingError(SQLException e);
+        void savingError(Exception e);
     }
 }

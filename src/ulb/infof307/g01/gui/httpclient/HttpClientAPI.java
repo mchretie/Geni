@@ -14,7 +14,8 @@ public abstract class HttpClientAPI {
     protected final HttpClient httpClient = HttpClient.newBuilder().build();
     protected final String baseUrl = "http://localhost:8080";
 
-    protected HttpResponse<String> get(String path) throws IOException, InterruptedException {
+    protected HttpResponse<String> get(String path)
+            throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(baseUrl + path))
@@ -24,7 +25,9 @@ public abstract class HttpClientAPI {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    protected HttpResponse<String> post(String path, String body) throws IOException, InterruptedException {
+    protected HttpResponse<String> post(String path, String body)
+            throws IOException, InterruptedException {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(baseUrl + path))
                 .POST(HttpRequest.BodyPublishers.ofString(body))
@@ -33,7 +36,9 @@ public abstract class HttpClientAPI {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    protected HttpResponse<String> put(String path, String body) throws IOException, InterruptedException {
+    protected HttpResponse<String> put(String path, String body)
+            throws IOException, InterruptedException {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(baseUrl + path))
                 .PUT(HttpRequest.BodyPublishers.ofString(body))
@@ -43,7 +48,9 @@ public abstract class HttpClientAPI {
 
     }
 
-    protected HttpResponse<String> delete(String path) throws IOException, InterruptedException {
+    protected HttpResponse<String> delete(String path)
+            throws IOException, InterruptedException {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(baseUrl + path))
                 .DELETE()
@@ -52,8 +59,8 @@ public abstract class HttpClientAPI {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    protected <T> List<T> stringToArray(String s, Class<T[]> clazz) {
-        T[] arr = new Gson().fromJson(s, clazz);
+    protected <T> List<T> stringToArray(String s, Class<T[]> elementClass) {
+        T[] arr = new Gson().fromJson(s, elementClass);
         return Arrays.asList(arr);
     }
 
