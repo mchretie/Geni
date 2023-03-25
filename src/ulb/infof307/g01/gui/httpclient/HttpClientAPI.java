@@ -1,9 +1,13 @@
 package ulb.infof307.g01.gui.httpclient;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class HttpClientAPI {
 
@@ -48,4 +52,12 @@ public abstract class HttpClientAPI {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
+    protected <T> List<T> stringToArray(String s, Class<T[]> clazz) {
+        T[] arr = new Gson().fromJson(s, clazz);
+        return Arrays.asList(arr);
+    }
+
+    protected String reformatString(String s) {
+        return s.substring(1, s.length() - 1).replaceAll("\\\\", "");
+    }
 }

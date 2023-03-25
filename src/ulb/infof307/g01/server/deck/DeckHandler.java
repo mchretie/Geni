@@ -10,6 +10,7 @@ import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.server.Handler;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -44,7 +45,7 @@ public class DeckHandler implements Handler {
         });
 
         after("/api/deck/*", (req, res) -> {
-            logger.info("Sent response: " + res.status());
+            logger.info("Sent response: " + res.body());
         });
 
         logger.info("Deck handler started");
@@ -56,11 +57,12 @@ public class DeckHandler implements Handler {
     }
 
     private Map<String, String> saveDeck(Request req, Response res) {
-        try{
+        try {
             UUID userId = UUID.fromString(req.queryParams("user_id"));
             Deck deck = bodyToDeck(req, res);
             deckDAO.saveDeck(deck, userId);
             return successfulResponse;
+
         } catch (Exception e) {
             logger.warning("Failed to save deck: " + e.getMessage());
             return failedResponse;
@@ -81,19 +83,42 @@ public class DeckHandler implements Handler {
             Deck deck = bodyToDeck(req, res);
             deckDAO.deleteDeck(deck, userId);
             return successfulResponse;
+
         } catch (Exception e) {
             logger.warning("Failed to delete deck: " + e.getMessage());
             return failedResponse;
         }
     }
 
-    private Map<String, String> getAllDecks(Request req, Response res) {
-        UUID userId = UUID.fromString(req.queryParams("user_id"));
-        return null;
+    private String getAllDecks(Request req, Response res) {
+        try {
+            // UUID userId = UUID.fromString(req.queryParams("user_id"));
+
+            List<Deck> decks = new ArrayList<>();
+
+            decks.add(new Deck("Deck 1"));
+            decks.add(new Deck("Deck 2"));
+            decks.add(new Deck("Deck 3"));
+
+            decks.get(0).addCard(new Card("Card 1", "Definition 1"));
+
+            return new Gson().toJson(decks);
+
+        } catch (Exception e) {
+            logger.warning("Failed to get all decks: " + e.getMessage());
+            return new Gson().toJson(failedResponse);
+        }
+
     }
 
     private List<String> searchDecks(Request req, Response res) {
-        String userSearch = req.queryParams("user_search");
-        return null;
+        try {
+            String userSearch = req.queryParams("user_search");
+            return null;
+
+        } catch (Exception e) {
+            logger.warning("Failed to search decks: " + e.getMessage());
+            return null;
+        }
     }
 }

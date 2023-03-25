@@ -1,10 +1,12 @@
 package ulb.infof307.g01.gui.httpclient;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import ulb.infof307.g01.gui.httpclient.exceptions.ServerRequestFailed;
 import ulb.infof307.g01.model.Deck;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,6 @@ public class DeckHttpClient extends HttpClientAPI {
         return new Gson().fromJson(response.body(), Deck.class);
     }
 
-    @SuppressWarnings("unchecked")
     public List<Deck> searchDecks(String deckName) throws IOException, InterruptedException {
 
         String path = deckName.isEmpty() ? "/api/deck/all" : "/api/deck/search";
@@ -31,7 +32,7 @@ public class DeckHttpClient extends HttpClientAPI {
             throw new ServerRequestFailed("Server request failed: "
                     + response.statusCode());
 
-        return new Gson().fromJson(response.body(), ArrayList.class);
+        return stringToArray(reformatString(response.body()), Deck[].class);
     }
 
     public void deleteDeck(String deckId) throws IOException, InterruptedException {
