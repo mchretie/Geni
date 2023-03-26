@@ -3,7 +3,7 @@ package ulb.infof307.g01.server.database.dao;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.server.database.Database;
+import ulb.infof307.g01.server.database.DatabaseConnectionManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +21,7 @@ public class DeckDAO {
     // Singleton
     private static DeckDAO instance;
 
-    private final static Database database = Database.singleton();
+    private final static DatabaseConnectionManager database = DatabaseConnectionManager.singleton();
     private final static TagDAO tagDao = TagDAO.singleton();
 
     protected DeckDAO() {
@@ -96,7 +96,7 @@ public class DeckDAO {
                 INSERT INTO deck (deck_id, user_id, name)
                 VALUES ('%1$s', '%2$s', '%3$s')
                 ON CONFLICT(deck_id)
-                DO UPDATE SET name = '%2$s'
+                DO UPDATE SET name = '%3$s'
                 ON CONFLICT(name)
                 DO NOTHING
                 """.formatted(

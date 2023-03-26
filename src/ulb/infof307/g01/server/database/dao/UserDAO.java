@@ -1,12 +1,12 @@
 package ulb.infof307.g01.server.database.dao;
 
-import ulb.infof307.g01.server.database.Database;
+import ulb.infof307.g01.server.database.DatabaseConnectionManager;
 
 import java.sql.SQLException;
 import java.util.UUID;
 
 public class UserDAO {
-    private final static Database database = Database.singleton();
+    private final static DatabaseConnectionManager database = DatabaseConnectionManager.singleton();
 
     public UserDAO() {
     }

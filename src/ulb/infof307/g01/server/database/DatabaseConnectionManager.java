@@ -16,8 +16,8 @@ import java.sql.*;
  * At the moment, only one database can be open at a given time. Two databases
  * cannot be open at the same time.
  */
-public class Database {
-    private static Database instance;
+public class DatabaseConnectionManager {
+    private static DatabaseConnectionManager instance;
     private Connection connection = null;
 
     private void assertOpened() throws DatabaseException {
@@ -29,9 +29,9 @@ public class Database {
     /**
      * Get access to the Database object
      */
-    public static Database singleton() {
+    public static DatabaseConnectionManager singleton() {
         if (instance == null)
-            instance = new Database();
+            instance = new DatabaseConnectionManager();
         return instance;
     }
 

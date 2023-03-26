@@ -2,8 +2,8 @@ package ulb.infof307.g01.server.database;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import ulb.infof307.g01.gui.database.Database;
-import ulb.infof307.g01.gui.database.exceptions.DatabaseException;
+import ulb.infof307.g01.server.database.DatabaseConnectionManager;
+import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.io.File;
 import java.sql.ResultSet;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestDatabase {
+class TestDatabaseConnectionManager {
     // clang-format off
     final String[] createStmt = new String[]{
             """
@@ -43,36 +43,36 @@ class TestDatabase {
     @AfterEach
     @SuppressWarnings("ResultOfMethodCallIgnored")
     void teardown() throws SQLException {
-        Database.singleton().close();
+        DatabaseConnectionManager.singleton().close();
         dbname.delete();
     }
 
     @Test
     void executeQuery_NotOpened_ThrowsException() {
         assertThrows(DatabaseException.class,
-                () -> Database.singleton().executeQuery("dummy"));
+                () -> DatabaseConnectionManager.singleton().executeQuery("dummy"));
     }
 
     @Test
     void executeUpdate_NotOpened_ThrowsException() {
         assertThrows(DatabaseException.class,
-                () -> Database.singleton().executeUpdate("dummy"));
+                () -> DatabaseConnectionManager.singleton().executeUpdate("dummy"));
     }
 
     @Test
     void open_TwiceOpened_ThrowsException()
             throws SQLException, DatabaseException {
-        Database.singleton().open(dbname);
+        DatabaseConnectionManager.singleton().open(dbname);
         assertThrows(DatabaseException.class,
-                () -> Database.singleton().open(dbname));
+                () -> DatabaseConnectionManager.singleton().open(dbname));
     }
 
     @Test
     void close_NonEmptyDB_DBFileExistsAfterClose()
             throws SQLException, DatabaseException {
-        Database.singleton().open(dbname);
-        Database.singleton().initTables(createStmt);
-        Database.singleton().close();
+        DatabaseConnectionManager.singleton().open(dbname);
+        DatabaseConnectionManager.singleton().initTables(createStmt);
+        DatabaseConnectionManager.singleton().close();
 
         assertTrue(dbname.exists());
     }
@@ -80,12 +80,12 @@ class TestDatabase {
     @Test
     void executeUpdate_TableCreated_TablePresent()
             throws SQLException, DatabaseException {
-        Database.singleton().open(dbname);
-        Database.singleton().initTables(createStmt);
+        DatabaseConnectionManager.singleton().open(dbname);
+        DatabaseConnectionManager.singleton().initTables(createStmt);
 
         String stmt =
                 "SELECT name FROM sqlite_master WHERE type='table' AND name='A'";
-        ResultSet res = Database.singleton().executeQuery(stmt);
+        ResultSet res = DatabaseConnectionManager.singleton().executeQuery(stmt);
 
         assertTrue(res.next()); // table exists
     }
@@ -93,11 +93,11 @@ class TestDatabase {
     @Test
     void executeUpdate_DataInserted_DataPresentAndRight()
             throws SQLException, DatabaseException {
-        Database.singleton().open(dbname);
-        Database.singleton().initTables(createStmt);
-        Database.singleton().executeUpdate(insertStmt);
+        DatabaseConnectionManager.singleton().open(dbname);
+        DatabaseConnectionManager.singleton().initTables(createStmt);
+        DatabaseConnectionManager.singleton().executeUpdate(insertStmt);
 
-        ResultSet res = Database.singleton().executeQuery(queryStmt);
+        ResultSet res = DatabaseConnectionManager.singleton().executeQuery(queryStmt);
         res.next();
 
         assertEquals(-42, res.getInt("a"));
@@ -107,12 +107,12 @@ class TestDatabase {
     @Test
     void executeUpdate_DataDeleted_DataNotPresent()
             throws SQLException, DatabaseException {
-        Database.singleton().open(dbname);
-        Database.singleton().initTables(createStmt);
-        Database.singleton().executeUpdate(insertStmt);
-        Database.singleton().executeUpdate(delStmt);
+        DatabaseConnectionManager.singleton().open(dbname);
+        DatabaseConnectionManager.singleton().initTables(createStmt);
+        DatabaseConnectionManager.singleton().executeUpdate(insertStmt);
+        DatabaseConnectionManager.singleton().executeUpdate(delStmt);
 
-        ResultSet res = Database.singleton().executeQuery(queryStmt);
+        ResultSet res = DatabaseConnectionManager.singleton().executeQuery(queryStmt);
         assertFalse(res.next());
     }
 }

@@ -2,7 +2,7 @@ package ulb.infof307.g01.server.database.dao;
 
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
-import ulb.infof307.g01.server.database.Database;
+import ulb.infof307.g01.server.database.DatabaseConnectionManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +25,7 @@ public class TagDAO {
     // Singleton
     private static TagDAO instance;
 
-    private final static Database database = Database.singleton();
+    private final static DatabaseConnectionManager database = DatabaseConnectionManager.singleton();
     private final static DeckDAO deckDao = DeckDAO.singleton();
 
     protected TagDAO() {
