@@ -85,8 +85,9 @@ public class DeckRequestHandler extends Handler {
 
     private List<Deck> getAllDecks(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("userid"));
-            return deckDAO.getAllDecks();
+            //UUID userId = UUID.fromString(req.queryParams("userid"));
+            //return deckDAO.getAllUserDecks(userId);
+            return null;
 
         } catch (Exception e) {
             logger.warning("Failed to get all decks: " + e.getMessage());

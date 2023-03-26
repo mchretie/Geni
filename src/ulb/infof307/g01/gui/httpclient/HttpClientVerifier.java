@@ -20,10 +20,8 @@ public class HttpClientVerifier {
 
             decks.forEach(deck -> {
                 System.out.println(deck.getName());
-                deck.getCards().forEach(card -> {
-                    System.out.println(
-                            " - " + card.getFront() + " : " + card.getBack());
-                });
+                deck.getCards().forEach(card -> System.out.println(
+                        " - " + card.getFront() + " : " + card.getBack()));
             });
 
         } catch (Exception e) {
@@ -32,6 +30,7 @@ public class HttpClientVerifier {
     }
 
     public static void main(String[] args) {
-        getAllDecksVerifier();
+        // getAllDecksVerifier();
+        System.out.println(UUID.randomUUID());
     }
 }

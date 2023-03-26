@@ -48,7 +48,10 @@ public class MainFxController extends Application implements MainWindowViewContr
         this.stage = stage;
 
         // TODO: Remove this line when the login is implemented
-        DeckDAO.getInstance().setUser(UUID.randomUUID());
+        UUID guestUser
+                = UUID.fromString("11a1025f-58ef-4044-8abc-3a1ba262f39c");
+
+        DeckDAO.getInstance().setUser(guestUser);
 
         URL resource = MainWindowViewController
                             .class

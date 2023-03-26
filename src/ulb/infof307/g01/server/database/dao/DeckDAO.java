@@ -224,6 +224,21 @@ public class DeckDAO {
     }
 
     /**
+     * Get all decks associated with given user
+     *
+     * @return A list of all decks, empty if none are saved.
+     */
+    public List<Deck> getAllUserDecks(UUID userId) throws SQLException {
+        String sql = """
+                SELECT deck_id
+                FROM deck
+                WHERE user_id = '%s'
+                """.formatted(userId.toString());
+
+        return getDecks(sql);
+    }
+
+    /**
      * Approximate search of decks with given search string
      *
      * @param userSearch query

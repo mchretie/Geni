@@ -49,5 +49,4 @@ public class TagRequestHandler extends Handler {
         String userSearch = req.queryParams("user_search");
         return null;
     }
-
 }
