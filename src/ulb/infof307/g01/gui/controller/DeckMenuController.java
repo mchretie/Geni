@@ -5,8 +5,8 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpclient.DeckDAO;
 import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
+import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ import java.util.List;
  * DeckMenuViewController
  */
 public class DeckMenuController implements DeckMenuViewController.Listener,
-        DeckViewController.Listener {
+                                                DeckViewController.Listener {
 
     private final Stage stage;
 

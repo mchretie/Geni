@@ -9,9 +9,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
-import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 
 public class MainWindowViewController {
 
@@ -74,11 +74,18 @@ public class MainWindowViewController {
     /*                              Alerts                                    */
     /* ====================================================================== */
 
-    public void alertError(String errorTitle, String errorDecription) {
+    public void alertError(String errorTitle, String errorDescription) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setHeaderText(errorTitle);
-        errorAlert.setContentText(errorDecription);
+        errorAlert.setContentText(errorDescription);
         errorAlert.showAndWait();
+    }
+
+    public void alertInformation(String infoTitle, String infoDescription) {
+        Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+        infoAlert.setHeaderText(infoTitle);
+        infoAlert.setContentText(infoDescription);
+        infoAlert.showAndWait();
     }
 
 

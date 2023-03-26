@@ -2,8 +2,7 @@ package ulb.infof307.g01.server.database;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import ulb.infof307.g01.gui.database.Database;
-import ulb.infof307.g01.gui.database.exceptions.DatabaseException;
+import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.io.File;
 import java.sql.ResultSet;

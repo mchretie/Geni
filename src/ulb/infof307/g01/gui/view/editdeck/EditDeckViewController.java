@@ -19,7 +19,8 @@ import ulb.infof307.g01.model.Deck;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditDeckViewController implements Initializable {
+public class
+EditDeckViewController implements Initializable {
 
     @FXML
     private StackPane frontCard;
@@ -54,7 +55,8 @@ public class EditDeckViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        frontCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        frontCardText.focusedProperty().addListener((observable, oldValue, newValue)
+                -> {
             if (!newValue) handleFrontEdit();
         });
 
@@ -63,6 +65,7 @@ public class EditDeckViewController implements Initializable {
         });
 
         deckNameText.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Deck name text field focus changed to " + newValue + "");
             if (!newValue) handleUpdateDeckName();
         });
     }

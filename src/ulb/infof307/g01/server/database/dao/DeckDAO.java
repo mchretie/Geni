@@ -45,13 +45,13 @@ public class DeckDAO {
      *
      * @see DeckDAO#deckNameExists
      */
-    public boolean isDeckValid(Deck deck) throws SQLException {
+    public boolean isDeckValid(Deck deck, UUID userid) throws SQLException {
         String sql = """
-            SELECT deck_id, name
+            SELECT deck_id, user_id, name
             FROM deck
-            WHERE NOT deck_id = '%1$s' AND name = '%2$s'
-            """.formatted(deck.getId().toString(),
-                deck.getName());
+            WHERE NOT deck_id = '%1s' and user_id = '%2$s' AND name = '%3$s'
+            """.formatted(deck.getId().toString(), userid.toString(),
+                            deck.getName());
 
         try (ResultSet res = database.executeQuery(sql)) {
             return !res.next();
@@ -77,8 +77,9 @@ public class DeckDAO {
      * @see DeckDAO#isDeckValid
      */
     public void saveDeck(Deck deck, UUID userId) throws SQLException {
-        if (!isDeckValid(deck))
+        if (!isDeckValid(deck, userId))
             return;
+
         saveDeckIdentity(deck, userId);
         saveDeckTags(deck);
         saveDeckCards(deck);
@@ -91,12 +92,12 @@ public class DeckDAO {
      * but with different ids, only the first will be saved while
      * the following will be ignored.
      */
-    private void saveDeckIdentity(Deck deck, UUID userId)  throws SQLException{
+    private void saveDeckIdentity(Deck deck, UUID userId)  throws SQLException {
         String sql = """
                 INSERT INTO deck (deck_id, user_id, name)
                 VALUES ('%1$s', '%2$s', '%3$s')
                 ON CONFLICT(deck_id)
-                DO UPDATE SET name = '%2$s'
+                DO UPDATE SET name = '%3$s'
                 ON CONFLICT(name)
                 DO NOTHING
                 """.formatted(

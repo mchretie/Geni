@@ -2,17 +2,14 @@ package ulb.infof307.g01.server.database;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ulb.infof307.g01.gui.database.DeckDAO;
-import ulb.infof307.g01.gui.database.TagDAO;
-import ulb.infof307.g01.gui.database.exceptions.DatabaseException;
+import ulb.infof307.g01.server.database.dao.DeckDAO;
+import ulb.infof307.g01.server.database.dao.TagDAO;
+import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +17,7 @@ public class TestTagDAO extends DatabaseUsingTest {
 
     TagDAO tagDAO = TagDAO.singleton();
     DeckDAO deckDAO = DeckDAO.singleton();
+    private final UUID id = UUID.randomUUID();
 
     @Override
     @BeforeEach
@@ -140,7 +138,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     @Test
     void getTagsFor_NoTags_EmptyList() throws SQLException {
         Deck deck = new Deck("name");
-        deckDAO.saveDeck(deck);
+        deckDAO.saveDeck(deck, id);
         tagDAO.saveTagsFor(deck);
         assertTrue(tagDAO.getTagsFor(deck.getId()).isEmpty());
     }
@@ -163,9 +161,9 @@ public class TestTagDAO extends DatabaseUsingTest {
         Deck deck2 = new Deck("name2");
         Deck deck3 = new Deck("name3");
 
-        deckDAO.saveDeck(deck1);
-        deckDAO.saveDeck(deck2);
-        deckDAO.saveDeck(deck3);
+        deckDAO.saveDeck(deck1, id);
+        deckDAO.saveDeck(deck2, id);
+        deckDAO.saveDeck(deck3, id);
 
         Tag tag = new Tag("name");
         deck1.addTag(tag);

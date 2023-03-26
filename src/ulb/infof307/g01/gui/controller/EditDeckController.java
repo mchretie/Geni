@@ -78,7 +78,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
     @Override
     public void deckNameModified(String newName) {
         try {
-            deck.setName(newName);
+            deck.setName(newName.trim());
             dm.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
@@ -92,7 +92,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
             deck.addTag(new Tag(tagName));
             dm.saveDeck(deck);
 
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
         }
     }
@@ -104,7 +104,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
             dm.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
 
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
         }
     }
@@ -116,7 +116,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
             dm.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
 
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
         }
 
@@ -132,7 +132,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
             editDeckViewController.setSelectedCard(deck.getLastCard());
             cardPreviewClicked(deck.getLastCard());
 
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
         }
     }
@@ -148,7 +148,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
                 cardPreviewClicked(deck.getLastCard());
             }
 
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
         }
     }
