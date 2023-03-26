@@ -21,7 +21,6 @@ public abstract class HttpClientAPI {
     protected final HttpClient httpClient = HttpClient.newBuilder().build();
     protected final String baseUrl = "http://localhost:8080";
 
-
     /* ====================================================================== */
     /*                            HTTP methods                                */
     /* ====================================================================== */

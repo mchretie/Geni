@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpclient.DeckDAO;
+import ulb.infof307.g01.gui.httpclient.UserDAO;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
@@ -37,12 +38,13 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     public DeckMenuController(Stage stage,
                               ControllerListener controllerListener,
-                              MainWindowViewController mainWindowViewController) {
+                              MainWindowViewController mainWindowViewController) throws IOException, InterruptedException {
 
         this.stage = stage;
         this.controllerListener = controllerListener;
         this.mainWindowViewController = mainWindowViewController;
 
+        dm.setUser(UserDAO.getInstance().getGuestUUID());
 
         this.deckMenuViewController
                 = mainWindowViewController.getDeckMenuViewController();

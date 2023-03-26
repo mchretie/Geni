@@ -6,17 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.eclipse.jetty.util.IO;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
-import ulb.infof307.g01.gui.httpclient.DeckDAO;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.util.UUID;
 
 /**
  * Main class of the application which initializes the main view using the main view handler and loads a menu view.
@@ -31,8 +26,6 @@ public class MainFxController extends Application implements MainWindowViewContr
     private PlayDeckController playDeckController;
 
     private Stage stage;
-
-    private final DeckDAO deckDAO = DeckDAO.getInstance();
 
     /* ====================================================================== */
     /*                                  Main                                  */
@@ -51,8 +44,7 @@ public class MainFxController extends Application implements MainWindowViewContr
     public void start(Stage stage) throws IOException {
 
         this.stage = stage;
-
-        deckDAO.setUser(UUID.fromString("c0a80101-0000-0000-0000-000000000000"));
+        stage.setTitle("Pokémon TCG Deck Builder");
 
         URL resource = MainWindowViewController
                             .class

@@ -27,16 +27,23 @@ public class GuestAccountHandler extends Handler {
     }
 
     private Map<String, String> registerGuest(Request req, Response res) {
-        UUID uuid = UUID.randomUUID();
+        UUID guestId;
         try {
-            userDAO.registerGuest(uuid);
-            logger.info("Registered guest with uuid " + uuid);
+            guestId = UUID.fromString(req.queryParams("guest_id"));
+
+            if (!userDAO.userExists(guestId))
+                userDAO.registerGuest(guestId);
+
+            logger.info("Registered guest with uuid " + guestId);
+
+            return successfulResponse;
+
         } catch (Exception e) {
             logger.warning("Failed to register guest: " + e.getMessage());
             halt(500, "Failed to register guest");
+
+            return failedResponse;
         }
-        res.type("application/json");
-        return Map.of("uuid", uuid.toString());
     }
 
 }
