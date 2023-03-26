@@ -232,7 +232,7 @@ public class DeckDAO {
         String sql = """
                 SELECT deck_id
                 FROM deck
-                WHERE user_id = '%s'
+                WHERE deck.user_id = '%s'
                 """.formatted(userId.toString());
 
         return getDecks(sql);
@@ -289,11 +289,11 @@ public class DeckDAO {
     /**
      * Delete a deck along with its cards from the database.
      */
-    public void deleteDeck(Deck deck, UUID userId) throws SQLException {
+    public void deleteDeck(UUID deckId, UUID userId) throws SQLException {
         String sql = """
                 DELETE FROM deck
                 WHERE deck_id = '%1$s' and user_id = '%2$s'
-                """.formatted(deck.getId().toString(), userId.toString());
+                """.formatted(deckId.toString(), userId.toString());
 
         database.executeUpdate(sql);
     }

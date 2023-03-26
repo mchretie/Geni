@@ -10,7 +10,7 @@ public abstract class Handler {
     protected final Logger logger = Logger.getLogger(getClass().getName());
 
     public ResponseTransformer toJson() {
-        return (object) -> new Gson().toJson(this);
+        return (object) -> new Gson().toJson(object);
     }
 
     public abstract void init();

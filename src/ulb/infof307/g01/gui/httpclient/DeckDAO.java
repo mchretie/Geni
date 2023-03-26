@@ -39,7 +39,7 @@ public class DeckDAO extends HttpClientAPI {
      * Set the user id to the query string. To be called before any DAO method.
      */
     public void setUser(UUID user) {
-        this.user = "?userid=" + user;
+        this.user = "?user_id=" + user;
     }
 
     /* ====================================================================== */
@@ -56,7 +56,17 @@ public class DeckDAO extends HttpClientAPI {
         return stringToArray(response.body(), Deck[].class);
     }
 
-    public List<Deck> searchDecks(String deckName) throws IOException, InterruptedException {
+    /**
+     * Search for decks with the given name. If the name is empty, return all.
+     * Useful for partial search.
+     *
+     * <p>
+     *   e.g. "deck" will return "deck1", "deck2"... "deck10".
+     * </p>
+     * @param deckName The name of the deck to search for.
+     */
+    public List<Deck> searchDecks(String deckName)
+            throws IOException, InterruptedException {
 
         if (deckName.isEmpty())
             return getAllDecks();
@@ -72,14 +82,18 @@ public class DeckDAO extends HttpClientAPI {
     public void deleteDeck(Deck deck)
             throws IOException, InterruptedException {
 
-        String query = user + "&id=" + deck.getId();
+        String query = user + "&deck_id=" + deck.getId();
+        HttpResponse<String> response = delete("/api/deck/delete" + query);
 
-        delete("/api/deck/delete" + query);
+        checkResponseCode(response.statusCode());
     }
 
     public void saveDeck(Deck deck)
             throws IOException, InterruptedException {
 
-        post("/api/deck/save" + user, new Gson().toJson(deck));
+        HttpResponse<String> response
+                = post("/api/deck/save" + user, new Gson().toJson(deck));
+
+        checkResponseCode(response.statusCode());
     }
 }

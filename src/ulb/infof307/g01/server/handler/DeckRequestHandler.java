@@ -55,6 +55,7 @@ public class DeckRequestHandler extends Handler {
         try {
             UUID userId = UUID.fromString(req.queryParams("user_id"));
             Deck deck = new Gson().fromJson(req.body(), Deck.class);
+            System.out.println(deck.getName());
             deckDAO.saveDeck(deck, userId);
             return successfulResponse;
 
@@ -65,16 +66,17 @@ public class DeckRequestHandler extends Handler {
     }
 
     private String getDeck(Request req, Response res) {
-        UUID userId = UUID.fromString(req.queryParams("userid"));
+        UUID userId = UUID.fromString(req.queryParams("user_id"));
         return null;
     }
 
 
     private Map<String, String> deleteDeck(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("userid"));
-            Deck deck = new Gson().fromJson(req.body(), Deck.class);
-            deckDAO.deleteDeck(deck, userId);
+            UUID userId = UUID.fromString(req.queryParams("user_id"));
+            UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+
+            deckDAO.deleteDeck(deckId, userId);
             return successfulResponse;
 
         } catch (Exception e) {
@@ -85,9 +87,8 @@ public class DeckRequestHandler extends Handler {
 
     private List<Deck> getAllDecks(Request req, Response res) {
         try {
-            //UUID userId = UUID.fromString(req.queryParams("userid"));
-            //return deckDAO.getAllUserDecks(userId);
-            return null;
+            UUID userId = UUID.fromString(req.queryParams("user_id"));
+            return deckDAO.getAllUserDecks(userId);
 
         } catch (Exception e) {
             logger.warning("Failed to get all decks: " + e.getMessage());

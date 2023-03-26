@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,6 +89,6 @@ public abstract class HttpClientAPI {
 
     protected <T> List<T> stringToArray(String s, Class<T[]> elementClass) {
         T[] arr = new Gson().fromJson(s, elementClass);
-        return Arrays.asList(arr);
+        return arr == null ? new ArrayList<>() : Arrays.asList(arr);
     }
 }
