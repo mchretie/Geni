@@ -17,13 +17,15 @@ public class GuestAccountHandler extends Handler {
 
     @Override
     public void init() {
-        logger.info("Starting guest handler");
+        logStart();
+
         path("/api", () -> {
             path("/guest", () -> {
                 get("/register", this::registerGuest, toJson());
             });
         });
-        logger.info("Guest handler started");
+
+        logStarted();
     }
 
     private Map<String, String> registerGuest(Request req, Response res) {

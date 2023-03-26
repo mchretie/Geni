@@ -19,7 +19,8 @@ public class DeckRequestHandler extends Handler {
 
     @Override
     public void init() {
-        logger.info("Starting deck handler");
+        logStart();
+
         path("/api", () -> {
             path("/deck", () -> {
                 post("/save", this::saveDeck, toJson());
@@ -42,7 +43,7 @@ public class DeckRequestHandler extends Handler {
             logger.info("Sent response code: " + res.status());
         });
 
-        logger.info("Deck handler started");
+        logStarted();
     }
 
     private Map<String, String> saveDeck(Request req, Response res) {

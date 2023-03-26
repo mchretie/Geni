@@ -3,8 +3,8 @@ package ulb.infof307.g01.gui.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.httpclient.DeckDAO;
-import ulb.infof307.g01.gui.httpclient.UserDAO;
+import ulb.infof307.g01.gui.httpclient.dao.DeckDAO;
+import ulb.infof307.g01.gui.httpclient.dao.UserDAO;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
@@ -12,7 +12,6 @@ import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
