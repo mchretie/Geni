@@ -4,7 +4,6 @@ import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.database.DatabaseScheme;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.server.handler.DeckRequestHandler;
-import ulb.infof307.g01.server.handler.GuestAccountHandler;
 import ulb.infof307.g01.server.handler.UserAccountHandler;
 
 import java.io.File;
@@ -56,7 +55,6 @@ public class Server {
 
     private void launchHandlers() {
         new DeckRequestHandler().init();
-        new GuestAccountHandler().init();
         new UserAccountHandler().init();
     }
 }
