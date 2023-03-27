@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 
 public class User {
@@ -24,10 +25,12 @@ public class User {
         }
     }
 
-    public User(String username, String password, byte[] salt) {
+    public User(String username, String password, String salt) {
         try {
             this.username = username;
-            this.salt = salt;
+            this.salt = salt.getBytes();
+            Base64.Decoder decoder = Base64.getDecoder();
+            this.salt = decoder.decode(salt);
             this.password = getEncryptedPassword(password);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();

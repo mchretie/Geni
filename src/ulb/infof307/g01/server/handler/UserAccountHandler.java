@@ -31,7 +31,10 @@ public class UserAccountHandler extends Handler {
     }
 
     private Map<String, String> loginUser(Request request, Response response) {
-        return null;
+        String username = request.queryParams("username");
+        String password = request.queryParams("password");
+        boolean isValidLogin = userDAO.loginUser(username, password);
+        return isValidLogin ? successfulResponse : failedResponse;
     }
 
     private Map<String, String> registerUser(Request request, Response response) {

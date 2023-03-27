@@ -49,13 +49,47 @@ public class UserDAO {
         }
     }
 
+    public String getUserSaltKey(String username) {
+        String sql = """
+                SELECT salt
+                FROM user
+                WHERE username = '%1$s'
+                """.formatted(username);
+
+        try (ResultSet res = database.executeQuery(sql)) {
+            return res.getString(1);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public boolean loginUser(String username, String password) {
+        if (!usernameExists(username)) return false;
+
+        User user = new User(username, password, getUserSaltKey(username));
+
+        String sql = """
+                SELECT EXISTS (
+                    SELECT 1
+                    FROM user
+                    WHERE username = '%1$s' AND password = '%2$s'
+                )
+                """.formatted(username, user.getPassword());
+
+        try (ResultSet res = database.executeQuery(sql)) {
+            return res.getBoolean(1);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
     public boolean registerUser(String username, String password) {
         if (usernameExists(username)) return false;
 
         User user = new User(username, password);
         UUID user_id = UUID.randomUUID();
 
-        // language=SQL
         String sql = """
                 INSERT INTO user (user_id, username, password, salt)
                 VALUES ('%1$s', '%2$s', '%3$s', '%4$s')
