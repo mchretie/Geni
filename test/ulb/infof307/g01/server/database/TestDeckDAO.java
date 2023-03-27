@@ -3,6 +3,7 @@ package ulb.infof307.g01.server.database;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
+import ulb.infof307.g01.server.database.dao.TagDAO;
 import ulb.infof307.g01.server.database.dao.UserDAO;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.model.Card;
@@ -16,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestDeckDAO extends DatabaseUsingTest {
 
-    DeckDAO deckDAO = DeckDAO.singleton();
+    DeckDAO deckDAO;
+    TagDAO tagDAO;
     UserDAO userDAO = new UserDAO();
 
     UUID user = UUID.randomUUID();
@@ -28,6 +30,12 @@ public class TestDeckDAO extends DatabaseUsingTest {
 
         db.initTables(DatabaseScheme.CLIENT);
         userDAO.registerGuest(user);
+
+        this.deckDAO = new DeckDAO();
+        this.tagDAO = new TagDAO();
+
+        this.deckDAO.setTagDao(this.tagDAO);
+        this.tagDAO.setDeckDao(this.deckDAO);
     }
 
     @Test

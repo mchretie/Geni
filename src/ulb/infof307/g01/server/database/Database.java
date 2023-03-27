@@ -25,9 +25,12 @@ public class Database {
     // }
 
     private Database() {
-        this.deckDao = DeckDAO.singleton();
-        this.tagDao = TagDAO.singleton();
+        this.deckDao = new DeckDAO();
+        this.tagDao = new TagDAO();
         this.userDao = new UserDAO();
+
+        this.deckDao.setTagDao(this.tagDao);
+        this.tagDao.setDeckDao(this.deckDao);
     }
 
     public static Database singleton() {

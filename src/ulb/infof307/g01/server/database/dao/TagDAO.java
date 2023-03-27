@@ -22,19 +22,14 @@ import java.util.*;
  */
 public class TagDAO {
 
-    // Singleton
-    private static TagDAO instance;
-
     private final static DatabaseConnectionManager database = DatabaseConnectionManager.singleton();
-    private final static DeckDAO deckDao = DeckDAO.singleton();
+    private DeckDAO deckDao;
 
-    protected TagDAO() {
+    public TagDAO() {
     }
 
-    public static TagDAO singleton() {
-        if (instance == null)
-            instance = new TagDAO();
-        return instance;
+    public void setDeckDao(DeckDAO deckDao) {
+        this.deckDao = deckDao;
     }
 
     /**

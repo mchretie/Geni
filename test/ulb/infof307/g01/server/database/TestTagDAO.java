@@ -1,6 +1,7 @@
 package ulb.infof307.g01.server.database;
 
 import org.eclipse.jetty.server.Authentication;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
@@ -17,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTagDAO extends DatabaseUsingTest {
 
-    TagDAO tagDAO = TagDAO.singleton();
-    DeckDAO deckDAO = DeckDAO.singleton();
-    UserDAO userDAO = new UserDAO();
+    TagDAO tagDAO;
+    DeckDAO deckDAO;
+    UserDAO userDAO;
 
     UUID user = UUID.randomUUID();
 
@@ -29,6 +30,14 @@ public class TestTagDAO extends DatabaseUsingTest {
         super.init();
 
         db.initTables(DatabaseScheme.CLIENT);
+
+        this.deckDAO = new DeckDAO();
+        this.tagDAO = new TagDAO();
+        this.userDAO = new UserDAO();
+
+        this.deckDAO.setTagDao(this.tagDAO);
+        this.tagDAO.setDeckDao(this.deckDAO);
+
         userDAO.registerGuest(user);
     }
 

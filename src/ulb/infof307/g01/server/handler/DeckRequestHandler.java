@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.server.database.dao.DeckDAO;
+import ulb.infof307.g01.server.database.Database;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class DeckRequestHandler extends Handler {
     private final Map<String, String> failedResponse
             = Map.of("success", "false");
 
-    private final DeckDAO deckDAO = DeckDAO.singleton();
+    private final Database database = Database.singleton();
 
     @Override
     public void init() {
@@ -56,7 +56,7 @@ public class DeckRequestHandler extends Handler {
             UUID userId = UUID.fromString(req.queryParams("user_id"));
             Deck deck = new Gson().fromJson(req.body(), Deck.class);
             System.out.println(deck.getName());
-            deckDAO.saveDeck(deck, userId);
+            database.saveDeck(deck, userId);
             return successfulResponse;
 
         } catch (Exception e) {
@@ -76,7 +76,7 @@ public class DeckRequestHandler extends Handler {
             UUID userId = UUID.fromString(req.queryParams("user_id"));
             UUID deckId = UUID.fromString(req.queryParams("deck_id"));
 
-            deckDAO.deleteDeck(deckId, userId);
+            database.deleteDeck(deckId, userId);
             return successfulResponse;
 
         } catch (Exception e) {
@@ -88,7 +88,7 @@ public class DeckRequestHandler extends Handler {
     private List<Deck> getAllDecks(Request req, Response res) {
         try {
             UUID userId = UUID.fromString(req.queryParams("user_id"));
-            return deckDAO.getAllUserDecks(userId);
+            return database.getAllUserDecks(userId);
 
         } catch (Exception e) {
             logger.warning("Failed to get all decks: " + e.getMessage());
@@ -100,7 +100,7 @@ public class DeckRequestHandler extends Handler {
     private List<Deck> searchDecks(Request req, Response res) {
         try {
             String userSearch = req.queryParams("name");
-            return deckDAO.searchDecks(userSearch);
+            return database.searchDecks(userSearch);
 
         } catch (Exception e) {
             logger.warning("Failed to search decks: " + e.getMessage());
