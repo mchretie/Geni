@@ -46,7 +46,8 @@ public class DatabaseScheme {
         CREATE TABLE IF NOT EXISTS user (
             user_id TEXT PRIMARY KEY,
             username TEXT NOT NULL,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            salt TEXT NOT NULL
         );""",
 
             """
