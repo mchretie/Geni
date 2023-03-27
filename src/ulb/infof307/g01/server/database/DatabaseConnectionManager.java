@@ -20,21 +20,6 @@ public class DatabaseConnectionManager {
     private static DatabaseConnectionManager instance;
     private Connection connection = null;
 
-    private void assertOpened() throws DatabaseException {
-        if (connection == null)
-            throw new DatabaseException(
-                    "Database must be opened before use");
-    }
-
-    /**
-     * Get access to the Database object
-     */
-    public static DatabaseConnectionManager singleton() {
-        if (instance == null)
-            instance = new DatabaseConnectionManager();
-        return instance;
-    }
-
     /**
      * Open a database
      * <p>
@@ -51,8 +36,10 @@ public class DatabaseConnectionManager {
                 .getConnection("jdbc:sqlite:" + dbname.toPath());
     }
 
-    public void initTables(String[] tables) throws DatabaseException, SQLException {
-        executeUpdates(tables);
+    public PreparedStatement getPreparedStatement(String statement)
+            throws DatabaseException, SQLException {
+        assertOpened();
+        return connection.prepareStatement(statement);
     }
 
     /**
@@ -66,6 +53,27 @@ public class DatabaseConnectionManager {
             connection = null;
         }
     }
+
+    private void assertOpened() throws DatabaseException {
+        if (connection == null)
+            throw new DatabaseException(
+                    "Database must be opened before use");
+    }
+
+    /**
+     * Get access to the Database object
+     */
+    public static DatabaseConnectionManager singleton() {
+        if (instance == null)
+            instance = new DatabaseConnectionManager();
+        return instance;
+    }
+
+
+    public void initTables(String[] tables) throws DatabaseException, SQLException {
+        executeUpdates(tables);
+    }
+
 
     /**
      * Execute any SQL statement returning a result
