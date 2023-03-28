@@ -1,0 +1,91 @@
+@startuml
+
+title "Server database schema diagram"
+/'
+left to right direction
+'/
+skinparam roundcorner 5
+skinparam linetype ortho
+skinparam shadowing false
+skinparam handwritten false
+
+!define primary_key(x) <b><color:#b8861b><&key></color> x</b>
+!define foreign_key(x) <color:#aaaaaa><&key></color> x
+!define column(x) <color:#efefef><&media-record></color> x
+!define table(x) entity x << (T, white) >>
+
+table( deck ) {
+  primary_key( deck_id ): TEXT
+  foreign_key( user_id ): TEXT
+  column( name ): TEXT
+}
+
+table( user_deck_collection ) {
+  primary_key( user_id ): TEXT
+  primary_key( deck_id ): TEXT
+}
+
+table( marketplace ) {
+  primary_key( deck_id ): TEXT
+  column( rating ): INTEGER
+  column( download ): INTEGER
+}
+
+table( card ) {
+  primary_key( card_id ): TEXT
+  foreign_key( deck_id ): TEXT
+  column( content ): TEXT
+}
+
+/'
+table( qcm_card ) {
+  primary_key( card_id ): TEXT
+  column( answer ): TEXT
+}
+
+table( qcmchoices ) {
+  primary_key(card_id ): TEXT
+  column( wrong_answer ): TEXT
+}
+'/
+
+table( deck_tag ) {
+  primary_key( deck_id ): TEXT
+  primary_key( tag_name ): TEXT
+  column( color ): TEXT
+}
+
+table( user ) {
+  primary_key( user_id ): TEXT
+  column( username ): TEXT
+  column( password ): TEXT
+}
+
+table( user_deck_score ) {
+  primary_key( user_id ): TEXT
+  primary_key( deck_id ): TEXT
+  column( timestamp ): TEXT
+  column( score ): INTEGER
+}
+user_deck_score }|--|| user
+user_deck_score }|--|| deck
+
+user_deck_collection }|--|| user
+user_deck_collection }|--|| deck
+
+marketplace }|--|| deck
+
+card }|--|| deck
+
+deck_tag }|--|| deck
+
+/'
+table( card_knowledge ) {
+  primary_key( user_id ): TEXT
+  primary_key( card_id ): TEXT
+  column( knowledge ): INTEGER
+}
+card_knowledge }|--|| user
+card_knowledge }|--|| card
+'/
+@enduml
