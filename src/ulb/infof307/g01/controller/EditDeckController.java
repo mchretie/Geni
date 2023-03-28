@@ -1,5 +1,6 @@
 package ulb.infof307.g01.controller;
 
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.database.DeckDAO;
 import ulb.infof307.g01.model.Card;
@@ -121,6 +122,17 @@ public class EditDeckController implements EditDeckViewController.Listener {
             controllerListener.savingError(e);
         }
 
+    }
+
+    @Override
+    public void deckColorModified(Deck deck, Color color) {
+        try {
+            deck.setColor(color);
+            dm.saveDeck(deck);      // TODO : save color in database (in dm.saveDeck())
+
+        } catch (SQLException e) {
+            controllerListener.savingError(e);
+        }
     }
 
     @Override

@@ -53,10 +53,7 @@ public class DeckViewController {
     }
 
     private void setDeckColor() {
-        // TODO: make gradient color depend on deck color
-
-        Color color
-                = Color.color(Math.random(), Math.random(), Math.random());
+        Color color = this.deck.getColor();
 
         deckGradientRect.setFill(makeGradient(color));
     }

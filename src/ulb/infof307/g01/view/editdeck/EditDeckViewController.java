@@ -209,7 +209,7 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     public void handleColorButtonClicked(ActionEvent actionEvent) {
-        System.out.println("new color : " + colorPicker.getValue());
+        listener.deckColorModified(deck, colorPicker.getValue());
     }
 
 
@@ -222,6 +222,7 @@ public class EditDeckViewController implements Initializable {
         void tagAddedToDeck(Deck deck, String tagName);
         void frontOfCardModified(Card card, String newFront);
         void backOfCardModified(Card card, String newBack);
+        void deckColorModified(Deck deck, Color color);
         void newCard();
         void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card);
