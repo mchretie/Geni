@@ -2,6 +2,7 @@ package ulb.infof307.g01.view.editdeck;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -199,6 +200,11 @@ public class EditDeckViewController implements Initializable {
             return;
 
         anchor.requestFocus();
+    }
+
+    @FXML
+    public void handleColorButtonClicked(ActionEvent actionEvent) {
+        System.out.println("zefzfzefzefzeczecze");
     }
 
 
