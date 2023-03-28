@@ -1,5 +1,7 @@
 package ulb.infof307.g01.model;
 
+import javafx.scene.paint.Color;
+
 import java.util.*;
 
 
@@ -8,12 +10,14 @@ public class Deck implements Iterable<Card> {
     private final UUID id;
     private final List<Card> cards;
     private final List<Tag> tags;
+    private Color color;
 
     public Deck(String name) {
         this.name = name;
         this.id = UUID.randomUUID();
         this.cards = new ArrayList<>();
         this.tags = new ArrayList<>();
+        this.color = Color.RED;
     }
 
     public Deck(String name, UUID id) {
@@ -21,6 +25,7 @@ public class Deck implements Iterable<Card> {
         this.id = id;
         this.cards = new ArrayList<>();
         this.tags = new ArrayList<>();
+        this.color = Color.RED;
     }
 
     public Deck(String name, UUID id, List<Card> cards, List<Tag> tags) {
@@ -28,6 +33,15 @@ public class Deck implements Iterable<Card> {
         this.id = id;
         this.cards = cards;
         this.tags = tags;
+        this.color = Color.RED;
+    }
+
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, Color color) {
+        this.name = name;
+        this.id = id;
+        this.cards = cards;
+        this.tags = tags;
+        this.color = color;
     }
 
     public List<Tag> getTags() { return tags; }
@@ -66,6 +80,9 @@ public class Deck implements Iterable<Card> {
     public void removeTag(Tag tag) { tags.remove(tag); }
     public void removeCard(Card card) { cards.remove(card); }
 
+    public void setColor(Color color) { this.color = color; }
+    public Color getColor() { return color; }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -77,12 +94,13 @@ public class Deck implements Iterable<Card> {
         return this.id.equals(other.id)
             && this.name.equals(other.name)
             && this.cards.equals(other.cards)
-            && this.tags.equals(other.tags);
+            && this.tags.equals(other.tags)
+            && this.color.equals(other.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, cards, tags);
+        return Objects.hash(name, id, cards, tags, color);
     }
 
     public Iterator<Card> iterator() {

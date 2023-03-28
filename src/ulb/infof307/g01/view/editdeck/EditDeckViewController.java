@@ -80,6 +80,7 @@ public class EditDeckViewController implements Initializable {
     public void setDeck(Deck deck) {
         this.deck = deck;
         deckNameText.setText(deck.getName());
+        colorPicker.setValue(deck.getColor());
     }
 
     public void setListener(Listener listener) {
