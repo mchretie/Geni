@@ -26,14 +26,14 @@ public class TestTagDAO extends DatabaseUsingTest {
 
     @Override
     @BeforeEach
-    void init() throws SQLException, DatabaseException {
+    void init() throws DatabaseException {
         super.init();
 
         db.initTables(DatabaseScheme.CLIENT);
 
-        this.deckDAO = new DeckDAO();
-        this.tagDAO = new TagDAO();
-        this.userDAO = new UserDAO();
+        this.deckDAO = new DeckDAO(this.db);
+        this.tagDAO = new TagDAO(this.db);
+        this.userDAO = new UserDAO(this.db);
 
         this.deckDAO.setTagDao(this.tagDAO);
         this.tagDAO.setDeckDao(this.deckDAO);

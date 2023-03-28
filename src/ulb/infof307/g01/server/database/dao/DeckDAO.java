@@ -1,9 +1,10 @@
 package ulb.infof307.g01.server.database.dao;
 
+import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.server.database.DatabaseConnectionManager;
+import ulb.infof307.g01.server.database.DatabaseAccess;
+import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,13 +17,13 @@ import java.util.*;
  * use an object of class Deck, apply changes
  * to it before saving it with saveDeck or deleteDeck.
  */
-public class DeckDAO {
+public class DeckDAO extends DAO {
 
-
-    private final static DatabaseConnectionManager database = DatabaseConnectionManager.singleton();
+    private final DatabaseAccess database;
     private TagDAO tagDao;
 
-    public DeckDAO() {
+    public DeckDAO(DatabaseAccess database) {
+        this.database = database;
     }
 
     public void setTagDao(TagDAO tagDao) {
@@ -41,38 +42,37 @@ public class DeckDAO {
      *
      * @see DeckDAO#deckNameExists
      */
-    public boolean isDeckValid(Deck deck) throws SQLException {
+    public boolean isDeckValid(Deck deck) throws DatabaseException {
         String sql = """
-            SELECT deck_id, name
-            FROM deck
-            WHERE NOT deck_id = '%1$s' AND name = '%2$s'
-            """.formatted(deck.getId().toString(),
-                deck.getName());
+                SELECT deck_id, name
+                FROM deck
+                WHERE NOT deck_id = ? AND name = ?
+                """;
 
-        try (ResultSet res = database.executeQuery(sql)) {
-            return !res.next();
-        }
+        return !checkedNext(database.executeQuery(sql,
+                                                  deck.getId().toString(),
+                                                  deck.getName()));
     }
 
     public boolean deckNameExists(String name) throws SQLException {
         String sql = """
-            SELECT name
-            FROM deck
-            WHERE name = '%1$s'
-            """.formatted(name);
+                SELECT name
+                FROM deck
+                WHERE name = ?
+                """;
 
-        try (ResultSet res = database.executeQuery(sql)) {
-            return res.next();
-        }
+        return checkedNext(database.executeQuery(sql, name));
     }
+
 
     /**
      * Write to long-term memory the contents of a deck
      * <p>
      * If the given deck is not valid, it will be ignored.
+     *
      * @see DeckDAO#isDeckValid
      */
-    public void saveDeck(Deck deck, UUID userId) throws SQLException {
+    public void saveDeck(Deck deck, UUID userId) throws DatabaseException {
         if (!isDeckValid(deck))
             return;
         saveDeckIdentity(deck, userId);
@@ -81,38 +81,141 @@ public class DeckDAO {
     }
 
     /**
+     * Get the deck identified by the given UUID
+     * <p>
+     * This should only be used by other managers.
+     * To retrieve decks from memory, use getAllDecks
+     * or other managers returning decks.
+     * <p>
+     *
+     * @return The deck requested or null if it does not exist.
+     */
+    public Deck getDeck(UUID uuid) throws DatabaseException {
+        String sql = """
+                SELECT deck_id, name
+                FROM deck
+                WHERE deck_id = ?
+                """;
+
+        ResultSet res = database.executeQuery(sql, uuid.toString());
+        if (!checkedNext(res))
+            return null;
+        return extractDeckFrom(res);
+    }
+
+    /**
+     * Get multiple decks from their ids
+     * <p>
+     *
+     * @param res result from a query on deck table
+     * @return List of decks
+     */
+    public List<Deck> getDecks(List<UUID> res) throws DatabaseException {
+        List<Deck> decks = new ArrayList<>();
+        for (UUID deckId : res)
+            decks.add(getDeck(deckId));
+        return decks;
+    }
+
+    /**
+     * Get all decks present in the database
+     *
+     * @return A list of all decks, empty if none are saved.
+     */
+    public List<Deck> getAllDecks() throws DatabaseException {
+        String sql = """
+                SELECT deck_id
+                FROM deck
+                """;
+
+        ResultSet res = database.executeQuery(sql);
+        List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
+        return getDecks(deckIds);
+    }
+
+    /**
+     * Get all decks associated with given user
+     *
+     * @return A list of all decks, empty if none are saved.
+     */
+    public List<Deck> getAllUserDecks(UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT deck_id
+                FROM deck
+                WHERE deck.user_id = ?
+                """;
+
+
+        ResultSet res = database.executeQuery(sql, userId.toString());
+        List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
+        return getDecks(deckIds);
+    }
+
+    /**
+     * Approximate search of decks with given search string
+     *
+     * @param userSearch query
+     * @return List of decks
+     */
+    public List<Deck> searchDecks(String userSearch) throws DatabaseException {
+        String sql = """
+                SELECT deck_id
+                FROM deck
+                WHERE name LIKE ?
+                """;
+
+        String pattern = userSearch + "%";
+        ResultSet res = database.executeQuery(sql, pattern);
+        List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
+        return getDecks(deckIds);
+    }
+
+    /**
+     * Delete a deck along with its cards from the database.
+     */
+    public void deleteDeck(UUID deckId, UUID userId) throws DatabaseException {
+        String sql = """
+                DELETE FROM deck
+                WHERE deck_id = ? and user_id = ?
+                """;
+
+        database.executeUpdate(sql, deckId.toString(), userId.toString());
+    }
+
+
+    /**
      * Update a deck’s name
      * <p>
      * Upon the saving of multiple decks with the same name,
      * but with different ids, only the first will be saved while
      * the following will be ignored.
      */
-    private void saveDeckIdentity(Deck deck, UUID userId)  throws SQLException{
+    private void saveDeckIdentity(Deck deck, UUID userId) throws DatabaseException {
         String sql = """
                 INSERT INTO deck (deck_id, user_id, name)
-                VALUES ('%1$s', '%2$s', '%3$s')
+                VALUES (?, ?, ?)
                 ON CONFLICT(deck_id)
-                DO UPDATE SET name = '%3$s'
+                DO UPDATE SET name = ?
                 ON CONFLICT(name)
                 DO NOTHING
-                """.formatted(
-                deck.getId().toString(),
-                userId.toString(),
-                deck.getName());
+                """;
 
-        database.executeUpdate(sql);
+        database.executeUpdate(sql,
+                               deck.getId().toString(),
+                               userId.toString(),
+                               deck.getName(),
+                               deck.getName());
     }
 
-    private void saveDeckTags(Deck deck) throws SQLException {
+    private void saveDeckTags(Deck deck) throws DatabaseException {
         tagDao.saveTagsFor(deck);
     }
-
 
     /**
      * Update the database with the data from the deck
      */
     @SuppressWarnings("unchecked")
-    private void saveDeckCards(Deck deck) throws SQLException {
+    private void saveDeckCards(Deck deck) throws DatabaseException {
         HashSet<Card> currentCards = new HashSet<>(getCardsFor(deck.getId()));
         HashSet<Card> newCards = new HashSet<>(deck.getCards());
 
@@ -129,125 +232,42 @@ public class DeckDAO {
             deleteCard(deletedCard);
     }
 
-    private void saveCard(Card card) throws SQLException {
+    private void saveCard(Card card) throws DatabaseException {
         String sql = """
                 INSERT INTO card (card_id, deck_id, front, back)
-                VALUES ('%1$s', '%2$s', '%3$s', '%4$s')
+                VALUES (?, ?, ?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET front = '%3$s', back = '%4$s'
-                """.formatted(
-                card.getId().toString(),
-                card.getDeckId().toString(),
-                card.getFront(),
-                card.getBack());
-
-        database.executeUpdate(sql);
-    }
-
-    private void deleteCard(Card card) throws SQLException {
-        String sql = """
-                DELETE FROM card
-                WHERE card.card_id = '%s'
-                """.formatted(card.getId().toString());
-
-        database.executeUpdate(sql);
-    }
-
-    /**
-     * Get the deck identified by the given UUID
-     * <p>
-     * This should only be used by other managers.
-     * To retrieve decks from memory, use getAllDecks
-     * or other managers returning decks.
-     * <p>
-     *
-     * @return The deck requested or null if it does not exist.
-     */
-    public Deck getDeck(UUID uuid) throws SQLException{
-        String sql = """
-                SELECT deck_id, name
-                FROM deck
-                WHERE deck_id = '%s'
-                """.formatted(uuid);
-
-        Deck deck;
-
-        try (ResultSet res = database.executeQuery(sql)) {
-            if (!res.next())
-                return null;
-
-            String name = res.getString("name");
-            List<Card> cards = getCardsFor(uuid);
-            List<Tag> tags = tagDao.getTagsFor(uuid);
-            deck = new Deck(name, uuid, cards, tags);
-
-            return deck;
-        }
-    }
-
-
-    /**
-     * General method to fetch decks used for exact and approximate search
-     *
-     * @param sql Search query
-     * @return List of decks
-     */
-    private List<Deck> getDecks(String sql) throws SQLException {
-        List<Deck> decks = new ArrayList<>();
-
-        try (ResultSet res = database.executeQuery(sql)) {
-            while (res.next()) {
-                UUID uuid = UUID.fromString(res.getString("deck_id"));
-                decks.add(getDeck(uuid));
-            }
-
-            return decks;
-        }
-    }
-
-    /**
-     * Get all decks present in the database
-     *
-     * @return A list of all decks, empty if none are saved.
-     */
-    public List<Deck> getAllDecks() throws SQLException {
-        String sql = """
-                SELECT deck_id
-                FROM deck
+                DO UPDATE SET front = ?, back = ?
                 """;
 
-        return getDecks(sql);
+        database.executeUpdate(sql,
+                               card.getId().toString(),
+                               card.getDeckId().toString(),
+                               card.getFront(),
+                               card.getBack(),
+                               card.getFront(),
+                               card.getBack());
     }
 
-    /**
-     * Get all decks associated with given user
-     *
-     * @return A list of all decks, empty if none are saved.
-     */
-    public List<Deck> getAllUserDecks(UUID userId) throws SQLException {
+    private void deleteCard(Card card) throws DatabaseException {
         String sql = """
-                SELECT deck_id
-                FROM deck
-                WHERE deck.user_id = '%s'
-                """.formatted(userId.toString());
+                DELETE FROM card
+                WHERE card.card_id = ?
+                """;
 
-        return getDecks(sql);
+        database.executeUpdate(sql, card.getId().toString());
     }
 
-    /**
-     * Approximate search of decks with given search string
-     *
-     * @param userSearch query
-     * @return List of decks
-     */
-    public List<Deck> searchDecks(String userSearch) throws SQLException {
-        String sql = """
-            SELECT deck_id
-            FROM deck
-            WHERE name LIKE '%s'
-            """.formatted(userSearch + "%");
-
-        return getDecks(sql);
+    private Card extractCardFrom(ResultSet res) throws DatabaseException {
+        try {
+            UUID uuid = UUID.fromString(res.getString("card_id"));
+            UUID deckId = UUID.fromString(res.getString("deck_id"));
+            String front = res.getString("front");
+            String back = res.getString("back");
+            return new Card(uuid, deckId, front, back);
+        } catch (SQLException e) {
+            throw new DatabaseException((e.getMessage()));
+        }
     }
 
     /**
@@ -257,41 +277,29 @@ public class DeckDAO {
      * is not in the database, an empty list is
      * returned.
      */
-    private List<Card> getCardsFor(UUID deckUuid) throws SQLException {
+    private List<Card> getCardsFor(UUID deckUuid) throws DatabaseException {
         String sql = """
                 SELECT card_id, deck_id, front, back
                 FROM card
-                WHERE deck_id = '%s'
-                """.formatted(deckUuid.toString());
+                WHERE deck_id = ?
+                """;
 
+        ResultSet res = database.executeQuery(sql, deckUuid.toString());
         List<Card> cards = new ArrayList<>();
+        while (checkedNext(res))
+            cards.add(extractCardFrom(res));
+        return cards;
+    }
 
-        try (ResultSet res = database.executeQuery(sql)) {
-            while (res.next())
-                cards.add(extractCardFromResultSet(res));
-
-            return cards;
+    private Deck extractDeckFrom(ResultSet res) throws DatabaseException {
+        try {
+            UUID uuid = UUID.fromString(res.getString("deck_id"));
+            String name = res.getString("name");
+            List<Card> cards = getCardsFor(uuid);
+            List<Tag> tags = tagDao.getTagsFor(uuid);
+            return new Deck(name, uuid, cards, tags);
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
         }
     }
-
-    private Card extractCardFromResultSet(ResultSet res) throws SQLException {
-        return new Card(
-                UUID.fromString(res.getString("card_id")),
-                UUID.fromString(res.getString("deck_id")),
-                res.getString("front"),
-                res.getString("back"));
-    }
-
-    /**
-     * Delete a deck along with its cards from the database.
-     */
-    public void deleteDeck(UUID deckId, UUID userId) throws SQLException {
-        String sql = """
-                DELETE FROM deck
-                WHERE deck_id = '%1$s' and user_id = '%2$s'
-                """.formatted(deckId.toString(), userId.toString());
-
-        database.executeUpdate(sql);
-    }
-
 }

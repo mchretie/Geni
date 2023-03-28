@@ -2,7 +2,8 @@ package ulb.infof307.g01.server.database.dao;
 
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
-import ulb.infof307.g01.server.database.DatabaseConnectionManager;
+import ulb.infof307.g01.server.database.DatabaseAccess;
+import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,12 +21,13 @@ import java.util.*;
  *
  * @see DeckDAO
  */
-public class TagDAO {
+public class TagDAO extends DAO {
 
-    private final static DatabaseConnectionManager database = DatabaseConnectionManager.singleton();
+    private final DatabaseAccess database;
     private DeckDAO deckDao;
 
-    public TagDAO() {
+    public TagDAO(DatabaseAccess database) {
+        this.database = database;
     }
 
     public void setDeckDao(DeckDAO deckDao) {
@@ -44,43 +46,30 @@ public class TagDAO {
      *
      * @see TagDAO#tagNameExists
      */
-    public boolean isTagValid(Tag tag) throws SQLException {
+    public boolean isTagValid(Tag tag) throws DatabaseException {
 
         if (tag == null)
             return false;
 
         String sql = """
-            SELECT tag_id, name
-            FROM tag
-            WHERE NOT tag_id = '%1$s' AND name = '%2$s'
-            """.formatted(tag.getId().toString(),
-                tag.getName());
-
-        return !database.executeQuery(sql).next();
-    }
-
-    public boolean tagNameExists(String name) throws SQLException {
-        String sql = """
-            SELECT name
-            FROM tag
-            WHERE name = '%1$s'
-            """.formatted(name);
-
-        return database.executeQuery(sql).next();
-    }
-
-    private Tag replaceIdIfAlreadyExist(Tag tag) throws SQLException {
-        String sql = """
-                SELECT tag_id
+                SELECT tag_id, name
                 FROM tag
-                WHERE name = '%1$s'
-                """.formatted(tag.getName());
-        try (ResultSet res = database.executeQuery(sql)) {
-            if (res.next()) {
-                tag = new Tag(tag.getName(), UUID.fromString(res.getString("tag_id")), tag.getColor());
-            }
-        }
-        return tag;
+                WHERE NOT tag_id = ? AND name = ?
+                """;
+
+        return !checkedNext(database.executeQuery(sql,
+                                                  tag.getId().toString(),
+                                                  tag.getName()));
+    }
+
+    public boolean tagNameExists(String name) throws DatabaseException {
+        String sql = """
+                SELECT name
+                FROM tag
+                WHERE name = ?
+                """;
+
+        return checkedNext(database.executeQuery(sql, name));
     }
 
 
@@ -90,79 +79,70 @@ public class TagDAO {
      * but with different ids, only the first will be saved while
      * the following will be ignored.
      */
-    public void saveTag(Tag tag) throws SQLException {
+    public void saveTag(Tag tag) throws DatabaseException {
 
         if (!isTagValid(tag))
             return;
 
         String sql = """
                 INSERT INTO tag (tag_id, name, color)
-                VALUES ('%1$s', '%2$s', '%3$s')
+                VALUES (?, ?, ?)
                 ON CONFLICT (tag_id)
-                DO UPDATE SET name = '%2$s', color = '%3$s'
+                DO UPDATE SET name = ?, color = ?
                 ON CONFLICT(name)
                 DO NOTHING
-                """.formatted(
-                tag.getId(),
-                tag.getName(),
-                tag.getColor());
+                """;
 
-        database.executeUpdate(sql);
+        database.executeUpdate(sql,
+                               tag.getId().toString(),
+                               tag.getName(),
+                               tag.getColor(),
+                               tag.getName(),
+                               tag.getColor());
     }
 
-    public Tag getTag(UUID uuid) throws SQLException {
+    public Tag getTag(UUID uuid) throws DatabaseException {
         String sql = """
                 SELECT tag_id, name, color
                 FROM tag
-                WHERE tag_id = '%1$s'
-                """.formatted(uuid.toString());
+                WHERE tag_id = ?
+                """;
 
-        Tag tag;
-
-        try (ResultSet res = database.executeQuery(sql)) {
-            if (!res.next())
-                return null;
-
-            String name = res.getString("name");
-            String color = res.getString("color");
-            tag = new Tag(name, uuid, color);
-        }
-
-        return tag;
+        ResultSet res = database.executeQuery(sql, uuid.toString());
+        if (!checkedNext(res))
+            return null;
+        return extractTag(res);
     }
 
-    public List<Tag> getAllTags() throws SQLException {
+
+    public List<Tag> getAllTags() throws DatabaseException {
         String sql = """
                 SELECT tag_id
                 FROM tag
                 """;
 
-        return getTags(sql);
-    }
-
-    private List<Tag> getTags(String sql) throws SQLException {
-        List<Tag> tags = new ArrayList<>();
-
-        try(ResultSet res = database.executeQuery(sql)) {
-            while (res.next()) {
-                UUID tagId = UUID.fromString(res.getString("tag_id"));
-                tags.add(getTag(tagId));
-            }
-        }
-
-        return tags;
+        ResultSet res = database.executeQuery(sql);
+        List<UUID> tagIds = extractUUIDsFrom(res, "tag_id");
+        return getTags(tagIds);
     }
 
     /**
      * Delete tag and all its associations to decks
      */
-    public void deleteTag(Tag tag) throws SQLException {
+    public void deleteTag(Tag tag) throws DatabaseException {
         String sql = """
                 DELETE FROM tag
-                WHERE tag_id = '%1$s'
-                """.formatted(tag.getId());
+                WHERE tag_id = ?
+                """;
 
-        database.executeUpdate(sql);
+        database.executeUpdate(sql, tag.getId().toString());
+    }
+
+    private List<Tag> getTags(List<UUID> res) throws DatabaseException {
+        List<Tag> tags = new ArrayList<>();
+        for (UUID tagId : res)
+            tags.add(getTag(tagId));
+        return tags;
     }
 
     /**
@@ -178,8 +158,7 @@ public class TagDAO {
      * @see DeckDAO
      */
     @SuppressWarnings("unchecked")
-    public void saveTagsFor(Deck deck) throws SQLException {
-
+    public void saveTagsFor(Deck deck) throws DatabaseException {
         for (Tag tag : deck.getTags()) {
             saveTag(tag);
         }
@@ -194,7 +173,7 @@ public class TagDAO {
         deletedTags.removeAll(newTags);
 
         for (Tag addedTag : addedTags)
-            addTagTo(deck, replaceIdIfAlreadyExist(addedTag));
+            addTagTo(deck, addedTag);
 
         for (Tag t : deletedTags)
             removeTagFrom(deck, t);
@@ -203,74 +182,96 @@ public class TagDAO {
     /**
      * Assumes the association doesn’t exist in the database.
      */
-    private void addTagTo(Deck deck, Tag tag) throws SQLException {
+    private void addTagTo(Deck deck, Tag tag) throws DatabaseException {
         String sql = """
                 INSERT INTO deck_tag (deck_id, tag_id)
-                VALUES ('%1$s', '%2$s')
-                """.formatted(
-                deck.getId().toString(),
-                tag.getId().toString());
+                VALUES (?, ?)
+                """;
 
-        database.executeUpdate(sql);
+        database.executeUpdate(sql,
+                               deck.getId().toString(),
+                               tag.getId().toString());
     }
 
-    private void removeTagFrom(Deck deck, Tag tag) throws SQLException {
+    private void removeTagFrom(Deck deck, Tag tag) throws DatabaseException {
         String sql = """
                 DELETE FROM deck_tag
-                WHERE deck_id = '%1$s'
-                AND tag_id = '%2$s'
-                """.formatted(
-                deck.getId().toString(),
-                tag.getId().toString());
+                WHERE deck_id = ?
+                AND tag_id = ?
+                """;
 
-        database.executeUpdate(sql);
+        database.executeUpdate(sql,
+                               deck.getId().toString(),
+                               tag.getId().toString());
     }
 
     /**
      * <p>
      * Should only be used by other managers.
      */
-    public List<Tag> getTagsFor(UUID deckId) throws SQLException {
+    public List<Tag> getTagsFor(UUID deckId) throws DatabaseException {
         String sql = """
                 SELECT deck_id, tag_id
                 FROM deck_tag
-                WHERE deck_id = '%1$s'
-                """.formatted(deckId.toString());
+                WHERE deck_id = ?
+                """;
 
-        return getTags(sql);
+        ResultSet res = database.executeQuery(sql, deckId.toString());
+        List<UUID> tagIds = extractUUIDsFrom(res, "tag_id");
+        return getTags(tagIds);
     }
 
     /**
      * For filtering purposes
      */
-    public List<Deck> getDecksHavingTag(Tag tag) throws SQLException {
+    public List<Deck> getDecksHavingTag(Tag tag) throws DatabaseException {
         String sql = """
                 SELECT deck_id, tag_id
                 FROM deck_tag
-                WHERE tag_id = '%1$s'
-                """.formatted(tag.getId().toString());
+                WHERE tag_id = ?
+                """;
 
-        List<Deck> decks = new ArrayList<>();
+        ResultSet res = database.executeQuery(sql, tag.getId().toString());
+        List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
+        return deckDao.getDecks(deckIds);
+    }
 
+    public List<Tag> searchTags(String userSearch) throws DatabaseException {
+        String sql = """
+                SELECT tag_id
+                FROM tag
+                WHERE name LIKE ?
+                """;
+
+        String pattern = userSearch + "%";
+        ResultSet res = database.executeQuery(sql, pattern);
+        List<UUID> tagIds = extractUUIDsFrom(res, "tag_id");
+        return getTags(tagIds);
+    }
+
+    private Tag extractTag(ResultSet res) {
+        try {
+            UUID uuid = UUID.fromString(res.getString("tag_id"));
+            String name = res.getString("name");
+            String color = res.getString("color");
+            return new Tag(name, uuid, color);
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    private Tag replaceIdIfAlreadyExist(Tag tag) throws SQLException {
+        String sql = """
+                SELECT tag_id
+                FROM tag
+                WHERE name = '%1$s'
+                """.formatted(tag.getName());
         try (ResultSet res = database.executeQuery(sql)) {
-            while (res.next()) {
-                UUID deckId = UUID.fromString(res.getString("deck_id"));
-                decks.add(deckDao.getDeck(deckId));
+            if (res.next()) {
+                tag = new Tag(tag.getName(), UUID.fromString(res.getString("tag_id")), tag.getColor());
             }
         }
-
-        return decks;
+        return tag;
     }
-
-    public List<Tag> searchTags(String userSearch) throws SQLException {
-        String sql = """
-            SELECT tag_id
-            FROM tag
-            WHERE name LIKE '%s'
-            """.formatted(userSearch + "%");
-
-        return getTags(sql);
-    }
-
 }
 

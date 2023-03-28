@@ -19,23 +19,25 @@ public class TestDeckDAO extends DatabaseUsingTest {
 
     DeckDAO deckDAO;
     TagDAO tagDAO;
-    UserDAO userDAO = new UserDAO();
+    UserDAO userDAO;
 
     UUID user = UUID.randomUUID();
 
     @Override
     @BeforeEach
-    void init() throws SQLException, DatabaseException {
+    void init() throws DatabaseException {
         super.init();
 
         db.initTables(DatabaseScheme.CLIENT);
-        userDAO.registerGuest(user);
 
-        this.deckDAO = new DeckDAO();
-        this.tagDAO = new TagDAO();
+        this.deckDAO = new DeckDAO(this.db);
+        this.tagDAO = new TagDAO(this.db);
+        this.userDAO  = new UserDAO(this.db);
 
         this.deckDAO.setTagDao(this.tagDAO);
         this.tagDAO.setDeckDao(this.deckDAO);
+
+        userDAO.registerGuest(user);
     }
 
     @Test

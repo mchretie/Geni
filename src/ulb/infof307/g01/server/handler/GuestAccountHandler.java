@@ -2,6 +2,7 @@ package ulb.infof307.g01.server.handler;
 
 import spark.Request;
 import spark.Response;
+import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.database.dao.UserDAO;
 
 import java.util.Map;
@@ -13,7 +14,11 @@ import static spark.Spark.*;
 public class GuestAccountHandler extends Handler {
     private static final Logger logger = Logger.getLogger(GuestAccountHandler.class.getName());
 
-    private final UserDAO userDAO = new UserDAO();
+    private final Database database;
+
+    public GuestAccountHandler(Database database) {
+        this.database = database;
+    }
 
     @Override
     public void init() {
@@ -29,7 +34,7 @@ public class GuestAccountHandler extends Handler {
     private Map<String, String> registerGuest(Request req, Response res) {
         UUID uuid = UUID.randomUUID();
         try {
-            userDAO.registerGuest(uuid);
+            database.registerGuest(uuid);
             logger.info("Registered guest with uuid " + uuid);
         } catch (Exception e) {
             logger.warning("Failed to register guest: " + e.getMessage());

@@ -4,6 +4,7 @@ import ulb.infof307.g01.server.database.dao.*;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
@@ -12,22 +13,16 @@ public class Database {
 
     static Database instance;
 
-    // DatabaseConnectionManager conManager;
+    DatabaseAccess databaseAccess;
     DeckDAO deckDao;
     TagDAO tagDao;
     UserDAO userDao;
 
-    // private Database(DatabaseConnectionManager conManager) {
-    //     this.conManager = conManager;
-    //     this.deckDao = new DeckDAO();
-    //     this.tagDao = new TagDAO();
-    //     this.userDao = new UserDAO();
-    // }
-
-    private Database() {
-        this.deckDao = new DeckDAO();
-        this.tagDao = new TagDAO();
-        this.userDao = new UserDAO();
+    public Database() {
+        this.databaseAccess = new DatabaseAccess();
+        this.deckDao = new DeckDAO(this.databaseAccess);
+        this.tagDao = new TagDAO(this.databaseAccess);
+        this.userDao = new UserDAO(this.databaseAccess);
 
         this.deckDao.setTagDao(this.tagDao);
         this.tagDao.setDeckDao(this.deckDao);
@@ -37,6 +32,14 @@ public class Database {
         if (instance == null)
             instance = new Database();
         return instance;
+    }
+
+    public void open(File dbname) {
+        this.databaseAccess.open(dbname);
+    }
+
+    public void initServerScheme() {
+        this.databaseAccess.initTables(DatabaseScheme.SERVER);
     }
 
     /* ====================================================================== */
@@ -128,5 +131,4 @@ public class Database {
     public void registerGuest(UUID guestId) throws SQLException {
         userDao.registerGuest(guestId);
     }
-
 }

@@ -1,7 +1,7 @@
 package ulb.infof307.g01.server;
 
-import ulb.infof307.g01.server.database.DatabaseConnectionManager;
-import ulb.infof307.g01.server.database.DatabaseScheme;
+import ulb.infof307.g01.server.database.Database;
+import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.server.handler.DeckRequestHandler;
 import ulb.infof307.g01.server.handler.GuestAccountHandler;
@@ -16,6 +16,7 @@ import static spark.Spark.port;
 public class Server {
 
     private final Logger logger = Logger.getLogger("Server");
+    private Database db = new Database();
     private final int port;
 
 
@@ -48,13 +49,13 @@ public class Server {
 
     private void initDatabase() throws SQLException, DatabaseException {
         File dbfile = new File("demo.db");
-        DatabaseConnectionManager db = DatabaseConnectionManager.singleton();
+        db = new Database();
         db.open(dbfile);
-        db.initTables(DatabaseScheme.CLIENT);
+        db.initServerScheme();
     }
 
     private void launchHandlers() {
-        new DeckRequestHandler().init();
-        new GuestAccountHandler().init();
+        new DeckRequestHandler(db).init();
+        new GuestAccountHandler(db).init();
     }
 }

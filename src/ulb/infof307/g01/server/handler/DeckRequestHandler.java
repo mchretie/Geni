@@ -20,7 +20,11 @@ public class DeckRequestHandler extends Handler {
     private final Map<String, String> failedResponse
             = Map.of("success", "false");
 
-    private final Database database = Database.singleton();
+    private final Database database;
+
+    public DeckRequestHandler(Database database) {
+        this.database = database;
+    }
 
     @Override
     public void init() {
