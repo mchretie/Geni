@@ -13,11 +13,10 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
+import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 =======
 import ulb.infof307.g01.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.view.editdeck.EditDeckViewController;
-import ulb.infof307.g01.view.profile.ProfileViewController;
-
 import ulb.infof307.g01.view.playdeck.PlayDeckViewController;
 >>>>>>> Stashed changes:src/ulb/infof307/g01/view/mainwindow/MainWindowViewController.java
 
