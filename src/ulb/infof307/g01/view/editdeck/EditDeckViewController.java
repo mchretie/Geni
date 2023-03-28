@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
@@ -43,6 +44,9 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private ListView<String> cardsContainer;
+
+    @FXML
+    private ColorPicker colorPicker;
 
     private Deck deck;
     private Card selectedCard;
@@ -204,7 +208,7 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     public void handleColorButtonClicked(ActionEvent actionEvent) {
-        System.out.println("zefzfzefzefzeczecze");
+        System.out.println("new color : " + colorPicker.getValue());
     }
 
 

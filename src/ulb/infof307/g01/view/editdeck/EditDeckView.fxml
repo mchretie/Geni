@@ -81,6 +81,6 @@
     </StackPane>
 
     <HBox layoutY="545.0" prefHeight="55.0" prefWidth="850.0" />
-   <ColorPicker layoutX="365.0" layoutY="14.0" />
+   <ColorPicker fx:id="colorPicker" layoutX="365.0" layoutY="14.0" onAction="#handleColorButtonClicked" />
 
 </AnchorPane>
