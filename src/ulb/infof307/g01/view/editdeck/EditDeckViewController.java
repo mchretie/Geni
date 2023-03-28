@@ -2,8 +2,10 @@ package ulb.infof307.g01.view.editdeck;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
@@ -52,6 +54,9 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private TextField tagsInput;
 
+    @FXML
+    private ColorPicker colorPicker;
+
     private Deck deck;
     private Card selectedCard;
     private Listener listener;
@@ -83,6 +88,7 @@ public class EditDeckViewController implements Initializable {
     public void setDeck(Deck deck) {
         this.deck = deck;
         deckNameText.setText(deck.getName());
+        colorPicker.setValue(deck.getColor());
     }
 
     public void setListener(Listener listener) {
@@ -240,6 +246,11 @@ public class EditDeckViewController implements Initializable {
         anchor.requestFocus();
     }
 
+    @FXML
+    public void handleColorButtonClicked(ActionEvent actionEvent) {
+        listener.deckColorModified(deck, colorPicker.getValue());
+    }
+
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -250,6 +261,7 @@ public class EditDeckViewController implements Initializable {
         void tagAddedToDeck(Deck deck, String tagName, String color);
         void frontOfCardModified(Card card, String newFront);
         void backOfCardModified(Card card, String newBack);
+        void deckColorModified(Deck deck, Color color);
         void newCard();
         void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card);
