@@ -1,7 +1,7 @@
 package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.httpclient.dao.DeckDAO;
+import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;

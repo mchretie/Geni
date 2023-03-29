@@ -1,13 +1,10 @@
-package ulb.infof307.g01.gui.httpclient.dao;
-
-import ulb.infof307.g01.gui.httpclient.HttpClientAPI;
+package ulb.infof307.g01.gui.httpdao.dao;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.Optional;
-import java.util.UUID;
 
-public class UserDAO extends HttpClientAPI {
+public class UserDAO extends HttpDAO {
 
     /* ====================================================================== */
     /*                               DAO methods                              */

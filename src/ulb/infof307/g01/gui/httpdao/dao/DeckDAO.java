@@ -1,15 +1,13 @@
-package ulb.infof307.g01.gui.httpclient.dao;
+package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
-import ulb.infof307.g01.gui.httpclient.HttpClientAPI;
 import ulb.infof307.g01.model.Deck;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.UUID;
 
-public class DeckDAO extends HttpClientAPI {
+public class DeckDAO extends HttpDAO {
 
     /* ====================================================================== */
     /*                               DAO methods                              */

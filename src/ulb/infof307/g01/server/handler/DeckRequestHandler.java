@@ -17,10 +17,11 @@ import static spark.Spark.*;
 @SuppressWarnings("FieldCanBeLocal")
 public class DeckRequestHandler extends Handler {
 
-    private final String SAVE_DECK_PATH     = "/api/deck/save";
-    private final String DELETE_DECK_PATH   = "/api/deck/delete";
-    private final String GET_ALL_DECKS_PATH = "/api/deck/all";
-    private final String SEARCH_DECKS_PATH  = "/api/deck/search";
+    private final String BASE_PATH          = "/api/deck";
+    private final String SAVE_DECK_PATH     = "/save";
+    private final String DELETE_DECK_PATH   = "/delete";
+    private final String GET_ALL_DECKS_PATH = "/all";
+    private final String SEARCH_DECKS_PATH  = "/search";
 
     private final Database database;
     private final JWTService jwtService;
@@ -32,10 +33,12 @@ public class DeckRequestHandler extends Handler {
 
     @Override
     public void init() {
-        post(SAVE_DECK_PATH, this::saveDeck, toJson());
-        delete(DELETE_DECK_PATH, this::deleteDeck, toJson());
-        get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
-        get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
+        path(BASE_PATH, () -> {
+            post(SAVE_DECK_PATH, this::saveDeck, toJson());
+            delete(DELETE_DECK_PATH, this::deleteDeck, toJson());
+            get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
+            get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
+        });
     }
 
     private Map<String, String> saveDeck(Request req, Response res) {
@@ -44,7 +47,6 @@ public class DeckRequestHandler extends Handler {
             UUID userId = UUID.fromString(database.getUserId(username));
 
             Deck deck = new Gson().fromJson(req.body(), Deck.class);
-            System.out.println(deck.getName());
             database.saveDeck(deck, userId);
             return successfulResponse;
 
@@ -80,9 +82,7 @@ public class DeckRequestHandler extends Handler {
     private List<Deck> getAllDecks(Request req, Response res) {
         try {
             String username = usernameFromRequest(req);
-            System.out.println(username);
             UUID userId = UUID.fromString(database.getUserId(username));
-            System.out.println(userId);
 
             return database.getAllUserDecks(userId);
 
@@ -101,7 +101,7 @@ public class DeckRequestHandler extends Handler {
             UUID userId = UUID.fromString(database.getUserId(username));
 
             String userSearch = req.queryParams("name");
-            System.out.println(userSearch);
+
             return database.searchDecks(userSearch, userId);
 
         } catch (Exception e) {
@@ -113,6 +113,17 @@ public class DeckRequestHandler extends Handler {
         }
     }
 
+
+    /**
+     * Extracts the username from the request's Authorization header.
+     * <p>
+     *     If the token is invalid, the request is halted.
+     *     Otherwise, the username is returned.
+     * </p>
+     *
+     * @param req the request
+     * @return the username
+     */
     private String usernameFromRequest(Request req) {
         String token = req.headers("Authorization");
         if (token == null || !jwtService.isTokenValid(token)) {

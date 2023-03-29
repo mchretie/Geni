@@ -9,13 +9,14 @@ import java.util.Map;
 
 import static spark.Spark.*;
 
-
 @SuppressWarnings("FieldCanBeLocal")
 public class UserAccountHandler extends Handler {
 
-    private final String REGISTER_PATH = "/api/user/register";
-    private final String LOGIN_PATH    = "/api/user/login";
-    private final String AUTH          = "/api/user/auth";
+    private final String BASE_PATH     = "/api/user";
+    private final String REGISTER_PATH = "/register";
+    private final String LOGIN_PATH    = "/login";
+
+    private final String AUTH_HEADER = "Authorization";
 
     private final Database database;
     private final JWTService jwtService;
@@ -27,8 +28,10 @@ public class UserAccountHandler extends Handler {
 
     @Override
     public void init() {
-        post(REGISTER_PATH, this::registerUser);
-        get(LOGIN_PATH, this::loginUser);
+        path(BASE_PATH, () ->{
+            post(REGISTER_PATH, this::registerUser);
+            get(LOGIN_PATH, this::loginUser);
+        });
     }
 
     private Map<String, String> loginUser(Request request, Response response) {
@@ -40,7 +43,7 @@ public class UserAccountHandler extends Handler {
 
             if (isValidLogin) {
                 String token = jwtService.generateToken(username);
-                response.header(AUTH, token);
+                response.header(AUTH_HEADER, token);
             }
 
             else {
