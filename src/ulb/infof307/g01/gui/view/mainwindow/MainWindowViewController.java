@@ -36,6 +36,9 @@ public class MainWindowViewController {
     private BorderPane playDeckView;
 
     @FXML
+    private AnchorPane editCardView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
     @FXML
     private EditDeckViewController editDeckViewController;
@@ -108,6 +111,10 @@ public class MainWindowViewController {
 
     public void setPlayDeckViewVisible() {
         setAllInvisibleExcept(playDeckView);
+    }
+
+    public void setEditCardViewVisible() {
+        setAllInvisibleExcept(editCardView);
     }
 
 

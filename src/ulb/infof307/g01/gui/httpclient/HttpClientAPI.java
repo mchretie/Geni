@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class HttpClientAPI {
 
     protected final HttpClient httpClient = HttpClient.newBuilder().build();
-    protected final String baseUrl = "http://localhost:8080";
+    protected final String baseUrl = "http://0.0.0.0:8080";
 
     /* ====================================================================== */
     /*                            HTTP methods                                */
