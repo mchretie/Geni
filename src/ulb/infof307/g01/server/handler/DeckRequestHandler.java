@@ -49,12 +49,7 @@ public class DeckRequestHandler extends Handler {
 
     private Map<String, String> saveDeck(Request req, Response res) {
         try {
-            String token = req.headers("Authorization");
-            isTokenValid(token);
-
-            String username
-                    = JWTService.getInstance().getUsernameFromToken(token);
-
+            String username = usernameFromToken(req);
             Deck deck = new Gson().fromJson(req.body(), Deck.class);
 
             deckDAO.saveDeckToUsername(deck, username);
@@ -72,12 +67,7 @@ public class DeckRequestHandler extends Handler {
 
     private Map<String, String> deleteDeck(Request req, Response res) {
         try {
-            String token = req.headers("Authorization");
-            isTokenValid(token);
-
-            String username
-                    = JWTService.getInstance().getUsernameFromToken(token);
-
+            String username = usernameFromToken(req);
             UUID deckId = UUID.fromString(req.queryParams("deck_id"));
 
             deckDAO.deleteDeckFromUsername(deckId, username);
@@ -94,15 +84,7 @@ public class DeckRequestHandler extends Handler {
 
     private List<Deck> getAllDecks(Request req, Response res) {
         try {
-            JWTService jwtService = JWTService.getInstance();
-            String token = req.headers("Authorization");
-
-            isTokenValid(token);
-
-            String username
-                    = jwtService.getUsernameFromToken(token);
-
-            System.out.println(username);
+            String username = usernameFromToken(req);
 
             return deckDAO.getAllDecksFromUsername(username);
 
@@ -117,11 +99,7 @@ public class DeckRequestHandler extends Handler {
 
     private List<Deck> searchDecks(Request req, Response res) {
         try {
-            String token = req.headers("Authorization");
-            isTokenValid(token);
-
-            String username
-                    = JWTService.getInstance().getUsernameFromToken(token);
+            String username = usernameFromToken(req);
             String userSearch = req.queryParams("search");
 
             return deckDAO.searchDecksFromUsername(userSearch, username);
@@ -135,10 +113,14 @@ public class DeckRequestHandler extends Handler {
         }
     }
 
-    private void isTokenValid(String token) {
+    private String usernameFromToken(Request req) {
+        String token = req.headers("Authorization");
+
         if (!JWTService.getInstance().isTokenValid(token)) {
             System.out.println("Invalid token");
             halt(401, "Invalid token");
         }
+
+        return JWTService.getInstance().getUsernameFromToken(token);
     }
 }
