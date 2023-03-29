@@ -1,7 +1,5 @@
 package ulb.infof307.g01.model;
 
-import javafx.scene.paint.Color;
-
 import java.util.*;
 
 
@@ -10,14 +8,14 @@ public class Deck implements Iterable<Card> {
     private final UUID id;
     private final List<Card> cards;
     private final List<Tag> tags;
-    private Color color;
+    private String color;
 
     public Deck(String name) {
         this.name = name;
         this.id = UUID.randomUUID();
         this.cards = new ArrayList<>();
         this.tags = new ArrayList<>();
-        this.color = Color.RED;
+        this.color = "FF0000";
     }
 
     public Deck(String name, UUID id) {
@@ -25,7 +23,7 @@ public class Deck implements Iterable<Card> {
         this.id = id;
         this.cards = new ArrayList<>();
         this.tags = new ArrayList<>();
-        this.color = Color.RED;
+        this.color = "FF0000";
     }
 
     public Deck(String name, UUID id, List<Card> cards, List<Tag> tags) {
@@ -33,10 +31,10 @@ public class Deck implements Iterable<Card> {
         this.id = id;
         this.cards = cards;
         this.tags = tags;
-        this.color = Color.RED;
+        this.color = "FF0000";
     }
 
-    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, Color color) {
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color) {
         this.name = name;
         this.id = id;
         this.cards = cards;
@@ -87,8 +85,8 @@ public class Deck implements Iterable<Card> {
         return false;
     }
 
-    public void setColor(Color color) { this.color = color; }
-    public Color getColor() { return color; }
+    public void setColor(String color) { this.color = color; }
+    public String getColor() { return color; }
 
     @Override
     public boolean equals(Object obj) {
