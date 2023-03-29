@@ -16,8 +16,6 @@ public class UserDAO extends HttpClientAPI {
     public void login(String username, String password)
             throws IOException, InterruptedException {
 
-        System.out.println("login");
-
         HttpResponse<String> response = get("/api/user/login"
                 + "?username=" + username + "&password=" + password);
 

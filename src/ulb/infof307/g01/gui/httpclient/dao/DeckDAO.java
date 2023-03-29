@@ -42,7 +42,7 @@ public class DeckDAO extends HttpClientAPI {
 
 
         HttpResponse<String> response
-                = get("/api/deck/search" + "&name=" + deckName);
+                = get("/api/deck/search" + "?name=" + deckName);
 
         checkResponseCode(response.statusCode());
 
@@ -52,7 +52,7 @@ public class DeckDAO extends HttpClientAPI {
     public void deleteDeck(Deck deck)
             throws IOException, InterruptedException {
 
-        String query =  "&deck_id=" + deck.getId();
+        String query =  "?deck_id=" + deck.getId();
         HttpResponse<String> response = delete("/api/deck/delete" + query);
 
         checkResponseCode(response.statusCode());

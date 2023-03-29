@@ -130,8 +130,7 @@ public class DeckRequestHandler extends Handler {
     private String usernameFromRequest(Request req) {
         String token = req.headers("Authorization");
         if (token == null || !jwtService.isTokenValid(token)) {
-            System.out.println("No token provided");
-            halt(401, "No token provided");
+            halt(401, "Token is " + (token == null ? "null" : "not valid"));
         }
         return jwtService.getUsernameFromToken(token);
     }

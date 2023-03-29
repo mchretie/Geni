@@ -17,11 +17,9 @@ public class UserDAO extends DAO {
 
     public boolean userExists(UUID userId) throws DatabaseException {
         String sql = """
-                SELECT EXISTS (
-                    SELECT 1
-                    FROM user
-                    WHERE user_id = ?
-                )
+                SELECT 1
+                FROM user
+                WHERE user_id = ?
                 """;
 
         ResultSet res = database.executeQuery(sql, userId.toString());
@@ -30,16 +28,12 @@ public class UserDAO extends DAO {
 
     public boolean usernameExists(String username) throws DatabaseException {
         String sql = """
-                SELECT EXISTS (
-                    SELECT 1
-                    FROM user
-                    WHERE username = ?
-                )
+                SELECT 1
+                FROM user
+                WHERE username = ?
                 """;
 
         ResultSet res = database.executeQuery(sql, username);
-
-
 
         return checkedNext(res);
     }
@@ -66,11 +60,9 @@ public class UserDAO extends DAO {
         User user = new User(username, password, getUserSaltKey(username));
 
         String sql = """
-                SELECT EXISTS (
-                    SELECT 1
-                    FROM user
-                    WHERE username = ? AND password = ?
-                )
+                SELECT 1
+                FROM user
+                WHERE username = ? AND password = ?
                 """;
 
         ResultSet res = database.executeQuery(sql,
@@ -81,11 +73,8 @@ public class UserDAO extends DAO {
     }
 
     public boolean registerUser(String username, String password) throws DatabaseException {
-        if (usernameExists(username)) {
-            System.out.println("Username already exists");
+        if (usernameExists(username))
             return false;
-        }
-
 
         User user = new User(username, password);
         UUID user_id = UUID.randomUUID();
@@ -107,7 +96,7 @@ public class UserDAO extends DAO {
         String sql = """
                 SELECT user_id
                 FROM user
-                WHERE username = '%1$s'
+                WHERE username = ?
                 """;
 
         try (ResultSet res = database.executeQuery(sql, username)) {

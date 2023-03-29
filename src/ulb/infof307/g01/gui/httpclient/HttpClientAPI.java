@@ -18,7 +18,7 @@ import java.util.List;
  */
 public abstract class HttpClientAPI {
 
-    private String token;
+    private String token = "";
 
     protected final HttpClient httpClient = HttpClient.newBuilder().build();
     protected final String baseUrl = "http://localhost:8080";
@@ -30,16 +30,11 @@ public abstract class HttpClientAPI {
     protected HttpResponse<String> get(String path)
             throws IOException, InterruptedException {
 
-        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+        HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(baseUrl + path))
-                .GET();
-
-        HttpRequest request
-                = token == null ?   requestBuilder.build()
-                                    : requestBuilder
-                                        .header("Authorization", token)
-                                        .build();
-
+                .GET()
+                .header("Authorization", token)
+                .build();
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
@@ -50,6 +45,7 @@ public abstract class HttpClientAPI {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(baseUrl + path))
                 .POST(HttpRequest.BodyPublishers.ofString(body))
+                .header("Authorization", token)
                 .build();
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());

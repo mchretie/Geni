@@ -51,7 +51,6 @@ public class MainFxController extends Application implements MainWindowViewContr
         this.stage = stage;
         stage.setTitle("Pokémon TCG Deck Builder");
 
-        userDAO.register("guest", "guest");
         userDAO.login("guest", "guest");
 
         URL resource = MainWindowViewController
