@@ -4,8 +4,7 @@ import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.server.database.dao.DeckDAO;
-import ulb.infof307.g01.server.service.JWTService;
+import ulb.infof307.g01.server.database.Database;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,11 @@ import static spark.Spark.*;
 
 public class DeckRequestHandler extends Handler {
 
-    private final DeckDAO deckDAO = DeckDAO.singleton();
+    private final Database database;
+
+    public DeckRequestHandler(Database database) {
+        this.database = database;
+    }
 
     @Override
     public void init() {
@@ -49,10 +52,10 @@ public class DeckRequestHandler extends Handler {
 
     private Map<String, String> saveDeck(Request req, Response res) {
         try {
-            String username = usernameFromToken(req);
+            UUID userId = UUID.fromString(req.queryParams("user_id"));
             Deck deck = new Gson().fromJson(req.body(), Deck.class);
-
-            deckDAO.saveDeckToUsername(deck, username);
+            System.out.println(deck.getName());
+            database.saveDeck(deck, userId);
             return successfulResponse;
 
         } catch (Exception e) {
@@ -67,10 +70,10 @@ public class DeckRequestHandler extends Handler {
 
     private Map<String, String> deleteDeck(Request req, Response res) {
         try {
-            String username = usernameFromToken(req);
+            UUID userId = UUID.fromString(req.queryParams("user_id"));
             UUID deckId = UUID.fromString(req.queryParams("deck_id"));
 
-            deckDAO.deleteDeckFromUsername(deckId, username);
+            database.deleteDeck(deckId, userId);
             return successfulResponse;
 
         } catch (Exception e) {
@@ -84,9 +87,8 @@ public class DeckRequestHandler extends Handler {
 
     private List<Deck> getAllDecks(Request req, Response res) {
         try {
-            String username = usernameFromToken(req);
-
-            return deckDAO.getAllDecksFromUsername(username);
+            UUID userId = UUID.fromString(req.queryParams("user_id"));
+            return database.getAllUserDecks(userId);
 
         } catch (Exception e) {
             String message = "Failed to get all decks: " + e.getMessage();
@@ -99,10 +101,8 @@ public class DeckRequestHandler extends Handler {
 
     private List<Deck> searchDecks(Request req, Response res) {
         try {
-            String username = usernameFromToken(req);
-            String userSearch = req.queryParams("search");
-
-            return deckDAO.searchDecksFromUsername(userSearch, username);
+            String userSearch = req.queryParams("name");
+            return database.searchDecks(userSearch);
 
         } catch (Exception e) {
             String message = "Failed to search decks: " + e.getMessage();
@@ -111,16 +111,5 @@ public class DeckRequestHandler extends Handler {
 
             return new ArrayList<>();
         }
-    }
-
-    private String usernameFromToken(Request req) {
-        String token = req.headers("Authorization");
-
-        if (!JWTService.getInstance().isTokenValid(token)) {
-            System.out.println("Invalid token");
-            halt(401, "Invalid token");
-        }
-
-        return JWTService.getInstance().getUsernameFromToken(token);
     }
 }

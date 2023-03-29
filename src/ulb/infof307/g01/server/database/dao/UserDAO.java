@@ -1,61 +1,64 @@
 package ulb.infof307.g01.server.database.dao;
 
+import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.model.User;
-import ulb.infof307.g01.server.database.Database;
+import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class UserDAO {
-    private final static Database database = Database.singleton();
+public class UserDAO extends DAO {
+    private final DatabaseAccess database;
 
-    public boolean userExists(UUID userId) throws SQLException {
+    public UserDAO(DatabaseAccess database) {
+        this.database = database;
+    }
+
+    public boolean userExists(UUID userId) throws DatabaseException {
         String sql = """
                 SELECT EXISTS (
                     SELECT 1
                     FROM user
-                    WHERE user_id = '%1$s'
+                    WHERE user_id = ?
                 )
-                """.formatted(userId.toString());
+                """;
 
-        try (ResultSet res = database.executeQuery(sql)) {
-            return res.getBoolean(1);
-        }
+        ResultSet res = database.executeQuery(sql, userId.toString());
+        return checkedNext(res);
     }
 
-    public boolean usernameExists(String username) {
+    public boolean usernameExists(String username) throws DatabaseException {
         String sql = """
                 SELECT EXISTS (
                     SELECT 1
                     FROM user
-                    WHERE username = '%1$s'
+                    WHERE username = ?
                 )
-                """.formatted(username);
+                """;
 
-        try (ResultSet res = database.executeQuery(sql)) {
-            return res.getBoolean(1);
-        } catch (SQLException e) {
-            return false;
-        }
+        ResultSet res = database.executeQuery(sql, username);
+        return checkedNext(res);
     }
 
-    public String getUserSaltKey(String username) {
+    public String getUserSaltKey(String username) throws DatabaseException {
         String sql = """
                 SELECT salt
                 FROM user
                 WHERE username = '%1$s'
-                """.formatted(username);
+                """;
 
-        try (ResultSet res = database.executeQuery(sql)) {
-            return res.getString(1);
+        try {
+            ResultSet res = database.executeQuery(sql, username);
+            return res.getString("salt");
         } catch (SQLException e) {
-            return null;
+            throw new DatabaseException(e.getMessage());
         }
     }
 
-    public boolean loginUser(String username, String password) {
-        if (!usernameExists(username)) return false;
+    public boolean loginUser(String username, String password) throws DatabaseException {
+        if (!usernameExists(username)) // is it working ?
+            return false;
 
         User user = new User(username, password, getUserSaltKey(username));
 
@@ -63,37 +66,34 @@ public class UserDAO {
                 SELECT EXISTS (
                     SELECT 1
                     FROM user
-                    WHERE username = '%1$s' AND password = '%2$s'
+                    WHERE username = ? AND password = ?
                 )
-                """.formatted(username, user.getPassword());
+                """;
 
-        try (ResultSet res = database.executeQuery(sql)) {
-            return res.getBoolean(1);
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
+        ResultSet res = database.executeQuery(sql,
+                                              user.getUsername(),
+                                              user.getPassword());
+        return checkedNext(res);
     }
 
-    public boolean registerUser(String username, String password) {
-        if (usernameExists(username)) return false;
+    public boolean registerUser(String username, String password) throws DatabaseException {
+        if (usernameExists(username))
+            return false;
 
         User user = new User(username, password);
         UUID user_id = UUID.randomUUID();
 
         String sql = """
                 INSERT INTO user (user_id, username, password, salt)
-                VALUES ('%1$s', '%2$s', '%3$s', '%4$s')
-                """.formatted(user_id.toString(), user.getUsername(), user.getPassword(), user.getSaltString());
+                VALUES (?, ?, ?, ?)
+                """;
 
-        try {
-            database.executeUpdate(sql);
-            return true;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
+        database.executeUpdate(sql,
+                               user_id.toString(),
+                               user.getUsername(),
+                               user.getPassword(),
+                               user.getSaltString());
+        return true;
     }
 }
 

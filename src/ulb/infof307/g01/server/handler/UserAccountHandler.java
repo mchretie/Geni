@@ -2,7 +2,7 @@ package ulb.infof307.g01.server.handler;
 
 import spark.Request;
 import spark.Response;
-import ulb.infof307.g01.server.database.dao.UserDAO;
+import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
 import java.util.Map;
@@ -12,7 +12,11 @@ import static spark.Spark.*;
 
 public class UserAccountHandler extends Handler {
 
-    private final UserDAO userDAO = new UserDAO();
+    private final Database database;
+
+    public UserAccountHandler(Database database) {
+        this.database = database;
+    }
 
     @Override
     public void init() {
@@ -52,7 +56,7 @@ public class UserAccountHandler extends Handler {
 
             JWTService jwtService = JWTService.getInstance();
 
-            boolean isValidLogin = userDAO.loginUser(username, password);
+            boolean isValidLogin = database.loginUser(username, password);
             if (isValidLogin) {
                 String token = jwtService.generateToken(username);
                 response.header("Authorization", token);
@@ -72,7 +76,7 @@ public class UserAccountHandler extends Handler {
     private Map<String, String> registerUser(Request request, Response response) {
         String username = request.queryParams("username");
         String password = request.queryParams("password");
-        boolean isRegistered = userDAO.registerUser(username, password);
+        boolean isRegistered = database.registerUser(username, password);
         return isRegistered ? successfulResponse : failedResponse;
     }
 }
