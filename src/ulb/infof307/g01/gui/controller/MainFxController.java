@@ -24,6 +24,7 @@ public class MainFxController extends Application implements MainWindowViewContr
     private DeckMenuController deckMenuController;
     private MainWindowViewController mainWindowViewController;
     private PlayDeckController playDeckController;
+    private ProfileController profileController;
 
     private Stage stage;
 
@@ -60,6 +61,9 @@ public class MainFxController extends Application implements MainWindowViewContr
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
 
+        //ICI
+        profileController = new ProfileController( stage, mainWindowViewController,
+                this );
         try {
             deckMenuController = new DeckMenuController(
                     stage,
@@ -123,6 +127,8 @@ public class MainFxController extends Application implements MainWindowViewContr
     /*                     Controller Listener Methods                        */
     /* ====================================================================== */
 
+
+
     @Override
     public void editDeckClicked(Deck deck) {
 
@@ -155,6 +161,17 @@ public class MainFxController extends Application implements MainWindowViewContr
             mainWindowViewController.alertInformation(title, description);
         }
     }
+
+    @Override //ICI
+    public void profileClicked() {
+        try {
+            profileController.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
     @Override
     public void fxmlLoadingError(IOException e) {
@@ -213,4 +230,5 @@ public class MainFxController extends Application implements MainWindowViewContr
             restartApplicationError(e);
         }
     }
+
 }

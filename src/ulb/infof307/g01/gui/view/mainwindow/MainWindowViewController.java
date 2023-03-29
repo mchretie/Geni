@@ -9,16 +9,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
-<<<<<<< Updated upstream:src/ulb/infof307/g01/gui/view/mainwindow/MainWindowViewController.java
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
-=======
-import ulb.infof307.g01.view.deckmenu.DeckMenuViewController;
-import ulb.infof307.g01.view.editdeck.EditDeckViewController;
-import ulb.infof307.g01.view.playdeck.PlayDeckViewController;
->>>>>>> Stashed changes:src/ulb/infof307/g01/view/mainwindow/MainWindowViewController.java
 
 public class MainWindowViewController {
 
@@ -161,7 +155,10 @@ public class MainWindowViewController {
     private void goToAboutClicked() {
         listener.goToAboutClicked();
     }
-
+    @FXML
+    private void profileClicked() {
+        listener.profileClicked();
+    }
 
     /* ====================================================================== */
     /*                              Hover handlers                            */
@@ -227,5 +224,6 @@ public class MainWindowViewController {
         void goToHomeClicked();
         void goToCurrentDeckClicked();
         void goToAboutClicked();
+        void profileClicked();
     }
 }
