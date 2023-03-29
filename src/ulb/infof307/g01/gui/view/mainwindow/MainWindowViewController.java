@@ -157,7 +157,7 @@ public class MainWindowViewController {
     }
     @FXML
     private void profileClicked() {
-      listener.profileClicked();
+        listener.profileClicked();
     }
 
     /* ====================================================================== */

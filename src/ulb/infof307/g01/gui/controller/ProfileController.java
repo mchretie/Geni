@@ -1,21 +1,24 @@
 package ulb.infof307.g01.gui.controller;
 
-import java.io.IOException;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpclient.dao.DeckDAO;
-import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
-import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
+import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
+import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+
+import java.io.IOException;
 
 public class ProfileController implements ProfileViewController.Listener {
 
   private final Stage stage;
 
+
   private final MainWindowViewController mainWindowViewController;
   private final ProfileViewController profileViewController;
+
 
   private final ControllerListener controllerListener;
 
@@ -31,11 +34,12 @@ public class ProfileController implements ProfileViewController.Listener {
     this.mainWindowViewController = mainWindowViewController;
     this.controllerListener = controllerListener;
 
-    this.profileViewController =
-        mainWindowViewController.getProfileViewController();
+    this.profileViewController
+            = mainWindowViewController.getProfileViewController();
 
     profileViewController.setListener(this);
   }
+
 
   /* ====================================================================== */
   /*                         Stage Manipulation                             */
@@ -51,6 +55,7 @@ public class ProfileController implements ProfileViewController.Listener {
 
     stage.show();
   }
+
 
   /* ====================================================================== */
   /*                        View Listener Method                            */

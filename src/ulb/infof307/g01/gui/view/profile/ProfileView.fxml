@@ -6,16 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="rootPane"
+<AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ulb.infof307.g01.gui.view.profile.testmenu">
-    <VBox fx:id="menuPane" prefWidth="200" style="-fx-background-color: #1F1F1F;">
-        <Label text="Menu" style="-fx-text-fill: #FFFFFF; -fx-font-size: 24; -fx-font-weight: bold; -fx-padding: 20;"/>
-        <Button text="Option 1" style="-fx-text-fill: #FFFFFF; -fx-padding: 10;"/>
-        <Button text="Option 2" style="-fx-text-fill: #FFFFFF; -fx-padding: 10;"/>
-        <Button text="Option 3" style="-fx-text-fill: #FFFFFF; -fx-padding: 10;"/>
-    </VBox>
-    <VBox fx:id="contentPane" style="-fx-background-color: #FFFFFF;">
-        <Label text="Content" style="-fx-font-size: 24; -fx-padding: 20;"/>
-    </VBox>
-</BorderPane>
+            fx:controller="ulb.infof307.g01.gui.view.profile.ProfileViewController"
+            prefHeight="400.0" prefWidth="600.0">
+
+</AnchorPane>

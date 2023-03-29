@@ -17,9 +17,9 @@ import java.net.URL;
  * Main class of the application which initializes the main view using the main view handler and loads a menu view.
  */
 public class MainFxController extends Application implements MainWindowViewController.NavigationListener,
-                                                                DeckMenuController.ControllerListener,
-                                                                PlayDeckController.ControllerListener,
-                                                                EditDeckController.ControllerListener {
+        DeckMenuController.ControllerListener,
+        PlayDeckController.ControllerListener,
+        EditDeckController.ControllerListener {
 
     private DeckMenuController deckMenuController;
     private MainWindowViewController mainWindowViewController;
@@ -48,8 +48,8 @@ public class MainFxController extends Application implements MainWindowViewContr
         stage.setTitle("Pokémon TCG Deck Builder");
 
         URL resource = MainWindowViewController
-                            .class
-                            .getResource("MainWindowView.fxml");
+                .class
+                .getResource("MainWindowView.fxml");
 
         FXMLLoader fxmlLoader = new FXMLLoader(resource);
 
@@ -61,9 +61,9 @@ public class MainFxController extends Application implements MainWindowViewContr
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
 
-        // ICI
-        profileController =
-            new ProfileController(stage, mainWindowViewController, this);
+        //ICI
+        profileController = new ProfileController( stage, mainWindowViewController,
+                this );
         try {
             deckMenuController = new DeckMenuController(
                     stage,
@@ -116,8 +116,8 @@ public class MainFxController extends Application implements MainWindowViewContr
      */
     private void databaseModificationError(Exception e) {
         String message = "Vos modifications n’ont pas été enregistrées, "
-                            + "veuillez réessayer. Si le problème persiste, "
-                            + "redémarrez l’application";
+                + "veuillez réessayer. Si le problème persiste, "
+                + "redémarrez l’application";
 
         communicateError(e, message);
     }
@@ -126,6 +126,8 @@ public class MainFxController extends Application implements MainWindowViewContr
     /* ====================================================================== */
     /*                     Controller Listener Methods                        */
     /* ====================================================================== */
+
+
 
     @Override
     public void editDeckClicked(Deck deck) {
@@ -142,7 +144,12 @@ public class MainFxController extends Application implements MainWindowViewContr
     }
 
     @Override
-    public void playDeckroller,
+    public void playDeckClicked(Deck deck) {
+        try {
+            playDeckController = new PlayDeckController(
+                    stage,
+                    deck,
+                    mainWindowViewController,
                     this);
 
             playDeckController.show();
@@ -155,14 +162,16 @@ public class MainFxController extends Application implements MainWindowViewContr
         }
     }
 
-    @Override // ICI
+    @Override //ICI
     public void profileClicked() {
-      try {
-        profileController.show();
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
+        try {
+            profileController.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
+
 
     @Override
     public void fxmlLoadingError(IOException e) {
@@ -221,4 +230,6 @@ public class MainFxController extends Application implements MainWindowViewContr
             restartApplicationError(e);
         }
     }
+
 }
+
