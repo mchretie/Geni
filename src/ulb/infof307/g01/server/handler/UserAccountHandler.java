@@ -10,7 +10,12 @@ import java.util.Map;
 import static spark.Spark.*;
 
 
+@SuppressWarnings("FieldCanBeLocal")
 public class UserAccountHandler extends Handler {
+
+    private final String REGISTER_PATH = "/api/user/register";
+    private final String LOGIN_PATH    = "/api/user/login";
+    private final String AUTH          = "/api/user/auth";
 
     private final Database database;
     private final JWTService jwtService;
@@ -24,54 +29,22 @@ public class UserAccountHandler extends Handler {
     public void init() {
         logStart();
 
-        before("/api/user/*", (req, res) -> {
-            logger.info("Received request: "
-                    + req.requestMethod()
-                    + " "
-                    + req.pathInfo()
-                    + " "
-                    + req.queryParams());
-        });
-
-        path("/api", () -> {
-            path("/user", () -> {
-                post("/register", this::registerUser);
-                get("/login", this::loginUser);
-                get("/test", this::testAuth);
-            });
-        });
+        post(REGISTER_PATH, this::registerUser);
+        get(LOGIN_PATH, this::loginUser);
 
         logStarted();
     }
 
-    private Map<String, String> testAuth(Request request, Response response) {
-        String token = request.cookie("token");
-        boolean isTokenValid = jwtService.isTokenValid(token);
-        if (isTokenValid) {
-            String username = jwtService.getUsernameFromToken(token);
-            System.out.println(username);
-            return successfulResponse;
-        } else {
-            System.out.println("Token is not valid");
-            return failedResponse;
-        }
-    }
-
     private Map<String, String> loginUser(Request request, Response response) {
         try {
-            System.out.println("Login request received");
             String username = request.queryParams("username");
             String password = request.queryParams("password");
 
-            System.out.println("Username: " + username);
-            System.out.println("Password: " + password);
-
             boolean isValidLogin = database.loginUser(username, password);
-
 
             if (isValidLogin) {
                 String token = jwtService.generateToken(username);
-                response.header("Authorization", token);
+                response.header(AUTH, token);
             }
 
             else {

@@ -14,7 +14,13 @@ import java.util.UUID;
 
 import static spark.Spark.*;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class DeckRequestHandler extends Handler {
+
+    private final String SAVE_DECK_PATH     = "/api/deck/save";
+    private final String DELETE_DECK_PATH   = "/api/deck/delete";
+    private final String GET_ALL_DECKS_PATH = "/api/deck/all";
+    private final String SEARCH_DECKS_PATH  = "/api/deck/search";
 
     private final Database database;
     private final JWTService jwtService;
@@ -28,27 +34,10 @@ public class DeckRequestHandler extends Handler {
     public void init() {
         logStart();
 
-        path("/api", () -> {
-            path("/deck", () -> {
-                post("/save", this::saveDeck, toJson());
-                delete("/delete", this::deleteDeck, toJson());
-                get("/all", this::getAllDecks, toJson());
-                get("/search", this::searchDecks, toJson());
-            });
-        });
-
-        before("/api/deck/*", (req, res) -> {
-            logger.info("Received request: "
-                    + req.requestMethod()
-                    + " "
-                    + req.pathInfo()
-                    + " "
-                    + req.queryParams());
-        });
-
-        after("/api/deck/*", (req, res) -> {
-            logger.info("Sent response code: " + res.status());
-        });
+        post(SAVE_DECK_PATH, this::saveDeck, toJson());
+        delete(DELETE_DECK_PATH, this::deleteDeck, toJson());
+        get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
+        get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
 
         logStarted();
     }
