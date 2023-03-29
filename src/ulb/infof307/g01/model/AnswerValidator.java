@@ -13,30 +13,30 @@ public class AnswerValidator {
     public final List<String> DETERMINERS = List.of("le", "la", "l'", "les", "de", "du", "des");
 
 
-    public AnswerValidator(String cardAnswer, String userAnswer) {
+    AnswerValidator(String cardAnswer, String userAnswer) {
         this.cardAnswer = cardAnswer;
         this.userAnswer = userAnswer;
     }
 
-    public String removeAccents(String text) {
+    String removeAccents(String text) {
         return StringUtils.stripAccents(text);
     }
 
-    public String removeDeterminer(String text) {
+    String removeDeterminer(String text) {
         for (String determiner : this.DETERMINERS) {
             text = StringUtils.remove(text, determiner);
         }
         return text;
     }
 
-    public String addTolerance(String text) {
+    String addTolerance(String text) {
         text = text.toLowerCase();
         text = this.removeAccents(text);
         text = this.removeDeterminer(text);
         return text;
     }
 
-    public boolean isAnswerValid() {
+    boolean isAnswerValid() {
         String cardAnswerWithTol = this.addTolerance(this.cardAnswer);
         String userAnswerWithTol = this.addTolerance(this.userAnswer);
 

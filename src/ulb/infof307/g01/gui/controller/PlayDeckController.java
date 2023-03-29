@@ -1,13 +1,14 @@
 package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.CardExtractor;
 import ulb.infof307.g01.model.CardExtractorRandom;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
+
+import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 
 public class PlayDeckController implements PlayDeckViewController.Listener {
 
@@ -27,10 +28,9 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     public PlayDeckController(Stage stage, Deck deck,
                               MainWindowViewController mainWindowViewController,
-                              ControllerListener controllerListener) throws EmptyDeckException {
+                              ControllerListener controllerListener) {
 
         this.stage = stage;
-
         this.cardExtractor = new CardExtractorRandom(deck);
         this.currentCard = cardExtractor.getNextCard();
 
@@ -38,7 +38,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             throw new EmptyDeckException("Deck does not contain any cards.");
 
         this.controllerListener = controllerListener;
-
         this.mainWindowViewController = mainWindowViewController;
         mainWindowViewController.makeGoBackIconVisible();
 
@@ -57,7 +56,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         mainWindowViewController.setPlayDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
-        playDeckViewController.showFrontOfCard();
         stage.show();
     }
 
@@ -68,15 +66,18 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     @Override
     public void cardClicked() {
-        frontShown = !frontShown;
-        if (frontShown)
-            playDeckViewController.flipToFrontOfCard();
-        else
+        if (frontShown) {
+            System.out.println("Flipping to back of card");
             playDeckViewController.flipToBackOfCard();
+        }
+        else
+            playDeckViewController.flipToFrontOfCard();
+        frontShown = !frontShown;
     }
 
     @Override
     public void nextCardClicked() {
+        frontShown = true;
         currentCard = cardExtractor.getNextCard();
 
         if (currentCard != null)
@@ -94,7 +95,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             return;
 
         currentCard = previousCard;
-        playDeckViewController.showCardContent(currentCard.getFront());
+        playDeckViewController.setCurrentCard(currentCard);
     }
 
 

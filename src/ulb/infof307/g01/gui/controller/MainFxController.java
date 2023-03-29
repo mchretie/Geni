@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
+import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
+import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
@@ -25,7 +27,11 @@ public class MainFxController extends Application implements MainWindowViewContr
     private MainWindowViewController mainWindowViewController;
     private PlayDeckController playDeckController;
 
+    private final UserDAO userDAO = new UserDAO();
+    private final DeckDAO deckDAO = new DeckDAO();
+
     private Stage stage;
+
 
     /* ====================================================================== */
     /*                                  Main                                  */
@@ -41,10 +47,13 @@ public class MainFxController extends Application implements MainWindowViewContr
     /* ====================================================================== */
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, InterruptedException {
 
         this.stage = stage;
+
+        // TODO: Title and login.
         stage.setTitle("Pokémon TCG Deck Builder");
+        userDAO.login("guest", "guest");
 
         URL resource = MainWindowViewController
                             .class
@@ -64,7 +73,9 @@ public class MainFxController extends Application implements MainWindowViewContr
             deckMenuController = new DeckMenuController(
                     stage,
                     this,
-                    mainWindowViewController);
+                    mainWindowViewController,
+                    deckDAO,
+                    userDAO);
 
             deckMenuController.show();
 
@@ -128,7 +139,11 @@ public class MainFxController extends Application implements MainWindowViewContr
 
         try {
             EditDeckController editDeckController
-                    = new EditDeckController(stage, deck, mainWindowViewController, this);
+                    = new EditDeckController(stage,
+                                                deck,
+                                                mainWindowViewController,
+                                                this,
+                                                deckDAO);
 
             editDeckController.show();
 

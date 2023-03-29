@@ -3,8 +3,8 @@ package ulb.infof307.g01.gui.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.httpclient.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpclient.dao.UserDAO;
+import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
+import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
@@ -29,7 +29,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     private final DeckMenuViewController deckMenuViewController;
     private final MainWindowViewController mainWindowViewController;
 
-    private final DeckDAO dm = DeckDAO.getInstance();
+    private final DeckDAO deckDAO;
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -37,13 +37,15 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     public DeckMenuController(Stage stage,
                               ControllerListener controllerListener,
-                              MainWindowViewController mainWindowViewController) throws IOException, InterruptedException {
+                              MainWindowViewController mainWindowViewController,
+                              DeckDAO deckDAO, UserDAO userDAO) throws IOException, InterruptedException {
 
         this.stage = stage;
         this.controllerListener = controllerListener;
         this.mainWindowViewController = mainWindowViewController;
 
-        dm.setUser(UserDAO.getInstance().getGuestUUID());
+        this.deckDAO = deckDAO;
+        this.deckDAO.setToken(userDAO.getToken());
 
         this.deckMenuViewController
                 = mainWindowViewController.getDeckMenuViewController();
@@ -62,7 +64,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException, InterruptedException {
-        deckMenuViewController.setDecks( loadDecks( dm.getAllDecks() ) );
+        deckMenuViewController.setDecks( loadDecks( deckDAO.getAllDecks() ) );
 
         mainWindowViewController.setDeckMenuViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
@@ -115,8 +117,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             return;
 
         try {
-            dm.saveDeck(new Deck(name));
-            deckMenuViewController.setDecks( loadDecks( dm.getAllDecks() ) );
+            deckDAO.saveDeck(new Deck(name));
+            deckMenuViewController.setDecks( loadDecks( deckDAO.getAllDecks() ) );
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
@@ -130,7 +132,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void searchDeckClicked(String name) {
         try {
-            deckMenuViewController.setDecks( loadDecks( dm.searchDecks(name) ) );
+            deckMenuViewController.setDecks( loadDecks( deckDAO.searchDecks(name) ) );
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
@@ -143,8 +145,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void deckRemoved(Deck deck) {
         try {
-            dm.deleteDeck(deck);
-            deckMenuViewController.setDecks( loadDecks( dm.getAllDecks() ) );
+            deckDAO.deleteDeck(deck);
+            deckMenuViewController.setDecks( loadDecks( deckDAO.getAllDecks() ) );
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);

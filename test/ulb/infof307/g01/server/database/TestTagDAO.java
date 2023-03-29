@@ -1,9 +1,14 @@
 package ulb.infof307.g01.server.database;
 
+import org.eclipse.jetty.server.Authentication;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
 import ulb.infof307.g01.server.database.dao.TagDAO;
+
+import ulb.infof307.g01.server.database.dao.UserDAO;
+
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
@@ -15,15 +20,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTagDAO extends DatabaseUsingTest {
 
-    TagDAO tagDAO = TagDAO.singleton();
-    DeckDAO deckDAO = DeckDAO.singleton();
-    private final UUID id = UUID.randomUUID();
+    TagDAO tagDAO;
+    DeckDAO deckDAO;
+    UserDAO userDAO;
+
+    UUID user = UUID.randomUUID();
 
     @Override
     @BeforeEach
-    void init() throws SQLException, DatabaseException {
+    void init() throws DatabaseException {
         super.init();
-        db.initTables(DatabaseScheme.CLIENT);
+
+        db.initTables(DatabaseScheme.SERVER);
+
+        this.deckDAO = new DeckDAO(this.db);
+        this.tagDAO = new TagDAO(this.db);
+        this.userDAO = new UserDAO(this.db);
+
+        this.deckDAO.setTagDao(this.tagDAO);
+        this.tagDAO.setDeckDao(this.deckDAO);
+
+        // userDAO.registerGuest(user);
     }
 
     @Test
@@ -138,7 +155,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     @Test
     void getTagsFor_NoTags_EmptyList() throws SQLException {
         Deck deck = new Deck("name");
-        deckDAO.saveDeck(deck, id);
+        deckDAO.saveDeck(deck, user);
         tagDAO.saveTagsFor(deck);
         assertTrue(tagDAO.getTagsFor(deck.getId()).isEmpty());
     }
@@ -161,9 +178,9 @@ public class TestTagDAO extends DatabaseUsingTest {
         Deck deck2 = new Deck("name2");
         Deck deck3 = new Deck("name3");
 
-        deckDAO.saveDeck(deck1, id);
-        deckDAO.saveDeck(deck2, id);
-        deckDAO.saveDeck(deck3, id);
+        deckDAO.saveDeck(deck1, user);
+        deckDAO.saveDeck(deck2, user);
+        deckDAO.saveDeck(deck3, user);
 
         Tag tag = new Tag("name");
         deck1.addTag(tag);
