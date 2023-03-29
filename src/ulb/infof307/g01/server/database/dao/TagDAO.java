@@ -166,7 +166,7 @@ public class TagDAO extends DAO {
         deletedTags.removeAll(newTags);
 
         for (Tag addedTag : addedTags)
-            addTagTo(deck, addedTag);
+            addTagTo(deck, replaceIdIfAlreadyExist(addedTag));
 
         for (Tag t : deletedTags)
             removeTagFrom(deck, t);
@@ -260,17 +260,16 @@ public class TagDAO extends DAO {
         }
     }
 
-    private Tag replaceIdIfAlreadyExist(Tag tag) throws SQLException {
+    private Tag replaceIdIfAlreadyExist(Tag tag) throws DatabaseException {
         String sql = """
-                SELECT tag_id
+                SELECT tag_id, name, color
                 FROM tag
-                WHERE name = '%1$s'
-                """.formatted(tag.getName());
-        try (ResultSet res = database.executeQuery(sql)) {
-            if (res.next()) {
-                tag = new Tag(tag.getName(), UUID.fromString(res.getString("tag_id")), tag.getColor());
-            }
-        }
+                WHERE name = ?
+                """;
+
+        ResultSet res = database.executeQuery(sql, tag.getName());
+        if (checkedNext(res))
+            tag = extractTag(res);
         return tag;
     }
 }

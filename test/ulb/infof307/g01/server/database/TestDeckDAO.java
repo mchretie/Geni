@@ -162,7 +162,6 @@ public class TestDeckDAO extends DatabaseUsingTest {
         assertEquals(deck, deckDAO.getDeck(deck.getId()));
     }
 
-    /*
     @Test
     void saveDecks_SameNameTagsAdded_DeckUpdated() {
         Deck deck1 = new Deck("deck1");
@@ -180,8 +179,6 @@ public class TestDeckDAO extends DatabaseUsingTest {
 
         assertEquals(updatedDeck1.getTags().get(0).getId(), updatedDeck2.getTags().get(0).getId());
     }
-     */
-     
 
     @Test
     void getAllDecks_NoDecks_EmptyList()  {
