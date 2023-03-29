@@ -3,6 +3,7 @@ package ulb.infof307.g01.server.database;
 import ulb.infof307.g01.server.database.dao.*;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
+import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.io.File;
 import java.sql.SQLException;
