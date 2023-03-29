@@ -1,0 +1,44 @@
+@startuml
+
+title "Actions interacting with database"
+
+left to right direction
+
+:Client: as C
+
+rectangle Server {
+
+    C -- (FetchUserCollection)
+    C -- (FetchUserStatistics)
+
+    C -- (SaveDeck)
+    C -- (DeleteDeck)
+    C -- (AddDeckToMarketplace)
+    C -- (AddDeckToCollection)
+
+    C -- (FetchDeck)
+    C -- (FetchMarketplace)
+    C -- (FetchLeaderboard)
+
+    C -- (Login)
+    C -- (Register)
+
+    (FetchUserCollection) --> (CheckIdentityForQuery)
+    (FetchUserStatistics) --> (CheckIdentityForQuery)
+    (CheckIdentityForQuery) -> (QueryDatabase)
+
+
+    (FetchDeck) --> (QueryDatabase)
+    (FetchMarketplace) --> (QueryDatabase)
+    (FetchLeaderboard) --> (QueryDatabase)
+
+    (SaveDeck) --> (CheckIdentityForUpdate)
+    (DeleteDeck) --> (CheckIdentityForUpdate)
+    (AddDeckToMarketplace) --> (CheckIdentityForUpdate)
+    (AddDeckToCollection) --> (CheckIdentityForUpdate)
+
+    (CheckIdentityForUpdate) --> (UpdateDatabase)
+}
+
+@enduml
+

@@ -1,6 +1,5 @@
 package ulb.infof307.g01.gui.controller;
 
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.model.Card;
@@ -30,7 +29,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
     public EditDeckController(Stage stage, Deck deck,
                               MainWindowViewController mainWindowViewController,
-                              ControllerListener controllerListener, 
+                              ControllerListener controllerListener,
                               DeckDAO deckDAO) {
 
         this.stage = stage;
@@ -60,6 +59,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
         mainWindowViewController.setEditDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
+        editDeckViewController.loadTagsFromDeck();
         editDeckViewController.loadCardsFromDeck();
 
         if (deck.cardCount() > 0) {
@@ -125,9 +125,9 @@ public class EditDeckController implements EditDeckViewController.Listener {
     }
 
     @Override
-    public void deckColorModified(Deck deck, Color color) {
+    public void deckColorModified(Deck deck, String color) {
         try {
-            deck.setColor(color.toString());
+            deck.setColor(color);
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {

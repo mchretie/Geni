@@ -32,6 +32,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     private Stage stage;
 
+
     /* ====================================================================== */
     /*                                  Main                                  */
     /* ====================================================================== */
@@ -49,8 +50,9 @@ public class MainFxController extends Application implements MainWindowViewContr
     public void start(Stage stage) throws IOException, InterruptedException {
 
         this.stage = stage;
-        stage.setTitle("Pokémon TCG Deck Builder");
 
+        // TODO: Title and login.
+        stage.setTitle("Pokémon TCG Deck Builder");
         userDAO.login("guest", "guest");
 
         URL resource = MainWindowViewController

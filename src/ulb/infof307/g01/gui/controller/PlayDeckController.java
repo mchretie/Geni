@@ -1,7 +1,6 @@
 package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.CardExtractor;
 import ulb.infof307.g01.model.CardExtractorRandom;
@@ -27,16 +26,11 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     public PlayDeckController(Stage stage, Deck deck,
                               MainWindowViewController mainWindowViewController,
-                              ControllerListener controllerListener) throws EmptyDeckException {
+                              ControllerListener controllerListener) {
 
         this.stage = stage;
-
         this.cardExtractor = new CardExtractorRandom(deck);
         this.currentCard = cardExtractor.getNextCard();
-
-        if (currentCard == null)
-            throw new EmptyDeckException("Deck does not contain any cards.");
-
         this.controllerListener = controllerListener;
 
         this.mainWindowViewController = mainWindowViewController;
@@ -44,7 +38,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         this.playDeckViewController = mainWindowViewController.getPlayDeckViewController();
         playDeckViewController.setListener(this);
-        playDeckViewController.setCurrentCard(currentCard);
         playDeckViewController.setDeckName(deck.getName());
     }
 

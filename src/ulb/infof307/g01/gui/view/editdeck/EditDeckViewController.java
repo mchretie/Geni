@@ -59,6 +59,7 @@ public class EditDeckViewController implements Initializable {
 
     private Deck deck;
     private Card selectedCard;
+
     private Listener listener;
 
     /* ====================================================================== */

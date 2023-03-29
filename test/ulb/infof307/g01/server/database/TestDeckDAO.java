@@ -163,6 +163,24 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
+    void saveDecks_SameNameTagsAdded_DeckUpdated() throws SQLException {
+        Deck deck1 = new Deck("deck1");
+        Tag tag1 = new Tag("tag");
+        deck1.addTag(tag1);
+        deckDAO.saveDeck(deck1);
+
+        Deck deck2 = new Deck("deck2");
+        Tag tag2 = new Tag("tag");
+        deck2.addTag(tag2);
+        deckDAO.saveDeck(deck2);
+
+        Deck updatedDeck1 = deckDAO.getDeck(deck1.getId());
+        Deck updatedDeck2 = deckDAO.getDeck(deck2.getId());
+
+        assertEquals(updatedDeck1.getTags().get(0).getId(), updatedDeck2.getTags().get(0).getId());
+    }
+
+    @Test
     void getAllDecks_NoDecks_EmptyList() throws SQLException {
         assertTrue(deckDAO.getAllDecks().isEmpty());
     }
