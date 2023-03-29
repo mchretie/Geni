@@ -172,7 +172,7 @@ public class DeckDAO extends DAO {
                 """;
 
         String pattern = userSearch + "%";
-        ResultSet res = database.executeQuery(sql, pattern);
+        ResultSet res = database.executeQuery(sql, userId.toString(), pattern);
         List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
 
         return getDecks(deckIds);

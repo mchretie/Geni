@@ -116,6 +116,7 @@ public class DeckRequestHandler extends Handler {
             UUID userId = UUID.fromString(database.getUserId(username));
 
             String userSearch = req.queryParams("name");
+            System.out.println(userSearch);
             return database.searchDecks(userSearch, userId);
 
         } catch (Exception e) {
