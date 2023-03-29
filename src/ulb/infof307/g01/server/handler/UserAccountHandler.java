@@ -13,7 +13,6 @@ import static spark.Spark.*;
 public class UserAccountHandler extends Handler {
 
     private final UserDAO userDAO = new UserDAO();
-    private final JWTService jwtService = new JWTService();
 
     @Override
     public void init() {
@@ -35,9 +34,9 @@ public class UserAccountHandler extends Handler {
 
     private Map<String, String> testAuth(Request request, Response response) {
         String token = request.cookie("token");
-        boolean isTokenValid = jwtService.isTokenValid(token);
+        boolean isTokenValid = JWTService.getInstance().isTokenValid(token);
         if (isTokenValid) {
-            String username = jwtService.getUsernameFromToken(token);
+            String username = JWTService.getInstance().getUsernameFromToken(token);
             System.out.println(username);
             return successfulResponse;
         } else {
@@ -47,18 +46,27 @@ public class UserAccountHandler extends Handler {
     }
 
     private Map<String, String> loginUser(Request request, Response response) {
-        String username = request.queryParams("username");
-        String password = request.queryParams("password");
-        boolean isValidLogin = userDAO.loginUser(username, password);
-        if (isValidLogin) {
-            String token = jwtService.generateToken(username);
-            response.cookie("token", token);
-        }
-        else {
-            logger.info("Invalid login");
-        }
+        try {
+            String username = request.queryParams("username");
+            String password = request.queryParams("password");
 
-        return isValidLogin ? successfulResponse : failedResponse;
+            JWTService jwtService = JWTService.getInstance();
+
+            boolean isValidLogin = userDAO.loginUser(username, password);
+            if (isValidLogin) {
+                String token = jwtService.generateToken(username);
+                response.header("Authorization", token);
+            }
+            else {
+                logger.info("Invalid login");
+            }
+
+            return isValidLogin ? successfulResponse : failedResponse;
+
+        } catch (Exception e) {
+            logger.warning("Error while logging in: " + e);
+            return failedResponse;
+        }
     }
 
     private Map<String, String> registerUser(Request request, Response response) {

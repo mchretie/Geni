@@ -239,6 +239,15 @@ public class DeckDAO {
         return getDecks(sql);
     }
 
+    public List<Deck> getAllDecksFromUsername(String username) throws SQLException {
+        String userId = getUserIdFromUsername(username);
+
+        if (userId == null)
+            throw new SQLException("User does not exist");
+
+        return getAllUserDecks(UUID.fromString(userId));
+    }
+
     /**
      * Approximate search of decks with given search string
      *
@@ -251,6 +260,19 @@ public class DeckDAO {
             FROM deck
             WHERE name LIKE '%s'
             """.formatted(userSearch + "%");
+
+        return getDecks(sql);
+    }
+
+    public List<Deck> searchDecksFromUsername(String userSearch, String username) throws SQLException {
+        String sql = """
+            SELECT deck_id
+            FROM deck
+            WHERE name LIKE '%s'
+            AND deck.user_id = (
+                SELECT user_id FROM user WHERE username = '%s'
+              )
+            """.formatted(userSearch + "%", username);
 
         return getDecks(sql);
     }
@@ -299,4 +321,40 @@ public class DeckDAO {
         database.executeUpdate(sql);
     }
 
+    public void deleteDeckFromUsername(UUID deckId, String username) throws SQLException {
+        String userId = getUserIdFromUsername(username);
+
+        if (userId == null)
+            throw new SQLException("User does not exist");
+
+        deleteDeck(deckId, UUID.fromString(userId));
+    }
+
+    public void saveDeckToUsername(Deck deck, String username) throws SQLException {
+        String userId = getUserIdFromUsername(username);
+
+        if (userId == null)
+            throw new SQLException("User does not exist");
+
+        saveDeck(deck, UUID.fromString(userId));
+    }
+
+    private String getUserIdFromUsername(String username) {
+        String sql = """
+                SELECT user_id
+                FROM user
+                WHERE username = '%s'
+                """.formatted(username);
+
+        try (ResultSet res = database.executeQuery(sql)) {
+            if (!res.next())
+                return null;
+
+            return res.getString("user_id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

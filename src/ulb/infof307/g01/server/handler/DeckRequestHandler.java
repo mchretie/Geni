@@ -5,6 +5,7 @@ import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
+import ulb.infof307.g01.server.service.JWTService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +49,15 @@ public class DeckRequestHandler extends Handler {
 
     private Map<String, String> saveDeck(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("user_id"));
+            String token = req.headers("Authorization");
+            isTokenValid(token);
+
+            String username
+                    = JWTService.getInstance().getUsernameFromToken(token);
+
             Deck deck = new Gson().fromJson(req.body(), Deck.class);
-            System.out.println(deck.getName());
-            deckDAO.saveDeck(deck, userId);
+
+            deckDAO.saveDeckToUsername(deck, username);
             return successfulResponse;
 
         } catch (Exception e) {
@@ -66,10 +72,15 @@ public class DeckRequestHandler extends Handler {
 
     private Map<String, String> deleteDeck(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("user_id"));
+            String token = req.headers("Authorization");
+            isTokenValid(token);
+
+            String username
+                    = JWTService.getInstance().getUsernameFromToken(token);
+
             UUID deckId = UUID.fromString(req.queryParams("deck_id"));
 
-            deckDAO.deleteDeck(deckId, userId);
+            deckDAO.deleteDeckFromUsername(deckId, username);
             return successfulResponse;
 
         } catch (Exception e) {
@@ -83,8 +94,17 @@ public class DeckRequestHandler extends Handler {
 
     private List<Deck> getAllDecks(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("user_id"));
-            return deckDAO.getAllUserDecks(userId);
+            JWTService jwtService = JWTService.getInstance();
+            String token = req.headers("Authorization");
+
+            isTokenValid(token);
+
+            String username
+                    = jwtService.getUsernameFromToken(token);
+
+            System.out.println(username);
+
+            return deckDAO.getAllDecksFromUsername(username);
 
         } catch (Exception e) {
             String message = "Failed to get all decks: " + e.getMessage();
@@ -97,8 +117,14 @@ public class DeckRequestHandler extends Handler {
 
     private List<Deck> searchDecks(Request req, Response res) {
         try {
-            String userSearch = req.queryParams("name");
-            return deckDAO.searchDecks(userSearch);
+            String token = req.headers("Authorization");
+            isTokenValid(token);
+
+            String username
+                    = JWTService.getInstance().getUsernameFromToken(token);
+            String userSearch = req.queryParams("search");
+
+            return deckDAO.searchDecksFromUsername(userSearch, username);
 
         } catch (Exception e) {
             String message = "Failed to search decks: " + e.getMessage();
@@ -106,6 +132,13 @@ public class DeckRequestHandler extends Handler {
             halt(500, message);
 
             return new ArrayList<>();
+        }
+    }
+
+    private void isTokenValid(String token) {
+        if (!JWTService.getInstance().isTokenValid(token)) {
+            System.out.println("Invalid token");
+            halt(401, "Invalid token");
         }
     }
 }

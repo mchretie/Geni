@@ -69,6 +69,7 @@ public class UserDAO {
 
         try (ResultSet res = database.executeQuery(sql)) {
             return res.getBoolean(1);
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;

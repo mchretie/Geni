@@ -18,6 +18,8 @@ import java.util.List;
  */
 public abstract class HttpClientAPI {
 
+    private String token;
+
     protected final HttpClient httpClient = HttpClient.newBuilder().build();
     protected final String baseUrl = "http://localhost:8080";
 
@@ -28,10 +30,16 @@ public abstract class HttpClientAPI {
     protected HttpResponse<String> get(String path)
             throws IOException, InterruptedException {
 
-        HttpRequest request = HttpRequest.newBuilder()
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(baseUrl + path))
-                .GET()
-                .build();
+                .GET();
+
+        HttpRequest request
+                = token == null ?   requestBuilder.build()
+                                    : requestBuilder
+                                        .header("Authorization", token)
+                                        .build();
+
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
@@ -42,6 +50,7 @@ public abstract class HttpClientAPI {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(baseUrl + path))
                 .POST(HttpRequest.BodyPublishers.ofString(body))
+                .header("Authorization", token)
                 .build();
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -53,6 +62,7 @@ public abstract class HttpClientAPI {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(baseUrl + path))
                 .PUT(HttpRequest.BodyPublishers.ofString(body))
+                .header("Authorization", token)
                 .build();
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -65,6 +75,7 @@ public abstract class HttpClientAPI {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(baseUrl + path))
                 .DELETE()
+                .header("Authorization", token)
                 .build();
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -89,5 +100,21 @@ public abstract class HttpClientAPI {
     protected <T> List<T> stringToArray(String s, Class<T[]> elementClass) {
         T[] arr = new Gson().fromJson(s, elementClass);
         return arr == null ? new ArrayList<>() : Arrays.asList(arr);
+    }
+
+    /* ====================================================================== */
+    /*                                  Setter                                */
+    /* ====================================================================== */
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    /* ====================================================================== */
+    /*                                  Getter                                */
+    /* ====================================================================== */
+
+    public String getToken() {
+        return token;
     }
 }

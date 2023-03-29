@@ -11,19 +11,6 @@ import java.util.UUID;
 
 public class DeckDAO extends HttpClientAPI {
 
-    private String user;
-
-    /* ====================================================================== */
-    /*                                  Setter                                */
-    /* ====================================================================== */
-
-    /**
-     * Set the user id to the query string. To be called before any DAO method.
-     */
-    public void setUser(UUID user) {
-        this.user = "?user_id=" + user;
-    }
-
     /* ====================================================================== */
     /*                               DAO methods                              */
     /* ====================================================================== */
@@ -31,7 +18,7 @@ public class DeckDAO extends HttpClientAPI {
     public List<Deck> getAllDecks()
             throws IOException, InterruptedException {
 
-        HttpResponse<String> response = get("/api/deck/all" + user);
+        HttpResponse<String> response = get("/api/deck/all");
 
         checkResponseCode(response.statusCode());
 
@@ -53,8 +40,9 @@ public class DeckDAO extends HttpClientAPI {
         if (deckName.isEmpty())
             return getAllDecks();
 
-        String query = user + "&name=" + deckName;
-        HttpResponse<String> response = get("/api/deck/search" + query);
+
+        HttpResponse<String> response
+                = get("/api/deck/search" + "&name=" + deckName);
 
         checkResponseCode(response.statusCode());
 
@@ -64,7 +52,7 @@ public class DeckDAO extends HttpClientAPI {
     public void deleteDeck(Deck deck)
             throws IOException, InterruptedException {
 
-        String query = user + "&deck_id=" + deck.getId();
+        String query =  "&deck_id=" + deck.getId();
         HttpResponse<String> response = delete("/api/deck/delete" + query);
 
         checkResponseCode(response.statusCode());
@@ -74,7 +62,7 @@ public class DeckDAO extends HttpClientAPI {
             throws IOException, InterruptedException {
 
         HttpResponse<String> response
-                = post("/api/deck/save" + user, new Gson().toJson(deck));
+                = post("/api/deck/save", new Gson().toJson(deck));
 
         checkResponseCode(response.statusCode());
     }

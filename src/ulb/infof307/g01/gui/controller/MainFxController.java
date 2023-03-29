@@ -46,10 +46,12 @@ public class MainFxController extends Application implements MainWindowViewContr
     /* ====================================================================== */
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, InterruptedException {
 
         this.stage = stage;
         stage.setTitle("Pokémon TCG Deck Builder");
+
+        userDAO.login("guest", "guest");
 
         URL resource = MainWindowViewController
                             .class
