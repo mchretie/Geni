@@ -5,15 +5,10 @@
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<AnchorPane fx:id="anchor" prefHeight="600.0" prefWidth="800.0"
-            style="-fx-background-color: #ffffff;"
-            xmlns="http://javafx.com/javafx/17.0.2-ea"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ulb.infof307.g01.gui.view.editdeck.EditDeckViewController">
+<AnchorPane fx:id="anchor" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditDeckViewController">
 
     <!-- Deck name -->
-    <TextField fx:id="deckNameText" alignment="CENTER" onKeyReleased="#handleTextFieldKeyPressed"
-               style="-fx-background-color: #00000000;" text="Deck Name">
+    <TextField fx:id="deckNameText" alignment="CENTER" onKeyReleased="#handleUpdateDeckName" style="-fx-background-color: #00000000;" text="Deck Name">
 
         <font>
             <Font name="System Italic" size="28.0" />
@@ -33,7 +28,6 @@
     </HBox>
 
     <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="102.0" prefHeight="38.0" prefWidth="351.0" vbarPolicy="NEVER">
-
         <HBox fx:id="tagsBox" style="-fx-background-color: #f0f0f0;" />
     </ScrollPane>
 
@@ -52,16 +46,14 @@
         <Button layoutX="180" onMouseClicked="#handleAddCardClicked" prefHeight="49.0" prefWidth="53.0" style="-fx-background-color: transparent;">
 
             <graphic>
-                <FontIcon fx:id="addCardIcon" iconLiteral="mdi2c-card-plus-outline" iconSize="25"
-                          onMouseEntered="#handleAddCardHover" onMouseExited="#handleAddHoverExit"/>
+                <FontIcon fx:id="addCardIcon" iconLiteral="mdi2c-card-plus-outline" iconSize="25" onMouseEntered="#handleAddCardHover" onMouseExited="#handleAddHoverExit" />
             </graphic>
         </Button>
 
         <Button layoutX="180" onMouseClicked="#handleRemoveCardClicked" prefHeight="50.0" prefWidth="54.0" style="-fx-background-color: transparent;">
 
             <graphic>
-                <FontIcon fx:id="removeCardIcon" iconLiteral="mdi2t-trash-can-outline" iconSize="25" wrappingWidth="25.0"
-                    onMouseEntered="#handleRemoveCardHover" onMouseExited="#handleRemoveCardHoverExit" />
+                <FontIcon fx:id="removeCardIcon" iconLiteral="mdi2t-trash-can-outline" iconSize="25" onMouseEntered="#handleRemoveCardHover" onMouseExited="#handleRemoveCardHoverExit" wrappingWidth="25.0" />
             </graphic>
         </Button>
     </HBox>
@@ -88,5 +80,6 @@
     </StackPane>
 
     <HBox layoutY="545.0" prefHeight="55.0" prefWidth="850.0" />
+   <ColorPicker fx:id="colorPicker" layoutX="365.0" layoutY="14.0" onAction="#handleColorButtonClicked" />
 
 </AnchorPane>

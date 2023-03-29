@@ -1,5 +1,7 @@
 package ulb.infof307.g01.model;
 
+import javafx.scene.paint.Color;
+
 import java.util.*;
 
 
@@ -8,12 +10,14 @@ public class Deck implements Iterable<Card> {
     private final UUID id;
     private final List<Card> cards;
     private final List<Tag> tags;
+    private String color;
 
     public Deck(String name) {
         this.name = name;
         this.id = UUID.randomUUID();
         this.cards = new ArrayList<>();
         this.tags = new ArrayList<>();
+        this.color = "FF0000";
     }
 
     public Deck(String name, UUID id) {
@@ -21,6 +25,7 @@ public class Deck implements Iterable<Card> {
         this.id = id;
         this.cards = new ArrayList<>();
         this.tags = new ArrayList<>();
+        this.color = "FF0000";
     }
 
     public Deck(String name, UUID id, List<Card> cards, List<Tag> tags) {
@@ -28,72 +33,40 @@ public class Deck implements Iterable<Card> {
         this.id = id;
         this.cards = cards;
         this.tags = tags;
+        this.color = "FF0000";
     }
 
-    public Deck(Map map) {
-        this.name = (String) map.get("name");
-        this.id = UUID.fromString((String) map.get("id"));
-        this.cards = new ArrayList<>();
-        this.tags = new ArrayList<>();
-//          TODO finish implementation by reading cards and tags
-//        example of map:
-//        "deck_cards": [
-//       {
-//           "card_id": "599f4ff1-4913-41a6-88c5-078a9b488535",
-//           "card_front": "Front",
-//           "card_back": "Back"
-//       }
-//   ],
-//   "deck_tags": [
-//       {
-//           "tag_id": "699f4ff1-4913-41a6-88c5-078a9b488535",
-//           "tag_name": "je suis un tag",
-//           "tag_color": "#000000"
-//       }
-//   ]
-
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color) {
+        this.name = name;
+        this.id = id;
+        this.cards = cards;
+        this.tags = tags;
+        this.color = color;
     }
 
-    public List<Tag> getTags() {
-        return tags;
-    }
+    public List<Tag> getTags() { return tags; }
 
     public Card getCard(int index) throws IndexOutOfBoundsException {
         return cards.get(index);
     }
 
-    public Card getLastCard() throws IndexOutOfBoundsException {
+    public Card getLastCard() throws  IndexOutOfBoundsException {
         return getCard(cards.size() - 1);
 
     }
-
-    public Card getFirstCard() throws IndexOutOfBoundsException {
+    public Card getFirstCard() throws  IndexOutOfBoundsException {
         return getCard(0);
     }
 
-    public List<Card> getCards() {
-        return cards;
-    }
+    public List<Card> getCards() { return cards; }
+    public UUID getId() { return id; }
 
-    public UUID getId() {
-        return id;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getName() {
-        return name;
-    }
+    public int cardCount() { return cards.size(); }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int cardCount() {
-        return cards.size();
-    }
-
-    public void addTag(Tag tag) {
-        tags.add(tag);
-    }
+    public void addTag(Tag tag) { tags.add(tag); }
 
     public void addCard(Card card) {
         card.setDeckId(id);
@@ -104,13 +77,18 @@ public class Deck implements Iterable<Card> {
         cards.forEach(this::addCard);
     }
 
-    public void removeTag(Tag tag) {
-        tags.remove(tag);
+    public void removeTag(Tag tag) { tags.remove(tag); }
+    public void removeCard(Card card) { cards.remove(card); }
+
+    public boolean tagExists(String newTagName){
+        for (Tag tag: tags){
+            if (tag.getName().equals(newTagName)) return true;
+        }
+        return false;
     }
 
-    public void removeCard(Card card) {
-        cards.remove(card);
-    }
+    public void setColor(String color) { this.color = color; }
+    public String getColor() { return color; }
 
     @Override
     public boolean equals(Object obj) {
@@ -121,43 +99,19 @@ public class Deck implements Iterable<Card> {
 
         Deck other = (Deck) obj;
         return this.id.equals(other.id)
-                && this.name.equals(other.name)
-                && this.cards.equals(other.cards)
-                && this.tags.equals(other.tags);
+            && this.name.equals(other.name)
+            && this.cards.equals(other.cards)
+            && this.tags.equals(other.tags)
+            && this.color.equals(other.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, cards, tags);
+        return Objects.hash(name, id, cards, tags, color);
     }
 
     public Iterator<Card> iterator() {
         return cards.iterator();
 
-    }
-
-    public String toJson() {
-//        TODO: implement toJson method using Gson
-//        return should be something like:
-//        {
-//            "deck_id": "399f4ff1-4913-41a6-88c5-078a9b488532",
-//                "deck_name": "ta grand mère",
-//                "deck_cards": [
-//            {
-//                "card_id": "599f4ff1-4913-41a6-88c5-078a9b488535",
-//                    "card_front": "Front",
-//                    "card_back": "Back"
-//            }
-//   ],
-//            "deck_tags": [
-//            {
-//                "tag_id": "699f4ff1-4913-41a6-88c5-078a9b488535",
-//                    "tag_name": "je suis un tag",
-//                    "tag_color": "#000000"
-//            }
-//   ]
-//        }
-
-        return "";
     }
 }
