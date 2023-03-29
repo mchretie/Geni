@@ -21,13 +21,5 @@ public abstract class Handler {
         return (object) -> new Gson().toJson(object);
     }
 
-    protected void logStart() {
-        logger.info("Starting " + getClass().getName());
-    }
-
-    protected void logStarted() {
-        logger.info(getClass().getName() + " started");
-    }
-
     public abstract void init();
 }

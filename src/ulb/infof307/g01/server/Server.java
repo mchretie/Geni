@@ -1,14 +1,12 @@
 package ulb.infof307.g01.server;
 
 import ulb.infof307.g01.server.database.Database;
-import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.server.handler.DeckRequestHandler;
 import ulb.infof307.g01.server.handler.UserAccountHandler;
 import ulb.infof307.g01.server.service.JWTService;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import static spark.Spark.get;

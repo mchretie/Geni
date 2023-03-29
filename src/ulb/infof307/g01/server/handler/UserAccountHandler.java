@@ -27,12 +27,8 @@ public class UserAccountHandler extends Handler {
 
     @Override
     public void init() {
-        logStart();
-
         post(REGISTER_PATH, this::registerUser);
         get(LOGIN_PATH, this::loginUser);
-
-        logStarted();
     }
 
     private Map<String, String> loginUser(Request request, Response response) {

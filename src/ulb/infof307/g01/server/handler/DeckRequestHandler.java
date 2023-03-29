@@ -32,14 +32,10 @@ public class DeckRequestHandler extends Handler {
 
     @Override
     public void init() {
-        logStart();
-
         post(SAVE_DECK_PATH, this::saveDeck, toJson());
         delete(DELETE_DECK_PATH, this::deleteDeck, toJson());
         get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
         get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
-
-        logStarted();
     }
 
     private Map<String, String> saveDeck(Request req, Response res) {

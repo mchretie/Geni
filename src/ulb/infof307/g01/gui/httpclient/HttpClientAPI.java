@@ -51,19 +51,6 @@ public abstract class HttpClientAPI {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    protected HttpResponse<String> put(String path, String body)
-            throws IOException, InterruptedException {
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(java.net.URI.create(baseUrl + path))
-                .PUT(HttpRequest.BodyPublishers.ofString(body))
-                .header("Authorization", token)
-                .build();
-
-        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-    }
-
     protected HttpResponse<String> delete(String path)
             throws IOException, InterruptedException {
 
