@@ -22,8 +22,6 @@ public class UserDAO extends HttpDAO {
         Optional<String> authorization
                 = response.headers().firstValue("Authorization");
 
-        System.out.println(authorization);
-
         authorization.ifPresent(this::setToken);
     }
 
