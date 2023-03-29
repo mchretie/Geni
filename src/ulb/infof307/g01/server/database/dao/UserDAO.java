@@ -38,6 +38,9 @@ public class UserDAO extends DAO {
                 """;
 
         ResultSet res = database.executeQuery(sql, username);
+
+
+
         return checkedNext(res);
     }
 
@@ -45,12 +48,12 @@ public class UserDAO extends DAO {
         String sql = """
                 SELECT salt
                 FROM user
-                WHERE username = '%1$s'
+                WHERE username = ?
                 """;
 
-        try {
-            ResultSet res = database.executeQuery(sql, username);
+        try (ResultSet res = database.executeQuery(sql, username)) {
             return res.getString("salt");
+
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -73,12 +76,16 @@ public class UserDAO extends DAO {
         ResultSet res = database.executeQuery(sql,
                                               user.getUsername(),
                                               user.getPassword());
+
         return checkedNext(res);
     }
 
     public boolean registerUser(String username, String password) throws DatabaseException {
-        if (usernameExists(username))
+        if (usernameExists(username)) {
+            System.out.println("Username already exists");
             return false;
+        }
+
 
         User user = new User(username, password);
         UUID user_id = UUID.randomUUID();
@@ -94,6 +101,21 @@ public class UserDAO extends DAO {
                                user.getPassword(),
                                user.getSaltString());
         return true;
+    }
+
+    public String getUserId(String username) {
+        String sql = """
+                SELECT user_id
+                FROM user
+                WHERE username = '%1$s'
+                """;
+
+        try (ResultSet res = database.executeQuery(sql, username)) {
+            return res.getString("user_id");
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 }
 

@@ -4,6 +4,7 @@ import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.database.dao.UserDAO;
+import ulb.infof307.g01.server.service.JWTService;
 
 import java.util.Map;
 import java.util.UUID;
@@ -15,8 +16,10 @@ public class GuestAccountHandler extends Handler {
     private static final Logger logger = Logger.getLogger(GuestAccountHandler.class.getName());
 
     private final Database database;
+    private final JWTService jwtService;
 
-    public GuestAccountHandler(Database database) {
+    public GuestAccountHandler(JWTService jwtService, Database database) {
+        this.jwtService = jwtService;
         this.database = database;
     }
 

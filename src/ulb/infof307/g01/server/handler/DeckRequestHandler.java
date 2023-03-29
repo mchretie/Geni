@@ -5,6 +5,7 @@ import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.server.database.Database;
+import ulb.infof307.g01.server.service.JWTService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +17,10 @@ import static spark.Spark.*;
 public class DeckRequestHandler extends Handler {
 
     private final Database database;
+    private final JWTService jwtService;
 
-    public DeckRequestHandler(Database database) {
+    public DeckRequestHandler(JWTService jwtService, Database database) {
+        this.jwtService = jwtService;
         this.database = database;
     }
 
@@ -52,7 +55,9 @@ public class DeckRequestHandler extends Handler {
 
     private Map<String, String> saveDeck(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("user_id"));
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+
             Deck deck = new Gson().fromJson(req.body(), Deck.class);
             System.out.println(deck.getName());
             database.saveDeck(deck, userId);
@@ -70,7 +75,9 @@ public class DeckRequestHandler extends Handler {
 
     private Map<String, String> deleteDeck(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("user_id"));
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+
             UUID deckId = UUID.fromString(req.queryParams("deck_id"));
 
             database.deleteDeck(deckId, userId);
@@ -87,7 +94,11 @@ public class DeckRequestHandler extends Handler {
 
     private List<Deck> getAllDecks(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("user_id"));
+            String username = usernameFromRequest(req);
+            System.out.println(username);
+            UUID userId = UUID.fromString(database.getUserId(username));
+            System.out.println(userId);
+
             return database.getAllUserDecks(userId);
 
         } catch (Exception e) {
@@ -101,8 +112,11 @@ public class DeckRequestHandler extends Handler {
 
     private List<Deck> searchDecks(Request req, Response res) {
         try {
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+
             String userSearch = req.queryParams("name");
-            return database.searchDecks(userSearch);
+            return database.searchDecks(userSearch, userId);
 
         } catch (Exception e) {
             String message = "Failed to search decks: " + e.getMessage();
@@ -111,5 +125,14 @@ public class DeckRequestHandler extends Handler {
 
             return new ArrayList<>();
         }
+    }
+
+    private String usernameFromRequest(Request req) {
+        String token = req.headers("Authorization");
+        if (token == null || !jwtService.isTokenValid(token)) {
+            System.out.println("No token provided");
+            halt(401, "No token provided");
+        }
+        return jwtService.getUsernameFromToken(token);
     }
 }

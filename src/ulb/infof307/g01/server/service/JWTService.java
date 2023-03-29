@@ -5,20 +5,7 @@ import java.security.Key;
 
 public class JWTService {
 
-    // Singleton
-    private static JWTService singleton = null;
-
-    private JWTService() {}
-
-    public static JWTService getInstance() {
-        if (singleton == null) {
-            singleton = new JWTService();
-        }
-        return singleton;
-    }
-
-
-    Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // we might need to change this to file key
+    Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String generateToken(String username) {
         return Jwts.builder()

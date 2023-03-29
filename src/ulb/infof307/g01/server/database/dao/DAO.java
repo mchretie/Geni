@@ -15,7 +15,7 @@ public abstract class DAO {
     protected boolean checkedNext(ResultSet rs) throws DatabaseException {
         try {
             return rs.next();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new DatabaseException(e.getMessage());
         }
     }

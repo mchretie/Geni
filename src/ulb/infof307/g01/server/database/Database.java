@@ -6,7 +6,6 @@ import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,8 +68,8 @@ public class Database {
         deckDao.deleteDeck(deckId, userId);
     }
 
-    public List<Deck> searchDecks(String userSearch) throws DatabaseException {
-        return deckDao.searchDecks(userSearch);
+    public List<Deck> searchDecks(String userSearch, UUID userId) throws DatabaseException {
+        return deckDao.searchDecks(userSearch, userId);
     }
 
 
@@ -129,5 +128,9 @@ public class Database {
 
     public boolean registerUser(String username, String password) {
         return userDao.registerUser(username, password);
+    }
+
+    public String getUserId(String username) {
+        return userDao.getUserId(username);
     }
 }

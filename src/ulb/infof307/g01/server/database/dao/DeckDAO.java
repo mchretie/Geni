@@ -161,18 +161,20 @@ public class DeckDAO extends DAO {
      * Approximate search of decks with given search string
      *
      * @param userSearch query
+     * @param userId user id
      * @return List of decks
      */
-    public List<Deck> searchDecks(String userSearch) throws DatabaseException {
+    public List<Deck> searchDecks(String userSearch, UUID userId) throws DatabaseException {
         String sql = """
                 SELECT deck_id
                 FROM deck
-                WHERE name LIKE ?
+                WHERE user_id = ? AND name LIKE ?
                 """;
 
         String pattern = userSearch + "%";
         ResultSet res = database.executeQuery(sql, pattern);
         List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
+
         return getDecks(deckIds);
     }
 

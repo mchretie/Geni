@@ -50,7 +50,6 @@ public abstract class HttpClientAPI {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(baseUrl + path))
                 .POST(HttpRequest.BodyPublishers.ofString(body))
-                .header("Authorization", token)
                 .build();
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());

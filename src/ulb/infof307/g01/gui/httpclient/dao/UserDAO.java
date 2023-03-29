@@ -16,15 +16,18 @@ public class UserDAO extends HttpClientAPI {
     public void login(String username, String password)
             throws IOException, InterruptedException {
 
+        System.out.println("login");
+
         HttpResponse<String> response = get("/api/user/login"
                 + "?username=" + username + "&password=" + password);
 
-        System.out.println(response == null);
         checkResponseCode(response.statusCode());
 
         // TODO : throw exception if no token is found
         Optional<String> authorization
                 = response.headers().firstValue("Authorization");
+
+        System.out.println(authorization);
 
         authorization.ifPresent(this::setToken);
     }

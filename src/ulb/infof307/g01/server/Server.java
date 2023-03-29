@@ -5,6 +5,7 @@ import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.server.handler.DeckRequestHandler;
 import ulb.infof307.g01.server.handler.UserAccountHandler;
+import ulb.infof307.g01.server.service.JWTService;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -17,6 +18,7 @@ public class Server {
 
     private final Logger logger = Logger.getLogger("Server");
     private Database db = new Database();
+    private final JWTService jwtService = new JWTService();
     private final int port;
 
 
@@ -55,7 +57,7 @@ public class Server {
     }
 
     private void launchHandlers() {
-        new DeckRequestHandler(db).init();
-        new UserAccountHandler(db).init();
+        new DeckRequestHandler(jwtService,db).init();
+        new UserAccountHandler(jwtService, db).init();
     }
 }
