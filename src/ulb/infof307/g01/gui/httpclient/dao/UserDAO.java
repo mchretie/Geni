@@ -14,7 +14,6 @@ public class UserDAO extends HttpClientAPI {
 
     private String token;
 
-
     /* ====================================================================== */
     /*                               DAO methods                              */
     /* ====================================================================== */
@@ -28,15 +27,6 @@ public class UserDAO extends HttpClientAPI {
 
         HttpResponse<String> response = post("/api/user/login",
                 "username=" + username + "&password=" + password);
-
-        checkResponseCode(response.statusCode());
-
-    }
-
-    public void registerGuest() throws IOException, InterruptedException {
-
-        String query = "?guest_id=" + guestUUID;
-        HttpResponse<String> response = get("/api/guest/register" + query);
 
         checkResponseCode(response.statusCode());
     }
