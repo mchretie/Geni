@@ -7,7 +7,7 @@ import java.io.File;
 import java.sql.*;
 
 /**
- * Provide global access to database
+ * Provide access to database
  * <p>
  * It allows to execute queries and updates on a given database.
  * Be aware that before these, a database must’ve been open, otherwise
@@ -60,12 +60,15 @@ public class DatabaseAccess {
         }
     }
 
-    private void assertOpened() throws DatabaseException {
-        if (connection == null)
-            throw new DatabaseException(
-                    "Database must be opened before use");
-    }
-
+    /**
+     * Initialize the database scheme
+     * <p>
+     *     The array of create statements should be taken from
+     *     DatabaseScheme.
+     * </p>
+     * @param tables set of updates to init the tables of the database
+     * @see ulb.infof307.g01.server.database.DatabaseScheme
+     */
     public void initTables(String[] tables) throws DatabaseException {
         executeUpdates(tables);
     }
@@ -84,6 +87,10 @@ public class DatabaseAccess {
             throws DatabaseException {
         try {
             assertOpened();
+
+            // This should not (!) be inside a try-with-resource
+            // because if it is, the ResultSet from the query
+            // will be closed before the caller processes it.
             return createStatement(query, args).executeQuery();
 
         } catch (SQLException e) {
@@ -115,19 +122,6 @@ public class DatabaseAccess {
         }
     }
 
-    private PreparedStatement createStatement(String sql, Object... args) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(sql);
-        for (int i = 0; i < args.length; ++i) {
-            if (args[i] instanceof String arg)
-                statement.setString(i + 1, arg);
-            else if (args[i] instanceof Integer arg)
-                statement.setInt(i + 1, arg);
-            else
-                throw new DatabaseException("Unsupported argument type for query");
-        }
-        return statement;
-    }
-
     /**
      * Execute multiple SQL statements that are not returning a result
      * <p>
@@ -147,5 +141,27 @@ public class DatabaseAccess {
             throw new DatabaseException(e.getMessage());
         }
 
+    }
+
+    /* ====================================================================== */
+    /*                        Helper methods                                  */
+    /* ====================================================================== */
+
+    private void assertOpened() throws DatabaseException {
+        if (connection == null)
+            throw new DatabaseException("Database must be opened before use");
+    }
+
+    private PreparedStatement createStatement(String sql, Object... args) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(sql);
+        for (int i = 0; i < args.length; ++i) {
+            if (args[i] instanceof String arg)
+                statement.setString(i + 1, arg);
+            else if (args[i] instanceof Integer arg)
+                statement.setInt(i + 1, arg);
+            else
+                throw new DatabaseException("Unsupported argument type for query");
+        }
+        return statement;
     }
 }

@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class DAO {
+/**
+ * Useful base that DAOs should use
+ */
+public abstract class DAO {
     protected boolean checkedNext(ResultSet rs) throws DatabaseException {
         try {
             return rs.next();

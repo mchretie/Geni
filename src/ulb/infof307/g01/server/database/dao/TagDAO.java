@@ -14,12 +14,13 @@ import java.util.*;
  * <p>
  * The aimed workflow with this manager is to
  * use an object of class Tag, apply changes
- * on it before commiting them to long-term
+ * on it before committing them to long-term
  * with saveTag or deleteTag.
  * <p>
  * To add tags to decks, see DeckManager.
- *
- * @see DeckDAO
+ * <p>
+ * Do not use directly, use the Database facade instead.
+ * @see ulb.infof307.g01.server.database.Database
  */
 public class TagDAO extends DAO {
 
@@ -47,7 +48,6 @@ public class TagDAO extends DAO {
      * @see TagDAO#tagNameExists
      */
     public boolean isTagValid(Tag tag) throws DatabaseException {
-
         if (tag == null)
             return false;
 
@@ -138,13 +138,6 @@ public class TagDAO extends DAO {
         database.executeUpdate(sql, tag.getId().toString());
     }
 
-    private List<Tag> getTags(List<UUID> res) throws DatabaseException {
-        List<Tag> tags = new ArrayList<>();
-        for (UUID tagId : res)
-            tags.add(getTag(tagId));
-        return tags;
-    }
-
     /**
      * Saves tags associated with a given deck
      * <p>
@@ -180,7 +173,7 @@ public class TagDAO extends DAO {
     }
 
     /**
-     * Assumes the association doesn’t exist in the database.
+     * Assumes the association doesn't exist in the database.
      */
     private void addTagTo(Deck deck, Tag tag) throws DatabaseException {
         String sql = """
@@ -247,6 +240,13 @@ public class TagDAO extends DAO {
         ResultSet res = database.executeQuery(sql, pattern);
         List<UUID> tagIds = extractUUIDsFrom(res, "tag_id");
         return getTags(tagIds);
+    }
+
+    private List<Tag> getTags(List<UUID> res) throws DatabaseException {
+        List<Tag> tags = new ArrayList<>();
+        for (UUID tagId : res)
+            tags.add(getTag(tagId));
+        return tags;
     }
 
     private Tag extractTag(ResultSet res) {

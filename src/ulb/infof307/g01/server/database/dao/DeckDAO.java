@@ -16,6 +16,9 @@ import java.util.*;
  * The aimed workflow with this manager is to
  * use an object of class Deck, apply changes
  * to it before saving it with saveDeck or deleteDeck.
+ * <p>
+ * Do not use directly, use the Database facade instead.
+ * @see ulb.infof307.g01.server.database.Database
  */
 public class DeckDAO extends DAO {
 
@@ -54,7 +57,7 @@ public class DeckDAO extends DAO {
                                                   deck.getName()));
     }
 
-    public boolean deckNameExists(String name) throws SQLException {
+    public boolean deckNameExists(String name) {
         String sql = """
                 SELECT name
                 FROM deck
