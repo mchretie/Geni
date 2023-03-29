@@ -19,7 +19,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
     private final MainWindowViewController mainWindowViewController;
     private final EditDeckViewController editDeckViewController;
 
-    private final DeckDAO dm = DeckDAO.getInstance();
+    private final DeckDAO deckDAO;
 
     private final ControllerListener controllerListener;
 
@@ -29,10 +29,12 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
     public EditDeckController(Stage stage, Deck deck,
                               MainWindowViewController mainWindowViewController,
-                              ControllerListener controllerListener) {
+                              ControllerListener controllerListener, 
+                              DeckDAO deckDAO) {
 
         this.stage = stage;
         this.deck = deck;
+        this.deckDAO = deckDAO;
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
 
@@ -79,7 +81,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
     public void deckNameModified(String newName) {
         try {
             deck.setName(newName.trim());
-            dm.saveDeck(deck);
+            deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
@@ -90,7 +92,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
     public void tagAddedToDeck(Deck deck, String tagName) {
         try {
             deck.addTag(new Tag(tagName));
-            dm.saveDeck(deck);
+            deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
@@ -101,7 +103,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
     public void frontOfCardModified(Card card, String newFront) {
         try {
             card.setFront(newFront);
-            dm.saveDeck(deck);
+            deckDAO.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
 
         } catch (InterruptedException | IOException e) {
@@ -113,20 +115,19 @@ public class EditDeckController implements EditDeckViewController.Listener {
     public void backOfCardModified(Card card, String newBack) {
         try {
             card.setBack(newBack);
-            dm.saveDeck(deck);
+            deckDAO.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
 
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
         }
-
     }
 
     @Override
     public void newCard() {
         try {
             deck.addCard(new Card("Avant", "Arrière"));
-            dm.saveDeck(deck);
+            deckDAO.saveDeck(deck);
 
             editDeckViewController.loadCardsFromDeck();
             editDeckViewController.setSelectedCard(deck.getLastCard());
@@ -141,7 +142,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
     public void removeCard(Card selectedCard){
         try {
             deck.removeCard(selectedCard);
-            dm.saveDeck(deck);
+            deckDAO.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
             editDeckViewController.hideSelectedCardEditor();
             if (deck.cardCount() != 0) {

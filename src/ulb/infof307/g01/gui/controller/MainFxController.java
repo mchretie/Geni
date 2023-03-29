@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
+import ulb.infof307.g01.gui.httpclient.dao.DeckDAO;
+import ulb.infof307.g01.gui.httpclient.dao.UserDAO;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
@@ -24,6 +26,9 @@ public class MainFxController extends Application implements MainWindowViewContr
     private DeckMenuController deckMenuController;
     private MainWindowViewController mainWindowViewController;
     private PlayDeckController playDeckController;
+
+    private final UserDAO userDAO = new UserDAO();
+    private final DeckDAO deckDAO = new DeckDAO();
 
     private Stage stage;
 
@@ -64,7 +69,9 @@ public class MainFxController extends Application implements MainWindowViewContr
             deckMenuController = new DeckMenuController(
                     stage,
                     this,
-                    mainWindowViewController);
+                    mainWindowViewController,
+                    deckDAO,
+                    userDAO);
 
             deckMenuController.show();
 
@@ -128,7 +135,11 @@ public class MainFxController extends Application implements MainWindowViewContr
 
         try {
             EditDeckController editDeckController
-                    = new EditDeckController(stage, deck, mainWindowViewController, this);
+                    = new EditDeckController(stage,
+                                                deck,
+                                                mainWindowViewController,
+                                                this,
+                                                deckDAO);
 
             editDeckController.show();
 

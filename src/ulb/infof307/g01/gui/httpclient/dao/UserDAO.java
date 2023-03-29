@@ -12,22 +12,7 @@ public class UserDAO extends HttpClientAPI {
             = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
 
-    /* ====================================================================== */
-    /*                           Singleton pattern                            */
-    /* ====================================================================== */
-
-    private static UserDAO instance;
-
-    private UserDAO() throws IOException, InterruptedException {
-        super();
-        registerGuest();
-    }
-
-    public static UserDAO getInstance() throws IOException, InterruptedException {
-        if (instance == null)
-            instance = new UserDAO();
-        return instance;
-    }
+    private String token;
 
 
     /* ====================================================================== */
@@ -45,6 +30,7 @@ public class UserDAO extends HttpClientAPI {
                 "username=" + username + "&password=" + password);
 
         checkResponseCode(response.statusCode());
+
     }
 
     public void registerGuest() throws IOException, InterruptedException {

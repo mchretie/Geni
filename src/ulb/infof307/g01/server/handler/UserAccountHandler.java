@@ -54,6 +54,10 @@ public class UserAccountHandler extends Handler {
             String token = jwtService.generateToken(username);
             response.cookie("token", token);
         }
+        else {
+            logger.info("Invalid login");
+        }
+
         return isValidLogin ? successfulResponse : failedResponse;
     }
 

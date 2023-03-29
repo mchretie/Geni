@@ -13,24 +13,6 @@ public class DeckDAO extends HttpClientAPI {
 
     private String user;
 
-
-    /* ====================================================================== */
-    /*                           Singleton pattern                            */
-    /* ====================================================================== */
-
-    private static DeckDAO instance;
-
-    private DeckDAO() {
-        super();
-    }
-
-    public static DeckDAO getInstance() {
-        if (instance == null)
-            instance = new DeckDAO();
-        return instance;
-    }
-
-
     /* ====================================================================== */
     /*                                  Setter                                */
     /* ====================================================================== */

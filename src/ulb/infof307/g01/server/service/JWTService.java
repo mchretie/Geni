@@ -7,11 +7,17 @@ public class JWTService {
     Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // we might need to change this to file key
 
     public String generateToken(String username) {
-        return Jwts.builder().setSubject(username).signWith(key).compact();
+        return Jwts.builder()
+                    .setSubject(username)
+                    .signWith(key)
+                    .compact();
     }
 
     private Jws<Claims> getJwsClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+        return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
     }
 
     public Boolean isTokenValid(String token) {
