@@ -216,6 +216,6 @@ public class TestDeckDAO extends DatabaseUsingTest {
             deckDAO.saveDeck(d, user);
         }
 
-        assertEquals(new HashSet<>(decks), new HashSet<>(deckDAO.searchDecks("name", userId)));
+        assertEquals(new HashSet<>(decks), new HashSet<>(deckDAO.searchDecks("name", user)));
     }
 }

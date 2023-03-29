@@ -17,9 +17,9 @@ public class UserDAO extends DAO {
 
     public boolean userExists(UUID userId) throws DatabaseException {
         String sql = """
-                SELECT 1
-                FROM user
-                WHERE user_id = ?
+                    SELECT *
+                    FROM user
+                    WHERE user_id = ?
                 """;
 
         ResultSet res = database.executeQuery(sql, userId.toString());
@@ -28,9 +28,9 @@ public class UserDAO extends DAO {
 
     public boolean usernameExists(String username) throws DatabaseException {
         String sql = """
-                SELECT 1
-                FROM user
-                WHERE username = ?
+                    SELECT *
+                    FROM user
+                    WHERE username = ?
                 """;
 
         ResultSet res = database.executeQuery(sql, username);
@@ -54,13 +54,13 @@ public class UserDAO extends DAO {
     }
 
     public boolean loginUser(String username, String password) throws DatabaseException {
-        if (!usernameExists(username)) // is it working ?
+        if (!usernameExists(username))
             return false;
 
         User user = new User(username, password, getUserSaltKey(username));
 
         String sql = """
-                SELECT 1
+                SELECT *
                 FROM user
                 WHERE username = ? AND password = ?
                 """;
