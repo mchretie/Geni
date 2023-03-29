@@ -27,6 +27,8 @@ public class MainFxController extends Application implements MainWindowViewContr
     private MainWindowViewController mainWindowViewController;
     private PlayDeckController playDeckController;
 
+    private CardEditController cardEditController;
+
     private final UserDAO userDAO = new UserDAO();
     private final DeckDAO deckDAO = new DeckDAO();
 
@@ -68,6 +70,8 @@ public class MainFxController extends Application implements MainWindowViewContr
 
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
+
+        editCardClicked();
 
         try {
             deckMenuController = new DeckMenuController(
@@ -169,6 +173,10 @@ public class MainFxController extends Application implements MainWindowViewContr
             String description = "Le paquet que vous aviez ouvert est vide.";
             mainWindowViewController.alertInformation(title, description);
         }
+    }
+
+    public void editCardClicked() {
+        cardEditController = new CardEditController(mainWindowViewController);
     }
 
     @Override

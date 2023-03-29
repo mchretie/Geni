@@ -66,7 +66,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     public void show() throws IOException, InterruptedException {
         deckMenuViewController.setDecks( loadDecks( deckDAO.getAllDecks() ) );
 
-        mainWindowViewController.setDeckMenuViewVisible();
+//        mainWindowViewController.setDeckMenuViewVisible();
+        mainWindowViewController.setEditCardViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
 
         stage.show();
