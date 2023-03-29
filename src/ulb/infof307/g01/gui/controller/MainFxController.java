@@ -61,9 +61,9 @@ public class MainFxController extends Application implements MainWindowViewContr
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
 
-        //ICI
-        profileController = new ProfileController( stage, mainWindowViewController,
-                this );
+        // ICI
+        profileController =
+            new ProfileController(stage, mainWindowViewController, this);
         try {
             deckMenuController = new DeckMenuController(
                     stage,
@@ -127,8 +127,6 @@ public class MainFxController extends Application implements MainWindowViewContr
     /*                     Controller Listener Methods                        */
     /* ====================================================================== */
 
-
-
     @Override
     public void editDeckClicked(Deck deck) {
 
@@ -144,12 +142,7 @@ public class MainFxController extends Application implements MainWindowViewContr
     }
 
     @Override
-    public void playDeckClicked(Deck deck) {
-        try {
-            playDeckController = new PlayDeckController(
-                    stage,
-                    deck,
-                    mainWindowViewController,
+    public void playDeckroller,
                     this);
 
             playDeckController.show();
@@ -162,16 +155,14 @@ public class MainFxController extends Application implements MainWindowViewContr
         }
     }
 
-    @Override //ICI
+    @Override // ICI
     public void profileClicked() {
-        try {
-            profileController.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+      try {
+        profileController.show();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
-
 
     @Override
     public void fxmlLoadingError(IOException e) {
@@ -230,5 +221,4 @@ public class MainFxController extends Application implements MainWindowViewContr
             restartApplicationError(e);
         }
     }
-
 }

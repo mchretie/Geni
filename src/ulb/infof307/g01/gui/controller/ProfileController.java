@@ -1,76 +1,71 @@
 package ulb.infof307.g01.gui.controller;
 
+import java.io.IOException;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpclient.dao.DeckDAO;
+import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
+import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
-import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
-import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
-
-import java.io.IOException;
 
 public class ProfileController implements ProfileViewController.Listener {
 
-    private final Stage stage;
+  private final Stage stage;
 
+  private final MainWindowViewController mainWindowViewController;
+  private final ProfileViewController profileViewController;
 
-    private final MainWindowViewController mainWindowViewController;
-    private final ProfileViewController profileViewController;
+  private final ControllerListener controllerListener;
 
+  /* ====================================================================== */
+  /*                              Constructor                               */
+  /* ====================================================================== */
 
-    private final ControllerListener controllerListener;
+  public ProfileController(Stage stage,
+                           MainWindowViewController mainWindowViewController,
+                           ControllerListener controllerListener) {
 
-    /* ====================================================================== */
-    /*                              Constructor                               */
-    /* ====================================================================== */
+    this.stage = stage;
+    this.mainWindowViewController = mainWindowViewController;
+    this.controllerListener = controllerListener;
 
-    public ProfileController(Stage stage,
-                              MainWindowViewController mainWindowViewController,
-                              ControllerListener controllerListener) {
+    this.profileViewController =
+        mainWindowViewController.getProfileViewController();
 
-        this.stage = stage;
-        this.mainWindowViewController = mainWindowViewController;
-        this.controllerListener = controllerListener;
+    profileViewController.setListener(this);
+  }
 
-        this.profileViewController
-                = mainWindowViewController.getProfileViewController();
+  /* ====================================================================== */
+  /*                         Stage Manipulation                             */
+  /* ====================================================================== */
 
-        profileViewController.setListener(this);
-    }
+  /**
+   * Loads and displays the Deck Menu onto the main scene
+   *
+   * @throws IOException if FXMLLoader.load() fails
+   */
+  public void show() throws IOException {
+    // Todo :  tests
 
+    stage.show();
+  }
 
-    /* ====================================================================== */
-    /*                         Stage Manipulation                             */
-    /* ====================================================================== */
+  /* ====================================================================== */
+  /*                        View Listener Method                            */
+  /* ====================================================================== */
 
-    /**
-     * Loads and displays the Deck Menu onto the main scene
-     *
-     * @throws IOException if FXMLLoader.load() fails
-     */
-    public void show() throws IOException {
-        // Todo :  tests
+  @Override
+  public void profileClicked() {
+    controllerListener.profileClicked();
+  }
 
-        stage.show();
-    }
+  /* ====================================================================== */
+  /*                   Controller Listener Interface                        */
+  /* ====================================================================== */
 
-
-    /* ====================================================================== */
-    /*                        View Listener Method                            */
-    /* ====================================================================== */
-
-    @Override
-    public void profileClicked() {
-        controllerListener.profileClicked();
-    }
-
-    /* ====================================================================== */
-    /*                   Controller Listener Interface                        */
-    /* ====================================================================== */
-
-    public interface ControllerListener {
-        void profileClicked();
-    }
+  public interface ControllerListener {
+    void profileClicked();
+  }
 }

@@ -103,6 +103,5 @@ public class DeckViewController {
         void deckRemoved(Deck deck);
         void deckDoubleClicked(Deck deck);
         void editDeckClicked(Deck deck);
-
     }
 }
