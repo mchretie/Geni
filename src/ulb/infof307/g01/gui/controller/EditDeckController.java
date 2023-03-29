@@ -1,5 +1,6 @@
 package ulb.infof307.g01.gui.controller;
 
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.model.Card;
@@ -125,9 +126,9 @@ public class EditDeckController implements EditDeckViewController.Listener {
     }
 
     @Override
-    public void deckColorModified(Deck deck, String color) {
+    public void deckColorModified(Deck deck, Color color) {
         try {
-            deck.setColor(color);
+            deck.setColor(color.toString());
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {

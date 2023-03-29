@@ -8,6 +8,8 @@ import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 
+import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
+
 public class PlayDeckController implements PlayDeckViewController.Listener {
 
     private final CardExtractor cardExtractor;
@@ -31,13 +33,17 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         this.stage = stage;
         this.cardExtractor = new CardExtractorRandom(deck);
         this.currentCard = cardExtractor.getNextCard();
-        this.controllerListener = controllerListener;
 
+        if (currentCard == null)
+            throw new EmptyDeckException("Deck does not contain any cards.");
+
+        this.controllerListener = controllerListener;
         this.mainWindowViewController = mainWindowViewController;
         mainWindowViewController.makeGoBackIconVisible();
 
         this.playDeckViewController = mainWindowViewController.getPlayDeckViewController();
         playDeckViewController.setListener(this);
+        playDeckViewController.setCurrentCard(currentCard);
         playDeckViewController.setDeckName(deck.getName());
     }
 
