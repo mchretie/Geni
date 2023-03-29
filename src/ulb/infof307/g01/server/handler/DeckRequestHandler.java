@@ -6,6 +6,7 @@ import spark.Response;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.server.database.Database;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -13,12 +14,6 @@ import java.util.UUID;
 import static spark.Spark.*;
 
 public class DeckRequestHandler extends Handler {
-
-    private final Map<String, String> successfulResponse
-            = Map.of("success", "true");
-
-    private final Map<String, String> failedResponse
-            = Map.of("success", "false");
 
     private final Database database;
 
@@ -28,10 +23,10 @@ public class DeckRequestHandler extends Handler {
 
     @Override
     public void init() {
-        logger.info("Starting deck handler");
+        logStart();
+
         path("/api", () -> {
             path("/deck", () -> {
-                get("/get", this::getDeck, toJson());
                 post("/save", this::saveDeck, toJson());
                 delete("/delete", this::deleteDeck, toJson());
                 get("/all", this::getAllDecks, toJson());
@@ -52,7 +47,7 @@ public class DeckRequestHandler extends Handler {
             logger.info("Sent response code: " + res.status());
         });
 
-        logger.info("Deck handler started");
+        logStarted();
     }
 
     private Map<String, String> saveDeck(Request req, Response res) {
@@ -64,14 +59,12 @@ public class DeckRequestHandler extends Handler {
             return successfulResponse;
 
         } catch (Exception e) {
-            logger.warning("Failed to save deck: " + e.getMessage());
+            String message = "Failed to save deck: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
             return failedResponse;
         }
-    }
-
-    private String getDeck(Request req, Response res) {
-        UUID userId = UUID.fromString(req.queryParams("user_id"));
-        return null;
     }
 
 
@@ -84,7 +77,10 @@ public class DeckRequestHandler extends Handler {
             return successfulResponse;
 
         } catch (Exception e) {
-            logger.warning("Failed to delete deck: " + e.getMessage());
+            String message = "Failed to delete deck: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
             return failedResponse;
         }
     }
@@ -95,10 +91,12 @@ public class DeckRequestHandler extends Handler {
             return database.getAllUserDecks(userId);
 
         } catch (Exception e) {
-            logger.warning("Failed to get all decks: " + e.getMessage());
-            return null;
-        }
+            String message = "Failed to get all decks: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
 
+            return new ArrayList<>();
+        }
     }
 
     private List<Deck> searchDecks(Request req, Response res) {
@@ -107,8 +105,11 @@ public class DeckRequestHandler extends Handler {
             return database.searchDecks(userSearch);
 
         } catch (Exception e) {
-            logger.warning("Failed to search decks: " + e.getMessage());
-            return null;
+            String message = "Failed to search decks: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
+            return new ArrayList<>();
         }
     }
 }

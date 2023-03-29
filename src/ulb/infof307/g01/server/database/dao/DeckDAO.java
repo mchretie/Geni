@@ -45,15 +45,17 @@ public class DeckDAO extends DAO {
      *
      * @see DeckDAO#deckNameExists
      */
-    public boolean isDeckValid(Deck deck) throws DatabaseException {
+
+    public boolean isDeckValid(Deck deck, UUID userId) throws DatabaseException {
         String sql = """
                 SELECT deck_id, name
                 FROM deck
-                WHERE NOT deck_id = ? AND name = ?
+                WHERE NOT deck_id = ? AND user_id = ? AND name = ?
                 """;
 
         return !checkedNext(database.executeQuery(sql,
                                                   deck.getId().toString(),
+                                                  userId.toString(),
                                                   deck.getName()));
     }
 
@@ -76,8 +78,9 @@ public class DeckDAO extends DAO {
      * @see DeckDAO#isDeckValid
      */
     public void saveDeck(Deck deck, UUID userId) throws DatabaseException {
-        if (!isDeckValid(deck))
+        if (!isDeckValid(deck, userId))
             return;
+
         saveDeckIdentity(deck, userId);
         saveDeckTags(deck);
         saveDeckCards(deck);

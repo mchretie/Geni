@@ -28,16 +28,14 @@ public class TestDeckDAO extends DatabaseUsingTest {
     void init() throws DatabaseException {
         super.init();
 
-        db.initTables(DatabaseScheme.CLIENT);
+        db.initTables(DatabaseScheme.SERVER);
 
         this.deckDAO = new DeckDAO(this.db);
         this.tagDAO = new TagDAO(this.db);
-        this.userDAO  = new UserDAO(this.db);
+        this.userDAO = new UserDAO(this.db);
 
         this.deckDAO.setTagDao(this.tagDAO);
         this.tagDAO.setDeckDao(this.deckDAO);
-
-        userDAO.registerGuest(user);
     }
 
     @Test
@@ -64,16 +62,16 @@ public class TestDeckDAO extends DatabaseUsingTest {
         Deck deck2 = new Deck("name");
         deckDAO.saveDeck(deck1, user);
 
-        assertFalse(deckDAO.isDeckValid(deck2));
+        assertFalse(deckDAO.isDeckValid(deck2, user));
     }
 
     @Test
     void isDeckValid_DeckValid_ReturnsTrue() throws SQLException {
         Deck deck = new Deck("name");
-        assertTrue(deckDAO.isDeckValid(deck));
+        assertTrue(deckDAO.isDeckValid(deck, user));
 
         deckDAO.saveDeck(deck, user);
-        assertTrue(deckDAO.isDeckValid(deck));
+        assertTrue(deckDAO.isDeckValid(deck, user));
     }
 
     @Test
@@ -189,7 +187,6 @@ public class TestDeckDAO extends DatabaseUsingTest {
         deckDAO.saveDeck(deck, user);
         deckDAO.saveDeck(deck, user);
         deckDAO.saveDeck(deck, user);
-
         assertEquals(Set.of(deck), new HashSet<>(deckDAO.getAllDecks()));
     }
 

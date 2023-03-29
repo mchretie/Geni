@@ -34,7 +34,7 @@ public class GuestAccountHandler extends Handler {
     private Map<String, String> registerGuest(Request req, Response res) {
         UUID uuid = UUID.randomUUID();
         try {
-            database.registerGuest(uuid);
+            // database.registerGuest(uuid);
             logger.info("Registered guest with uuid " + uuid);
         } catch (Exception e) {
             logger.warning("Failed to register guest: " + e.getMessage());

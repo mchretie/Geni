@@ -41,8 +41,8 @@ public class Database {
     /*                              Deck                                      */
     /* ====================================================================== */
 
-    public boolean isDeckValid(Deck deck) throws DatabaseException {
-        return deckDao.isDeckValid(deck);
+    public boolean isDeckValid(Deck deck, UUID userId) throws DatabaseException {
+        return deckDao.isDeckValid(deck, userId);
     }
 
     public boolean deckNameExists(String name) throws DatabaseException {
@@ -123,7 +123,11 @@ public class Database {
     /*                              User                                      */
     /* ====================================================================== */
 
-    public void registerGuest(UUID guestId) throws DatabaseException {
-        userDao.registerGuest(guestId);
+    public boolean loginUser(String username, String password) throws DatabaseException {
+        return userDao.loginUser(username, password);
+    }
+
+    public boolean registerUser(String username, String password) {
+        return userDao.registerUser(username, password);
     }
 }

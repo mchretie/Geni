@@ -7,7 +7,8 @@ class DatabaseScheme {
         CREATE TABLE IF NOT EXISTS user (
             user_id TEXT PRIMARY KEY,
             username TEXT NOT NULL,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            salt TEXT NOT NULL
         );
             """,
             """
@@ -20,25 +21,34 @@ class DatabaseScheme {
                 ON DELETE CASCADE
         );
             """,
+            // TODO: 29/03/23 replace with content instead of front and back
             """
         CREATE TABLE IF NOT EXISTS card (
             card_id TEXT PRIMARY KEY,
             deck_id TEXT NOT NULL,
-            content TEXT NOT NULL,
+            front TEXT NOT NULL,
+            back TEXT NOT NULL,
             FOREIGN KEY (deck_id)
                 REFERENCES deck(deck_id)
                 ON DELETE CASCADE
         );
             """,
             """
+        CREATE TABLE IF NOT EXISTS tag (
+            tag_id TEXT PRIMARY KEY,
+            name TEXT UNIQUE NOT NULL,
+            color TEXT NOT NULL
+        );""",
+            """
         CREATE TABLE IF NOT EXISTS deck_tag (
             deck_id TEXT,
-            tag_name TEXT,
-            color TEXT NOT NULL,
-            PRIMARY KEY (deck_id, tag_name),
+            tag_id TEXT,
+            PRIMARY KEY (deck_id, tag_id),
             FOREIGN KEY (deck_id)
                 REFERENCES deck(deck_id)
                 ON DELETE CASCADE
+            FOREIGN KEY (tag_id)
+                REFERENCES Tag(tag_id)
         );
             """,
             """
@@ -79,69 +89,6 @@ class DatabaseScheme {
                 ON DELETE CASCADE
         );
             """
-    };
-
-    public static final String[] CLIENT = new String[]{
-            """
-        CREATE TABLE IF NOT EXISTS deck (
-            deck_id TEXT PRIMARY KEY,
-            user_id TEXT,
-            name TEXT UNIQUE NOT NULL,
-            FOREIGN KEY (user_id)
-                REFERENCES User(user_id)
-                ON DELETE CASCADE
-        );""",
-
-            """
-        CREATE TABLE IF NOT EXISTS card (
-            card_id TEXT PRIMARY KEY,
-            deck_id TEXT,
-            front TEXT,
-            back TEXT,
-            FOREIGN KEY (deck_id)
-                REFERENCES Deck(deck_id)
-                ON DELETE CASCADE
-        );""",
-
-            """
-        CREATE TABLE IF NOT EXISTS tag (
-            tag_id TEXT PRIMARY KEY,
-            name TEXT UNIQUE NOT NULL,
-            color TEXT NOT NULL
-        );""",
-
-            """
-        CREATE TABLE IF NOT EXISTS deck_tag (
-            deck_id TEXT,
-            tag_id TEXT,
-            PRIMARY KEY (deck_id, tag_id),
-            FOREIGN KEY (deck_id)
-                REFERENCES Deck(deck_id)
-                ON DELETE CASCADE
-            FOREIGN KEY (tag_id)
-                REFERENCES Tag(tag_id)
-        );""",
-
-            """
-        CREATE TABLE IF NOT EXISTS user (
-            user_id TEXT PRIMARY KEY,
-            username TEXT NOT NULL,
-            password TEXT NOT NULL
-        );""",
-
-            """
-        CREATE TABLE IF NOT EXISTS card_knowledge (
-            user_id TEXT,
-            card_id TEXT,
-            knowledge INTEGER,
-            PRIMARY KEY (user_id, card_id),
-            FOREIGN KEY (user_id)
-                REFERENCES User(user_id)
-                ON DELETE CASCADE
-            FOREIGN KEY (card_id)
-                REFERENCES Card(card_id)
-                ON DELETE CASCADE
-        );""",
     };
 }
 

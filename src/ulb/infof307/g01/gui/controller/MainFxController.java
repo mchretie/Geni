@@ -6,13 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.httpclient.DeckDAO;
+import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.UUID;
 
 /**
  * Main class of the application which initializes the main view using the main view handler and loads a menu view.
@@ -22,12 +21,11 @@ public class MainFxController extends Application implements MainWindowViewContr
                                                                 PlayDeckController.ControllerListener,
                                                                 EditDeckController.ControllerListener {
 
-    DeckMenuController deckMenuController;
-    MainWindowViewController mainWindowViewController;
-    PlayDeckController playDeckController;
+    private DeckMenuController deckMenuController;
+    private MainWindowViewController mainWindowViewController;
+    private PlayDeckController playDeckController;
 
     private Stage stage;
-
 
     /* ====================================================================== */
     /*                                  Main                                  */
@@ -46,12 +44,7 @@ public class MainFxController extends Application implements MainWindowViewContr
     public void start(Stage stage) throws IOException {
 
         this.stage = stage;
-
-        // TODO: Remove this line when the login is implemented
-        UUID guestUser
-                = UUID.fromString("11a1025f-58ef-4044-8abc-3a1ba262f39c");
-
-        DeckDAO.getInstance().setUser(guestUser);
+        stage.setTitle("Pokémon TCG Deck Builder");
 
         URL resource = MainWindowViewController
                             .class
@@ -75,7 +68,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
             deckMenuController.show();
 
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             restartApplicationError(e);
         }
     }
@@ -118,8 +111,8 @@ public class MainFxController extends Application implements MainWindowViewContr
      *
      */
     private void databaseModificationError(Exception e) {
-        String message = "Vos modifications n’ont pas été enregistrées,"
-                            + "veuillez réessayer. Si le problème persiste,"
+        String message = "Vos modifications n’ont pas été enregistrées, "
+                            + "veuillez réessayer. Si le problème persiste, "
                             + "redémarrez l’application";
 
         communicateError(e, message);
@@ -146,13 +139,21 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     @Override
     public void playDeckClicked(Deck deck) {
-        playDeckController = new PlayDeckController(
-                                        stage,
-                                        deck,
-                                        mainWindowViewController,
-                         this);
+        try {
+            playDeckController = new PlayDeckController(
+                    stage,
+                    deck,
+                    mainWindowViewController,
+                    this);
 
-        playDeckController.show();
+            playDeckController.show();
+        }
+
+        catch (EmptyDeckException e) {
+            String title = "Paquet vide.";
+            String description = "Le paquet que vous aviez ouvert est vide.";
+            mainWindowViewController.alertInformation(title, description);
+        }
     }
 
     @Override

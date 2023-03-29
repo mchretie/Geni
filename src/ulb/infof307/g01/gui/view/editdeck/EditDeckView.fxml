@@ -12,7 +12,7 @@
             fx:controller="ulb.infof307.g01.gui.view.editdeck.EditDeckViewController">
 
     <!-- Deck name -->
-    <TextField fx:id="deckNameText" alignment="CENTER" onKeyReleased="#handleUpdateDeckName"
+    <TextField fx:id="deckNameText" alignment="CENTER" onKeyReleased="#handleTextFieldKeyPressed"
                style="-fx-background-color: #00000000;" text="Deck Name">
 
         <font>

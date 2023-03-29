@@ -6,7 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
 import ulb.infof307.g01.server.database.dao.TagDAO;
+
 import ulb.infof307.g01.server.database.dao.UserDAO;
+
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
@@ -29,7 +31,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     void init() throws DatabaseException {
         super.init();
 
-        db.initTables(DatabaseScheme.CLIENT);
+        db.initTables(DatabaseScheme.SERVER);
 
         this.deckDAO = new DeckDAO(this.db);
         this.tagDAO = new TagDAO(this.db);
@@ -38,7 +40,7 @@ public class TestTagDAO extends DatabaseUsingTest {
         this.deckDAO.setTagDao(this.tagDAO);
         this.tagDAO.setDeckDao(this.deckDAO);
 
-        userDAO.registerGuest(user);
+        // userDAO.registerGuest(user);
     }
 
     @Test

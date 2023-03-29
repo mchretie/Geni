@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
