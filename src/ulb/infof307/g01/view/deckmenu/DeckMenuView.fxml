@@ -38,7 +38,7 @@
 
                <!-- Create deck rectangle -->
                <VBox alignment="CENTER" style="-fx-border-color: black; -fx-border-radius: 20; -fx-border-style: dashed; -fx-background-color: #d3d1d1; -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-                   <TextField fx:id="createDeckField" alignment="CENTER" promptText="Nom du paquet..." style="-fx-background-color: transparent;">
+                   <TextField fx:id="createDeckField" onAction="#handleCreateDeckClicked" alignment="CENTER" promptText="Nom du paquet..." style="-fx-background-color: transparent;">
                        <cursor>
                            <Cursor fx:constant="DEFAULT" />
                        </cursor>
@@ -46,8 +46,16 @@
                            <Blend />
                        </effect>
                    </TextField>
-                     <FontIcon fx:id="createDeckIcon" iconLiteral="mdi2p-plus" iconSize="50" onMouseEntered="#handleCreateDeckHover" onMouseExited="#handleCreateDeckExit" />
-               <GridPane.margin>
+                   <Button fx:id="createDeckButton" layoutX="50" layoutY="50"
+                           onMouseClicked="#handleCreateDeckClicked" prefHeight="100" prefWidth="225"
+                           style="-fx-background-color: transparent;">
+
+                       <graphic>
+                           <FontIcon fx:id="createDeckIcon" iconLiteral="mdi2p-plus" iconSize="50"
+                                     onMouseEntered="#handleCreateDeckHover" onMouseExited="#handleCreateDeckExit" />
+                       </graphic>
+                   </Button>
+                   <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </GridPane.margin>
                </VBox>
