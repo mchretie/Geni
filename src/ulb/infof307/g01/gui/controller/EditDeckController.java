@@ -173,6 +173,11 @@ public class EditDeckController implements EditDeckViewController.Listener {
         editDeckViewController.loadSelectedCardEditor();
     }
 
+    @Override
+    public void openFrontCardEditor(Card selectedCard) {
+        mainWindowViewController.openCardEditor(selectedCard);
+    }
+
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */
     /* ====================================================================== */

@@ -11,6 +11,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
@@ -26,7 +27,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EditDeckViewController implements Initializable {
-
     @FXML
     private StackPane frontCard;
     @FXML
@@ -58,6 +58,9 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private ColorPicker colorPicker;
+
+    @FXML
+    public FontIcon frontCardEditIcon;
 
     private Deck deck;
     private Card selectedCard;
@@ -261,6 +264,18 @@ public class EditDeckViewController implements Initializable {
         listener.deckColorModified(deck, colorPicker.getValue());
     }
 
+    public void handleFrontCardEditHover(MouseEvent mouseEvent) {
+        frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    public void handleFrontCardEditHoverExit(MouseEvent mouseEvent) {
+        frontCardEditIcon.setIconColor(Color.web("#000000"));
+    }
+
+    public void handleFrontEditClicked(MouseEvent mouseEvent) {
+        listener.openFrontCardEditor(selectedCard);
+    }
+
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -282,5 +297,7 @@ public class EditDeckViewController implements Initializable {
         void removeCard(Card selectedCard);
 
         void cardPreviewClicked(Card card);
+
+        void openFrontCardEditor(Card selectedCard);
     }
 }

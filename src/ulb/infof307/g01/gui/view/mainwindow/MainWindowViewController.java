@@ -13,6 +13,7 @@ import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
+import ulb.infof307.g01.model.Card;
 
 public class MainWindowViewController {
 
@@ -216,6 +217,11 @@ public class MainWindowViewController {
     @FXML
     private void handleUserProfileExitHover() {
         userProfileIcon.setIconColor(Color.web("#000000"));
+    }
+
+    public void openCardEditor(Card selectedCard) {
+        editCardViewController.setCard(selectedCard);
+        setEditCardViewVisible();
     }
 
 
