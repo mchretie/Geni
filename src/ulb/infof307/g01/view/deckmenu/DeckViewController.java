@@ -44,7 +44,7 @@ public class DeckViewController {
         this.deck = deck;
         this.updateDeckButtonName();
 
-        this.setDeckColor();
+//        this.setDeckColor();
         this.setBackGroundImage();
     }
 
@@ -65,11 +65,12 @@ public class DeckViewController {
                 BackgroundPosition.CENTER,
                 new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true)
                 );
-        deckVBox.setBackground(new Background(bckImage));
-        deckVBox.setStyle("-fx-background-radius: 20;");
+//        deckVBox.setBackground(new Background(bckImage));
+//        deckVBox.setStyle("-fx-background-radius: 20;");
+
 
 //        deckVBox.setStyle("-fx-border-color: black; -fx-background-radius: 20; " +
-//                "-fx-background-image:url('/home/hugo/Documents/2023-groupe-1/res/img/tmpdeckimage.jpg'); " +
+//                "-fx-background-image:url('file:res/img/tmpdeckimage.jpg'); " +
 //                "-fx-border-radius: 20;");
     }
 

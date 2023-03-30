@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<VBox fx:id="deckVBox" style="-fx-border-color: black; -fx-border-radius: 20;" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="125.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.deckmenu.DeckViewController">
+<VBox fx:id="deckVBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="125.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.view.deckmenu.DeckViewController">
    <HBox alignment="CENTER_RIGHT">
       <!-- Edit deck button -->
       <Button onMouseClicked="#handleEditDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
