@@ -11,6 +11,7 @@ import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.model.User;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,6 +54,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
         // TODO: Title and login.
         stage.setTitle("Pokémon TCG Deck Builder");
+        userDAO.register("guest", "guest");
         userDAO.login("guest", "guest");
 
         URL resource = MainWindowViewController
