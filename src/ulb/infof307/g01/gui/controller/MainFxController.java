@@ -71,7 +71,7 @@ public class MainFxController extends Application implements MainWindowViewContr
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
 
-        editCardClicked();
+//        editCardClicked();
 
         try {
             deckMenuController = new DeckMenuController(

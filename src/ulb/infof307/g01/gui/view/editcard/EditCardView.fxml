@@ -11,11 +11,13 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="ulb.infof307.g01.gui.view.editcard.EditCardViewController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="400.0" prefWidth="1000.0">
 
-    <Text text="Edit Card" layoutX="10.0" layoutY="10.0" />
-    <HTMLEditor fx:id="htmlEditor" layoutX="10.0" layoutY="40.0" prefHeight="300.0" prefWidth="580.0" />
-    <Button fx:id="saveButton" layoutX="10.0" layoutY="350.0" mnemonicParsing="false" text="Save" onMousePressed="#onSaveButtonClicked" />
-    <WebView fx:id="webView" layoutX="10.0" layoutY="400.0" prefHeight="300.0" prefWidth="580.0" />
-
+    <VBox alignment="BASELINE_CENTER" prefWidth="1000.0">
+        <Text text="Edit Card" layoutX="10.0" layoutY="10.0"/>
+        <HTMLEditor fx:id="htmlEditor" layoutX="10.0" layoutY="40.0" prefHeight="300.0" maxWidth="580.0"/>
+        <Button fx:id="saveButton" layoutX="10.0" layoutY="350.0" mnemonicParsing="false" text="Save"
+                onMousePressed="#onSaveButtonClicked"/>
+        <WebView fx:id="webView" layoutX="10.0" layoutY="400.0" prefHeight="300.0" prefWidth="580.0"/>
+    </VBox>
 </AnchorPane>

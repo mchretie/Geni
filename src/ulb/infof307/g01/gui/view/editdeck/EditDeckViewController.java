@@ -16,6 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
+import javafx.scene.web.WebView;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
@@ -34,7 +35,8 @@ public class EditDeckViewController implements Initializable {
     private AnchorPane anchor;
 
     @FXML
-    private TextField frontCardText;
+    private WebView frontCardWebView;
+    //    private TextField frontCardText;
     @FXML
     private TextField backCardText;
     @FXML
@@ -68,9 +70,9 @@ public class EditDeckViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        frontCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) handleFrontEdit();
-        });
+//        frontCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
+//            if (!newValue) handleFrontEdit();
+//        });
 
         backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleBackEdit();
@@ -123,7 +125,8 @@ public class EditDeckViewController implements Initializable {
     }
 
     private void loadCardEditor(Card card) {
-        frontCardText.setText(card.getFront());
+//        frontCardText.setText(card.getFront());
+        frontCardWebView.getEngine().loadContent(card.getFront());
         backCardText.setText(card.getBack());
         frontCard.setVisible(true);
         backCard.setVisible(true);
@@ -138,9 +141,11 @@ public class EditDeckViewController implements Initializable {
         backCard.setVisible(false);
     }
 
-    public void loadTagsFromDeck(){
+    public void loadTagsFromDeck() {
         tagsBox.getChildren().clear();
-        for (Tag tag: deck.getTags()) { addTagToView(tag.getName(), tag.getColor()); }
+        for (Tag tag : deck.getTags()) {
+            addTagToView(tag.getName(), tag.getColor());
+        }
     }
 
     private void addTagToView(String text, String color) {
@@ -165,10 +170,14 @@ public class EditDeckViewController implements Initializable {
     /* ====================================================================== */
 
     @FXML
-    private void handleAddCardClicked() { listener.newCard();}
+    private void handleAddCardClicked() {
+        listener.newCard();
+    }
 
     @FXML
-    private void handleRemoveCardClicked() { listener.removeCard(selectedCard);}
+    private void handleRemoveCardClicked() {
+        listener.removeCard(selectedCard);
+    }
 
     @FXML
     private void handleCardPreviewClicked() {
@@ -231,7 +240,7 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleFrontEdit() {
-        listener.frontOfCardModified(selectedCard, frontCardText.getText());
+        listener.frontOfCardModified(selectedCard, frontCardWebView.getEngine().executeScript("document.body.innerHTML").toString());
     }
 
     @FXML
@@ -259,12 +268,19 @@ public class EditDeckViewController implements Initializable {
 
     public interface Listener {
         void deckNameModified(String newName);
+
         void tagAddedToDeck(Deck deck, String tagName, String color);
+
         void frontOfCardModified(Card card, String newFront);
+
         void backOfCardModified(Card card, String newBack);
+
         void deckColorModified(Deck deck, Color color);
+
         void newCard();
+
         void removeCard(Card selectedCard);
+
         void cardPreviewClicked(Card card);
     }
 }
