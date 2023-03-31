@@ -61,6 +61,9 @@ public class MainFxController extends Application implements MainWindowViewContr
 
         stage.setScene(new Scene(root));
         stage.setResizable(true);
+        stage.setMinHeight(400);
+        stage.setMinWidth(550);
+
 
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
