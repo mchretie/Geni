@@ -3,6 +3,7 @@ package ulb.infof307.g01.server.handler;
 import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
+import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;

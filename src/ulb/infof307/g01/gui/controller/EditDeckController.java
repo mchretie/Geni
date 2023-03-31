@@ -176,7 +176,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
     @Override
     public void openFrontCardEditor(Card selectedCard) {
 //        mainWindowViewController.openCardEditor(selectedCard);
-        controllerListener.openCardEditor(selectedCard);
+        controllerListener.openCardEditor(selectedCard, deck);
     }
 
     /* ====================================================================== */
@@ -186,6 +186,6 @@ public class EditDeckController implements EditDeckViewController.Listener {
     public interface ControllerListener {
         void savingError(Exception e);
 
-        void openCardEditor(Card selectedCard);
+        void openCardEditor(Card selectedCard, Deck deck);
     }
 }

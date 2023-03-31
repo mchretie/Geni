@@ -65,11 +65,4 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
     }
-
-    public void updateCard(Card card) throws IOException, InterruptedException {
-        String query = "?card_id=" + card.getId();
-        HttpResponse<String> response = put("/api/deck/card/update" + query, new Gson().toJson(card));
-
-        checkResponseCode(response.statusCode());
-    }
 }

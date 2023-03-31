@@ -4,6 +4,7 @@ import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.Card;
+import ulb.infof307.g01.model.Deck;
 
 public class EditCardController implements EditCardViewController.Listener {
 
@@ -13,21 +14,23 @@ public class EditCardController implements EditCardViewController.Listener {
 
     private final DeckDAO deckDAO;
 
+    private Deck deck;
+
     public EditCardController(MainWindowViewController mainWindowViewController,
-                              ControllerListener controllerListener, DeckDAO deckDAO) {
+                              ControllerListener controllerListener, Deck deck, DeckDAO deckDAO) {
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
         this.editCardViewController = mainWindowViewController.getEditCardViewController();
+        this.deck = deck;
         this.deckDAO = deckDAO;
         editCardViewController.setListener(this);
     }
 
     @Override
-    public void saveButtonClicked(Card card) {
-        System.out.println("Save button clicked");
-        System.out.println(card.getFront());
+    public void saveButtonClicked(Card card, String html) {
         try {
-            deckDAO.updateCard(card);
+            card.setFront(html);
+            deckDAO.saveDeck(deck);
         } catch (Exception e) {
             controllerListener.savingError(e);
         }
@@ -35,11 +38,11 @@ public class EditCardController implements EditCardViewController.Listener {
 
     @Override
     public void editCardClicked() {
-        controllerListener.editCardClicked();
+        controllerListener.editCardClicked(deck);
     }
 
     public interface ControllerListener {
-        void editCardClicked();
+        void editCardClicked(Deck deck);
 
         void savingError(Exception e);
     }
