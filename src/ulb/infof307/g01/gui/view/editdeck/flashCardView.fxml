@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="CardsSidesBox" prefHeight="405.0" prefWidth="425.0" visible="false" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.flashCardViewController">
+
+    <StackPane fx:id="frontCard" visible="false">
+
+        <TextField fx:id="frontCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+
+            <font>
+                <Font size="24.0" />
+            </font>
+        </TextField>
+    </StackPane>
+
+    <StackPane fx:id="backCard"  visible="false">
+
+        <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+
+            <font>
+                <Font size="24.0" />
+            </font>
+        </TextField>
+    </StackPane>
+</VBox>
