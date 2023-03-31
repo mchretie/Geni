@@ -9,6 +9,9 @@ public class Deck implements Iterable<Card> {
     private final List<Card> cards;
     private final List<Tag> tags;
 
+    // x by default
+    private String color = "0x00000000";
+
     public Deck(String name) {
         this.name = name;
         this.id = UUID.randomUUID();
@@ -28,6 +31,14 @@ public class Deck implements Iterable<Card> {
         this.id = id;
         this.cards = cards;
         this.tags = tags;
+    }
+
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color) {
+        this.name = name;
+        this.id = id;
+        this.cards = cards;
+        this.tags = tags;
+        this.color = color;
     }
 
     public List<Tag> getTags() { return tags; }
@@ -59,19 +70,21 @@ public class Deck implements Iterable<Card> {
         cards.add(card);
     }
 
-    public void addCards(List<Card> cards) {
-        cards.forEach(this::addCard);
-    }
-
     public void removeTag(Tag tag) { tags.remove(tag); }
     public void removeCard(Card card) { cards.remove(card); }
 
-    public boolean tagExists(String newTagName){
+    public boolean tagExists(String newTagName) {
+
         for (Tag tag: tags){
-            if (tag.getName().equals(newTagName)) return true;
+            if (tag.getName().equals(newTagName))
+                return true;
         }
+
         return false;
     }
+
+    public void setColor(String color) { this.color = color; }
+    public String getColor() { return color; }
 
     @Override
     public boolean equals(Object obj) {
@@ -84,12 +97,13 @@ public class Deck implements Iterable<Card> {
         return this.id.equals(other.id)
             && this.name.equals(other.name)
             && this.cards.equals(other.cards)
-            && this.tags.equals(other.tags);
+            && this.tags.equals(other.tags)
+            && this.color.equals(other.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, cards, tags);
+        return Objects.hash(name, id, cards, tags, color);
     }
 
     public Iterator<Card> iterator() {
