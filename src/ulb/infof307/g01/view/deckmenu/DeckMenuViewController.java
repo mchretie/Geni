@@ -2,12 +2,12 @@ package ulb.infof307.g01.view.deckmenu;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -77,11 +77,27 @@ public class DeckMenuViewController {
         int row = 0;
 
         for (Node deck : decks) {
+            if (row == gridPane.getRowCount()) {
+                addRow();
+            }
+
+            GridPane.setMargin(deck, new Insets(20));
             gridPane.add(deck, col, row);
 
             col = nextCol(col);
             row = nextRow(row, col);
         }
+    }
+
+    /**
+     * properly add row to the gridPane
+     */
+    private void addRow() {
+        RowConstraints rc = new RowConstraints();
+        rc.setMinHeight(200);
+//        rc.setMaxHeight(300);
+
+        gridPane.getRowConstraints().add(rc);
     }
 
     private int nextCol(int currentCol) {
