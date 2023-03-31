@@ -236,11 +236,15 @@ public class DeckDAO extends DAO {
         Set<Card> deletedCards = (Set<Card>) currentCards.clone();
         deletedCards.removeAll(newCards);
 
-        for (Card addedCard : addedCards)
-            saveCard(addedCard);
+        System.out.println("Added cards: " + addedCards);
+        System.out.println("Deleted cards: " + deletedCards);
 
         for (Card deletedCard : deletedCards)
             deleteCard(deletedCard);
+
+        for (Card addedCard : addedCards)
+            saveCard(addedCard);
+
     }
 
     private void saveCard(Card card) throws DatabaseException {
