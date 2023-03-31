@@ -24,7 +24,8 @@ public class EditCardViewController {
 
     @FXML
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
-        listener.saveButtonClicked(htmlEditor.getHtmlText());
+        selectedCard.setFront(htmlEditor.getHtmlText());
+        listener.saveButtonClicked(selectedCard);
     }
 
     public void setCard(Card selectedCard) {
@@ -34,7 +35,7 @@ public class EditCardViewController {
     }
 
     public interface Listener {
-        void saveButtonClicked(String html);
+        void saveButtonClicked(Card card);
 
         void editCardClicked();
     }

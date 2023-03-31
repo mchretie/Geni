@@ -1,6 +1,7 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
+import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 
 import java.io.IOException;
@@ -61,6 +62,13 @@ public class DeckDAO extends HttpDAO {
 
         HttpResponse<String> response
                 = post("/api/deck/save", new Gson().toJson(deck));
+
+        checkResponseCode(response.statusCode());
+    }
+
+    public void updateCard(Card card) throws IOException, InterruptedException {
+        String query = "?card_id=" + card.getId();
+        HttpResponse<String> response = put("/api/deck/card/update" + query, new Gson().toJson(card));
 
         checkResponseCode(response.statusCode());
     }
