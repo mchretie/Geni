@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
@@ -18,16 +19,18 @@ import java.net.URL;
 /**
  * Main class of the application which initializes the main view using the main view handler and loads a menu view.
  */
-public class MainFxController extends Application implements MainWindowViewController.NavigationListener,
-                                                                DeckMenuController.ControllerListener,
-                                                                PlayDeckController.ControllerListener,
-                                                                EditDeckController.ControllerListener {
+public class MainFxController extends Application implements
+        MainWindowViewController.NavigationListener,
+        DeckMenuController.ControllerListener,
+        PlayDeckController.ControllerListener,
+        EditDeckController.ControllerListener,
+        EditCardController.ControllerListener {
 
     private DeckMenuController deckMenuController;
     private MainWindowViewController mainWindowViewController;
     private PlayDeckController playDeckController;
 
-    private CardEditController cardEditController;
+    private EditCardController editCardController;
 
     private final UserDAO userDAO = new UserDAO();
     private final DeckDAO deckDAO = new DeckDAO();
@@ -58,8 +61,8 @@ public class MainFxController extends Application implements MainWindowViewContr
         userDAO.login("guest", "guest");
 
         URL resource = MainWindowViewController
-                            .class
-                            .getResource("MainWindowView.fxml");
+                .class
+                .getResource("MainWindowView.fxml");
 
         FXMLLoader fxmlLoader = new FXMLLoader(resource);
 
@@ -95,8 +98,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     /**
      * Used to communicate errors that require the user to restart
-     *  the application
-     *
+     * the application
      */
     private void communicateError(Exception e, String messageToUser) {
         mainWindowViewController.alertError(e.toString(), messageToUser);
@@ -104,8 +106,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     /**
      * For exceptions that indicate that the app cannot continue to
-     *  function properly
-     *
+     * function properly
      */
     private void restartApplicationError(Exception e) {
         communicateError(e, "Veuillez redémarrer l'application.");
@@ -114,7 +115,6 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     /**
      * For when windows other than the main window fail to launch
-     *
      */
     private void returnToMenuError(Exception e) {
         communicateError(e, "Vous reviendrez au menu principal.");
@@ -122,13 +122,12 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     /**
      * For when changes to components (Decks, cards, etc.) fail to be saved in
-     *  the db
-     *
+     * the db
      */
     private void databaseModificationError(Exception e) {
         String message = "Vos modifications n’ont pas été enregistrées, "
-                            + "veuillez réessayer. Si le problème persiste, "
-                            + "redémarrez l’application";
+                + "veuillez réessayer. Si le problème persiste, "
+                + "redémarrez l’application";
 
         communicateError(e, message);
     }
@@ -144,10 +143,10 @@ public class MainFxController extends Application implements MainWindowViewContr
         try {
             EditDeckController editDeckController
                     = new EditDeckController(stage,
-                                                deck,
-                                                mainWindowViewController,
-                                                this,
-                                                deckDAO);
+                    deck,
+                    mainWindowViewController,
+                    this,
+                    deckDAO);
 
             editDeckController.show();
 
@@ -166,17 +165,16 @@ public class MainFxController extends Application implements MainWindowViewContr
                     this);
 
             playDeckController.show();
-        }
-
-        catch (EmptyDeckException e) {
+        } catch (EmptyDeckException e) {
             String title = "Paquet vide.";
             String description = "Le paquet que vous aviez ouvert est vide.";
             mainWindowViewController.alertInformation(title, description);
         }
     }
 
+    @Override
     public void editCardClicked() {
-        cardEditController = new CardEditController(mainWindowViewController);
+        editCardController = new EditCardController(mainWindowViewController, this);
     }
 
     @Override
@@ -187,6 +185,12 @@ public class MainFxController extends Application implements MainWindowViewContr
     @Override
     public void savingError(Exception e) {
         databaseModificationError(e);
+    }
+
+    @Override
+    public void openCardEditor(Card selectedCard) {
+        editCardClicked();
+        mainWindowViewController.openCardEditor(selectedCard, editCardController);
     }
 
 

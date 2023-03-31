@@ -29,10 +29,13 @@ public class EditCardViewController {
 
     public void setCard(Card selectedCard) {
         this.selectedCard = selectedCard;
+        listener.editCardClicked();
         htmlEditor.setHtmlText(selectedCard.getFront());
     }
 
     public interface Listener {
         void saveButtonClicked(String html);
+
+        void editCardClicked();
     }
 }
