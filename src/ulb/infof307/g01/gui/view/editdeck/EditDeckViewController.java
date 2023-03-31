@@ -18,6 +18,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
@@ -116,14 +119,16 @@ public class EditDeckViewController implements Initializable {
 
         cardsContainer.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        for (Card card : deck)
-            list.add(card.getFront());
+        for (Card card : deck){
+            Document doc = Jsoup.parse(card.getFront());
+            Element body = doc.body();
+            list.add(body.text());
+        }
 
         cardsContainer.refresh();
     }
 
     private void loadCardEditor(Card card) {
-//        frontCardText.setText(card.getFront());
         frontCardWebView.getEngine().loadContent(card.getFront());
         backCardText.setText(card.getBack());
         frontCard.setVisible(true);
