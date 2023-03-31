@@ -24,10 +24,10 @@ public class UserAccountHandler extends Handler {
 
     @Override
     public void init() {
-        path(BASE_PATH, () ->{
-            post(REGISTER_PATH, this::registerUser);
-            get(LOGIN_PATH, this::loginUser);
-        });
+      path(USER_BASE_PATH, () -> {
+        post(REGISTER_PATH, this::registerUser);
+        get(LOGIN_PATH, this::loginUser);
+      });
     }
 
     private Map<String, String> loginUser(Request request, Response response) {
