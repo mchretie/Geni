@@ -16,6 +16,7 @@ class DatabaseScheme {
             deck_id TEXT PRIMARY KEY,
             user_id TEXT,
             name TEXT UNIQUE NOT NULL,
+            color TEXT NOT NULL,
             FOREIGN KEY (user_id)
                 REFERENCES user(user_id)
                 ON DELETE CASCADE
