@@ -4,20 +4,20 @@ import java.util.*;
 
 
 public class Deck implements Iterable<Card> {
-    private String name;
-    private final UUID id;
-    private final List<Card> cards;
-    private final List<Tag> tags;
+  public String name;
+  private final UUID id;
+  private final List<Card> cards;
+  private final List<Tag> tags;
 
-    // x by default
-    private String color = "0x00000000";
+  // x by default
+  private String color = "0x00000000";
 
-    public Deck(String name) {
-        this.name = name;
-        this.id = UUID.randomUUID();
-        this.cards = new ArrayList<>();
-        this.tags = new ArrayList<>();
-    }
+  public Deck(String name) {
+    this.name = name;
+    this.id = UUID.randomUUID();
+    this.cards = new ArrayList<>();
+    this.tags = new ArrayList<>();
+  }
 
     public Deck(String name, UUID id) {
         this.name = name;

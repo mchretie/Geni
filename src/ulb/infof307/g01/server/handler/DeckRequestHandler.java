@@ -1,27 +1,21 @@
 package ulb.infof307.g01.server.handler;
 
+import static spark.Spark.*;
+import static ulb.infof307.g01.shared.constants.ServerPaths.*;
+
 import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import static spark.Spark.*;
-
 @SuppressWarnings("FieldCanBeLocal")
 public class DeckRequestHandler extends Handler {
-
-    private final String BASE_PATH          = "/api/deck";
-    private final String SAVE_DECK_PATH     = "/save";
-    private final String DELETE_DECK_PATH   = "/delete";
-    private final String GET_ALL_DECKS_PATH = "/all";
-    private final String SEARCH_DECKS_PATH  = "/search";
 
     private final Database database;
     private final JWTService jwtService;
