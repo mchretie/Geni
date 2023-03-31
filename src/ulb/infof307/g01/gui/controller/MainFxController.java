@@ -11,10 +11,11 @@ import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
-import ulb.infof307.g01.model.User;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main class of the application which initializes the main view using the main view handler and loads a menu view.
@@ -24,15 +25,43 @@ public class MainFxController extends Application implements MainWindowViewContr
                                                                 PlayDeckController.ControllerListener,
                                                                 EditDeckController.ControllerListener {
 
+    /* ====================================================================== */
+    /*                          Attribute: Controllers                        */
+    /* ====================================================================== */
+
     private DeckMenuController deckMenuController;
-    private MainWindowViewController mainWindowViewController;
+    private EditDeckController editDeckController;
     private PlayDeckController playDeckController;
+
+    private MainWindowViewController mainWindowViewController;
+
+    /* ====================================================================== */
+    /*                              DAO Attributes                            */
+    /* ====================================================================== */
 
     private final UserDAO userDAO = new UserDAO();
     private final DeckDAO deckDAO = new DeckDAO();
 
-    private Stage stage;
 
+    /* ====================================================================== */
+    /*                            View Stack Attributes                       */
+    /* ====================================================================== */
+
+    private enum View {
+        DECK_MENU,
+        PLAY_DECK,
+        EDIT_DECK,
+        HTML_EDITOR
+    }
+
+    List<View> viewStack = new ArrayList<>();
+
+
+    /* ====================================================================== */
+    /*                             Stage Attributes                           */
+    /* ====================================================================== */
+
+    Stage stage;
 
     /* ====================================================================== */
     /*                                  Main                                  */
@@ -79,6 +108,7 @@ public class MainFxController extends Application implements MainWindowViewContr
                     deckDAO,
                     userDAO);
 
+            viewStack.add(View.DECK_MENU);
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
@@ -140,13 +170,13 @@ public class MainFxController extends Application implements MainWindowViewContr
     public void editDeckClicked(Deck deck) {
 
         try {
-            EditDeckController editDeckController
-                    = new EditDeckController(stage,
+            editDeckController = new EditDeckController(stage,
                                                 deck,
                                                 mainWindowViewController,
                                                 this,
                                                 deckDAO);
 
+            viewStack.add(View.EDIT_DECK);
             editDeckController.show();
 
         } catch (IOException e) {
@@ -163,6 +193,7 @@ public class MainFxController extends Application implements MainWindowViewContr
                     mainWindowViewController,
                     this);
 
+            viewStack.add(View.PLAY_DECK);
             playDeckController.show();
         }
 
@@ -190,8 +221,18 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     @Override
     public void goBackClicked() {
+
+        // If there is no view to go back to, do nothing (shouldn't happen)
+        if (viewStack.size() == 1)
+            return;
+
         try {
-            deckMenuController.show();
+            viewStack.remove(viewStack.size() - 1);
+            switch (viewStack.get(0)) {
+                case DECK_MENU -> deckMenuController.show();
+                case PLAY_DECK -> playDeckController.show();
+                case EDIT_DECK -> editDeckController.show();
+            }
 
         } catch (IOException | InterruptedException e) {
             restartApplicationError(e);
