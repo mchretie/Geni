@@ -1,5 +1,8 @@
 package ulb.infof307.g01.gui.controller;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -29,8 +32,10 @@ public class EditCardController implements EditCardViewController.Listener {
     @Override
     public void saveButtonClicked(Card card, String html) {
         try {
-            card.setFront(html);
-            System.out.println(deck.getCards().get(0).getFront());
+            Document doc = Jsoup.parse(html);
+            Element body = doc.body();
+            body.removeAttr("contenteditable");
+            card.setFront(doc.html());
             deckDAO.saveDeck(deck);
         } catch (Exception e) {
             controllerListener.savingError(e);
