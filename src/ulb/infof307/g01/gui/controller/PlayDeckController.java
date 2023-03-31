@@ -66,10 +66,8 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     @Override
     public void cardClicked() {
-        if (frontShown) {
-            System.out.println("Flipping to back of card");
+        if (frontShown)
             playDeckViewController.flipToBackOfCard();
-        }
         else
             playDeckViewController.flipToFrontOfCard();
         frontShown = !frontShown;

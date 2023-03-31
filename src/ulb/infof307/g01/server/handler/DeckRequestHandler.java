@@ -47,6 +47,7 @@ public class DeckRequestHandler extends Handler {
             UUID userId = UUID.fromString(database.getUserId(username));
 
             Deck deck = new Gson().fromJson(req.body(), Deck.class);
+
             database.saveDeck(deck, userId);
             return successfulResponse;
 

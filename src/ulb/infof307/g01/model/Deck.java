@@ -8,14 +8,15 @@ public class Deck implements Iterable<Card> {
     private final UUID id;
     private final List<Card> cards;
     private final List<Tag> tags;
-    private String color;
+
+    // x by default
+    private String color = "0x00000000";
 
     public Deck(String name) {
         this.name = name;
         this.id = UUID.randomUUID();
         this.cards = new ArrayList<>();
         this.tags = new ArrayList<>();
-        this.color = "FF0000";
     }
 
     public Deck(String name, UUID id) {
@@ -23,7 +24,6 @@ public class Deck implements Iterable<Card> {
         this.id = id;
         this.cards = new ArrayList<>();
         this.tags = new ArrayList<>();
-        this.color = "FF0000";
     }
 
     public Deck(String name, UUID id, List<Card> cards, List<Tag> tags) {
@@ -31,7 +31,6 @@ public class Deck implements Iterable<Card> {
         this.id = id;
         this.cards = cards;
         this.tags = tags;
-        this.color = "FF0000";
     }
 
     public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color) {
@@ -71,17 +70,16 @@ public class Deck implements Iterable<Card> {
         cards.add(card);
     }
 
-    public void addCards(List<Card> cards) {
-        cards.forEach(this::addCard);
-    }
-
     public void removeTag(Tag tag) { tags.remove(tag); }
     public void removeCard(Card card) { cards.remove(card); }
 
-    public boolean tagExists(String newTagName){
+    public boolean tagExists(String newTagName) {
+
         for (Tag tag: tags){
-            if (tag.getName().equals(newTagName)) return true;
+            if (tag.getName().equals(newTagName))
+                return true;
         }
+
         return false;
     }
 
