@@ -36,7 +36,6 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private WebView frontCardWebView;
-    //    private TextField frontCardText;
     @FXML
     private TextField backCardText;
     @FXML
