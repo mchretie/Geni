@@ -72,10 +72,6 @@ public class EditDeckViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        frontCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!newValue) handleFrontEdit();
-//        });
-
         backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleBackEdit();
         });
