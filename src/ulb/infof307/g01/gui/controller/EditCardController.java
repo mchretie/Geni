@@ -30,6 +30,7 @@ public class EditCardController implements EditCardViewController.Listener {
     public void saveButtonClicked(Card card, String html) {
         try {
             card.setFront(html);
+            System.out.println(deck.getCards().get(0).getFront());
             deckDAO.saveDeck(deck);
         } catch (Exception e) {
             controllerListener.savingError(e);
