@@ -220,17 +220,6 @@ public class MainWindowViewController {
         userProfileIcon.setIconColor(Color.web("#000000"));
     }
 
-
-    /* ====================================================================== */
-    /*                              Loaders                                   */
-    /* ====================================================================== */
-
-    public void openCardEditor(Card selectedCard, EditCardController editCardController) {
-        editCardViewController.setCard(selectedCard);;
-        editCardViewController.setListener(editCardController);
-        setEditCardViewVisible();
-    }
-
     /* ====================================================================== */
     /*                        Listener interface                              */
     /* ====================================================================== */

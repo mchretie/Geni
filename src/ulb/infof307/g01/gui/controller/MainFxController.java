@@ -221,11 +221,6 @@ public class MainFxController extends Application implements
         databaseModificationError(e);
     }
 
-//    @Override
-//    public void openCardEditor(Card selectedCard, Deck deck) {
-//        editCardClicked(deck, selectedCard);
-//    }
-
 
     /* ====================================================================== */
     /*                   Navigation Listener Methods                          */
