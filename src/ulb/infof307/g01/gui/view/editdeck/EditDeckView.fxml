@@ -103,6 +103,12 @@
     </StackPane>
 
     <HBox layoutY="545.0" prefHeight="55.0" prefWidth="850.0"/>
-    <ColorPicker fx:id="colorPicker" layoutX="365.0" layoutY="14.0" onAction="#handleColorButtonClicked"/>
+    <ColorPicker fx:id="colorPicker" layoutX="437.0" layoutY="14.0" onAction="#handleColorButtonClicked"
+                 onMouseEntered="#handleColorPickerHover" onMouseExited="#handleColorPickerExit" prefHeight="38.0"
+                 prefWidth="144.0" style="-fx-background-color: #5ab970;"/>
+    <Button fx:id="imageUploader" layoutX="637.0" layoutY="14.0" mnemonicParsing="false"
+            onAction="#handleUploadImageClicked" onMouseEntered="#handleUploadImageHover"
+            onMouseExited="#handleUploadImageExit" prefHeight="38.0" prefWidth="146.0"
+            style="-fx-background-color: #5ab970;" text="Upload image"/>
 
 </AnchorPane>

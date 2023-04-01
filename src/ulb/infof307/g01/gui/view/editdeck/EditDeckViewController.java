@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -17,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.scene.web.WebView;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,6 +24,7 @@ import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -63,6 +62,9 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     public FontIcon frontCardEditIcon;
+
+    @FXML
+    private Button imageUploader;
 
     private Deck deck;
     private Card selectedCard;
@@ -213,6 +215,32 @@ public class EditDeckViewController implements Initializable {
         addCardIcon.setIconColor(Color.web("#000000"));
     }
 
+    @FXML
+    private void handleColorPickerHover() {
+        colorPicker.setStyle("-fx-background-color: #aad0b3");
+    }
+
+    @FXML
+    private void handleColorPickerExit() {
+        colorPicker.setStyle("-fx-background-color: #5ab970");
+    }
+
+    @FXML
+    private void handleUploadImageHover() {
+        imageUploader.setStyle("-fx-background-color: #aad0b3");
+    }
+
+    @FXML
+    private void handleUploadImageExit() {
+        imageUploader.setStyle("-fx-background-color: #5ab970");
+    }
+
+    @FXML
+    private void handleUploadImageClicked() {
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
+        listener.uploadImage(file.toURI().toString());
+    }
 
 
     /* ====================================================================== */
@@ -299,5 +327,7 @@ public class EditDeckViewController implements Initializable {
         void cardPreviewClicked(Card card);
 
         void editCardClicked(Card selectedCard);
+
+        void uploadImage(String filePath);
     }
 }
