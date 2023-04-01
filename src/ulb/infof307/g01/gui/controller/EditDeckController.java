@@ -141,7 +141,8 @@ public class EditDeckController implements EditDeckViewController.Listener {
     @Override
     public void newCard() {
         try {
-            deck.addCard(new Card("Avant", "Arrière"));
+            String frontHtml = "<body style='background-color: #f0f0f0;'><h1>Avant</h1></body>";
+            deck.addCard(new Card(frontHtml, "Arrière"));
             deckDAO.saveDeck(deck);
 
             editDeckViewController.loadCardsFromDeck();
