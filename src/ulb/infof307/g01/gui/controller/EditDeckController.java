@@ -26,6 +26,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     private final MainWindowViewController mainWindowViewController;
     private final EditDeckViewController editDeckViewController;
 
+
     private final DeckDAO deckDAO;
 
     private final ControllerListener controllerListener;
@@ -110,6 +111,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void frontOfCardModified(Card card, String newFront) {
         try {
+            System.out.println("here");
             card.setFront(newFront);
             deckDAO.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
@@ -182,8 +184,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
     @Override
     public void editFlashCard(Card card) throws IOException {
-        System.out.println("here");
-
         URL resource = EditDeckViewController
                 .class
                 .getResource("EditFlashCardView.fxml");

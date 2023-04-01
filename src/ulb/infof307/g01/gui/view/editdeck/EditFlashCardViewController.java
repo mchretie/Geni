@@ -10,6 +10,9 @@ import javafx.scene.layout.StackPane;
 
 import ulb.infof307.g01.model.Card;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class EditFlashCardViewController {
     @FXML
     private VBox cardSidesBox;
@@ -27,6 +30,7 @@ public class EditFlashCardViewController {
     private Listener listener;
 
     private Card card;
+
 
     /* ====================================================================== */
     /*                                Setters                                 */
@@ -55,22 +59,19 @@ public class EditFlashCardViewController {
 
 
     @FXML
-    private void handleFrontEdit() {
+    private void handleFrontEdit(KeyEvent keyEvent) {
+        if (!keyEvent.getCode().equals(KeyCode.ENTER))
+            return;
         listener.frontOfCardModified(card, frontCardText.getText());
     }
 
     @FXML
-    private void handleBackEdit() {
+    private void handleBackEdit(KeyEvent keyEvent) {
+        if (!keyEvent.getCode().equals(KeyCode.ENTER))
+            return;
         listener.backOfCardModified(card, backCardText.getText());
     }
 
-    @FXML
-    private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
-        if (!keyEvent.getCode().equals(KeyCode.ENTER))
-            return;
-
-        cardSidesBox.requestFocus();
-    }
 
 
 

@@ -38,16 +38,8 @@ public class EditDeckViewController implements Initializable {
     private HBox cardTypeButtons;
 
     @FXML
-    private Button flashCardButton;
-
-    @FXML
-    private Button QCMButton;
-
-    @FXML
     private AnchorPane selectedCardBox;
 
-    @FXML
-    private EditFlashCardViewController flashCardView; //TODO : plutot dans EditDeckController --> quand flashCard clicked --> selectedCardBox.add(FlashCardView)
     @FXML
     private AnchorPane anchor;
 
@@ -194,7 +186,6 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleAddCardClicked() {
-        showCardTypeButtons();
         listener.newCard();
     }
 
@@ -210,13 +201,16 @@ public class EditDeckViewController implements Initializable {
             return;
 
         selectedCard = deck.getCards().get(cardIndex);
+
+
         listener.cardPreviewClicked(selectedCard);
     }
 
     @FXML
     private void handleFlashCardEdit() throws IOException {
         hideCardTypeButtons();
-        listener.editFlashCard(selectedCard);}
+        //listener.editFlashCard(selectedCard);
+    }
 
     @FXML
     private void handleQCMCardEdit() {return; }
@@ -309,8 +303,6 @@ public class EditDeckViewController implements Initializable {
     public interface Listener {
         void deckNameModified(String newName);
         void tagAddedToDeck(Deck deck, String tagName, String color);
-        void frontOfCardModified(Card card, String newFront);
-        void backOfCardModified(Card card, String newBack);
         void deckColorModified(Deck deck, Color color);
         void newCard();
         void removeCard(Card selectedCard);
