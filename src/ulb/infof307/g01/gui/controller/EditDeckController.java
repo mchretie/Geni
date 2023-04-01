@@ -1,17 +1,23 @@
 package ulb.infof307.g01.gui.controller;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
+import ulb.infof307.g01.gui.view.editdeck.EditFlashCardViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
+import ulb.infof307.g01.gui.view.editdeck.EditFlashCardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
+import java.net.URL;
 
-public class EditDeckController implements EditDeckViewController.Listener {
+public class EditDeckController implements EditDeckViewController.Listener,
+                                            EditFlashCardViewController.Listener {
 
     private final Stage stage;
 
@@ -172,6 +178,29 @@ public class EditDeckController implements EditDeckViewController.Listener {
         editDeckViewController.setSelectedCard(card);
         editDeckViewController.loadSelectedCardEditor();
     }
+
+    @Override
+    public void editFlashCard(Card card) throws IOException {
+        System.out.println("here");
+
+        URL resource = EditDeckViewController
+                .class
+                .getResource("EditFlashCardView.fxml");
+        FXMLLoader loader = new FXMLLoader(resource);
+
+        Node node = loader.load();
+
+        EditFlashCardViewController flashCardController = loader.getController();
+
+        //TODO set text of sides of card (from flashCard)
+        flashCardController.setListener(this);
+
+        editDeckViewController.setEditFlashCard(node);
+
+    }
+
+    @Override
+    public void editQCMCard(Card card) { return; }
 
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */

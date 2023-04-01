@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="CardsSidesBox" prefHeight="405.0" prefWidth="425.0" visible="false" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.flashCardViewController">
+<VBox fx:id="CardsSidesBox" prefHeight="365.0" prefWidth="425.0" style="-fx-background-color: #f12345;" visible="true" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditFlashCardViewController">
 
     <StackPane fx:id="frontCard" visible="false">
 
@@ -16,7 +16,7 @@
         </TextField>
     </StackPane>
 
-    <StackPane fx:id="backCard"  visible="false">
+    <StackPane fx:id="backCard" visible="false">
 
         <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px;">
 

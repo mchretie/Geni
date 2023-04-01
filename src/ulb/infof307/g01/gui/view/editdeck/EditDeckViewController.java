@@ -5,10 +5,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -21,6 +23,7 @@ import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -30,6 +33,18 @@ public class EditDeckViewController implements Initializable {
     private StackPane frontCard;
     @FXML
     private StackPane backCard;
+
+    @FXML
+    private Button flashCardButton;
+
+    @FXML
+    private Button QCMButton;
+
+    @FXML
+    private StackPane selectedCardBox;
+
+    @FXML
+    private EditFlashCardViewController flashCardView; //TODO : plutot dans EditDeckController --> quand flashCard clicked --> selectedCardBox.add(FlashCardView)
     @FXML
     private AnchorPane anchor;
 
@@ -105,6 +120,13 @@ public class EditDeckViewController implements Initializable {
         }
     }
 
+    public void setEditFlashCard(Node node){
+        selectedCardBox.getChildren().add(node);
+
+        System.out.println(selectedCardBox.getChildren().size());
+
+        //TODO rendre insibles les bouttons + if +1 children --> supp celui d'avant
+    }
 
     /* ====================================================================== */
     /*                         Tags, Card, deck loading                       */
@@ -182,6 +204,12 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
+    private void handleFlashCardEdit() throws IOException {listener.editFlashCard(selectedCard);}
+
+    @FXML
+    private void handleQCMCardEdit() {return; }
+
+    @FXML
     private void handleRemoveCardHover() {
         removeCardIcon.setIconColor(Color.web("#FFFFFF"));
     }
@@ -200,6 +228,8 @@ public class EditDeckViewController implements Initializable {
     private void handleAddHoverExit() {
         addCardIcon.setIconColor(Color.web("#000000"));
     }
+
+
 
 
 
@@ -266,5 +296,9 @@ public class EditDeckViewController implements Initializable {
         void newCard();
         void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card);
+
+        void editFlashCard(Card card) throws IOException;
+
+        void editQCMCard(Card card);
     }
 }

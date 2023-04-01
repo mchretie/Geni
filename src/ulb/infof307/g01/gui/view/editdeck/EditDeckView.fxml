@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<AnchorPane fx:id="anchor" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditDeckViewController">
+<AnchorPane fx:id="anchor" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditDeckViewController">
 
     <!-- Deck name -->
     <TextField fx:id="deckNameText" alignment="CENTER" onKeyReleased="#handleUpdateDeckName" style="-fx-background-color: #00000000;" text="Deck Name">
@@ -79,7 +79,14 @@
         </TextField>
     </StackPane>
 
-    <HBox layoutY="545.0" prefHeight="55.0" prefWidth="850.0" />
    <ColorPicker fx:id="colorPicker" layoutX="365.0" layoutY="14.0" onAction="#handleColorButtonClicked" />
+   <StackPane fx:id="selectedCardBox" layoutX="386.0" layoutY="147.0" prefHeight="365.0" prefWidth="425.0" />
+
+   <HBox layoutX="386.0" layoutY="78.0" prefHeight="63.0" prefWidth="425.0">
+      <children>
+         <Button fx:id="flashCardButton" onMouseClicked="#handleFlashCardEdit" mnemonicParsing="false" prefHeight="63.0" prefWidth="212.0" text="FlashCard" />
+         <Button fx:id="QCMButton" onMouseClicked="#handleQCMCardEdit" mnemonicParsing="false" prefHeight="63.0" prefWidth="212.0" text="QCM Card" />
+      </children>
+   </HBox>
 
 </AnchorPane>
