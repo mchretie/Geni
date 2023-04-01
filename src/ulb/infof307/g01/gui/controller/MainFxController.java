@@ -205,8 +205,9 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void editCardClicked(Deck deck) {
-        editCardController = new EditCardController(mainWindowViewController, this, stage, deck, deckDAO);
+    public void editCardClicked(Deck deck, Card card) {
+        editCardController = new EditCardController(mainWindowViewController, this, stage, deck, card, deckDAO);
+        editCardController.show();
         viewStack.add(View.HTML_EDITOR);
     }
 
@@ -220,11 +221,10 @@ public class MainFxController extends Application implements
         databaseModificationError(e);
     }
 
-    @Override
-    public void openCardEditor(Card selectedCard, Deck deck) {
-        editCardClicked(deck);
-        mainWindowViewController.openCardEditor(selectedCard, editCardController);
-    }
+//    @Override
+//    public void openCardEditor(Card selectedCard, Deck deck) {
+//        editCardClicked(deck, selectedCard);
+//    }
 
 
     /* ====================================================================== */

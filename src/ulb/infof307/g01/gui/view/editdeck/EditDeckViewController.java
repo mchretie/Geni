@@ -273,7 +273,7 @@ public class EditDeckViewController implements Initializable {
     }
 
     public void handleFrontEditClicked(MouseEvent mouseEvent) {
-        listener.openFrontCardEditor(selectedCard);
+        listener.editCardClicked(selectedCard);
     }
 
 
@@ -298,6 +298,6 @@ public class EditDeckViewController implements Initializable {
 
         void cardPreviewClicked(Card card);
 
-        void openFrontCardEditor(Card selectedCard);
+        void editCardClicked(Card selectedCard);
     }
 }

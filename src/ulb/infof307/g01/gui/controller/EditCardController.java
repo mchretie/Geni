@@ -17,16 +17,17 @@ public class EditCardController implements EditCardViewController.Listener {
     private final ControllerListener controllerListener;
     private final Stage stage;
     private final DeckDAO deckDAO;
-
     private final Deck deck;
+    private final Card card;
 
     public EditCardController(MainWindowViewController mainWindowViewController,
-                              ControllerListener controllerListener, Stage stage, Deck deck, DeckDAO deckDAO) {
+                              ControllerListener controllerListener, Stage stage, Deck deck, Card card, DeckDAO deckDAO) {
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
         this.editCardViewController = mainWindowViewController.getEditCardViewController();
         this.stage = stage;
         this.deck = deck;
+        this.card = card;
         this.deckDAO = deckDAO;
         editCardViewController.setListener(this);
     }
@@ -44,13 +45,16 @@ public class EditCardController implements EditCardViewController.Listener {
         }
     }
 
-    @Override
-    public void editCardClicked() {
-        controllerListener.editCardClicked(deck);
+    public void show() {
+        editCardViewController.setCard(card);
+        mainWindowViewController.setEditCardViewVisible();
+        mainWindowViewController.makeGoBackIconVisible();
+
+        stage.show();
     }
 
     public interface ControllerListener {
-        void editCardClicked(Deck deck);
+//        void editCardClicked(Deck deck, Card card);
 
         void savingError(Exception e);
     }
