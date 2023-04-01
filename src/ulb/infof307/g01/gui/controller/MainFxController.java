@@ -234,7 +234,6 @@ public class MainFxController extends Application implements
 
         try {
             viewStack.remove(viewStack.size() - 1);
-            System.out.printf(viewStack.get(viewStack.size() - 1).toString());
             switch (viewStack.get(viewStack.size() - 1)) {
                 case DECK_MENU -> deckMenuController.show();
                 case PLAY_DECK -> playDeckController.show();
