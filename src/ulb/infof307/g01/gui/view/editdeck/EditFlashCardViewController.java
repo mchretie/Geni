@@ -14,13 +14,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EditFlashCardViewController {
-    @FXML
-    private VBox cardSidesBox;
-
-    @FXML
-    private StackPane frontCard;
-    @FXML
-    private StackPane backCard;
 
     @FXML
     private TextField frontCardText;
@@ -71,9 +64,6 @@ public class EditFlashCardViewController {
             return;
         listener.backOfCardModified(card, backCardText.getText());
     }
-
-
-
 
 
     /* ====================================================================== */

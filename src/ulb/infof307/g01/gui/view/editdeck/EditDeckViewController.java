@@ -29,10 +29,6 @@ import java.util.ResourceBundle;
 
 public class EditDeckViewController implements Initializable {
 
-    @FXML
-    private StackPane frontCard;
-    @FXML
-    private StackPane backCard;
 
     @FXML
     private HBox cardTypeButtons;
@@ -43,10 +39,6 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private AnchorPane anchor;
 
-    @FXML
-    private TextField frontCardText;
-    @FXML
-    private TextField backCardText;
     @FXML
     private TextField deckNameText;
 
@@ -78,14 +70,6 @@ public class EditDeckViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        frontCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) handleFrontEdit();
-        });
-
-        backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) handleBackEdit();
-        });
-
         deckNameText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleUpdateDeckName();
         });
@@ -139,23 +123,9 @@ public class EditDeckViewController implements Initializable {
         cardsContainer.refresh();
     }
 
-    private void loadCardEditor(Card card) {
-        return;
-//        frontCardText.setText(card.getFront());
-//        backCardText.setText(card.getBack());
-//        frontCard.setVisible(true);
-//        backCard.setVisible(true);
-    }
-
-    public void loadSelectedCardEditor() {
-        return;
-//        loadCardEditor(selectedCard);
-    }
 
     public void hideSelectedCardEditor() {
-        return;
-//        frontCard.setVisible(false);
-//        backCard.setVisible(false);
+        selectedCardBox.setVisible(false);
     }
 
     public void loadTagsFromDeck(){
@@ -186,6 +156,8 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleAddCardClicked() {
+        showCardTypeButtons();
+        hideSelectedCardEditor();
         listener.newCard();
     }
 
@@ -209,7 +181,7 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private void handleFlashCardEdit() throws IOException {
         hideCardTypeButtons();
-        //listener.editFlashCard(selectedCard);
+        listener.editFlashCard(selectedCard);
     }
 
     @FXML
@@ -240,9 +212,6 @@ public class EditDeckViewController implements Initializable {
     }
 
 
-
-
-
     /* ====================================================================== */
     /*                            Modified text                               */
     /* ====================================================================== */
@@ -270,31 +239,9 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
-    private void handleFrontEdit() {
-        return;
-//        listener.frontOfCardModified(selectedCard, frontCardText.getText());
-    }
-
-    @FXML
-    private void handleBackEdit() {
-        return;
-//        listener.backOfCardModified(selectedCard, backCardText.getText());
-    }
-
-    @FXML
-    private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
-        return;
-//        if (!keyEvent.getCode().equals(KeyCode.ENTER))
-//            return;
-//
-//        anchor.requestFocus();
-    }
-
-    @FXML
     public void handleColorButtonClicked(ActionEvent actionEvent) {
         listener.deckColorModified(deck, colorPicker.getValue());
     }
-
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
