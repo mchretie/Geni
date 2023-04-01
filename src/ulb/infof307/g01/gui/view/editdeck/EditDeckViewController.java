@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -58,6 +55,9 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private ColorPicker colorPicker;
+
+    @FXML
+    private Button imageUploader;
 
     private Deck deck;
     private Card selectedCard;
@@ -201,6 +201,26 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private void handleAddHoverExit() {
         addCardIcon.setIconColor(Color.web("#000000"));
+    }
+
+    @FXML
+    private void handleColorPickerHover() {
+        colorPicker.setStyle("-fx-background-color: #aad0b3");
+    }
+
+    @FXML
+    private void handleColorPickerExit() {
+        colorPicker.setStyle("-fx-background-color: #5ab970");
+    }
+
+    @FXML
+    private void handleUploadImageHover() {
+        imageUploader.setStyle("-fx-background-color: #aad0b3");
+    }
+
+    @FXML
+    private void handleUploadImageExit() {
+        imageUploader.setStyle("-fx-background-color: #5ab970");
     }
 
     @FXML
