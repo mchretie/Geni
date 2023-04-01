@@ -171,7 +171,7 @@ public class MainFxController extends Application implements
     public void editDeckClicked(Deck deck) {
 
         try {
-            EditDeckController editDeckController
+            editDeckController
                     = new EditDeckController(stage,
                     deck,
                     mainWindowViewController,
