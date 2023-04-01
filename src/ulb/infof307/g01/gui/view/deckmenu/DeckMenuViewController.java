@@ -62,6 +62,7 @@ public class DeckMenuViewController {
      */
     private void clearDecksFromGrid() {
         gridPane.getChildren().removeIf(this::clearNodeFromGridCondition);
+        resetGrid();
     }
 
     /**
@@ -90,13 +91,21 @@ public class DeckMenuViewController {
     }
 
     /**
+     * removes all rows from the gridPane except the first one
+     */
+    private void resetGrid() {
+        for (int i=1; i<gridPane.getRowCount(); i++) {
+            gridPane.getRowConstraints().remove(i);
+        }
+    }
+
+    /**
      * properly add row to the gridPane
      */
     private void addRow() {
         RowConstraints rc = new RowConstraints();
-        rc.setMinHeight(200);
-//        rc.setMaxHeight(300);
-
+        rc.setMinHeight(220);
+        rc.setMaxHeight(300);
         gridPane.getRowConstraints().add(rc);
     }
 

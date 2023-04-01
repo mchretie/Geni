@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.view.deckmenu;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -11,8 +12,11 @@ import ulb.infof307.g01.model.Deck;
 public class DeckViewController {
 
     @FXML
+    private StackPane stackPane;
+    @FXML
+    private ImageView imageView;
+    @FXML
     private Label playDeckLabel;
-
     @FXML
     private VBox deckVBox;
     @FXML
@@ -53,14 +57,11 @@ public class DeckViewController {
 
     private void setBackGroundImage() {
         // TODO: make image depend on deck image
-        BackgroundImage bckImage = new BackgroundImage(new Image("file:res/img/tmpdeckimage.jpg"),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true)
-        );
-//        deckVBox.setBackground(new Background(bckImage));
-//        deckVBox.setStyle("-fx-background-radius: 20;");
+        Image img = new Image("file:res/img/tmpdeckimage.jpg");
+        imageView.setImage(img);
+        imageView.setPreserveRatio(false);
+        imageView.fitWidthProperty().bind(stackPane.widthProperty());
+        imageView.fitHeightProperty().bind(stackPane.heightProperty());
     }
 
     private LinearGradient makeGradient(Color color) {

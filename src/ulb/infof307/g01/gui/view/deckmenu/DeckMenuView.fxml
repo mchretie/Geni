@@ -7,10 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-            minHeight="200.0" minWidth="540.0"
-            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="540.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController">
     <!-- Search bar-->
    <top>
        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -34,11 +31,11 @@
                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
-                   <RowConstraints maxHeight="300.0" minHeight="200.0" />
+                   <RowConstraints maxHeight="300.0" minHeight="220.0" />
                </rowConstraints>
 
                <!-- Create deck rectangle -->
-               <VBox alignment="CENTER" style="-fx-border-color: black; -fx-border-radius: 20; -fx-border-style: dashed; -fx-background-color: #d3d1d1; -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+               <VBox alignment="CENTER" maxWidth="500.0" style="-fx-border-color: black; -fx-border-radius: 20; -fx-border-style: dashed; -fx-background-color: #d3d1d1; -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
                    <TextField fx:id="createDeckField" alignment="CENTER" onAction="#handleCreateDeckClicked" promptText="Nom du paquet..." style="-fx-background-color: transparent;">
                        <cursor>
                            <Cursor fx:constant="DEFAULT" />
