@@ -35,6 +35,9 @@ public class EditDeckViewController implements Initializable {
     private StackPane backCard;
 
     @FXML
+    private HBox cardTypeButtons;
+
+    @FXML
     private Button flashCardButton;
 
     @FXML
@@ -187,13 +190,17 @@ public class EditDeckViewController implements Initializable {
     /* ====================================================================== */
 
     @FXML
-    private void handleAddCardClicked() { listener.newCard();}
+    private void handleAddCardClicked() {
+        showCardTypeButtons();
+        listener.newCard();
+    }
 
     @FXML
     private void handleRemoveCardClicked() { listener.removeCard(selectedCard);}
 
     @FXML
     private void handleCardPreviewClicked() {
+
         int cardIndex = cardsContainer.getSelectionModel().getSelectedIndex();
 
         if (cardIndex < 0)
@@ -204,10 +211,16 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
-    private void handleFlashCardEdit() throws IOException {listener.editFlashCard(selectedCard);}
+    private void handleFlashCardEdit() throws IOException {
+        hideCardTypeButtons();
+        listener.editFlashCard(selectedCard);}
 
     @FXML
     private void handleQCMCardEdit() {return; }
+
+    private void hideCardTypeButtons() {cardTypeButtons.setVisible(false);}
+
+    private void showCardTypeButtons() {cardTypeButtons.setVisible(true);}
 
     @FXML
     private void handleRemoveCardHover() {

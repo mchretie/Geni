@@ -7,7 +7,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import ulb.infof307.g01.model.Card;
 
-public class QCMCardViewController {
+public class EditQCMCardViewController {
     @FXML
     private StackPane card;
 
