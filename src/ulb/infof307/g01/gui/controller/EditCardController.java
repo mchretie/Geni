@@ -1,5 +1,6 @@
 package ulb.infof307.g01.gui.controller;
 
+import javafx.stage.Stage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,16 +15,17 @@ public class EditCardController implements EditCardViewController.Listener {
     private final MainWindowViewController mainWindowViewController;
     private final EditCardViewController editCardViewController;
     private final ControllerListener controllerListener;
-
+    private final Stage stage;
     private final DeckDAO deckDAO;
 
-    private Deck deck;
+    private final Deck deck;
 
     public EditCardController(MainWindowViewController mainWindowViewController,
-                              ControllerListener controllerListener, Deck deck, DeckDAO deckDAO) {
+                              ControllerListener controllerListener, Stage stage, Deck deck, DeckDAO deckDAO) {
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
         this.editCardViewController = mainWindowViewController.getEditCardViewController();
+        this.stage = stage;
         this.deck = deck;
         this.deckDAO = deckDAO;
         editCardViewController.setListener(this);

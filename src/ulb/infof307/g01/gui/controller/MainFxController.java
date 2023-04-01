@@ -237,6 +237,8 @@ public class MainFxController extends Application implements
         if (viewStack.size() == 1)
             return;
 
+        System.out.println("Going back to " + viewStack.get(viewStack.size() - 2));
+
         try {
             viewStack.remove(viewStack.size() - 1);
             switch (viewStack.get(0)) {
