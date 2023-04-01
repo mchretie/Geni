@@ -176,6 +176,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void cardPreviewClicked(Card card) throws IOException {
         editDeckViewController.setSelectedCard(card);
+        editFlashCard(card);
         //        editDeckViewController.loadSelectedCardEditor();
     }
 
@@ -195,6 +196,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         //TODO set text of sides of card (from flashCard)
         flashCardController.setListener(this);
         flashCardController.setCard(card);
+        flashCardController.loadSelectedCardEditor();
 
         editDeckViewController.setEditFlashCard(node);
 
