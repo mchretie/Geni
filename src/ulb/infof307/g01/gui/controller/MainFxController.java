@@ -232,14 +232,14 @@ public class MainFxController extends Application implements
         if (viewStack.size() == 1)
             return;
 
-        System.out.println("Going back to " + viewStack.get(viewStack.size() - 2));
-
         try {
             viewStack.remove(viewStack.size() - 1);
-            switch (viewStack.get(0)) {
+            System.out.printf(viewStack.get(viewStack.size() - 1).toString());
+            switch (viewStack.get(viewStack.size() - 1)) {
                 case DECK_MENU -> deckMenuController.show();
                 case PLAY_DECK -> playDeckController.show();
-                case EDIT_DECK, HTML_EDITOR -> editDeckController.show();
+                case EDIT_DECK -> editDeckController.show();
+                case HTML_EDITOR -> editCardController.show();
             }
         } catch (IOException | InterruptedException e) {
             restartApplicationError(e);
