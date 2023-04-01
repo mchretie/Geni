@@ -244,7 +244,6 @@ public class DeckDAO extends DAO {
 
         for (Card addedCard : addedCards)
             saveCard(addedCard);
-
     }
 
     private void saveCard(Card card) throws DatabaseException {
