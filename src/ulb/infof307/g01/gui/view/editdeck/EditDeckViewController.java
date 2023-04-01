@@ -41,7 +41,7 @@ public class EditDeckViewController implements Initializable {
     private Button QCMButton;
 
     @FXML
-    private StackPane selectedCardBox;
+    private AnchorPane selectedCardBox;
 
     @FXML
     private EditFlashCardViewController flashCardView; //TODO : plutot dans EditDeckController --> quand flashCard clicked --> selectedCardBox.add(FlashCardView)

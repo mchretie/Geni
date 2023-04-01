@@ -4,11 +4,21 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="CardsSidesBox" prefHeight="365.0" prefWidth="425.0" style="-fx-background-color: #f12345;" visible="true" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditFlashCardViewController">
+<VBox fx:id="CardsSidesBox" prefHeight="365.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditFlashCardViewController">
 
-    <StackPane fx:id="frontCard" visible="false">
+    <StackPane fx:id="frontCard" visible="true">
 
-        <TextField fx:id="frontCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px;">
+        <TextField fx:id="frontCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px; -fx-padding: 6px 10px; -fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;">
+
+            <font>
+                <Font size="24.0" />
+            </font>
+        </TextField>
+    </StackPane>
+
+    <StackPane fx:id="backCard" visible="true">
+
+        <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px; -fx-padding: 6px 10px; -fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;">
 
             <font>
                 <Font size="24.0" />
@@ -16,13 +26,4 @@
         </TextField>
     </StackPane>
 
-    <StackPane fx:id="backCard" visible="false">
-
-        <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px;">
-
-            <font>
-                <Font size="24.0" />
-            </font>
-        </TextField>
-    </StackPane>
 </VBox>

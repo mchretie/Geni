@@ -80,7 +80,7 @@
     </StackPane>
 
    <ColorPicker fx:id="colorPicker" layoutX="365.0" layoutY="14.0" onAction="#handleColorButtonClicked" />
-   <StackPane fx:id="selectedCardBox" layoutX="386.0" layoutY="147.0" prefHeight="365.0" prefWidth="425.0" />
+   <AnchorPane fx:id="selectedCardBox" layoutX="386.0" layoutY="147.0" prefHeight="365.0" prefWidth="425.0" />
 
    <HBox layoutX="386.0" layoutY="78.0" prefHeight="63.0" prefWidth="425.0">
       <children>
