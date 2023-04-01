@@ -206,7 +206,7 @@ public class MainFxController extends Application implements
 
     @Override
     public void editCardClicked(Deck deck, Card card) {
-        editCardController = new EditCardController(mainWindowViewController, this, stage, deck, card, deckDAO);
+        editCardController = new EditCardController(stage, deck, card, deckDAO, mainWindowViewController, this);
         editCardController.show();
         viewStack.add(View.HTML_EDITOR);
     }

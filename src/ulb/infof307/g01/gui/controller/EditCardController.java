@@ -20,10 +20,9 @@ public class EditCardController implements EditCardViewController.Listener {
     private final Deck deck;
     private final Card card;
 
-    public EditCardController(MainWindowViewController mainWindowViewController,
-                              ControllerListener controllerListener, Stage stage, Deck deck, Card card, DeckDAO deckDAO) {
+    public EditCardController(Stage stage, Deck deck, Card card, DeckDAO deckDAO, MainWindowViewController mainWindowViewController, MainFxController mainFxController) {
         this.mainWindowViewController = mainWindowViewController;
-        this.controllerListener = controllerListener;
+        this.controllerListener = mainFxController;
         this.editCardViewController = mainWindowViewController.getEditCardViewController();
         this.stage = stage;
         this.deck = deck;
