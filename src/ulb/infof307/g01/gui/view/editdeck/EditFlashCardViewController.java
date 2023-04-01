@@ -47,18 +47,12 @@ public class EditFlashCardViewController {
     private void loadCardEditor(Card card) {
         frontCardText.setText(card.getFront());
         backCardText.setText(card.getBack());
-        frontCard.setVisible(true);
-        backCard.setVisible(true);
     }
 
     public void loadSelectedCardEditor() {
         loadCardEditor(card);
     }
 
-    public void hideSelectedCardEditor() {
-        frontCard.setVisible(false);
-        backCard.setVisible(false);
-    }
 
     @FXML
     private void handleFrontEdit() {

@@ -148,19 +148,22 @@ public class EditDeckViewController implements Initializable {
     }
 
     private void loadCardEditor(Card card) {
-        frontCardText.setText(card.getFront());
-        backCardText.setText(card.getBack());
-        frontCard.setVisible(true);
-        backCard.setVisible(true);
+        return;
+//        frontCardText.setText(card.getFront());
+//        backCardText.setText(card.getBack());
+//        frontCard.setVisible(true);
+//        backCard.setVisible(true);
     }
 
     public void loadSelectedCardEditor() {
-        loadCardEditor(selectedCard);
+        return;
+//        loadCardEditor(selectedCard);
     }
 
     public void hideSelectedCardEditor() {
-        frontCard.setVisible(false);
-        backCard.setVisible(false);
+        return;
+//        frontCard.setVisible(false);
+//        backCard.setVisible(false);
     }
 
     public void loadTagsFromDeck(){
@@ -199,7 +202,7 @@ public class EditDeckViewController implements Initializable {
     private void handleRemoveCardClicked() { listener.removeCard(selectedCard);}
 
     @FXML
-    private void handleCardPreviewClicked() {
+    private void handleCardPreviewClicked() throws IOException {
 
         int cardIndex = cardsContainer.getSelectionModel().getSelectedIndex();
 
@@ -274,20 +277,23 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleFrontEdit() {
-        listener.frontOfCardModified(selectedCard, frontCardText.getText());
+        return;
+//        listener.frontOfCardModified(selectedCard, frontCardText.getText());
     }
 
     @FXML
     private void handleBackEdit() {
-        listener.backOfCardModified(selectedCard, backCardText.getText());
+        return;
+//        listener.backOfCardModified(selectedCard, backCardText.getText());
     }
 
     @FXML
     private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
-        if (!keyEvent.getCode().equals(KeyCode.ENTER))
-            return;
-
-        anchor.requestFocus();
+        return;
+//        if (!keyEvent.getCode().equals(KeyCode.ENTER))
+//            return;
+//
+//        anchor.requestFocus();
     }
 
     @FXML
@@ -308,7 +314,7 @@ public class EditDeckViewController implements Initializable {
         void deckColorModified(Deck deck, Color color);
         void newCard();
         void removeCard(Card selectedCard);
-        void cardPreviewClicked(Card card);
+        void cardPreviewClicked(Card card) throws IOException;
 
         void editFlashCard(Card card) throws IOException;
 

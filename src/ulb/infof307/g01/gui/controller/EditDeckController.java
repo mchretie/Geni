@@ -163,7 +163,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deck.removeCard(selectedCard);
             deckDAO.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
-            editDeckViewController.hideSelectedCardEditor();
+//            editDeckViewController.hideSelectedCardEditor();
             if (deck.cardCount() != 0) {
                 cardPreviewClicked(deck.getLastCard());
             }
@@ -174,9 +174,9 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void cardPreviewClicked(Card card) {
+    public void cardPreviewClicked(Card card) throws IOException {
         editDeckViewController.setSelectedCard(card);
-        editDeckViewController.loadSelectedCardEditor();
+        //        editDeckViewController.loadSelectedCardEditor();
     }
 
     @Override
@@ -194,6 +194,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
         //TODO set text of sides of card (from flashCard)
         flashCardController.setListener(this);
+        flashCardController.setCard(card);
 
         editDeckViewController.setEditFlashCard(node);
 
