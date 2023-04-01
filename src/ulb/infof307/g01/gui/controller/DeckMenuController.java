@@ -20,7 +20,7 @@ import java.util.List;
  * DeckMenuViewController
  */
 public class DeckMenuController implements DeckMenuViewController.Listener,
-                                                DeckViewController.Listener {
+        DeckViewController.Listener {
 
     private final Stage stage;
 
@@ -64,9 +64,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException, InterruptedException {
-        deckMenuViewController.setDecks( loadDecks( deckDAO.getAllDecks() ) );
+        deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
 
         mainWindowViewController.setDeckMenuViewVisible();
+//        mainWindowViewController.setEditCardViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
 
         stage.show();
@@ -78,7 +79,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     /* ====================================================================== */
 
     /**
-     *
      * @return List of loaded nodes representing decks
      * @throws IOException if FXMLLoader.load() fails
      */
@@ -88,8 +88,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         for (Deck deck : decks) {
 
             URL resource = DeckMenuViewController
-                                .class
-                                .getResource("DeckView.fxml");
+                    .class
+                    .getResource("DeckView.fxml");
 
             FXMLLoader loader = new FXMLLoader(resource);
 
@@ -118,7 +118,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         try {
             deckDAO.saveDeck(new Deck(name));
-            deckMenuViewController.setDecks( loadDecks( deckDAO.getAllDecks() ) );
+            deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
@@ -132,7 +132,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void searchDeckClicked(String name) {
         try {
-            deckMenuViewController.setDecks( loadDecks( deckDAO.searchDecks(name) ) );
+            deckMenuViewController.setDecks(loadDecks(deckDAO.searchDecks(name)));
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
@@ -146,7 +146,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     public void deckRemoved(Deck deck) {
         try {
             deckDAO.deleteDeck(deck);
-            deckMenuViewController.setDecks( loadDecks( deckDAO.getAllDecks() ) );
+            deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
@@ -173,8 +173,11 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     public interface ControllerListener {
         void editDeckClicked(Deck deck);
+
         void playDeckClicked(Deck deck);
+
         void fxmlLoadingError(IOException e);
+
         void savingError(Exception e);
     }
 }

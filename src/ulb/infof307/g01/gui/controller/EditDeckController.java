@@ -180,11 +180,18 @@ public class EditDeckController implements EditDeckViewController.Listener {
         System.out.println(filePath);
     }
 
+    @Override
+    public void editCardClicked(Card selectedCard) {
+        controllerListener.editCardClicked(deck, selectedCard);
+    }
+
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */
     /* ====================================================================== */
 
     public interface ControllerListener {
         void savingError(Exception e);
+
+        void editCardClicked(Deck deck, Card card);
     }
 }

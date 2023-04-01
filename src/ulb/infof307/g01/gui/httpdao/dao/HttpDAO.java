@@ -21,9 +21,9 @@ public abstract class HttpDAO {
     private String token = "";
 
     private final HttpClient httpClient = HttpClient.newBuilder().build();
-    
+
     private final String BASE_URL    = "http://localhost:8080";
-    private final String AUTH_HEADER = "Authorization"; 
+    private final String AUTH_HEADER = "Authorization";
 
     /* ====================================================================== */
     /*                            HTTP methods                                */
@@ -47,6 +47,18 @@ public abstract class HttpDAO {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(BASE_URL + path))
                 .POST(HttpRequest.BodyPublishers.ofString(body))
+                .header(AUTH_HEADER, token)
+                .build();
+
+        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    protected HttpResponse<String> put(String path, String body)
+            throws IOException, InterruptedException {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(java.net.URI.create(BASE_URL + path))
+                .PUT(HttpRequest.BodyPublishers.ofString(body))
                 .header(AUTH_HEADER, token)
                 .build();
 
