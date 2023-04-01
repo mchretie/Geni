@@ -80,7 +80,7 @@
     </StackPane>
 
     <HBox layoutY="545.0" prefHeight="55.0" prefWidth="850.0" />
-   <ColorPicker fx:id="colorPicker" layoutX="365.0" layoutY="14.0" onAction="#handleColorButtonClicked" prefHeight="38.0" prefWidth="144.0" style="-fx-background-color: #5ab970;" />
-   <Button layoutX="570.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleUploadImageClicked" prefHeight="38.0" prefWidth="146.0" style="-fx-background-color: #5ab970;" text="Upload image" />
+   <ColorPicker fx:id="colorPicker" layoutX="437.0" layoutY="14.0" onAction="#handleColorButtonClicked" prefHeight="38.0" prefWidth="144.0" style="-fx-background-color: #5ab970;" />
+   <Button layoutX="637.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleUploadImageClicked" prefHeight="38.0" prefWidth="146.0" style="-fx-background-color: #5ab970;" text="Upload image" />
 
 </AnchorPane>
