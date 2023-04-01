@@ -16,11 +16,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -201,6 +203,12 @@ public class EditDeckViewController implements Initializable {
         addCardIcon.setIconColor(Color.web("#000000"));
     }
 
+    @FXML
+    private void handleUploadImageClicked() {
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
+        listener.uploadImage(file.toURI().toString());
+    }
 
 
     /* ====================================================================== */
@@ -266,5 +274,6 @@ public class EditDeckViewController implements Initializable {
         void newCard();
         void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card);
+        void uploadImage(String filePath);
     }
 }

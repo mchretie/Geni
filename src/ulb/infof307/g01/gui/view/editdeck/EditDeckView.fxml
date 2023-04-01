@@ -81,5 +81,6 @@
 
     <HBox layoutY="545.0" prefHeight="55.0" prefWidth="850.0" />
    <ColorPicker fx:id="colorPicker" layoutX="365.0" layoutY="14.0" onAction="#handleColorButtonClicked" />
+   <Button layoutX="570.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleUploadImageClicked" prefHeight="25.0" prefWidth="146.0" text="Upload image" />
 
 </AnchorPane>
