@@ -14,9 +14,7 @@ import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
-@SuppressWarnings("FieldCanBeLocal")
 
-// Import with : import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 public class DeckRequestHandler extends Handler {
 
   private final Database database;

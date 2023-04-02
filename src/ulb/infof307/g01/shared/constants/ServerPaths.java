@@ -1,11 +1,15 @@
 package ulb.infof307.g01.shared.constants;
 
+/**
+ * This class contains all the paths used by the server.
+ */
 public final class ServerPaths {
-  public ServerPaths() {}
+
+  private ServerPaths() {}
 
   private static final String BASE = "/api";
 
-  // Used bby UserAccountHandler
+  // Used by UserRequestHandler
   public static final String USER_BASE_PATH = BASE + "/user";
   public static final String REGISTER_PATH = "/register";
   public static final String LOGIN_PATH = "/login";
