@@ -13,7 +13,6 @@ public class EditCardViewController {
     @FXML
     private Button saveButton;
 
-
     private Card selectedCard;
     private Listener listener;
 
@@ -21,9 +20,8 @@ public class EditCardViewController {
         this.listener = listener;
     }
 
-
     @FXML
-    public void onSaveButtonClicked(MouseEvent mouseEvent) {
+    private void onSaveButtonClicked() {
         listener.saveButtonClicked(selectedCard, htmlEditor.getHtmlText());
     }
 
