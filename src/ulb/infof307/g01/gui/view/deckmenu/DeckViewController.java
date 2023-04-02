@@ -4,9 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.paint.*;
-import javafx.scene.shape.Circle;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
@@ -16,17 +18,17 @@ public class DeckViewController {
     @FXML
     private StackPane stackPane;
     @FXML
-    private ImageView imageView;
+    private ImageView backgroundImage;
     @FXML
     private Label playDeckLabel;
-    @FXML
-    private VBox deckVBox;
     @FXML
     private FontIcon editDeckIcon;
     @FXML
     private FontIcon removeDeckIcon;
     @FXML
     private FontIcon shareDeckIcon;
+    @FXML
+    private Rectangle colorRect;
 
     private Deck deck;
 
@@ -44,34 +46,35 @@ public class DeckViewController {
         this.deck = deck;
         this.updateDeckButtonName();
 
-//        this.setDeckColor();
-        this.setBackGroundImage();
+        this.setDeckColor();
+        this.setBackGroundImage("file:res/img/tmpdeckimage.jpg");
     }
 
     private void setDeckColor() {
-        // TODO: make gradient color depend on deck color
-
-//        Color color
-//                = Color.color(Math.random(), Math.random(), Math.random());
-//
-//        deckGradientRect.setFill(makeGradient(color));
+        colorRect.setArcHeight(40);
+        colorRect.setArcWidth(40);
+        colorRect.heightProperty().bind(backgroundImage.fitHeightProperty());
+        colorRect.widthProperty().bind(backgroundImage.fitWidthProperty());
+        Color color
+                = Color.web(deck.getColor());
+        colorRect.setFill(makeGradient(color));
     }
 
-    private void setBackGroundImage() {
+    private void setBackGroundImage(String filename) {
         // TODO: make image depend on deck image
-        Image img = new Image("file:res/img/tmpdeckimage.jpg");
-        imageView.setImage(img);
-        imageView.setPreserveRatio(false);
-        imageView.fitWidthProperty().bind(stackPane.widthProperty());
-        imageView.fitHeightProperty().bind(stackPane.heightProperty());
+        Image img = new Image(filename);
+        backgroundImage.setImage(img);
+        backgroundImage.setPreserveRatio(false);
+        backgroundImage.fitWidthProperty().bind(stackPane.widthProperty());
+        backgroundImage.fitHeightProperty().bind(stackPane.heightProperty());
 
         // add clip to image so that it has rounded corner
         Rectangle clip = new Rectangle();
         clip.setArcHeight(40);
         clip.setArcWidth(40);
-        clip.heightProperty().bind(imageView.fitHeightProperty());
-        clip.widthProperty().bind(imageView.fitWidthProperty());
-        imageView.setClip(clip);
+        clip.heightProperty().bind(backgroundImage.fitHeightProperty());
+        clip.widthProperty().bind(backgroundImage.fitWidthProperty());
+        backgroundImage.setClip(clip);
     }
 
     private LinearGradient makeGradient(Color color) {
