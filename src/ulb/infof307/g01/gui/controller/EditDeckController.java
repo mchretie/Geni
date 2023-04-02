@@ -68,9 +68,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
         if (deck.cardCount() > 0) {
             editDeckViewController.setSelectedCard(deck.getFirstCard());
             editDeckViewController.loadSelectedCardEditor();
-        }
-
-        else
+        } else
             editDeckViewController.hideSelectedCardEditor();
 
         stage.show();
@@ -141,7 +139,26 @@ public class EditDeckController implements EditDeckViewController.Listener {
     @Override
     public void newCard() {
         try {
-            String frontHtml = "<body style='background-color: #f0f0f0;'><h1>Avant</h1></body>";
+            // language=HTML
+            String frontHtml =
+                    """
+                            <html lang="fr">
+                                <head>
+                                    <title>Card</title>
+                                    <script type="text/x-mathjax-config">
+                                        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']]}});
+                                    </script>
+                                    <script type="text/javascript"
+                                      src='http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'>
+                                    </script>
+                                </head>
+                                <body style='background-color: #f0f0f0;'>
+                                    <h1>Avant</h1>
+                                    When $a \\ne 0$, there are two solutions to \\(ax^2 + bx + c = 0\\) and they are
+                                    $$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$
+                                </body>
+                            </html>
+                            """;
             deck.addCard(new Card(frontHtml, "Arrière"));
             deckDAO.saveDeck(deck);
 
@@ -155,7 +172,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
     }
 
     @Override
-    public void removeCard(Card selectedCard){
+    public void removeCard(Card selectedCard) {
         try {
             deck.removeCard(selectedCard);
             deckDAO.saveDeck(deck);
