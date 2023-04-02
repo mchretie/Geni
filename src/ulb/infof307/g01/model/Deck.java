@@ -4,7 +4,7 @@ import java.util.*;
 
 
 public class Deck implements Iterable<Card> {
-  public String name;
+  private String name;
   private final UUID id;
   private final List<Card> cards;
   private final List<Tag> tags;
