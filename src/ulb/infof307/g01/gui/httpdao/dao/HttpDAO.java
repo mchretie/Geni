@@ -1,7 +1,7 @@
-package ulb.infof307.g01.gui.httpclient;
+package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
-import ulb.infof307.g01.gui.httpclient.exceptions.ServerRequestFailed;
+import ulb.infof307.g01.gui.httpdao.exceptions.ServerRequestFailed;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
@@ -16,10 +16,14 @@ import java.util.List;
  *  methods to send HTTP requests to the server.
  *
  */
-public abstract class HttpClientAPI {
+public abstract class HttpDAO {
 
-    protected final HttpClient httpClient = HttpClient.newBuilder().build();
-    protected final String baseUrl = "http://localhost:8080";
+    private String token = "";
+
+    private final HttpClient httpClient = HttpClient.newBuilder().build();
+
+    private final String BASE_URL    = "http://localhost:8080";
+    private final String AUTH_HEADER = "Authorization";
 
     /* ====================================================================== */
     /*                            HTTP methods                                */
@@ -29,8 +33,9 @@ public abstract class HttpClientAPI {
             throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(java.net.URI.create(baseUrl + path))
+                .uri(java.net.URI.create(BASE_URL + path))
                 .GET()
+                .header(AUTH_HEADER, token)
                 .build();
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -40,8 +45,9 @@ public abstract class HttpClientAPI {
             throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(java.net.URI.create(baseUrl + path))
+                .uri(java.net.URI.create(BASE_URL + path))
                 .POST(HttpRequest.BodyPublishers.ofString(body))
+                .header(AUTH_HEADER, token)
                 .build();
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -51,20 +57,21 @@ public abstract class HttpClientAPI {
             throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(java.net.URI.create(baseUrl + path))
+                .uri(java.net.URI.create(BASE_URL + path))
                 .PUT(HttpRequest.BodyPublishers.ofString(body))
+                .header(AUTH_HEADER, token)
                 .build();
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
     }
 
     protected HttpResponse<String> delete(String path)
             throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(java.net.URI.create(baseUrl + path))
+                .uri(java.net.URI.create(BASE_URL + path))
                 .DELETE()
+                .header(AUTH_HEADER, token)
                 .build();
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -89,5 +96,21 @@ public abstract class HttpClientAPI {
     protected <T> List<T> stringToArray(String s, Class<T[]> elementClass) {
         T[] arr = new Gson().fromJson(s, elementClass);
         return arr == null ? new ArrayList<>() : Arrays.asList(arr);
+    }
+
+    /* ====================================================================== */
+    /*                                  Setter                                */
+    /* ====================================================================== */
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    /* ====================================================================== */
+    /*                                  Getter                                */
+    /* ====================================================================== */
+
+    public String getToken() {
+        return token;
     }
 }

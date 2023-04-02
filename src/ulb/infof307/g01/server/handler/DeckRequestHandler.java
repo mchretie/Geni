@@ -3,8 +3,10 @@ package ulb.infof307.g01.server.handler;
 import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
+import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.server.database.dao.DeckDAO;
+import ulb.infof307.g01.server.database.Database;
+import ulb.infof307.g01.server.service.JWTService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,45 +15,41 @@ import java.util.UUID;
 
 import static spark.Spark.*;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class DeckRequestHandler extends Handler {
 
-    private final DeckDAO deckDAO = DeckDAO.singleton();
+    private final String BASE_PATH          = "/api/deck";
+    private final String SAVE_DECK_PATH     = "/save";
+    private final String DELETE_DECK_PATH   = "/delete";
+    private final String GET_ALL_DECKS_PATH = "/all";
+    private final String SEARCH_DECKS_PATH  = "/search";
+
+    private final Database database;
+    private final JWTService jwtService;
+
+    public DeckRequestHandler(JWTService jwtService, Database database) {
+        this.jwtService = jwtService;
+        this.database = database;
+    }
 
     @Override
     public void init() {
-        logStart();
-
-        path("/api", () -> {
-            path("/deck", () -> {
-                post("/save", this::saveDeck, toJson());
-                delete("/delete", this::deleteDeck, toJson());
-                get("/all", this::getAllDecks, toJson());
-                get("/search", this::searchDecks, toJson());
-            });
+        path(BASE_PATH, () -> {
+            post(SAVE_DECK_PATH, this::saveDeck, toJson());
+            delete(DELETE_DECK_PATH, this::deleteDeck, toJson());
+            get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
+            get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
         });
-
-        before("/api/deck/*", (req, res) -> {
-            logger.info("Received request: "
-                    + req.requestMethod()
-                    + " "
-                    + req.pathInfo()
-                    + " "
-                    + req.queryParams());
-        });
-
-        after("/api/deck/*", (req, res) -> {
-            logger.info("Sent response code: " + res.status());
-        });
-
-        logStarted();
     }
 
     private Map<String, String> saveDeck(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("user_id"));
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+
             Deck deck = new Gson().fromJson(req.body(), Deck.class);
-            System.out.println(deck.getName());
-            deckDAO.saveDeck(deck, userId);
+
+            database.saveDeck(deck, userId);
             return successfulResponse;
 
         } catch (Exception e) {
@@ -66,10 +64,12 @@ public class DeckRequestHandler extends Handler {
 
     private Map<String, String> deleteDeck(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("user_id"));
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+
             UUID deckId = UUID.fromString(req.queryParams("deck_id"));
 
-            deckDAO.deleteDeck(deckId, userId);
+            database.deleteDeck(deckId, userId);
             return successfulResponse;
 
         } catch (Exception e) {
@@ -83,8 +83,10 @@ public class DeckRequestHandler extends Handler {
 
     private List<Deck> getAllDecks(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("user_id"));
-            return deckDAO.getAllUserDecks(userId);
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+
+            return database.getAllUserDecks(userId);
 
         } catch (Exception e) {
             String message = "Failed to get all decks: " + e.getMessage();
@@ -97,8 +99,12 @@ public class DeckRequestHandler extends Handler {
 
     private List<Deck> searchDecks(Request req, Response res) {
         try {
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+
             String userSearch = req.queryParams("name");
-            return deckDAO.searchDecks(userSearch);
+
+            return database.searchDecks(userSearch, userId);
 
         } catch (Exception e) {
             String message = "Failed to search decks: " + e.getMessage();
@@ -107,5 +113,24 @@ public class DeckRequestHandler extends Handler {
 
             return new ArrayList<>();
         }
+    }
+
+
+    /**
+     * Extracts the username from the request's Authorization header.
+     * <p>
+     *     If the token is invalid, the request is halted.
+     *     Otherwise, the username is returned.
+     * </p>
+     *
+     * @param req the request
+     * @return the username
+     */
+    private String usernameFromRequest(Request req) {
+        String token = req.headers("Authorization");
+        if (token == null || !jwtService.isTokenValid(token)) {
+            halt(401, "Token is " + (token == null ? "null" : "not valid"));
+        }
+        return jwtService.getUsernameFromToken(token);
     }
 }

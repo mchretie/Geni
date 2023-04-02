@@ -9,21 +9,22 @@ import java.util.logging.Logger;
 
 import static spark.Spark.*;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class TagRequestHandler extends Handler {
+
+    private final String SAVE_TAG_PATH = "/api/tag/save";
+    private final String GET_TAG_PATH = "/api/tag/get";
+    private final String DELETE_TAG_PATH = "/api/tag/delete";
+    private final String GET_ALL_TAGS_PATH = "/api/tag/all";
+    private final String SEARCH_TAG_PATH = "/api/tag/search";
 
     @Override
     public void init() {
-        logger.info("Starting tag handler");
-        path("/api", () -> {
-            path("/tag", () -> {
-                post("/save", this::saveTag);
-                get("/get", this::getTagFor);
-                delete("/delete", this::deleteTag);
-                get("/all", this::getAllTags);
-                get("/search", this::searchTag);
-            });
-        });
-        logger.info("Tag handler started");
+        post(SAVE_TAG_PATH, this::saveTag, toJson());
+        get(GET_TAG_PATH, this::getTagFor, toJson());
+        delete(DELETE_TAG_PATH, this::deleteTag, toJson());
+        get(GET_ALL_TAGS_PATH, this::getAllTags, toJson());
+        get(SEARCH_TAG_PATH, this::searchTag, toJson());
     }
 
     private Map<String, String> saveTag(Request req, Response res) {

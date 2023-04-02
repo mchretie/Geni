@@ -10,7 +10,7 @@ public class LaunchServer {
             Server server = new Server(8080);
             server.start();
 
-        } catch (SQLException | DatabaseException e) {
+        } catch (DatabaseException e) {
             e.printStackTrace();
         }
     }

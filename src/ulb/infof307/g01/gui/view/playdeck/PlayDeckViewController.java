@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.transform.Rotate;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.util.Duration;
 import ulb.infof307.g01.model.Card;
 
@@ -15,6 +17,9 @@ public class PlayDeckViewController {
 
     @FXML
     private Button cardButton;
+
+    @FXML
+    private WebView cardWebView;
 
     private Card currentCard;
 
@@ -30,12 +35,9 @@ public class PlayDeckViewController {
 
     public void setDeckName(String deckName) { this.deckNameLabel.setText(deckName); }
 
-    public void showCardContent(String content) {
-        cardButton.setText(content);
-    }
-
     public void setCurrentCard(Card currentCard) {
         this.currentCard = currentCard;
+        showFrontOfCard();
     }
 
 
@@ -43,8 +45,9 @@ public class PlayDeckViewController {
     /*                     Card displaying and animation                      */
     /* ====================================================================== */
 
-    public void showFrontOfCard() {
-        cardButton.setText(currentCard.getFront());
+    private void showFrontOfCard() {
+        String htmlContent = currentCard.getFront();
+        cardWebView.getEngine().loadContent(htmlContent);
     }
 
     public void flipToFrontOfCard() {
@@ -64,13 +67,11 @@ public class PlayDeckViewController {
         rotateTransition.setToAngle(90);
 
         rotateTransition.setOnFinished(e -> {
-            if (cardButton.getText().equals(newContent))
-                return;
-
-            cardButton.setText(newContent);
+            cardWebView.getEngine().loadContent(newContent);
 
             rotateTransition.setFromAngle(90);
             rotateTransition.setToAngle(0);
+            rotateTransition.setOnFinished(_e -> {});
             rotateTransition.play();
         });
 

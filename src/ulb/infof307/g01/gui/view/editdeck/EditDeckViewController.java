@@ -2,26 +2,33 @@ package ulb.infof307.g01.gui.view.editdeck;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.scene.web.WebView;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.Tag;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class
-EditDeckViewController implements Initializable {
-
+public class EditDeckViewController implements Initializable {
     @FXML
     private StackPane frontCard;
     @FXML
@@ -30,7 +37,7 @@ EditDeckViewController implements Initializable {
     private AnchorPane anchor;
 
     @FXML
-    private TextField frontCardText;
+    private WebView frontCardWebView;
     @FXML
     private TextField backCardText;
     @FXML
@@ -44,6 +51,21 @@ EditDeckViewController implements Initializable {
     @FXML
     private ListView<String> cardsContainer;
 
+    @FXML
+    private HBox tagsBox;
+
+    @FXML
+    private TextField tagsInput;
+
+    @FXML
+    private ColorPicker colorPicker;
+
+    @FXML
+    public FontIcon frontCardEditIcon;
+
+    @FXML
+    private Button imageUploader;
+
     private Deck deck;
     private Card selectedCard;
 
@@ -55,17 +77,11 @@ EditDeckViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        frontCardText.focusedProperty().addListener((observable, oldValue, newValue)
-                -> {
-            if (!newValue) handleFrontEdit();
-        });
-
         backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleBackEdit();
         });
 
         deckNameText.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Deck name text field focus changed to " + newValue + "");
             if (!newValue) handleUpdateDeckName();
         });
     }
@@ -78,6 +94,7 @@ EditDeckViewController implements Initializable {
     public void setDeck(Deck deck) {
         this.deck = deck;
         deckNameText.setText(deck.getName());
+        colorPicker.setValue(Color.web(deck.getColor()));
     }
 
     public void setListener(Listener listener) {
@@ -95,7 +112,7 @@ EditDeckViewController implements Initializable {
 
 
     /* ====================================================================== */
-    /*                         Card and deck loading                          */
+    /*                         Tags, Card, deck loading                       */
     /* ====================================================================== */
 
     public void loadCardsFromDeck() {
@@ -104,14 +121,17 @@ EditDeckViewController implements Initializable {
 
         cardsContainer.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        for (Card card : deck)
-            list.add(card.getFront());
+        for (Card card : deck){
+            Document doc = Jsoup.parse(card.getFront());
+            Element body = doc.body();
+            list.add(body.text());
+        }
 
         cardsContainer.refresh();
     }
 
     private void loadCardEditor(Card card) {
-        frontCardText.setText(card.getFront());
+        frontCardWebView.getEngine().loadContent(card.getFront());
         backCardText.setText(card.getBack());
         frontCard.setVisible(true);
         backCard.setVisible(true);
@@ -126,6 +146,29 @@ EditDeckViewController implements Initializable {
         backCard.setVisible(false);
     }
 
+    public void loadTagsFromDeck() {
+        tagsBox.getChildren().clear();
+        for (Tag tag : deck.getTags()) {
+            addTagToView(tag.getName(), tag.getColor());
+        }
+    }
+
+    private void addTagToView(String text, String color) {
+        StackPane tagPane = new StackPane();
+        tagPane.setMaxHeight(20);
+        tagPane.setStyle("-fx-border-color: #000000; " +
+                "-fx-padding: 6px 10px; " +
+                "-fx-border-insets: 3px 5px; " +
+                "-fx-background-insets: 3px 5px; " +
+                "-fx-border-radius: 15px; " +
+                "-fx-background-radius: 15px; " +
+                "-fx-background-color: " + color);
+
+        Text tagText = new Text(text.trim());
+        tagPane.getChildren().add(tagText);
+        tagsBox.getChildren().add(tagPane);
+    }
+
 
     /* ====================================================================== */
     /*                             Click handlers                             */
@@ -137,7 +180,9 @@ EditDeckViewController implements Initializable {
     }
 
     @FXML
-    private void handleRemoveCardClicked() { listener.removeCard(selectedCard);}
+    private void handleRemoveCardClicked() {
+        listener.removeCard(selectedCard);
+    }
 
     @FXML
     private void handleCardPreviewClicked() {
@@ -170,6 +215,32 @@ EditDeckViewController implements Initializable {
         addCardIcon.setIconColor(Color.web("#000000"));
     }
 
+    @FXML
+    private void handleColorPickerHover() {
+        colorPicker.setStyle("-fx-background-color: #aad0b3");
+    }
+
+    @FXML
+    private void handleColorPickerExit() {
+        colorPicker.setStyle("-fx-background-color: #5ab970");
+    }
+
+    @FXML
+    private void handleUploadImageHover() {
+        imageUploader.setStyle("-fx-background-color: #aad0b3");
+    }
+
+    @FXML
+    private void handleUploadImageExit() {
+        imageUploader.setStyle("-fx-background-color: #5ab970");
+    }
+
+    @FXML
+    private void handleUploadImageClicked() {
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
+        listener.uploadImage(file.toURI().toString());
+    }
 
 
     /* ====================================================================== */
@@ -182,13 +253,25 @@ EditDeckViewController implements Initializable {
     }
 
     @FXML
-    private void handleTagAdded() {
-        listener.tagAddedToDeck(deck, "Tag");
+    private void handleTagAdded(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            Color color = Color.color(Math.random(), Math.random(), Math.random());
+            String colorStr = color.toString().replace("0x", "#");
+
+            String tagText = tagsInput.getText();
+
+            if (!deck.tagExists(tagText)) {
+                addTagToView(tagText, colorStr);
+                tagsInput.setText("");
+
+                listener.tagAddedToDeck(deck, tagText, colorStr);
+            }
+        }
     }
 
     @FXML
     private void handleFrontEdit() {
-        listener.frontOfCardModified(selectedCard, frontCardText.getText());
+        listener.frontOfCardModified(selectedCard, frontCardWebView.getEngine().executeScript("document.body.innerHTML").toString());
     }
 
     @FXML
@@ -204,6 +287,23 @@ EditDeckViewController implements Initializable {
         anchor.requestFocus();
     }
 
+    @FXML
+    public void handleColorButtonClicked(ActionEvent actionEvent) {
+        listener.deckColorModified(deck, colorPicker.getValue());
+    }
+
+    public void handleFrontCardEditHover(MouseEvent mouseEvent) {
+        frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    public void handleFrontCardEditHoverExit(MouseEvent mouseEvent) {
+        frontCardEditIcon.setIconColor(Color.web("#000000"));
+    }
+
+    public void handleFrontEditClicked(MouseEvent mouseEvent) {
+        listener.editCardClicked(selectedCard);
+    }
+
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -211,11 +311,23 @@ EditDeckViewController implements Initializable {
 
     public interface Listener {
         void deckNameModified(String newName);
-        void tagAddedToDeck(Deck deck, String tagName);
+
+        void tagAddedToDeck(Deck deck, String tagName, String color);
+
         void frontOfCardModified(Card card, String newFront);
+
         void backOfCardModified(Card card, String newBack);
+
+        void deckColorModified(Deck deck, Color color);
+
         void newCard();
+
         void removeCard(Card selectedCard);
+
         void cardPreviewClicked(Card card);
+
+        void editCardClicked(Card selectedCard);
+
+        void uploadImage(String filePath);
     }
 }
