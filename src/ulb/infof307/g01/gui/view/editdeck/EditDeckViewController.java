@@ -196,6 +196,18 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
+    private void handleUploadImageClicked() {
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
+        listener.uploadImage(file.toURI().toString());
+    }
+
+
+    /* ====================================================================== */
+    /*                             Hover handlers                             */
+    /* ====================================================================== */
+
+    @FXML
     private void handleRemoveCardHover() {
         removeCardIcon.setIconColor(Color.web("#FFFFFF"));
     }
@@ -235,13 +247,6 @@ public class EditDeckViewController implements Initializable {
         imageUploader.setStyle("-fx-background-color: #5ab970");
     }
 
-    @FXML
-    private void handleUploadImageClicked() {
-        final FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
-        listener.uploadImage(file.toURI().toString());
-    }
-
 
     /* ====================================================================== */
     /*                            Modified text                               */
@@ -271,7 +276,12 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleFrontEdit() {
-        listener.frontOfCardModified(selectedCard, frontCardWebView.getEngine().executeScript("document.body.innerHTML").toString());
+        String newFront
+                = frontCardWebView.getEngine()
+                                  .executeScript("document.body.innerHTML")
+                                  .toString();
+
+        listener.frontOfCardModified(selectedCard, newFront);
     }
 
     @FXML
@@ -288,19 +298,22 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
-    public void handleColorButtonClicked(ActionEvent actionEvent) {
+    public void handleColorButtonClicked() {
         listener.deckColorModified(deck, colorPicker.getValue());
     }
 
-    public void handleFrontCardEditHover(MouseEvent mouseEvent) {
+    @FXML
+    private void handleFrontCardEditHover() {
         frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
-    public void handleFrontCardEditHoverExit(MouseEvent mouseEvent) {
+    @FXML
+    private void handleFrontCardEditHoverExit() {
         frontCardEditIcon.setIconColor(Color.web("#000000"));
     }
 
-    public void handleFrontEditClicked(MouseEvent mouseEvent) {
+    @FXML
+    private void handleFrontEditClicked() {
         listener.editCardClicked(selectedCard);
     }
 
@@ -311,23 +324,14 @@ public class EditDeckViewController implements Initializable {
 
     public interface Listener {
         void deckNameModified(String newName);
-
         void tagAddedToDeck(Deck deck, String tagName, String color);
-
         void frontOfCardModified(Card card, String newFront);
-
         void backOfCardModified(Card card, String newBack);
-
         void deckColorModified(Deck deck, Color color);
-
         void newCard();
-
         void removeCard(Card selectedCard);
-
         void cardPreviewClicked(Card card);
-
         void editCardClicked(Card selectedCard);
-
         void uploadImage(String filePath);
     }
 }
