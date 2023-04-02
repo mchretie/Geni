@@ -26,7 +26,7 @@ public class MainFxController
   private DeckMenuController deckMenuController;
   private MainWindowViewController mainWindowViewController;
   private PlayDeckController playDeckController;
-  private ProfileController profileController;
+ // private ProfileController profileController;
 
   private Stage stage;
 
@@ -60,8 +60,8 @@ public class MainFxController
     mainWindowViewController.setListener(this);
 
     // ICI
-    profileController =
-        new ProfileController(stage, mainWindowViewController, this);
+    //profileController =
+      //  new ProfileController(stage, mainWindowViewController, this);
     try {
       deckMenuController =
           new DeckMenuController(stage, this, mainWindowViewController);
@@ -151,14 +151,14 @@ public class MainFxController
     }
   }
 
-  @Override // ICI
+  /*@Override // ICI
   public void profileClicked() {
     try {
       profileController.show();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-  }
+  }*/
 
   @Override
   public void fxmlLoadingError(IOException e) {
@@ -213,5 +213,17 @@ public class MainFxController
     } catch (IOException | InterruptedException e) {
       restartApplicationError(e);
     }
+  }
+  @FXML
+  private void handleGoToProfileClicked(ActionEvent event) {
+    // logic to navigate to profile view
+  }
+  @Override
+  public void goToProfileClicked() {
+    handleGoToProfileClicked(null);
+  }
+  @Override
+  public void ProfileClicked() {
+    handleGoToProfileClicked(null);
   }
 }
