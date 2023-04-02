@@ -1,6 +1,7 @@
 package ulb.infof307.g01.gui.controller;
 
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.model.Card;
@@ -9,6 +10,7 @@ import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
+import java.io.File;
 import java.io.IOException;
 
 public class EditDeckController implements EditDeckViewController.Listener {
@@ -173,11 +175,23 @@ public class EditDeckController implements EditDeckViewController.Listener {
         editDeckViewController.loadSelectedCardEditor();
     }
 
+    @Override
+    public void uploadImage(String filePath) {
+        System.out.println(filePath);
+    }
+
+    @Override
+    public void editCardClicked(Card selectedCard) {
+        controllerListener.editCardClicked(deck, selectedCard);
+    }
+
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */
     /* ====================================================================== */
 
     public interface ControllerListener {
         void savingError(Exception e);
+
+        void editCardClicked(Deck deck, Card card);
     }
 }

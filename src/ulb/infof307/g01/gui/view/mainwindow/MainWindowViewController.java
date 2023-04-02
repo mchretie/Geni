@@ -9,9 +9,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.gui.controller.EditCardController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
+import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
+import ulb.infof307.g01.model.Card;
 
 public class MainWindowViewController {
 
@@ -36,11 +39,17 @@ public class MainWindowViewController {
     private BorderPane playDeckView;
 
     @FXML
+    private AnchorPane editCardView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
     @FXML
     private EditDeckViewController editDeckViewController;
     @FXML
     private PlayDeckViewController playDeckViewController;
+
+    @FXML
+    private EditCardViewController editCardViewController;
 
     private NavigationListener listener;
 
@@ -67,6 +76,10 @@ public class MainWindowViewController {
 
     public PlayDeckViewController getPlayDeckViewController() {
         return playDeckViewController;
+    }
+
+    public EditCardViewController getEditCardViewController() {
+        return editCardViewController;
     }
 
 
@@ -108,6 +121,10 @@ public class MainWindowViewController {
 
     public void setPlayDeckViewVisible() {
         setAllInvisibleExcept(playDeckView);
+    }
+
+    public void setEditCardViewVisible() {
+        setAllInvisibleExcept(editCardView);
     }
 
 
@@ -202,7 +219,6 @@ public class MainWindowViewController {
     private void handleUserProfileExitHover() {
         userProfileIcon.setIconColor(Color.web("#000000"));
     }
-
 
     /* ====================================================================== */
     /*                        Listener interface                              */
