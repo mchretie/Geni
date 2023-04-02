@@ -6,6 +6,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
 
@@ -62,6 +64,14 @@ public class DeckViewController {
         imageView.setPreserveRatio(false);
         imageView.fitWidthProperty().bind(stackPane.widthProperty());
         imageView.fitHeightProperty().bind(stackPane.heightProperty());
+
+        // add clip to image so that it has rounded corner
+        Rectangle clip = new Rectangle();
+        clip.setArcHeight(40);
+        clip.setArcWidth(40);
+        clip.heightProperty().bind(imageView.fitHeightProperty());
+        clip.widthProperty().bind(imageView.fitWidthProperty());
+        imageView.setClip(clip);
     }
 
     private LinearGradient makeGradient(Color color) {
