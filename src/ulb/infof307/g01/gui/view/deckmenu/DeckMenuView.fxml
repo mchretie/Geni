@@ -13,7 +13,7 @@
        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
            <TextField fx:id="searchBar" alignment="CENTER" prefWidth="200.0" promptText="Rechercher des paquets / tags" />
            <!-- Search Button-->
-           <Button fx:id="searchButton" layoutY="5" onMouseClicked="#handleSearchDeckEvent" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent;">
+           <Button layoutY="5" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent;">
 
                <graphic>
                    <FontIcon fx:id="searchIcon" iconLiteral="mdi2m-magnify" iconSize="30" onMouseClicked="#handleSearchDeckEvent" onMouseEntered="#handleSearchHover" onMouseExited="#handleSearchExit" />
@@ -23,7 +23,7 @@
        </HBox>
    </top>
    <center>
-       <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" vbarPolicy="ALWAYS">
+       <ScrollPane fitToHeight="true" fitToWidth="true" vbarPolicy="ALWAYS">
            <GridPane fx:id="gridPane" alignment="CENTER">
                <columnConstraints>
                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
