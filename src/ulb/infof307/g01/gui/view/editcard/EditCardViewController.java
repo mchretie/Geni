@@ -29,6 +29,19 @@ public class EditCardViewController {
 
     public void setCard(Card selectedCard) {
         this.selectedCard = selectedCard;
+        // language=HTML
+        String html = """
+                <head>
+                    <title>Card</title>
+                    <script type="text/x-mathjax-config">
+                        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']]}});
+                    </script>
+                    <script type="text/javascript"
+                      src='http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'>
+                    </script>
+                </head>
+                """;
+//        htmlEditor.setHtmlText(html+selectedCard.getFront());
         htmlEditor.setHtmlText(selectedCard.getFront());
     }
 

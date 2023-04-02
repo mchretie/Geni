@@ -3,6 +3,9 @@ package ulb.infof307.g01.gui.controller;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
@@ -139,27 +142,25 @@ public class EditDeckController implements EditDeckViewController.Listener {
     @Override
     public void newCard() {
         try {
+//                        <body style='background-color: #f0f0f0;'>
             // language=HTML
             String frontHtml =
                     """
-                            <html lang="fr">
-                                <head>
-                                    <title>Card</title>
-                                    <script type="text/x-mathjax-config">
-                                        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']]}});
-                                    </script>
-                                    <script type="text/javascript"
-                                      src='http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'>
-                                    </script>
-                                </head>
-                                <body style='background-color: #f0f0f0;'>
-                                    <h1>Avant</h1>
-                                    When $a \\ne 0$, there are two solutions to \\(ax^2 + bx + c = 0\\) and they are
-                                    $$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$
-                                </body>
-                            </html>
-                            """;
-            deck.addCard(new Card(frontHtml, "Arrière"));
+                            <body>
+                                <p>test</p>
+                            </body>
+                                """;
+//            frontHtml = frontHtml + "<style> body {background-image=url('../../../../../../res/img/yannick.jpg');}";
+            Document doc = Jsoup.parse(frontHtml);
+            Elements elements = doc.select("body");
+            elements.attr("style", """
+                    background-image:url('https://mlg.ulb.ac.be/wordpress/wp-content/uploads/avatars/46/5fc8b05a199cf-bpfull.png');
+                      background-attachment: fixed;
+                      background-size: 100%% 100%%;
+                    """);
+
+            System.out.printf(doc.toString());
+            deck.addCard(new Card(doc.toString(), "Arrière"));
             deckDAO.saveDeck(deck);
 
             editDeckViewController.loadCardsFromDeck();
