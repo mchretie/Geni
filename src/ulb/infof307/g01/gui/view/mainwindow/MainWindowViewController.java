@@ -24,6 +24,7 @@ public class MainWindowViewController {
     private FontIcon aboutIcon;
     @FXML
     private FontIcon goBackIcon;
+    // ICI
     @FXML
     private FontIcon userProfileIcon;
 
@@ -143,7 +144,7 @@ public class MainWindowViewController {
 
     @FXML
     private void goToHomeClicked() {
-        listener.goToHomeClicked();
+      listener.goToHomeClicked();
     }
 
     @FXML
@@ -155,9 +156,10 @@ public class MainWindowViewController {
     private void goToAboutClicked() {
         listener.goToAboutClicked();
     }
+    // ICI
     @FXML
-    private void profileClicked() {
-      listener.profileClicked();
+    private void goToProfileClicked() {
+      listener.goToProfileClicked();
     }
 
     /* ====================================================================== */
@@ -166,7 +168,7 @@ public class MainWindowViewController {
 
     @FXML
     private void handleHomeHover() {
-        homeIcon.setIconColor(Color.web("#FFFFFF"));
+      homeIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
@@ -224,6 +226,7 @@ public class MainWindowViewController {
         void goToHomeClicked();
         void goToCurrentDeckClicked();
         void goToAboutClicked();
-        void profileClicked();
+        // ICI
+        void goToProfileClicked();
     }
 }

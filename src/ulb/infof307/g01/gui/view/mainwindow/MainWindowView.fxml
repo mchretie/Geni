@@ -44,7 +44,8 @@
             <!-- ICI -->
             <!-- User profile button -->
             <Button fx:id="userProfile" mnemonicParsing="false" prefHeight="100.0" prefWidth="61.0"
-                    BorderPane.alignment="CENTER" style="-fx-background-color: transparent;">
+                    BorderPane.alignment="CENTER" style="-fx-background-color: transparent;"
+                    onMouseClicked="#goToProfileClicked">
                 <graphic>
                     <FontIcon fx:id="userProfileIcon" iconLiteral="mdi2a-account" iconSize="48"
                               onMouseEntered="#handleUserProfileHover" onMouseExited="#handleUserProfileExitHover"/>

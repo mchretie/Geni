@@ -20,7 +20,8 @@ public class MainFxController
     extends Application implements MainWindowViewController.NavigationListener,
                                    DeckMenuController.ControllerListener,
                                    PlayDeckController.ControllerListener,
-                                   EditDeckController.ControllerListener {
+                                   EditDeckController.ControllerListener,
+                                   ProfileController.ControllerListener {
 
   private DeckMenuController deckMenuController;
   private MainWindowViewController mainWindowViewController;

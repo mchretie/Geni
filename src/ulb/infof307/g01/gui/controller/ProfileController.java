@@ -1,6 +1,7 @@
 package ulb.infof307.g01.gui.controller;
 
 import java.io.IOException;
+import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpclient.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
@@ -56,10 +57,10 @@ public class ProfileController implements ProfileViewController.Listener {
   /*                        View Listener Method                            */
   /* ====================================================================== */
 
-  @Override
-  public void profileClicked() {
-    controllerListener.profileClicked();
-  }
+  //@Override
+  // public void profileClicked() {
+  // controllerListener.profileClicked();
+  //}
 
   /* ====================================================================== */
   /*                   Controller Listener Interface                        */
