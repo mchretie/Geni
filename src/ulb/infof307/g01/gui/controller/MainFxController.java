@@ -19,21 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Main class of the application which initializes the main view using the main view handler and loads a menu view.
+ * Main class of the application which initializes the main view using the main
+ * view handler and loads a menu view.
  */
-public class MainFxController
-    extends Application implements MainWindowViewController.NavigationListener,
-                                   DeckMenuController.ControllerListener,
-                                   PlayDeckController.ControllerListener,
-                                   EditDeckController.ControllerListener,
-                                   ProfileController.ControllerListener {
 
-  private DeckMenuController deckMenuController;
-  private MainWindowViewController mainWindowViewController;
-  private PlayDeckController playDeckController;
-  private ProfileController profileController;
-
-  private Stage stage;
 public class MainFxController extends Application implements
         MainWindowViewController.NavigationListener,
         DeckMenuController.ControllerListener,
@@ -42,46 +31,38 @@ public class MainFxController extends Application implements
         EditCardController.ControllerListener,
         ProfileController.ControllerListener {
 
-    /* ====================================================================== */
-    /*                          Attribute: Controllers                        */
-    /* ====================================================================== */
+  /* ====================================================================== */
+  /*                          Attribute: Controllers                        */
+  /* ====================================================================== */
 
-    private DeckMenuController deckMenuController;
-    private EditDeckController editDeckController;
-    private PlayDeckController playDeckController;
-    private EditCardController editCardController;
-    private ProfileController profileController;
+  private DeckMenuController deckMenuController;
+  private EditDeckController editDeckController;
+  private PlayDeckController playDeckController;
+  private EditCardController editCardController;
+  private ProfileController profileController;
 
+  private MainWindowViewController mainWindowViewController;
 
-    private MainWindowViewController mainWindowViewController;
+  /* ====================================================================== */
+  /*                              DAO Attributes                            */
+  /* ====================================================================== */
 
-    /* ====================================================================== */
-    /*                              DAO Attributes                            */
-    /* ====================================================================== */
+  private final UserDAO userDAO = new UserDAO();
+  private final DeckDAO deckDAO = new DeckDAO();
 
-    private final UserDAO userDAO = new UserDAO();
-    private final DeckDAO deckDAO = new DeckDAO();
+  /* ====================================================================== */
+  /*                            View Stack Attributes                       */
+  /* ====================================================================== */
 
+  private enum View { DECK_MENU, PLAY_DECK, EDIT_DECK, HTML_EDITOR }
 
-    /* ====================================================================== */
-    /*                            View Stack Attributes                       */
-    /* ====================================================================== */
+  List<View> viewStack = new ArrayList<>();
 
-    private enum View {
-        DECK_MENU,
-        PLAY_DECK,
-        EDIT_DECK,
-        HTML_EDITOR
-    }
+  /* ====================================================================== */
+  /*                             Stage Attributes                           */
+  /* ====================================================================== */
 
-    List<View> viewStack = new ArrayList<>();
-
-
-    /* ====================================================================== */
-    /*                             Stage Attributes                           */
-    /* ====================================================================== */
-
-    Stage stage;
+  Stage stage;
 
   /* ====================================================================== */
   /*                                  Main                                  */
@@ -93,19 +74,18 @@ public class MainFxController extends Application implements
   /*                           Application Methods                          */
   /* ====================================================================== */
 
-    @Override
-    public void start(Stage stage) throws IOException, InterruptedException {
+  @Override
+  public void start(Stage stage) throws IOException, InterruptedException {
 
-        this.stage = stage;
+    this.stage = stage;
 
-        // TODO: Title and login.
-        stage.setTitle("Pokémon TCG Deck Builder");
-        userDAO.register("guest", "guest");
-        userDAO.login("guest", "guest");
+    // TODO: Title and login.
+    stage.setTitle("Pokémon TCG Deck Builder");
+    userDAO.register("guest", "guest");
+    userDAO.login("guest", "guest");
 
-        URL resource = MainWindowViewController
-                .class
-                .getResource("MainWindowView.fxml");
+    URL resource =
+        MainWindowViewController.class.getResource("MainWindowView.fxml");
 
     FXMLLoader fxmlLoader = new FXMLLoader(resource);
 
@@ -117,34 +97,28 @@ public class MainFxController extends Application implements
     mainWindowViewController = fxmlLoader.getController();
     mainWindowViewController.setListener(this);
 
-        try {
-            deckMenuController = new DeckMenuController(
-                    stage,
-                    this,
-                    mainWindowViewController,
-                    deckDAO,
-                    userDAO);
+    try {
+      deckMenuController = new DeckMenuController(
+          stage, this, mainWindowViewController, deckDAO, userDAO);
 
-            viewStack.add(View.DECK_MENU);
-            deckMenuController.show();
+      viewStack.add(View.DECK_MENU);
+      deckMenuController.show();
 
     } catch (IOException | InterruptedException e) {
       restartApplicationError(e);
     }
   }
 
+  /* ====================================================================== */
+  /*                      Error messages and handling                       */
+  /* ====================================================================== */
 
-    /* ====================================================================== */
-    /*                      Error messages and handling                       */
-    /* ====================================================================== */
-
-    /**
-     * Used to communicate errors that require the user to restart
-     * the application
-     */
-    private void communicateError(Exception e, String messageToUser) {
-        mainWindowViewController.alertError(e.toString(), messageToUser);
-    }
+  /**
+   * Used to communicate errors that require the user to restart
+   * the application
+   */
+  private void communicateError(Exception e, String messageToUser) {
+    mainWindowViewController.alertError(e.toString(), messageToUser);
   }
 
   @Override
@@ -153,107 +127,85 @@ public class MainFxController extends Application implements
       playDeckController =
           new PlayDeckController(stage, deck, mainWindowViewController, this);
 
+      viewStack.add(View.PLAY_DECK);
       playDeckController.show();
-    }
-
-    catch (EmptyDeckException e) {
+    } catch (EmptyDeckException e) {
       String title = "Paquet vide.";
       String description = "Le paquet que vous aviez ouvert est vide.";
       mainWindowViewController.alertInformation(title, description);
     }
   }
 
-  @Override // ICI
-  public void profileClicked() {
-    // ICI
-    profileController =
-        new ProfileController(stage, mainWindowViewController, this);
+  /*
+    @Override // ICI
+    public void profileClicked() {
+      // ICI
+      profileController =
+          new ProfileController(stage, mainWindowViewController, this);
+      System.out.println("ICI#########");
+      try {
+        profileController.show();
+      } catch (IOException e) {
+        throw new RuntimeException(e);}} */
+  /**
+   * For exceptions that indicate that the app cannot continue to
+   * function properly
+   */
+  private void restartApplicationError(Exception e) {
+    communicateError(e, "Veuillez redémarrer l'application.");
+    Platform.exit();
+  }
+
+  /**
+   * For when windows other than the main window fail to launch
+   */
+  private void returnToMenuError(Exception e) {
+    communicateError(e, "Vous reviendrez au menu principal.");
+  }
+
+  /**
+   * For when changes to components (Decks, cards, etc.) fail to be saved in
+   * the db
+   */
+  private void databaseModificationError(Exception e) {
+    String message = "Vos modifications n’ont pas été enregistrées, "
+                     + "veuillez réessayer. Si le problème persiste, "
+                     + "redémarrez l’application";
+
+    communicateError(e, message);
+  }
+
+  /* ====================================================================== */
+  /*                     Controller Listener Methods                        */
+  /* ====================================================================== */
+
+  @Override
+  public void editDeckClicked(Deck deck) {
+
     try {
-      profileController.show();
+      editDeckController = new EditDeckController(
+          stage, deck, mainWindowViewController, this, deckDAO);
+
+      viewStack.add(View.EDIT_DECK);
+      editDeckController.show();
+
     } catch (IOException e) {
-      throw new RuntimeException(e);}}
-    /**
-     * For exceptions that indicate that the app cannot continue to
-     * function properly
-     */
-    private void restartApplicationError(Exception e) {
-        communicateError(e, "Veuillez redémarrer l'application.");
-        Platform.exit();
+      returnToMenuError(e);
     }
+  }
 
-    /**
-     * For when windows other than the main window fail to launch
-     */
-    private void returnToMenuError(Exception e) {
-        communicateError(e, "Vous reviendrez au menu principal.");
-    }
+  @Override
+  public void editCardClicked(Deck deck, Card card) {
+    editCardController = new EditCardController(stage, deck, card, deckDAO,
+                                                mainWindowViewController, this);
+    editCardController.show();
+    viewStack.add(View.HTML_EDITOR);
+  }
 
-    /**
-     * For when changes to components (Decks, cards, etc.) fail to be saved in
-     * the db
-     */
-    private void databaseModificationError(Exception e) {
-        String message = "Vos modifications n’ont pas été enregistrées, "
-                + "veuillez réessayer. Si le problème persiste, "
-                + "redémarrez l’application";
-
-        communicateError(e, message);
-    }
-
-
-    /* ====================================================================== */
-    /*                     Controller Listener Methods                        */
-    /* ====================================================================== */
-
-    @Override
-    public void editDeckClicked(Deck deck) {
-
-        try {
-            editDeckController
-                    = new EditDeckController(stage,
-                    deck,
-                    mainWindowViewController,
-                    this,
-                    deckDAO);
-
-            viewStack.add(View.EDIT_DECK);
-            editDeckController.show();
-
-        } catch (IOException e) {
-            returnToMenuError(e);
-        }
-    }
-
-    @Override
-    public void playDeckClicked(Deck deck) {
-        try {
-            playDeckController = new PlayDeckController(
-                    stage,
-                    deck,
-                    mainWindowViewController,
-                    this);
-
-            viewStack.add(View.PLAY_DECK);
-            playDeckController.show();
-        } catch (EmptyDeckException e) {
-            String title = "Paquet vide.";
-            String description = "Le paquet que vous aviez ouvert est vide.";
-            mainWindowViewController.alertInformation(title, description);
-        }
-    }
-
-    @Override
-    public void editCardClicked(Deck deck, Card card) {
-        editCardController = new EditCardController(stage, deck, card, deckDAO, mainWindowViewController, this);
-        editCardController.show();
-        viewStack.add(View.HTML_EDITOR);
-    }
-
-    @Override
-    public void fxmlLoadingError(IOException e) {
-        restartApplicationError(e);
-    }
-
+  @Override
+  public void fxmlLoadingError(IOException e) {
+    restartApplicationError(e);
+  }
 
   @Override
   public void savingError(Exception e) {
@@ -264,71 +216,78 @@ public class MainFxController extends Application implements
   /*                   Navigation Listener Methods                          */
   /* ====================================================================== */
 
-    @Override
-    public void goBackClicked() {
-        // If there is no view to go back to, do nothing (shouldn't happen)
-        if (viewStack.size() == 1)
-            return;
-
-        try {
-            viewStack.remove(viewStack.size() - 1);
-            switch (viewStack.get(viewStack.size() - 1)) {
-                case DECK_MENU -> deckMenuController.show();
-                case PLAY_DECK -> playDeckController.show();
-                case EDIT_DECK -> editDeckController.show();
-                case HTML_EDITOR -> editCardController.show();
-            }
-        } catch (IOException | InterruptedException e) {
-            restartApplicationError(e);
-        }
-      }
-    
-  
-
   @Override
-  public void goToHomeClicked() {
-    try {
-      deckMenuController.show();
-
-    } catch (IOException | InterruptedException e) {
-      restartApplicationError(e);
-    }
-  }
-
-  @Override
-  public void goToCurrentDeckClicked() {
-    if (playDeckController == null)
+  public void goBackClicked() {
+    // If there is no view to go back to, do nothing (shouldn't happen)
+    if (viewStack.size() == 1)
       return;
 
-    playDeckController.show();
-  }
-
-  @Override
-  public void goToAboutClicked() {}
-
-  @Override
-  public void finishedPlayingDeck() {
     try {
-      deckMenuController.show();
+      viewStack.remove(viewStack.size() - 1);
+      switch (viewStack.get(viewStack.size() - 1)) {
+                    case DECK_MENU -> deckMenuController.show();
+                    case PLAY_DECK -> playDeckController.show();
+                    case EDIT_DECK -> editDeckController.show();
+                    case HTML_EDITOR -> editCardController.show();
+                }
+            } catch (IOException | InterruptedException e) {
+                restartApplicationError(e);
+            }
+          }
 
-    } catch (IOException | InterruptedException e) {
-      restartApplicationError(e);
+
+
+      @Override
+      public void goToHomeClicked() {
+        try {
+          deckMenuController.show();
+
+        } catch (IOException | InterruptedException e) {
+          restartApplicationError(e);
+        }
+      }
+
+      @Override
+      public void goToCurrentDeckClicked() {
+        if (playDeckController == null)
+          return;
+
+        playDeckController.show();
+      }
+
+      @Override
+      public void goToAboutClicked() {}
+
+      @Override
+      public void finishedPlayingDeck() {
+        try {
+          deckMenuController.show();
+
+        } catch (IOException | InterruptedException e) {
+          restartApplicationError(e);
+        }
+      }
+      //@FXML
+      // private void handleGoToProfileClicked(ActionEvent event) {
+      // logic to navigate to profile view
+      //}
+      @Override
+      public void handleProfileClicked() {
+            System.out.println("wtf ####");
+
+          profileController =
+                  new ProfileController(stage, mainWindowViewController, this);
+
+          System.out.println("ICI#########");
+          try {
+              profileController.show();
+          } catch (IOException e) {
+              throw new RuntimeException(e);
+          }
+
+      }
+      //@Override
+      // public void profileClicked() {
+      // handleGoToProfileClicked(null);
+      //}
     }
-  }
-  //@FXML
-  // private void handleGoToProfileClicked(ActionEvent event) {
-  // logic to navigate to profile view
-  //}
-  @Override
-  public void handleProfileClicked() {
-    try {
-      profileController.show();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-  //@Override
-  // public void profileClicked() {
-  // handleGoToProfileClicked(null);
-  //}
-}

@@ -14,6 +14,7 @@ import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
+import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 import ulb.infof307.g01.model.Card;
 
 public class MainWindowViewController {
@@ -50,6 +51,7 @@ public class MainWindowViewController {
 
     //ICI
     @FXML private ProfileViewController profileViewController;
+
     @FXML
     private EditCardViewController editCardViewController;
 
@@ -173,6 +175,7 @@ public class MainWindowViewController {
     // ICI
     @FXML
     private void handleProfileClicked() {
+      System.out.println("Profile clicked handler");
       listener.handleProfileClicked();
     }
 

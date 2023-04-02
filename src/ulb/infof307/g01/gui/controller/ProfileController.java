@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.httpclient.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
@@ -33,11 +32,11 @@ public class ProfileController implements ProfileViewController.Listener {
     this.stage = stage;
     this.mainWindowViewController = mainWindowViewController;
     this.controllerListener = controllerListener;
-
+    System.out.println("initialisation de profileViewController");
     this.profileViewController =
         mainWindowViewController.getProfileViewController();
-
-    profileViewController.setListener(this);
+    System.out.println(this.profileViewController);
+    this.profileViewController.setListener(this);
   }
 
   /* ====================================================================== */
@@ -74,6 +73,6 @@ public class ProfileController implements ProfileViewController.Listener {
   /* ====================================================================== */
 
   public interface ControllerListener {
-    void profileClicked();
+    void handleProfileClicked();
   }
 }
