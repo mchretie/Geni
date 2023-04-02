@@ -2,13 +2,11 @@ package ulb.infof307.g01.gui.view.editdeck;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
@@ -22,7 +20,6 @@ import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.Tag;
 
 import java.io.File;
 import java.net.URL;
@@ -112,10 +109,10 @@ public class EditDeckViewController implements Initializable {
 
 
     /* ====================================================================== */
-    /*                         Tags, Card, deck loading                       */
+    /*                              Card Editor                               */
     /* ====================================================================== */
 
-    public void loadCardsFromDeck() {
+    public void showCards() {
         ObservableList<String> list = FXCollections.observableArrayList();
         cardsContainer.setItems(list);
 
@@ -146,12 +143,10 @@ public class EditDeckViewController implements Initializable {
         backCard.setVisible(false);
     }
 
-    public void loadTagsFromDeck() {
-        tagsBox.getChildren().clear();
-        for (Tag tag : deck.getTags()) {
-            addTagToView(tag.getName(), tag.getColor());
-        }
-    }
+
+    /* ====================================================================== */
+    /*                                 Tags                                   */
+    /* ====================================================================== */
 
     private void addTagToView(String text, String color) {
         StackPane tagPane = new StackPane();
@@ -167,6 +162,32 @@ public class EditDeckViewController implements Initializable {
         Text tagText = new Text(text.trim());
         tagPane.getChildren().add(tagText);
         tagsBox.getChildren().add(tagPane);
+    }
+
+    public void showTags() {
+        tagsBox.getChildren().clear();
+        deck.getTags()
+                .forEach(tag -> addTagToView(tag.getName(), tag.getColor()));
+    }
+
+    @FXML
+    private void handleTagAdded(KeyEvent event) {
+        if (event.getCode() != KeyCode.ENTER
+                || tagsInput.getText().trim().isEmpty())
+
+            return;
+
+        String tagText = tagsInput.getText().trim();
+        tagsInput.clear();
+
+        // TODO: Ability to choose a color
+        Color color
+                = Color.color(Math.random(), Math.random(), Math.random());
+
+        String colorString
+                = color.toString().replace("0x", "#");
+
+        listener.tagAddedToDeck(deck, tagText, colorString);
     }
 
 
@@ -255,23 +276,6 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private void handleUpdateDeckName() {
         listener.deckNameModified(deckNameText.getText());
-    }
-
-    @FXML
-    private void handleTagAdded(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            Color color = Color.color(Math.random(), Math.random(), Math.random());
-            String colorStr = color.toString().replace("0x", "#");
-
-            String tagText = tagsInput.getText();
-
-            if (!deck.tagExists(tagText)) {
-                addTagToView(tagText, colorStr);
-                tagsInput.setText("");
-
-                listener.tagAddedToDeck(deck, tagText, colorStr);
-            }
-        }
     }
 
     @FXML
