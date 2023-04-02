@@ -24,9 +24,8 @@ public class MainWindowViewController {
     private FontIcon aboutIcon;
     @FXML
     private FontIcon goBackIcon;
-    // ICI
-    //@FXML
-    //private FontIcon userProfileIcon;
+
+    @FXML private FontIcon userProfileIcon;
 
     @FXML
     private StackPane centerStackPane;
@@ -45,8 +44,7 @@ public class MainWindowViewController {
     private PlayDeckViewController playDeckViewController;
 
     //ICI
-    //@FXML
-    //private ProfileViewController profileViewController;
+    @FXML private ProfileViewController profileViewController;
 
     private NavigationListener listener;
 
@@ -76,8 +74,9 @@ public class MainWindowViewController {
     }
 
     // ICI
-   // public ProfileViewController getProfileViewController() { return profileViewController; }
-
+    public ProfileViewController getProfileViewController() {
+      return profileViewController;
+    }
 
     /* ====================================================================== */
     /*                              Alerts                                    */
@@ -157,9 +156,9 @@ public class MainWindowViewController {
         listener.goToAboutClicked();
     }
     // ICI
-    //@FXML
-    private void goToProfileClicked() {
-      listener.goToProfileClicked();
+    @FXML
+    private void handleProfileClicked() {
+      listener.handleProfileClicked();
     }
 
     /* ====================================================================== */
@@ -216,7 +215,6 @@ public class MainWindowViewController {
         userProfileIcon.setIconColor(Color.web("#000000"));
     }
 
-
     /* ====================================================================== */
     /*                        Listener interface                              */
     /* ====================================================================== */
@@ -227,6 +225,6 @@ public class MainWindowViewController {
         void goToCurrentDeckClicked();
         void goToAboutClicked();
         // ICI
-        void goToProfileClicked();
+        void handleProfileClicked();
     }
 }

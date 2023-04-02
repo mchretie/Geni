@@ -2,6 +2,8 @@ package ulb.infof307.g01.gui.controller;
 
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpclient.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
@@ -49,7 +51,12 @@ public class ProfileController implements ProfileViewController.Listener {
    */
   public void show() throws IOException {
     // Todo :  tests
+    FXMLLoader loader = new FXMLLoader(
+        ProfileViewController.class.getResource("ProfileView.fxml"));
+    loader.load();
 
+    Parent root = loader.getRoot();
+    stage.setScene(new Scene(root));
     stage.show();
   }
 
