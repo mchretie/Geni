@@ -124,10 +124,6 @@ public class EditDeckViewController implements Initializable {
     }
 
 
-    public void hideSelectedCardEditor() {
-        selectedCardBox.setVisible(false);
-    }
-
     public void loadTagsFromDeck(){
         tagsBox.getChildren().clear();
         for (Tag tag: deck.getTags()) { addTagToView(tag.getName(), tag.getColor()); }
@@ -156,9 +152,8 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleAddCardClicked() {
-//        showCardTypeButtons();
         hideSelectedCardEditor();
-        listener.newCard();
+        showCardTypeButtons();
     }
 
     @FXML
@@ -180,9 +175,9 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleFlashCardEdit() throws IOException {
-        return;
-        //        hideCardTypeButtons();
-        //TODO rendre visible flashCardEditor dans le stackPane
+        listener.newCard(); //TODO newCard avec para flashCardEditor
+        hideCardTypeButtons();
+        showSelectedCardEditor();
     }
 
     @FXML
@@ -212,6 +207,13 @@ public class EditDeckViewController implements Initializable {
     private void hideCardTypeButtons() {cardTypeButtons.setVisible(false);}
 
     private void showCardTypeButtons() {cardTypeButtons.setVisible(true);}
+
+    public void hideSelectedCardEditor() {
+        selectedCardBox.setVisible(false);
+    }
+    public void showSelectedCardEditor() {
+        selectedCardBox.setVisible(true);
+    }
 
 
     /* ====================================================================== */
@@ -256,9 +258,5 @@ public class EditDeckViewController implements Initializable {
         void newCard();
         void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card) throws IOException;
-
-        void editFlashCard(Card card) throws IOException;
-
-        void editQCMCard(Card card);
     }
 }

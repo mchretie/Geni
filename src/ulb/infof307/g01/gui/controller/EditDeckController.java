@@ -175,6 +175,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
             editDeckViewController.loadCardsFromDeck();
             editDeckViewController.setSelectedCard(deck.getLastCard());
+
             cardPreviewClicked(deck.getLastCard());
 
         } catch (InterruptedException | IOException e) {
@@ -201,18 +202,11 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void cardPreviewClicked(Card card) throws IOException {
         editDeckViewController.setSelectedCard(card);
-        editFlashCard(card);
+
         editFlashCardViewController.setCard(card);
         editFlashCardViewController.loadSelectedCardEditor();
     }
 
-
-    public void editFlashCard(Card card) throws IOException {
-        return;
-    }
-
-    @Override
-    public void editQCMCard(Card card) { return; }
 
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */
