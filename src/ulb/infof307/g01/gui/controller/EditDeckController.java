@@ -79,7 +79,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
         else
             editDeckViewController.hideSelectedCardEditor();
-
         stage.show();
     }
 

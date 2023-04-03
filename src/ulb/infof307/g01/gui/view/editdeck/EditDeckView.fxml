@@ -61,13 +61,15 @@
 
 
    <ColorPicker fx:id="colorPicker" layoutX="365.0" layoutY="14.0" onAction="#handleColorButtonClicked" />
-   <AnchorPane fx:id="selectedCardBox" layoutX="386.0" layoutY="147.0" prefHeight="365.0" prefWidth="425.0" />
-
-   <HBox fx:id="cardTypeButtons" layoutX="386.0" layoutY="78.0" prefHeight="63.0" prefWidth="425.0" visible="false">
+   <AnchorPane fx:id="selectedCardBox" layoutX="386.0" layoutY="78.0" prefHeight="435.0" prefWidth="425.0">
       <children>
-         <Button fx:id="flashCardButton" onMouseClicked="#handleFlashCardEdit" mnemonicParsing="false" prefHeight="63.0" prefWidth="212.0" text="FlashCard" />
-         <Button fx:id="QCMButton" onMouseClicked="#handleQCMCardEdit" mnemonicParsing="false" prefHeight="63.0" prefWidth="212.0" text="QCM Card" />
-      </children>
-   </HBox>
+      
+         <HBox fx:id="cardTypeButtons" layoutY="186.0" prefHeight="63.0" prefWidth="425.0" visible="false">
+            <children>
+               <Button fx:id="flashCardButton" mnemonicParsing="false" onMouseClicked="#handleFlashCardEdit" prefHeight="63.0" prefWidth="212.0" text="FlashCard" />
+               <Button fx:id="QCMButton" mnemonicParsing="false" onMouseClicked="#handleQCMCardEdit" prefHeight="63.0" prefWidth="212.0" text="QCM Card" />
+            </children>
+         </HBox>
+      </children></AnchorPane>
 
 </AnchorPane>

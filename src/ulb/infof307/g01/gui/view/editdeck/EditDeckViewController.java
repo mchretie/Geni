@@ -10,7 +10,6 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -28,8 +27,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EditDeckViewController implements Initializable {
-
-
     @FXML
     private HBox cardTypeButtons;
 
@@ -101,10 +98,7 @@ public class EditDeckViewController implements Initializable {
 
     public void setEditFlashCard(Node node){
         selectedCardBox.getChildren().add(node);
-
-        System.out.println(selectedCardBox.getChildren().size());
-
-        //TODO rendre insibles les bouttons + if +1 children --> supp celui d'avant
+        selectedCardBox.setVisible(false);
     }
 
     /* ====================================================================== */
@@ -122,7 +116,6 @@ public class EditDeckViewController implements Initializable {
 
         cardsContainer.refresh();
     }
-
 
     public void loadTagsFromDeck(){
         tagsBox.getChildren().clear();
@@ -163,18 +156,17 @@ public class EditDeckViewController implements Initializable {
     private void handleCardPreviewClicked() throws IOException {
 
         int cardIndex = cardsContainer.getSelectionModel().getSelectedIndex();
-
         if (cardIndex < 0)
             return;
 
+        selectedCardBox.setVisible(true);
         selectedCard = deck.getCards().get(cardIndex);
-
 
         listener.cardPreviewClicked(selectedCard);
     }
 
     @FXML
-    private void handleFlashCardEdit() throws IOException {
+    private void handleFlashCardEdit(){
         listener.newCard(); //TODO newCard avec para flashCardEditor
         hideCardTypeButtons();
         showSelectedCardEditor();
@@ -209,10 +201,10 @@ public class EditDeckViewController implements Initializable {
     private void showCardTypeButtons() {cardTypeButtons.setVisible(true);}
 
     public void hideSelectedCardEditor() {
-        selectedCardBox.setVisible(false);
+        selectedCardBox.getChildren().get(1).setVisible(false);
     }
     public void showSelectedCardEditor() {
-        selectedCardBox.setVisible(true);
+        selectedCardBox.getChildren().get(1).setVisible(true);
     }
 
 
