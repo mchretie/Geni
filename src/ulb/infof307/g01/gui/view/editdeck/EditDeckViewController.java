@@ -156,7 +156,7 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleAddCardClicked() {
-        showCardTypeButtons();
+//        showCardTypeButtons();
         hideSelectedCardEditor();
         listener.newCard();
     }
@@ -180,16 +180,14 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleFlashCardEdit() throws IOException {
-        hideCardTypeButtons();
-        listener.editFlashCard(selectedCard);
+        return;
+        //        hideCardTypeButtons();
+        //TODO rendre visible flashCardEditor dans le stackPane
     }
 
     @FXML
     private void handleQCMCardEdit() {return; }
 
-    private void hideCardTypeButtons() {cardTypeButtons.setVisible(false);}
-
-    private void showCardTypeButtons() {cardTypeButtons.setVisible(true);}
 
     @FXML
     private void handleRemoveCardHover() {
@@ -210,6 +208,10 @@ public class EditDeckViewController implements Initializable {
     private void handleAddHoverExit() {
         addCardIcon.setIconColor(Color.web("#000000"));
     }
+
+    private void hideCardTypeButtons() {cardTypeButtons.setVisible(false);}
+
+    private void showCardTypeButtons() {cardTypeButtons.setVisible(true);}
 
 
     /* ====================================================================== */

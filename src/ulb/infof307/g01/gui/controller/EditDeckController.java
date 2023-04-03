@@ -26,6 +26,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     private final MainWindowViewController mainWindowViewController;
     private final EditDeckViewController editDeckViewController;
 
+    private final EditFlashCardViewController editFlashCardViewController;
 
     private final DeckDAO deckDAO;
 
@@ -38,7 +39,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public EditDeckController(Stage stage, Deck deck,
                               MainWindowViewController mainWindowViewController,
                               ControllerListener controllerListener,
-                              DeckDAO deckDAO) {
+                              DeckDAO deckDAO) throws IOException {
 
         this.stage = stage;
         this.deck = deck;
@@ -51,6 +52,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
         editDeckViewController.setListener(this);
         editDeckViewController.setDeck(deck);
+
+        editFlashCardViewController = setEditFlashCard();
     }
 
 
@@ -78,6 +81,27 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.hideSelectedCardEditor();
 
         stage.show();
+    }
+
+    /* ====================================================================== */
+    /*                        Card Editor Setters                             */
+    /* ====================================================================== */
+
+    public EditFlashCardViewController setEditFlashCard() throws IOException {
+        URL resource = EditDeckViewController
+                .class
+                .getResource("EditFlashCardView.fxml");
+        FXMLLoader loader = new FXMLLoader(resource);
+
+        Node node = loader.load();
+
+        EditFlashCardViewController flashCardController = loader.getController();
+
+        flashCardController.setListener(this);
+
+        editDeckViewController.setEditFlashCard(node);
+
+        return  flashCardController;
     }
 
 
@@ -178,27 +202,13 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void cardPreviewClicked(Card card) throws IOException {
         editDeckViewController.setSelectedCard(card);
         editFlashCard(card);
-        //        editDeckViewController.loadSelectedCardEditor();
+        editFlashCardViewController.setCard(card);
+        editFlashCardViewController.loadSelectedCardEditor();
     }
 
-    @Override
+
     public void editFlashCard(Card card) throws IOException {
-        URL resource = EditDeckViewController
-                .class
-                .getResource("EditFlashCardView.fxml");
-        FXMLLoader loader = new FXMLLoader(resource);
-
-        Node node = loader.load();
-
-        EditFlashCardViewController flashCardController = loader.getController();
-
-        //TODO set text of sides of card (from flashCard)
-        flashCardController.setListener(this);
-        flashCardController.setCard(card);
-        flashCardController.loadSelectedCardEditor();
-
-        editDeckViewController.setEditFlashCard(node);
-
+        return;
     }
 
     @Override
