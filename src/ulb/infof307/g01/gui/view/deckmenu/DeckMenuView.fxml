@@ -6,33 +6,19 @@
 <?import javafx.scene.shape.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/17.0.2-ea"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController">
+<BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController">
 
     <!-- Search bar-->
     <top>
-        <HBox alignment="CENTER" spacing="-40">
-
+        <HBox alignment="CENTER">
             <!-- Search bar -->
-            <TextField fx:id="searchBar" onKeyReleased="#handleSearchDeckEvent"
-                       prefHeight="30" prefWidth="207"
-                       promptText="Rechercher des decks / tags"
-                       style="-fx-background-color: gray;" />
+            <StackPane alignment="CENTER_RIGHT">
+                <TextField fx:id="searchBar" onKeyReleased="#handleSearchDeckEvent" prefHeight="30" prefWidth="207" promptText="Rechercher des decks / tags" style="-fx-background-color: gray;" />
 
-            <!-- Search Button-->
-            <Button fx:id="searchButton" layoutY="5"
-                    onMouseClicked="#handleSearchDeckEvent" prefHeight="30" prefWidth="30"
-                    style="-fx-background-color: transparent;">
+                <Button fx:id="searchButton" layoutY="5" onMouseClicked="#handleSearchDeckEvent" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent;" />
 
-                <graphic>
-                    <FontIcon fx:id="searchIcon" iconLiteral="mdi2m-magnify" iconSize="30"
-                              onMouseClicked="#handleSearchDeckEvent"
-                              onMouseEntered="#handleSearchHover" onMouseExited="#handleSearchExit" />
-                </graphic>
-
-            </Button>
+                  <FontIcon fx:id="searchIcon" iconLiteral="mdi2m-magnify" iconSize="30" onMouseClicked="#handleSearchDeckEvent" onMouseEntered="#handleSearchHover" onMouseExited="#handleSearchExit" />
+            </StackPane>
         </HBox>
     </top>
 
@@ -44,30 +30,42 @@
                 <StackPane>
 
                     <!-- Create deck rectangle -->
-                    <Rectangle arcHeight="20" arcWidth="20" fill="lightgray"
-                               height="150" stroke="black"
-                               strokeDashArray="5" width="225"/>
+                    <Rectangle arcHeight="20" arcWidth="20" fill="lightgray" height="150" stroke="black" strokeDashArray="5" width="225" />
 
                     <VBox>
-                        <TextField fx:id="createDeckField" onAction="#handleCreateDeckClicked"
-                                   prefHeight="50" prefWidth="225" promptText="Entrez un nom de deck"
-                                   style="-fx-background-color: transparent;" />
+                        <TextField fx:id="createDeckField" onAction="#handleCreateDeckClicked" prefHeight="50" prefWidth="225" promptText="Entrez un nom de deck" style="-fx-background-color: transparent;" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                      <Button fx:id="createDeckButton" onMouseClicked="#handleCreateDeckClicked" prefHeight="100" prefWidth="115.0" style="-fx-background-color: transparent;">
 
-                        <Button fx:id="createDeckButton" layoutX="50" layoutY="50"
-                                onMouseClicked="#handleCreateDeckClicked" prefHeight="100" prefWidth="225"
-                                style="-fx-background-color: transparent;">
+                          <graphic>
+                              <FontIcon fx:id="createDeckIcon" iconLiteral="mdi2p-plus" iconSize="50" onMouseEntered="#handleCreateDeckHover" onMouseExited="#handleCreateDeckExit" />
+                          </graphic>
+                      </Button>
+                      <Button prefHeight="100" prefWidth="115.0"
+                              style="-fx-background-color: transparent;"
+                              onMouseClicked="#handleImportDeck">
 
-                            <graphic>
-                                <FontIcon fx:id="createDeckIcon" iconLiteral="mdi2p-plus" iconSize="50"
-                                          onMouseEntered="#handleCreateDeckHover" onMouseExited="#handleCreateDeckExit" />
-                            </graphic>
-                        </Button>
+                          <graphic>
+                              <FontIcon fx:id="importDeck"
+                                        iconLiteral="mdi2f-file-import"
+                                        iconSize="50"
+                                        onMouseEntered="#handleImportDeckHover"
+                                        onMouseExited="#handleImportDeckExit" />
+                          </graphic>
+                      </Button>
+                  </HBox>
                     </VBox>
 
                     <GridPane.margin>
-                        <Insets left="40.0" top="25.0"/>
+                        <Insets left="40.0" top="25.0" />
                     </GridPane.margin>
                 </StackPane>
+            <columnConstraints>
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
 
         </ScrollPane>

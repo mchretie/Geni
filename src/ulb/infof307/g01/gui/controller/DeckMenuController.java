@@ -1,5 +1,8 @@
 package ulb.infof307.g01.gui.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.JsonReader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
@@ -10,7 +13,10 @@ import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +70,16 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException, InterruptedException {
-        deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+        showDecks();
 
         mainWindowViewController.setDeckMenuViewVisible();
-//        mainWindowViewController.setEditCardViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
 
         stage.show();
+    }
+
+    private void showDecks() throws IOException, InterruptedException {
+        deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
     }
 
 
@@ -118,7 +127,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         try {
             deckDAO.saveDeck(new Deck(name));
-            deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+            showDecks();
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
@@ -143,10 +152,32 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
+    public void deckImported(File file) {
+        if (file == null)
+            return;
+
+        try {
+            JsonReader reader = new JsonReader(new FileReader(file));
+            Deck deck = new Gson().fromJson(reader, Deck.class);
+            deckDAO.saveDeck(deck);
+            showDecks();
+
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+
+        } catch (IOException e) {
+            controllerListener.fxmlLoadingError(e);
+
+        } catch (InterruptedException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
     public void deckRemoved(Deck deck) {
         try {
             deckDAO.deleteDeck(deck);
-            deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+            showDecks();
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
