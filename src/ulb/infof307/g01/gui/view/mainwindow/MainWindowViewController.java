@@ -86,6 +86,7 @@ public class MainWindowViewController {
     public ProfileViewController getProfileViewController() {
       return profileViewController;
     }
+
     public EditCardViewController getEditCardViewController() {
         return editCardViewController;
     }

@@ -54,7 +54,7 @@ public class MainFxController extends Application implements
   /*                            View Stack Attributes                       */
   /* ====================================================================== */
 
-  private enum View { DECK_MENU, PLAY_DECK, EDIT_DECK, HTML_EDITOR }
+  private enum View { DECK_MENU, PLAY_DECK, EDIT_DECK, HTML_EDITOR, PROFILE }
 
   List<View> viewStack = new ArrayList<>();
 
@@ -218,6 +218,7 @@ public class MainFxController extends Application implements
                     case PLAY_DECK -> playDeckController.show();
                     case EDIT_DECK -> editDeckController.show();
                     case HTML_EDITOR -> editCardController.show();
+                    case PROFILE -> profileController.show(); //ICI should never happen
                 }
             } catch (IOException | InterruptedException e) {
                 restartApplicationError(e);
@@ -264,7 +265,8 @@ public class MainFxController extends Application implements
 
           System.out.println("ICI#########");
           try {
-              profileController.show();
+            viewStack.add(View.PROFILE);
+            profileController.show();
           } catch (IOException e) {
               throw new RuntimeException(e);
           }
@@ -272,8 +274,10 @@ public class MainFxController extends Application implements
       @Override
       public void handleExitProfile(){
         try {
-          profileController.hide();
-        } catch (IOException e) {
+        //profileController.hide(
+          System.out.println("handleExitProfile");
+          deckMenuController.show();
+        } catch (InterruptedException | IOException e) {
           throw new RuntimeException(e);
         }
       };

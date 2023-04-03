@@ -60,6 +60,7 @@ public class ProfileViewController implements Initializable {
   /* ====================================================================== */
   /*                             Click handlers                             */
   /* ====================================================================== */
+
   @FXML
   private void exitProfileButton() {
     System.out.println("Profile clicked handler");

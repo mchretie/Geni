@@ -7,12 +7,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 
-public class ProfileController {
+public class ProfileController implements ProfileViewController.ViewListener {
 
   private final Stage stage;
 
@@ -39,7 +40,7 @@ public class ProfileController {
         mainWindowViewController.getProfileViewController();
 
     System.out.println(this.profileViewController);
-    // this.profileViewController.setListener(this);
+    this.profileViewController.setListener(this);
   }
 
   /* ====================================================================== */
@@ -59,13 +60,6 @@ public class ProfileController {
 
     ProfileViewController controller = loader.getController();
 
-    controller.setListener(new ProfileViewController.ViewListener() {
-      @Override
-      public void exitProfile() {
-        controllerListener.handleExitProfile();
-      }
-    });
-
     Parent root = loader.getRoot();
     stage.setScene(new Scene(root));
     stage.show();
@@ -76,7 +70,10 @@ public class ProfileController {
   /* ====================================================================== */
   /*                        View Listener Method                            */
   /* ====================================================================== */
-
+  @Override
+  public void exitProfile() {
+    controllerListener.handleExitProfile();
+  }
   /* ====================================================================== */
   /*                   Controller Listener Interface                        */
   /* ====================================================================== */
