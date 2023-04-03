@@ -8,7 +8,7 @@
 
     <StackPane fx:id="card" opacity="0.0" visible="false">
 
-        <TextField fx:id="cardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" opacity="0.0" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f12345; -fx-border-radius: 20px; -fx-background-radius: 20px; -fx-padding: 6px 10px; -fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;">
+        <TextField fx:id="cardText" alignment="CENTER" opacity="0.0" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f12345; -fx-border-radius: 20px; -fx-background-radius: 20px; -fx-padding: 6px 10px; -fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;">
          <font>
             <Font size="24.0" />
          </font></TextField>

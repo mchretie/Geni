@@ -30,7 +30,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
     private final EditFlashCardViewController editFlashCardViewController;
 
-//    private final EditQCMCardViewController editQCMCardViewController;
+    private final EditQCMCardViewController editQCMCardViewController;
 
     private final DeckDAO deckDAO;
 
@@ -58,7 +58,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         editDeckViewController.setDeck(deck);
 
         editFlashCardViewController = setEditFlashCard();
-//        editQCMCardViewController = setEditQCMCard();
+        editQCMCardViewController = setEditQCMCard();
     }
 
 
@@ -118,7 +118,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         Node node = loader.load();
 
         EditQCMCardViewController QCMCardController = loader.getController();
-//        QCMCardController.setListener(this);
+        QCMCardController.setListener(this);
         editDeckViewController.setCardEditors(node);
 
         return QCMCardController;
