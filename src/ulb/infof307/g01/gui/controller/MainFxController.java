@@ -78,6 +78,30 @@ public class MainFxController extends Application implements
 
 
     /* ====================================================================== */
+    /*                             View stack methods                         */
+    /* ====================================================================== */
+
+    private void showPreviousView() {
+
+        if (viewStack.size() == 1)
+            return;
+
+        try {
+            viewStack.remove(viewStack.size() - 1);
+            switch (viewStack.get(viewStack.size() - 1)) {
+                case DECK_MENU -> deckMenuController.show();
+                case PLAY_DECK -> playDeckController.show();
+                case EDIT_DECK -> editDeckController.show();
+                case HTML_EDITOR -> editCardController.show();
+            }
+
+        } catch (IOException | InterruptedException e) {
+            restartApplicationError(e);
+        }
+    }
+
+
+    /* ====================================================================== */
     /*                           Application Methods                          */
     /* ====================================================================== */
 
@@ -197,6 +221,7 @@ public class MainFxController extends Application implements
 
             viewStack.add(View.PLAY_DECK);
             playDeckController.show();
+
         } catch (EmptyDeckException e) {
             String title = "Paquet vide.";
             String description = "Le paquet que vous aviez ouvert est vide.";
@@ -221,6 +246,12 @@ public class MainFxController extends Application implements
         databaseModificationError(e);
     }
 
+    @Override
+    public void savedChanges() {
+        System.out.println("Saved changes");
+        showPreviousView();
+    }
+
 
     /* ====================================================================== */
     /*                   Navigation Listener Methods                          */
@@ -228,21 +259,7 @@ public class MainFxController extends Application implements
 
     @Override
     public void goBackClicked() {
-        // If there is no view to go back to, do nothing (shouldn't happen)
-        if (viewStack.size() == 1)
-            return;
-
-        try {
-            viewStack.remove(viewStack.size() - 1);
-            switch (viewStack.get(viewStack.size() - 1)) {
-                case DECK_MENU -> deckMenuController.show();
-                case PLAY_DECK -> playDeckController.show();
-                case EDIT_DECK -> editDeckController.show();
-                case HTML_EDITOR -> editCardController.show();
-            }
-        } catch (IOException | InterruptedException e) {
-            restartApplicationError(e);
-        }
+        showPreviousView();
     }
 
     @Override
