@@ -1,20 +1,16 @@
 package ulb.infof307.g01.server.handler;
 
+import static spark.Spark.*;
+import static ulb.infof307.g01.shared.constants.ServerPaths.*;
+
+import java.util.Map;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
-import java.util.Map;
-
-import static spark.Spark.*;
-
 @SuppressWarnings("FieldCanBeLocal")
 public class UserAccountHandler extends Handler {
-
-    private final String BASE_PATH     = "/api/user";
-    private final String REGISTER_PATH = "/register";
-    private final String LOGIN_PATH    = "/login";
 
     private final String AUTH_HEADER = "Authorization";
 
@@ -28,10 +24,10 @@ public class UserAccountHandler extends Handler {
 
     @Override
     public void init() {
-        path(BASE_PATH, () ->{
-            post(REGISTER_PATH, this::registerUser);
-            get(LOGIN_PATH, this::loginUser);
-        });
+      path(USER_BASE_PATH, () -> {
+        post(REGISTER_PATH, this::registerUser);
+        get(LOGIN_PATH, this::loginUser);
+      });
     }
 
     private Map<String, String> loginUser(Request request, Response response) {

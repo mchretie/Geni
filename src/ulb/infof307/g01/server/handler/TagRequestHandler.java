@@ -1,22 +1,16 @@
 package ulb.infof307.g01.server.handler;
 
-import spark.Request;
-import spark.Response;
+import static spark.Spark.*;
+import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
-
-import static spark.Spark.*;
+import spark.Request;
+import spark.Response;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class TagRequestHandler extends Handler {
-
-    private final String SAVE_TAG_PATH = "/api/tag/save";
-    private final String GET_TAG_PATH = "/api/tag/get";
-    private final String DELETE_TAG_PATH = "/api/tag/delete";
-    private final String GET_ALL_TAGS_PATH = "/api/tag/all";
-    private final String SEARCH_TAG_PATH = "/api/tag/search";
 
     @Override
     public void init() {
