@@ -11,13 +11,15 @@ import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditFlashCardViewController;
+import ulb.infof307.g01.gui.view.editdeck.EditQCMCardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
 import java.net.URL;
 
 public class EditDeckController implements EditDeckViewController.Listener,
-                                            EditFlashCardViewController.Listener {
+                                            EditFlashCardViewController.Listener,
+                                            EditQCMCardViewController.Listener{
 
     private final Stage stage;
 
@@ -27,6 +29,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
     private final EditDeckViewController editDeckViewController;
 
     private final EditFlashCardViewController editFlashCardViewController;
+
+//    private final EditQCMCardViewController editQCMCardViewController;
 
     private final DeckDAO deckDAO;
 
@@ -54,6 +58,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         editDeckViewController.setDeck(deck);
 
         editFlashCardViewController = setEditFlashCard();
+//        editQCMCardViewController = setEditQCMCard();
     }
 
 
@@ -78,7 +83,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
         }
 
         else
-            editDeckViewController.hideSelectedCardEditor();
+            editDeckViewController.hideFlashCardEditor();
+
         stage.show();
     }
 
@@ -98,9 +104,24 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
         flashCardController.setListener(this);
 
-        editDeckViewController.setEditFlashCard(node);
+        editDeckViewController.setCardEditors(node);
 
         return  flashCardController;
+    }
+
+    public EditQCMCardViewController setEditQCMCard() throws IOException {
+        URL resource = EditDeckViewController
+                .class
+                .getResource("EditQCMCardView.fxml");
+        FXMLLoader loader = new FXMLLoader(resource);
+
+        Node node = loader.load();
+
+        EditQCMCardViewController QCMCardController = loader.getController();
+//        QCMCardController.setListener(this);
+        editDeckViewController.setCardEditors(node);
+
+        return QCMCardController;
     }
 
 
@@ -133,7 +154,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void frontOfCardModified(Card card, String newFront) {
         try {
-            System.out.println("here");
             card.setFront(newFront);
             deckDAO.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
@@ -188,7 +208,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deck.removeCard(selectedCard);
             deckDAO.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
-//            editDeckViewController.hideSelectedCardEditor();
+            editDeckViewController.hideFlashCardEditor();
+            editDeckViewController.hideQCMCardEditor();
             if (deck.cardCount() != 0) {
                 cardPreviewClicked(deck.getLastCard());
             }

@@ -31,7 +31,7 @@ public class EditDeckViewController implements Initializable {
     private HBox cardTypeButtons;
 
     @FXML
-    private AnchorPane selectedCardBox;
+    private AnchorPane cardEditor;
 
     @FXML
     private AnchorPane anchor;
@@ -96,9 +96,10 @@ public class EditDeckViewController implements Initializable {
         }
     }
 
-    public void setEditFlashCard(Node node){
-        selectedCardBox.getChildren().add(node);
-        selectedCardBox.setVisible(false);
+    public void setCardEditors(Node node){
+        cardEditor.getChildren().add(node);
+        hideFlashCardEditor();
+        hideQCMCardEditor();
     }
 
     /* ====================================================================== */
@@ -145,7 +146,7 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleAddCardClicked() {
-        hideSelectedCardEditor();
+        hideFlashCardEditor();
         showCardTypeButtons();
     }
 
@@ -159,7 +160,7 @@ public class EditDeckViewController implements Initializable {
         if (cardIndex < 0)
             return;
 
-        selectedCardBox.setVisible(true);
+        showFlashCardEditor();
         selectedCard = deck.getCards().get(cardIndex);
 
         listener.cardPreviewClicked(selectedCard);
@@ -169,12 +170,15 @@ public class EditDeckViewController implements Initializable {
     private void handleFlashCardEdit(){
         listener.newCard(); //TODO newCard avec para flashCardEditor
         hideCardTypeButtons();
-        showSelectedCardEditor();
+        showFlashCardEditor();
     }
 
     @FXML
-    private void handleQCMCardEdit() {return; }
-
+    private void handleQCMCardEdit() {
+        listener.newCard(); //TODO newCard avec para QCMCardEditor
+        hideCardTypeButtons();
+        showQCMCardEditor();
+    }
 
     @FXML
     private void handleRemoveCardHover() {
@@ -200,11 +204,20 @@ public class EditDeckViewController implements Initializable {
 
     private void showCardTypeButtons() {cardTypeButtons.setVisible(true);}
 
-    public void hideSelectedCardEditor() {
-        selectedCardBox.getChildren().get(1).setVisible(false);
+    public void hideFlashCardEditor() {
+        cardEditor.getChildren().get(1).setVisible(false);
     }
-    public void showSelectedCardEditor() {
-        selectedCardBox.getChildren().get(1).setVisible(true);
+    public void showFlashCardEditor() {
+        cardEditor.getChildren().get(1).setVisible(true);
+    }
+
+    public void hideQCMCardEditor() {
+        return;
+//        cardEditor.getChildren().get(2).setVisible(false);
+    }
+    public void showQCMCardEditor() {
+        return;
+//        cardEditor.getChildren().get(2).setVisible(true);
     }
 
 

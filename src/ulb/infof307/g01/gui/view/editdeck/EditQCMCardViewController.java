@@ -14,18 +14,19 @@ public class EditQCMCardViewController {
     @FXML
     private TextField cardText;
 
-    @FXML
-    private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
-        if (!keyEvent.getCode().equals(KeyCode.ENTER))
-            return;
+    private Listener listener;
 
-        card.requestFocus();
+    /* ====================================================================== */
+    /*                                Setters                                 */
+    /* ====================================================================== */
+
+    public void setListener(EditQCMCardViewController.Listener listener) {
+        this.listener = listener;
     }
 
-
-/* ====================================================================== */
-/*                           Listener Interface                           */
-/* ====================================================================== */
+    /* ====================================================================== */
+    /*                           Listener Interface                           */
+    /* ====================================================================== */
 
     public interface Listener {
         void frontOfCardModified(Card card, String newFront);
