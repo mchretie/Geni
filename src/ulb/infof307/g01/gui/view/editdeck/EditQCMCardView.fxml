@@ -2,25 +2,19 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<VBox opacity="0.0" prefHeight="435.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditQCMCardViewController">
+<VBox prefHeight="435.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditQCMCardViewController" visible="false">
+   <children>
+      <TextField prefHeight="217.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px; -fx-padding: 6px 10px; -fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;" />
+      <GridPane prefHeight="43.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 
-    <StackPane fx:id="card" opacity="0.0" visible="false">
-
-        <TextField fx:id="cardText" alignment="CENTER" opacity="0.0" prefHeight="205.0" prefWidth="425.0" style="-fx-background-color: #f12345; -fx-border-radius: 20px; -fx-background-radius: 20px; -fx-padding: 6px 10px; -fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;">
-         <font>
-            <Font size="24.0" />
-         </font></TextField>
-    </StackPane>
-   <GridPane prefHeight="230.0" prefWidth="425.0">
-     <columnConstraints>
-       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-     </columnConstraints>
-     <rowConstraints>
-       <RowConstraints minHeight="10.0" prefHeight="30.0" />
-     </rowConstraints>
-   </GridPane>
-
+        </rowConstraints>
+      </GridPane>
+   </children>
 </VBox>

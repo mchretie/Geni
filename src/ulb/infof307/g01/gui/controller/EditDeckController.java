@@ -83,7 +83,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         }
 
         else
-            editDeckViewController.hideFlashCardEditor();
+            editDeckViewController.hideCardEditor();
 
         stage.show();
     }
@@ -208,8 +208,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deck.removeCard(selectedCard);
             deckDAO.saveDeck(deck);
             editDeckViewController.loadCardsFromDeck();
-            editDeckViewController.hideFlashCardEditor();
-            editDeckViewController.hideQCMCardEditor();
+            editDeckViewController.hideCardEditor();
             if (deck.cardCount() != 0) {
                 cardPreviewClicked(deck.getLastCard());
             }
