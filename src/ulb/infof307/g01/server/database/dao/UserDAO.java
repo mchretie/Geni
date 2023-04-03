@@ -15,18 +15,7 @@ public class UserDAO extends DAO {
         this.database = database;
     }
 
-    public boolean userExists(UUID userId) throws DatabaseException {
-        String sql = """
-                    SELECT *
-                    FROM user
-                    WHERE user_id = ?
-                """;
-
-        ResultSet res = database.executeQuery(sql, userId.toString());
-        return checkedNext(res);
-    }
-
-    public boolean usernameExists(String username) throws DatabaseException {
+    private boolean usernameExists(String username) throws DatabaseException {
         String sql = """
                     SELECT *
                     FROM user
@@ -38,7 +27,7 @@ public class UserDAO extends DAO {
         return checkedNext(res);
     }
 
-    public String getUserSaltKey(String username) throws DatabaseException {
+    private String getUserSaltKey(String username) throws DatabaseException {
         String sql = """
                 SELECT salt
                 FROM user
