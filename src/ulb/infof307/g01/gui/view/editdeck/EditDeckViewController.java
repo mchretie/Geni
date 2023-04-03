@@ -102,6 +102,10 @@ public class EditDeckViewController implements Initializable {
 
     public void setCardEditors(Node node){
         cardEditor.getChildren().add(node);
+        if (cardEditor.getChildren().size() == 3) {
+            flashCardEditor = cardEditor.getChildren().get(1);
+            QCMCardEditor = cardEditor.getChildren().get(2);
+        }
     }
 
     /* ====================================================================== */
@@ -167,6 +171,7 @@ public class EditDeckViewController implements Initializable {
         selectedCard = deck.getCards().get(cardIndex);
 
         listener.cardPreviewClicked(selectedCard);
+
     }
 
     @FXML
@@ -210,13 +215,13 @@ public class EditDeckViewController implements Initializable {
     }
 
     public void showFlashCardEditor() {
-        cardEditor.getChildren().get(1).setVisible(true);
-        cardEditor.getChildren().get(1).toFront();
+        flashCardEditor.setVisible(true);
+        flashCardEditor.toFront();
     }
 
     public void showQCMCardEditor() {
-        cardEditor.getChildren().get(2).setVisible(true);
-        cardEditor.getChildren().get(2).toFront();
+        QCMCardEditor.setVisible(true);
+        QCMCardEditor.toFront();
     }
 
     public void hideCardEditor(){
