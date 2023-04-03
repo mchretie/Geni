@@ -248,7 +248,6 @@ public class MainFxController extends Application implements
 
     @Override
     public void savedChanges() {
-        System.out.println("Saved changes");
         showPreviousView();
     }
 
