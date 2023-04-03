@@ -19,7 +19,7 @@ public class ProfileViewController implements Initializable {
 
   @FXML private VBox menuPane;
 
-  private Listener listener;
+  protected ViewListener listener;
 
   /* ====================================================================== */
   /*                              Initializer                               */
@@ -28,7 +28,7 @@ public class ProfileViewController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     // Set the menu pane to be initially hidden
-    menuPane.setTranslateX(200);
+    /*menuPane.setTranslateX(200);
 
     // Set up the button to toggle the menu pane
     rootPane.setOnMouseClicked(event -> {
@@ -45,25 +45,31 @@ public class ProfileViewController implements Initializable {
           transition.setToX(200);
         }
         transition.play();
+
       }
-    });
+    }); */
+    ;
   }
 
   /* ====================================================================== */
   /*                                Setters                                 */
   /* ====================================================================== */
 
-  public void setListener(Listener listener) { this.listener = listener; }
+  public void setListener(ViewListener listener) { this.listener = listener; }
 
   /* ====================================================================== */
   /*                             Click handlers                             */
   /* ====================================================================== */
-
+  @FXML
+  private void exitProfileButton() {
+    System.out.println("Profile clicked handler");
+    listener.exitProfile();
+  }
   /* ====================================================================== */
   /*                           Listener Interface                           */
   /* ====================================================================== */
 
-  public interface Listener {
-    //
+  public interface ViewListener {
+    void exitProfile();
   }
 }

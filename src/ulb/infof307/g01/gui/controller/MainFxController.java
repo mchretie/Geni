@@ -136,17 +136,6 @@ public class MainFxController extends Application implements
     }
   }
 
-  /*
-    @Override // ICI
-    public void profileClicked() {
-      // ICI
-      profileController =
-          new ProfileController(stage, mainWindowViewController, this);
-      System.out.println("ICI#########");
-      try {
-        profileController.show();
-      } catch (IOException e) {
-        throw new RuntimeException(e);}} */
   /**
    * For exceptions that indicate that the app cannot continue to
    * function properly
@@ -235,8 +224,6 @@ public class MainFxController extends Application implements
             }
           }
 
-
-
       @Override
       public void goToHomeClicked() {
         try {
@@ -267,10 +254,7 @@ public class MainFxController extends Application implements
           restartApplicationError(e);
         }
       }
-      //@FXML
-      // private void handleGoToProfileClicked(ActionEvent event) {
-      // logic to navigate to profile view
-      //}
+
       @Override
       public void handleProfileClicked() {
             System.out.println("wtf ####");
@@ -284,10 +268,13 @@ public class MainFxController extends Application implements
           } catch (IOException e) {
               throw new RuntimeException(e);
           }
-
       }
-      //@Override
-      // public void profileClicked() {
-      // handleGoToProfileClicked(null);
-      //}
+      @Override
+      public void handleExitProfile(){
+        try {
+          profileController.hide();
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      };
     }

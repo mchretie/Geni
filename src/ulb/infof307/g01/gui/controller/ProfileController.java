@@ -12,11 +12,12 @@ import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 
-public class ProfileController implements ProfileViewController.Listener {
+public class ProfileController {
 
   private final Stage stage;
 
-  private final MainWindowViewController mainWindowViewController;
+  // private final MainWindowViewController mainWindowViewController;
+
   private final ProfileViewController profileViewController;
 
   private final ControllerListener controllerListener;
@@ -30,13 +31,15 @@ public class ProfileController implements ProfileViewController.Listener {
                            ControllerListener controllerListener) {
 
     this.stage = stage;
-    this.mainWindowViewController = mainWindowViewController;
+    // this.mainWindowViewController = mainWindowViewController;
     this.controllerListener = controllerListener;
+
     System.out.println("initialisation de profileViewController");
     this.profileViewController =
         mainWindowViewController.getProfileViewController();
+
     System.out.println(this.profileViewController);
-    this.profileViewController.setListener(this);
+    // this.profileViewController.setListener(this);
   }
 
   /* ====================================================================== */
@@ -54,25 +57,32 @@ public class ProfileController implements ProfileViewController.Listener {
         ProfileViewController.class.getResource("ProfileView.fxml"));
     loader.load();
 
+    ProfileViewController controller = loader.getController();
+
+    controller.setListener(new ProfileViewController.ViewListener() {
+      @Override
+      public void exitProfile() {
+        controllerListener.handleExitProfile();
+      }
+    });
+
     Parent root = loader.getRoot();
     stage.setScene(new Scene(root));
     stage.show();
   }
 
+  public void hide() throws IOException { stage.hide(); }
+
   /* ====================================================================== */
   /*                        View Listener Method                            */
   /* ====================================================================== */
-
-  //@Override
-  // public void profileClicked() {
-  // controllerListener.profileClicked();
-  //}
 
   /* ====================================================================== */
   /*                   Controller Listener Interface                        */
   /* ====================================================================== */
 
   public interface ControllerListener {
-    void handleProfileClicked();
+
+    void handleExitProfile();
   }
 }

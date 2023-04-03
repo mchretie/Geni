@@ -10,6 +10,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.controller.EditCardController;
+import ulb.infof307.g01.gui.controller.ProfileController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
@@ -81,7 +82,6 @@ public class MainWindowViewController {
     public PlayDeckViewController getPlayDeckViewController() {
         return playDeckViewController;
     }
-
     // ICI
     public ProfileViewController getProfileViewController() {
       return profileViewController;
