@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
@@ -179,6 +180,11 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         try {
             JsonReader reader = new JsonReader(new FileReader(file));
             Deck deck = new Gson().fromJson(reader, Deck.class);
+
+            deck.setNewID();
+            for (Card card : deck.getCards())
+                card.setNewId();
+
             deckDAO.saveDeck(deck);
             showDecks();
 
@@ -211,6 +217,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             FileWriter fileWriter = new FileWriter(filePath);
 
             new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation()
                     .setPrettyPrinting()
                     .create()
                     .toJson(deck, Deck.class, fileWriter);
