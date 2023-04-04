@@ -1,5 +1,6 @@
 package ulb.infof307.g01.gui.controller;
 
+import com.google.gson.JsonSyntaxException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -194,6 +195,14 @@ public class MainFxController extends Application implements
         communicateError(e, message);
     }
 
+    private void failedDeckImportError(JsonSyntaxException e) {
+        String message = "L'importation du deck a échouée, " +
+                "veuillez vérifiez que le fichier est bien un fichier " +
+                ".json.";
+
+        communicateError(e, message);
+    }
+
 
     /* ====================================================================== */
     /*                     Controller Listener Methods                        */
@@ -257,6 +266,11 @@ public class MainFxController extends Application implements
     @Override
     public void failedExport(IOException e) {
         failedDeckExportError(e);
+    }
+
+    @Override
+    public void failedImport(JsonSyntaxException e) {
+        failedDeckImportError(e);
     }
 
     @Override

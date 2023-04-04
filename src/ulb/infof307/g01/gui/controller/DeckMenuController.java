@@ -148,28 +148,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void deckImported(File file) {
-        if (file == null)
-            return;
-
-        try {
-            JsonReader reader = new JsonReader(new FileReader(file));
-            Deck deck = new Gson().fromJson(reader, Deck.class);
-            deckDAO.saveDeck(deck);
-            showDecks();
-
-        } catch (JsonSyntaxException e) {
-            e.printStackTrace();
-
-        } catch (IOException e) {
-            controllerListener.fxmlLoadingError(e);
-
-        } catch (InterruptedException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-    @Override
     public void deckRemoved(Deck deck) {
         try {
             deckDAO.deleteDeck(deck);
@@ -191,6 +169,28 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void editDeckClicked(Deck deck) {
         controllerListener.editDeckClicked(deck);
+    }
+
+    @Override
+    public void deckImported(File file) {
+        if (file == null)
+            return;
+
+        try {
+            JsonReader reader = new JsonReader(new FileReader(file));
+            Deck deck = new Gson().fromJson(reader, Deck.class);
+            deckDAO.saveDeck(deck);
+            showDecks();
+
+        } catch (JsonSyntaxException e) {
+            controllerListener.failedImport(e);
+
+        } catch (IOException e) {
+            controllerListener.fxmlLoadingError(e);
+
+        } catch (InterruptedException e) {
+            controllerListener.savingError(e);
+        }
     }
 
     @Override
@@ -234,5 +234,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         void fxmlLoadingError(IOException e);
         void savingError(Exception e);
         void failedExport(IOException e);
+        void failedImport(JsonSyntaxException e);
     }
 }
