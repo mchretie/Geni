@@ -186,6 +186,14 @@ public class MainFxController extends Application implements
         communicateError(e, message);
     }
 
+    private void failedDeckExportError(Exception e) {
+        String message = "L'exportation de votre deck a échoué "
+                + "veuillez réessayer. Si le problème persiste, "
+                + "redémarrez l’application";
+
+        communicateError(e, message);
+    }
+
 
     /* ====================================================================== */
     /*                     Controller Listener Methods                        */
@@ -244,6 +252,11 @@ public class MainFxController extends Application implements
     @Override
     public void savingError(Exception e) {
         databaseModificationError(e);
+    }
+
+    @Override
+    public void failedExport(IOException e) {
+        failedDeckExportError(e);
     }
 
     @Override

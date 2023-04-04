@@ -218,6 +218,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             fileWriter.flush();
 
         } catch (IOException e) {
+            controllerListener.failedExport(e);
             e.printStackTrace();
         }
     }
@@ -232,5 +233,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         void playDeckClicked(Deck deck);
         void fxmlLoadingError(IOException e);
         void savingError(Exception e);
+        void failedExport(IOException e);
     }
 }
