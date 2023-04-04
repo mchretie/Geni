@@ -201,12 +201,21 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         try {
 
             String fileName
-                    = file.getAbsoluteFile()
-                        + "/"
-                        + deck.getName().replace(" ", "") + ".json";
+                    = deck.getName()
+                          .replace(" ", "_")
+                          .toLowerCase();
 
-            new Gson()
-                    .toJson(deck, new FileWriter(fileName));
+            String filePath
+                    = file.getAbsoluteFile() + "/" + fileName + ".json";
+
+            FileWriter fileWriter = new FileWriter(filePath);
+
+            new GsonBuilder()
+                    .setPrettyPrinting()
+                    .create()
+                    .toJson(deck, Deck.class, fileWriter);
+
+            fileWriter.flush();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -220,11 +229,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     public interface ControllerListener {
         void editDeckClicked(Deck deck);
-
         void playDeckClicked(Deck deck);
-
         void fxmlLoadingError(IOException e);
-
         void savingError(Exception e);
     }
 }
