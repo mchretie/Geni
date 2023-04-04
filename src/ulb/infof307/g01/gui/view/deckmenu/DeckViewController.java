@@ -4,18 +4,22 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
 
+import java.io.File;
 import java.net.URL;
 
 public class DeckViewController {
+
+    @FXML
+    private StackPane homeDeckPane;
 
     @FXML
     private Button playDeckButton;
@@ -106,6 +110,20 @@ public class DeckViewController {
         listener.deckRemoved(deck);
     }
 
+    @FXML
+    private void handleShareDeckClicked() {
+        final DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose a directory to share your deck");
+
+        File file = directoryChooser.showDialog(
+                        homeDeckPane.getParent()
+                                    .getScene()
+                                    .getWindow()
+                    );
+
+        listener.shareDeckClicked(deck, file);
+    }
+
 
     /* ====================================================================== */
     /*                             Hover handlers                             */
@@ -150,5 +168,6 @@ public class DeckViewController {
         void deckRemoved(Deck deck);
         void deckDoubleClicked(Deck deck);
         void editDeckClicked(Deck deck);
+        void shareDeckClicked(Deck deck, File file);
     }
 }

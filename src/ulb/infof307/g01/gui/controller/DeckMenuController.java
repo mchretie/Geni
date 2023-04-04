@@ -1,7 +1,6 @@
 package ulb.infof307.g01.gui.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,10 +12,7 @@ import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -195,6 +191,24 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void editDeckClicked(Deck deck) {
         controllerListener.editDeckClicked(deck);
+    }
+
+    @Override
+    public void shareDeckClicked(Deck deck, File file) {
+        if (file == null || !file.isDirectory())
+            return;
+
+        try {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+            String fileName = file.getAbsoluteFile() + "/" + deck.getName() + ".json";
+            FileWriter fileWriter = new FileWriter(fileName);
+
+            gson.toJson(deck, fileWriter);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
