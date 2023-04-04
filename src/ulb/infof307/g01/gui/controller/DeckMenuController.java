@@ -199,12 +199,14 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             return;
 
         try {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-            String fileName = file.getAbsoluteFile() + "/" + deck.getName() + ".json";
-            FileWriter fileWriter = new FileWriter(fileName);
+            String fileName
+                    = file.getAbsoluteFile()
+                        + "/"
+                        + deck.getName().replace(" ", "") + ".json";
 
-            gson.toJson(deck, fileWriter);
+            new Gson()
+                    .toJson(deck, new FileWriter(fileName));
 
         } catch (IOException e) {
             e.printStackTrace();
