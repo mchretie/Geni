@@ -51,7 +51,6 @@
         </Button>
 
         <Button layoutX="180" onMouseClicked="#handleRemoveCardClicked" prefHeight="50.0" prefWidth="54.0" style="-fx-background-color: transparent;">
-
             <graphic>
                 <FontIcon fx:id="removeCardIcon" iconLiteral="mdi2t-trash-can-outline" iconSize="25" onMouseEntered="#handleRemoveCardHover" onMouseExited="#handleRemoveCardHoverExit" wrappingWidth="25.0" />
             </graphic>

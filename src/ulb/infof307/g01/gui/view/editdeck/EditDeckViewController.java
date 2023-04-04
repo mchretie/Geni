@@ -167,11 +167,12 @@ public class EditDeckViewController implements Initializable {
             return;
 
         hideCardEditor();
+
+        //TODO check type of card to show the good card editor
         showFlashCardEditor();
         selectedCard = deck.getCards().get(cardIndex);
 
         listener.cardPreviewClicked(selectedCard);
-
     }
 
     @FXML
@@ -225,10 +226,9 @@ public class EditDeckViewController implements Initializable {
     }
 
     public void hideCardEditor(){
-        cardEditor.getChildren().get(1).setVisible(false);
-        cardEditor.getChildren().get(2).setVisible(false);
+        flashCardEditor.setVisible(false);
+        QCMCardEditor.setVisible(false);
         cardTypeButtons.setVisible(false);
-
     }
 
 
