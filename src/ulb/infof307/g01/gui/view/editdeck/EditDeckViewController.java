@@ -10,6 +10,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -17,16 +18,22 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.scene.web.WebView;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.Tag;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EditDeckViewController implements Initializable {
+
     @FXML
     private HBox cardTypeButtons;
 
@@ -36,6 +43,8 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private AnchorPane anchor;
 
+    @FXML
+    private TextField backCardText;
     @FXML
     private TextField deckNameText;
 
@@ -60,6 +69,9 @@ public class EditDeckViewController implements Initializable {
 
     private Node flashCardEditor;
 
+    @FXML
+    private Button imageUploader;
+
     private Deck deck;
     private Card selectedCard;
 
@@ -71,6 +83,10 @@ public class EditDeckViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) handleBackEdit();
+        });
+
         deckNameText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleUpdateDeckName();
         });
@@ -109,25 +125,29 @@ public class EditDeckViewController implements Initializable {
     }
 
     /* ====================================================================== */
-    /*                         Tags, Card, deck loading                       */
+    /*                              Card Editor                               */
     /* ====================================================================== */
 
-    public void loadCardsFromDeck() {
+    public void showCards() {
         ObservableList<String> list = FXCollections.observableArrayList();
         cardsContainer.setItems(list);
 
         cardsContainer.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        for (Card card : deck)
-            list.add(card.getFront());
+        for (Card card : deck){
+            Document doc = Jsoup.parse(card.getFront());
+            Element body = doc.body();
+            list.add(body.text());
+        }
 
         cardsContainer.refresh();
     }
 
-    public void loadTagsFromDeck(){
-        tagsBox.getChildren().clear();
-        for (Tag tag: deck.getTags()) { addTagToView(tag.getName(), tag.getColor()); }
-    }
+
+
+    /* ====================================================================== */
+    /*                                 Tags                                   */
+    /* ====================================================================== */
 
     private void addTagToView(String text, String color) {
         StackPane tagPane = new StackPane();
@@ -145,6 +165,31 @@ public class EditDeckViewController implements Initializable {
         tagsBox.getChildren().add(tagPane);
     }
 
+    public void showTags() {
+        tagsBox.getChildren().clear();
+        deck.getTags()
+                .forEach(tag -> addTagToView(tag.getName(), tag.getColor()));
+    }
+
+    @FXML
+    private void handleTagAdded(KeyEvent event) {
+        if (event.getCode() != KeyCode.ENTER
+                || tagsInput.getText().trim().isEmpty())
+            return;
+
+        String tagText = tagsInput.getText().trim();
+        tagsInput.clear();
+
+        // TODO: Ability to choose a color
+        Color color
+                = Color.color(Math.random(), Math.random(), Math.random());
+
+        String colorString
+                = color.toString().replace("0x", "#");
+
+        listener.tagAddedToDeck(deck, tagText, colorString);
+    }
+
 
     /* ====================================================================== */
     /*                             Click handlers                             */
@@ -157,12 +202,15 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
-    private void handleRemoveCardClicked() { listener.removeCard(selectedCard);}
+    private void handleRemoveCardClicked() {
+        listener.removeCard(selectedCard);
+    }
 
     @FXML
-    private void handleCardPreviewClicked() throws IOException {
+    private void handleCardPreviewClicked() {
 
         int cardIndex = cardsContainer.getSelectionModel().getSelectedIndex();
+
         if (cardIndex < 0)
             return;
 
@@ -190,6 +238,18 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
+    private void handleUploadImageClicked() {
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
+        listener.uploadImage(file.toURI().toString());
+    }
+
+
+    /* ====================================================================== */
+    /*                             Hover handlers                             */
+    /* ====================================================================== */
+
+    @FXML
     private void handleRemoveCardHover() {
         removeCardIcon.setIconColor(Color.web("#FFFFFF"));
     }
@@ -209,6 +269,25 @@ public class EditDeckViewController implements Initializable {
         addCardIcon.setIconColor(Color.web("#000000"));
     }
 
+    @FXML
+    private void handleColorPickerHover() {
+        colorPicker.setStyle("-fx-background-color: #aad0b3");
+    }
+
+    @FXML
+    private void handleColorPickerExit() {
+        colorPicker.setStyle("-fx-background-color: #5ab970");
+    }
+
+    @FXML
+    private void handleUploadImageHover() {
+        imageUploader.setStyle("-fx-background-color: #aad0b3");
+    }
+
+    @FXML
+    private void handleUploadImageExit() {
+        imageUploader.setStyle("-fx-background-color: #5ab970");
+    }
 
     private void showCardTypeButtons() {
         cardTypeButtons.setVisible(true);
@@ -241,27 +320,18 @@ public class EditDeckViewController implements Initializable {
         listener.deckNameModified(deckNameText.getText());
     }
 
+
     @FXML
-    private void handleTagAdded(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            Color color = Color.color(Math.random(), Math.random(), Math.random());
-            String colorStr = color.toString().replace("0x", "#");
-
-            String tagText = tagsInput.getText();
-
-            if (!deck.tagExists(tagText)) {
-                addTagToView(tagText, colorStr);
-                tagsInput.setText("");
-
-                listener.tagAddedToDeck(deck, tagText, colorStr);
-            }
-        }
+    private void handleBackEdit() {
+        listener.backOfCardModified(selectedCard, backCardText.getText());
     }
 
+
     @FXML
-    public void handleColorButtonClicked(ActionEvent actionEvent) {
+    public void handleColorButtonClicked() {
         listener.deckColorModified(deck, colorPicker.getValue());
     }
+
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -270,9 +340,12 @@ public class EditDeckViewController implements Initializable {
     public interface Listener {
         void deckNameModified(String newName);
         void tagAddedToDeck(Deck deck, String tagName, String color);
+        void frontOfCardModified(Card card, String newFront);
+        void backOfCardModified(Card card, String newBack);
         void deckColorModified(Deck deck, Color color);
         void newCard();
         void removeCard(Card selectedCard);
-        void cardPreviewClicked(Card card) throws IOException;
+        void cardPreviewClicked(Card card);
+        void uploadImage(String filePath);
     }
 }

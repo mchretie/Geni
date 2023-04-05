@@ -9,30 +9,64 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
-import ulb.infof307.g01.model.User;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main class of the application which initializes the main view using the main view handler and loads a menu view.
  */
-public class MainFxController extends Application implements MainWindowViewController.NavigationListener,
-                                                                DeckMenuController.ControllerListener,
-                                                                PlayDeckController.ControllerListener,
-                                                                EditDeckController.ControllerListener {
+public class MainFxController extends Application implements
+        MainWindowViewController.NavigationListener,
+        DeckMenuController.ControllerListener,
+        PlayDeckController.ControllerListener,
+        EditDeckController.ControllerListener,
+        EditCardController.ControllerListener {
+
+    /* ====================================================================== */
+    /*                          Attribute: Controllers                        */
+    /* ====================================================================== */
 
     private DeckMenuController deckMenuController;
-    private MainWindowViewController mainWindowViewController;
+    private EditDeckController editDeckController;
     private PlayDeckController playDeckController;
+    private EditCardController editCardController;
+
+
+    private MainWindowViewController mainWindowViewController;
+
+    /* ====================================================================== */
+    /*                              DAO Attributes                            */
+    /* ====================================================================== */
 
     private final UserDAO userDAO = new UserDAO();
     private final DeckDAO deckDAO = new DeckDAO();
 
-    private Stage stage;
 
+    /* ====================================================================== */
+    /*                            View Stack Attributes                       */
+    /* ====================================================================== */
+
+    private enum View {
+        DECK_MENU,
+        PLAY_DECK,
+        EDIT_DECK,
+        HTML_EDITOR
+    }
+
+    List<View> viewStack = new ArrayList<>();
+
+
+    /* ====================================================================== */
+    /*                             Stage Attributes                           */
+    /* ====================================================================== */
+
+    Stage stage;
 
     /* ====================================================================== */
     /*                                  Main                                  */
@@ -40,6 +74,30 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     public static void main(String[] args) {
         launch();
+    }
+
+
+    /* ====================================================================== */
+    /*                             View stack methods                         */
+    /* ====================================================================== */
+
+    private void showPreviousView() {
+
+        if (viewStack.size() == 1)
+            return;
+
+        try {
+            viewStack.remove(viewStack.size() - 1);
+            switch (viewStack.get(viewStack.size() - 1)) {
+                case DECK_MENU -> deckMenuController.show();
+                case PLAY_DECK -> playDeckController.show();
+                case EDIT_DECK -> editDeckController.show();
+                case HTML_EDITOR -> editCardController.show();
+            }
+
+        } catch (IOException | InterruptedException e) {
+            restartApplicationError(e);
+        }
     }
 
 
@@ -58,8 +116,8 @@ public class MainFxController extends Application implements MainWindowViewContr
         userDAO.login("guest", "guest");
 
         URL resource = MainWindowViewController
-                            .class
-                            .getResource("MainWindowView.fxml");
+                .class
+                .getResource("MainWindowView.fxml");
 
         FXMLLoader fxmlLoader = new FXMLLoader(resource);
 
@@ -82,6 +140,7 @@ public class MainFxController extends Application implements MainWindowViewContr
                     deckDAO,
                     userDAO);
 
+            viewStack.add(View.DECK_MENU);
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
@@ -96,8 +155,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     /**
      * Used to communicate errors that require the user to restart
-     *  the application
-     *
+     * the application
      */
     private void communicateError(Exception e, String messageToUser) {
         mainWindowViewController.alertError(e.toString(), messageToUser);
@@ -105,8 +163,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     /**
      * For exceptions that indicate that the app cannot continue to
-     *  function properly
-     *
+     * function properly
      */
     private void restartApplicationError(Exception e) {
         communicateError(e, "Veuillez redémarrer l'application.");
@@ -115,7 +172,6 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     /**
      * For when windows other than the main window fail to launch
-     *
      */
     private void returnToMenuError(Exception e) {
         communicateError(e, "Vous reviendrez au menu principal.");
@@ -123,13 +179,12 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     /**
      * For when changes to components (Decks, cards, etc.) fail to be saved in
-     *  the db
-     *
+     * the db
      */
     private void databaseModificationError(Exception e) {
         String message = "Vos modifications n’ont pas été enregistrées, "
-                            + "veuillez réessayer. Si le problème persiste, "
-                            + "redémarrez l’application";
+                + "veuillez réessayer. Si le problème persiste, "
+                + "redémarrez l’application";
 
         communicateError(e, message);
     }
@@ -143,13 +198,14 @@ public class MainFxController extends Application implements MainWindowViewContr
     public void editDeckClicked(Deck deck) {
 
         try {
-            EditDeckController editDeckController
+            editDeckController
                     = new EditDeckController(stage,
-                                                deck,
-                                                mainWindowViewController,
-                                                this,
-                                                deckDAO);
+                    deck,
+                    mainWindowViewController,
+                    this,
+                    deckDAO);
 
+            viewStack.add(View.EDIT_DECK);
             editDeckController.show();
 
         } catch (IOException e) {
@@ -166,14 +222,21 @@ public class MainFxController extends Application implements MainWindowViewContr
                     mainWindowViewController,
                     this);
 
+            viewStack.add(View.PLAY_DECK);
             playDeckController.show();
-        }
 
-        catch (EmptyDeckException e) {
+        } catch (EmptyDeckException e) {
             String title = "Paquet vide.";
             String description = "Le paquet que vous aviez ouvert est vide.";
             mainWindowViewController.alertInformation(title, description);
         }
+    }
+
+    @Override
+    public void editCardClicked(Deck deck, Card card) {
+        editCardController = new EditCardController(stage, deck, card, deckDAO, mainWindowViewController, this);
+        editCardController.show();
+        viewStack.add(View.HTML_EDITOR);
     }
 
     @Override
@@ -186,6 +249,11 @@ public class MainFxController extends Application implements MainWindowViewContr
         databaseModificationError(e);
     }
 
+    @Override
+    public void savedChanges() {
+        showPreviousView();
+    }
+
 
     /* ====================================================================== */
     /*                   Navigation Listener Methods                          */
@@ -193,12 +261,7 @@ public class MainFxController extends Application implements MainWindowViewContr
 
     @Override
     public void goBackClicked() {
-        try {
-            deckMenuController.show();
-
-        } catch (IOException | InterruptedException e) {
-            restartApplicationError(e);
-        }
+        showPreviousView();
     }
 
     @Override

@@ -21,20 +21,44 @@ public class EditDeckController implements EditDeckViewController.Listener,
                                             EditFlashCardViewController.Listener,
                                             EditQCMCardViewController.Listener{
 
-    private final Stage stage;
+    /* ====================================================================== */
+    /*                             Model Attributes                           */
+    /* ====================================================================== */
 
     private final Deck deck;
 
+
+    /* ====================================================================== */
+    /*                         Controller Listener                            */
+    /* ====================================================================== */
+
+    private final ControllerListener controllerListener;
+
+
+    /* ====================================================================== */
+    /*                        View Controller References                      */
+    /* ====================================================================== */
+
     private final MainWindowViewController mainWindowViewController;
     private final EditDeckViewController editDeckViewController;
-
     private final EditFlashCardViewController editFlashCardViewController;
-
     private final EditQCMCardViewController editQCMCardViewController;
+
+
+    /* ====================================================================== */
+    /*                             Dao Attributes                             */
+    /* ====================================================================== */
+
 
     private final DeckDAO deckDAO;
 
-    private final ControllerListener controllerListener;
+
+    /* ====================================================================== */
+    /*                             Stage Attributes                           */
+    /* ====================================================================== */
+
+    private final Stage stage;
+
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -75,8 +99,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
         mainWindowViewController.setEditDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
-        editDeckViewController.loadTagsFromDeck();
-        editDeckViewController.loadCardsFromDeck();
+        editDeckViewController.showTags();
+        editDeckViewController.showCards();
 
         if (deck.cardCount() > 0) {
             editDeckViewController.setSelectedCard(deck.getFirstCard());
@@ -143,7 +167,12 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void tagAddedToDeck(Deck deck, String tagName, String color) {
         try {
+            if (tagName.trim().isEmpty() || deck.tagExists(tagName))
+                return;
+
             deck.addTag(new Tag(tagName, color));
+
+            editDeckViewController.showTags();
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
@@ -156,7 +185,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         try {
             card.setFront(newFront);
             deckDAO.saveDeck(deck);
-            editDeckViewController.loadCardsFromDeck();
+            editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
@@ -168,7 +197,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         try {
             card.setBack(newBack);
             deckDAO.saveDeck(deck);
-            editDeckViewController.loadCardsFromDeck();
+            editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
@@ -192,9 +221,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deck.addCard(new Card("Avant", "Arrière"));
             deckDAO.saveDeck(deck);
 
-            editDeckViewController.loadCardsFromDeck();
+            editDeckViewController.showCards();
             editDeckViewController.setSelectedCard(deck.getLastCard());
-
             cardPreviewClicked(deck.getLastCard());
 
         } catch (InterruptedException | IOException e) {
@@ -207,7 +235,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         try {
             deck.removeCard(selectedCard);
             deckDAO.saveDeck(deck);
-            editDeckViewController.loadCardsFromDeck();
+            editDeckViewController.showCards();
             editDeckViewController.hideCardEditor();
             if (deck.cardCount() != 0) {
                 cardPreviewClicked(deck.getLastCard());
@@ -219,13 +247,22 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void cardPreviewClicked(Card card) throws IOException {
+    public void cardPreviewClicked(Card card) {
         editDeckViewController.setSelectedCard(card);
 
         editFlashCardViewController.setCard(card);
         editFlashCardViewController.loadSelectedCardEditor();
     }
 
+    @Override
+    public void uploadImage(String filePath) {
+        System.out.println(filePath);
+    }
+
+    @Override
+    public void editCardClicked(Card selectedCard) {
+        controllerListener.editCardClicked(deck, selectedCard);
+    }
 
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */
@@ -233,5 +270,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
     public interface ControllerListener {
         void savingError(Exception e);
+
+        void editCardClicked(Deck deck, Card card);
     }
 }
