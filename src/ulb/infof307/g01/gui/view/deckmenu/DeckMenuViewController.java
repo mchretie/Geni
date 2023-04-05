@@ -6,15 +6,21 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.File;
 import java.util.List;
 
 public class DeckMenuViewController {
 
+
+    @FXML
+    private BorderPane borderPane;
     @FXML
     private GridPane gridPane;
 
@@ -28,6 +34,8 @@ public class DeckMenuViewController {
     private FontIcon searchIcon;
     @FXML
     private FontIcon createDeckIcon;
+    @FXML
+    private FontIcon importDeck;
 
     private Listener listener;
 
@@ -136,6 +144,14 @@ public class DeckMenuViewController {
         listener.searchDeckClicked(searchBar.getText());
     }
 
+    @FXML
+    private void handleImportDeck() {
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(borderPane.getScene().getWindow());
+
+        listener.deckImported(file);
+    }
+
     /* ====================================================================== */
     /*                             Hover handlers                             */
     /* ====================================================================== */
@@ -160,6 +176,16 @@ public class DeckMenuViewController {
         createDeckIcon.setIconColor(Color.web("#000000"));
     }
 
+    @FXML
+    private void handleImportDeckHover() {
+        importDeck.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    private void handleImportDeckExit() {
+        importDeck.setIconColor(Color.web("#000000"));
+    }
+
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -168,5 +194,6 @@ public class DeckMenuViewController {
     public interface Listener {
         void createDeckClicked(String name);
         void searchDeckClicked(String name);
+        void deckImported(File file);
     }
 }

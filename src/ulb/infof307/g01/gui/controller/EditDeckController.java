@@ -219,7 +219,6 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
     public interface ControllerListener {
         void savingError(Exception e);
-
         void editCardClicked(Deck deck, Card card);
     }
 }

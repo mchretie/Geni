@@ -30,8 +30,8 @@
          </Button>
 
          <!-- Share deck button -->
-         <Button prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
-
+         <Button fx:id="shareDeckButton" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;"
+                 onMouseClicked="#handleShareDeckClicked">
             <graphic>
                <FontIcon fx:id="shareDeckIcon" iconLiteral="mdi2s-share" iconSize="25" onMouseEntered="#handleHoverShareDeck" onMouseExited="#handleHoverShareDeckExit" />
             </graphic>

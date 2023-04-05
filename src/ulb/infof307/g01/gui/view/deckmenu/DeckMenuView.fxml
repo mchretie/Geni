@@ -27,6 +27,8 @@
             </Button>
         </HBox>
     </top>
+
+    <!-- Deck grid -->
     <center>
         <ScrollPane fitToHeight="true" fitToWidth="true" vbarPolicy="ALWAYS">
             <GridPane fx:id="gridPane" alignment="CENTER">
@@ -56,15 +58,31 @@
                             style="-fx-background-color: transparent;">
 
                         <graphic>
-                            <FontIcon fx:id="createDeckIcon" iconLiteral="mdi2p-plus" iconSize="50"
-                                      onMouseEntered="#handleCreateDeckHover" onMouseExited="#handleCreateDeckExit"/>
+                            <FontIcon fx:id="createDeckIcon"
+                                      iconLiteral="mdi2p-plus"
+                                      iconSize="50"
+                                      onMouseEntered="#handleCreateDeckHover"
+                                      onMouseExited="#handleCreateDeckExit"/>
                         </graphic>
                     </Button>
+                    <Button prefHeight="100" prefWidth="115.0"
+                            style="-fx-background-color: transparent;"
+                            onMouseClicked="#handleImportDeck">
+
+                        <graphic>
+                              <FontIcon fx:id="importDeck"
+                                        iconLiteral="mdi2f-file-import"
+                                        iconSize="50"
+                                        onMouseEntered="#handleImportDeckHover"
+                                        onMouseExited="#handleImportDeckExit" />
+                          </graphic>
+                      </Button>
+                    </VBox>
+
                     <GridPane.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
                     </GridPane.margin>
-                </VBox>
-            </GridPane>
+        </GridPane>
         </ScrollPane>
     </center>
 </BorderPane>

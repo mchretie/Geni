@@ -9,9 +9,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.*;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
+
+import java.io.File;
+import java.net.URL;
 
 public class DeckViewController {
 
@@ -119,6 +127,20 @@ public class DeckViewController {
         listener.deckRemoved(deck);
     }
 
+    @FXML
+    private void handleShareDeckClicked() {
+        final DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose a directory to share your deck");
+
+        File file = directoryChooser.showDialog(
+                stackPane.getParent()
+                                    .getScene()
+                                    .getWindow()
+                    );
+
+        listener.shareDeckClicked(deck, file);
+    }
+
 
     /* ====================================================================== */
     /*                             Hover handlers                             */
@@ -163,5 +185,6 @@ public class DeckViewController {
         void deckRemoved(Deck deck);
         void deckDoubleClicked(Deck deck);
         void editDeckClicked(Deck deck);
+        void shareDeckClicked(Deck deck, File file);
     }
 }
