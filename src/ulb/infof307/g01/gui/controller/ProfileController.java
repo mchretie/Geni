@@ -17,7 +17,7 @@ public class ProfileController implements ProfileViewController.ViewListener {
 
   private final Stage stage;
 
-  // private final MainWindowViewController mainWindowViewController;
+  private final MainWindowViewController mainWindowViewController;
 
   private final ProfileViewController profileViewController;
 
@@ -32,7 +32,7 @@ public class ProfileController implements ProfileViewController.ViewListener {
                            ControllerListener controllerListener) {
 
     this.stage = stage;
-    // this.mainWindowViewController = mainWindowViewController;
+    this.mainWindowViewController = mainWindowViewController;
     this.controllerListener = controllerListener;
 
     System.out.println("initialisation de profileViewController");
@@ -53,7 +53,12 @@ public class ProfileController implements ProfileViewController.ViewListener {
    * @throws IOException if FXMLLoader.load() fails
    */
   public void show() throws IOException {
+    System.out.println("showing profile");
+
+    mainWindowViewController.setProfileViewVisible();
+    mainWindowViewController.makeGoBackIconVisible();
     // Todo :  tests
+    /*
     FXMLLoader loader = new FXMLLoader(
         ProfileViewController.class.getResource("ProfileView.fxml"));
     loader.load();
@@ -61,7 +66,7 @@ public class ProfileController implements ProfileViewController.ViewListener {
     ProfileViewController controller = loader.getController();
 
     Parent root = loader.getRoot();
-    stage.setScene(new Scene(root));
+    stage.setScene(new Scene(root));*/
     stage.show();
   }
 

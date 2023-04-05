@@ -43,6 +43,9 @@ public class MainWindowViewController {
     @FXML
     private AnchorPane editCardView;
 
+    // ICI
+    @FXML private AnchorPane profileView;
+
     @FXML
     private DeckMenuViewController deckMenuViewController;
     @FXML
@@ -82,6 +85,7 @@ public class MainWindowViewController {
     public PlayDeckViewController getPlayDeckViewController() {
         return playDeckViewController;
     }
+
     // ICI
     public ProfileViewController getProfileViewController() {
       return profileViewController;
@@ -136,6 +140,8 @@ public class MainWindowViewController {
         setAllInvisibleExcept(editCardView);
     }
 
+    // ICI
+    public void setProfileViewVisible() { setAllInvisibleExcept(profileView); }
 
     /* ====================================================================== */
     /*                          Icon Visibility                               */

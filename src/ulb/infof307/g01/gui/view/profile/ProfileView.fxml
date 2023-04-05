@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ulb.infof307.g01.gui.view.profile.ProfileViewController">
+   <VBox layoutX="14.0" layoutY="78.0" prefHeight="20.0" prefWidth="351.0" style="-fx-background-color: #f0f0f0;">
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.profile.ProfileViewController">
-   <children>
-      <Pane layoutX="386.0" prefHeight="400.0" prefWidth="213.0">
-         <children>
-            <Button fx:id="exitProfileButton" mnemonicParsing="false" layoutX="26.0" layoutY="345.0"
-                    onMouseClicked="#exitProfileButton"  text="Back">
-            </Button>
-            <Label layoutX="39.0" layoutY="37.0" prefHeight="16.0" prefWidth="131.0" text="Profile" />
-         </children>
-      </Pane>
-   </children>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="72.0" prefHeight="16.0" prefWidth="131.0" text="Profile" textAlignment="CENTER" />
+      <PasswordField alignment="CENTER" layoutX="215.0" layoutY="200.0" promptText="Password" />
+      <TextField alignment="CENTER" layoutX="215.0" layoutY="136.0" promptText="User Name" />
+   </VBox>
+
 </AnchorPane>

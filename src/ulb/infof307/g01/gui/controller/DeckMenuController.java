@@ -64,13 +64,14 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException, InterruptedException {
-        deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+      System.out.println("DeckMenuController.show()");
+      deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
 
-        mainWindowViewController.setDeckMenuViewVisible();
-//        mainWindowViewController.setEditCardViewVisible();
-        mainWindowViewController.makeGoBackIconInvisible();
+      mainWindowViewController.setDeckMenuViewVisible();
+      //        mainWindowViewController.setEditCardViewVisible();
+      mainWindowViewController.makeGoBackIconInvisible();
 
-        stage.show();
+      stage.show();
     }
 
 

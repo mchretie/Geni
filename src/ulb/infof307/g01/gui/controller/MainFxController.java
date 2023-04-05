@@ -102,6 +102,7 @@ public class MainFxController extends Application implements
           stage, this, mainWindowViewController, deckDAO, userDAO);
 
       viewStack.add(View.DECK_MENU);
+      System.out.println("showing deck menu on startup");
       deckMenuController.show();
 
     } catch (IOException | InterruptedException e) {
@@ -128,6 +129,7 @@ public class MainFxController extends Application implements
           new PlayDeckController(stage, deck, mainWindowViewController, this);
 
       viewStack.add(View.PLAY_DECK);
+      System.out.println("showing play deck");
       playDeckController.show();
     } catch (EmptyDeckException e) {
       String title = "Paquet vide.";
@@ -176,6 +178,7 @@ public class MainFxController extends Application implements
           stage, deck, mainWindowViewController, this, deckDAO);
 
       viewStack.add(View.EDIT_DECK);
+      System.out.println("showing edit deck");
       editDeckController.show();
 
     } catch (IOException e) {
@@ -187,6 +190,7 @@ public class MainFxController extends Application implements
   public void editCardClicked(Deck deck, Card card) {
     editCardController = new EditCardController(stage, deck, card, deckDAO,
                                                 mainWindowViewController, this);
+    System.out.println("showing edit card");
     editCardController.show();
     viewStack.add(View.HTML_EDITOR);
   }
@@ -212,6 +216,7 @@ public class MainFxController extends Application implements
       return;
 
     try {
+      System.out.println("go back clicked");
       viewStack.remove(viewStack.size() - 1);
       switch (viewStack.get(viewStack.size() - 1)) {
                     case DECK_MENU -> deckMenuController.show();

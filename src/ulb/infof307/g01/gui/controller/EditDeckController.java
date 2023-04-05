@@ -59,21 +59,22 @@ public class EditDeckController implements EditDeckViewController.Listener {
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException {
-        mainWindowViewController.setEditDeckViewVisible();
-        mainWindowViewController.makeGoBackIconVisible();
+      System.out.println("initialisation de editDeckViewController");
+      mainWindowViewController.setEditDeckViewVisible();
+      mainWindowViewController.makeGoBackIconVisible();
 
-        editDeckViewController.loadTagsFromDeck();
-        editDeckViewController.loadCardsFromDeck();
+      editDeckViewController.loadTagsFromDeck();
+      editDeckViewController.loadCardsFromDeck();
 
-        if (deck.cardCount() > 0) {
-            editDeckViewController.setSelectedCard(deck.getFirstCard());
-            editDeckViewController.loadSelectedCardEditor();
-        }
+      if (deck.cardCount() > 0) {
+        editDeckViewController.setSelectedCard(deck.getFirstCard());
+        editDeckViewController.loadSelectedCardEditor();
+      }
 
-        else
-            editDeckViewController.hideSelectedCardEditor();
+      else
+        editDeckViewController.hideSelectedCardEditor();
 
-        stage.show();
+      stage.show();
     }
 
 
