@@ -227,7 +227,7 @@ public class MainFxController extends Application implements
 
         } catch (EmptyDeckException e) {
             String title = "Paquet vide.";
-            String description = "Le paquet que vous aviez ouvert est vide.";
+            String description = "Le paquet que vous avez ouvert est vide.";
             mainWindowViewController.alertInformation(title, description);
         }
     }
