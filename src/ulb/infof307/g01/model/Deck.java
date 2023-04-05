@@ -115,6 +115,7 @@ public class Deck implements Iterable<Card> {
 
     public DeckMetadata getMetadata() {
         return new DeckMetadata(id,
+                                name,
                                 color,
                                 cards.size(),
                                 tags,
