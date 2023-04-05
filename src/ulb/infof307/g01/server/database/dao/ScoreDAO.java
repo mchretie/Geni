@@ -25,9 +25,9 @@ public class ScoreDAO extends DAO {
                 """;
 
         database.executeUpdate(sql,
-                score.getUserId(),
-                score.getTimestamp().getTime(),
-                score.getDeckId(),
+                score.getUserId().toString(),
+                Long.toString(score.getTimestamp().getTime()),
+                score.getDeckId().toString(),
                 score.getScore());
     }
 
@@ -43,14 +43,14 @@ public class ScoreDAO extends DAO {
         }
     }
 
-    public List<Score> getScoreFromDeckId(String deckId) throws DatabaseException {
+    public List<Score> getScoreFromDeckId(UUID deckId) throws DatabaseException {
         String sql = """
                 SELECT *
                 FROM user_deck_score
-                WHERE deckId = ?
+                WHERE deck_id = ?
                 """;
 
-        ResultSet res = database.executeQuery(sql, deckId);
+        ResultSet res = database.executeQuery(sql, deckId.toString());
         try {
             List<Score> scores = new ArrayList<>();
             while (res.next()) {
@@ -62,14 +62,14 @@ public class ScoreDAO extends DAO {
         }
     }
 
-    public List<Score> getScoreFromUserId(String userId) throws DatabaseException {
+    public List<Score> getScoreFromUserId(UUID userId) throws DatabaseException {
         String sql = """
                 SELECT *
                 FROM user_deck_score
-                WHERE userId = ?
+                WHERE user_id = ?
                 """;
 
-        ResultSet res = database.executeQuery(sql, userId);
+        ResultSet res = database.executeQuery(sql, userId.toString());
         try {
             List<Score> scores = new ArrayList<>();
             while (res.next()) {
