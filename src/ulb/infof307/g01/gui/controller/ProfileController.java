@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
@@ -23,17 +24,21 @@ public class ProfileController implements ProfileViewController.ViewListener {
 
   private final ControllerListener controllerListener;
 
+  private final UserDAO userDAO;
+
   /* ====================================================================== */
   /*                              Constructor                               */
   /* ====================================================================== */
 
   public ProfileController(Stage stage,
                            MainWindowViewController mainWindowViewController,
-                           ControllerListener controllerListener) {
+                           ControllerListener controllerListener,
+                           UserDAO userDAO) {
 
     this.stage = stage;
     this.mainWindowViewController = mainWindowViewController;
     this.controllerListener = controllerListener;
+    this.userDAO = userDAO;
 
     System.out.println("initialisation de profileViewController");
     this.profileViewController =
@@ -79,6 +84,17 @@ public class ProfileController implements ProfileViewController.ViewListener {
   public void exitProfile() {
     controllerListener.handleExitProfile();
   }
+  @Override
+  public void loginClicked() {
+    System.out.println("login clicked");
+    // Todo :  tests
+    // userDAO.login("test", "test");
+    // get information from the text fields
+    // String pswd = this.passwordField.getText();
+    // String username = this.usernameField.getText();
+    // use dao to login
+  }
+
   /* ====================================================================== */
   /*                   Controller Listener Interface                        */
   /* ====================================================================== */

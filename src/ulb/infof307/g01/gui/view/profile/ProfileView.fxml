@@ -6,11 +6,11 @@
 <AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;"
             xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ulb.infof307.g01.gui.view.profile.ProfileViewController">
-   <VBox layoutX="14.0" layoutY="78.0" prefHeight="20.0" prefWidth="351.0" style="-fx-background-color: #f0f0f0;">
-
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="235.0" layoutY="72.0" prefHeight="16.0" prefWidth="131.0" text="Profile" textAlignment="CENTER" />
-      <PasswordField alignment="CENTER" layoutX="215.0" layoutY="200.0" promptText="Password" />
-      <TextField alignment="CENTER" layoutX="215.0" layoutY="136.0" promptText="User Name" />
-   </VBox>
+   <children>
+      <Label alignment="CENTER" layoutX="380.0" layoutY="155.0" text="Profile" textAlignment="CENTER" />
+      <TextField fx:id="usernameField" layoutX="315.0" layoutY="214.0" promptText="User Name" />
+      <PasswordField fx:id="passwordField" layoutX="315.0" layoutY="276.0" promptText="Password" />
+      <Button fx:id="loginButton" layoutX="374.0" layoutY="335.0" mnemonicParsing="false" text="Login" onMouseClicked="#handleLoginClicked"/>
+   </children>
 
 </AnchorPane>

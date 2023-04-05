@@ -266,7 +266,7 @@ public class MainFxController extends Application implements
             System.out.println("wtf ####");
 
           profileController =
-                  new ProfileController(stage, mainWindowViewController, this);
+                  new ProfileController(stage, mainWindowViewController, this, userDAO);
 
           System.out.println("ICI#########");
           try {

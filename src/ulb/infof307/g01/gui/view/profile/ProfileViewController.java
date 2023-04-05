@@ -1,23 +1,22 @@
 package ulb.infof307.g01.gui.view.profile;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.util.Duration;
-import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
-import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.Deck;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+;
 
 public class ProfileViewController implements Initializable {
 
-  @FXML private BorderPane rootPane;
+  @FXML private TextField usernameField;
 
-  @FXML private VBox menuPane;
+  @FXML private PasswordField passwordField;
+
+  @FXML private Button loginButton;
 
   protected ViewListener listener;
 
@@ -62,15 +61,22 @@ public class ProfileViewController implements Initializable {
   /* ====================================================================== */
 
   @FXML
-  private void exitProfileButton() {
-    System.out.println("Profile clicked handler");
-    listener.exitProfile();
+  private void handleLoginClicked() {
+    System.out.println("handle Login clicked");
+    loginClicked();
+    // get information from the text fields
+    String pswd = this.passwordField.getText();
+    String username = this.usernameField.getText();
+    // use dao to login
   }
+
   /* ====================================================================== */
   /*                           Listener Interface                           */
   /* ====================================================================== */
 
   public interface ViewListener {
     void exitProfile();
+    // ICI
+    void loginClicked();
   }
 }
