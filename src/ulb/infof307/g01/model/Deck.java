@@ -86,6 +86,14 @@ public class Deck implements Iterable<Card> {
     public void setColor(String color) { this.color = color; }
     public String getColor() { return color; }
 
+    public DeckMetadata getMetadata() {
+        return new DeckMetadata(id,
+                                color,
+                                cards.size(),
+                                tags,
+                                hashCode());
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
