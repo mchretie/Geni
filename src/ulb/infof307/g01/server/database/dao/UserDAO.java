@@ -46,7 +46,7 @@ public class UserDAO extends DAO {
         if (!usernameExists(username))
             return false;
 
-        User user = new User(username, password, getUserSaltKey(username));
+        User user = new User(UUID.fromString(getUserId(username)) , username, password, getUserSaltKey(username));
 
         String sql = """
                 SELECT *
@@ -66,7 +66,6 @@ public class UserDAO extends DAO {
             return false;
 
         User user = new User(username, password);
-        UUID user_id = UUID.randomUUID();
 
         String sql = """
                 INSERT INTO user (user_id, username, password, salt)
@@ -74,7 +73,7 @@ public class UserDAO extends DAO {
                 """;
 
         database.executeUpdate(sql,
-                               user_id.toString(),
+                               user.getUserId().toString(),
                                user.getUsername(),
                                user.getPassword(),
                                user.getSaltString());
