@@ -5,7 +5,6 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.view.editdeck.EditFlashCardViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
@@ -18,8 +17,8 @@ import java.io.IOException;
 import java.net.URL;
 
 public class EditDeckController implements EditDeckViewController.Listener,
-                                            EditFlashCardViewController.Listener,
-                                            EditQCMCardViewController.Listener{
+                                           EditFlashCardViewController.Listener,
+                                           EditQCMCardViewController.Listener {
 
     /* ====================================================================== */
     /*                             Model Attributes                           */
@@ -48,7 +47,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
     /* ====================================================================== */
     /*                             Dao Attributes                             */
     /* ====================================================================== */
-
 
     private final DeckDAO deckDAO;
 
@@ -147,6 +145,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
         return QCMCardController;
     }
+
 
 
     /* ====================================================================== */

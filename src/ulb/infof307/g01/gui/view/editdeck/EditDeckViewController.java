@@ -2,14 +2,9 @@ package ulb.infof307.g01.gui.view.editdeck;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -28,7 +23,6 @@ import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -36,13 +30,16 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private HBox cardTypeButtons;
-
     @FXML
     private AnchorPane cardEditor;
-
+    @FXML
+    private StackPane frontCard;
+    @FXML
+    private StackPane backCard;
     @FXML
     private AnchorPane anchor;
-
+    @FXML
+    private WebView frontCardWebView;
     @FXML
     private TextField backCardText;
     @FXML
@@ -65,12 +62,15 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private ColorPicker colorPicker;
 
-    private Node QCMCardEditor;
-
-    private Node flashCardEditor;
+    @FXML
+    public FontIcon frontCardEditIcon;
 
     @FXML
     private Button imageUploader;
+
+    private Node QCMCardEditor;
+
+    private Node flashCardEditor;
 
     private Deck deck;
     private Card selectedCard;
@@ -83,9 +83,9 @@ public class EditDeckViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) handleBackEdit();
-        });
+//        backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
+//            if (!newValue) handleBackEdit();
+//        });
 
         deckNameText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleUpdateDeckName();
@@ -124,6 +124,8 @@ public class EditDeckViewController implements Initializable {
         }
     }
 
+
+
     /* ====================================================================== */
     /*                              Card Editor                               */
     /* ====================================================================== */
@@ -133,7 +135,6 @@ public class EditDeckViewController implements Initializable {
         cardsContainer.setItems(list);
 
         cardsContainer.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
         for (Card card : deck){
             Document doc = Jsoup.parse(card.getFront());
             Element body = doc.body();
@@ -143,6 +144,21 @@ public class EditDeckViewController implements Initializable {
         cardsContainer.refresh();
     }
 
+//    private void loadCardEditor(Card card) {
+//        frontCardWebView.getEngine().loadContent(card.getFront());
+//        backCardText.setText(card.getBack());
+//        frontCard.setVisible(true);
+//        backCard.setVisible(true);
+//    }
+//
+//    public void loadSelectedCardEditor() {
+//        loadCardEditor(selectedCard);
+//    }
+//
+//    public void hideSelectedCardEditor() {
+//        frontCard.setVisible(false);
+//        backCard.setVisible(false);
+//    }
 
 
     /* ====================================================================== */
@@ -175,6 +191,7 @@ public class EditDeckViewController implements Initializable {
     private void handleTagAdded(KeyEvent event) {
         if (event.getCode() != KeyCode.ENTER
                 || tagsInput.getText().trim().isEmpty())
+
             return;
 
         String tagText = tagsInput.getText().trim();
@@ -208,19 +225,23 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleCardPreviewClicked() {
-
         int cardIndex = cardsContainer.getSelectionModel().getSelectedIndex();
 
         if (cardIndex < 0)
             return;
 
         hideCardEditor();
-
         //TODO check type of card to show the good card editor
         showFlashCardEditor();
         selectedCard = deck.getCards().get(cardIndex);
-
         listener.cardPreviewClicked(selectedCard);
+    }
+
+    @FXML
+    private void handleUploadImageClicked() {
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
+        listener.uploadImage(file.toURI().toString());
     }
 
     @FXML
@@ -237,11 +258,26 @@ public class EditDeckViewController implements Initializable {
         showQCMCardEditor();
     }
 
-    @FXML
-    private void handleUploadImageClicked() {
-        final FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
-        listener.uploadImage(file.toURI().toString());
+
+    private void showCardTypeButtons() {
+        cardTypeButtons.setVisible(true);
+        cardTypeButtons.toFront();
+    }
+
+    public void showFlashCardEditor() {
+        flashCardEditor.setVisible(true);
+        flashCardEditor.toFront();
+    }
+
+    public void showQCMCardEditor() {
+        QCMCardEditor.setVisible(true);
+        QCMCardEditor.toFront();
+    }
+
+    public void hideCardEditor(){
+        flashCardEditor.setVisible(false);
+        QCMCardEditor.setVisible(false);
+        cardTypeButtons.setVisible(false);
     }
 
 
@@ -289,27 +325,6 @@ public class EditDeckViewController implements Initializable {
         imageUploader.setStyle("-fx-background-color: #5ab970");
     }
 
-    private void showCardTypeButtons() {
-        cardTypeButtons.setVisible(true);
-        cardTypeButtons.toFront();
-    }
-
-    public void showFlashCardEditor() {
-        flashCardEditor.setVisible(true);
-        flashCardEditor.toFront();
-    }
-
-    public void showQCMCardEditor() {
-        QCMCardEditor.setVisible(true);
-        QCMCardEditor.toFront();
-    }
-
-    public void hideCardEditor(){
-        flashCardEditor.setVisible(false);
-        QCMCardEditor.setVisible(false);
-        cardTypeButtons.setVisible(false);
-    }
-
 
     /* ====================================================================== */
     /*                            Modified text                               */
@@ -320,17 +335,48 @@ public class EditDeckViewController implements Initializable {
         listener.deckNameModified(deckNameText.getText());
     }
 
-
-    @FXML
-    private void handleBackEdit() {
-        listener.backOfCardModified(selectedCard, backCardText.getText());
-    }
-
-
+//    @FXML
+//    private void handleFrontEdit() {
+//        String newFront
+//                = frontCardWebView.getEngine()
+//                .executeScript("document.body.innerHTML")
+//                .toString();
+//
+//        listener.frontOfCardModified(selectedCard, newFront);
+//    }
+//
+//    @FXML
+//    private void handleBackEdit() {
+//        listener.backOfCardModified(selectedCard, backCardText.getText());
+//    }
+//
+//    @FXML
+//    private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
+//        if (!keyEvent.getCode().equals(KeyCode.ENTER))
+//            return;
+//
+//        anchor.requestFocus();
+//    }
+//
     @FXML
     public void handleColorButtonClicked() {
         listener.deckColorModified(deck, colorPicker.getValue());
     }
+//
+//    @FXML
+//    private void handleFrontCardEditHover() {
+//        frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
+//    }
+//
+//    @FXML
+//    private void handleFrontCardEditHoverExit() {
+//        frontCardEditIcon.setIconColor(Color.web("#000000"));
+//    }
+//
+//    @FXML
+//    private void handleFrontEditClicked() {
+//        listener.editCardClicked(selectedCard);
+//    }
 
 
     /* ====================================================================== */
@@ -340,12 +386,11 @@ public class EditDeckViewController implements Initializable {
     public interface Listener {
         void deckNameModified(String newName);
         void tagAddedToDeck(Deck deck, String tagName, String color);
-        void frontOfCardModified(Card card, String newFront);
-        void backOfCardModified(Card card, String newBack);
         void deckColorModified(Deck deck, Color color);
         void newCard();
         void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card);
+        void editCardClicked(Card selectedCard);
         void uploadImage(String filePath);
     }
 }

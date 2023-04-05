@@ -7,13 +7,13 @@
 
 <?import javafx.scene.web.WebView?>
 <?import javafx.scene.shape.Rectangle?>
-
 <AnchorPane fx:id="anchor" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;"
             xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ulb.infof307.g01.gui.view.editdeck.EditDeckViewController">
 
     <!-- Deck name -->
-    <TextField fx:id="deckNameText" alignment="CENTER" onKeyReleased="#handleUpdateDeckName" style="-fx-background-color: #00000000;" text="Deck Name">
+    <TextField fx:id="deckNameText" alignment="CENTER" onKeyReleased="#handleUpdateDeckName"
+               style="-fx-background-color: #00000000;" text="Deck Name">
 
         <font>
             <Font name="System Italic" size="28.0"/>
@@ -71,16 +71,36 @@
         </Button>
     </HBox>
 
+    <!-- Card -->
+<!--    <StackPane fx:id="frontCard" layoutX="400.0" layoutY="77.0" visible="false">-->
+<!--        <StackPane prefHeight="205.0"-->
+<!--                   prefWidth="425.0">-->
+<!--            <Rectangle stroke="gray" strokeWidth="2" fill="#f0f0f0" arcHeight="20" arcWidth="20" width="425.0"-->
+<!--                       height="205.0"/>-->
+<!--            <WebView fx:id="frontCardWebView" onKeyPressed="#handleTextFieldKeyPressed" maxHeight="180.0"-->
+<!--                     maxWidth="420.0" translateY="8"/>-->
+<!--            <Button translateY="-92" translateX="192" prefHeight="49.0" prefWidth="53.0"-->
+<!--                    style="-fx-background-color: transparent;" onMousePressed="#handleFrontEditClicked">-->
+<!--                <graphic>-->
+<!--                    <FontIcon fx:id="frontCardEditIcon" iconLiteral="mdi2p-pencil" iconSize="22"-->
+<!--                              onMouseEntered="#handleFrontCardEditHover" onMouseExited="#handleFrontCardEditHoverExit"-->
+<!--                              wrappingWidth="25.0"/>-->
+<!--                </graphic>-->
+<!--            </Button>-->
+<!--        </StackPane>-->
+<!--    </StackPane>-->
 
-    <HBox layoutY="545.0" prefHeight="55.0" prefWidth="850.0"/>
+<!--    <StackPane fx:id="backCard" layoutX="400.0" layoutY="310.0" visible="false">-->
 
-                 onMouseEntered="#handleColorPickerHover" onMouseExited="#handleColorPickerExit" prefHeight="38.0"
-                 prefWidth="144.0" style="-fx-background-color: #5ab970;"/>
+<!--        <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0"-->
+<!--                   prefWidth="425.0"-->
+<!--                   style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px;">-->
 
-    <Button fx:id="imageUploader" layoutX="637.0" layoutY="14.0" mnemonicParsing="false"
-            onAction="#handleUploadImageClicked" onMouseEntered="#handleUploadImageHover"
-            onMouseExited="#handleUploadImageExit" prefHeight="38.0" prefWidth="146.0"
-            style="-fx-background-color: #5ab970;" text="Upload image"/>
+<!--            <font>-->
+<!--                <Font size="24.0"/>-->
+<!--            </font>-->
+<!--        </TextField>-->
+<!--    </StackPane>-->
 
     <!-- Card Editor -->
     <AnchorPane fx:id="cardEditor" layoutX="372.0" layoutY="78.0" prefHeight="435.0" prefWidth="425.0">
@@ -93,6 +113,14 @@
             </HBox>
         </children></AnchorPane>
 
-   <ColorPicker fx:id="colorPicker" layoutX="365.0" layoutY="14.0" onAction="#handleColorButtonClicked" />
+
+    <HBox layoutY="545.0" prefHeight="55.0" prefWidth="850.0"/>
+    <ColorPicker fx:id="colorPicker" layoutX="437.0" layoutY="14.0" onAction="#handleColorButtonClicked"
+                 onMouseEntered="#handleColorPickerHover" onMouseExited="#handleColorPickerExit" prefHeight="38.0"
+                 prefWidth="144.0" style="-fx-background-color: #5ab970;"/>
+    <Button fx:id="imageUploader" layoutX="637.0" layoutY="14.0" mnemonicParsing="false"
+            onAction="#handleUploadImageClicked" onMouseEntered="#handleUploadImageHover"
+            onMouseExited="#handleUploadImageExit" prefHeight="38.0" prefWidth="146.0"
+            style="-fx-background-color: #5ab970;" text="Upload image"/>
 
 </AnchorPane>

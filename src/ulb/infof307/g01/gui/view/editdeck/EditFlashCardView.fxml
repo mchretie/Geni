@@ -3,30 +3,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import org.kordamp.ikonli.javafx.*?>
-
-<?import javafx.scene.web.WebView?>
-<?import javafx.scene.shape.Rectangle?>
-
 
 <VBox fx:id="CardsSidesBox" prefHeight="435.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditFlashCardViewController" visible="false">
 
-    <StackPane fx:id="frontCard" layoutX="400.0" layoutY="77.0" visible="false">
-        <StackPane prefHeight="205.0"
-                   prefWidth="425.0">
-            <Rectangle stroke="gray" strokeWidth="2" fill="#f0f0f0" arcHeight="20" arcWidth="20" width="425.0"
-                       height="205.0"/>
-            <WebView fx:id="frontCardWebView" onKeyPressed="#handleTextFieldKeyPressed" maxHeight="180.0"
-                     maxWidth="420.0" translateY="8"/>
-            <Button translateY="-92" translateX="192" prefHeight="49.0" prefWidth="53.0"
-                    style="-fx-background-color: transparent;" onMousePressed="#handleFrontEditClicked">
-                <graphic>
-                    <FontIcon fx:id="frontCardEditIcon" iconLiteral="mdi2p-pencil" iconSize="22"
-                              onMouseEntered="#handleFrontCardEditHover" onMouseExited="#handleFrontCardEditHoverExit"
-                              wrappingWidth="25.0"/>
-                </graphic>
-            </Button>
-        </StackPane>
+    <StackPane fx:id="frontCard" visible="true">
+
+        <TextField fx:id="frontCardText" alignment="CENTER" onKeyPressed="#handleFrontEdit" prefHeight="219.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px; -fx-padding: 6px 10px; -fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;">
+
+            <font>
+                <Font size="24.0" />
+            </font>
+        </TextField>
     </StackPane>
 
     <StackPane fx:id="backCard" visible="true">
