@@ -1,12 +1,16 @@
 package ulb.infof307.g01.model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.UUID;
 import java.util.Objects;
 
 public class Tag {
-    private String name;
+    @Expose
     private final UUID id;
-
+    @Expose
+    private String name;
+    @Expose
     private final String color;
 
     public Tag(String name) {

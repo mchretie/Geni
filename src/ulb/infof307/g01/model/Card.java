@@ -1,13 +1,19 @@
 package ulb.infof307.g01.model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.UUID;
 import java.util.Objects;
 
 public class Card {
-    private final UUID id;
     private UUID deckId;
+    private UUID id;
+
+    @Expose
     private String front;
+    @Expose
     private String back;
+    @Expose
     private KnowledgeLevel knowledge;
 
     public enum KnowledgeLevel {
@@ -54,6 +60,9 @@ public class Card {
     public UUID getId() { return id; }
     public UUID getDeckId() { return deckId; }
 
+    public void setNewId() {
+        this.id = UUID.randomUUID();
+    }
     public void setFront(String front) { this.front = front; }
     public void setBack(String back) { this.back = back; }
     public void setDeckId(UUID deckId) { this.deckId = deckId; }

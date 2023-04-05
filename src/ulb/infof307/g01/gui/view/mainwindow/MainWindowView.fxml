@@ -59,7 +59,6 @@
             <fx:include fx:id="editDeckView" source="../editdeck/EditDeckView.fxml"/>
             <fx:include fx:id="deckMenuView" source="../deckmenu/DeckMenuView.fxml"/>
             <fx:include fx:id="playDeckView" source="../playdeck/PlayDeckView.fxml"/>
-            <fx:include fx:id="editCardView" source="../editcard/EditCardView.fxml"/>
         </StackPane>
     </center>
 
