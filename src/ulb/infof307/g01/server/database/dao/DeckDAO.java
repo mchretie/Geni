@@ -59,6 +59,16 @@ public class DeckDAO extends DAO {
                                                   deck.getName()));
     }
 
+    public boolean deckNameExists(String name) {
+        String sql = """
+                SELECT name
+                FROM deck
+                WHERE name = ?
+                """;
+
+        return checkedNext(database.executeQuery(sql, name));
+    }
+
     public boolean deckNameExists(String name, UUID userId) {
         String sql = """
                 SELECT name
