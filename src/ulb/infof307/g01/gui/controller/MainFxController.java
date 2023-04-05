@@ -274,6 +274,16 @@ public class MainFxController extends Application implements
     }
 
     @Override
+    public void invalidDeckName(String name, char c) {
+        String title = "Nom de paquet invalide.";
+        String description = "Le nom de paquet que vous avez entré est invalide. "
+                + "Veuillez entrer un nom de paquet qui ne contient pas le "
+                + "caractère " + c + ".";
+
+        mainWindowViewController.alertInformation(title, description);
+    }
+
+    @Override
     public void savedChanges() {
         showPreviousView();
     }

@@ -15,6 +15,10 @@ public class DeckDAO extends HttpDAO {
     /*                               DAO methods                              */
     /* ====================================================================== */
 
+    public boolean deckExists(String deckName) throws IOException, InterruptedException {
+        return !searchDecks(deckName).isEmpty();
+    }
+
     public List<Deck> getAllDecks()
             throws IOException, InterruptedException {
 
@@ -41,7 +45,9 @@ public class DeckDAO extends HttpDAO {
             return getAllDecks();
 
         HttpResponse<String> response
-                = get(ServerPaths.SEARCH_DECKS_PATH + "?name=" + deckName);
+                = get(ServerPaths.SEARCH_DECKS_PATH
+                            + "?name="
+                            + deckName.replace(" ", "_"));
 
         checkResponseCode(response.statusCode());
 

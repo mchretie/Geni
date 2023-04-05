@@ -119,8 +119,17 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void createDeckClicked(String name) {
 
+        String bannedCharacters = "!\"#$%&()*+,./:;<=>?@[\\]^_`{}~";
+
         if (name.isEmpty())
             return;
+
+        for (char c : bannedCharacters.toCharArray()) {
+            if (name.contains(String.valueOf(c))) {
+                controllerListener.invalidDeckName(name, c);
+                return;
+            }
+        }
 
         try {
             deckDAO.saveDeck(new Deck(name));
@@ -185,7 +194,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             for (Card card : deck.getCards())
                 card.setNewId();
 
+            assignNameIfExists(deck);
             deckDAO.saveDeck(deck);
+
             showDecks();
 
         } catch (JsonSyntaxException e) {
@@ -196,6 +207,29 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         } catch (InterruptedException e) {
             controllerListener.savingError(e);
+        }
+    }
+
+    /**
+     * Assigns a name to the deck if it already exists. The name will be
+     *  the same as the original name with a number in parentheses.
+     *
+     * @param deck the deck to assign a name to
+     */
+    private void assignNameIfExists(Deck deck) throws IOException, InterruptedException {
+        int i = 1;
+
+        if (deckDAO.deckExists(deck.getName())
+                && !deck.getName().contains("(" + i + ")"))
+
+            deck.setName(deck.getName() + " (" + i + ")");
+
+        while (deckDAO.deckExists(deck.getName())) {
+            String current = "(" + i + ")";
+            String next = "(" + (i + 1) + ")";
+            deck.setName(deck.getName().replace(current, next));
+
+            i++;
         }
     }
 
@@ -242,5 +276,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         void savingError(Exception e);
         void failedExport(IOException e);
         void failedImport(JsonSyntaxException e);
+        void invalidDeckName(String name, char c);
     }
 }
