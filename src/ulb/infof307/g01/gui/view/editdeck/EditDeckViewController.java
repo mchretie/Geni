@@ -32,16 +32,10 @@ public class EditDeckViewController implements Initializable {
     private HBox cardTypeButtons;
     @FXML
     private AnchorPane cardEditor;
-    @FXML
-    private StackPane frontCard;
-    @FXML
-    private StackPane backCard;
+
     @FXML
     private AnchorPane anchor;
-    @FXML
-    private WebView frontCardWebView;
-    @FXML
-    private TextField backCardText;
+
     @FXML
     private TextField deckNameText;
 
@@ -63,9 +57,6 @@ public class EditDeckViewController implements Initializable {
     private ColorPicker colorPicker;
 
     @FXML
-    public FontIcon frontCardEditIcon;
-
-    @FXML
     private Button imageUploader;
 
     private Node QCMCardEditor;
@@ -83,10 +74,6 @@ public class EditDeckViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!newValue) handleBackEdit();
-//        });
-
         deckNameText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleUpdateDeckName();
         });
@@ -124,8 +111,6 @@ public class EditDeckViewController implements Initializable {
         }
     }
 
-
-
     /* ====================================================================== */
     /*                              Card Editor                               */
     /* ====================================================================== */
@@ -143,22 +128,6 @@ public class EditDeckViewController implements Initializable {
 
         cardsContainer.refresh();
     }
-
-//    private void loadCardEditor(Card card) {
-//        frontCardWebView.getEngine().loadContent(card.getFront());
-//        backCardText.setText(card.getBack());
-//        frontCard.setVisible(true);
-//        backCard.setVisible(true);
-//    }
-//
-//    public void loadSelectedCardEditor() {
-//        loadCardEditor(selectedCard);
-//    }
-//
-//    public void hideSelectedCardEditor() {
-//        frontCard.setVisible(false);
-//        backCard.setVisible(false);
-//    }
 
 
     /* ====================================================================== */
@@ -191,7 +160,6 @@ public class EditDeckViewController implements Initializable {
     private void handleTagAdded(KeyEvent event) {
         if (event.getCode() != KeyCode.ENTER
                 || tagsInput.getText().trim().isEmpty())
-
             return;
 
         String tagText = tagsInput.getText().trim();
@@ -335,48 +303,10 @@ public class EditDeckViewController implements Initializable {
         listener.deckNameModified(deckNameText.getText());
     }
 
-//    @FXML
-//    private void handleFrontEdit() {
-//        String newFront
-//                = frontCardWebView.getEngine()
-//                .executeScript("document.body.innerHTML")
-//                .toString();
-//
-//        listener.frontOfCardModified(selectedCard, newFront);
-//    }
-//
-//    @FXML
-//    private void handleBackEdit() {
-//        listener.backOfCardModified(selectedCard, backCardText.getText());
-//    }
-//
-//    @FXML
-//    private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
-//        if (!keyEvent.getCode().equals(KeyCode.ENTER))
-//            return;
-//
-//        anchor.requestFocus();
-//    }
-//
     @FXML
     public void handleColorButtonClicked() {
         listener.deckColorModified(deck, colorPicker.getValue());
     }
-//
-//    @FXML
-//    private void handleFrontCardEditHover() {
-//        frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
-//    }
-//
-//    @FXML
-//    private void handleFrontCardEditHoverExit() {
-//        frontCardEditIcon.setIconColor(Color.web("#000000"));
-//    }
-//
-//    @FXML
-//    private void handleFrontEditClicked() {
-//        listener.editCardClicked(selectedCard);
-//    }
 
 
     /* ====================================================================== */
@@ -390,7 +320,6 @@ public class EditDeckViewController implements Initializable {
         void newCard();
         void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card);
-        void editCardClicked(Card selectedCard);
         void uploadImage(String filePath);
     }
 }

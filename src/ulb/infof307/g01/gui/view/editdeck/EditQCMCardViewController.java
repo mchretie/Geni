@@ -5,19 +5,22 @@ import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.web.WebView;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 
 public class EditQCMCardViewController {
     @FXML
-    private StackPane frontCard;
+    private WebView frontCardWebView;
     @FXML
-    private TextField frontCardText;
+    public FontIcon frontCardEditIcon;
 
     @FXML
     private GridPane choicesGrid;
@@ -35,6 +38,8 @@ public class EditQCMCardViewController {
 
     private int currentRow = 0;
 
+    private Card card;
+
     private Listener listener;
 
     /* ====================================================================== */
@@ -45,8 +50,33 @@ public class EditQCMCardViewController {
         this.listener = listener;
     }
 
+    public void setCard(Card card) {
+        this.card = card;
+    }
+
     /* ====================================================================== */
-    /*                             Click handlers                             */
+    /*                            card Click handlers                         */
+    /* ====================================================================== */
+    @FXML
+    private void handleFrontEdit(KeyEvent keyEvent) {
+        if (!keyEvent.getCode().equals(KeyCode.ENTER))
+            return;
+        String newFront
+                = frontCardWebView.getEngine()
+                .executeScript("document.body.innerHTML")
+                .toString();
+
+        listener.frontOfCardModified(card, newFront);
+    }
+
+
+    @FXML
+    private void handleFrontEditClicked() {
+        listener.editCardClicked(card);
+    }
+
+    /* ====================================================================== */
+    /*                            grid Click handlers                         */
     /* ====================================================================== */
 
     @FXML
@@ -117,11 +147,25 @@ public class EditQCMCardViewController {
         //TODO set the correctAnswer to the card
     }
 
+    /* ====================================================================== */
+    /*                             Hover handlers                             */
+    /* ====================================================================== */
+
     @FXML
     private void handleAddChoiceHover(){ addChoiceIcon.setIconColor(Color.web("#7f8281"));  }
 
     @FXML
     private void handleAddChoiceHoverExit() {addChoiceIcon.setIconColor(Color.web("#000000"));}
+
+    @FXML
+    private void handleFrontCardEditHover() {
+        frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    private void handleFrontCardEditHoverExit() {
+        frontCardEditIcon.setIconColor(Color.web("#000000"));
+    }
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -129,5 +173,6 @@ public class EditQCMCardViewController {
 
     public interface Listener {
         void frontOfCardModified(Card card, String newFront);
+        void editCardClicked(Card card);
     }
 }

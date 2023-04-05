@@ -8,15 +8,20 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
 
+import javafx.scene.paint.Color;
+import javafx.scene.web.WebView;
+import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EditFlashCardViewController {
-
     @FXML
-    private TextField frontCardText;
+    private WebView frontCardWebView;
+    @FXML
+    public FontIcon frontCardEditIcon;
+
     @FXML
     private TextField backCardText;
 
@@ -42,7 +47,7 @@ public class EditFlashCardViewController {
     /*                        Modify and  Card loading                        */
     /* ====================================================================== */
     private void loadCardEditor(Card card) {
-        frontCardText.setText(card.getFront());
+        frontCardWebView.getEngine().loadContent(card.getFront());
         backCardText.setText(card.getBack());
     }
 
@@ -55,7 +60,12 @@ public class EditFlashCardViewController {
     private void handleFrontEdit(KeyEvent keyEvent) {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
-        listener.frontOfCardModified(card, frontCardText.getText());
+        String newFront
+            = frontCardWebView.getEngine()
+            .executeScript("document.body.innerHTML")
+            .toString();
+
+        listener.frontOfCardModified(card, newFront);
     }
 
     @FXML
@@ -65,6 +75,24 @@ public class EditFlashCardViewController {
         listener.backOfCardModified(card, backCardText.getText());
     }
 
+    @FXML
+    private void handleFrontEditClicked() {
+        listener.editCardClicked(card);
+    }
+
+    /* ====================================================================== */
+    /*                             Hover handlers                             */
+    /* ====================================================================== */
+
+    @FXML
+    private void handleFrontCardEditHover() {
+        frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    private void handleFrontCardEditHoverExit() {
+        frontCardEditIcon.setIconColor(Color.web("#000000"));
+    }
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -73,5 +101,6 @@ public class EditFlashCardViewController {
     public interface Listener {
         void frontOfCardModified(Card card, String newFront);
         void backOfCardModified(Card card, String newBack);
+        void editCardClicked(Card card);
     }
 }
