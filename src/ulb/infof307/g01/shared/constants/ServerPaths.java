@@ -28,4 +28,5 @@ public final class ServerPaths {
   public static final String DELETE_DECK_PATH = DECK_BASE_PATH + "/delete";
   public static final String GET_ALL_DECKS_PATH = DECK_BASE_PATH + "/all";
   public static final String SEARCH_DECKS_PATH = DECK_BASE_PATH + "/search";
+    public static final String DECK_EXISTS_PATH = DECK_BASE_PATH + "/exists";
 }

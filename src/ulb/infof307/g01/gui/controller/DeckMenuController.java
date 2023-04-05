@@ -113,23 +113,36 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
 
     /* ====================================================================== */
+    /*                         Deck Name Validation                           */
+    /* ====================================================================== */
+
+    private boolean isDeckNameValid(String name) {
+
+        if (name.isEmpty())
+            return false;
+
+        String bannedCharacters = "!\"#$%&()*+,./:;<=>?@[\\]^_`{}~";
+
+        for (char c : bannedCharacters.toCharArray()) {
+            if (name.contains(String.valueOf(c))) {
+                controllerListener.invalidDeckName(name, c);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    /* ====================================================================== */
     /*                        View Listener Method                            */
     /* ====================================================================== */
 
     @Override
     public void createDeckClicked(String name) {
 
-        String bannedCharacters = "!\"#$%&()*+,./:;<=>?@[\\]^_`{}~";
-
-        if (name.isEmpty())
+        if (!isDeckNameValid(name))
             return;
-
-        for (char c : bannedCharacters.toCharArray()) {
-            if (name.contains(String.valueOf(c))) {
-                controllerListener.invalidDeckName(name, c);
-                return;
-            }
-        }
 
         try {
             deckDAO.saveDeck(new Deck(name));

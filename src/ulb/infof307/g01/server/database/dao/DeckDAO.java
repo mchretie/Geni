@@ -59,14 +59,14 @@ public class DeckDAO extends DAO {
                                                   deck.getName()));
     }
 
-    public boolean deckNameExists(String name) {
+    public boolean deckNameExists(String name, UUID userId) {
         String sql = """
                 SELECT name
                 FROM deck
-                WHERE name = ?
+                WHERE name = ? AND user_id = ?
                 """;
 
-        return checkedNext(database.executeQuery(sql, name));
+        return checkedNext(database.executeQuery(sql, name, userId.toString()));
     }
 
 
@@ -235,9 +235,6 @@ public class DeckDAO extends DAO {
 
         Set<Card> deletedCards = (Set<Card>) currentCards.clone();
         deletedCards.removeAll(newCards);
-
-        System.out.println("Added cards: " + addedCards);
-        System.out.println("Deleted cards: " + deletedCards);
 
         for (Card deletedCard : deletedCards)
             deleteCard(deletedCard);
