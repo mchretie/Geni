@@ -44,8 +44,8 @@ public class Database {
         return deckDao.isDeckValid(deck, userId);
     }
 
-    public boolean deckNameExists(String name) throws DatabaseException {
-        return deckDao.deckNameExists(name);
+    public boolean deckNameExists(String name, UUID userid) throws DatabaseException {
+        return deckDao.deckNameExists(name, userid);
     }
 
     public void saveDeck(Deck deck, UUID userId) throws DatabaseException {
