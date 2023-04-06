@@ -96,8 +96,6 @@ public class MainFxController
     userDAO.register("guest", "guest");
     userDAO.login("guest", "guest");
 
-    this.profileController =
-        new ProfileController(stage, mainWindowViewController, this);
 
     URL resource =
         MainWindowViewController.class.getResource("MainWindowView.fxml");
@@ -111,6 +109,10 @@ public class MainFxController
 
     mainWindowViewController = fxmlLoader.getController();
     mainWindowViewController.setListener(this);
+
+    System.out.println("something");
+    this.profileController =
+            new ProfileController(stage, mainWindowViewController, this);
 
     try {
       deckMenuController = new DeckMenuController(

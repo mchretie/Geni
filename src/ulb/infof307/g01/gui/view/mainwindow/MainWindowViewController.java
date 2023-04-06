@@ -96,6 +96,7 @@ public class MainWindowViewController {
 
     // ICI
     public ProfileViewController getProfileViewController() {
+      System.out.println("ProfileViewController: " + profileViewController);
       return profileViewController;
     }
 
