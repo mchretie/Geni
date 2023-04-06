@@ -9,17 +9,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
 
 import java.io.File;
-import java.net.URL;
 
 public class DeckViewController {
 
@@ -52,7 +47,7 @@ public class DeckViewController {
 
     public void setDeck(Deck deck) {
         this.deck = deck;
-        this.updateDeckButtonName();
+        this.updateDeckLabelName();
 
         this.setDeckColor();
         this.setBackGroundImage("file:res/img/tmpdeckimage.jpg");
@@ -63,8 +58,7 @@ public class DeckViewController {
         colorRect.setArcWidth(40);
         colorRect.heightProperty().bind(backgroundImage.fitHeightProperty());
         colorRect.widthProperty().bind(backgroundImage.fitWidthProperty());
-        Color color
-                = Color.web(deck.getColor());
+        Color color = Color.web(deck.getColor());
         colorRect.setFill(makeGradient(color));
     }
 
@@ -103,7 +97,7 @@ public class DeckViewController {
 
     }
 
-    private void updateDeckButtonName() {
+    private void updateDeckLabelName() {
         this.playDeckLabel.setText(this.deck.getName());
     }
 

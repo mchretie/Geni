@@ -102,9 +102,8 @@ public class DeckMenuViewController {
      * removes all rows from the gridPane except the first one
      */
     private void resetGrid() {
-        for (int i=1; i<gridPane.getRowCount(); i++) {
-            gridPane.getRowConstraints().remove(i);
-        }
+        int rowCount = gridPane.getRowCount();
+        gridPane.getRowConstraints().remove(1, rowCount-1);
     }
 
     /**
