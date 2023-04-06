@@ -46,15 +46,12 @@ public class EditFlashCardViewController {
     /* ====================================================================== */
     /*                        Modify and  Card loading                        */
     /* ====================================================================== */
-    private void loadCardEditor(Card card) {
+    public void loadCardEditor() {
+        if (card == null ) return;
+
         frontCardWebView.getEngine().loadContent(card.getFront());
         backCardText.setText(card.getBack());
     }
-
-    public void loadSelectedCardEditor() {
-        loadCardEditor(card);
-    }
-
 
     @FXML
     private void handleFrontEdit(KeyEvent keyEvent) {

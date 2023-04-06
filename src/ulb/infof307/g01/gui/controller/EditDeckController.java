@@ -102,6 +102,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
         if (deck.cardCount() > 0) {
             editDeckViewController.setSelectedCard(deck.getFirstCard());
+            editFlashCardViewController.loadCardEditor(); //TODO
         }
 
         else
@@ -250,7 +251,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
         editQCMCardViewController.setCard(card); //TODO
         editFlashCardViewController.setCard(card);
-        editFlashCardViewController.loadSelectedCardEditor();
+        editFlashCardViewController.loadCardEditor();
     }
 
     @Override
