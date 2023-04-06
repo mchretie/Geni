@@ -2,43 +2,43 @@ package ulb.infof307.g01.gui.controller;
 
 import java.io.IOException;
 import javafx.stage.Stage;
+import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.gui.view.login.LoginViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
-import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 
-public class ProfileController implements ProfileViewController.ViewListener {
+public class LoginController implements LoginViewController.ViewListener {
 
   private final Stage stage;
 
   private final MainWindowViewController mainWindowViewController;
 
-  private final ProfileViewController profileViewController;
+  private final LoginViewController loginViewController;
 
   private final ControllerListener controllerListener;
 
-  private boolean loggedIn = false;
-
-  private String userID = "";
+  private final UserDAO userDAO = new UserDAO();
 
   /* ====================================================================== */
   /*                              Constructor                               */
   /* ====================================================================== */
-  public ProfileController(
-      Stage stage, MainWindowViewController mainWindowViewController,
-      ProfileController.ControllerListener controllerListener) {
+
+  public LoginController(Stage stage,
+                         MainWindowViewController mainWindowViewController,
+                         ControllerListener controllerListener) {
 
     this.stage = stage;
     this.mainWindowViewController = mainWindowViewController;
     this.controllerListener = controllerListener;
 
-    this.profileViewController =
-        mainWindowViewController.getProfileViewController();
+    this.loginViewController =
+        mainWindowViewController.getLoginViewController();
 
     System.out.println(
-        "initialisation de profileViewController setting listener de :");
-    System.out.println(this.profileViewController);
+        "initialisation de loginViewController setting listener de :");
+    System.out.println(this.loginViewController);
     System.out.println(this);
 
-    this.profileViewController.setListener(this);
+    this.loginViewController.setListener(this);
   }
 
   /* ====================================================================== */
@@ -51,11 +51,20 @@ public class ProfileController implements ProfileViewController.ViewListener {
    * @throws IOException if FXMLLoader.load() fails
    */
   public void show() throws IOException {
-    System.out.println("showing profile");
+    System.out.println("showing login");
 
-    mainWindowViewController.setProfileViewVisible();
+    mainWindowViewController.setLoginViewVisible();
     mainWindowViewController.makeGoBackIconVisible();
+    // Todo :  tests
+    /*
+    FXMLLoader loader = new FXMLLoader(
+        ProfileViewController.class.getResource("LoginView.fxml"));
+    loader.load();
 
+    ProfileViewController controller = loader.getController();
+
+    Parent root = loader.getRoot();
+    stage.setScene(new Scene(root));*/
     stage.show();
   }
 
@@ -64,8 +73,14 @@ public class ProfileController implements ProfileViewController.ViewListener {
   /* ====================================================================== */
 
   @Override
-  public void logoutClicked() {
-    ;
+  public void loginClicked() {
+    System.out.println("login clicked");
+    // Todo :  tests
+    // userDAO.login("test", "test"); !! see mainFX for use example
+    // get information from the text fields
+    // String pswd = this.passwordField.getText();
+    // String username = this.usernameField.getText();
+    // use dao to login
   }
 
   /* ====================================================================== */
@@ -73,6 +88,6 @@ public class ProfileController implements ProfileViewController.ViewListener {
   /* ====================================================================== */
 
   public interface ControllerListener {
-    void handleLogoutButton();
+    ;
   }
 }

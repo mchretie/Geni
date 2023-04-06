@@ -9,14 +9,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.gui.controller.EditCardController;
-import ulb.infof307.g01.gui.controller.ProfileController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
+import ulb.infof307.g01.gui.view.login.LoginViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
-import ulb.infof307.g01.model.Card;
 
 public class MainWindowViewController {
 
@@ -37,13 +35,12 @@ public class MainWindowViewController {
     private BorderPane deckMenuView;
     @FXML
     private AnchorPane editDeckView;
-    @FXML
-    private BorderPane playDeckView;
-
+    @FXML private BorderPane playDeckView;
     @FXML
     private AnchorPane editCardView;
 
     // ICI
+    @FXML private AnchorPane loginView;
     @FXML private AnchorPane profileView;
 
     @FXML
@@ -54,10 +51,12 @@ public class MainWindowViewController {
     private PlayDeckViewController playDeckViewController;
 
     //ICI
-    @FXML private ProfileViewController profileViewController;
+    @FXML private LoginViewController loginViewController;
 
     @FXML
     private EditCardViewController editCardViewController;
+
+    @FXML private ProfileViewController profileViewController;
 
     private NavigationListener listener;
 
@@ -87,14 +86,18 @@ public class MainWindowViewController {
     }
 
     // ICI
-    public ProfileViewController getProfileViewController() {
-      return profileViewController;
+    public LoginViewController getLoginViewController() {
+      return loginViewController;
     }
 
     public EditCardViewController getEditCardViewController() {
         return editCardViewController;
     }
 
+    // ICI
+    public ProfileViewController getProfileViewController() {
+      return profileViewController;
+    }
 
     /* ====================================================================== */
     /*                              Alerts                                    */
@@ -141,6 +144,8 @@ public class MainWindowViewController {
     }
 
     // ICI
+    public void setLoginViewVisible() { setAllInvisibleExcept(loginView); }
+
     public void setProfileViewVisible() { setAllInvisibleExcept(profileView); }
 
     /* ====================================================================== */

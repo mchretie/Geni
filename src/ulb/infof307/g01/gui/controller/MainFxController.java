@@ -23,13 +23,14 @@ import java.util.List;
  * view handler and loads a menu view.
  */
 
-public class MainFxController extends Application implements
-        MainWindowViewController.NavigationListener,
-        DeckMenuController.ControllerListener,
-        PlayDeckController.ControllerListener,
-        EditDeckController.ControllerListener,
-        EditCardController.ControllerListener,
-        ProfileController.ControllerListener {
+public class MainFxController
+    extends Application implements MainWindowViewController.NavigationListener,
+                                   DeckMenuController.ControllerListener,
+                                   PlayDeckController.ControllerListener,
+                                   EditDeckController.ControllerListener,
+                                   EditCardController.ControllerListener,
+                                   LoginController.ControllerListener,
+                                   ProfileController.ControllerListener {
 
   /* ====================================================================== */
   /*                          Attribute: Controllers                        */
@@ -39,6 +40,7 @@ public class MainFxController extends Application implements
   private EditDeckController editDeckController;
   private PlayDeckController playDeckController;
   private EditCardController editCardController;
+  private LoginController loginController;
   private ProfileController profileController;
 
   private MainWindowViewController mainWindowViewController;
@@ -54,7 +56,14 @@ public class MainFxController extends Application implements
   /*                            View Stack Attributes                       */
   /* ====================================================================== */
 
-  private enum View { DECK_MENU, PLAY_DECK, EDIT_DECK, HTML_EDITOR, PROFILE }
+  private enum View {
+    DECK_MENU,
+    PLAY_DECK,
+    EDIT_DECK,
+    HTML_EDITOR,
+    LOGIN,
+    PROFILE
+  }
 
   List<View> viewStack = new ArrayList<>();
 
@@ -81,8 +90,14 @@ public class MainFxController extends Application implements
 
     // TODO: Title and login.
     stage.setTitle("Pokémon TCG Deck Builder");
+
+    // ICI !!!
+
     userDAO.register("guest", "guest");
     userDAO.login("guest", "guest");
+
+    this.profileController =
+        new ProfileController(stage, mainWindowViewController, this);
 
     URL resource =
         MainWindowViewController.class.getResource("MainWindowView.fxml");
@@ -223,8 +238,10 @@ public class MainFxController extends Application implements
                     case PLAY_DECK -> playDeckController.show();
                     case EDIT_DECK -> editDeckController.show();
                     case HTML_EDITOR -> editCardController.show();
+                    case LOGIN -> loginController.show(); //ICI should never happen
                     case PROFILE -> profileController.show(); //ICI should never happen
-                }
+
+      }
             } catch (IOException | InterruptedException e) {
                 restartApplicationError(e);
             }
@@ -263,27 +280,29 @@ public class MainFxController extends Application implements
 
       @Override
       public void handleProfileClicked() {
-            System.out.println("wtf ####");
 
-          profileController =
-                  new ProfileController(stage, mainWindowViewController, this, userDAO);
+          System.out.println("handleProfileClicked /n setting up login controller with this");
+
+          loginController =
+                  new LoginController(stage, mainWindowViewController, this);
 
           System.out.println("ICI#########");
           try {
-            viewStack.add(View.PROFILE);
-            profileController.show();
+            viewStack.add(View.LOGIN);
+            loginController.show();
           } catch (IOException e) {
               throw new RuntimeException(e);
           }
       }
+
       @Override
-      public void handleExitProfile(){
-        try {
-        //profileController.hide(
-          System.out.println("handleExitProfile");
-          deckMenuController.show();
-        } catch (InterruptedException | IOException e) {
-          throw new RuntimeException(e);
-        }
-      };
+      public void handleLogoutButton() {
+          try {
+            viewStack.remove(View.PROFILE);
+            loginController.show();
+          } catch (IOException e) {
+              throw new RuntimeException(e);
+          }
+      }
+
     }
