@@ -125,7 +125,9 @@ public class MainFxController extends Application implements
         Parent root = fxmlLoader.load();
 
         stage.setScene(new Scene(root));
-        stage.setResizable(false);
+        stage.setMinHeight(400);
+        stage.setMinWidth(550);
+
 
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
@@ -241,7 +243,7 @@ public class MainFxController extends Application implements
 
         } catch (EmptyDeckException e) {
             String title = "Paquet vide.";
-            String description = "Le paquet que vous aviez ouvert est vide.";
+            String description = "Le paquet que vous avez ouvert est vide.";
             mainWindowViewController.alertInformation(title, description);
         }
     }

@@ -2,11 +2,13 @@ package ulb.infof307.g01.gui.view.deckmenu;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -68,6 +70,7 @@ public class DeckMenuViewController {
      */
     private void clearDecksFromGrid() {
         gridPane.getChildren().removeIf(this::clearNodeFromGridCondition);
+        resetGrid();
     }
 
     /**
@@ -83,11 +86,34 @@ public class DeckMenuViewController {
         int row = 0;
 
         for (Node deck : decks) {
+            if (row == gridPane.getRowCount()) {
+                addRow();
+            }
+
+            GridPane.setMargin(deck, new Insets(20));
             gridPane.add(deck, col, row);
 
             col = nextCol(col);
             row = nextRow(row, col);
         }
+    }
+
+    /**
+     * removes all rows from the gridPane except the first one
+     */
+    private void resetGrid() {
+        int rowCount = gridPane.getRowCount();
+        gridPane.getRowConstraints().remove(1, rowCount-1);
+    }
+
+    /**
+     * properly add row to the gridPane
+     */
+    private void addRow() {
+        RowConstraints rc = new RowConstraints();
+        rc.setMinHeight(220);
+        rc.setMaxHeight(300);
+        gridPane.getRowConstraints().add(rc);
     }
 
     private int nextCol(int currentCol) {
