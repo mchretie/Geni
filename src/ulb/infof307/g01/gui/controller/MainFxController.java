@@ -1,5 +1,6 @@
 package ulb.infof307.g01.gui.controller;
 
+import com.google.gson.JsonSyntaxException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -124,7 +125,6 @@ public class MainFxController extends Application implements
         Parent root = fxmlLoader.load();
 
         stage.setScene(new Scene(root));
-        stage.setResizable(true);
         stage.setMinHeight(400);
         stage.setMinWidth(550);
 
@@ -189,6 +189,22 @@ public class MainFxController extends Application implements
         communicateError(e, message);
     }
 
+    private void failedDeckExportError(Exception e) {
+        String message = "L'exportation de votre deck a échoué "
+                + "veuillez réessayer. Si le problème persiste, "
+                + "redémarrez l’application";
+
+        communicateError(e, message);
+    }
+
+    private void failedDeckImportError(JsonSyntaxException e) {
+        String message = "L'importation du deck a échouée, " +
+                "veuillez vérifiez que le fichier est bien un fichier " +
+                ".json.";
+
+        communicateError(e, message);
+    }
+
 
     /* ====================================================================== */
     /*                     Controller Listener Methods                        */
@@ -227,7 +243,7 @@ public class MainFxController extends Application implements
 
         } catch (EmptyDeckException e) {
             String title = "Paquet vide.";
-            String description = "Le paquet que vous aviez ouvert est vide.";
+            String description = "Le paquet que vous avez ouvert est vide.";
             mainWindowViewController.alertInformation(title, description);
         }
     }
@@ -247,6 +263,26 @@ public class MainFxController extends Application implements
     @Override
     public void savingError(Exception e) {
         databaseModificationError(e);
+    }
+
+    @Override
+    public void failedExport(IOException e) {
+        failedDeckExportError(e);
+    }
+
+    @Override
+    public void failedImport(JsonSyntaxException e) {
+        failedDeckImportError(e);
+    }
+
+    @Override
+    public void invalidDeckName(String name, char c) {
+        String title = "Nom de paquet invalide.";
+        String description = "Le nom de paquet que vous avez entré est invalide. "
+                + "Veuillez entrer un nom de paquet qui ne contient pas le "
+                + "caractère " + c + ".";
+
+        mainWindowViewController.alertInformation(title, description);
     }
 
     @Override

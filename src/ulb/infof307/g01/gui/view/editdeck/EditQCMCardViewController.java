@@ -99,13 +99,7 @@ public class EditQCMCardViewController {
     }
 
     private BorderPane createEditChoiceField(){
-        FontIcon checkIcon = new FontIcon("mdi2c-check-circle-outline");
-        checkIcon.setIconSize(19);
-
-        Button check = new Button();
-        check.setGraphic(checkIcon);
-        check.setStyle("-fx-background-color: transparent;");
-        check.setAlignment(Pos.CENTER_RIGHT);
+        Button check = setCheckButton();
 
         TextField textField = new TextField();
         textField.setStyle("-fx-background-color: #e4e4e4;");
@@ -122,27 +116,35 @@ public class EditQCMCardViewController {
                             "-fx-padding: 1px 2px;" +
                             "-fx-border-insets: 0px;" +
                             "-fx-background-insets: 1px 3px;");
-
-        setCheckButton(check);
         return borderPane;
     }
 
-    private void setCheckButton(Button button){
-        FontIcon fontIcon = (FontIcon) button.getGraphic();
-        button.setOnMouseClicked(event ->{
-            handleCorrectChoice(fontIcon);
+
+    private Button setCheckButton(){
+        FontIcon checkIcon = new FontIcon("mdi2c-check-circle-outline");
+        checkIcon.setIconSize(19);
+
+        Button checkButton = new Button();
+        checkButton.setGraphic(checkIcon);
+        checkButton.setStyle("-fx-background-color: transparent;");
+        checkButton.setAlignment(Pos.CENTER_RIGHT);
+
+        checkButton.setOnMouseClicked(event ->{
+            handleCorrectAnswer();
         });
 
-        button.getGraphic().setOnMouseEntered(event -> {
-            fontIcon.setIconColor(Color.web("#7f8281"));
+        checkButton.getGraphic().setOnMouseEntered(event -> {
+            checkIcon.setIconColor(Color.web("#7f8281"));
         });
 
-        button.getGraphic().setOnMouseExited(event ->{
-            fontIcon.setIconColor(Color.web("#000000"));
+        checkButton.getGraphic().setOnMouseExited(event ->{
+            checkIcon.setIconColor(Color.web("#000000"));
         });
+
+        return checkButton;
     }
 
-    private void handleCorrectChoice(FontIcon fontIcon){
+    private void handleCorrectAnswer(){
         return;
         //TODO set the correctAnswer to the card
     }

@@ -103,13 +103,6 @@ public class EditDeckViewController implements Initializable {
         }
     }
 
-    public void setCardEditors(Node node){
-        cardEditor.getChildren().add(node);
-        if (cardEditor.getChildren().size() == 3) {
-            flashCardEditor = cardEditor.getChildren().get(1);
-            QCMCardEditor = cardEditor.getChildren().get(2);
-        }
-    }
 
     /* ====================================================================== */
     /*                              Card Editor                               */
@@ -129,6 +122,14 @@ public class EditDeckViewController implements Initializable {
         cardsContainer.refresh();
     }
 
+
+    public void setCardEditors(Node node){
+        cardEditor.getChildren().add(node);
+        if (cardEditor.getChildren().size() == 3) {
+            flashCardEditor = cardEditor.getChildren().get(1);
+            QCMCardEditor = cardEditor.getChildren().get(2);
+        }
+    }
 
     /* ====================================================================== */
     /*                                 Tags                                   */
@@ -248,6 +249,11 @@ public class EditDeckViewController implements Initializable {
         cardTypeButtons.setVisible(false);
     }
 
+    @FXML
+    public void handleColorButtonClicked() {
+        listener.deckColorModified(deck, colorPicker.getValue());
+    }
+
 
     /* ====================================================================== */
     /*                             Hover handlers                             */
@@ -301,11 +307,6 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private void handleUpdateDeckName() {
         listener.deckNameModified(deckNameText.getText());
-    }
-
-    @FXML
-    public void handleColorButtonClicked() {
-        listener.deckColorModified(deck, colorPicker.getValue());
     }
 
 
