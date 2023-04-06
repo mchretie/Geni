@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
 
-<?import org.kordamp.ikonli.javafx.FontIcon?>
-<?import javafx.scene.text.Font?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController"
-            prefHeight="600.0" prefWidth="800.0">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController">
 
     <!-- Top navigation bar -->
     <top>
-        <HBox xmlns="http://javafx.com/javafx"
-              xmlns:fx="http://javafx.com/fxml"
-              prefHeight="55.0" prefWidth="850.0" alignment="CENTER" style="-fx-background-color: #449a6c;">
+        <HBox alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #449a6c;"
+              xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
 
             <!-- Go back button -->
-            <Button fx:id="goBack" mnemonicParsing="false" prefHeight="100.0" prefWidth="61.0"
-                    BorderPane.alignment="CENTER_LEFT" style="-fx-background-color: transparent;"
-                    onMouseClicked="#handleGoBackClicked">
+            <Button mnemonicParsing="false" onMouseClicked="#handleGoBackClicked" prefHeight="100.0"
+                    prefWidth="61.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER_LEFT">
 
                 <graphic>
                     <FontIcon fx:id="goBackIcon" iconLiteral="mdi2k-keyboard-backspace" iconSize="48"
@@ -30,20 +22,11 @@
                 </graphic>
             </Button>
 
-            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-
-            <!-- Menu title text -->
-            <Label fx:id="topBarText" alignment="CENTER" textAlignment="CENTER">
-                <font>
-                    <Font name="System Italic" size="23.0"/>
-                </font>
-            </Label>
-
-            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Region prefHeight="50.0" HBox.hgrow="ALWAYS"/>
 
             <!-- User profile button -->
-            <Button fx:id="userProfile" mnemonicParsing="false" prefHeight="100.0" prefWidth="61.0"
-                    BorderPane.alignment="CENTER" style="-fx-background-color: transparent;">
+            <Button fx:id="userProfile" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0"
+                    style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
                 <graphic>
                     <FontIcon fx:id="userProfileIcon" iconLiteral="mdi2a-account" iconSize="48"
                               onMouseEntered="#handleUserProfileHover" onMouseExited="#handleUserProfileExitHover"/>
@@ -59,27 +42,27 @@
             <fx:include fx:id="editDeckView" source="../editdeck/EditDeckView.fxml"/>
             <fx:include fx:id="deckMenuView" source="../deckmenu/DeckMenuView.fxml"/>
             <fx:include fx:id="playDeckView" source="../playdeck/PlayDeckView.fxml"/>
-            <fx:include fx:id="editCardView" source="../editcard/EditCardView.fxml"/>
         </StackPane>
     </center>
 
 
     <!-- Bottom navigation bar -->
     <bottom>
-        <HBox prefHeight="55.0" prefWidth="850.0" alignment="CENTER" style="-fx-background-color: #449a6c;">
+        <HBox alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #449a6c;">
 
             <!-- Home button -->
-            <Button fx:id="homeButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" layoutX="300.0"
-                    style="-fx-background-color: transparent;" onMouseClicked="#goToHomeClicked">
+            <Button fx:id="homeButton" layoutX="300.0" mnemonicParsing="false" onMouseClicked="#goToHomeClicked"
+                    prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
                 <graphic>
-                    <FontIcon fx:id="homeIcon" iconLiteral="mdi2h-home" iconSize="48"
-                              onMouseEntered="#handleHomeHover" onMouseExited="#handleHomeExitHover"/>
+                    <FontIcon fx:id="homeIcon" iconLiteral="mdi2h-home" iconSize="48" onMouseEntered="#handleHomeHover"
+                              onMouseExited="#handleHomeExitHover"/>
                 </graphic>
             </Button>
 
             <!-- Current deck button -->
-            <Button fx:id="currentDeckButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" layoutX="400.0"
-                    style="-fx-background-color: transparent;" onMouseClicked="#goToCurrentDeckClicked">
+            <Button fx:id="currentDeckButton" layoutX="400.0" mnemonicParsing="false"
+                    onMouseClicked="#goToCurrentDeckClicked" prefHeight="55.0" prefWidth="55.0"
+                    style="-fx-background-color: transparent;">
                 <graphic>
                     <FontIcon fx:id="currentDeckIcon" iconLiteral="mdi2c-cards" iconSize="48"
                               onMouseEntered="#handleCurrentDeckHover" onMouseExited="#handleCurrentDeckExitHover"/>
@@ -87,8 +70,8 @@
             </Button>
 
             <!-- Go to about button -->
-            <Button fx:id="aboutButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" layoutX="500.0"
-                    style="-fx-background-color: transparent;" onMouseClicked="#goToAboutClicked">
+            <Button fx:id="aboutButton" layoutX="500.0" mnemonicParsing="false" onMouseClicked="#goToAboutClicked"
+                    prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
                 <graphic>
                     <FontIcon fx:id="aboutIcon" iconLiteral="mdi2i-information-outline" iconSize="48"
                               onMouseEntered="#handleAboutHover" onMouseExited="#handleAboutExitHover"/>

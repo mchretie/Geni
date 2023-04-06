@@ -1,7 +1,6 @@
 package ulb.infof307.g01.gui.controller;
 
 import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.model.Card;
@@ -10,21 +9,45 @@ import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
-import java.io.File;
 import java.io.IOException;
 
 public class EditDeckController implements EditDeckViewController.Listener {
 
-    private final Stage stage;
+    /* ====================================================================== */
+    /*                             Model Attributes                           */
+    /* ====================================================================== */
 
     private final Deck deck;
+
+
+    /* ====================================================================== */
+    /*                         Controller Listener                            */
+    /* ====================================================================== */
+
+    private final ControllerListener controllerListener;
+
+
+    /* ====================================================================== */
+    /*                        View Controller References                      */
+    /* ====================================================================== */
 
     private final MainWindowViewController mainWindowViewController;
     private final EditDeckViewController editDeckViewController;
 
+
+    /* ====================================================================== */
+    /*                             Dao Attributes                             */
+    /* ====================================================================== */
+
     private final DeckDAO deckDAO;
 
-    private final ControllerListener controllerListener;
+
+    /* ====================================================================== */
+    /*                             Stage Attributes                           */
+    /* ====================================================================== */
+
+    private final Stage stage;
+
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -62,8 +85,8 @@ public class EditDeckController implements EditDeckViewController.Listener {
         mainWindowViewController.setEditDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
-        editDeckViewController.loadTagsFromDeck();
-        editDeckViewController.loadCardsFromDeck();
+        editDeckViewController.showTags();
+        editDeckViewController.showCards();
 
         if (deck.cardCount() > 0) {
             editDeckViewController.setSelectedCard(deck.getFirstCard());
@@ -95,7 +118,12 @@ public class EditDeckController implements EditDeckViewController.Listener {
     @Override
     public void tagAddedToDeck(Deck deck, String tagName, String color) {
         try {
+            if (tagName.trim().isEmpty() || deck.tagExists(tagName))
+                return;
+
             deck.addTag(new Tag(tagName, color));
+
+            editDeckViewController.showTags();
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
@@ -108,7 +136,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
         try {
             card.setFront(newFront);
             deckDAO.saveDeck(deck);
-            editDeckViewController.loadCardsFromDeck();
+            editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
@@ -120,7 +148,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
         try {
             card.setBack(newBack);
             deckDAO.saveDeck(deck);
-            editDeckViewController.loadCardsFromDeck();
+            editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
@@ -145,7 +173,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
             deck.addCard(new Card(frontHtml, "Arrière"));
             deckDAO.saveDeck(deck);
 
-            editDeckViewController.loadCardsFromDeck();
+            editDeckViewController.showCards();
             editDeckViewController.setSelectedCard(deck.getLastCard());
             cardPreviewClicked(deck.getLastCard());
 
@@ -159,7 +187,7 @@ public class EditDeckController implements EditDeckViewController.Listener {
         try {
             deck.removeCard(selectedCard);
             deckDAO.saveDeck(deck);
-            editDeckViewController.loadCardsFromDeck();
+            editDeckViewController.showCards();
             editDeckViewController.hideSelectedCardEditor();
             if (deck.cardCount() != 0) {
                 cardPreviewClicked(deck.getLastCard());
@@ -192,7 +220,6 @@ public class EditDeckController implements EditDeckViewController.Listener {
 
     public interface ControllerListener {
         void savingError(Exception e);
-
         void editCardClicked(Deck deck, Card card);
     }
 }

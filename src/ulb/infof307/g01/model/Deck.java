@@ -1,23 +1,28 @@
 package ulb.infof307.g01.model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.*;
 
 
 public class Deck implements Iterable<Card> {
-    private String name;
-    private final UUID id;
-    private final List<Card> cards;
-    private final List<Tag> tags;
+  private UUID id;
 
-    // x by default
-    private String color = "0x00000000";
+  @Expose
+  private String name;
+  @Expose
+  private final List<Card> cards;
+  @Expose
+  private final List<Tag> tags;
+  @Expose
+  private String color = "0x00000000";
 
-    public Deck(String name) {
-        this.name = name;
-        this.id = UUID.randomUUID();
-        this.cards = new ArrayList<>();
-        this.tags = new ArrayList<>();
-    }
+  public Deck(String name) {
+    this.name = name;
+    this.id = UUID.randomUUID();
+    this.cards = new ArrayList<>();
+    this.tags = new ArrayList<>();
+  }
 
     public Deck(String name, UUID id) {
         this.name = name;
@@ -39,6 +44,12 @@ public class Deck implements Iterable<Card> {
         this.cards = cards;
         this.tags = tags;
         this.color = color;
+    }
+
+    public void setNewID() {
+      this.id = UUID.randomUUID();
+
+      getCards().forEach(card -> card.setDeckId(this.id));
     }
 
     public List<Tag> getTags() { return tags; }

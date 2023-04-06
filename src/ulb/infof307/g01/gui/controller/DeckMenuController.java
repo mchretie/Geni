@@ -1,16 +1,19 @@
 package ulb.infof307.g01.gui.controller;
 
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +67,16 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException, InterruptedException {
-        deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+        showDecks();
 
         mainWindowViewController.setDeckMenuViewVisible();
-//        mainWindowViewController.setEditCardViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
 
         stage.show();
+    }
+
+    private void showDecks() throws IOException, InterruptedException {
+        deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
     }
 
 
@@ -113,12 +119,21 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void createDeckClicked(String name) {
 
+        String bannedCharacters = "!\"#$%&()*+,./:;<=>?@[\\]^_`{}~";
+
         if (name.isEmpty())
             return;
 
+        for (char c : bannedCharacters.toCharArray()) {
+            if (name.contains(String.valueOf(c))) {
+                controllerListener.invalidDeckName(name, c);
+                return;
+            }
+        }
+
         try {
             deckDAO.saveDeck(new Deck(name));
-            deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+            showDecks();
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
@@ -146,7 +161,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     public void deckRemoved(Deck deck) {
         try {
             deckDAO.deleteDeck(deck);
-            deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+            showDecks();
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
@@ -166,6 +181,89 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         controllerListener.editDeckClicked(deck);
     }
 
+    @Override
+    public void deckImported(File file) {
+        if (file == null)
+            return;
+
+        try {
+            JsonReader reader = new JsonReader(new FileReader(file));
+            Deck deck = new Gson().fromJson(reader, Deck.class);
+
+            deck.setNewID();
+            for (Card card : deck.getCards())
+                card.setNewId();
+
+            assignNameIfExists(deck);
+            deckDAO.saveDeck(deck);
+
+            showDecks();
+
+        } catch (JsonSyntaxException e) {
+            controllerListener.failedImport(e);
+
+        } catch (IOException e) {
+            controllerListener.fxmlLoadingError(e);
+
+        } catch (InterruptedException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    /**
+     * Assigns a name to the deck if it already exists. The name will be
+     *  the same as the original name with a number in parentheses.
+     *
+     * @param deck the deck to assign a name to
+     */
+    private void assignNameIfExists(Deck deck) throws IOException, InterruptedException {
+        int i = 1;
+
+        if (deckDAO.deckExists(deck.getName())
+                && !deck.getName().contains("(" + i + ")"))
+
+            deck.setName(deck.getName() + " (" + i + ")");
+
+        while (deckDAO.deckExists(deck.getName())) {
+            String current = "(" + i + ")";
+            String next = "(" + (i + 1) + ")";
+            deck.setName(deck.getName().replace(current, next));
+
+            i++;
+        }
+    }
+
+    @Override
+    public void shareDeckClicked(Deck deck, File file) {
+        if (file == null || !file.isDirectory())
+            return;
+
+        try {
+
+            String fileName
+                    = deck.getName()
+                          .replace(" ", "_")
+                          .toLowerCase();
+
+            String filePath
+                    = file.getAbsoluteFile() + "/" + fileName + ".json";
+
+            FileWriter fileWriter = new FileWriter(filePath);
+
+            new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .setPrettyPrinting()
+                    .create()
+                    .toJson(deck, Deck.class, fileWriter);
+
+            fileWriter.flush();
+
+        } catch (IOException e) {
+            controllerListener.failedExport(e);
+            e.printStackTrace();
+        }
+    }
+
 
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */
@@ -173,11 +271,11 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     public interface ControllerListener {
         void editDeckClicked(Deck deck);
-
         void playDeckClicked(Deck deck);
-
         void fxmlLoadingError(IOException e);
-
         void savingError(Exception e);
+        void failedExport(IOException e);
+        void failedImport(JsonSyntaxException e);
+        void invalidDeckName(String name, char c);
     }
 }

@@ -39,6 +39,8 @@ public class EditCardController implements EditCardViewController.Listener {
             body.removeAttr("contenteditable");
             card.setFront(doc.html());
             deckDAO.saveDeck(deck);
+            controllerListener.savedChanges();
+
         } catch (Exception e) {
             controllerListener.savingError(e);
         }
@@ -54,5 +56,6 @@ public class EditCardController implements EditCardViewController.Listener {
 
     public interface ControllerListener {
         void savingError(Exception e);
+        void savedChanges();
     }
 }

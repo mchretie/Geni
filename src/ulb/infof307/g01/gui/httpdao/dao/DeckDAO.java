@@ -1,8 +1,9 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
-import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
+
+import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
@@ -14,10 +15,14 @@ public class DeckDAO extends HttpDAO {
     /*                               DAO methods                              */
     /* ====================================================================== */
 
+    public boolean deckExists(String deckName) throws IOException, InterruptedException {
+        return !searchDecks(deckName).isEmpty();
+    }
+
     public List<Deck> getAllDecks()
             throws IOException, InterruptedException {
 
-        HttpResponse<String> response = get("/api/deck/all");
+        HttpResponse<String> response = get(ServerPaths.GET_ALL_DECKS_PATH);
 
         checkResponseCode(response.statusCode());
 
@@ -39,9 +44,10 @@ public class DeckDAO extends HttpDAO {
         if (deckName.isEmpty())
             return getAllDecks();
 
-
         HttpResponse<String> response
-                = get("/api/deck/search" + "?name=" + deckName);
+                = get(ServerPaths.SEARCH_DECKS_PATH
+                            + "?name="
+                            + deckName.replace(" ", "_"));
 
         checkResponseCode(response.statusCode());
 
@@ -52,7 +58,8 @@ public class DeckDAO extends HttpDAO {
             throws IOException, InterruptedException {
 
         String query =  "?deck_id=" + deck.getId();
-        HttpResponse<String> response = delete("/api/deck/delete" + query);
+        HttpResponse<String> response
+                = delete(ServerPaths.DELETE_DECK_PATH + query);
 
         checkResponseCode(response.statusCode());
     }
@@ -61,7 +68,7 @@ public class DeckDAO extends HttpDAO {
             throws IOException, InterruptedException {
 
         HttpResponse<String> response
-                = post("/api/deck/save", new Gson().toJson(deck));
+                = post(ServerPaths.SAVE_DECK_PATH, new Gson().toJson(deck));
 
         checkResponseCode(response.statusCode());
     }
