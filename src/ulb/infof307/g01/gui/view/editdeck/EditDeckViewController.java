@@ -14,7 +14,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.scene.web.WebView;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -253,8 +252,6 @@ public class EditDeckViewController implements Initializable {
     public void handleColorButtonClicked() {
         listener.deckColorModified(deck, colorPicker.getValue());
     }
-
-
     /* ====================================================================== */
     /*                             Hover handlers                             */
     /* ====================================================================== */

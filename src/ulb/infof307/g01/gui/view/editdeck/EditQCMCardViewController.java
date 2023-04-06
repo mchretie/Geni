@@ -4,16 +4,15 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
-
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.web.WebView;
 import org.kordamp.ikonli.javafx.FontIcon;
+
+import java.util.Random;
 import ulb.infof307.g01.model.Card;
 
 public class EditQCMCardViewController {
@@ -26,13 +25,13 @@ public class EditQCMCardViewController {
     private GridPane choicesGrid;
 
     @FXML
-    private BorderPane editChoiceField;
-
-    @FXML
     private BorderPane addChoiceField;
 
     @FXML
     private FontIcon addChoiceIcon;
+
+    @FXML
+    private FontIcon selectedCheckIcon;
 
     private int currentCol = 0;
 
@@ -52,6 +51,8 @@ public class EditQCMCardViewController {
 
     public void setCard(Card card) {
         this.card = card;
+        //TODO this.correctAnswer = ...
+        selectedCheckIcon = new FontIcon(); //TODO
     }
 
     /* ====================================================================== */
@@ -68,7 +69,6 @@ public class EditQCMCardViewController {
 
         listener.frontOfCardModified(card, newFront);
     }
-
 
     @FXML
     private void handleFrontEditClicked() {
@@ -123,6 +123,8 @@ public class EditQCMCardViewController {
     private Button setCheckButton(){
         FontIcon checkIcon = new FontIcon("mdi2c-check-circle-outline");
         checkIcon.setIconSize(19);
+        int random = new Random().nextInt(100);
+        checkIcon.setId(Integer.toString(random));
 
         Button checkButton = new Button();
         checkButton.setGraphic(checkIcon);
@@ -130,31 +132,23 @@ public class EditQCMCardViewController {
         checkButton.setAlignment(Pos.CENTER_RIGHT);
 
         checkButton.setOnMouseClicked(event ->{
-            handleCorrectAnswer();
+            handleCorrectAnswer(checkIcon);
         });
 
-        checkButton.getGraphic().setOnMouseEntered(event -> {
-            checkIcon.setIconColor(Color.web("#7f8281"));
-        });
-
-        checkButton.getGraphic().setOnMouseExited(event ->{
-            checkIcon.setIconColor(Color.web("#000000"));
-        });
-
+        setCheckButtonHovers(checkIcon);
         return checkButton;
     }
 
-    private void handleCorrectAnswer(){
-        return;
+    private void handleCorrectAnswer(FontIcon checkIcon){
+        selectedCheckIcon.setIconColor(Color.web("#000000"));
+        selectedCheckIcon = checkIcon;
+        selectedCheckIcon.setIconColor(Color.web("#32974d"));
         //TODO set the correctAnswer to the card
     }
 
     /* ====================================================================== */
     /*                             Hover handlers                             */
     /* ====================================================================== */
-
-    @FXML
-    private void handleAddChoiceHover(){ addChoiceIcon.setIconColor(Color.web("#7f8281"));  }
 
     @FXML
     private void handleAddChoiceHoverExit() {addChoiceIcon.setIconColor(Color.web("#000000"));}
@@ -167,6 +161,19 @@ public class EditQCMCardViewController {
     @FXML
     private void handleFrontCardEditHoverExit() {
         frontCardEditIcon.setIconColor(Color.web("#000000"));
+    }
+
+    @FXML
+    private void handleAddChoiceHover(){ addChoiceIcon.setIconColor(Color.web("#7f8281"));  }
+
+    private void setCheckButtonHovers(FontIcon checkIcon){
+        checkIcon.setOnMouseEntered(event -> {
+            if(!checkIcon.getId().equals(selectedCheckIcon.getId())) checkIcon.setIconColor(Color.web("#7f8281"));
+        });
+
+        checkIcon.setOnMouseExited(event ->{
+            if (!checkIcon.getId().equals(selectedCheckIcon.getId())) checkIcon.setIconColor(Color.web("#000000"));
+        });
     }
 
     /* ====================================================================== */

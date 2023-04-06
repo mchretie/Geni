@@ -125,7 +125,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
         EditFlashCardViewController flashCardController = loader.getController();
 
         flashCardController.setListener(this);
-
         editDeckViewController.setCardEditors(node);
 
         return  flashCardController;
@@ -249,6 +248,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void cardPreviewClicked(Card card) {
         editDeckViewController.setSelectedCard(card);
 
+        editQCMCardViewController.setCard(card); //TODO
         editFlashCardViewController.setCard(card);
         editFlashCardViewController.loadSelectedCardEditor();
     }
