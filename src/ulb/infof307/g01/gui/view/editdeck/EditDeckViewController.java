@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -23,6 +24,7 @@ import ulb.infof307.g01.model.Deck;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EditDeckViewController implements Initializable {
@@ -148,26 +150,10 @@ public class EditDeckViewController implements Initializable {
     /*                                 Tags                                   */
     /* ====================================================================== */
 
-    private void addTagToView(String text, String color) {
-        StackPane tagPane = new StackPane();
-        tagPane.setMaxHeight(20);
-        tagPane.setStyle("-fx-border-color: #000000; " +
-                "-fx-padding: 6px 10px; " +
-                "-fx-border-insets: 3px 5px; " +
-                "-fx-background-insets: 3px 5px; " +
-                "-fx-border-radius: 15px; " +
-                "-fx-background-radius: 15px; " +
-                "-fx-background-color: " + color);
-
-        Text tagText = new Text(text.trim());
-        tagPane.getChildren().add(tagText);
-        tagsBox.getChildren().add(tagPane);
-    }
-
-    public void showTags() {
+    public void setTags(List<Node> tagViews) {
         tagsBox.getChildren().clear();
-        deck.getTags()
-                .forEach(tag -> addTagToView(tag.getName(), tag.getColor()));
+        tagViews.forEach(tagView -> tagView.prefHeight(tagsBox.getHeight()));
+        tagsBox.getChildren().addAll(tagViews);
     }
 
     @FXML
