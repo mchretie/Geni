@@ -12,6 +12,7 @@ import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.DeckMetadata;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
@@ -97,15 +98,15 @@ public class DeckRequestHandler extends Handler {
       String username = usernameFromRequest(req);
       UUID userId = UUID.fromString(database.getUserId(username));
       UUID deckId = UUID.fromString(req.queryParams("deck_id"));
-      return database.getDeck(deckId);
+      return database.getDeck(deckId, userId);
   }
 
-  private List<Deck> getAllDecks(Request req, Response res) {
+  private List<DeckMetadata> getAllDecks(Request req, Response res) {
     try {
       String username = usernameFromRequest(req);
       UUID userId = UUID.fromString(database.getUserId(username));
 
-      return database.getAllUserDecks(userId);
+      return database.getAllUserDecksMetadata(userId);
 
     } catch (Exception e) {
       String message = "Failed to get all decks: " + e.getMessage();
@@ -116,7 +117,7 @@ public class DeckRequestHandler extends Handler {
     }
   }
 
-  private List<Deck> searchDecks(Request req, Response res) {
+  private List<DeckMetadata> searchDecks(Request req, Response res) {
     try {
       String username = usernameFromRequest(req);
       UUID userId = UUID.fromString(database.getUserId(username));
@@ -124,7 +125,7 @@ public class DeckRequestHandler extends Handler {
       String userSearch = req.queryParams("name");
       userSearch = userSearch.replace("_", " ");
 
-      return database.searchDecks(userSearch, userId);
+      return database.searchDecksMetadata(userSearch, userId);
 
     } catch (Exception e) {
       String message = "Failed to search decks: " + e.getMessage();

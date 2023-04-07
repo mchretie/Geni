@@ -107,14 +107,30 @@ public class DeckDAO extends DAO {
      *
      * @return The deck requested or null if it does not exist.
      */
-    public Deck getDeck(UUID uuid) throws DatabaseException {
+    public Deck getDeck(UUID deckId, UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT deck_id, name, color
+                FROM deck
+                WHERE deck_id = ? AND user_id = ?
+                """;
+
+        ResultSet res = database.executeQuery(sql,
+                                              deckId.toString(),
+                                              userId.toString());
+        if (!checkedNext(res))
+            return null;
+        return extractDeckFrom(res);
+    }
+
+    public Deck getDeck(UUID deckId) throws DatabaseException {
         String sql = """
                 SELECT deck_id, name, color
                 FROM deck
                 WHERE deck_id = ?
                 """;
 
-        ResultSet res = database.executeQuery(sql, uuid.toString());
+        ResultSet res = database.executeQuery(sql,
+                                              deckId.toString());
         if (!checkedNext(res))
             return null;
         return extractDeckFrom(res);
@@ -166,6 +182,24 @@ public class DeckDAO extends DAO {
         ResultSet res = database.executeQuery(sql, userId.toString());
         List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
         return getDecks(deckIds);
+    }
+
+    /**
+     * Get all decks associated with given user
+     *
+     * @return A list of all decks, empty if none are saved.
+     */
+    public List<DeckMetadata> getAllUserDecksMetadata(UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT deck_id
+                FROM deck
+                WHERE deck.user_id = ?
+                """;
+
+
+        ResultSet res = database.executeQuery(sql, userId.toString());
+        List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
+        return extractDeckMetadata(getDecks(deckIds));
     }
 
     /**

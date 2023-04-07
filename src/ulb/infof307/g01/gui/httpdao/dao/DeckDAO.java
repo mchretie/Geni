@@ -26,14 +26,14 @@ public class DeckDAO extends HttpDAO {
         return Boolean.parseBoolean(response.body());
     }
 
-    public List<Deck> getAllDecks()
+    public List<DeckMetadata> getAllDecks()
             throws IOException, InterruptedException {
 
         HttpResponse<String> response = get(ServerPaths.GET_ALL_DECKS_PATH);
 
         checkResponseCode(response.statusCode());
 
-        return stringToArray(response.body(), Deck[].class);
+        return stringToArray(response.body(), DeckMetadata[].class);
     }
 
     /**
@@ -45,7 +45,7 @@ public class DeckDAO extends HttpDAO {
      * </p>
      * @param deckName The name of the deck to search for.
      */
-    public List<Deck> searchDecks(String deckName)
+    public List<DeckMetadata> searchDecks(String deckName)
             throws IOException, InterruptedException {
 
         if (deckName.isEmpty())
@@ -58,7 +58,7 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        return stringToArray(response.body(), Deck[].class);
+        return stringToArray(response.body(), DeckMetadata[].class);
     }
 
     public void deleteDeck(DeckMetadata deck)

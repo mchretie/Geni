@@ -89,10 +89,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @return List of loaded nodes representing decks
      * @throws IOException if FXMLLoader.load() fails
      */
-    private List<Node> loadDecks(List<Deck> decks) throws IOException {
+    private List<Node> loadDecks(List<DeckMetadata> decks) throws IOException {
         List<Node> decksLoaded = new ArrayList<>();
 
-        for (Deck deck : decks) {
+        for (DeckMetadata deck : decks) {
 
             URL resource = DeckMenuViewController
                     .class
@@ -103,7 +103,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             Node node = loader.load();
 
             DeckViewController controller = loader.getController();
-            controller.setDeck(deck.getMetadata());
+            controller.setDeck(deck);
             controller.setListener(this);
 
             decksLoaded.add(node);

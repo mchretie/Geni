@@ -53,8 +53,8 @@ public class Database {
         deckDao.saveDeck(deck, userId);
     }
 
-    public Deck getDeck(UUID uuid) throws DatabaseException {
-        return deckDao.getDeck(uuid);
+    public Deck getDeck(UUID deckId, UUID userId) throws DatabaseException {
+        return deckDao.getDeck(deckId, userId);
     }
 
     public List<Deck> getAllDecks() throws DatabaseException {
@@ -65,6 +65,10 @@ public class Database {
         return deckDao.getAllUserDecks(userId);
     }
 
+    public List<DeckMetadata> getAllUserDecksMetadata(UUID userId) throws DatabaseException {
+        return deckDao.getAllUserDecksMetadata(userId);
+    }
+
     public void deleteDeck(UUID deckId, UUID userId) throws DatabaseException {
         deckDao.deleteDeck(deckId, userId);
     }
@@ -73,6 +77,9 @@ public class Database {
         return deckDao.searchDecks(userSearch, userId);
     }
 
+    public List<DeckMetadata> searchDecksMetadata(String userSearch, UUID userId) throws DatabaseException {
+        return deckDao.searchDecksMetadata(userSearch, userId);
+    }
 
     /* ====================================================================== */
     /*                              Tag                                       */
