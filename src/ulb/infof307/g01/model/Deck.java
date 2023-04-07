@@ -1,15 +1,20 @@
 package ulb.infof307.g01.model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.*;
 
 
 public class Deck implements Iterable<Card> {
-    private String name;
-    private final UUID id;
-    private final List<Card> cards;
-    private final List<Tag> tags;
+    private UUID id;
 
-    // x by default
+    @Expose
+    private String name;
+    @Expose
+    private final List<Card> cards;
+    @Expose
+    private final List<Tag> tags;
+    @Expose
     private String color = "0x00000000";
 
     public Deck(String name) {
@@ -41,9 +46,19 @@ public class Deck implements Iterable<Card> {
         this.color = color;
     }
 
+<<<<<<< HEAD
     public List<Tag> getTags() {
         return tags;
     }
+=======
+    public void setNewID() {
+      this.id = UUID.randomUUID();
+
+      getCards().forEach(card -> card.setDeckId(this.id));
+    }
+
+    public List<Tag> getTags() { return tags; }
+>>>>>>> main
 
     public Card getCard(int index) throws IndexOutOfBoundsException {
         return cards.get(index);
