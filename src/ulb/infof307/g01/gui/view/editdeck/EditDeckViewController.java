@@ -28,45 +28,86 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class EditDeckViewController implements Initializable {
+
+    /* ====================================================================== */
+    /*                         FXML: Panes & Containers                       */
+    /* ====================================================================== */
+
     @FXML
     private StackPane frontCard;
+
     @FXML
     private StackPane backCard;
+
     @FXML
     private AnchorPane anchor;
-
-    @FXML
-    private WebView frontCardWebView;
-    @FXML
-    private TextField backCardText;
-    @FXML
-    private TextField deckNameText;
-
-    @FXML
-    private FontIcon removeCardIcon;
-    @FXML
-    private FontIcon addCardIcon;
-
-    @FXML
-    private ListView<String> cardsContainer;
 
     @FXML
     private HBox tagsBox;
 
     @FXML
+    private ListView<String> cardsContainer;
+
+
+    /* ====================================================================== */
+    /*                            FXML: Text Fields                           */
+    /* ====================================================================== */
+
+    @FXML
+    private TextField backCardText;
+
+    @FXML
+    private TextField deckNameText;
+
+    @FXML
     private TextField tagsInput;
 
     @FXML
-    private ColorPicker colorPicker;
+    private WebView frontCardWebView;
 
-    @FXML
-    public FontIcon frontCardEditIcon;
+
+    /* ====================================================================== */
+    /*                              FXML: Buttons                             */
+    /* ====================================================================== */
 
     @FXML
     private Button imageUploader;
 
+
+    /* ====================================================================== */
+    /*                               FXML: Icons                              */
+    /* ====================================================================== */
+
+    @FXML
+    private FontIcon removeCardIcon;
+
+    @FXML
+    private FontIcon addCardIcon;
+
+    @FXML
+    public FontIcon frontCardEditIcon;
+
+
+    /* ====================================================================== */
+    /*                           FXML: Color picker                           */
+    /* ====================================================================== */
+
+    @FXML
+    private ColorPicker colorPicker;
+
+
+    /* ====================================================================== */
+    /*                              Model Attributes                          */
+    /* ====================================================================== */
+
     private Deck deck;
+
     private Card selectedCard;
+
+
+    /* ====================================================================== */
+    /*                                Listener                                */
+    /* ====================================================================== */
 
     private Listener listener;
 
@@ -152,7 +193,6 @@ public class EditDeckViewController implements Initializable {
 
     public void setTags(List<Node> tagViews) {
         tagsBox.getChildren().clear();
-        tagViews.forEach(tagView -> tagView.prefHeight(tagsBox.getHeight()));
         tagsBox.getChildren().addAll(tagViews);
     }
 

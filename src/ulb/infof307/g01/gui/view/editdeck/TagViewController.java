@@ -9,23 +9,39 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import ulb.infof307.g01.model.Tag;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+public class TagViewController {
 
-public class TagViewController implements Initializable {
+    /* ====================================================================== */
+    /*                                FXML: Panes                             */
+    /* ====================================================================== */
 
     @FXML
     private BorderPane tagPane;
+
+
+    /* ====================================================================== */
+    /*                              FXML:Text Fields                          */
+    /* ====================================================================== */
 
     @FXML
     private TextField tagNameField;
 
 
+    /* ====================================================================== */
+    /*                             Model Attributes                           */
+    /* ====================================================================== */
+
     private Tag tag;
+
+
+    /* ====================================================================== */
+    /*                                Listener                                */
+    /* ====================================================================== */
+
     private Listener listener;
+
 
     /* ====================================================================== */
     /*                                Setter                                  */
@@ -36,7 +52,7 @@ public class TagViewController implements Initializable {
     }
 
     private void setTagColor(String color) {
-        tagPane.setStyle("-fx-background-color: " + color + ";");
+        tagPane.setStyle(tagPane.getStyle() + "-fx-background-color: " + color + ";");
     }
 
     public void setTag(Tag tag) {
@@ -57,12 +73,13 @@ public class TagViewController implements Initializable {
             listener.tagNameChanged(tag, tagNameField.getText());
     }
 
-    public void handleDeleteTagButton() {
+    @FXML
+    private void handleDeleteTagButton() {
         listener.tagDeleted(tag);
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    private void handleEditTagButton(ActionEvent actionEvent) {
     }
 
     /* ====================================================================== */
