@@ -1,50 +1,24 @@
 package ulb.infof307.g01.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
-public class DeckMetadata {
-    private final UUID id;
+public record DeckMetadata(UUID id,
+                           String name,
+                           String color,
+                           int cardCount,
+                           List<Tag> tags,
+                           int deckHashCode) {
 
-    private final String name;
-    private final String color;
-    private final int cardCount;
-    private final List<Tag> tags;
-    private final int deckHashCode;
-
-    public DeckMetadata(UUID id, String name, String color, int cardCount, List<Tag> tags, int deckHashCode) {
-        this.id = id;
-        this.name = name;
-        this.color = color;
-        this.cardCount = cardCount;
-        this.tags = tags;
-        this.deckHashCode = deckHashCode;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public int getCardCount() {
-        return cardCount;
-    }
-
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public int getDeckHashCode() {
-        return deckHashCode;
+    public DeckMetadata(DeckMetadata deckMetadata) {
+        this(deckMetadata.id,
+             deckMetadata.name,
+             deckMetadata.color,
+             deckMetadata.cardCount,
+             List.copyOf(deckMetadata.tags),
+             deckMetadata.deckHashCode);
     }
 
     @Override
@@ -58,11 +32,6 @@ public class DeckMetadata {
                 && name.equals(that.name)
                 && color.equals(that.color)
                 && tags.equals(that.tags);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, color, cardCount, tags, deckHashCode);
     }
 
 }

@@ -12,7 +12,6 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.DeckMetadata;
 
 import java.io.File;
@@ -59,7 +58,7 @@ public class DeckViewController {
         colorRect.setArcWidth(40);
         colorRect.heightProperty().bind(backgroundImage.fitHeightProperty());
         colorRect.widthProperty().bind(backgroundImage.fitWidthProperty());
-        Color color = Color.web(deck.getColor());
+        Color color = Color.web(deck.color());
         colorRect.setFill(makeGradient(color));
     }
 
@@ -99,7 +98,7 @@ public class DeckViewController {
     }
 
     private void updateDeckLabelName() {
-        this.playDeckLabel.setText(this.deck.getName());
+        this.playDeckLabel.setText(this.deck.name());
     }
 
 

@@ -8,32 +8,81 @@ import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.util.List;
+import java.util.*;
 
 public class DeckDAO extends HttpDAO {
+
+    Map<UUID, Deck> cachedDecks = new HashMap<>();
+    Map<UUID, DeckMetadata> deckMetadata = new HashMap<>();
+    Optional<HashSet<UUID>> allDecksIds = Optional.empty();
 
     /* ====================================================================== */
     /*                               DAO methods                              */
     /* ====================================================================== */
 
     public boolean deckExists(String deckName) throws IOException, InterruptedException {
+        if (allDecksIds.isEmpty()) {
+            // Fill the complete list of decks
+            fetchAllDecksMetadata();
+        }
 
-        deckName = deckName.replace(" ", "_");
-        HttpResponse<String> response = get(ServerPaths.DECK_EXISTS_PATH + "?name=" + deckName);
+        for (UUID deckId: allDecksIds.get()) {
+            assert deckMetadata.containsKey(deckId);
 
+            if (deckMetadata.get(deckId).name().equals(deckName)) {
+                return true;
+            }
+        }
+
+        return false;
+        // deckName = deckName.replace(" ", "_");
+        // HttpResponse<String> response = get(ServerPaths.DECK_EXISTS_PATH + "?name=" + deckName);
+
+        // checkResponseCode(response.statusCode());
+
+        // return Boolean.parseBoolean(response.body());
+    }
+
+    /**
+     * Fill the cached data related to decks metadata
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    private void fetchAllDecksMetadata()
+            throws IOException, InterruptedException {
+
+        HttpResponse<String> response = get(ServerPaths.GET_ALL_DECKS_PATH);
         checkResponseCode(response.statusCode());
 
-        return Boolean.parseBoolean(response.body());
+        allDecksIds = Optional.of(new HashSet<UUID>());
+        Set<UUID> allDecksIdsSet = allDecksIds.get();
+
+        List<DeckMetadata> decks =  stringToArray(response.body(), DeckMetadata[].class);
+        for (DeckMetadata deck: decks) {
+            allDecksIdsSet.add(deck.id());
+            deckMetadata.put(deck.id(), deck);
+        }
     }
 
     public List<DeckMetadata> getAllDecks()
             throws IOException, InterruptedException {
 
-        HttpResponse<String> response = get(ServerPaths.GET_ALL_DECKS_PATH);
+        if (allDecksIds.isEmpty()) {
+            fetchAllDecksMetadata();
+        }
 
-        checkResponseCode(response.statusCode());
+        List<DeckMetadata> decks = new ArrayList<>();
+        for (UUID deckId: allDecksIds.get()) {
+            decks.add(new DeckMetadata(deckMetadata.get(deckId)));
+        }
 
-        return stringToArray(response.body(), DeckMetadata[].class);
+        return decks;
+
+//        HttpResponse<String> response = get(ServerPaths.GET_ALL_DECKS_PATH);
+//
+//        checkResponseCode(response.statusCode());
+//
+//        return stringToArray(response.body(), DeckMetadata[].class);
     }
 
     /**
@@ -64,7 +113,7 @@ public class DeckDAO extends HttpDAO {
     public void deleteDeck(DeckMetadata deck)
             throws IOException, InterruptedException {
 
-        String query =  "?deck_id=" + deck.getId();
+        String query =  "?deck_id=" + deck.id();
         HttpResponse<String> response
                 = delete(ServerPaths.DELETE_DECK_PATH + query);
 
@@ -84,7 +133,7 @@ public class DeckDAO extends HttpDAO {
             throws IOException, InterruptedException {
 
         String path = ServerPaths.GET_DECK_PATH;
-        String parameters = "?deck_id=%s".formatted(deckMetadata.getId());
+        String parameters = "?deck_id=%s".formatted(deckMetadata.id());
         HttpResponse<String> response = get(path + parameters);
 
         return new Gson().fromJson(response.body(), Deck.class);
