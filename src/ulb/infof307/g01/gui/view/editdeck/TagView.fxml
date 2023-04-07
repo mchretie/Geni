@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.effect.Blend?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="ulb.infof307.g01.gui.view.editdeck.TagViewController"
+           maxHeight="20"
+           style="-fx-border-color: #000000;
+                    -fx-padding: 6px 10px;
+                    -fx-border-insets: 3px 5px;
+                    -fx-background-insets: 3px 5px;
+                    -fx-border-radius: 15px;
+                    -fx-background-radius: 15px;"
+
+
+           prefHeight="400.0" prefWidth="600.0">
+
+    <TextField fx:id="tagNameField"
+               alignment="CENTER"
+               onKeyPressed="#handleKeyPressedOnTextField"
+               promptText="Nom du tag..."
+               style="-fx-background-color: transparent;">
+
+        <cursor>
+            <Cursor fx:constant="DEFAULT"/>
+        </cursor>
+        <effect>
+            <Blend/>
+        </effect>
+
+    </TextField>
+</StackPane>
