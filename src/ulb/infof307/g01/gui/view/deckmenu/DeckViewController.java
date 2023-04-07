@@ -13,6 +13,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.DeckMetadata;
 
 import java.io.File;
 
@@ -33,7 +34,7 @@ public class DeckViewController {
     @FXML
     private Rectangle colorRect;
 
-    private Deck deck;
+    private DeckMetadata deck;
 
     private Listener listener;
 
@@ -45,7 +46,7 @@ public class DeckViewController {
     /*                           Updating Deck                                */
     /* ====================================================================== */
 
-    public void setDeck(Deck deck) {
+    public void setDeck(DeckMetadata deck) {
         this.deck = deck;
         this.updateDeckLabelName();
 
@@ -176,9 +177,9 @@ public class DeckViewController {
     /* ====================================================================== */
 
     public interface Listener {
-        void deckRemoved(Deck deck);
-        void deckDoubleClicked(Deck deck);
-        void editDeckClicked(Deck deck);
-        void shareDeckClicked(Deck deck, File file);
+        void deckRemoved(DeckMetadata deck);
+        void deckDoubleClicked(DeckMetadata deck);
+        void editDeckClicked(DeckMetadata deck);
+        void shareDeckClicked(DeckMetadata deck, File file);
     }
 }

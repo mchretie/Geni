@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.httpdao.dao;
 import com.google.gson.Gson;
 import ulb.infof307.g01.model.Deck;
 
+import ulb.infof307.g01.model.DeckMetadata;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class DeckDAO extends HttpDAO {
         return stringToArray(response.body(), Deck[].class);
     }
 
-    public void deleteDeck(Deck deck)
+    public void deleteDeck(DeckMetadata deck)
             throws IOException, InterruptedException {
 
         String query =  "?deck_id=" + deck.getId();
@@ -77,5 +78,15 @@ public class DeckDAO extends HttpDAO {
                 = post(ServerPaths.SAVE_DECK_PATH, new Gson().toJson(deck));
 
         checkResponseCode(response.statusCode());
+    }
+
+    public Deck getDeck(DeckMetadata deckMetadata)
+            throws IOException, InterruptedException {
+
+        String path = ServerPaths.GET_DECK_PATH;
+        String parameters = "?deck_id=%s".formatted(deckMetadata.getId());
+        HttpResponse<String> response = get(path + parameters);
+
+        return new Gson().fromJson(response.body(), Deck.class);
     }
 }

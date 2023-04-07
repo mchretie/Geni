@@ -32,6 +32,7 @@ public class DeckRequestHandler extends Handler {
       delete(DELETE_DECK_PATH, this::deleteDeck, toJson());
       get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
       get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
+      get(GET_DECK_PATH, this::getDeck, toJson());
       get(DECK_EXISTS_PATH, this::deckExists, toJson());
   }
 
@@ -90,6 +91,13 @@ public class DeckRequestHandler extends Handler {
 
       return failedResponse;
     }
+  }
+
+  private Deck getDeck(Request req, Response res) {
+      String username = usernameFromRequest(req);
+      UUID userId = UUID.fromString(database.getUserId(username));
+      UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+      return database.getDeck(deckId);
   }
 
   private List<Deck> getAllDecks(Request req, Response res) {

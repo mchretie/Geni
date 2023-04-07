@@ -46,11 +46,6 @@ public class Deck implements Iterable<Card> {
         this.color = color;
     }
 
-<<<<<<< HEAD
-    public List<Tag> getTags() {
-        return tags;
-    }
-=======
     public void setNewID() {
       this.id = UUID.randomUUID();
 
@@ -58,7 +53,6 @@ public class Deck implements Iterable<Card> {
     }
 
     public List<Tag> getTags() { return tags; }
->>>>>>> main
 
     public Card getCard(int index) throws IndexOutOfBoundsException {
         return cards.get(index);

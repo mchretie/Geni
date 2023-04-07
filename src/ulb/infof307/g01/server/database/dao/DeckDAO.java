@@ -2,6 +2,7 @@ package ulb.infof307.g01.server.database.dao;
 
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.DeckMetadata;
 import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
@@ -188,6 +189,21 @@ public class DeckDAO extends DAO {
         return getDecks(deckIds);
     }
 
+    // TODO: optimize the deck fetching
+    public List<DeckMetadata> searchDecksMetadata(String userSearch, UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT deck_id
+                FROM deck
+                WHERE user_id = ? AND name LIKE ?
+                """;
+
+        String pattern = userSearch + "%";
+        ResultSet res = database.executeQuery(sql, userId.toString(), pattern);
+        List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
+
+        return extractDeckMetadata(getDecks(deckIds));
+    }
+
     /**
      * Delete a deck along with its cards from the database.
      */
@@ -326,4 +342,9 @@ public class DeckDAO extends DAO {
         }
     }
 
+    private List<DeckMetadata> extractDeckMetadata(List<Deck> decks) {
+        List<DeckMetadata> decksMetadata = new ArrayList<>();
+        decks.forEach((d) -> decksMetadata.add(d.getMetadata()));
+        return decksMetadata;
+    }
 }

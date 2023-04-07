@@ -12,6 +12,7 @@ import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.model.DeckMetadata;
 
 import java.io.*;
 import java.net.URL;
@@ -102,7 +103,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             Node node = loader.load();
 
             DeckViewController controller = loader.getController();
-            controller.setDeck(deck);
+            controller.setDeck(deck.getMetadata());
             controller.setListener(this);
 
             decksLoaded.add(node);
@@ -171,7 +172,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void deckRemoved(Deck deck) {
+    public void deckRemoved(DeckMetadata deck) {
         try {
             deckDAO.deleteDeck(deck);
             showDecks();
@@ -185,12 +186,12 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void deckDoubleClicked(Deck deck) {
+    public void deckDoubleClicked(DeckMetadata deck) {
         controllerListener.playDeckClicked(deck);
     }
 
     @Override
-    public void editDeckClicked(Deck deck) {
+    public void editDeckClicked(DeckMetadata deck) {
         controllerListener.editDeckClicked(deck);
     }
 
@@ -247,12 +248,12 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void shareDeckClicked(Deck deck, File file) {
+    public void shareDeckClicked(DeckMetadata deckMetadata, File file) {
         if (file == null || !file.isDirectory())
             return;
 
         try {
-
+            Deck deck = deckDAO.getDeck(deckMetadata);
             String fileName
                     = deck.getName()
                           .replace(" ", "_")
@@ -274,6 +275,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         } catch (IOException e) {
             controllerListener.failedExport(e);
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            controllerListener.failedFetch(e);
+            e.printStackTrace();
         }
     }
 
@@ -283,12 +287,16 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     /* ====================================================================== */
 
     public interface ControllerListener {
-        void editDeckClicked(Deck deck);
-        void playDeckClicked(Deck deck);
+        void editDeckClicked(DeckMetadata deck);
+
+        void playDeckClicked(DeckMetadata deck);
+
         void fxmlLoadingError(IOException e);
         void savingError(Exception e);
         void failedExport(IOException e);
         void failedImport(JsonSyntaxException e);
         void invalidDeckName(String name, char c);
+
+        void failedFetch(InterruptedException e);
     }
 }
