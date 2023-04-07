@@ -121,13 +121,14 @@ public class EditDeckViewController implements Initializable {
         cardsContainer.refresh();
     }
 
-
-    public void setCardEditors(Node node){
+    public void setFlashCardEditor(Node node){
         cardEditor.getChildren().add(node);
-        if (cardEditor.getChildren().size() == 3) {
-            flashCardEditor = cardEditor.getChildren().get(1);
-            QCMCardEditor = cardEditor.getChildren().get(2);
-        }
+        flashCardEditor = node;
+    }
+
+    public void setQCMCardEditor(Node node){
+        cardEditor.getChildren().add(node);
+        QCMCardEditor = node;
     }
 
     /* ====================================================================== */
