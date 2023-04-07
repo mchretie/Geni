@@ -91,11 +91,11 @@ public class MainFxController
     // TODO: Title and login.
     stage.setTitle("Pokémon TCG Deck Builder");
 
-    // ICI !!!
-
-    userDAO.register("guest", "guest");
-    userDAO.login("guest", "guest");
-
+    if (userDAO.userCredentialsExist()) {
+      userDAO.loginWithCredentials();
+    } else {
+      userDAO.loginAsGuest();
+    }
 
     URL resource =
         MainWindowViewController.class.getResource("MainWindowView.fxml");
@@ -110,9 +110,14 @@ public class MainFxController
     mainWindowViewController = fxmlLoader.getController();
     mainWindowViewController.setListener(this);
 
+    loginController =
+        new LoginController(stage, mainWindowViewController, this);
+    profileController =
+        new ProfileController(stage, mainWindowViewController, this);
+
     System.out.println("something");
     this.profileController =
-            new ProfileController(stage, mainWindowViewController, this);
+        new ProfileController(stage, mainWindowViewController, this);
 
     try {
       deckMenuController = new DeckMenuController(
@@ -240,8 +245,8 @@ public class MainFxController
                     case PLAY_DECK -> playDeckController.show();
                     case EDIT_DECK -> editDeckController.show();
                     case HTML_EDITOR -> editCardController.show();
-                    case LOGIN -> loginController.show(); //ICI should never happen
-                    case PROFILE -> profileController.show(); //ICI should never happen
+                    case LOGIN -> loginController.show();
+                    case PROFILE -> profileController.show();
 
       }
             } catch (IOException | InterruptedException e) {
@@ -282,29 +287,46 @@ public class MainFxController
 
       @Override
       public void handleProfileClicked() {
+          System.out.println("handleProfileClicked");
 
-          System.out.println("handleProfileClicked /n setting up login controller with this");
-
-          loginController =
-                  new LoginController(stage, mainWindowViewController, this);
-
-          System.out.println("ICI#########");
-          try {
-            viewStack.add(View.LOGIN);
-            loginController.show();
-          } catch (IOException e) {
-              throw new RuntimeException(e);
+          if ( profileController.isLoggedIn() ) {
+              try {
+                  viewStack.add(View.PROFILE);
+                  profileController.show();
+              } catch (IOException e) {
+                  throw new RuntimeException(e);
+              }
+          }
+          else {
+            System.out.println("ICI#########");
+            try {
+              viewStack.add(View.LOGIN);
+              loginController.show();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
           }
       }
-
       @Override
-      public void handleLogoutButton() {
+      public void handleLogout() {
           try {
+            userDAO.logout();
+            profileController.setLoggedIn(false);
             viewStack.remove(View.PROFILE);
             loginController.show();
           } catch (IOException e) {
               throw new RuntimeException(e);
           }
       }
+      @Override
+      public void handleLogin() {
 
+        profileController.setLoggedIn(true);
+        viewStack.remove(View.LOGIN);
+        try {
+          profileController.show();
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }
     }

@@ -16,6 +16,8 @@ public class LoginViewController implements Initializable {
 
   @FXML private Button loginButton;
 
+  @FXML private Button signupButton;
+
   protected ViewListener listener;
 
   /* ====================================================================== */
@@ -61,11 +63,27 @@ public class LoginViewController implements Initializable {
   @FXML
   private void handleLoginClicked() {
     System.out.println("handle Login clicked");
-    listener.loginClicked();
     // get information from the text fields
-    String pswd = this.passwordField.getText();
+    String password = this.passwordField.getText();
     String username = this.usernameField.getText();
-    // use dao to login
+
+    System.out.println("received: " + password + " " + username);
+    this.passwordField.clear();
+    this.usernameField.clear();
+    listener.loginClicked(username, password);
+  }
+
+  @FXML
+  private void handleSignupClicked() {
+    System.out.println("handle Signup clicked");
+    // get information from the text fields
+    String password = this.passwordField.getText();
+    String username = this.usernameField.getText();
+
+    System.out.println("received: " + password + " " + username);
+    this.passwordField.clear();
+    this.usernameField.clear();
+    listener.signupClicked(username, password);
   }
 
   /* ====================================================================== */
@@ -74,6 +92,7 @@ public class LoginViewController implements Initializable {
 
   public interface ViewListener {
     // ICI
-    void loginClicked();
+    void loginClicked(String username, String password);
+    void signupClicked(String username, String password);
   }
 }

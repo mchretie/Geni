@@ -5,11 +5,16 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import ulb.infof307.g01.gui.view.login.LoginViewController;
 
 public class ProfileViewController implements Initializable {
+
+  @FXML private Label usernameLabel;
+
+  @FXML private Button logoutButton;
 
   protected ViewListener listener;
 
@@ -34,7 +39,7 @@ public class ProfileViewController implements Initializable {
 
   @FXML
   private void handleLogoutButtonClicked() {
-    listener.logoutClicked();
+    listener.logoutButtonClicked();
   }
 
   /* ====================================================================== */
@@ -43,6 +48,6 @@ public class ProfileViewController implements Initializable {
 
   public interface ViewListener {
     // ICI
-    void logoutClicked();
+    void logoutButtonClicked();
   }
 }

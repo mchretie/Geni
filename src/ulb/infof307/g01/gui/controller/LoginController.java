@@ -73,14 +73,29 @@ public class LoginController implements LoginViewController.ViewListener {
   /* ====================================================================== */
 
   @Override
-  public void loginClicked() {
+  public void loginClicked(String username, String password) {
     System.out.println("login clicked");
-    // Todo :  tests
-    // userDAO.login("test", "test"); !! see mainFX for use example
     // get information from the text fields
-    // String pswd = this.passwordField.getText();
-    // String username = this.usernameField.getText();
-    // use dao to login
+    try {
+      userDAO.login(username, password);
+      System.out.println("logged in successfully");
+    } catch (IOException | InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+
+    controllerListener.handleLogin();
+  }
+
+  @Override
+  public void signupClicked(String username, String password) {
+    System.out.println("signup clicked");
+    try {
+      userDAO.register(username, password);
+      System.out.println("registered successfully");
+    } catch (IOException | InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+    loginClicked(username, password);
   }
 
   /* ====================================================================== */
@@ -88,6 +103,6 @@ public class LoginController implements LoginViewController.ViewListener {
   /* ====================================================================== */
 
   public interface ControllerListener {
-    ;
+    void handleLogin();
   }
 }

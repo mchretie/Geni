@@ -2,6 +2,7 @@ package ulb.infof307.g01.gui.controller;
 
 import java.io.IOException;
 import javafx.stage.Stage;
+import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 
@@ -17,7 +18,7 @@ public class ProfileController implements ProfileViewController.ViewListener {
 
   private boolean loggedIn = false;
 
-  private String userID = "";
+  private final UserDAO userDAO = new UserDAO();
 
   /* ====================================================================== */
   /*                              Constructor                               */
@@ -42,6 +43,14 @@ public class ProfileController implements ProfileViewController.ViewListener {
   }
 
   /* ====================================================================== */
+  /*                              Getters                                   */
+  /* ====================================================================== */
+  public boolean isLoggedIn() { return loggedIn; }
+  /* ====================================================================== */
+  /*                              Setters                                   */
+  /* ====================================================================== */
+  public void setLoggedIn(boolean loggedInVal) { this.loggedIn = loggedInVal; }
+  /* ====================================================================== */
   /*                         Stage Manipulation                             */
   /* ====================================================================== */
 
@@ -64,8 +73,9 @@ public class ProfileController implements ProfileViewController.ViewListener {
   /* ====================================================================== */
 
   @Override
-  public void logoutClicked() {
-    ;
+  public void logoutButtonClicked() {
+    System.out.println("logoutButton clicked clicked");
+    controllerListener.handleLogout();
   }
 
   /* ====================================================================== */
@@ -73,6 +83,6 @@ public class ProfileController implements ProfileViewController.ViewListener {
   /* ====================================================================== */
 
   public interface ControllerListener {
-    void handleLogoutButton();
+    void handleLogout();
   }
 }
