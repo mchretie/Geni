@@ -16,7 +16,13 @@ public class DeckDAO extends HttpDAO {
     /* ====================================================================== */
 
     public boolean deckExists(String deckName) throws IOException, InterruptedException {
-        return !searchDecks(deckName).isEmpty();
+
+        deckName = deckName.replace(" ", "_");
+        HttpResponse<String> response = get(ServerPaths.DECK_EXISTS_PATH + "?name=" + deckName);
+
+        checkResponseCode(response.statusCode());
+
+        return Boolean.parseBoolean(response.body());
     }
 
     public List<Deck> getAllDecks()
