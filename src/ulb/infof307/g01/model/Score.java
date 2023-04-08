@@ -6,19 +6,21 @@ import java.util.UUID;
 
 public class Score {
     private UUID userId;
+    private String username;
     private UUID deckId;
     private int score;
     private Date timestamp;
 
-    public Score(UUID userId, UUID deckId, int score, Date timestamp) {
+    public Score(UUID userId, String username, UUID deckId, int score, Date timestamp) {
         this.userId = userId;
+        this.username = username;
         this.deckId = deckId;
         this.score = score;
         this.timestamp = timestamp;
     }
 
-    static public Score createNewScore(UUID userId, UUID deckId) {
-        return new Score(userId, deckId, 0, new Date());
+    static public Score createNewScore(UUID userId, String username, UUID deckId) {
+        return new Score(userId, username, deckId, 0, new Date());
     }
 
     public UUID getUserId() {
@@ -52,6 +54,6 @@ public class Score {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, deckId, score, timestamp);
+        return Objects.hash(userId, username, deckId, score, timestamp);
     }
 }

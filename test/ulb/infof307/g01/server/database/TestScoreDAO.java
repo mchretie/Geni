@@ -36,17 +36,19 @@ public class TestScoreDAO extends DatabaseUsingTest {
 
         this.deckDAO.setTagDao(this.tagDAO);
         this.tagDAO.setDeckDao(this.deckDAO);
+        this.scoreDAO.setUserDAO(userDAO);
     }
 
     @Test
     void addScoreTest() {
-        userDAO.registerUser("hihi", "hoho");
+        String username = "hihi";
+        userDAO.registerUser(username, "hoho");
         UUID userId = UUID.fromString(userDAO.getUserId("hihi"));
 
         Deck deck = new Deck("pom");
         deckDAO.saveDeck(deck, userId);
 
-        Score score = new Score(userId, deck.getId(), 25, new Date());
+        Score score = new Score(userId, username, deck.getId(), 25, new Date());
         scoreDAO.addScore(score);
 
         Score scoreFromDAO = scoreDAO.getScoreFromUserId(userId).get(0);
@@ -55,16 +57,17 @@ public class TestScoreDAO extends DatabaseUsingTest {
 
     @Test
     void getScoreFromDeckIdTest() {
-        userDAO.registerUser("hihi", "hoho");
+        String username = "hihi";
+        userDAO.registerUser(username, "hoho");
         UUID userId = UUID.fromString(userDAO.getUserId("hihi"));
 
         Deck deck1 = new Deck("pom");
         deckDAO.saveDeck(deck1, userId);
         Deck deck2 = new Deck("xD");
         deckDAO.saveDeck(deck2, userId);
-        Score score1 = new Score(userId, deck1.getId(), 200, new Date(123456));
-        Score score2 = new Score(userId, deck1.getId(), 100, new Date(123458));
-        Score score3 = new Score(userId, deck2.getId(), 100, new Date(123459));
+        Score score1 = new Score(userId, username, deck1.getId(), 200, new Date(123456));
+        Score score2 = new Score(userId, username, deck1.getId(), 100, new Date(123458));
+        Score score3 = new Score(userId, username, deck2.getId(), 100, new Date(123459));
         scoreDAO.addScore(score1);
         scoreDAO.addScore(score2);
         scoreDAO.addScore(score3);

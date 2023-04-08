@@ -14,6 +14,12 @@ public class Leaderboard {
         this.scores = new ArrayList<>();
     }
 
+    public Leaderboard(UUID deckId, List<Score> scores) {
+        this.deckId = deckId;
+        this.scores = scores;
+        this.sortByScore();
+    }
+
     public List<Score> getLeaderboard() {
         return scores;
     }

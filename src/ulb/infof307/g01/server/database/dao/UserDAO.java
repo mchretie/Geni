@@ -94,5 +94,19 @@ public class UserDAO extends DAO {
             throw new DatabaseException(e.getMessage());
         }
     }
+
+    public String getUsername(UUID userId) {
+        String sql = """
+                SELECT username
+                FROM USER
+                WHERE user_id = ?
+                """;
+
+        try (ResultSet res = database.executeQuery(sql, userId.toString())) {
+            return res.getString("username");
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 }
 

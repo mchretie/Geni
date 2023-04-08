@@ -1,5 +1,6 @@
 package ulb.infof307.g01.server.database;
 
+import ulb.infof307.g01.model.Leaderboard;
 import ulb.infof307.g01.model.Score;
 import ulb.infof307.g01.server.database.dao.*;
 import ulb.infof307.g01.model.Deck;
@@ -29,6 +30,7 @@ public class Database {
 
         this.deckDao.setTagDao(this.tagDao);
         this.tagDao.setDeckDao(this.deckDao);
+        this.scoreDao.setUserDAO(this.userDao);
     }
 
     public void open(File dbname) {
@@ -139,14 +141,14 @@ public class Database {
 
 
     /* ====================================================================== */
-    /*                              Score                                     */
+    /*                              Score/Leaderboard                         */
     /* ====================================================================== */
 
     public void saveScore(Score score) {
         scoreDao.addScore(score);
     }
 
-    public List<Score> getAllScoresFromDeck(UUID deckId) {
-        return scoreDao.getScoreFromDeckId(deckId);
+    public Leaderboard getLeaderboardFromDeckId(UUID deckId) {
+        return new Leaderboard(deckId,  scoreDao.getScoreFromDeckId(deckId));
     }
 }

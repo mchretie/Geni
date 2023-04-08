@@ -13,9 +13,14 @@ import java.util.UUID;
 
 public class ScoreDAO extends DAO {
     private final DatabaseAccess database;
+    private UserDAO userDAO;
 
     public ScoreDAO(DatabaseAccess database) {
         this.database = database;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
     public void addScore(Score score) {
@@ -37,7 +42,8 @@ public class ScoreDAO extends DAO {
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             int score = res.getInt("score");
             Date date = new Date(res.getLong("timestamp"));
-            return new Score(userId, deckId, score, date);
+            String username = userDAO.getUsername(userId);
+            return new Score(userId, username, deckId, score, date);
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -50,8 +56,8 @@ public class ScoreDAO extends DAO {
                 WHERE deck_id = ?
                 """;
 
-        ResultSet res = database.executeQuery(sql, deckId.toString());
         try {
+            ResultSet res = database.executeQuery(sql, deckId.toString());
             List<Score> scores = new ArrayList<>();
             while (res.next()) {
                 scores.add(extractScore(res));
@@ -69,8 +75,8 @@ public class ScoreDAO extends DAO {
                 WHERE user_id = ?
                 """;
 
-        ResultSet res = database.executeQuery(sql, userId.toString());
         try {
+            ResultSet res = database.executeQuery(sql, userId.toString());
             List<Score> scores = new ArrayList<>();
             while (res.next()) {
                 scores.add(extractScore(res));
