@@ -323,7 +323,6 @@ public class EditDeckViewController implements Initializable {
     public interface Listener {
         void deckNameModified(String newName);
         void tagAddedToDeck(Deck deck, String tagName, String color);
-        void frontOfCardModified(Card card, String newFront);
         void backOfCardModified(Card card, String newBack);
         void deckColorModified(Deck deck, Color color);
         void newCard();
