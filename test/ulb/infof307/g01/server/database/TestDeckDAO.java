@@ -2,6 +2,7 @@ package ulb.infof307.g01.server.database;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ulb.infof307.g01.model.FlashCard;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
 import ulb.infof307.g01.server.database.dao.TagDAO;
 import ulb.infof307.g01.server.database.dao.UserDAO;
@@ -117,7 +118,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     @Test
     void saveDeck_CardAdded_DeckAddedWithCard()  {
         Deck deck = new Deck("name");
-        Card card = new Card("front", "back");
+        Card card = new FlashCard("front", "back");
 
         deck.addCard(card);
         deckDAO.saveDeck(deck, user);
@@ -128,7 +129,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     @Test
     void saveDeck_CardDeleted_DeckUpdated()  {
         Deck deck = new Deck("name");
-        Card card = new Card("front", "back");
+        Card card = new FlashCard("front", "back");
 
         deck.addCard(card);
         deckDAO.saveDeck(deck, user);
