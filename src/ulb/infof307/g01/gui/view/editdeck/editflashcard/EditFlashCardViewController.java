@@ -45,7 +45,7 @@ public class EditFlashCardViewController {
         if (card == null ) return;
 
         frontCardWebView.getEngine().loadContent(card.getFront());
-        backCardText.setText(card.getBack());
+//        backCardText.setText(card.getBack());
     }
 
     @FXML
