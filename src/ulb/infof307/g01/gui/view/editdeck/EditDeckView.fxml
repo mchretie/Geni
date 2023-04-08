@@ -12,12 +12,22 @@
     <!-- Left side -->
     <VBox fx:id="leftVbox" HBox.hgrow="ALWAYS">
         <!-- Deck name -->
-        <TextField fx:id="deckNameText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" onKeyReleased="#handleUpdateDeckName" style="-fx-background-color: #00000000;" text="Deck Name">
+        <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+            <TextField fx:id="deckNameText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" onKeyReleased="#handleUpdateDeckName" style="-fx-background-color: #00000000;" text="Deck Name">
 
-            <font>
-                <Font name="System Italic" size="28.0" />
-            </font>
-        </TextField>
+                <font>
+                    <Font name="System Italic" size="28.0" />
+                </font>
+            </TextField>
+
+            <Button style="-fx-background-color: transparent">
+                <graphic>
+                    <FontIcon iconLiteral="mdi2p-pencil"
+                              iconSize="25"/>
+                </graphic>
+            </Button>
+        </HBox>
+
 
 
         <!-- Tags -->
@@ -28,7 +38,7 @@
         </ScrollPane>
 
         <VBox style="-fx-background-color: #f0f0f0;" VBox.vgrow="ALWAYS">
-            <ListView fx:id="cardsContainer" VBox.vgrow="ALWAYS" onMouseClicked="#handleCardPreviewClicked" />
+            <ListView fx:id="cardsContainer" onMouseClicked="#handleCardPreviewClicked" VBox.vgrow="ALWAYS" />
         </VBox>
 
         <HBox alignment="CENTER" layoutX="15.0" layoutY="460.0" prefHeight="50.0" prefWidth="350.0" style="-fx-background-color: #5ab970;">
@@ -94,17 +104,14 @@
         <!-- Back of card -->
         <StackPane fx:id="backCard" visible="false" VBox.vgrow="ALWAYS">
 
-            <TextField fx:id="backCardText" alignment="CENTER"
-                       onKeyPressed="#handleTextFieldKeyPressed"
-                       prefHeight="205.0"
-                       style="-fx-background-color: #f0f0f0;
-                       -fx-border-radius: 20px;
-                       -fx-background-radius: 20px;"
-                       VBox.vgrow="ALWAYS">
+            <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" style="-fx-background-color: #f0f0f0;                        -fx-border-radius: 20px;                        -fx-background-radius: 20px;" VBox.vgrow="ALWAYS">
 
                 <font>
                     <Font size="24.0" />
                 </font>
+            <StackPane.margin>
+               <Insets right="10.0" />
+            </StackPane.margin>
             </TextField>
         </StackPane>
 
