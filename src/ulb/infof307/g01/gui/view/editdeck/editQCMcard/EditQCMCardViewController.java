@@ -1,34 +1,35 @@
 package ulb.infof307.g01.gui.view.editdeck.editQCMcard;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.view.editdeck.EditFrontCardViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.MCQCard;
 
-public class EditQCMCardViewController implements EditFrontCardViewController.Listener, EditChoiceFieldController.Listener {
+import java.util.List;
 
-    @FXML
-    private StackPane editFrontCardView;
+public class EditQCMCardViewController implements EditFrontCardViewController.Listener, EditAnswerFieldController.Listener {
+
+
 
     @FXML
     private EditFrontCardViewController editFrontCardViewController;
 
     @FXML
-    private EditChoiceFieldController editChoiceFieldController;
+    private EditAnswerFieldController editAnswerFieldController;
 
     @FXML
-    private GridPane choicesGrid;
+    private GridPane answersGrid;
 
     @FXML
-    private BorderPane addChoiceField;
+    private BorderPane addAnswerField;
 
     @FXML
-    private FontIcon addChoiceIcon;
+    private FontIcon addAnswerIcon;
 
     private int currentCol = 0;
 
@@ -45,6 +46,7 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
     public void setListener(Listener listener) {
         this.listener = listener;
         editFrontCardViewController.setListener(this);
+        editAnswerFieldController.setListener(this);
     }
 
     public void setCard(MCQCard card) {
@@ -55,12 +57,12 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
     /*                              Card loading                              */
     /* ====================================================================== */
 
-    public  void loadCardEditor(){
+    public void loadCardEditor(List<Node> answers){
         if (card == null) return;
         editFrontCardViewController.loadFront();
+        setAnswers(answers);
     }
 
-    public void load
 
     /* ====================================================================== */
     /*                               FrontCard                                */
@@ -78,7 +80,7 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
 
 
     /* ====================================================================== */
-    /*                            grid handlers                               */
+    /*                            Grid handlers                               */
     /* ====================================================================== */
 
     @FXML
@@ -87,17 +89,33 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
         int nextRow = currentRow;
         if (nextCol==0) nextRow +=1;
 
-        choicesGrid.getChildren().remove(addChoiceField);
-        choicesGrid.setConstraints(addChoiceField, nextCol, nextRow);
-        choicesGrid.getChildren().add(addChoiceField);
+        answersGrid.getChildren().remove(addAnswerField);
+        answersGrid.setConstraints(addAnswerField, nextCol, nextRow);
+        answersGrid.getChildren().add(addAnswerField);
 
         currentCol = nextCol; currentRow = nextRow;
 
-        //TODO listener.addNewChoiceToCard(Card card);
+        listener.addNewAnswerToCard(card);
     }
 
-    public void setCorrectAnswer(){return; }
-    public void setAnswer() {return; }
+    public void setAnswers(List<Node> answers){
+        answersGrid.getChildren().clear();
+        answersGrid.getChildren().addAll(answers);
+
+        int size = answers.size();
+        currentCol = size % 2;
+        currentRow = size / 2;
+    }
+
+    @Override
+    public void setCorrectAnswer(int idxOfAnswer) {
+        listener.setCorrectAnswer(idxOfAnswer);
+    }
+
+    @Override
+    public void answerChanged(int idxOfAnswer, String newAnswer){
+        listener.answerChanged(idxOfAnswer, newAnswer);
+    }
 
 
     /* ====================================================================== */
@@ -105,10 +123,11 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
     /* ====================================================================== */
 
     @FXML
-    private void handleAddChoiceHoverExit() {addChoiceIcon.setIconColor(Color.web("#000000"));}
+    private void handleAddChoiceHoverExit() {
+        addAnswerIcon.setIconColor(Color.web("#000000"));}
 
     @FXML
-    private void handleAddChoiceHover(){ addChoiceIcon.setIconColor(Color.web("#7f8281"));  }
+    private void handleAddChoiceHover(){ addAnswerIcon.setIconColor(Color.web("#7f8281"));  }
 
 
     /* ====================================================================== */
@@ -118,5 +137,8 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
     public interface Listener {
         void frontOfCardModified(Card card, String newFront);
         void editCardClicked(Card card);
+        void setCorrectAnswer(int idxOfAnswer);
+        void answerChanged(int idxOfAnswer, String newAnswer);
+        void addNewAnswerToCard(MCQCard card);
     }
 }

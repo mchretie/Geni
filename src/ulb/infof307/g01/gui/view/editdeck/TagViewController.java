@@ -1,10 +1,6 @@
 package ulb.infof307.g01.gui.view.editdeck;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -78,9 +74,6 @@ public class TagViewController {
         listener.tagDeleted(tag);
     }
 
-    @FXML
-    private void handleEditTagButton(ActionEvent actionEvent) {
-    }
 
     /* ====================================================================== */
     /*                              Listener                                  */

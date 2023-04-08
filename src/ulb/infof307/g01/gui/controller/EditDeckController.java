@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
+import ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditAnswerFieldController;
 import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.editdeck.editflashcard.EditFlashCardViewController;
@@ -195,6 +196,11 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
+    public void editCardClicked(Card selectedCard) {
+        controllerListener.editCardClicked(deck, selectedCard);
+    }
+
+    @Override
     public void backOfCardModified(FlashCard card, String newBack) {
         try {
             card.setBack(newBack);
@@ -206,10 +212,37 @@ public class EditDeckController implements EditDeckViewController.Listener,
         }
     }
 
-    @Override
-    public void editCardClicked(Card selectedCard) {
-        controllerListener.editCardClicked(deck, selectedCard);
+    private List<Node> loadAnswers(MCQCard card){
+        try {
+            int idx = 0;
+            List<Node> answerViews = new ArrayList<>();
+            for (String answer: card.getAnswers()){
+                URL url = EditAnswerFieldController.class.getResource("editQCMCard/EditAnswerField.fxml");
+                FXMLLoader loader = new FXMLLoader(url);
+
+                Node node = loader.load();
+                EditAnswerFieldController answerViewController = loader.getController();
+                answerViewController.setAnswerText(answer, idx);
+                idx++;
+                answerViews.add(node);
+            }
+            return answerViews;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
+    @Override
+    public void setCorrectAnswer(int idxOfAnswer) {return;}
+
+    @Override
+    public void answerChanged(int idxOfAnswer, String newAnswer) {return;}
+
+    @Override
+    public void addNewAnswerToCard(MCQCard card) {return;}
+
 
     /* ====================================================================== */
     /*                             Cards Manager                              */
@@ -260,7 +293,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         }
         else
             editQCMCardViewController.setCard((MCQCard) card);
-            editQCMCardViewController.loadCardEditor();
+            editQCMCardViewController.loadCardEditor(loadAnswers((MCQCard) card));
             editDeckViewController.showQCMCardEditor();
     }
 
