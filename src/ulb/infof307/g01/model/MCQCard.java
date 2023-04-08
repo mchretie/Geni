@@ -1,34 +1,35 @@
 package ulb.infof307.g01.model;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 public class MCQCard extends Card{
-    private String[] answers;
+    private List<String> answers;
     private int correctAnswer;
 
-    public MCQCard(String front, String[] answers, int correctAnswer) {
+    public MCQCard(String front, List<String> answers, int correctAnswer) {
         super(front);
         this.answers = answers;
         this.correctAnswer = correctAnswer;
     }
 
-    public MCQCard(UUID uuid, UUID deckId, String front, String[] answers, int correctAnswer) {
+    public MCQCard(UUID uuid, UUID deckId, String front, List<String> answers, int correctAnswer) {
         super(uuid, deckId, front);
         this.answers = answers;
         this.correctAnswer = correctAnswer;
     }
 
-    public MCQCard(String front, String[] answers, int correctAnswer, KnowledgeLevel knowledge) {
+    public MCQCard(String front, List<String> answers, int correctAnswer, KnowledgeLevel knowledge) {
         super(front, knowledge);
         this.answers = answers;
         this.correctAnswer = correctAnswer;
     }
 
-    public String[] getAnswers() { return answers; }
+    public List<String> getAnswers() { return answers; }
 
-    public void setAnswers(String[] answers) { this.answers = answers; }
+    public void setAnswers(List<String> answers) { this.answers = answers; }
 
     public int getCorrectAnswer() { return correctAnswer; }
 
