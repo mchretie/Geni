@@ -267,10 +267,10 @@ public class DeckDAO extends DAO {
 
     public void saveCard(MCQCard card) throws DatabaseException {
         String upsertMCQCard = """
-                INSERT INTO mcq_card (card_id, correct_answer)
+                INSERT INTO mcq_card (card_id, correct_answer_index)
                 VALUES (?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET correct_answer = ?
+                DO UPDATE SET correct_answer_index = ?
                 """;
 
         database.executeUpdate(upsertMCQCard,
@@ -279,16 +279,17 @@ public class DeckDAO extends DAO {
                                  card.getCorrectAnswer());
 
         String upsertMCQCardAnswer = """
-                INSERT INTO mcq_card_answer (card_id, answer)
-                VALUES (?, ?)
-                ON CONFLICT(card_id, answer)
+                INSERT INTO mcq_answer (card_id, answer, answer_index)
+                VALUES (?, ?, ?)
+                ON CONFLICT(card_id, answer_index)
                 DO NOTHING
                 """;
 
-        for (String answer : card.getAnswers())
+        for (int i = 0; i < card.getAnswers().size(); i++)
             database.executeUpdate(upsertMCQCardAnswer,
                                      card.getId().toString(),
-                                     answer);
+                                     card.getAnswers().get(i),
+                                     i);
     }
 
     private void saveCard(Card card) throws DatabaseException {
