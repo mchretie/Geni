@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Rectangle?>
 
 
-<VBox fx:id="CardsSidesBox" prefHeight="435.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditFlashCardViewController" visible="false">
+<VBox fx:id="CardsSidesBox" prefHeight="435.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.editflashcard.EditFlashCardViewController" visible="false">
 
     <StackPane fx:id="frontCard" layoutX="400.0" layoutY="77.0" visible="true">
         <StackPane prefHeight="205.0"
@@ -32,7 +32,6 @@
     <StackPane fx:id="backCard" visible="true">
 
         <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleBackEdit" prefHeight="212.0" prefWidth="425.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px; -fx-padding: 6px 10px; -fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;">
-
             <font>
                 <Font size="24.0" />
             </font>

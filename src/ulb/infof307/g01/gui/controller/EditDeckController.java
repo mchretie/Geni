@@ -9,8 +9,8 @@ import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
-import ulb.infof307.g01.gui.view.editdeck.EditFlashCardViewController;
-import ulb.infof307.g01.gui.view.editdeck.EditQCMCardViewController;
+import ulb.infof307.g01.gui.view.editdeck.editflashcard.EditFlashCardViewController;
+import ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditQCMCardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
@@ -118,7 +118,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public EditFlashCardViewController setEditFlashCard() throws IOException {
         URL resource = EditDeckViewController
                 .class
-                .getResource("EditFlashCardView.fxml");
+                .getResource("editflashcard/EditFlashCardView.fxml");
         FXMLLoader loader = new FXMLLoader(resource);
 
         Node node = loader.load();
@@ -134,7 +134,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public EditQCMCardViewController setEditQCMCard() throws IOException {
         URL resource = EditDeckViewController
                 .class
-                .getResource("EditQCMCardView.fxml");
+                .getResource("editQCMcard/EditQCMCardView.fxml");
         FXMLLoader loader = new FXMLLoader(resource);
 
         Node node = loader.load();

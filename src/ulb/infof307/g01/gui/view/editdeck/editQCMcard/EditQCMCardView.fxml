@@ -7,7 +7,7 @@
 <?import javafx.scene.web.WebView?>
 <?import javafx.scene.shape.Rectangle?>
 
-<VBox prefHeight="435.0" prefWidth="425.0" visible="false" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditQCMCardViewController">
+<VBox prefHeight="435.0" prefWidth="425.0" visible="false" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditQCMCardViewController">
     <children>
         <StackPane fx:id="frontCard" layoutX="400.0" layoutY="77.0" visible="true">
             <StackPane prefHeight="205.0"
