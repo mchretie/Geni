@@ -63,7 +63,8 @@ class DatabaseScheme {
             card_id TEXT,
             answer_index INTEGER NOT NULL,
             answer TEXT NOT NULL,
-            FOREIGN KEY (card_id) REFERENCES card(card_id) ON DELETE CASCADE
+            FOREIGN KEY (card_id) REFERENCES card(card_id) ON DELETE CASCADE,
+            PRIMARY KEY (card_id, answer_index)
         );
             """,
             """
