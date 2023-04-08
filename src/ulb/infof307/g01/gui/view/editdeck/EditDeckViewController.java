@@ -179,8 +179,6 @@ public class EditDeckViewController implements Initializable {
     }
 
 
-
-
     /* ====================================================================== */
     /*                             Click handlers                             */
     /* ====================================================================== */
@@ -257,6 +255,7 @@ public class EditDeckViewController implements Initializable {
     public void handleColorButtonClicked() {
         listener.deckColorModified(deck, colorPicker.getValue());
     }
+
     /* ====================================================================== */
     /*                             Hover handlers                             */
     /* ====================================================================== */

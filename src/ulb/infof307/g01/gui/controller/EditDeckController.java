@@ -140,9 +140,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
         }
     }
 
-
     /* ====================================================================== */
-    /*                        Card Editor Setters                             */
+    /*                        Card Editors Setters                            */
     /* ====================================================================== */
 
     public EditFlashCardViewController setEditFlashCard() throws IOException {
@@ -176,39 +175,14 @@ public class EditDeckController implements EditDeckViewController.Listener,
         return QCMCardController;
     }
 
+    /* ====================================================================== */
+    /*                        View Listener Methods                           */
+    /* ====================================================================== */
 
 
     /* ====================================================================== */
-    /*                        View Listener Method                            */
+    /*                             Modify Card                                */
     /* ====================================================================== */
-
-    @Override
-    public void deckNameModified(String newName) {
-        try {
-            deck.setName(newName.trim());
-            deckDAO.saveDeck(deck);
-
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-    @Override
-    public void tagAddedToDeck(Deck deck, String tagName, String color) {
-        try {
-            if (tagName.trim().isEmpty() || deck.tagExists(tagName))
-                return;
-
-            deck.addTag(new Tag(tagName, color));
-            editDeckViewController.setTags( loadTags() );
-
-            deckDAO.saveDeck(deck);
-
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
 
     @Override
     public void frontOfCardModified(Card card, String newFront) {
@@ -235,15 +209,13 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void deckColorModified(Deck deck, Color color) {
-        try {
-            deck.setColor(color.toString());
-            deckDAO.saveDeck(deck);
-
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
+    public void editCardClicked(Card selectedCard) {
+        controllerListener.editCardClicked(deck, selectedCard);
     }
+
+    /* ====================================================================== */
+    /*                             Cards Manager                              */
+    /* ====================================================================== */
 
     @Override
     public void newCard() {
@@ -285,14 +257,25 @@ public class EditDeckController implements EditDeckViewController.Listener,
         editFlashCardViewController.loadCardEditor();
     }
 
-    @Override
-    public void uploadImage(String filePath) {
-        System.out.println(filePath);
-    }
+    /* ====================================================================== */
+    /*                             Tags Manager                              */
+    /* ====================================================================== */
+
 
     @Override
-    public void editCardClicked(Card selectedCard) {
-        controllerListener.editCardClicked(deck, selectedCard);
+    public void tagAddedToDeck(Deck deck, String tagName, String color) {
+        try {
+            if (tagName.trim().isEmpty() || deck.tagExists(tagName))
+                return;
+
+            deck.addTag(new Tag(tagName, color));
+            editDeckViewController.setTags( loadTags() );
+
+            deckDAO.saveDeck(deck);
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
     }
 
     @Override
@@ -317,6 +300,37 @@ public class EditDeckController implements EditDeckViewController.Listener,
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
         }
+    }
+
+    /* ====================================================================== */
+    /*                             Modify Deck                                */
+    /* ====================================================================== */
+
+    @Override
+    public void deckNameModified(String newName) {
+        try {
+            deck.setName(newName.trim());
+            deckDAO.saveDeck(deck);
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void deckColorModified(Deck deck, Color color) {
+        try {
+            deck.setColor(color.toString());
+            deckDAO.saveDeck(deck);
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void uploadImage(String filePath) {
+        System.out.println(filePath);
     }
 
 
