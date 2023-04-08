@@ -127,7 +127,54 @@
             </StackPane>
 
             <!-- Back of QCM card -->
+            <GridPane fx:id="choicesGrid" visible="false"
+                      style="-fx-padding: 6px 10px;
+                                -fx-border-insets: 3px 5px;
+                                -fx-background-insets: 3px 5px;">
 
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.5" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.5" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+
+                <BorderPane fx:id="addChoiceField"
+                            prefHeight="38.0" prefWidth="0.0"
+                            style="-fx-background-color: #f0f0f0;
+                                    -fx-border-color: #b2b2b2;
+                                    -fx-padding: 1px 2px;
+                                    -fx-border-insets: 0px;
+                                    -fx-background-insets: 1px 3px;"
+                                    GridPane.columnIndex="0"
+                                    GridPane.rowIndex="0">
+
+                    <center>
+                        <Button maxWidth="31.0"
+                                prefHeight="30.0"
+                                prefWidth="31.0"
+                                style="-fx-background-color: transparent;"
+                                onMouseClicked="#handleAddNewChoice">
+
+                            <graphic>
+                                <FontIcon fx:id="addChoiceIcon"
+                                          iconLiteral="mdi2p-plus"
+                                          iconSize="20"
+                                          onMouseEntered="#handleAddChoiceHover"
+                                          onMouseExited="#handleAddChoiceHoverExit"/>
+                            </graphic>
+                        </Button>
+                    </center>
+                </BorderPane>
+
+            </GridPane>
         </StackPane>
 
 
