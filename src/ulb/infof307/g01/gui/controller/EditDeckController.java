@@ -5,9 +5,8 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.Tag;
+import ulb.infof307.g01.gui.view.editdeck.EditFrontCardViewController;
+import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.editdeck.editflashcard.EditFlashCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditQCMCardViewController;
@@ -218,9 +217,12 @@ public class EditDeckController implements EditDeckViewController.Listener,
     /* ====================================================================== */
 
     @Override
-    public void newCard() {
+    public void newCard(String type) {
         try {
-//            deck.addCard(new Card("Avant", "Arrière"));
+            if (type.equals("flashCard"))
+            deck.addCard(new FlashCard("Avant", "Arrière"));
+            else
+                deck.addCard(new MCQCard("Front", List.of("Réponse 1", "Réponse 2"), 1));
             deckDAO.saveDeck(deck);
 
             editDeckViewController.showCards();
@@ -252,9 +254,14 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void cardPreviewClicked(Card card) {
         editDeckViewController.setSelectedCard(card);
 
-        editQCMCardViewController.setCard(card); //TODO
-        editFlashCardViewController.setCard(card);
-        editFlashCardViewController.loadCardEditor();
+        if (card instanceof FlashCard){
+            editFlashCardViewController.setCard((FlashCard) card);
+            editFlashCardViewController.loadCardEditor();
+        }
+        else
+            editQCMCardViewController.setCard((MCQCard) card);
+            editQCMCardViewController.loadCardEditor();
+
     }
 
     /* ====================================================================== */

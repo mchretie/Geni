@@ -6,36 +6,37 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import javafx.scene.paint.Color;
-import javafx.scene.web.WebView;
-import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.gui.view.editdeck.EditFrontCardViewController;
 import ulb.infof307.g01.model.Card;
+import ulb.infof307.g01.model.FlashCard;
 
-public class EditFlashCardViewController {
+public class EditFlashCardViewController implements EditFrontCardViewController.Listener {
+
     @FXML
-    private WebView frontCardWebView;
-    @FXML
-    public FontIcon frontCardEditIcon;
+    private EditFrontCardViewController frontCard;
 
     @FXML
     private TextField backCardText;
 
     private Listener listener;
 
-    private Card card;
+    private FlashCard card;
 
 
     /* ====================================================================== */
     /*                                Setters                                 */
     /* ====================================================================== */
 
-    public void setListener(EditFlashCardViewController.Listener listener) {
+    public void setListener(Listener listener) {
         this.listener = listener;
+        frontCard.setListener(this);
     }
 
-    public void setCard(Card card) {
+    public void setCard(FlashCard card) {
         this.card = card;
+        frontCard.setCard(card);
     }
+
 
 
     /* ====================================================================== */
@@ -43,22 +44,10 @@ public class EditFlashCardViewController {
     /* ====================================================================== */
     public void loadCardEditor() {
         if (card == null ) return;
-
-        frontCardWebView.getEngine().loadContent(card.getFront());
-//        backCardText.setText(card.getBack());
+        frontCard.loadFront();
+        backCardText.setText(card.getBack());
     }
 
-    @FXML
-    private void handleFrontEdit(KeyEvent keyEvent) {
-        if (!keyEvent.getCode().equals(KeyCode.ENTER))
-            return;
-        String newFront
-            = frontCardWebView.getEngine()
-            .executeScript("document.body.innerHTML")
-            .toString();
-
-        listener.frontOfCardModified(card, newFront);
-    }
 
     @FXML
     private void handleBackEdit(KeyEvent keyEvent) {
@@ -68,22 +57,13 @@ public class EditFlashCardViewController {
     }
 
     @FXML
-    private void handleFrontEditClicked() {
+    public void frontModified(Card card, String newFront){
+        listener.frontOfCardModified(card, newFront);
+    }
+
+    @Override
+    public void editClicked(Card card) {
         listener.editCardClicked(card);
-    }
-
-    /* ====================================================================== */
-    /*                             Hover handlers                             */
-    /* ====================================================================== */
-
-    @FXML
-    private void handleFrontCardEditHover() {
-        frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
-    }
-
-    @FXML
-    private void handleFrontCardEditHoverExit() {
-        frontCardEditIcon.setIconColor(Color.web("#000000"));
     }
 
     /* ====================================================================== */

@@ -18,6 +18,7 @@ import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.MCQCard;
 
 import java.io.File;
 import java.net.URL;
@@ -217,14 +218,14 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleFlashCardEdit(){
-        listener.newCard(); //TODO newCard avec para flashCardEditor
+        listener.newCard("flashCard"); //TODO newCard avec para flashCardEditor
         hideCardEditor();
         showFlashCardEditor();
     }
 
     @FXML
     private void handleQCMCardEdit() {
-        listener.newCard(); //TODO newCard avec para QCMCardEditor
+        listener.newCard("MCQCard"); //TODO newCard avec para QCMCardEditor
         hideCardEditor();
         showQCMCardEditor();
     }
@@ -327,7 +328,7 @@ public class EditDeckViewController implements Initializable {
         void deckNameModified(String newName);
         void tagAddedToDeck(Deck deck, String tagName, String color);
         void deckColorModified(Deck deck, Color color);
-        void newCard();
+        void newCard(String type);
         void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card);
         void uploadImage(String filePath);
