@@ -25,12 +25,15 @@ class DeckTest {
     void removeCard_FromInit_SizeDecrease() {
         Deck deck = new Deck("Test");
         Card card = new FlashCard("Front", "Back");
+        Card card2 = new MCQCard("Front", List.of("Answer 1", "Answer 2"), 1);
 
         deck.addCard(card);
+        deck.addCard(card2);
 
-        assertEquals(1, deck.cardCount());
+        assertEquals(2, deck.cardCount());
 
         deck.removeCard(card);
+        deck.removeCard(card2);
 
         assertEquals(0, deck.cardCount());
     }
