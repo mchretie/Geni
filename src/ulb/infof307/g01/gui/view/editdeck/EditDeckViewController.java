@@ -25,6 +25,7 @@ import java.util.List;
 public class EditDeckViewController {
     public GridPane choicesGrid;
     public BorderPane addChoiceField;
+    public FontIcon addChoiceIcon;
 
     /* ====================================================================== */
     /*                              FXML Attributes                           */
@@ -80,6 +81,14 @@ public class EditDeckViewController {
 
     @FXML
     private ColorPicker colorPicker;
+
+
+    /* ====================================================================== */
+    /*                           Card Editor Grid                             */
+    /* ====================================================================== */
+
+    private int currentCol = 0;
+    private int currentRow = 0;
 
 
     /* ====================================================================== */
@@ -307,6 +316,15 @@ public class EditDeckViewController {
         frontCardEditIcon.setIconColor(Color.web("#000000"));
     }
 
+    @FXML
+    private void handleAddChoiceHover() {
+        addChoiceIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    private void handleAddChoiceHoverExit() {
+        addChoiceIcon.setIconColor(Color.web("#000000"));
+    }
 
     /* ====================================================================== */
     /*                            Modified text                               */
@@ -331,18 +349,25 @@ public class EditDeckViewController {
 
     @FXML
     private void handleQCMSelected() {
-        listener.newCard();
-        setCardTypeButtonVisibility(false);
-        frontCard.setVisible(true);
+        backCard.setVisible(false);
+        System.out.println("QCM selected " + backCard.visibleProperty());
+        cardTypeSelected();
+        choicesGrid.setVisible(true);
+
 
     }
 
     @FXML
     private void handleNormalSelected() {
+        choicesGrid.setVisible(false);
+        cardTypeSelected();
+        backCard.setVisible(true);
+    }
+
+    private void cardTypeSelected() {
         listener.newCard();
         setCardTypeButtonVisibility(false);
         frontCard.setVisible(true);
-        backCard.setVisible(true);
     }
 
     private void setCardTypeButtonVisibility(boolean visibility) {
