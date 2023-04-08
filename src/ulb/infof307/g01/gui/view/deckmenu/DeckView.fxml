@@ -7,7 +7,7 @@
 <?import org.kordamp.ikonli.javafx.*?>
 
 <StackPane fx:id="stackPane"
-           maxHeight="333.0" maxWidth="500.0" minHeight="150.0" minWidth="100.0"
+           maxHeight="175.0" maxWidth="500.0" minHeight="150.0" minWidth="100.0"
            onMouseClicked="#handleDoubleDeckClicked"
            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
