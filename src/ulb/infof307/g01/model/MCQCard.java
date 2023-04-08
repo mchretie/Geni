@@ -37,7 +37,7 @@ public class MCQCard extends Card{
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.getId(), this.getDeckId(), this.getFront(), Arrays.hashCode(answers), correctAnswer);
+        return Objects.hash(this.getId(), this.getDeckId(), this.getFront(), answers, correctAnswer);
     }
 
     @Override
