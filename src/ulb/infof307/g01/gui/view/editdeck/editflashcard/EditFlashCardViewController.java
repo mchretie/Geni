@@ -10,10 +10,10 @@ import ulb.infof307.g01.gui.view.editdeck.EditFrontCardViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.FlashCard;
 
-public class EditFlashCardViewController implements EditFrontCardViewController.Listener {
+public class EditFlashCardViewController {
 
-    @FXML
-    private EditFrontCardViewController frontCard;
+//    @FXML
+//    private EditFrontCardViewController frontCard;
 
     @FXML
     private TextField backCardText;
@@ -29,12 +29,12 @@ public class EditFlashCardViewController implements EditFrontCardViewController.
 
     public void setListener(Listener listener) {
         this.listener = listener;
-        frontCard.setListener(this);
+//        frontCard.setListener(this);
     }
 
     public void setCard(FlashCard card) {
         this.card = card;
-        frontCard.setCard(card);
+//        frontCard.setCard(card);
     }
 
 
@@ -44,7 +44,7 @@ public class EditFlashCardViewController implements EditFrontCardViewController.
     /* ====================================================================== */
     public void loadCardEditor() {
         if (card == null ) return;
-        frontCard.loadFront();
+//        frontCard.loadFront();
         backCardText.setText(card.getBack());
     }
 
@@ -56,15 +56,15 @@ public class EditFlashCardViewController implements EditFrontCardViewController.
         listener.backOfCardModified(card, backCardText.getText());
     }
 
-    @FXML
-    public void frontModified(Card card, String newFront){
-        listener.frontOfCardModified(card, newFront);
-    }
-
-    @Override
-    public void editClicked(Card card) {
-        listener.editCardClicked(card);
-    }
+//    @FXML
+//    public void frontModified(Card card, String newFront){
+//        listener.frontOfCardModified(card, newFront);
+//    }
+//
+//    @Override
+//    public void editClicked(Card card) {
+//        listener.editCardClicked(card);
+//    }
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -72,7 +72,7 @@ public class EditFlashCardViewController implements EditFrontCardViewController.
 
     public interface Listener {
         void frontOfCardModified(Card card, String newFront);
-        void backOfCardModified(Card card, String newBack);
+        void backOfCardModified(FlashCard card, String newBack);
         void editCardClicked(Card card);
     }
 }

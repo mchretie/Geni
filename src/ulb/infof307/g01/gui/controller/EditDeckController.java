@@ -196,9 +196,9 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void backOfCardModified(Card card, String newBack) {
+    public void backOfCardModified(FlashCard card, String newBack) {
         try {
-//            card.setBack(newBack);
+            card.setBack(newBack);
             deckDAO.saveDeck(deck);
             editDeckViewController.showCards();
 

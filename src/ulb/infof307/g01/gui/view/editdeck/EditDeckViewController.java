@@ -134,6 +134,7 @@ public class EditDeckViewController implements Initializable {
             Document doc = Jsoup.parse(card.getFront());
             Element body = doc.body();
             list.add(body.text());
+            System.out.println("here");
         }
 
         cardsContainer.refresh();
