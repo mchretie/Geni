@@ -5,15 +5,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
+import javafx.scene.layout.StackPane;
 import ulb.infof307.g01.gui.view.editdeck.EditFrontCardViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.FlashCard;
 
-public class EditFlashCardViewController {
+public class EditFlashCardViewController implements EditFrontCardViewController.Listener {
 
-//    @FXML
-//    private EditFrontCardViewController frontCard;
+    @FXML
+    private StackPane editFrontCardView;
+
+    @FXML
+    private EditFrontCardViewController editFrontCardViewController;
 
     @FXML
     private TextField backCardText;
@@ -29,12 +32,12 @@ public class EditFlashCardViewController {
 
     public void setListener(Listener listener) {
         this.listener = listener;
-//        frontCard.setListener(this);
+        editFrontCardViewController.setListener(this);
     }
 
     public void setCard(FlashCard card) {
         this.card = card;
-//        frontCard.setCard(card);
+        editFrontCardViewController.setCard(card);
     }
 
 
@@ -44,7 +47,7 @@ public class EditFlashCardViewController {
     /* ====================================================================== */
     public void loadCardEditor() {
         if (card == null ) return;
-//        frontCard.loadFront();
+        editFrontCardViewController.loadFront();
         backCardText.setText(card.getBack());
     }
 
@@ -56,15 +59,15 @@ public class EditFlashCardViewController {
         listener.backOfCardModified(card, backCardText.getText());
     }
 
-//    @FXML
-//    public void frontModified(Card card, String newFront){
-//        listener.frontOfCardModified(card, newFront);
-//    }
-//
-//    @Override
-//    public void editClicked(Card card) {
-//        listener.editCardClicked(card);
-//    }
+    @FXML
+    public void frontModified(Card card, String newFront){
+        listener.frontOfCardModified(card, newFront);
+    }
+
+    @Override
+    public void editClicked(Card card) {
+        listener.editCardClicked(card);
+    }
 
     /* ====================================================================== */
     /*                           Listener Interface                           */

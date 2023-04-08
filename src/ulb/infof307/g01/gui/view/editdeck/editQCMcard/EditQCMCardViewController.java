@@ -3,17 +3,20 @@ package ulb.infof307.g01.gui.view.editdeck.editQCMcard;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
-
 import ulb.infof307.g01.gui.view.editdeck.EditFrontCardViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.MCQCard;
 
-public class EditQCMCardViewController {
+public class EditQCMCardViewController implements EditFrontCardViewController.Listener {
 
-//    @FXML
-//    private EditFrontCardViewController frontCard;
+    @FXML
+    private StackPane editFrontCardView;
+
+    @FXML
+    private EditFrontCardViewController editFrontCardViewController;
 
     @FXML
     private GridPane choicesGrid;
@@ -38,12 +41,12 @@ public class EditQCMCardViewController {
 
     public void setListener(Listener listener) {
         this.listener = listener;
-//        frontCard.setListener(this);
+        editFrontCardViewController.setListener(this);
     }
 
     public void setCard(MCQCard card) {
         this.card = card;
-//        frontCard.setCard(card);
+        editFrontCardViewController.setCard(card);
     }
 
     public  void loadCardEditor(){
@@ -53,15 +56,16 @@ public class EditQCMCardViewController {
     /* ====================================================================== */
     /*                            card Click handlers                         */
     /* ====================================================================== */
-//    @FXML
-//    public void frontModified(Card card, String newFront){
-//        listener.frontOfCardModified(card, newFront);
-//    }
-//
-//    @Override
-//    public void editClicked(Card card) {
-//        listener.editCardClicked(card);
-//    }
+
+    @FXML
+    public void frontModified(Card card, String newFront){
+        listener.frontOfCardModified(card, newFront);
+    }
+
+    @Override
+    public void editClicked(Card card) {
+        listener.editCardClicked(card);
+    }
 
 
     /* ====================================================================== */

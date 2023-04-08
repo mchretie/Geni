@@ -8,7 +8,7 @@
 <VBox fx:id="CardsSidesBox" prefHeight="435.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.editflashcard.EditFlashCardViewController" visible="false">
 
     <StackPane  layoutX="400.0" layoutY="77.0" visible="true">
-        <fx:include fx:id="frontCard" source="../EditFrontCardView.fxml"/>
+        <fx:include fx:id="editFrontCardView" source="../EditFrontCardView.fxml"/>
     </StackPane>
 
     <StackPane fx:id="backCard" visible="true">
