@@ -32,7 +32,7 @@ public class FlashCard extends Card {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.getId(), this.getDeckId(), front, back);
+        return Objects.hash(this.getId(), this.getDeckId(), this.getFront(), back);
     }
 
     @Override
