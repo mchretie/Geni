@@ -310,21 +310,6 @@ public class DeckDAO extends DAO {
             saveCard((FlashCard) card);
         else if (card instanceof MCQCard)
             saveCard((MCQCard) card);
-
-//        String sql = """
-//                INSERT INTO card (card_id, deck_id, front, back)
-//                VALUES (?, ?, ?, ?)
-//                ON CONFLICT(card_id)
-//                DO UPDATE SET front = ?, back = ?
-//                """;
-//
-//        database.executeUpdate(sql,
-//                               card.getId().toString(),
-//                               card.getDeckId().toString(),
-//                               card.getFront(),
-//                               card.getBack(),
-//                               card.getFront(),
-//                               card.getBack());
     }
 
     private void deleteCard(Card card) throws DatabaseException {
@@ -335,18 +320,6 @@ public class DeckDAO extends DAO {
 
         database.executeUpdate(sql, card.getId().toString());
     }
-
-//    private Card extractCardFrom(ResultSet res) throws DatabaseException {
-//        try {
-//            UUID uuid = UUID.fromString(res.getString("card_id"));
-//            UUID deckId = UUID.fromString(res.getString("deck_id"));
-//            String front = res.getString("front");
-//            String back = res.getString("back");
-//            return new Card(uuid, deckId, front, back);
-//        } catch (SQLException e) {
-//            throw new DatabaseException((e.getMessage()));
-//        }
-//    }
 
     private FlashCard extractFlashCardFrom(ResultSet res) throws DatabaseException {
         try {
@@ -428,16 +401,6 @@ public class DeckDAO extends DAO {
      * returned.
      */
     private List<Card> getCardsFor(UUID deckUuid) throws DatabaseException {
-//        String sql = """
-//                SELECT card_id, deck_id, front, back
-//                FROM card
-//                WHERE deck_id = ?
-//                """;
-//
-//        ResultSet res = database.executeQuery(sql, deckUuid.toString());
-//        List<Card> cards = new ArrayList<>();
-//        while (checkedNext(res))
-//            cards.add(extractCardFrom(res));
         List<Card> cards = new ArrayList<>();
         cards.addAll(getFlashCardsFor(deckUuid));
         cards.addAll(getMCQCardsFor(deckUuid));

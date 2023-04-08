@@ -22,18 +22,6 @@ class DatabaseScheme {
                 ON DELETE CASCADE
         );
             """,
-            // TODO: 29/03/23 replace with content instead of front and back
-//            """
-//        CREATE TABLE IF NOT EXISTS card (
-//            card_id TEXT PRIMARY KEY,
-//            deck_id TEXT NOT NULL,
-//            front TEXT NOT NULL,
-//            back TEXT NOT NULL,
-//            FOREIGN KEY (deck_id)
-//                REFERENCES deck(deck_id)
-//                ON DELETE CASCADE
-//        );
-//            """,
             """
         CREATE TABLE IF NOT EXISTS card (
             card_id TEXT PRIMARY KEY,
