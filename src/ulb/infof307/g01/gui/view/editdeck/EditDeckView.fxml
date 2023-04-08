@@ -57,10 +57,10 @@
 
         <HBox fx:id="cardTypeBox" alignment="CENTER" spacing="30" visible="false" HBox.hgrow="ALWAYS">
 
-            <Button fx:id="QCMCardButton" onMouseClicked="#handleQCMSelected" minWidth="100" HBox.hgrow="ALWAYS" text="QCM Card">
+            <Button onMouseClicked="#handleQCMSelected" minWidth="100" HBox.hgrow="ALWAYS" text="QCM Card">
 
             </Button>
-            <Button fx:id="NormalCardButton" onMouseClicked="#handleNormalSelected" minWidth="100" HBox.hgrow="ALWAYS" text="Normal Card">
+            <Button onMouseClicked="#handleNormalSelected" minWidth="100" HBox.hgrow="ALWAYS" text="Normal Card">
 
             </Button>
          <VBox.margin>
@@ -84,14 +84,14 @@
             <Button fx:id="imageUploader" mnemonicParsing="false" onAction="#handleUploadImageClicked" onMouseEntered="#handleUploadImageHover" onMouseExited="#handleUploadImageExit" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #5ab970;" text="Upload image" />
         </HBox>
 
-        <!-- Card -->
+        <!-- Font of Card (constant) -->
         <BorderPane fx:id="frontCard" style="-fx-border-color: black; -fx-border-radius: 15px; -fx-background-radius: 15px;" visible="false" VBox.vgrow="ALWAYS">
 
             <center>
                 <WebView fx:id="frontCardWebView" maxHeight="180.0" onKeyPressed="#handleTextFieldKeyPressed" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin></WebView>
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin></WebView>
             </center>
 
             <right>
@@ -103,33 +103,37 @@
                 </Button>
             </right>
 
-             <VBox.margin>
+            <VBox.margin>
                 <Insets bottom="15.0" right="10.0" top="15.0" />
-             </VBox.margin>
+            </VBox.margin>
 
-         <padding>
-            <Insets bottom="5.0" left="5.0" />
-         </padding>
+            <padding>
+                <Insets bottom="5.0" left="5.0" />
+            </padding>
         </BorderPane>
 
-        <!-- Back of card -->
-        <StackPane fx:id="backCard" visible="false" VBox.vgrow="ALWAYS">
+        <StackPane>
+            <!-- Back of normal card -->
+            <StackPane fx:id="backCard" visible="false" VBox.vgrow="ALWAYS">
+                <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" style="-fx-background-color: #f0f0f0;                        -fx-border-radius: 20px;                        -fx-background-radius: 20px;" VBox.vgrow="ALWAYS">
 
-            <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" style="-fx-background-color: #f0f0f0;                        -fx-border-radius: 20px;                        -fx-background-radius: 20px;" VBox.vgrow="ALWAYS">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                    <StackPane.margin>
+                        <Insets right="10.0" />
+                    </StackPane.margin>
+                </TextField>
+            </StackPane>
 
-                <font>
-                    <Font size="24.0" />
-                </font>
-            <StackPane.margin>
-               <Insets right="10.0" />
-            </StackPane.margin>
-            </TextField>
+            <!-- Back of QCM card -->
+
         </StackPane>
+
 
       <padding>
          <Insets top="20.0" />
       </padding>
-
     </VBox>
 
    <padding>

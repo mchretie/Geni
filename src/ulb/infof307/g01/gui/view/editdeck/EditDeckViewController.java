@@ -332,12 +332,18 @@ public class EditDeckViewController {
 
     @FXML
     private void handleQCMSelected() {
+        listener.newCard();
         setCardTypeButtonVisibility(false);
+        frontCard.setVisible(true);
+
     }
 
     @FXML
     private void handleNormalSelected() {
+        listener.newCard();
         setCardTypeButtonVisibility(false);
+        frontCard.setVisible(true);
+        backCard.setVisible(true);
     }
 
     private void setCardTypeButtonVisibility(boolean visibility) {
