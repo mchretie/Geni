@@ -8,10 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.scene.web.WebView;
@@ -26,6 +23,8 @@ import java.io.File;
 import java.util.List;
 
 public class EditDeckViewController {
+    public GridPane choicesGrid;
+    public BorderPane addChoiceField;
 
     /* ====================================================================== */
     /*                              FXML Attributes                           */
@@ -348,6 +347,19 @@ public class EditDeckViewController {
 
     private void setCardTypeButtonVisibility(boolean visibility) {
         cardTypeBox.setVisible(visibility);
+    }
+
+    @FXML
+    private void handleAddNewChoice() {
+        int nextCol = currentCol ^ 1;
+        int nextRow = currentRow;
+        if (nextCol==0) nextRow +=1;
+
+        choicesGrid.getChildren().remove(addChoiceField);
+        choicesGrid.setConstraints(addChoiceField, nextCol, nextRow);
+        choicesGrid.getChildren().add(addChoiceField);
+
+        currentCol = nextCol; currentRow = nextRow;
     }
 
 
