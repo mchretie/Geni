@@ -3,11 +3,11 @@ package ulb.infof307.g01.gui.view.editdeck;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
@@ -26,12 +26,19 @@ import java.io.File;
 import java.util.List;
 
 public class EditDeckViewController {
-    public VBox leftVbox;
-    public VBox rightVbox;
 
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
+
+    @FXML
+    private VBox leftVbox;
+
+    @FXML
+    private VBox rightVbox;
+
+    @FXML
+    private HBox cardTypeBox;
 
     @FXML
     private HBox hbox;
@@ -210,7 +217,7 @@ public class EditDeckViewController {
 
     @FXML
     private void handleAddCardClicked() {
-        listener.newCard();
+        setCardTypeButtonVisibility(true);
     }
 
     @FXML
@@ -321,6 +328,20 @@ public class EditDeckViewController {
             return;
 
         hbox.requestFocus();
+    }
+
+    @FXML
+    private void handleQCMSelected() {
+        setCardTypeButtonVisibility(false);
+    }
+
+    @FXML
+    private void handleNormalSelected() {
+        setCardTypeButtonVisibility(false);
+    }
+
+    private void setCardTypeButtonVisibility(boolean visibility) {
+        cardTypeBox.setVisible(visibility);
     }
 
 
