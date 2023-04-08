@@ -1,8 +1,6 @@
 package ulb.infof307.g01.server.database.dao;
 
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.Tag;
+import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
@@ -253,21 +251,79 @@ public class DeckDAO extends DAO {
             saveCard(addedCard);
     }
 
-    private void saveCard(Card card) throws DatabaseException {
-        String sql = """
-                INSERT INTO card (card_id, deck_id, front, back)
-                VALUES (?, ?, ?, ?)
+    public void saveCard(FlashCard card) throws DatabaseException {
+        String upsertFlashCard = """
+                INSERT INTO flash_card (card_id, back)
+                VALUES (?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET front = ?, back = ?
+                DO UPDATE SET back = ?
                 """;
 
-        database.executeUpdate(sql,
-                               card.getId().toString(),
-                               card.getDeckId().toString(),
-                               card.getFront(),
-                               card.getBack(),
-                               card.getFront(),
-                               card.getBack());
+        database.executeUpdate(upsertFlashCard,
+                                 card.getId().toString(),
+                                 card.getBack(),
+                                 card.getBack());
+    }
+
+    public void saveCard(MCQCard card) throws DatabaseException {
+        String upsertMCQCard = """
+                INSERT INTO mcq_card (card_id, correct_answer)
+                VALUES (?, ?)
+                ON CONFLICT(card_id)
+                DO UPDATE SET correct_answer = ?
+                """;
+
+        database.executeUpdate(upsertMCQCard,
+                                 card.getId().toString(),
+                                 card.getCorrectAnswer(),
+                                 card.getCorrectAnswer());
+
+        String upsertMCQCardAnswer = """
+                INSERT INTO mcq_card_answer (card_id, answer)
+                VALUES (?, ?)
+                ON CONFLICT(card_id, answer)
+                DO NOTHING
+                """;
+
+        for (String answer : card.getAnswers())
+            database.executeUpdate(upsertMCQCardAnswer,
+                                     card.getId().toString(),
+                                     answer);
+    }
+
+    private void saveCard(Card card) throws DatabaseException {
+        String upsertCard = """
+                INSERT INTO card (card_id, deck_id, front)
+                VALUES (?, ?, ?)
+                ON CONFLICT(card_id)
+                DO UPDATE SET front = ?
+                """;
+
+        database.executeUpdate(upsertCard,
+                card.getId().toString(),
+                card.getDeckId().toString(),
+                card.getFront(),
+                card.getFront());
+
+        if (card instanceof FlashCard)
+            saveCard((FlashCard) card);
+        else if (card instanceof MCQCard)
+            saveCard((MCQCard) card);
+
+//        String sql = """
+//                INSERT INTO card (card_id, deck_id, front, back)
+//                VALUES (?, ?, ?, ?)
+//                ON CONFLICT(card_id)
+//                DO UPDATE SET front = ?, back = ?
+//                """;
+//
+//        database.executeUpdate(sql,
+//                               card.getId().toString(),
+//                               card.getDeckId().toString(),
+//                               card.getFront(),
+//                               card.getBack(),
+//                               card.getFront(),
+//                               card.getBack());
     }
 
     private void deleteCard(Card card) throws DatabaseException {
