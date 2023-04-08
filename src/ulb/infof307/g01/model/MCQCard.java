@@ -56,7 +56,7 @@ public class MCQCard extends Card{
         return id.equals(other.getId())
                 && (deckId == other.getDeckId() || deckId.equals(other.getDeckId()))
                 && front.equals(other.getFront())
-                && Arrays.equals(answers, other.getAnswers())
+                && answers.equals(other.getAnswers())
                 && correctAnswer == other.getCorrectAnswer();
     }
 
