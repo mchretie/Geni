@@ -10,13 +10,16 @@ import ulb.infof307.g01.gui.view.editdeck.EditFrontCardViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.MCQCard;
 
-public class EditQCMCardViewController implements EditFrontCardViewController.Listener {
+public class EditQCMCardViewController implements EditFrontCardViewController.Listener, EditChoiceFieldController.Listener {
 
     @FXML
     private StackPane editFrontCardView;
 
     @FXML
     private EditFrontCardViewController editFrontCardViewController;
+
+    @FXML
+    private EditChoiceFieldController editChoiceFieldController;
 
     @FXML
     private GridPane choicesGrid;
@@ -48,13 +51,19 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
         this.card = card;
         editFrontCardViewController.setCard(card);
     }
+    /* ====================================================================== */
+    /*                              Card loading                              */
+    /* ====================================================================== */
 
     public  void loadCardEditor(){
-        return;
+        if (card == null) return;
+        editFrontCardViewController.loadFront();
     }
 
+    public void load
+
     /* ====================================================================== */
-    /*                            card Click handlers                         */
+    /*                               FrontCard                                */
     /* ====================================================================== */
 
     @FXML
@@ -69,7 +78,7 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
 
 
     /* ====================================================================== */
-    /*                            grid Click handlers                         */
+    /*                            grid handlers                               */
     /* ====================================================================== */
 
     @FXML
@@ -86,6 +95,9 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
 
         //TODO listener.addNewChoiceToCard(Card card);
     }
+
+    public void setCorrectAnswer(){return; }
+    public void setAnswer() {return; }
 
 
     /* ====================================================================== */

@@ -7,12 +7,9 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 public class EditChoiceFieldController {
     @FXML
-    TextField possibleAnswerText;
-
-    @FXML
     FontIcon checkIcon;
 
-    //TODO private Text possible answer
+    //TODO private Text answer
 
     private Listener listener;
 
@@ -20,9 +17,9 @@ public class EditChoiceFieldController {
     /*                                Setters                                 */
     /* ====================================================================== */
 
-//    public void setListener(EditQCMCardViewController.Listener listener) {
-//        this.listener = listener;
-//    }
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
 
     /* ====================================================================== */
     /*                            Modified text                               */
@@ -57,7 +54,7 @@ public class EditChoiceFieldController {
     /* ====================================================================== */
 
     public interface Listener{
-        public void setPossibleAnswerText();
-        public void setGoodAnswer();
+        public void setCorrectAnswer();
+        public void setAnswer();
     }
 }

@@ -221,7 +221,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             if (type.equals("flashCard"))
             deck.addCard(new FlashCard("Avant", "Arrière"));
             else
-                deck.addCard(new MCQCard("Front", List.of("Réponse 1", "Réponse 2"), 1));
+                deck.addCard(new MCQCard("Avant", List.of("Réponse 1", "Réponse 2"), 1));
             deckDAO.saveDeck(deck);
 
             editDeckViewController.showCards();
@@ -256,11 +256,12 @@ public class EditDeckController implements EditDeckViewController.Listener,
         if (card instanceof FlashCard){
             editFlashCardViewController.setCard((FlashCard) card);
             editFlashCardViewController.loadCardEditor();
+            editDeckViewController.showFlashCardEditor();
         }
         else
             editQCMCardViewController.setCard((MCQCard) card);
             editQCMCardViewController.loadCardEditor();
-
+            editDeckViewController.showQCMCardEditor();
     }
 
     /* ====================================================================== */

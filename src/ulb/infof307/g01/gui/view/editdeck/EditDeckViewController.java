@@ -184,7 +184,12 @@ public class EditDeckViewController implements Initializable {
     /* ====================================================================== */
     /*                             Click handlers                             */
     /* ====================================================================== */
-
+    @FXML
+    private void handleUploadImageClicked() {
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
+        listener.uploadImage(file.toURI().toString());
+    }
     @FXML
     private void handleAddCardClicked() {
         hideCardEditor();
@@ -204,29 +209,20 @@ public class EditDeckViewController implements Initializable {
             return;
 
         hideCardEditor();
-        //TODO check type of card to show the good card editor
-        showFlashCardEditor();
         selectedCard = deck.getCards().get(cardIndex);
         listener.cardPreviewClicked(selectedCard);
     }
 
     @FXML
-    private void handleUploadImageClicked() {
-        final FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
-        listener.uploadImage(file.toURI().toString());
-    }
-
-    @FXML
     private void handleFlashCardEdit(){
-        listener.newCard("flashCard"); //TODO newCard avec para flashCardEditor
+        listener.newCard("flashCard");
         hideCardEditor();
         showFlashCardEditor();
     }
 
     @FXML
     private void handleQCMCardEdit() {
-        listener.newCard("MCQCard"); //TODO newCard avec para QCMCardEditor
+        listener.newCard("MCQCard");
         hideCardEditor();
         showQCMCardEditor();
     }
