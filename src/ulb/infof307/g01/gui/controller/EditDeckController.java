@@ -11,14 +11,18 @@ import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.editdeck.editflashcard.EditFlashCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditQCMCardViewController;
+import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditDeckController implements EditDeckViewController.Listener,
                                            EditFlashCardViewController.Listener,
-                                           EditQCMCardViewController.Listener {
+                                           EditQCMCardViewController.Listener,
+                                           TagViewController.Listener {
 
     /* ====================================================================== */
     /*                             Model Attributes                           */
@@ -97,7 +101,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         mainWindowViewController.setEditDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
-        editDeckViewController.showTags();
+        editDeckViewController.setTags(loadTags());
         editDeckViewController.showCards();
 
         if (deck.cardCount() > 0) {
@@ -110,6 +114,32 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
         stage.show();
     }
+
+    private List<Node> loadTags() {
+        try {
+            List<Node> tagViews = new ArrayList<>();
+
+            for (Tag tag : deck.getTags()) {
+
+                URL url = TagViewController.class.getResource("TagView.fxml");
+                FXMLLoader loader = new FXMLLoader(url);
+
+                Node node = loader.load();
+                TagViewController tagViewController = loader.getController();
+                tagViewController.setListener(this);
+                tagViewController.setTag(tag);
+
+                tagViews.add(node);
+            }
+
+            return tagViews;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     /* ====================================================================== */
     /*                        Card Editor Setters                             */
@@ -170,14 +200,15 @@ public class EditDeckController implements EditDeckViewController.Listener,
                 return;
 
             deck.addTag(new Tag(tagName, color));
+            editDeckViewController.setTags( loadTags() );
 
-            editDeckViewController.showTags();
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
         }
     }
+
 
     @Override
     public void frontOfCardModified(Card card, String newFront) {
@@ -263,6 +294,32 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void editCardClicked(Card selectedCard) {
         controllerListener.editCardClicked(deck, selectedCard);
     }
+
+    @Override
+    public void tagNameChanged(Tag tag, String name) {
+        try {
+            tag.setName(name);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.setTags( loadTags() );
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void tagDeleted(Tag tag) {
+        try {
+            deck.removeTag(tag);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.setTags( loadTags() );
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+
 
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */

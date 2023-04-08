@@ -32,6 +32,26 @@ public class DeckRequestHandler extends Handler {
       delete(DELETE_DECK_PATH, this::deleteDeck, toJson());
       get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
       get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
+      get(DECK_EXISTS_PATH, this::deckExists, toJson());
+  }
+
+  private boolean deckExists(Request request, Response response) {
+      try {
+          String username = usernameFromRequest(request);
+          UUID userId = UUID.fromString(database.getUserId(username));
+
+          String deckName = request.queryParams("name");
+          deckName = deckName.replace("_", " ");
+
+          return database.deckNameExists(deckName, userId);
+
+      } catch (Exception e) {
+          String message = "Failed to check if deck exists: " + e.getMessage();
+          logger.warning(message);
+          halt(500, message);
+
+          return false;
+      }
   }
 
   private Map<String, String> saveDeck(Request req, Response res) {
