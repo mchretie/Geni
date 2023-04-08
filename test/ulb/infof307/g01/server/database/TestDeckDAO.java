@@ -2,16 +2,12 @@ package ulb.infof307.g01.server.database;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ulb.infof307.g01.model.FlashCard;
+import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
 import ulb.infof307.g01.server.database.dao.TagDAO;
 import ulb.infof307.g01.server.database.dao.UserDAO;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.Tag;
 
-import java.sql.SQLException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -119,8 +115,10 @@ public class TestDeckDAO extends DatabaseUsingTest {
     void saveDeck_CardAdded_DeckAddedWithCard()  {
         Deck deck = new Deck("name");
         Card card = new FlashCard("front", "back");
+        Card card2 = new MCQCard("question", Arrays.asList("answer1", "answer2"), 0);
 
         deck.addCard(card);
+        deck.addCard(card2);
         deckDAO.saveDeck(deck, user);
 
         assertEquals(deck, deckDAO.getDeck(deck.getId()));
@@ -130,10 +128,13 @@ public class TestDeckDAO extends DatabaseUsingTest {
     void saveDeck_CardDeleted_DeckUpdated()  {
         Deck deck = new Deck("name");
         Card card = new FlashCard("front", "back");
+        Card card2 = new MCQCard("question", Arrays.asList("answer1", "answer2"), 0);
 
         deck.addCard(card);
+        deck.addCard(card2);
         deckDAO.saveDeck(deck, user);
         deck.removeCard(card);
+        deck.removeCard(card2);
         deckDAO.saveDeck(deck, user);
 
         assertEquals(deck, deckDAO.getDeck(deck.getId()));
