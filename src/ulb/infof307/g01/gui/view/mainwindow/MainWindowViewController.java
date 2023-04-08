@@ -18,23 +18,35 @@ import ulb.infof307.g01.model.Card;
 
 public class MainWindowViewController {
 
+    /* ====================================================================== */
+    /*                               FXML Attributes                          */
+    /* ====================================================================== */
+
     @FXML
     private FontIcon homeIcon;
+
     @FXML
     private FontIcon currentDeckIcon;
+
     @FXML
     private FontIcon aboutIcon;
+
     @FXML
     private FontIcon goBackIcon;
+
     @FXML
     private FontIcon userProfileIcon;
 
+
     @FXML
     private StackPane centerStackPane;
+
     @FXML
     private BorderPane deckMenuView;
+
     @FXML
     private AnchorPane editDeckView;
+
     @FXML
     private BorderPane playDeckView;
 
@@ -43,13 +55,20 @@ public class MainWindowViewController {
 
     @FXML
     private DeckMenuViewController deckMenuViewController;
+
     @FXML
     private EditDeckViewController editDeckViewController;
+
     @FXML
     private PlayDeckViewController playDeckViewController;
 
     @FXML
     private EditCardViewController editCardViewController;
+
+
+    /* ====================================================================== */
+    /*                                 Listener                               */
+    /* ====================================================================== */
 
     private NavigationListener listener;
 

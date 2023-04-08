@@ -18,9 +18,13 @@ import java.util.List;
 
 public class DeckMenuViewController {
 
+    /* ====================================================================== */
+    /*                              FXML Attributes                           */
+    /* ====================================================================== */
 
     @FXML
     private BorderPane borderPane;
+
     @FXML
     private GridPane gridPane;
 
@@ -32,10 +36,17 @@ public class DeckMenuViewController {
 
     @FXML
     private FontIcon searchIcon;
+
     @FXML
     private FontIcon createDeckIcon;
+
     @FXML
     private FontIcon importDeck;
+
+
+    /* ====================================================================== */
+    /*                                Listener                                */
+    /* ====================================================================== */
 
     private Listener listener;
 
@@ -47,6 +58,7 @@ public class DeckMenuViewController {
     public void setListener(Listener listener) {
         this.listener = listener;
     }
+
 
     /* ====================================================================== */
     /*                           Deck Displaying                              */

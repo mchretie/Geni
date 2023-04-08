@@ -11,7 +11,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.scene.web.WebView;
@@ -30,7 +29,7 @@ import java.util.ResourceBundle;
 public class EditDeckViewController implements Initializable {
 
     /* ====================================================================== */
-    /*                         FXML: Panes & Containers                       */
+    /*                              FXML Attributes                           */
     /* ====================================================================== */
 
     @FXML
@@ -48,11 +47,6 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private ListView<String> cardsContainer;
 
-
-    /* ====================================================================== */
-    /*                            FXML: Text Fields                           */
-    /* ====================================================================== */
-
     @FXML
     private TextField backCardText;
 
@@ -65,18 +59,8 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private WebView frontCardWebView;
 
-
-    /* ====================================================================== */
-    /*                              FXML: Buttons                             */
-    /* ====================================================================== */
-
     @FXML
     private Button imageUploader;
-
-
-    /* ====================================================================== */
-    /*                               FXML: Icons                              */
-    /* ====================================================================== */
 
     @FXML
     private FontIcon removeCardIcon;
@@ -86,11 +70,6 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     public FontIcon frontCardEditIcon;
-
-
-    /* ====================================================================== */
-    /*                           FXML: Color picker                           */
-    /* ====================================================================== */
 
     @FXML
     private ColorPicker colorPicker;
@@ -249,6 +228,16 @@ public class EditDeckViewController implements Initializable {
         listener.uploadImage(file.toURI().toString());
     }
 
+    @FXML
+    public void handleColorButtonClicked() {
+        listener.deckColorModified(deck, colorPicker.getValue());
+    }
+
+    @FXML
+    private void handleFrontEditClicked() {
+        listener.editCardClicked(selectedCard);
+    }
+
 
     /* ====================================================================== */
     /*                             Hover handlers                             */
@@ -294,6 +283,16 @@ public class EditDeckViewController implements Initializable {
         imageUploader.setStyle("-fx-background-color: #5ab970");
     }
 
+    @FXML
+    private void handleFrontCardEditHover() {
+        frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    private void handleFrontCardEditHoverExit() {
+        frontCardEditIcon.setIconColor(Color.web("#000000"));
+    }
+
 
     /* ====================================================================== */
     /*                            Modified text                               */
@@ -303,17 +302,6 @@ public class EditDeckViewController implements Initializable {
     private void handleUpdateDeckName() {
         listener.deckNameModified(deckNameText.getText());
     }
-
-    @FXML
-    private void handleFrontEdit() {
-        String newFront
-                = frontCardWebView.getEngine()
-                                  .executeScript("document.body.innerHTML")
-                                  .toString();
-
-        listener.frontOfCardModified(selectedCard, newFront);
-    }
-
     @FXML
     private void handleBackEdit() {
         listener.backOfCardModified(selectedCard, backCardText.getText());
@@ -325,26 +313,6 @@ public class EditDeckViewController implements Initializable {
             return;
 
         anchor.requestFocus();
-    }
-
-    @FXML
-    public void handleColorButtonClicked() {
-        listener.deckColorModified(deck, colorPicker.getValue());
-    }
-
-    @FXML
-    private void handleFrontCardEditHover() {
-        frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
-    }
-
-    @FXML
-    private void handleFrontCardEditHoverExit() {
-        frontCardEditIcon.setIconColor(Color.web("#000000"));
-    }
-
-    @FXML
-    private void handleFrontEditClicked() {
-        listener.editCardClicked(selectedCard);
     }
 
 
