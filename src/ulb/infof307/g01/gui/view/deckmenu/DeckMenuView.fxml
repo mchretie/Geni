@@ -34,7 +34,7 @@
     <!-- Deck grid -->
     <center>
         <ScrollPane fitToHeight="true" fitToWidth="true" vbarPolicy="ALWAYS">
-            <GridPane fx:id="gridPane" alignment="CENTER">
+            <GridPane fx:id="gridPane">
                 <columnConstraints>
                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
