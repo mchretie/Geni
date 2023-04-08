@@ -8,9 +8,10 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.scene.web.WebView;
@@ -22,24 +23,24 @@ import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 
 import java.io.File;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class EditDeckViewController implements Initializable {
+public class EditDeckViewController {
+    public VBox leftVbox;
+    public VBox rightVbox;
 
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
 
     @FXML
-    private StackPane frontCard;
+    private HBox hbox;
+
+    @FXML
+    private BorderPane frontCard;
 
     @FXML
     private StackPane backCard;
-
-    @FXML
-    private AnchorPane anchor;
 
     @FXML
     private HBox tagsBox;
@@ -94,8 +95,11 @@ public class EditDeckViewController implements Initializable {
     /*                              Initializer                               */
     /* ====================================================================== */
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    /**
+     * Initializes the controller class. Cannot happen during construction as
+     *  the parents size is needed to set the width of the left and right components.
+     */
+    public void init() {
         backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleBackEdit();
         });
@@ -103,6 +107,10 @@ public class EditDeckViewController implements Initializable {
         deckNameText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleUpdateDeckName();
         });
+
+        double sceneWidth = leftVbox.getParent().getLayoutBounds().getWidth();
+        leftVbox.setPrefWidth(sceneWidth * 0.4);
+        rightVbox.setPrefWidth(sceneWidth * 0.6);
     }
 
 
@@ -224,7 +232,7 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private void handleUploadImageClicked() {
         final FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
+        File file = fileChooser.showOpenDialog(hbox.getScene().getWindow());
         listener.uploadImage(file.toURI().toString());
     }
 
@@ -312,13 +320,13 @@ public class EditDeckViewController implements Initializable {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
 
-        anchor.requestFocus();
+        hbox.requestFocus();
     }
 
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
-    /* ====================================================================== */
+    /* ==================================================================== */
 
     public interface Listener {
         void deckNameModified(String newName);

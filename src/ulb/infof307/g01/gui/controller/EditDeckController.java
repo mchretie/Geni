@@ -75,6 +75,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
                 = mainWindowViewController.getEditDeckViewController();
 
         editDeckViewController.setListener(this);
+        editDeckViewController.init();
         editDeckViewController.setDeck(deck);
     }
 

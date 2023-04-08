@@ -110,6 +110,8 @@ public class MainFxController extends Application implements
     public void start(Stage stage) throws IOException, InterruptedException {
 
         this.stage = stage;
+        stage.setWidth(1000);
+        stage.setHeight(800);
 
         // TODO: Title and login.
         stage.setTitle("Pokémon TCG Deck Builder");
@@ -123,11 +125,7 @@ public class MainFxController extends Application implements
         FXMLLoader fxmlLoader = new FXMLLoader(resource);
 
         Parent root = fxmlLoader.load();
-
         stage.setScene(new Scene(root));
-        stage.setMinHeight(400);
-        stage.setMinWidth(550);
-
 
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
