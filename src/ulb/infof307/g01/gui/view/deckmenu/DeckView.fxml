@@ -68,5 +68,7 @@
       <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
          <Label fx:id="playDeckLabel" textAlignment="CENTER" />
       </HBox>
+
+      <HBox prefHeight="40"/>
    </VBox>
 </StackPane>
