@@ -361,7 +361,7 @@ public class DeckDAO extends DAO {
 
     private List<FlashCard> getFlashCardsFor(UUID deckUuid) throws DatabaseException {
         String sql = """
-                SELECT card_id, deck_id, front, back
+                SELECT card.card_id, deck_id, front, back
                 FROM card
                 INNER JOIN flash_card
                 ON card.card_id = flash_card.card_id
@@ -405,7 +405,7 @@ public class DeckDAO extends DAO {
 
     private List<MCQCard> getMCQCardsFor(UUID deckUuid) throws DatabaseException {
         String sql = """
-                SELECT card_id, deck_id, front, correct_answer
+                SELECT card.card_id, deck_id, front, correct_answer_index
                 FROM card
                 INNER JOIN mcq_card
                 ON card.card_id = mcq_card.card_id
