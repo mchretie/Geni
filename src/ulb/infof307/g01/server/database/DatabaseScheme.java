@@ -56,6 +56,13 @@ class DatabaseScheme {
         );
             """,
             """
+        CREATE TABLE IF NOT EXISTS input_card (
+            card_id TEXT PRIMARY KEY,
+            answer TEXT NOT NULL,
+            FOREIGN KEY (card_id) REFERENCES card(card_id) ON DELETE CASCADE
+        );
+            """,
+            """
         CREATE TABLE IF NOT EXISTS tag (
             tag_id TEXT PRIMARY KEY,
             name TEXT UNIQUE NOT NULL,

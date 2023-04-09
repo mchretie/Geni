@@ -13,17 +13,20 @@ public class FlashCard extends Card {
     public FlashCard(String front, String back) {
         super(front);
         this.back = back;
+        this.cardType = "FlashCard";
     }
 
     public FlashCard(UUID uuid, UUID deckId, String front, String back) {
         super(uuid, deckId, front);
         this.back = back;
+        this.cardType = "FlashCard";
     }
 
 
     public FlashCard(String front, String back, KnowledgeLevel knowledge) {
         super(front, knowledge);
         this.back = back;
+        this.cardType = "FlashCard";
     }
 
     public String getBack() { return back; }
@@ -50,7 +53,7 @@ public class FlashCard extends Card {
         FlashCard other = (FlashCard) o;
         return id.equals(other.getId())
                 && (deckId == other.getDeckId() || deckId.equals(other.getDeckId()))
-                && front.equals(other.getFront());
+                && front.equals(other.getFront()) && back.equals(other.getBack());
     }
 
 }
