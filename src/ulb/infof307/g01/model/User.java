@@ -7,16 +7,18 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-import java.util.Arrays;
 import java.util.Base64;
+import java.util.UUID;
 
 public class User {
+    private UUID userId;
     private String username;
     private String password;
     private byte[] salt;
 
     public User(String username, String password) {
         try {
+            this.userId = UUID.randomUUID();
             this.username = username;
             this.salt = getSalt();
             this.password = getEncryptedPassword(password);
@@ -25,8 +27,9 @@ public class User {
         }
     }
 
-    public User(String username, String password, String salt) {
+    public User(UUID userId, String username, String password, String salt) {
         try {
+            this.userId = userId;
             this.username = username;
             this.salt = salt.getBytes();
             Base64.Decoder decoder = Base64.getDecoder();
@@ -70,5 +73,9 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public UUID getUserId() {
+        return userId;
     }
 }

@@ -26,7 +26,7 @@
     </center>
 
     <right>
-        <Button fx:id="deleteTagButton" onAction="#handleDeleteTagButton" style="-fx-background-color: transparent;">
+        <Button onAction="#handleDeleteTagButton" style="-fx-background-color: transparent;">
             <graphic>
                 <FontIcon iconLiteral="mdi2t-trash-can-outline" />
             </graphic>
