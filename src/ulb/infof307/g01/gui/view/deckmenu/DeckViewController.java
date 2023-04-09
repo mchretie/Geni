@@ -14,6 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.Tag;
 
 import java.io.File;
 
@@ -90,32 +91,16 @@ public class DeckViewController {
         tagsContainer.setHgap(30);
         tagsContainer.setVgap(10);
 
-        Label tag1 = new Label("Tag1");
-        Label tag2 = new Label("Tag22");
-        Label tag3 = new Label("Tag333");
-        Label tag4 = new Label("Tag4444");
-        Label tag5 = new Label("Tag55555");
+        for (Tag tag : deck.getTags()) {
+            Label tagLabel = new Label(tag.getName());
 
-        Background background = new Background(new BackgroundFill(
-                Color.web("#FFFFFF"),
-                new CornerRadii(10, false),
-                new Insets(-2, -10, -2, -10)));
+            tagLabel.setBackground(new Background(new BackgroundFill(
+                    Color.web(tag.getColor()),
+                    new CornerRadii(10, false),
+                    new Insets(-2, -10, -2, -10))));
 
-
-
-        tag1.setBackground(background);
-        tag2.setBackground(background);
-        tag3.setBackground(background);
-        tag4.setBackground(background);
-        tag5.setBackground(background);
-
-        //this.tagsContainer.setSpacing(20);
-
-        this.tagsContainer.getChildren().add(tag1);
-        this.tagsContainer.getChildren().add(tag2);
-        this.tagsContainer.getChildren().add(tag3);
-        this.tagsContainer.getChildren().add(tag4);
-        this.tagsContainer.getChildren().add(tag5);
+            tagsContainer.getChildren().add(tagLabel);
+        }
     }
 
     private LinearGradient makeGradient(Color color) {
