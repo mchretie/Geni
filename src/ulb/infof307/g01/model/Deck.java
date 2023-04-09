@@ -18,6 +18,9 @@ public class Deck implements Iterable<Card> {
   @Expose
   private String color = "0x00000000";
 
+  @Expose
+  private String backgroundImage;
+
     public Deck(String name) {
         this.name = name;
         this.id = UUID.randomUUID();
@@ -123,6 +126,14 @@ public class Deck implements Iterable<Card> {
 
     public String getColor() {
         return color;
+    }
+
+    public String getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public void setBackgroundImage(String backgroundImage) {
+        this.backgroundImage = backgroundImage;
     }
 
     public DeckMetadata getMetadata() {
