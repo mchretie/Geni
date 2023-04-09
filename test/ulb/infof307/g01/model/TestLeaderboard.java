@@ -26,7 +26,7 @@ public class TestLeaderboard {
         User user = new User("user", "pass");
         Score scoreBad = new Score(user.getUserId(), user.getUsername(), deck.getId(), 360, new Date(1586503737));
         Score scoreGood = new Score(user.getUserId(), user.getUsername(), deck.getId(), 1024, new Date(1585812537));
-        System.out.println(new Gson().toJson(scoreGood));
+        
         leaderboard.addScore(scoreGood);
         leaderboard.addScore(scoreBad);
 
