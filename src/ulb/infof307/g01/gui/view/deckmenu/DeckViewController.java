@@ -21,8 +21,6 @@ public class DeckViewController {
     @FXML
     private StackPane stackPane;
     @FXML
-    private ImageView backgroundImage;
-    @FXML
     private Label playDeckLabel;
     @FXML
     private FontIcon editDeckIcon;
@@ -31,7 +29,9 @@ public class DeckViewController {
     @FXML
     private FontIcon shareDeckIcon;
     @FXML
-    private Rectangle colorRect;
+    private ImageView imageBackground;
+    @FXML
+    private Rectangle colorBackground;
 
     private Deck deck;
 
@@ -49,34 +49,34 @@ public class DeckViewController {
         this.deck = deck;
         this.updateDeckLabelName();
 
+        this.setDeckImage();
         this.setDeckColor();
-        this.setBackGroundImage("file:res/img/tmpdeckimage.jpg");
     }
 
     private void setDeckColor() {
-        colorRect.setArcHeight(40);
-        colorRect.setArcWidth(40);
-        colorRect.heightProperty().bind(backgroundImage.fitHeightProperty());
-        colorRect.widthProperty().bind(backgroundImage.fitWidthProperty());
+        colorBackground.setArcHeight(40);
+        colorBackground.setArcWidth(40);
+        colorBackground.heightProperty().bind(imageBackground.fitHeightProperty());
+        colorBackground.widthProperty().bind(imageBackground.fitWidthProperty());
         Color color = Color.web(deck.getColor());
-        colorRect.setFill(makeGradient(color));
+        colorBackground.setFill(makeGradient(color));
     }
 
-    private void setBackGroundImage(String filename) {
-        // TODO: make image depend on deck image
-        Image img = new Image(filename);
-        backgroundImage.setImage(img);
-        backgroundImage.setPreserveRatio(false);
-        backgroundImage.fitWidthProperty().bind(stackPane.widthProperty());
-        backgroundImage.fitHeightProperty().bind(stackPane.heightProperty());
+    private void setDeckImage() {
+        System.out.println("DeckViewController setDeckImage : " + deck.getImage());
+        Image img = new Image(deck.getImage());
+        imageBackground.setImage(img);
+        imageBackground.setPreserveRatio(false);
+        imageBackground.fitWidthProperty().bind(stackPane.widthProperty());
+        imageBackground.fitHeightProperty().bind(stackPane.heightProperty());
 
         // add clip to image so that it has rounded corner
         Rectangle clip = new Rectangle();
         clip.setArcHeight(40);
         clip.setArcWidth(40);
-        clip.heightProperty().bind(backgroundImage.fitHeightProperty());
-        clip.widthProperty().bind(backgroundImage.fitWidthProperty());
-        backgroundImage.setClip(clip);
+        clip.heightProperty().bind(imageBackground.fitHeightProperty());
+        clip.widthProperty().bind(imageBackground.fitWidthProperty());
+        imageBackground.setClip(clip);
     }
 
     private LinearGradient makeGradient(Color color) {

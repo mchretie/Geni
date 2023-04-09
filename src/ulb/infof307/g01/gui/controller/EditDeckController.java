@@ -188,6 +188,17 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
+    public void deckImageModified(Deck deck, String filePath) {
+        try {
+            deck.setImage(filePath);
+            deckDAO.saveDeck(deck);
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
     public void deckColorModified(Deck deck, Color color) {
         try {
             deck.setColor(color.toString());
@@ -233,17 +244,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void cardPreviewClicked(Card card) {
         editDeckViewController.setSelectedCard(card);
         editDeckViewController.loadSelectedCardEditor();
-    }
-
-    @Override
-    public void uploadImage(String filePath) {
-        try {
-            deck.setImage(filePath);
-            deckDAO.saveDeck(deck);
-
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
     }
 
     @Override

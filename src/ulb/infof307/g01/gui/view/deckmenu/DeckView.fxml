@@ -12,14 +12,14 @@
            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
 
-   <!-- image and colorRect dimensions are set dynamically in the DeckViewController  -->
-   <ImageView fx:id="image"
+   <!-- imageBackground and colorBackground dimensions are set dynamically in the DeckViewController  -->
+   <ImageView fx:id="imageBackground"
               fitHeight="150.0"
               fitWidth="200.0"
               pickOnBounds="true"
               preserveRatio="true" />
 
-   <Rectangle fx:id="colorRect"
+   <Rectangle fx:id="colorBackground"
               arcHeight="5.0"
               arcWidth="5.0"
               fill="#1f93ff00"
@@ -56,7 +56,7 @@
          </Button>
 
          <!-- Share deck button -->
-         <Button fx:id="shareDeckButton" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;"
+         <Button prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;"
                  onMouseClicked="#handleShareDeckClicked">
             <graphic>
                <FontIcon fx:id="shareDeckIcon" iconLiteral="mdi2s-share" iconSize="25"

@@ -211,7 +211,7 @@ public class DeckDAO extends DAO {
     private void saveDeckIdentity(Deck deck, UUID userId) throws DatabaseException {
         String sql = """
                 INSERT INTO deck (deck_id, user_id, name, color, image)
-                VALUES (?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?)
                 ON CONFLICT(deck_id)
                 DO UPDATE SET name = ?, color = ?, image = ?
                 ON CONFLICT(name)

@@ -9,12 +9,11 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -242,13 +241,6 @@ public class EditDeckViewController implements Initializable {
         listener.cardPreviewClicked(selectedCard);
     }
 
-    @FXML
-    private void handleUploadImageClicked() {
-        final FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
-        listener.uploadImage(file.toURI().toString());
-    }
-
 
     /* ====================================================================== */
     /*                             Hover handlers                             */
@@ -333,6 +325,13 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
+    private void handleUploadImageClicked() {
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
+        listener.deckImageModified(deck, file.toURI().toString());
+    }
+
+    @FXML
     private void handleFrontCardEditHover() {
         frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
     }
@@ -357,11 +356,11 @@ public class EditDeckViewController implements Initializable {
         void tagAddedToDeck(Deck deck, String tagName, String color);
         void frontOfCardModified(Card card, String newFront);
         void backOfCardModified(Card card, String newBack);
+        void deckImageModified(Deck deck, String filePath);
         void deckColorModified(Deck deck, Color color);
         void newCard();
         void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card);
         void editCardClicked(Card selectedCard);
-        void uploadImage(String filePath);
     }
 }

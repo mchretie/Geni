@@ -17,9 +17,8 @@ public class Deck implements Iterable<Card> {
   private final List<Tag> tags;
   @Expose
   private String color = "0x00000000";
-
   @Expose
-  private String image;
+  private String image = "file:res/img/default_background.jpg";
 
     public Deck(String name) {
         this.name = name;
@@ -135,6 +134,7 @@ public class Deck implements Iterable<Card> {
 
     public void setImage(String image) {
         this.image = image;
+        System.out.println("Deck setImage : " + this.image);
     }
 
     public DeckMetadata getMetadata() {
