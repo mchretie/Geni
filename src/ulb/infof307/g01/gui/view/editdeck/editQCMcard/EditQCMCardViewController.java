@@ -10,6 +10,7 @@ import ulb.infof307.g01.gui.view.editdeck.EditFrontCardViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.MCQCard;
 
+import java.io.IOException;
 import java.util.List;
 
 public class EditQCMCardViewController implements EditFrontCardViewController.Listener, EditAnswerFieldController.Listener {
@@ -81,7 +82,7 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
     /* ====================================================================== */
 
     @FXML
-    private void handleAddNewChoice() {
+    private void handleAddNewChoice() throws IOException, InterruptedException {
         moveAnswerFieldToNext();
         listener.addNewAnswerToCard(card);
     }
@@ -114,17 +115,17 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
     }
 
     @Override
-    public void setCorrectAnswer(int idxOfAnswer) {
+    public void setCorrectAnswer(int idxOfAnswer) throws IOException, InterruptedException {
         listener.setCorrectAnswer(card, idxOfAnswer);
     }
 
     @Override
-    public void answerChanged(int idxOfAnswer, String newAnswer){
+    public void answerChanged(int idxOfAnswer, String newAnswer) throws IOException, InterruptedException {
         listener.answerChanged(card, idxOfAnswer, newAnswer);
     }
 
     @Override
-    public void deleteAnswer(int idxOfAnswer) {
+    public void deleteAnswer(int idxOfAnswer) throws IOException, InterruptedException {
         listener.removeAnswerFromCard(card, idxOfAnswer);
     }
 
@@ -148,9 +149,9 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
     public interface Listener {
         void frontOfCardModified(Card card, String newFront);
         void editCardClicked(Card card);
-        void setCorrectAnswer(MCQCard card, int idxOfAnswer);
-        void answerChanged(MCQCard card, int idxOfAnswer, String newAnswer);
-        void addNewAnswerToCard(MCQCard card);
-        void removeAnswerFromCard(MCQCard card, int idxOfAnswer);
+        void setCorrectAnswer(MCQCard card, int idxOfAnswer) throws IOException, InterruptedException;
+        void answerChanged(MCQCard card, int idxOfAnswer, String newAnswer) throws IOException, InterruptedException;
+        void addNewAnswerToCard(MCQCard card) throws IOException, InterruptedException;
+        void removeAnswerFromCard(MCQCard card, int idxOfAnswer) throws IOException, InterruptedException;
     }
 }

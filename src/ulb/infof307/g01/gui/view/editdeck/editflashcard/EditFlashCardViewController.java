@@ -41,7 +41,6 @@ public class EditFlashCardViewController implements EditFrontCardViewController.
     }
 
 
-
     /* ====================================================================== */
     /*                        Modify and  Card loading                        */
     /* ====================================================================== */
@@ -56,7 +55,7 @@ public class EditFlashCardViewController implements EditFrontCardViewController.
     private void handleBackEdit(KeyEvent keyEvent) {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
-        listener.backOfCardModified(card, backCardText.getText());
+        listener.backOfFlashCardModified(card, backCardText.getText());
     }
 
     @FXML
@@ -75,7 +74,7 @@ public class EditFlashCardViewController implements EditFrontCardViewController.
 
     public interface Listener {
         void frontOfCardModified(Card card, String newFront);
-        void backOfCardModified(FlashCard card, String newBack);
+        void backOfFlashCardModified(FlashCard card, String newBack);
         void editCardClicked(Card card);
     }
 }

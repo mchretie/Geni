@@ -7,6 +7,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.IOException;
+
 public class EditAnswerFieldController {
     @FXML
     FontIcon checkIcon;
@@ -46,7 +48,7 @@ public class EditAnswerFieldController {
     /* ====================================================================== */
 
     @FXML
-    public void handleKeyPressedOnTextField(KeyEvent keyEvent) {
+    public void handleKeyPressedOnTextField(KeyEvent keyEvent) throws IOException, InterruptedException {
         if (keyEvent.getCode().equals(KeyCode.ENTER))
             listener.answerChanged(idxOfAnswer, answerTextField.getText());
 
@@ -57,12 +59,12 @@ public class EditAnswerFieldController {
     /* ====================================================================== */
 
     @FXML
-    private void handleCorrectAnswer(){
+    private void handleCorrectAnswer() throws IOException, InterruptedException {
         listener.setCorrectAnswer(idxOfAnswer);
     }
 
     @FXML
-    private void handleDeleteAnswer(){
+    private void handleDeleteAnswer() throws IOException, InterruptedException {
         listener.deleteAnswer(idxOfAnswer);
     }
 
@@ -96,9 +98,9 @@ public class EditAnswerFieldController {
     /* ====================================================================== */
 
     public interface Listener{
-        void setCorrectAnswer(int idxOfAnswer);
-        void answerChanged(int idxOfAnswer, String answerText);
+        void setCorrectAnswer(int idxOfAnswer) throws IOException, InterruptedException;
+        void answerChanged(int idxOfAnswer, String answerText) throws IOException, InterruptedException;
 
-        void deleteAnswer(int idxOfAnswer);
+        void deleteAnswer(int idxOfAnswer) throws IOException, InterruptedException;
     }
 }

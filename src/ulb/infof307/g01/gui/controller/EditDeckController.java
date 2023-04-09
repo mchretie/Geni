@@ -201,7 +201,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void backOfCardModified(FlashCard card, String newBack) {
+    public void backOfFlashCardModified(FlashCard card, String newBack) {
         try {
             card.setBack(newBack);
             deckDAO.saveDeck(deck);
@@ -239,32 +239,54 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
     @Override
     public void setCorrectAnswer(MCQCard card, int idxOfAnswer) {
-        card.setCorrectAnswer(idxOfAnswer);
-        editQCMCardViewController.loadCardEditor(loadAnswers(card));
+        try {
+            card.setCorrectAnswer(idxOfAnswer);
+            deckDAO.saveDeck(deck);
+            editQCMCardViewController.loadCardEditor(loadAnswers(card));
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
     }
 
     @Override
-    public void answerChanged(MCQCard card, int idxOfAnswer, String newAnswer) {
-        ArrayList<String> answers = new ArrayList<>(card.getAnswers());
-        answers.set(idxOfAnswer, newAnswer);
-        card.setAnswers(answers);
-        editQCMCardViewController.loadCardEditor(loadAnswers(card));
+    public void answerChanged(MCQCard card, int idxOfAnswer, String newAnswer) throws IOException, InterruptedException {
+        try {
+            ArrayList<String> answers = new ArrayList<>(card.getAnswers());
+            answers.set(idxOfAnswer, newAnswer);
+            card.setAnswers(answers);
+            deckDAO.saveDeck(deck);
+            editQCMCardViewController.loadCardEditor(loadAnswers(card));
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
     }
 
     @Override
-    public void addNewAnswerToCard(MCQCard card) {
-        ArrayList<String> answers = new ArrayList<>(card.getAnswers());
-        answers.add("Réponse");
-        card.setAnswers(answers);
-        editQCMCardViewController.loadCardEditor(loadAnswers(card));
+    public void addNewAnswerToCard(MCQCard card){
+        try {
+            ArrayList<String> answers = new ArrayList<>(card.getAnswers());
+            answers.add("");
+            card.setAnswers(answers);
+            deckDAO.saveDeck(deck);
+            editQCMCardViewController.loadCardEditor(loadAnswers(card));
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
     }
 
     @Override
-    public void removeAnswerFromCard(MCQCard card, int idxOfAnswer) {
-        ArrayList<String> answers = new ArrayList<>(card.getAnswers());
-        answers.remove(idxOfAnswer);
-        card.setAnswers(answers);
-        editQCMCardViewController.loadCardEditor(loadAnswers(card));
+    public void removeAnswerFromCard(MCQCard card, int idxOfAnswer){
+        try {
+            ArrayList<String> answers = new ArrayList<>(card.getAnswers());
+            answers.remove(idxOfAnswer);
+            card.setAnswers(answers);
+            deckDAO.saveDeck(deck);
+            editQCMCardViewController.loadCardEditor(loadAnswers(card));
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
     }
 
 
@@ -320,7 +342,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editQCMCardViewController.loadCardEditor(loadAnswers((MCQCard) card));
             editDeckViewController.showQCMCardEditor();
         }
-
     }
 
     /* ====================================================================== */
