@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -32,6 +33,10 @@ public class DeckViewController {
     private FontIcon shareDeckIcon;
     @FXML
     private Rectangle colorRect;
+    @FXML
+    private HBox tagsContainer;
+    @FXML
+    private HBox bandContainer;
 
     private Deck deck;
 
