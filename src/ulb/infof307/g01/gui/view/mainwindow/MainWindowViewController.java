@@ -45,7 +45,7 @@ public class MainWindowViewController {
     private BorderPane playDeckView;
 
     @FXML
-    private AnchorPane editCardView;
+    private VBox editCardView;
 
     @FXML
     private DeckMenuViewController deckMenuViewController;

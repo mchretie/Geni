@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
 
-<AnchorPane prefHeight="400.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ulb.infof307.g01.gui.view.editcard.EditCardViewController">
-
-    <VBox alignment="CENTER">
-        <Text layoutX="10.0" layoutY="10.0" text="Modifier l'avant de la carte" textAlignment="CENTER">
-            <font>
-                <Font name="System Bold" size="27.0"/>
-            </font>
-        </Text>
-        <HTMLEditor fx:id="htmlEditor" layoutX="10.0" layoutY="40.0" maxWidth="580.0" prefHeight="300.0" translateY="10"/>
-        <Button layoutX="10.0" layoutY="350.0" mnemonicParsing="false"
-                onMousePressed="#onSaveButtonClicked" text="Save" translateY="10"/>
-    </VBox>
-</AnchorPane>
+<VBox fx:id="vbox" alignment="CENTER" prefHeight="400.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editcard.EditCardViewController">
+    <Text text="Modifier l'avant de la carte" textAlignment="CENTER">
+        <font>
+            <Font name="System Bold" size="27.0" />
+        </font>
+    </Text>
+    <HTMLEditor fx:id="htmlEditor" maxWidth="580.0" prefHeight="300.0">
+      <VBox.margin>
+         <Insets />
+      </VBox.margin></HTMLEditor>
+    <Button mnemonicParsing="false" onMousePressed="#onSaveButtonClicked" text="Save">
+      <VBox.margin>
+         <Insets top="10.0" />
+      </VBox.margin></Button>
+</VBox>

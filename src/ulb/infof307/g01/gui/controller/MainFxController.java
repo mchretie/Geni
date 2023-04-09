@@ -198,8 +198,8 @@ public class MainFxController extends Application implements
     }
 
     private void failedDeckImportError(JsonSyntaxException e) {
-        String message = "L'importation du deck a échouée, " +
-                "veuillez vérifiez que le fichier est bien un fichier " +
+        String message = "L'importation du deck a échoué, " +
+                "veuillez vérifier que le fichier est bien un fichier " +
                 ".json.";
 
         communicateError(e, message);
@@ -251,8 +251,8 @@ public class MainFxController extends Application implements
     @Override
     public void editCardClicked(Deck deck, Card card) {
         editCardController = new EditCardController(stage, deck, card, deckDAO, mainWindowViewController, this);
-        editCardController.show();
         viewStack.add(View.HTML_EDITOR);
+        editCardController.show();
     }
 
     @Override

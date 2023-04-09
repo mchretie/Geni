@@ -1,10 +1,12 @@
 package ulb.infof307.g01.gui.view.editcard;
 
 import javafx.fxml.FXML;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
 import ulb.infof307.g01.model.Card;
 
 public class EditCardViewController {
+    public VBox vbox;
 
     /* ====================================================================== */
     /*                               FXML Attributes                          */
@@ -27,6 +29,7 @@ public class EditCardViewController {
 
     private Listener listener;
 
+    public void init() {} // PLEASE DO NOT DELETE
 
     /* ====================================================================== */
     /*                                   Setters                              */

@@ -88,10 +88,7 @@
         <BorderPane fx:id="frontCard" style="-fx-border-color: black; -fx-border-radius: 15px; -fx-background-radius: 15px;" visible="false" VBox.vgrow="ALWAYS">
 
             <center>
-                <WebView fx:id="frontCardWebView" maxHeight="180.0" onKeyPressed="#handleTextFieldKeyPressed" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
-                    <BorderPane.margin>
-                        <Insets />
-                    </BorderPane.margin></WebView>
+                <WebView fx:id="frontCardWebView" maxHeight="180.0" onKeyPressed="#handleTextFieldKeyPressed" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS"> </WebView>
             </center>
 
             <right>
