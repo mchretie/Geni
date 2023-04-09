@@ -1,6 +1,7 @@
 package ulb.infof307.g01.server.database;
 
 
+import org.sqlite.SQLiteConfig;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.io.File;
@@ -37,7 +38,10 @@ public class DatabaseAccess {
             }
 
             String url = "jdbc:sqlite:" + dbname.toPath();
-            connection = DriverManager.getConnection(url);
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            connection = DriverManager.getConnection(url, config.toProperties());
+//            connection = DriverManager.getConnection(url);
 
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
