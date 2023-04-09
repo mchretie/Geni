@@ -292,6 +292,20 @@ public class DeckDAO extends DAO {
                                      i);
     }
 
+    public void saveCard(InputCard card) throws DatabaseException {
+        String upsertInputCard = """
+                INSERT INTO input_card (card_id, answer)
+                VALUES (?, ?)
+                ON CONFLICT(card_id)
+                DO UPDATE SET answer = ?
+                """;
+
+        database.executeUpdate(upsertInputCard,
+                                 card.getId().toString(),
+                                 card.getAnswer(),
+                                 card.getAnswer());
+    }
+
     private void saveCard(Card card) throws DatabaseException {
         String upsertCard = """
                 INSERT INTO card (card_id, deck_id, front)
@@ -310,6 +324,8 @@ public class DeckDAO extends DAO {
             saveCard((FlashCard) card);
         else if (card instanceof MCQCard)
             saveCard((MCQCard) card);
+        else if (card instanceof InputCard)
+            saveCard((InputCard) card);
     }
 
     private void deleteCard(Card card) throws DatabaseException {
@@ -393,6 +409,34 @@ public class DeckDAO extends DAO {
         return cards;
     }
 
+    private InputCard extractInputCardFrom(ResultSet res) throws DatabaseException {
+        try {
+            UUID uuid = UUID.fromString(res.getString("card_id"));
+            UUID deckId = UUID.fromString(res.getString("deck_id"));
+            String front = res.getString("front");
+            String answer = res.getString("answer");
+            return new InputCard(uuid, deckId, front, answer);
+        } catch (SQLException e) {
+            throw new DatabaseException((e.getMessage()));
+        }
+    }
+
+    private List<InputCard> getInputCardsFor(UUID deckUuid) throws DatabaseException {
+        String sql = """
+                SELECT card.card_id, deck_id, front, answer
+                FROM card
+                INNER JOIN input_card
+                ON card.card_id = input_card.card_id
+                WHERE deck_id = ?
+                """;
+
+        ResultSet res = database.executeQuery(sql, deckUuid.toString());
+        List<InputCard> cards = new ArrayList<>();
+        while (checkedNext(res))
+            cards.add(extractInputCardFrom(res));
+        return cards;
+    }
+
     /**
      * Get all cards associated with given deck
      *
@@ -404,6 +448,7 @@ public class DeckDAO extends DAO {
         List<Card> cards = new ArrayList<>();
         cards.addAll(getFlashCardsFor(deckUuid));
         cards.addAll(getMCQCardsFor(deckUuid));
+        cards.addAll(getInputCardsFor(deckUuid));
         return cards;
     }
 
