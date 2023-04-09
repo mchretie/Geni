@@ -1,5 +1,6 @@
 package ulb.infof307.g01.server.database;
 
+import com.google.gson.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ulb.infof307.g01.model.*;
@@ -36,17 +37,17 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getDeck_DeckNotExists_ThrowsException()  {
+    void getDeck_DeckNotExists_ThrowsException() {
         assertNull(deckDAO.getDeck(new Deck("name").getId()));
     }
 
     @Test
-    void deckNameExists_NameNotExists_ReturnsFalse()  {
+    void deckNameExists_NameNotExists_ReturnsFalse() {
         assertFalse(deckDAO.deckNameExists("name"));
     }
 
     @Test
-    void deckNameExists_NameExists_ReturnsTrue()  {
+    void deckNameExists_NameExists_ReturnsTrue() {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
 
@@ -54,7 +55,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void isDeckValid_DeckInvalid_ReturnsFalse()  {
+    void isDeckValid_DeckInvalid_ReturnsFalse() {
         Deck deck1 = new Deck("name");
         Deck deck2 = new Deck("name");
         deckDAO.saveDeck(deck1, user);
@@ -63,7 +64,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void isDeckValid_DeckValid_ReturnsTrue()  {
+    void isDeckValid_DeckValid_ReturnsTrue() {
         Deck deck = new Deck("name");
         assertTrue(deckDAO.isDeckValid(deck, user));
 
@@ -72,7 +73,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_DecksWithSameNameDiffId_OnlyFirstAdded()  {
+    void saveDeck_DecksWithSameNameDiffId_OnlyFirstAdded() {
         Deck deck1 = new Deck("name");
         Deck deck2 = new Deck("name");
 
@@ -83,7 +84,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_DeckNotExists_CreatesDeck()  {
+    void saveDeck_DeckNotExists_CreatesDeck() {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
 
@@ -91,7 +92,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_DeckNameChanged_RenameDeck()  {
+    void saveDeck_DeckNameChanged_RenameDeck() {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
 
@@ -102,7 +103,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_DeckNameNotUpdated_DeckNotUpdated()  {
+    void saveDeck_DeckNameNotUpdated_DeckNotUpdated() {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
 
@@ -112,7 +113,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_CardAdded_DeckAddedWithCard()  {
+    void saveDeck_CardAdded_DeckAddedWithCard() {
         Deck deck = new Deck("name");
         Card card = new FlashCard("front", "back");
         Card card2 = new MCQCard("question", Arrays.asList("answer1", "answer2"), 0);
@@ -125,7 +126,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_CardDeleted_DeckUpdated()  {
+    void saveDeck_CardDeleted_DeckUpdated() {
         Deck deck = new Deck("name");
         Card card = new FlashCard("front", "back");
         Card card2 = new MCQCard("question", Arrays.asList("answer1", "answer2"), 0);
@@ -141,7 +142,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_TagAdded_DeckUpdated()  {
+    void saveDeck_TagAdded_DeckUpdated() {
         Deck deck = new Deck("name");
         Tag tag = new Tag("name");
 
@@ -152,7 +153,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_TagRemoved_DeckUpdated()  {
+    void saveDeck_TagRemoved_DeckUpdated() {
         Deck deck = new Deck("name");
         Tag tag = new Tag("name");
 
@@ -183,12 +184,12 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getAllDecks_NoDecks_EmptyList()  {
+    void getAllDecks_NoDecks_EmptyList() {
         assertTrue(deckDAO.getAllDecks().isEmpty());
     }
 
     @Test
-    void getAllDecks_ManyDecks_AllReturned()  {
+    void getAllDecks_ManyDecks_AllReturned() {
         List<Deck> decks = new ArrayList<>();
         decks.add(new Deck("name1"));
         decks.add(new Deck("name2"));
@@ -202,7 +203,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getAllDecks_SameDeckAddedMultipleTimes_OneReturned()  {
+    void getAllDecks_SameDeckAddedMultipleTimes_OneReturned() {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
         deckDAO.saveDeck(deck, user);
@@ -211,7 +212,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void deleteDeck_DeckExists_DeckNotExists()  {
+    void deleteDeck_DeckExists_DeckNotExists() {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
         deckDAO.deleteDeck(deck.getId(), user);
@@ -226,7 +227,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void searchTags()  {
+    void searchTags() {
         List<Deck> decks = new ArrayList<>();
         decks.add(new Deck("name1"));
         decks.add(new Deck("name2"));
@@ -237,5 +238,27 @@ public class TestDeckDAO extends DatabaseUsingTest {
         }
 
         assertEquals(new HashSet<>(decks), new HashSet<>(deckDAO.searchDecks("name", user)));
+    }
+
+    @Test
+    void gsonDeckConversion_DeckConverted_DecksEqual() {
+        Deck deck1 = new Deck("name");
+        Card card1 = new FlashCard("front", "back");
+        Card card2 = new MCQCard("question", Arrays.asList("answer1", "answer2"), 0);
+
+        deck1.addCard(card1);
+        deck1.addCard(card2);
+
+        String deck1Gson = new Gson().toJson(deck1);
+        Deck deck2 = new Gson().fromJson(deck1Gson, Deck.class);
+
+        JsonObject jsonObject = new Gson().fromJson(deck1Gson, JsonObject.class);
+        JsonArray cardsJson = jsonObject.getAsJsonArray("cards");
+
+        deck2.setCardsFromJson(cardsJson);
+
+        String deck2Gson = new Gson().toJson(deck2);
+
+        assertEquals(deck1Gson, deck2Gson);
     }
 }
