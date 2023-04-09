@@ -3,7 +3,6 @@ package ulb.infof307.g01.model;
 import com.google.gson.annotations.Expose;
 
 import java.util.UUID;
-import java.util.Objects;
 
 public class Card {
     private UUID deckId;
@@ -13,6 +12,9 @@ public class Card {
     private String front;
     @Expose
     private KnowledgeLevel knowledge;
+
+    @Expose
+    protected String cardType;
 
     public enum KnowledgeLevel {
         NEVER_SEEN(0), VERY_BAD(1), BAD(2), AVERAGE(3), GOOD(4), VERY_GOOD(5);
