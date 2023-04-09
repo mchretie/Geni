@@ -4,12 +4,12 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane prefHeight="40.0" prefWidth="213.0" style="-fx-background-color: #f0f0f0; -fx-border-color: #b2b2b2;-fx-padding: 1px 2px;-fx-border-insets: 0px ;-fx-background-insets: 1px 3px;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditAnswerFieldController">
+<BorderPane maxHeight="40.0" maxWidth="217.0" prefHeight="34.0" prefWidth="155.0" style="-fx-background-color: #f0f0f0; -fx-border-color: #b2b2b2;-fx-padding: 1px 2px;-fx-border-insets: 0px ;-fx-background-insets: 1px 3px;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditAnswerFieldController">
    <left>
-      <TextField fx:id="answerTextField" onKeyPressed="#handleKeyPressedOnTextField" prefHeight="40.0" prefWidth="170.0" style="-fx-background-color: #e4e4e4;" BorderPane.alignment="CENTER" />
+      <TextField fx:id="answerTextField" maxWidth="150" onKeyPressed="#handleKeyPressedOnTextField" style="-fx-background-color: #e4e4e4;" BorderPane.alignment="CENTER" />
    </left>
    <right>
-      <Button mnemonicParsing="false" onMouseClicked="#handleCorrectAnswer" prefHeight="43.0" prefWidth="60.0" style="-fx-background-color: transparent" BorderPane.alignment="CENTER">
+      <Button mnemonicParsing="false" maxWidth="30" onMouseClicked="#handleCorrectAnswer" style="-fx-background-color: transparent" BorderPane.alignment="CENTER">
          <graphic>
             <FontIcon fx:id="checkIcon" iconLiteral="mdi2c-check-circle-outline" iconSize="22" onMouseEntered="#handleCheckHover" onMouseExited="#handleCheckHoverExit" wrappingWidth="25.0" />
          </graphic>

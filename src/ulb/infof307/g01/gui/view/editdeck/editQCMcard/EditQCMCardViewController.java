@@ -13,14 +13,11 @@ import ulb.infof307.g01.model.MCQCard;
 import java.util.List;
 
 public class EditQCMCardViewController implements EditFrontCardViewController.Listener, EditAnswerFieldController.Listener {
-
-
-
     @FXML
     private EditFrontCardViewController editFrontCardViewController;
 
-    @FXML
-    private EditAnswerFieldController editAnswerFieldController;
+//    @FXML
+//    private EditAnswerFieldController editAnswerFieldController;
 
     @FXML
     private GridPane answersGrid;
@@ -46,7 +43,7 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
     public void setListener(Listener listener) {
         this.listener = listener;
         editFrontCardViewController.setListener(this);
-        editAnswerFieldController.setListener(this);
+//        editAnswerFieldController.setListener(this);
     }
 
     public void setCard(MCQCard card) {
@@ -85,6 +82,25 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
 
     @FXML
     private void handleAddNewChoice() {
+        moveAnswerFieldToNext();
+        listener.addNewAnswerToCard(card);
+    }
+
+    public void setAnswers(List<Node> answers){
+
+        for (int i = 0; i < answers.size(); i++) {
+            Node node = answers.get(i);
+            currentRow = i / 2;
+            currentCol = i % 2;
+            GridPane.setRowIndex(node, currentRow);
+            GridPane.setColumnIndex(node, currentCol);
+        }
+        answersGrid.getChildren().addAll(answers);
+
+        moveAnswerFieldToNext();
+    }
+
+    private void moveAnswerFieldToNext(){
         int nextCol = currentCol ^ 1;
         int nextRow = currentRow;
         if (nextCol==0) nextRow +=1;
@@ -94,17 +110,6 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
         answersGrid.getChildren().add(addAnswerField);
 
         currentCol = nextCol; currentRow = nextRow;
-
-        listener.addNewAnswerToCard(card);
-    }
-
-    public void setAnswers(List<Node> answers){
-        answersGrid.getChildren().clear();
-        answersGrid.getChildren().addAll(answers);
-
-        int size = answers.size();
-        currentCol = size % 2;
-        currentRow = size / 2;
     }
 
     @Override

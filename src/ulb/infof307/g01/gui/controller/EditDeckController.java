@@ -217,12 +217,12 @@ public class EditDeckController implements EditDeckViewController.Listener,
             int idx = 0;
             List<Node> answerViews = new ArrayList<>();
             for (String answer: card.getAnswers()){
-                URL url = EditAnswerFieldController.class.getResource("editQCMCard/EditAnswerField.fxml");
+                URL url = EditAnswerFieldController.class.getResource("EditAnswerField.fxml");
                 FXMLLoader loader = new FXMLLoader(url);
 
                 Node node = loader.load();
-                EditAnswerFieldController answerViewController = loader.getController();
-                answerViewController.setAnswerText(answer, idx);
+//                EditAnswerFieldController answerViewController = loader.getController();
+//                answerViewController.setAnswerText(answer, idx);
                 idx++;
                 answerViews.add(node);
             }
@@ -254,7 +254,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             if (type.equals("flashCard"))
             deck.addCard(new FlashCard("Avant", "Arrière"));
             else
-                deck.addCard(new MCQCard("Avant", List.of("Réponse 1", "Réponse 2"), 1));
+                deck.addCard(new MCQCard("Avant", List.of("Réponse 1", "Réponse 2", "Répponse 3"), 1));
             deckDAO.saveDeck(deck);
 
             editDeckViewController.showCards();
