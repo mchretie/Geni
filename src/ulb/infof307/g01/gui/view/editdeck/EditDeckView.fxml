@@ -40,14 +40,14 @@
 
         <HBox alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #5ab970;">
 
-            <Button layoutX="180" onMouseClicked="#handleAddCardClicked" prefHeight="49.0" prefWidth="53.0" style="-fx-background-color: transparent;">
+            <Button layoutX="180" onMouseClicked="#handleAddCardClicked" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent;">
 
                 <graphic>
                     <FontIcon fx:id="addCardIcon" iconLiteral="mdi2c-card-plus-outline" iconSize="25" onMouseEntered="#handleAddCardHover" onMouseExited="#handleAddHoverExit" />
                 </graphic>
             </Button>
 
-            <Button layoutX="180" onMouseClicked="#handleRemoveCardClicked" prefHeight="50.0" prefWidth="54.0" style="-fx-background-color: transparent;">
+            <Button layoutX="180" onMouseClicked="#handleRemoveCardClicked" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent;">
 
                 <graphic>
                     <FontIcon fx:id="removeCardIcon" iconLiteral="mdi2t-trash-can-outline" iconSize="25" onMouseEntered="#handleRemoveCardHover" onMouseExited="#handleRemoveCardHoverExit" wrappingWidth="25.0" />
@@ -115,7 +115,7 @@
         <StackPane>
             <!-- Back of normal card -->
             <StackPane fx:id="backCard" visible="false" VBox.vgrow="ALWAYS">
-                <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" style="-fx-background-color: #f0f0f0;                        -fx-border-radius: 20px;                        -fx-background-radius: 20px;" VBox.vgrow="ALWAYS">
+                <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" prefHeight="205.0" style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px;" VBox.vgrow="ALWAYS">
 
                     <font>
                         <Font size="24.0" />
