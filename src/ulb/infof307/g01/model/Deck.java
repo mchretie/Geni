@@ -176,10 +176,10 @@ public class Deck implements Iterable<Card> {
         for (JsonElement card : cardsJson) {
             JsonObject cardObject = card.getAsJsonObject();
             String cardType = cardObject.get("cardType").getAsString();
-            if (cardType.equals("FlashCard")) {
-                this.cards.add(new Gson().fromJson(card, FlashCard.class));
-            } else if (cardType.equals("MCQCard")) {
-                this.cards.add(new Gson().fromJson(card, MCQCard.class));
+            switch (cardType) {
+                case "FlashCard" -> this.cards.add(new Gson().fromJson(card, FlashCard.class));
+                case "MCQCard" -> this.cards.add(new Gson().fromJson(card, MCQCard.class));
+                case "InputCard" -> this.cards.add(new Gson().fromJson(card, InputCard.class));
             }
         }
     }
