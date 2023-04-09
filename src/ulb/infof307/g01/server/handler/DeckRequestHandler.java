@@ -61,10 +61,7 @@ public class DeckRequestHandler extends Handler {
       String username = usernameFromRequest(req);
       UUID userId = UUID.fromString(database.getUserId(username));
 
-      Deck deck = new Gson().fromJson(req.body(), Deck.class);
-      JsonObject jsonObject = new Gson().fromJson(new Gson().toJson(deck), JsonObject.class);
-      JsonArray cardsJson = jsonObject.getAsJsonArray("cards");
-      deck.setCardsFromJson(cardsJson);
+      Deck deck = new Deck(new Gson().fromJson(req.body(), JsonObject.class));
 
       database.saveDeck(deck, userId);
       return successfulResponse;
