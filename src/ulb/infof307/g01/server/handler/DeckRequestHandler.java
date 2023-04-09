@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import spark.Request;
 import spark.Response;
-import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
@@ -60,6 +62,9 @@ public class DeckRequestHandler extends Handler {
       UUID userId = UUID.fromString(database.getUserId(username));
 
       Deck deck = new Gson().fromJson(req.body(), Deck.class);
+      JsonObject jsonObject = new Gson().fromJson(new Gson().toJson(deck), JsonObject.class);
+      JsonArray cardsJson = jsonObject.getAsJsonArray("cards");
+      deck.setCardsFromJson(cardsJson);
 
       database.saveDeck(deck, userId);
       return successfulResponse;
