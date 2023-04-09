@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -26,11 +27,17 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class EditDeckViewController implements Initializable {
+public class EditDeckViewController {
 
     /* ====================================================================== */
-    /*                         FXML: Panes & Containers                       */
+    /*                            FXML Attributes                             */
     /* ====================================================================== */
+    @FXML
+    private VBox leftVbox;
+
+    @FXML
+    private VBox rightVbox;
+
     @FXML
     private HBox cardTypeButtons;
     @FXML
@@ -42,32 +49,19 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private HBox tagsBox;
 
-    /* ====================================================================== */
-    /*                            FXML: Text Fields                           */
-    /* ====================================================================== */
-
     @FXML
     private TextField deckNameText;
     @FXML
     private TextField tagsInput;
 
-    /* ====================================================================== */
-    /*                              FXML: Buttons                             */
-    /* ====================================================================== */
     @FXML
     private Button imageUploader;
 
-    /* ====================================================================== */
-    /*                               FXML: Icons                              */
-    /* ====================================================================== */
     @FXML
     private FontIcon removeCardIcon;
     @FXML
     private FontIcon addCardIcon;
 
-    /* ====================================================================== */
-    /*                           FXML: Color picker                           */
-    /* ====================================================================== */
     @FXML
     private ColorPicker colorPicker;
 
@@ -91,12 +85,20 @@ public class EditDeckViewController implements Initializable {
     /*                              Initializer                               */
     /* ====================================================================== */
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    /**
+     * Initializes the controller class. Cannot happen during construction as
+     *  the parents size is needed to set the width of the left and right components.
+     */
+    public void init() {
         deckNameText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleUpdateDeckName();
         });
+
+        double sceneWidth = leftVbox.getParent().getLayoutBounds().getWidth();
+        leftVbox.setPrefWidth(sceneWidth * 0.4);
+        rightVbox.setPrefWidth(sceneWidth * 0.6);
     }
+
 
 
     /* ====================================================================== */
