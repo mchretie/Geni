@@ -5,11 +5,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Score {
-    private UUID userId;
-    private String username;
-    private UUID deckId;
+    private final UUID userId;
+    private final String username;
+    private final UUID deckId;
     private int score;
-    private Date timestamp;
+    private final Date timestamp;
 
     public Score(UUID userId, String username, UUID deckId, int score, Date timestamp) {
         this.userId = userId;
@@ -21,6 +21,10 @@ public class Score {
 
     static public Score createNewScore(UUID userId, String username, UUID deckId) {
         return new Score(userId, username, deckId, 0, new Date());
+    }
+
+    public void increment(int value) {
+        this.score += value;
     }
 
     public UUID getUserId() {
