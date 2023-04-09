@@ -32,24 +32,24 @@ public class LeaderboardRequestHandler extends Handler {
 
     private Map<String, String> saveScore(Request req, Response res) {
         try {
-            // TODO same code in DeckRequestHandler::usernameFromRequest
+            // check if token is valid
             String token = req.headers("Authorization");
             if (token == null || !jwtService.isTokenValid(token))
-                throw new RuntimeException("Invalid token.");
+                throw new RuntimeException("Token is " + (token == null ? "null" : "not valid"));
 
+            // check if userId from token and userId from score are the same
             String username = jwtService.getUsernameFromToken(token);
             UUID userId = UUID.fromString(database.getUserId(username));
-
             Score score = new Gson().fromJson(req.body(), Score.class);
             if (! userId.equals(score.getUserId()))
-                throw new RuntimeException("Wrong userId");
+                throw new RuntimeException("userId from token doesn't match userId from score.");
+
             database.saveScore(score);
             return successfulResponse;
         } catch (Exception e) {
             String errorMessage = "Failed to add score: " + e.getMessage();
             logger.warning(errorMessage);
             halt(500, errorMessage);
-
             return failedResponse;
         }
     }
