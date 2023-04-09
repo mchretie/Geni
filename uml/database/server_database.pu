@@ -63,8 +63,8 @@ table( user ) {
 
 table( user_deck_score ) {
   primary_key( user_id ): TEXT
-  primary_key( deck_id ): TEXT
-  column( timestamp ): TEXT
+  primary_key( timestamp ): TEXT
+  column( deck_id ): TEXT
   column( score ): INTEGER
 }
 user_deck_score }|--|| user
