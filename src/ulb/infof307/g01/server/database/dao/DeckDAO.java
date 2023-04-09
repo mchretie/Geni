@@ -69,6 +69,16 @@ public class DeckDAO extends DAO {
         return checkedNext(database.executeQuery(sql, name));
     }
 
+    public boolean deckNameExists(String name, UUID userId) {
+        String sql = """
+                SELECT name
+                FROM deck
+                WHERE name = ? AND user_id = ?
+                """;
+
+        return checkedNext(database.executeQuery(sql, name, userId.toString()));
+    }
+
 
     /**
      * Write to long-term memory the contents of a deck
@@ -235,9 +245,6 @@ public class DeckDAO extends DAO {
 
         Set<Card> deletedCards = (Set<Card>) currentCards.clone();
         deletedCards.removeAll(newCards);
-
-        System.out.println("Added cards: " + addedCards);
-        System.out.println("Deleted cards: " + deletedCards);
 
         for (Card deletedCard : deletedCards)
             deleteCard(deletedCard);

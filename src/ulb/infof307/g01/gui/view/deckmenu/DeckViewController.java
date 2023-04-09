@@ -1,36 +1,37 @@
 package ulb.infof307.g01.gui.view.deckmenu;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.paint.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.DirectoryChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Deck;
 
-import java.net.URL;
+import java.io.File;
 
 public class DeckViewController {
 
     @FXML
-    private Button playDeckButton;
-
+    private StackPane stackPane;
     @FXML
-    private Rectangle deckRect;
+    private ImageView backgroundImage;
     @FXML
-    private Rectangle deckGradientRect;
-
+    private Label playDeckLabel;
     @FXML
     private FontIcon editDeckIcon;
     @FXML
     private FontIcon removeDeckIcon;
     @FXML
     private FontIcon shareDeckIcon;
+    @FXML
+    private Rectangle colorRect;
 
     private Deck deck;
 
@@ -46,22 +47,36 @@ public class DeckViewController {
 
     public void setDeck(Deck deck) {
         this.deck = deck;
-        this.updateDeckButtonName();
+        this.updateDeckLabelName();
 
         this.setDeckColor();
-        this.setBackGroundImage();
+        this.setBackGroundImage("file:res/img/tmpdeckimage.jpg");
     }
 
     private void setDeckColor() {
-        deckGradientRect.setFill(makeGradient(Color.web(deck.getColor())));
+        colorRect.setArcHeight(40);
+        colorRect.setArcWidth(40);
+        colorRect.heightProperty().bind(backgroundImage.fitHeightProperty());
+        colorRect.widthProperty().bind(backgroundImage.fitWidthProperty());
+        Color color = Color.web(deck.getColor());
+        colorRect.setFill(makeGradient(color));
     }
 
-    private void setBackGroundImage()  {
+    private void setBackGroundImage(String filename) {
         // TODO: make image depend on deck image
+        Image img = new Image(filename);
+        backgroundImage.setImage(img);
+        backgroundImage.setPreserveRatio(false);
+        backgroundImage.fitWidthProperty().bind(stackPane.widthProperty());
+        backgroundImage.fitHeightProperty().bind(stackPane.heightProperty());
 
-        Image img = new Image("file:res/img/tmpdeckimage.jpg");
-        deckRect.setFill(new ImagePattern(img));
-        deckRect.setOpacity(0.7);
+        // add clip to image so that it has rounded corner
+        Rectangle clip = new Rectangle();
+        clip.setArcHeight(40);
+        clip.setArcWidth(40);
+        clip.heightProperty().bind(backgroundImage.fitHeightProperty());
+        clip.widthProperty().bind(backgroundImage.fitWidthProperty());
+        backgroundImage.setClip(clip);
     }
 
     private LinearGradient makeGradient(Color color) {
@@ -82,8 +97,8 @@ public class DeckViewController {
 
     }
 
-    private void updateDeckButtonName() {
-        this.playDeckButton.setText(this.deck.getName());
+    private void updateDeckLabelName() {
+        this.playDeckLabel.setText(this.deck.getName());
     }
 
 
@@ -104,6 +119,20 @@ public class DeckViewController {
     @FXML
     private void handleRemoveDeckClicked() {
         listener.deckRemoved(deck);
+    }
+
+    @FXML
+    private void handleShareDeckClicked() {
+        final DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose a directory to share your deck");
+
+        File file = directoryChooser.showDialog(
+                stackPane.getParent()
+                                    .getScene()
+                                    .getWindow()
+                    );
+
+        listener.shareDeckClicked(deck, file);
     }
 
 
@@ -150,5 +179,6 @@ public class DeckViewController {
         void deckRemoved(Deck deck);
         void deckDoubleClicked(Deck deck);
         void editDeckClicked(Deck deck);
+        void shareDeckClicked(Deck deck, File file);
     }
 }

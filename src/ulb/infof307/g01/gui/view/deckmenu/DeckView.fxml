@@ -1,63 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<StackPane fx:id="homeDeckPane" onMouseClicked="#handleDoubleDeckClicked" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
+<StackPane fx:id="stackPane"
+           maxHeight="175.0" maxWidth="500.0" minHeight="150.0" minWidth="100.0"
+           onMouseClicked="#handleDoubleDeckClicked"
+           xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
 
-    <Rectangle fx:id="deckRect" arcHeight="20" arcWidth="20" fill="WHITE" height="150" stroke="TRANSPARENT" width="225">
+   <!-- backgroundImage and colorRect dimensions are set dynamically in the DeckViewController  -->
+   <ImageView fx:id="backgroundImage"
+              fitHeight="150.0"
+              fitWidth="200.0"
+              pickOnBounds="true"
+              preserveRatio="true" />
 
-          <StackPane.margin>
-             <Insets left="40.0" top="25.0" />
-          </StackPane.margin></Rectangle>
-   <Rectangle fx:id="deckGradientRect" arcHeight="20" arcWidth="20" fill="#ffffff00" height="150" stroke="BLACK" width="225">
-      <StackPane.margin>
-         <Insets left="40.0" top="24.0" />
-      </StackPane.margin></Rectangle>
+   <Rectangle fx:id="colorRect"
+              arcHeight="5.0"
+              arcWidth="5.0"
+              fill="#1f93ff00"
+              height="100.0"
+              stroke="BLACK"
+              strokeType="INSIDE"
+              width="100.0" />
 
-        <Button fx:id="playDeckButton" onMouseClicked="#handleDoubleDeckClicked" prefHeight="97.0" prefWidth="180.0" style="-fx-background-color: transparent;" StackPane.alignment="CENTER">
+   <VBox alignment="CENTER"
+         style="-fx-border-color: black;
+                  -fx-border-radius: 20;">
 
-            <StackPane.margin>
-                <Insets left="40.0" top="25.0" />
-            </StackPane.margin>
-        </Button>
+      <HBox alignment="CENTER_RIGHT">
+         <!-- Edit deck button -->
+         <Button onMouseClicked="#handleEditDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
 
-        <FlowPane fx:id="deckTags" hgap="5" maxWidth="200" vgap="5" />
+            <graphic>
+               <FontIcon fx:id="editDeckIcon" iconLiteral="mdi2p-pencil" iconSize="25"
+                         onMouseEntered="#handleHoverEditDeck" onMouseExited="#handleHoverEditDeckExit" />
+            </graphic>
 
-        <HBox alignment="TOP_RIGHT">
+         </Button>
 
-            <!-- Edit deck button -->
-            <Button fx:id="editDeck" layoutX="180" onMouseClicked="#handleEditDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
+         <!-- Remove deck button -->
+         <Button onMouseClicked="#handleRemoveDeckClicked" prefHeight="25" prefWidth="25"
+                 style="-fx-background-color: transparent;">
 
-                <graphic>
-                    <FontIcon fx:id="editDeckIcon" iconLiteral="mdi2p-pencil" iconSize="25" onMouseEntered="#handleHoverEditDeck" onMouseExited="#handleHoverEditDeckExit" />
-                </graphic>
+            <graphic>
+               <FontIcon fx:id="removeDeckIcon" iconLiteral="mdi2d-delete" iconSize="25"
+                         onMouseEntered="#handleHoverRemoveDeck"
+                         onMouseExited="#handleHoverRemoveDeckExit" />
+            </graphic>
 
-            </Button>
+         </Button>
 
-            <!-- Remove deck button -->
-            <Button fx:id="deleteDeckButton" layoutX="180" onMouseClicked="#handleRemoveDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
-
-                <graphic>
-                    <FontIcon fx:id="removeDeckIcon" iconLiteral="mdi2d-delete" iconSize="25" onMouseEntered="#handleHoverRemoveDeck" onMouseExited="#handleHoverRemoveDeckExit" />
-                </graphic>
-
-            </Button>
-
-            <!-- Share deck button -->
-            <Button fx:id="shareDeckButton" layoutX="180" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
-
-                <graphic>
-                    <FontIcon fx:id="shareDeckIcon" iconLiteral="mdi2s-share" iconSize="25" onMouseEntered="#handleHoverShareDeck" onMouseExited="#handleHoverShareDeckExit" />
-                </graphic>
-            </Button>
-
-            <StackPane.margin>
-                 <Insets top="25.0" />
-            </StackPane.margin>
-        </HBox>
-
+         <!-- Share deck button -->
+         <Button fx:id="shareDeckButton" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;"
+                 onMouseClicked="#handleShareDeckClicked">
+            <graphic>
+               <FontIcon fx:id="shareDeckIcon" iconLiteral="mdi2s-share" iconSize="25"
+                         onMouseEntered="#handleHoverShareDeck"
+                         onMouseExited="#handleHoverShareDeckExit" />
+            </graphic>
+         </Button>
+      </HBox>
+      <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+         <Label fx:id="playDeckLabel" textAlignment="CENTER" />
+      </HBox>
+   </VBox>
 </StackPane>

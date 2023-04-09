@@ -2,17 +2,25 @@ package ulb.infof307.g01.gui.view.deckmenu;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.File;
 import java.util.List;
 
 public class DeckMenuViewController {
 
+
+    @FXML
+    private BorderPane borderPane;
     @FXML
     private GridPane gridPane;
 
@@ -26,6 +34,8 @@ public class DeckMenuViewController {
     private FontIcon searchIcon;
     @FXML
     private FontIcon createDeckIcon;
+    @FXML
+    private FontIcon importDeck;
 
     private Listener listener;
 
@@ -60,6 +70,7 @@ public class DeckMenuViewController {
      */
     private void clearDecksFromGrid() {
         gridPane.getChildren().removeIf(this::clearNodeFromGridCondition);
+        resetGrid();
     }
 
     /**
@@ -75,11 +86,34 @@ public class DeckMenuViewController {
         int row = 0;
 
         for (Node deck : decks) {
+            if (row == gridPane.getRowCount()) {
+                addRow();
+            }
+
+            GridPane.setMargin(deck, new Insets(20));
             gridPane.add(deck, col, row);
 
             col = nextCol(col);
             row = nextRow(row, col);
         }
+    }
+
+    /**
+     * removes all rows from the gridPane except the first one
+     */
+    private void resetGrid() {
+        int rowCount = gridPane.getRowCount();
+        gridPane.getRowConstraints().remove(1, rowCount-1);
+    }
+
+    /**
+     * properly add row to the gridPane
+     */
+    private void addRow() {
+        RowConstraints rc = new RowConstraints();
+        rc.setMinHeight(220);
+        rc.setMaxHeight(300);
+        gridPane.getRowConstraints().add(rc);
     }
 
     private int nextCol(int currentCol) {
@@ -109,6 +143,14 @@ public class DeckMenuViewController {
         listener.searchDeckClicked(searchBar.getText());
     }
 
+    @FXML
+    private void handleImportDeck() {
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(borderPane.getScene().getWindow());
+
+        listener.deckImported(file);
+    }
+
     /* ====================================================================== */
     /*                             Hover handlers                             */
     /* ====================================================================== */
@@ -133,6 +175,16 @@ public class DeckMenuViewController {
         createDeckIcon.setIconColor(Color.web("#000000"));
     }
 
+    @FXML
+    private void handleImportDeckHover() {
+        importDeck.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    private void handleImportDeckExit() {
+        importDeck.setIconColor(Color.web("#000000"));
+    }
+
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -141,5 +193,6 @@ public class DeckMenuViewController {
     public interface Listener {
         void createDeckClicked(String name);
         void searchDeckClicked(String name);
+        void deckImported(File file);
     }
 }
