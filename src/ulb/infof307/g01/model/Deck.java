@@ -50,6 +50,17 @@ public class Deck implements Iterable<Card> {
         this.color = color;
     }
 
+    public Deck(JsonObject deckGson){
+        Deck deck = new Gson().fromJson(deckGson.toString(), Deck.class);
+        JsonArray cardsJson = deckGson.getAsJsonArray("cards");
+        deck.setCardsFromJson(cardsJson);
+        this.name = deck.getName();
+        this.id = deck.getId();
+        this.cards = deck.getCards();
+        this.tags = deck.getTags();
+        this.color = deck.getColor();
+    }
+
     public void setNewID() {
         this.id = UUID.randomUUID();
 
@@ -158,7 +169,6 @@ public class Deck implements Iterable<Card> {
 
     public Iterator<Card> iterator() {
         return cards.iterator();
-
     }
 
     public void setCardsFromJson(JsonArray cardsJson) {
