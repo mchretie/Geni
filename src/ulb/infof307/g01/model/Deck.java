@@ -42,12 +42,13 @@ public class Deck implements Iterable<Card> {
         this.tags = tags;
     }
 
-    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color) {
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image) {
         this.name = name;
         this.id = id;
         this.cards = cards;
         this.tags = tags;
         this.color = color;
+        this.image = image;
     }
 
     public void setNewID() {
