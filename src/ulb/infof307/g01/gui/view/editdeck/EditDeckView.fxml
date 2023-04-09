@@ -8,10 +8,7 @@
 <AnchorPane fx:id="anchor" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditDeckViewController">
 
     <!-- Deck name -->
-    <TextField fx:id="deckNameText" alignment="CENTER"
-               onKeyPressed="#handleTextFieldKeyPressed"
-               onKeyReleased="#handleUpdateDeckName"
-               style="-fx-background-color: #00000000;" text="Deck Name">
+    <TextField fx:id="deckNameText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" onKeyReleased="#handleUpdateDeckName" style="-fx-background-color: #00000000;" text="Deck Name">
 
         <font>
             <Font name="System Italic" size="28.0" />
@@ -63,7 +60,7 @@
 
 
     <!-- Card Editor -->
-    <AnchorPane fx:id="cardEditor" layoutX="372.0" layoutY="78.0" prefHeight="435.0" prefWidth="425.0">
+    <AnchorPane fx:id="cardEditor" layoutX="372.0" layoutY="78.0" prefHeight="435.0" prefWidth="470.0">
         <children>
             <HBox fx:id="cardTypeButtons" layoutY="186.0" prefHeight="63.0" prefWidth="425.0" visible="false">
                 <children>
@@ -74,13 +71,8 @@
         </children></AnchorPane>
 
 
-    <HBox layoutY="545.0" prefHeight="55.0" prefWidth="850.0"/>
-    <ColorPicker fx:id="colorPicker" layoutX="437.0" layoutY="14.0" onAction="#handleColorButtonClicked"
-                 onMouseEntered="#handleColorPickerHover" onMouseExited="#handleColorPickerExit" prefHeight="38.0"
-                 prefWidth="144.0" style="-fx-background-color: #5ab970;"/>
-    <Button fx:id="imageUploader" layoutX="637.0" layoutY="14.0" mnemonicParsing="false"
-            onAction="#handleUploadImageClicked" onMouseEntered="#handleUploadImageHover"
-            onMouseExited="#handleUploadImageExit" prefHeight="38.0" prefWidth="146.0"
-            style="-fx-background-color: #5ab970;" text="Upload image"/>
+    <HBox layoutY="545.0" prefHeight="55.0" prefWidth="850.0" />
+    <ColorPicker fx:id="colorPicker" layoutX="437.0" layoutY="14.0" onAction="#handleColorButtonClicked" onMouseEntered="#handleColorPickerHover" onMouseExited="#handleColorPickerExit" prefHeight="38.0" prefWidth="144.0" style="-fx-background-color: #5ab970;" />
+    <Button fx:id="imageUploader" layoutX="637.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleUploadImageClicked" onMouseEntered="#handleUploadImageHover" onMouseExited="#handleUploadImageExit" prefHeight="38.0" prefWidth="146.0" style="-fx-background-color: #5ab970;" text="Upload image" />
 
 </AnchorPane>

@@ -4,14 +4,14 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<VBox prefHeight="435.0" prefWidth="425.0" visible="false" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditQCMCardViewController">
+<VBox prefHeight="435.0" prefWidth="450.0" visible="false" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditQCMCardViewController">
     <children>
         <StackPane  layoutX="400.0" layoutY="77.0" visible="true">
             <fx:include fx:id="editFrontCardView" source="../EditFrontCardView.fxml"/>
         </StackPane>
 
 
-        <GridPane fx:id="answersGrid" prefHeight="217.0" prefWidth="425.0" style="-fx-padding: 6px 10px; -fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;">
+        <GridPane fx:id="answersGrid" prefHeight="217.0" prefWidth="465.0" style="-fx-padding: 6px 10px; -fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.5" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.5" minWidth="10.0" prefWidth="100.0" />
