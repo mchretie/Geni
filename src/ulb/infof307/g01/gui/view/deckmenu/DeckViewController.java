@@ -12,6 +12,7 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.Deck;
 
 import java.io.File;
@@ -36,9 +37,14 @@ public class DeckViewController {
     private Deck deck;
 
     private Listener listener;
+    private ImageLoader imageLoader;
 
     public void setListener(Listener listener) {
         this.listener = listener;
+    }
+
+    public void setImageLoader(ImageLoader loader) {
+        this.imageLoader = loader;
     }
 
     /* ====================================================================== */
@@ -64,7 +70,7 @@ public class DeckViewController {
 
     private void setBackGroundImage(String filename) {
         // TODO: make image depend on deck image
-        Image img = new Image(filename);
+        Image img = imageLoader.get(filename);
         backgroundImage.setImage(img);
         backgroundImage.setPreserveRatio(false);
         backgroundImage.fitWidthProperty().bind(stackPane.widthProperty());
