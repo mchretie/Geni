@@ -41,7 +41,6 @@ public class DatabaseAccess {
             SQLiteConfig config = new SQLiteConfig();
             config.enforceForeignKeys(true);
             connection = DriverManager.getConnection(url, config.toProperties());
-//            connection = DriverManager.getConnection(url);
 
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
