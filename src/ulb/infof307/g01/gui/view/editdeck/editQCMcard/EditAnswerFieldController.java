@@ -10,6 +10,8 @@ import org.kordamp.ikonli.javafx.FontIcon;
 public class EditAnswerFieldController {
     @FXML
     FontIcon checkIcon;
+    @FXML
+    FontIcon deleteAnswerIcon;
 
     @FXML
     TextField answerTextField;
@@ -17,6 +19,9 @@ public class EditAnswerFieldController {
     private Listener listener;
 
     private int idxOfAnswer;
+
+    private boolean isCorrectAnswer = false;
+
 
     /* ====================================================================== */
     /*                                Setters                                 */
@@ -31,12 +36,9 @@ public class EditAnswerFieldController {
         answerTextField.setText(answerText);
     }
 
-    public void isCorrectAnswer(boolean isCorrectAnswer) {
-        if (isCorrectAnswer) {
-            checkIcon.setIconColor(Color.web("#00ff00"));
-        } else {
-            checkIcon.setIconColor(Color.web("#000000"));
-        }
+    public void setCorrectAnswer() {
+        isCorrectAnswer = true;
+        checkIcon.setIconColor(Color.web("#4ab831"));
     }
 
     /* ====================================================================== */
@@ -56,8 +58,12 @@ public class EditAnswerFieldController {
 
     @FXML
     private void handleCorrectAnswer(){
-        checkIcon.setIconColor(Color.web("#00ff00"));
         listener.setCorrectAnswer(idxOfAnswer);
+    }
+
+    @FXML
+    private void handleDeleteAnswer(){
+        listener.deleteAnswer(idxOfAnswer);
     }
 
 
@@ -67,12 +73,23 @@ public class EditAnswerFieldController {
 
     @FXML
     private void handleCheckHoverExit() {
-        checkIcon.setIconColor(Color.web("#000000"));
+        if (!isCorrectAnswer) checkIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
-    private void handleCheckHover(){ checkIcon.setIconColor(Color.web("#7f8281"));  }
+    private void handleCheckHover(){
+        if (!isCorrectAnswer) checkIcon.setIconColor(Color.web("#7f8281"));
+    }
 
+    @FXML
+    private void handleDeleteHoverExit() {
+        deleteAnswerIcon.setIconColor(Color.web("#000000"));
+    }
+
+    @FXML
+    private void handleDeleteHover(){
+        deleteAnswerIcon.setIconColor(Color.web("#7f8281"));
+    }
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -82,5 +99,6 @@ public class EditAnswerFieldController {
         void setCorrectAnswer(int idxOfAnswer);
         void answerChanged(int idxOfAnswer, String answerText);
 
+        void deleteAnswer(int idxOfAnswer);
     }
 }

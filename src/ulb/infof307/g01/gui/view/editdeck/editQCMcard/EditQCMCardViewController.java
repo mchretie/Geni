@@ -39,15 +39,11 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
     /* ====================================================================== */
     /*                                Setters                                 */
     /* ====================================================================== */
+    public EditQCMCardViewController get() { return this; }
 
     public void setListener(Listener listener) {
         this.listener = listener;
         editFrontCardViewController.setListener(this);
-//        editAnswerFieldController.setListener(this);
-    }
-
-    public EditQCMCardViewController getListener() {
-        return this;
     }
 
     public void setCard(MCQCard card) {
@@ -127,6 +123,11 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
         listener.answerChanged(card, idxOfAnswer, newAnswer);
     }
 
+    @Override
+    public void deleteAnswer(int idxOfAnswer) {
+        listener.removeAnswerFromCard(card, idxOfAnswer);
+    }
+
 
     /* ====================================================================== */
     /*                             Hover handlers                             */
@@ -150,5 +151,6 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
         void setCorrectAnswer(MCQCard card, int idxOfAnswer);
         void answerChanged(MCQCard card, int idxOfAnswer, String newAnswer);
         void addNewAnswerToCard(MCQCard card);
+        void removeAnswerFromCard(MCQCard card, int idxOfAnswer);
     }
 }

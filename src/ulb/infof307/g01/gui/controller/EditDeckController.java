@@ -222,8 +222,10 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
                 Node node = loader.load();
                 EditAnswerFieldController answerViewController = loader.getController();
-                answerViewController.setListener(editQCMCardViewController.getListener());
+                answerViewController.setListener(editQCMCardViewController.get());
                 answerViewController.setAnswerText(answer, idx);
+                if (idx == card.getCorrectAnswer())
+                    answerViewController.setCorrectAnswer();
                 idx++;
                 answerViews.add(node);
             }
@@ -253,6 +255,14 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void addNewAnswerToCard(MCQCard card) {
         ArrayList<String> answers = new ArrayList<>(card.getAnswers());
         answers.add("Réponse");
+        card.setAnswers(answers);
+        editQCMCardViewController.loadCardEditor(loadAnswers(card));
+    }
+
+    @Override
+    public void removeAnswerFromCard(MCQCard card, int idxOfAnswer) {
+        ArrayList<String> answers = new ArrayList<>(card.getAnswers());
+        answers.remove(idxOfAnswer);
         card.setAnswers(answers);
         editQCMCardViewController.loadCardEditor(loadAnswers(card));
     }
@@ -305,10 +315,12 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editFlashCardViewController.loadCardEditor();
             editDeckViewController.showFlashCardEditor();
         }
-        else
+        else if (card instanceof MCQCard){
             editQCMCardViewController.setCard((MCQCard) card);
             editQCMCardViewController.loadCardEditor(loadAnswers((MCQCard) card));
             editDeckViewController.showQCMCardEditor();
+        }
+
     }
 
     /* ====================================================================== */
