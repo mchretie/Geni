@@ -14,7 +14,6 @@ public class EditAnswerFieldController {
     @FXML
     TextField answerTextField;
 
-
     private Listener listener;
 
     private int idxOfAnswer;
@@ -46,9 +45,9 @@ public class EditAnswerFieldController {
 
     @FXML
     public void handleKeyPressedOnTextField(KeyEvent keyEvent) {
-        if (keyEvent.getCode().equals(KeyCode.ENTER)){
+        if (keyEvent.getCode().equals(KeyCode.ENTER))
             listener.answerChanged(idxOfAnswer, answerTextField.getText());
-        }
+
     }
 
     /* ====================================================================== */

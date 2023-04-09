@@ -221,8 +221,9 @@ public class EditDeckController implements EditDeckViewController.Listener,
                 FXMLLoader loader = new FXMLLoader(url);
 
                 Node node = loader.load();
-//                EditAnswerFieldController answerViewController = loader.getController();
-//                answerViewController.setAnswerText(answer, idx);
+                EditAnswerFieldController answerViewController = loader.getController();
+                answerViewController.setListener(editQCMCardViewController.getListener());
+                answerViewController.setAnswerText(answer, idx);
                 idx++;
                 answerViews.add(node);
             }
@@ -235,13 +236,26 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void setCorrectAnswer(int idxOfAnswer) {return;}
+    public void setCorrectAnswer(MCQCard card, int idxOfAnswer) {
+        card.setCorrectAnswer(idxOfAnswer);
+        editQCMCardViewController.loadCardEditor(loadAnswers(card));
+    }
 
     @Override
-    public void answerChanged(int idxOfAnswer, String newAnswer) {return;}
+    public void answerChanged(MCQCard card, int idxOfAnswer, String newAnswer) {
+        ArrayList<String> answers = new ArrayList<>(card.getAnswers());
+        answers.set(idxOfAnswer, newAnswer);
+        card.setAnswers(answers);
+        editQCMCardViewController.loadCardEditor(loadAnswers(card));
+    }
 
     @Override
-    public void addNewAnswerToCard(MCQCard card) {return;}
+    public void addNewAnswerToCard(MCQCard card) {
+        ArrayList<String> answers = new ArrayList<>(card.getAnswers());
+        answers.add("Réponse");
+        card.setAnswers(answers);
+        editQCMCardViewController.loadCardEditor(loadAnswers(card));
+    }
 
 
     /* ====================================================================== */

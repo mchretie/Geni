@@ -16,8 +16,8 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
     @FXML
     private EditFrontCardViewController editFrontCardViewController;
 
-//    @FXML
-//    private EditAnswerFieldController editAnswerFieldController;
+    @FXML
+    private EditAnswerFieldController editAnswerFieldController;
 
     @FXML
     private GridPane answersGrid;
@@ -44,6 +44,10 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
         this.listener = listener;
         editFrontCardViewController.setListener(this);
 //        editAnswerFieldController.setListener(this);
+    }
+
+    public EditQCMCardViewController getListener() {
+        return this;
     }
 
     public void setCard(MCQCard card) {
@@ -95,6 +99,7 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
             GridPane.setRowIndex(node, currentRow);
             GridPane.setColumnIndex(node, currentCol);
         }
+        answersGrid.getChildren().clear();
         answersGrid.getChildren().addAll(answers);
 
         moveAnswerFieldToNext();
@@ -114,12 +119,12 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
 
     @Override
     public void setCorrectAnswer(int idxOfAnswer) {
-        listener.setCorrectAnswer(idxOfAnswer);
+        listener.setCorrectAnswer(card, idxOfAnswer);
     }
 
     @Override
     public void answerChanged(int idxOfAnswer, String newAnswer){
-        listener.answerChanged(idxOfAnswer, newAnswer);
+        listener.answerChanged(card, idxOfAnswer, newAnswer);
     }
 
 
@@ -142,8 +147,8 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
     public interface Listener {
         void frontOfCardModified(Card card, String newFront);
         void editCardClicked(Card card);
-        void setCorrectAnswer(int idxOfAnswer);
-        void answerChanged(int idxOfAnswer, String newAnswer);
+        void setCorrectAnswer(MCQCard card, int idxOfAnswer);
+        void answerChanged(MCQCard card, int idxOfAnswer, String newAnswer);
         void addNewAnswerToCard(MCQCard card);
     }
 }
