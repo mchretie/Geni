@@ -34,7 +34,7 @@ public class DeckViewController {
     @FXML
     private Rectangle colorRect;
     @FXML
-    private HBox tagsContainer;
+    private FlowPane tagsContainer;
     @FXML
     private HBox bandContainer;
 
@@ -87,6 +87,9 @@ public class DeckViewController {
     }
 
     private void setTags() {
+        tagsContainer.setHgap(10);
+        tagsContainer.setVgap(10);
+
         Label tag1 = new Label("Tag1");
         Label tag2 = new Label("Tag22");
         Label tag3 = new Label("Tag333");
@@ -98,13 +101,15 @@ public class DeckViewController {
                 new CornerRadii(10, false),
                 new Insets(-2)));
 
+
+
         tag1.setBackground(background);
         tag2.setBackground(background);
         tag3.setBackground(background);
         tag4.setBackground(background);
         tag5.setBackground(background);
 
-        this.tagsContainer.setSpacing(20);
+        //this.tagsContainer.setSpacing(20);
 
         this.tagsContainer.getChildren().add(tag1);
         this.tagsContainer.getChildren().add(tag2);
