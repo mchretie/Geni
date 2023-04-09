@@ -126,7 +126,7 @@ public class MainFxController extends Application implements
 
         Parent root = fxmlLoader.load();
         stage.setScene(new Scene(root));
-        stage.setMinHeight(450);
+        stage.setMinHeight(500);
         stage.setMinWidth(600);
 
         mainWindowViewController = fxmlLoader.getController();
