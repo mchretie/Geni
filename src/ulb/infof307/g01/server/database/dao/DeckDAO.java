@@ -108,7 +108,7 @@ public class DeckDAO extends DAO {
      */
     public Deck getDeck(UUID uuid) throws DatabaseException {
         String sql = """
-                SELECT deck_id, name, color
+                SELECT deck_id, name, color, image
                 FROM deck
                 WHERE deck_id = ?
                 """;
@@ -210,10 +210,10 @@ public class DeckDAO extends DAO {
      */
     private void saveDeckIdentity(Deck deck, UUID userId) throws DatabaseException {
         String sql = """
-                INSERT INTO deck (deck_id, user_id, name, color)
+                INSERT INTO deck (deck_id, user_id, name, color, image)
                 VALUES (?, ?, ?, ?)
                 ON CONFLICT(deck_id)
-                DO UPDATE SET name = ?, color = ?
+                DO UPDATE SET name = ?, color = ?, image = ?
                 ON CONFLICT(name)
                 DO NOTHING
                 """;
@@ -317,10 +317,11 @@ public class DeckDAO extends DAO {
             UUID uuid = UUID.fromString(res.getString("deck_id"));
             String name = res.getString("name");
             String color = res.getString("color");
+            String image = res.getString("image");
             List<Card> cards = getCardsFor(uuid);
             List<Tag> tags = tagDao.getTagsFor(uuid);
 
-            return new Deck(name, uuid, cards, tags, color);
+            return new Deck(name, uuid, cards, tags, color, image);
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
