@@ -5,6 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
 <StackPane fx:id="stackPane" maxHeight="175.0" maxWidth="500.0" minHeight="150.0" minWidth="100.0" onMouseClicked="#handleDoubleDeckClicked" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
@@ -43,7 +44,16 @@
          </Button>
       </HBox>
       <HBox alignment="CENTER" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-         <Label fx:id="playDeckLabel" prefHeight="17.0" textAlignment="CENTER" />
+         <Label fx:id="playDeckLabel" prefHeight="17.0" textAlignment="CENTER">
+            <font>
+               <Font name="System Bold" size="22.0" />
+            </font>
+            <HBox.margin>
+               <Insets />
+            </HBox.margin></Label>
+         <VBox.margin>
+            <Insets left="20.0" right="20.0" />
+         </VBox.margin>
       </HBox>
       <HBox fx:id="tagsContainer" prefHeight="100.0" prefWidth="200.0" />
       <HBox fx:id="bandContainer" prefHeight="100.0" prefWidth="200.0">

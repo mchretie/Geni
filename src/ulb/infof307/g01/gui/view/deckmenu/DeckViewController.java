@@ -56,6 +56,8 @@ public class DeckViewController {
 
         this.setDeckColor();
         this.setBackGroundImage("file:res/img/tmpdeckimage.jpg");
+
+        this.setTags();
     }
 
     private void setDeckColor() {
@@ -82,6 +84,10 @@ public class DeckViewController {
         clip.heightProperty().bind(backgroundImage.fitHeightProperty());
         clip.widthProperty().bind(backgroundImage.fitWidthProperty());
         backgroundImage.setClip(clip);
+    }
+
+    private void setTags() {
+        this.tagsContainer.getChildren().add(new Label("Tag1"));
     }
 
     private LinearGradient makeGradient(Color color) {
