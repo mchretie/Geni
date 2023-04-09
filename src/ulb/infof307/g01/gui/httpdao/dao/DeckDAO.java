@@ -9,24 +9,25 @@ import ulb.infof307.g01.shared.constants.ServerPaths;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class DeckDAO extends HttpDAO {
 
     Map<UUID, Deck> cachedDecks = new HashMap<>();
     Map<UUID, DeckMetadata> deckMetadata = new HashMap<>();
-    Optional<HashSet<UUID>> allDecksIds = Optional.empty();
+    HashSet<UUID> allDecksIds = null;
 
     /* ====================================================================== */
     /*                               DAO methods                              */
     /* ====================================================================== */
 
     public boolean deckExists(String deckName) throws IOException, InterruptedException {
-        if (allDecksIds.isEmpty()) {
+        if (allDecksIds == null) {
             // Fill the complete list of decks
             fetchAllDecksMetadata();
         }
 
-        for (UUID deckId: allDecksIds.get()) {
+        for (UUID deckId: allDecksIds) {
             assert deckMetadata.containsKey(deckId);
 
             if (deckMetadata.get(deckId).name().equals(deckName)) {
@@ -35,12 +36,6 @@ public class DeckDAO extends HttpDAO {
         }
 
         return false;
-        // deckName = deckName.replace(" ", "_");
-        // HttpResponse<String> response = get(ServerPaths.DECK_EXISTS_PATH + "?name=" + deckName);
-
-        // checkResponseCode(response.statusCode());
-
-        // return Boolean.parseBoolean(response.body());
     }
 
     /**
@@ -54,12 +49,11 @@ public class DeckDAO extends HttpDAO {
         HttpResponse<String> response = get(ServerPaths.GET_ALL_DECKS_PATH);
         checkResponseCode(response.statusCode());
 
-        allDecksIds = Optional.of(new HashSet<UUID>());
-        Set<UUID> allDecksIdsSet = allDecksIds.get();
+        allDecksIds = new HashSet<>();
 
         List<DeckMetadata> decks =  stringToArray(response.body(), DeckMetadata[].class);
         for (DeckMetadata deck: decks) {
-            allDecksIdsSet.add(deck.id());
+            allDecksIds.add(deck.id());
             deckMetadata.put(deck.id(), deck);
         }
     }
@@ -67,22 +61,16 @@ public class DeckDAO extends HttpDAO {
     public List<DeckMetadata> getAllDecks()
             throws IOException, InterruptedException {
 
-        if (allDecksIds.isEmpty()) {
+        if (allDecksIds == null) {
             fetchAllDecksMetadata();
         }
 
         List<DeckMetadata> decks = new ArrayList<>();
-        for (UUID deckId: allDecksIds.get()) {
+        for (UUID deckId: allDecksIds) {
             decks.add(new DeckMetadata(deckMetadata.get(deckId)));
         }
 
         return decks;
-
-//        HttpResponse<String> response = get(ServerPaths.GET_ALL_DECKS_PATH);
-//
-//        checkResponseCode(response.statusCode());
-//
-//        return stringToArray(response.body(), DeckMetadata[].class);
     }
 
     /**
@@ -100,14 +88,15 @@ public class DeckDAO extends HttpDAO {
         if (deckName.isEmpty())
             return getAllDecks();
 
-        HttpResponse<String> response
-                = get(ServerPaths.SEARCH_DECKS_PATH
-                            + "?name="
-                            + deckName.replace(" ", "_"));
+        Pattern pattern = Pattern.compile(".*%s.*".formatted(deckName));
+        List<DeckMetadata> decks = new ArrayList<>();
+        for (DeckMetadata deck: getAllDecks()) {
+            if (pattern.matcher(deck.name()).matches()) {
+                decks.add(new DeckMetadata(deck));
+            }
+        }
 
-        checkResponseCode(response.statusCode());
-
-        return stringToArray(response.body(), DeckMetadata[].class);
+        return decks;
     }
 
     public void deleteDeck(DeckMetadata deck)
@@ -118,6 +107,11 @@ public class DeckDAO extends HttpDAO {
                 = delete(ServerPaths.DELETE_DECK_PATH + query);
 
         checkResponseCode(response.statusCode());
+
+        // Update cache
+        cachedDecks.remove(deck.id());
+        if (allDecksIds != null)
+            allDecksIds.remove(deck.id());
     }
 
     public void saveDeck(Deck deck)
@@ -127,15 +121,26 @@ public class DeckDAO extends HttpDAO {
                 = post(ServerPaths.SAVE_DECK_PATH, new Gson().toJson(deck));
 
         checkResponseCode(response.statusCode());
+
+        // Update cache
+        cachedDecks.put(deck.getId(), deck);
     }
 
-    public Deck getDeck(DeckMetadata deckMetadata)
+    private void fetchDeck(DeckMetadata deckMetadata)
             throws IOException, InterruptedException {
-
         String path = ServerPaths.GET_DECK_PATH;
         String parameters = "?deck_id=%s".formatted(deckMetadata.id());
         HttpResponse<String> response = get(path + parameters);
 
-        return new Gson().fromJson(response.body(), Deck.class);
+        Deck receivedDeck = new Gson().fromJson(response.body(), Deck.class);
+        cachedDecks.put(deckMetadata.id(), receivedDeck);
+    }
+
+    public Deck getDeck(DeckMetadata deckMetadata)
+            throws IOException, InterruptedException {
+        if (!cachedDecks.containsKey(deckMetadata.id())) {
+            fetchDeck(deckMetadata);
+        }
+        return cachedDecks.get(deckMetadata.id());
     }
 }
