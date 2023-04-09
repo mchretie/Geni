@@ -19,7 +19,7 @@ public class Deck implements Iterable<Card> {
   private String color = "0x00000000";
 
   @Expose
-  private String backgroundImage;
+  private String image;
 
     public Deck(String name) {
         this.name = name;
@@ -128,12 +128,12 @@ public class Deck implements Iterable<Card> {
         return color;
     }
 
-    public String getBackgroundImage() {
-        return backgroundImage;
+    public String getImage() {
+        return image;
     }
 
-    public void setBackgroundImage(String backgroundImage) {
-        this.backgroundImage = backgroundImage;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public DeckMetadata getMetadata() {

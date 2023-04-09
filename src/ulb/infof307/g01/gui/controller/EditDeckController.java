@@ -238,7 +238,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void uploadImage(String filePath) {
         try {
-            deck.setBackgroundImage(filePath);
+            deck.setImage(filePath);
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
