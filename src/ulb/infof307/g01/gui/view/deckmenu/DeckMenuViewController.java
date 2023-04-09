@@ -1,16 +1,17 @@
 package ulb.infof307.g01.gui.view.deckmenu;
 
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.beans.value.ChangeListener;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.File;
@@ -37,8 +38,24 @@ public class DeckMenuViewController {
     @FXML
     private FontIcon importDeck;
 
+    private int colCount = 2;
+
     private Listener listener;
 
+    public void initialize() {
+        initWidthListener();
+    }
+
+    private void initWidthListener() {
+        final ChangeListener<Number> listener = new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                widthChangeHandler();
+            }
+        };
+
+        gridPane.widthProperty().addListener(listener);
+    }
 
     /* ====================================================================== */
     /*                                Setters                                 */
@@ -79,31 +96,40 @@ public class DeckMenuViewController {
      * @param decks loaded FXML deck files
      */
     public void setDecks(List<Node> decks) {
-
         clearDecksFromGrid();
 
-        int col = 1;
-        int row = 0;
-
         for (Node deck : decks) {
-            if (row == gridPane.getRowCount()) {
-                addRow();
-            }
-
             GridPane.setMargin(deck, new Insets(20));
-            gridPane.add(deck, col, row);
-
-            col = nextCol(col);
-            row = nextRow(row, col);
+            gridPane.add(deck, 0, 0);
         }
+
+        arrange();
     }
 
     /**
      * removes all rows from the gridPane except the first one
      */
     private void resetGrid() {
-        int rowCount = gridPane.getRowCount();
-        gridPane.getRowConstraints().remove(1, rowCount-1);
+        int rowCount = gridPane.getRowConstraints().size();
+        gridPane.getRowConstraints().remove(0, rowCount);
+
+        int columnCount = gridPane.getColumnConstraints().size();
+        gridPane.getColumnConstraints().remove(0, columnCount);
+    }
+
+    /**
+     * Properly add column to gridPane
+     */
+    private void addColumn() {
+        ColumnConstraints cc = new ColumnConstraints();
+        cc.setMinWidth(300);  // TODO: change these values
+        cc.setMaxWidth(400);
+
+        cc.setHalignment(HPos.CENTER);
+        cc.setHgrow(Priority.ALWAYS);
+        cc.setFillWidth(true);
+
+        gridPane.getColumnConstraints().add(cc);
     }
 
     /**
@@ -117,13 +143,66 @@ public class DeckMenuViewController {
     }
 
     private int nextCol(int currentCol) {
-        return (currentCol + 1) % 3;
+        return (currentCol + 1) % colCount;
     }
 
     private int nextRow(int currentRow, int currentCol) {
         return currentCol == 0 ? currentRow + 1 : currentRow;
     }
 
+    private void initGrid(int rows, int columns) {
+        while (gridPane.getRowCount() < rows) {
+            addRow();
+        }
+        while (gridPane.getColumnCount() < columns) {
+            addColumn();
+        }
+    }
+
+    /**
+     * Initialize the grid for a number of cells given the column count
+     */
+    private void initGridFor(int cellsCount, int columnCount) {
+        int expectedRows = cellsCount / columnCount + cellsCount % columnCount;
+        initGrid(expectedRows, columnCount);
+    }
+
+    /**
+     * Redistributes the grid’s children in the grid
+     * <p>
+     *     From top left through bottom right.
+     * </p>
+     */
+    private void arrange() {
+        List<Node> nodes = gridPane.getChildren();
+
+        resetGrid();
+        initGridFor(nodes.size(), colCount);
+
+        int row = 0;
+        int col = 0;
+
+        for (Node node : nodes) {
+            GridPane.setColumnIndex(node, col);
+            GridPane.setRowIndex(node, row);
+            col = nextCol(col);
+            row = nextRow(row, col);
+        }
+    }
+
+    /* ====================================================================== */
+    /*                             Resize handlers                            */
+    /* ====================================================================== */
+
+    private void widthChangeHandler() {
+        double newWidth = gridPane.getWidth();
+        int newColumnCount = (int) (newWidth / 400);  // TODO: change this magic
+
+        if (newColumnCount != colCount) {
+            colCount = newColumnCount;
+            arrange();
+        }
+    }
 
     /* ====================================================================== */
     /*                             Click handlers                             */
@@ -192,7 +271,9 @@ public class DeckMenuViewController {
 
     public interface Listener {
         void createDeckClicked(String name);
+
         void searchDeckClicked(String name);
+
         void deckImported(File file);
     }
 }
