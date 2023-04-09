@@ -30,7 +30,7 @@ public class TestLeaderboard {
         leaderboard.addScore(scoreGood);
         leaderboard.addScore(scoreBad);
 
-        List<Score> expectedLeaderboard = new ArrayList<>(Arrays.asList(scoreBad, scoreGood));
+        List<Score> expectedLeaderboard = new ArrayList<>(Arrays.asList(scoreGood, scoreBad));
         assertEquals(expectedLeaderboard, leaderboard.getLeaderboard());
     }
 
@@ -44,7 +44,7 @@ public class TestLeaderboard {
         List<Score> scores = new ArrayList<>(Arrays.asList(scoreAverage, scoreBad, scoreGood));
         leaderboard.addScores(scores);
 
-        List<Score> expectedLeaderboard = new ArrayList<>(Arrays.asList(scoreBad, scoreAverage, scoreGood));
+        List<Score> expectedLeaderboard = new ArrayList<>(Arrays.asList(scoreGood, scoreAverage, scoreBad));
 
         assertEquals(expectedLeaderboard, leaderboard.getLeaderboard());
     }

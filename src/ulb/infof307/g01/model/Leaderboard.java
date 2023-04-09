@@ -35,6 +35,6 @@ public class Leaderboard {
     }
 
     private void sortByScore() {
-        scores.sort(Comparator.comparing(Score::getScore));
+        scores.sort(Comparator.comparing(Score::getScore).reversed());
     }
 }
