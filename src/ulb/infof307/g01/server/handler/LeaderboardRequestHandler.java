@@ -55,9 +55,10 @@ public class LeaderboardRequestHandler extends Handler {
     }
 
     private Leaderboard getLeaderboardByDeckId(Request req, Response res) {
-        // TODO: if deckId is wrong it doesn't throw error
         try {
             UUID deckId = UUID.fromString(req.queryParams("deck"));
+            if (! database.deckIdExists(deckId))
+                throw new RuntimeException("DeckId '"+ deckId +"' does not exists.");
             return database.getLeaderboardFromDeckId(deckId);
         } catch (Exception e) {
             String errorMessage = "Failed to get leaderboard: " + e.getMessage();

@@ -77,6 +77,10 @@ public class Database {
         return deckDao.searchDecks(userSearch, userId);
     }
 
+    public boolean deckIdExists(UUID deckId) throws DatabaseException {
+        return deckDao.deckIdExists(deckId);
+    }
+
 
     /* ====================================================================== */
     /*                              Tag                                       */
