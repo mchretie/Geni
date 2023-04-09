@@ -207,7 +207,7 @@ public class MainFxController extends Application implements
     }
 
     private void failedFetchError(Exception e) {
-        String message = "Le téléchargemenq depuis le serveur a échoué";
+        String message = "Le téléchargement depuis le serveur a échoué";
 
         communicateError(e, message);
     }
