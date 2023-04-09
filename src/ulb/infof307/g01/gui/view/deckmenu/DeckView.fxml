@@ -1,72 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<StackPane fx:id="stackPane"
-           maxHeight="175.0" maxWidth="500.0" minHeight="150.0" minWidth="100.0"
-           onMouseClicked="#handleDoubleDeckClicked"
-           xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
+<StackPane fx:id="stackPane" maxHeight="175.0" maxWidth="500.0" minHeight="150.0" minWidth="100.0" onMouseClicked="#handleDoubleDeckClicked" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
 
    <!-- backgroundImage and colorRect dimensions are set dynamically in the DeckViewController  -->
-   <ImageView fx:id="backgroundImage"
-              fitHeight="150.0"
-              fitWidth="200.0"
-              pickOnBounds="true"
-              preserveRatio="true" />
+   <ImageView fx:id="backgroundImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
 
-   <Rectangle fx:id="colorRect"
-              arcHeight="5.0"
-              arcWidth="5.0"
-              fill="#1f93ff00"
-              height="100.0"
-              stroke="BLACK"
-              strokeType="INSIDE"
-              width="100.0" />
+   <Rectangle fx:id="colorRect" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="100.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
 
-   <VBox alignment="CENTER"
-         style="-fx-border-color: black;
-                  -fx-border-radius: 20;">
+   <VBox alignment="CENTER" style="-fx-border-color: black;                   -fx-border-radius: 20;">
 
       <HBox alignment="CENTER_RIGHT">
          <!-- Edit deck button -->
          <Button onMouseClicked="#handleEditDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
 
             <graphic>
-               <FontIcon fx:id="editDeckIcon" iconLiteral="mdi2p-pencil" iconSize="25"
-                         onMouseEntered="#handleHoverEditDeck" onMouseExited="#handleHoverEditDeckExit" />
+               <FontIcon fx:id="editDeckIcon" iconLiteral="mdi2p-pencil" iconSize="25" onMouseEntered="#handleHoverEditDeck" onMouseExited="#handleHoverEditDeckExit" />
             </graphic>
 
          </Button>
 
          <!-- Remove deck button -->
-         <Button onMouseClicked="#handleRemoveDeckClicked" prefHeight="25" prefWidth="25"
-                 style="-fx-background-color: transparent;">
+         <Button onMouseClicked="#handleRemoveDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
 
             <graphic>
-               <FontIcon fx:id="removeDeckIcon" iconLiteral="mdi2d-delete" iconSize="25"
-                         onMouseEntered="#handleHoverRemoveDeck"
-                         onMouseExited="#handleHoverRemoveDeckExit" />
+               <FontIcon fx:id="removeDeckIcon" iconLiteral="mdi2d-delete" iconSize="25" onMouseEntered="#handleHoverRemoveDeck" onMouseExited="#handleHoverRemoveDeckExit" />
             </graphic>
 
          </Button>
 
          <!-- Share deck button -->
-         <Button fx:id="shareDeckButton" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;"
-                 onMouseClicked="#handleShareDeckClicked">
+         <Button fx:id="shareDeckButton" onMouseClicked="#handleShareDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
             <graphic>
-               <FontIcon fx:id="shareDeckIcon" iconLiteral="mdi2s-share" iconSize="25"
-                         onMouseEntered="#handleHoverShareDeck"
-                         onMouseExited="#handleHoverShareDeckExit" />
+               <FontIcon fx:id="shareDeckIcon" iconLiteral="mdi2s-share" iconSize="25" onMouseEntered="#handleHoverShareDeck" onMouseExited="#handleHoverShareDeckExit" />
             </graphic>
          </Button>
       </HBox>
-      <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-         <Label fx:id="playDeckLabel" textAlignment="CENTER" />
+      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <Label fx:id="playDeckLabel" prefHeight="17.0" textAlignment="CENTER" />
       </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" />
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin></HBox>
    </VBox>
 </StackPane>
