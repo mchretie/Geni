@@ -1,11 +1,11 @@
 package ulb.infof307.g01.gui.view.deckmenu;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -87,7 +87,30 @@ public class DeckViewController {
     }
 
     private void setTags() {
-        this.tagsContainer.getChildren().add(new Label("Tag1"));
+        Label tag1 = new Label("Tag1");
+        Label tag2 = new Label("Tag22");
+        Label tag3 = new Label("Tag333");
+        Label tag4 = new Label("Tag4444");
+        Label tag5 = new Label("Tag55555");
+
+        Background background = new Background(new BackgroundFill(
+                Color.web("#FFFFFF"),
+                new CornerRadii(10, false),
+                new Insets(-2)));
+
+        tag1.setBackground(background);
+        tag2.setBackground(background);
+        tag3.setBackground(background);
+        tag4.setBackground(background);
+        tag5.setBackground(background);
+
+        this.tagsContainer.setSpacing(20);
+
+        this.tagsContainer.getChildren().add(tag1);
+        this.tagsContainer.getChildren().add(tag2);
+        this.tagsContainer.getChildren().add(tag3);
+        this.tagsContainer.getChildren().add(tag4);
+        this.tagsContainer.getChildren().add(tag5);
     }
 
     private LinearGradient makeGradient(Color color) {
