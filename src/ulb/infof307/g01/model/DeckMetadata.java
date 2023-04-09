@@ -8,13 +8,15 @@ import java.util.UUID;
 public class DeckMetadata {
     private final UUID id;
     private final String color;
+    private final String image;
     private final int cardCount;
     private final List<Tag> tags;
     private final int deckHashCode;
 
-    public DeckMetadata(UUID id, String color, int cardCount, List<Tag> tags, int deckHashCode) {
+    public DeckMetadata(UUID id, String color, String image, int cardCount, List<Tag> tags, int deckHashCode) {
         this.id = id;
         this.color = color;
+        this.image = image;
         this.cardCount = cardCount;
         this.tags = tags;
         this.deckHashCode = deckHashCode;
@@ -27,6 +29,11 @@ public class DeckMetadata {
     public String getColor() {
         return color;
     }
+
+    public String getImage() {
+        return image;
+    }
+
 
     public int getCardCount() {
         return cardCount;
@@ -49,11 +56,12 @@ public class DeckMetadata {
                 && deckHashCode == that.deckHashCode
                 && id.equals(that.id)
                 && color.equals(that.color)
+                && image.equals(that.image)
                 && tags.equals(that.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, color, cardCount, tags, deckHashCode);
+        return Objects.hash(id, color, image, cardCount, tags, deckHashCode);
     }
 }

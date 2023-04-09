@@ -140,6 +140,7 @@ public class Deck implements Iterable<Card> {
     public DeckMetadata getMetadata() {
         return new DeckMetadata(id,
                                 color,
+                                image,
                                 cards.size(),
                                 tags,
                                 hashCode());
@@ -157,12 +158,13 @@ public class Deck implements Iterable<Card> {
                 && this.name.equals(other.name)
                 && this.cards.equals(other.cards)
                 && this.tags.equals(other.tags)
-                && this.color.equals(other.color);
+                && this.color.equals(other.color)
+                && this.image.equals(other.image);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, cards, tags, color);
+        return Objects.hash(name, id, cards, tags, color, image);
     }
 
     public Iterator<Card> iterator() {

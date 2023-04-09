@@ -223,9 +223,11 @@ public class DeckDAO extends DAO {
                                userId.toString(),
                                deck.getName(),
                                deck.getColor(),
+                               deck.getImage(),
 
                                deck.getName(),
-                               deck.getColor());
+                               deck.getColor(),
+                               deck.getImage());
     }
 
     private void saveDeckTags(Deck deck) throws DatabaseException {
