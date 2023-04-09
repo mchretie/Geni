@@ -87,7 +87,7 @@ public class DeckViewController {
     }
 
     private void setTags() {
-        tagsContainer.setHgap(10);
+        tagsContainer.setHgap(30);
         tagsContainer.setVgap(10);
 
         Label tag1 = new Label("Tag1");
@@ -99,7 +99,7 @@ public class DeckViewController {
         Background background = new Background(new BackgroundFill(
                 Color.web("#FFFFFF"),
                 new CornerRadii(10, false),
-                new Insets(-2)));
+                new Insets(-2, -10, -2, -10)));
 
 
 
