@@ -56,7 +56,7 @@
          </Button>
 
          <!-- Share deck button -->
-         <Button fx:id="shareDeckButton" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;"
+         <Button prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;"
                  onMouseClicked="#handleShareDeckClicked">
             <graphic>
                <FontIcon fx:id="shareDeckIcon" iconLiteral="mdi2s-share" iconSize="25"

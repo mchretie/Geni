@@ -7,7 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -381,7 +380,7 @@ public class EditDeckViewController {
         if (nextCol==0) nextRow +=1;
 
         choicesGrid.getChildren().remove(addChoiceField);
-        choicesGrid.setConstraints(addChoiceField, nextCol, nextRow);
+        GridPane.setConstraints(addChoiceField, nextCol, nextRow);
         choicesGrid.getChildren().add(addChoiceField);
 
         currentCol = nextCol; currentRow = nextRow;

@@ -6,12 +6,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.gui.controller.EditCardController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
-import ulb.infof307.g01.model.Card;
 
 public class MainWindowViewController {
 
