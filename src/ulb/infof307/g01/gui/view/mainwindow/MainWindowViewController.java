@@ -3,53 +3,66 @@ package ulb.infof307.g01.gui.view.mainwindow;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.gui.controller.EditCardController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
-import ulb.infof307.g01.model.Card;
 
 public class MainWindowViewController {
 
+    /* ====================================================================== */
+    /*                               FXML Attributes                          */
+    /* ====================================================================== */
+
     @FXML
     private FontIcon homeIcon;
+
     @FXML
     private FontIcon currentDeckIcon;
+
     @FXML
     private FontIcon aboutIcon;
+
     @FXML
     private FontIcon goBackIcon;
+
     @FXML
     private FontIcon userProfileIcon;
 
     @FXML
     private StackPane centerStackPane;
+
     @FXML
     private BorderPane deckMenuView;
+
     @FXML
-    private AnchorPane editDeckView;
+    private HBox editDeckView;
+
     @FXML
     private BorderPane playDeckView;
 
     @FXML
-    private AnchorPane editCardView;
+    private VBox editCardView;
 
     @FXML
     private DeckMenuViewController deckMenuViewController;
+
     @FXML
     private EditDeckViewController editDeckViewController;
+
     @FXML
     private PlayDeckViewController playDeckViewController;
 
     @FXML
     private EditCardViewController editCardViewController;
+
+
+    /* ====================================================================== */
+    /*                                 Listener                               */
+    /* ====================================================================== */
 
     private NavigationListener listener;
 

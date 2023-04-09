@@ -24,12 +24,12 @@
 
     <left>
         <VBox alignment="CENTER_RIGHT" prefHeight="352.0" prefWidth="60.0">
-            <Button fx:id="previousCardButton" onMouseClicked="#handlePreviousCardClicked"
+            <Button onMouseClicked="#handlePreviousCardClicked"
                     prefHeight="30" prefWidth="30" style="-fx-border-radius: 50%;"
                     textAlignment="CENTER">
 
                 <graphic>
-                    <FontIcon iconLiteral="mdi2c-chevron-left" iconSize="30" wrappingWidth="35.0"/>
+                    <FontIcon iconLiteral="mdi2c-chevron-left" iconSize="30"/>
 
                 </graphic>
 
@@ -46,7 +46,7 @@
 
     <right>
         <VBox alignment="CENTER_LEFT" prefHeight="363.0">
-            <Button fx:id="nextCardButton" alignment="CENTER"
+            <Button alignment="CENTER"
                     onMouseClicked="#handleNextCardClicked" prefHeight="30" prefWidth="30"
                     style="-fx-border-radius: 50%">
 
