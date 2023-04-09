@@ -53,7 +53,7 @@ public class FlashCard extends Card {
         FlashCard other = (FlashCard) o;
         return id.equals(other.getId())
                 && (deckId == other.getDeckId() || deckId.equals(other.getDeckId()))
-                && front.equals(other.getFront());
+                && front.equals(other.getFront()) && back.equals(other.getBack());
     }
 
 }
