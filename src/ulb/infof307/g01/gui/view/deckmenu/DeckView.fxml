@@ -62,17 +62,17 @@
       </FlowPane>
       <BorderPane maxHeight="30.0" minHeight="30.0" opacity="0.7" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #939393;">
          <left>
-            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="91.0" spacing="10.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="70.0" spacing="10.0">
                <children>
-                  <Label text="26" />
-                  <FontIcon iconLiteral="mdi2t-trophy" iconSize="25" wrappingWidth="25.0" />
+                  <Label fx:id="amountCardsLabel" />
+                  <FontIcon iconLiteral="mdi2c-cards" iconSize="25" wrappingWidth="25.0" />
                </children>
             </HBox>
          </left>
          <right>
-            <HBox alignment="CENTER_RIGHT" layoutX="125.0" layoutY="10.0" prefHeight="30.0" prefWidth="91.0" spacing="10.0">
+            <HBox alignment="CENTER_RIGHT" layoutX="125.0" layoutY="10.0" prefHeight="30.0" prefWidth="77.0" spacing="10.0">
                <children>
-                  <Label text="345" />
+                  <Label fx:id="amountTrophiesLabel" />
                   <FontIcon iconLiteral="mdi2t-trophy" iconSize="25" wrappingWidth="25.0" />
                </children>
             </HBox>

@@ -37,7 +37,9 @@ public class DeckViewController {
     @FXML
     private FlowPane tagsContainer;
     @FXML
-    private HBox bandContainer;
+    private Label amountCardsLabel;
+    @FXML
+    private Label amountTrophiesLabel;
 
     private Deck deck;
 
@@ -59,6 +61,7 @@ public class DeckViewController {
         this.setBackGroundImage("file:res/img/tmpdeckimage.jpg");
 
         this.setTags();
+        this.setStats();
     }
 
     private void setDeckColor() {
@@ -101,6 +104,13 @@ public class DeckViewController {
 
             tagsContainer.getChildren().add(tagLabel);
         }
+    }
+
+    private void setStats() {
+        amountCardsLabel.setText(String.valueOf(deck.getCards().size()));
+        // TODO : use this when trophies are implemented
+        //amountTrophiesLabel.setText(String.valueOf(deck.getTrophies()));
+        amountTrophiesLabel.setText("666");
     }
 
     private LinearGradient makeGradient(Color color) {
