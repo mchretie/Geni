@@ -107,7 +107,7 @@ public class DeckViewController {
     }
 
     private void setStats() {
-        amountCardsLabel.setText(String.valueOf(deck.getCards().size()));
+        amountCardsLabel.setText(String.valueOf(deck.cardCount()));
         // TODO : use this when trophies are implemented
         //amountTrophiesLabel.setText(String.valueOf(deck.getTrophies()));
         amountTrophiesLabel.setText("666");
