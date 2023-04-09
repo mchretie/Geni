@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import org.jsoup.Jsoup;
@@ -33,13 +34,14 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private HBox cardTypeButtons;
     @FXML
-    private AnchorPane cardEditor;
+    private StackPane cardEditor;
     @FXML
     private AnchorPane anchor;
     @FXML
     private ListView<String> cardsContainer;
     @FXML
     private HBox tagsBox;
+
     /* ====================================================================== */
     /*                            FXML: Text Fields                           */
     /* ====================================================================== */
@@ -183,12 +185,7 @@ public class EditDeckViewController implements Initializable {
     /* ====================================================================== */
     /*                             Click handlers                             */
     /* ====================================================================== */
-    @FXML
-    private void handleUploadImageClicked() {
-        final FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
-        listener.uploadImage(file.toURI().toString());
-    }
+
     @FXML
     private void handleAddCardClicked() {
         hideCardEditor();
@@ -246,6 +243,13 @@ public class EditDeckViewController implements Initializable {
         flashCardEditor.setVisible(false);
         QCMCardEditor.setVisible(false);
         cardTypeButtons.setVisible(false);
+    }
+
+    @FXML
+    private void handleUploadImageClicked() {
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
+        listener.uploadImage(file.toURI().toString());
     }
 
     @FXML

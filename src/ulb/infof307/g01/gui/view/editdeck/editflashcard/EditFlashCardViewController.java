@@ -13,9 +13,6 @@ import ulb.infof307.g01.model.FlashCard;
 public class EditFlashCardViewController implements EditFrontCardViewController.Listener {
 
     @FXML
-    private StackPane editFrontCardView;
-
-    @FXML
     private EditFrontCardViewController editFrontCardViewController;
 
     @FXML

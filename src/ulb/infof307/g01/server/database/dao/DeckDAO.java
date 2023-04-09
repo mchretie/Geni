@@ -466,4 +466,13 @@ public class DeckDAO extends DAO {
         }
     }
 
+    public boolean deckIdExists(UUID deckId) throws DatabaseException {
+        String sql = """
+                SELECT deck_id
+                FROM deck
+                WHERE deck_id = ?
+                """;
+
+        return checkedNext(database.executeQuery(sql, deckId.toString()));
+    }
 }

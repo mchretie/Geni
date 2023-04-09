@@ -7,7 +7,7 @@
 <?import org.kordamp.ikonli.javafx.*?>
 
 <StackPane fx:id="stackPane"
-           maxHeight="333.0" maxWidth="500.0" minHeight="150.0" minWidth="100.0"
+           maxHeight="175.0" maxWidth="500.0" minHeight="150.0" minWidth="100.0"
            onMouseClicked="#handleDoubleDeckClicked"
            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
@@ -56,7 +56,7 @@
          </Button>
 
          <!-- Share deck button -->
-         <Button fx:id="shareDeckButton" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;"
+         <Button prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;"
                  onMouseClicked="#handleShareDeckClicked">
             <graphic>
                <FontIcon fx:id="shareDeckIcon" iconLiteral="mdi2s-share" iconSize="25"
@@ -68,5 +68,7 @@
       <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
          <Label fx:id="playDeckLabel" textAlignment="CENTER" />
       </HBox>
+
+      <HBox prefHeight="40"/>
    </VBox>
 </StackPane>
