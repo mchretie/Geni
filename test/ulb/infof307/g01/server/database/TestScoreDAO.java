@@ -51,7 +51,7 @@ public class TestScoreDAO extends DatabaseUsingTest {
         Score score = new Score(userId, username, deck.getId(), 25, new Date());
         scoreDAO.addScore(score);
 
-        Score scoreFromDAO = scoreDAO.getScoreFromUserId(userId).get(0);
+        Score scoreFromDAO = scoreDAO.getScoresForUser(userId).get(0);
         assertEquals(scoreFromDAO, score);
     }
 
@@ -72,7 +72,7 @@ public class TestScoreDAO extends DatabaseUsingTest {
         scoreDAO.addScore(score2);
         scoreDAO.addScore(score3);
 
-        List<Score> scoresDeck1 = scoreDAO.getScoreFromDeckId(deck1.getId());
+        List<Score> scoresDeck1 = scoreDAO.getScoresForDeck(deck1.getId());
         List<Score> expectedScoresDeck1 = new ArrayList<>(Arrays.asList(score1, score2));
         assertEquals(expectedScoresDeck1, scoresDeck1);
     }

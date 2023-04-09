@@ -153,6 +153,6 @@ public class Database {
     }
 
     public Leaderboard getLeaderboardFromDeckId(UUID deckId) {
-        return new Leaderboard(deckId,  scoreDao.getScoreFromDeckId(deckId));
+        return new Leaderboard(deckId,  scoreDao.getScoresForDeck(deckId));
     }
 }

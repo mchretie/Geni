@@ -49,7 +49,7 @@ public class ScoreDAO extends DAO {
         }
     }
 
-    public List<Score> getScoreFromDeckId(UUID deckId) throws DatabaseException {
+    public List<Score> getScoresForDeck(UUID deckId) throws DatabaseException {
         String sql = """
                 SELECT *
                 FROM user_deck_score
@@ -68,7 +68,7 @@ public class ScoreDAO extends DAO {
         }
     }
 
-    public List<Score> getScoreFromUserId(UUID userId) throws DatabaseException {
+    public List<Score> getScoresForUser(UUID userId) throws DatabaseException {
         String sql = """
                 SELECT *
                 FROM user_deck_score
