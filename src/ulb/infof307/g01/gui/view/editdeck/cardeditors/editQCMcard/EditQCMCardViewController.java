@@ -1,4 +1,4 @@
-package ulb.infof307.g01.gui.view.editdeck.editQCMcard;
+package ulb.infof307.g01.gui.view.editdeck.cardeditors.editQCMcard;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -6,7 +6,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.gui.view.editdeck.EditFrontCardViewController;
+import ulb.infof307.g01.gui.view.editdeck.cardeditors.EditFrontCardViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.MCQCard;
 

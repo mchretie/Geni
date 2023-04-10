@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<VBox prefHeight="435.0" prefWidth="450.0" visible="false" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditQCMCardViewController" >
+<VBox prefHeight="435.0" prefWidth="450.0" visible="false" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.cardeditors.editQCMcard.EditQCMCardViewController" >
     <children>
         <StackPane  layoutX="400.0" layoutY="77.0" visible="true" VBox.vgrow="ALWAYS">
             <fx:include fx:id="editFrontCardView" source="../EditFrontCardView.fxml"/>
@@ -17,7 +17,6 @@
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.5" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />

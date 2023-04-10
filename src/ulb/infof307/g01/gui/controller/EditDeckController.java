@@ -5,11 +5,11 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditAnswerFieldController;
+import ulb.infof307.g01.gui.view.editdeck.cardeditors.editQCMcard.EditAnswerFieldController;
 import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
-import ulb.infof307.g01.gui.view.editdeck.editflashcard.EditFlashCardViewController;
-import ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditQCMCardViewController;
+import ulb.infof307.g01.gui.view.editdeck.cardeditors.editflashcard.EditFlashCardViewController;
+import ulb.infof307.g01.gui.view.editdeck.cardeditors.editQCMcard.EditQCMCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
@@ -147,7 +147,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public EditFlashCardViewController setEditFlashCard() throws IOException {
         URL resource = EditDeckViewController
                 .class
-                .getResource("editflashcard/EditFlashCardView.fxml");
+                .getResource("cardeditors/editflashcard/EditFlashCardView.fxml");
         FXMLLoader loader = new FXMLLoader(resource);
 
         Node node = loader.load();
@@ -163,7 +163,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public EditQCMCardViewController setEditQCMCard() throws IOException {
         URL resource = EditDeckViewController
                 .class
-                .getResource("editQCMcard/EditQCMCardView.fxml");
+                .getResource("cardeditors/editQCMcard/EditQCMCardView.fxml");
         FXMLLoader loader = new FXMLLoader(resource);
 
         Node node = loader.load();

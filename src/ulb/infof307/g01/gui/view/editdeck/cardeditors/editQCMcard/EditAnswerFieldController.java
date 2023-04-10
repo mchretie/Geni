@@ -1,4 +1,4 @@
-package ulb.infof307.g01.gui.view.editdeck.editQCMcard;
+package ulb.infof307.g01.gui.view.editdeck.cardeditors.editQCMcard;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

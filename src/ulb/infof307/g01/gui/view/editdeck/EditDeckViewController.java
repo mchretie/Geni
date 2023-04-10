@@ -3,7 +3,6 @@ package ulb.infof307.g01.gui.view.editdeck;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -20,12 +19,9 @@ import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.MCQCard;
 
 import java.io.File;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class EditDeckViewController {
 
@@ -39,7 +35,7 @@ public class EditDeckViewController {
     private VBox rightVbox;
 
     @FXML
-    private HBox cardTypeButtons;
+    private HBox cardTypeBox;
     @FXML
     private StackPane cardEditor;
     @FXML
@@ -74,6 +70,7 @@ public class EditDeckViewController {
 
     private Deck deck;
     private Card selectedCard;
+
 
     /* ====================================================================== */
     /*                                Listener                                */
@@ -212,14 +209,14 @@ public class EditDeckViewController {
     }
 
     @FXML
-    private void handleFlashCardEdit(){
+    private void handleNormalSelected(){
         listener.newCard("flashCard");
         hideCardEditor();
         showFlashCardEditor();
     }
 
     @FXML
-    private void handleQCMCardEdit() {
+    private void handleQCMSelected() {
         listener.newCard("MCQCard");
         hideCardEditor();
         showQCMCardEditor();
@@ -227,8 +224,8 @@ public class EditDeckViewController {
 
 
     private void showCardTypeButtons() {
-        cardTypeButtons.setVisible(true);
-        cardTypeButtons.toFront();
+        cardTypeBox.setVisible(true);
+        cardTypeBox.toFront();
     }
 
     public void showFlashCardEditor() {
@@ -244,7 +241,7 @@ public class EditDeckViewController {
     public void hideCardEditor(){
         flashCardEditor.setVisible(false);
         QCMCardEditor.setVisible(false);
-        cardTypeButtons.setVisible(false);
+        cardTypeBox.setVisible(false);
     }
 
     @FXML

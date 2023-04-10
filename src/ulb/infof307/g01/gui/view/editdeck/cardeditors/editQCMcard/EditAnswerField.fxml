@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane maxHeight="40.0" maxWidth="217.0" style="-fx-background-color: #f0f0f0; -fx-border-color: #b2b2b2;-fx-padding: 1px 2px;-fx-border-insets: 0px ;-fx-background-insets: 1px 3px;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.editQCMcard.EditAnswerFieldController">
+<BorderPane maxHeight="40.0" maxWidth="217.0" style="-fx-background-color: #f0f0f0; -fx-border-color: #b2b2b2;-fx-padding: 1px 2px;-fx-border-insets: 0px ;-fx-background-insets: 1px 3px;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.cardeditors.editQCMcard.EditAnswerFieldController">
    <left>
       <TextField fx:id="answerTextField" onKeyPressed="#handleKeyPressedOnTextField" prefHeight="24.0" prefWidth="143.0" style="-fx-background-color: #e4e4e4;" BorderPane.alignment="CENTER" />
    </left>

@@ -1,12 +1,11 @@
-package ulb.infof307.g01.gui.view.editdeck.editflashcard;
+package ulb.infof307.g01.gui.view.editdeck.cardeditors.editflashcard;
 
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
-import ulb.infof307.g01.gui.view.editdeck.EditFrontCardViewController;
+import ulb.infof307.g01.gui.view.editdeck.cardeditors.EditFrontCardViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.FlashCard;
 

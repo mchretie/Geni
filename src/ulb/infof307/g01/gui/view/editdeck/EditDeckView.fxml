@@ -54,11 +54,11 @@
             </Button>
         </HBox>
 
-        <HBox fx:id="cardTypeButtons" alignment="CENTER" spacing="30" visible="false" HBox.hgrow="ALWAYS">
+        <HBox fx:id="cardTypeBox" alignment="CENTER" spacing="30" visible="false" HBox.hgrow="ALWAYS">
 
-            <Button fx:id="QCMButton" minWidth="100" onMouseClicked="#handleQCMCardEdit" text="QCM Card" HBox.hgrow="ALWAYS" />
+            <Button fx:id="QCMButton" minWidth="100" onMouseClicked="#handleQCMSelected" text="QCM Card" HBox.hgrow="ALWAYS" />
 
-            <Button fx:id="flashCardButton" minWidth="100" onMouseClicked="#handleFlashCardEdit" text="Normal Card" HBox.hgrow="ALWAYS" />
+            <Button fx:id="flashCardButton" minWidth="100" onMouseClicked="#handleNormalSelected" text="Normal Card" HBox.hgrow="ALWAYS" />
 
             <VBox.margin>
                 <Insets top="5.0" />

@@ -1,4 +1,4 @@
-package ulb.infof307.g01.gui.view.editdeck;
+package ulb.infof307.g01.gui.view.editdeck.cardeditors;
 
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
