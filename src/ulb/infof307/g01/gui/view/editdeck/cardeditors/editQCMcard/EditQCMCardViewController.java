@@ -112,6 +112,10 @@ public class EditQCMCardViewController implements EditFrontCardViewController.Li
         answersGrid.getChildren().add(addAnswerField);
 
         currentCol = nextCol; currentRow = nextRow;
+
+        //To prevent the user from adding more than 4 answersTo
+        if (nextRow>1) addAnswerField.setVisible(false);
+        else addAnswerField.setVisible(true);
     }
 
     @Override
