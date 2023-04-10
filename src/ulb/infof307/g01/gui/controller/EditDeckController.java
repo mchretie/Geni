@@ -162,9 +162,21 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void backOfFlashCardModified(FlashCard card, String newBack) {
+    public void backOfFlashCardModified(FlashCard flashCard, String newBack) {
         try {
-            card.setBack(newBack);
+            flashCard.setBack(newBack);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.showCards();
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void mcqAnswerEdit(MCQCard mcqCard, String text, int index) {
+        try {
+            mcqCard.setAnswer(index, text);
             deckDAO.saveDeck(deck);
             editDeckViewController.showCards();
 

@@ -37,6 +37,8 @@ public class MCQCard extends Card{
 
     public void setAnswers(List<String> answers) { this.answers = answers; }
 
+    public void setAnswer(int index, String answer) { this.answers.set(index, answer); }
+
     public int getCorrectAnswer() { return correctAnswer; }
 
     public void setCorrectAnswer(int correctAnswer) { this.correctAnswer = correctAnswer; }

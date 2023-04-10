@@ -186,7 +186,7 @@ public class EditDeckViewController {
             int correctAnswerIndex = mcqCard.getCorrectAnswer();
             for (int i = 0; i < mcqCard.getAnswers().size(); i++) {
                 String choice = mcqCard.getAnswers().get(i);
-                addChoiceField(choice, i, correctAnswerIndex == i);
+                addChoiceField(mcqCard, choice, i, correctAnswerIndex == i);
                 currentCol++;
                 if (currentCol == 2) {
                     currentCol = 0;
@@ -196,28 +196,12 @@ public class EditDeckViewController {
         }
     }
 
-    private void addChoiceField(String choice, int index, boolean correctAnswer) {
-        TextField textField = new TextField(choice);
-        textField.setPromptText("Réponse");
-        textField.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(textField, Priority.ALWAYS);
-//        textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-//            if (!newValue) handleChoiceEdit(textField, index);
-//        });
+    private void addChoiceField(MCQCard mcqCard, String choice, int index, boolean correctAnswer) {
+        TextField textField = getChoiceFieldTextField(mcqCard, choice, index);
 
-        Button setCorrectAnswerButton = new Button();
-        FontIcon checkIcon = new FontIcon("mdi2c-check");
-        if (correctAnswer) {
-            checkIcon.setIconColor(Color.WHITE);
-            setCorrectAnswerButton.setStyle("-fx-background-color: green;");
-        }
-        setCorrectAnswerButton.setGraphic(checkIcon);
+        Button setCorrectAnswerButton = getChoiceFieldCorrectAnswerButton(correctAnswer);
 
-        Button removeChoiceButton = new Button();
-        FontIcon trashIcon = new FontIcon("mdi2t-trash-can-outline");
-        trashIcon.setIconColor(Color.WHITE);
-        removeChoiceButton.setGraphic(trashIcon);
-        removeChoiceButton.setStyle("-fx-background-color: red;");
+        Button removeChoiceButton = getChoiceFieldRemoveButton();
 
         HBox hBox = new HBox();
         HBox.setHgrow(hBox, Priority.ALWAYS);
@@ -225,6 +209,41 @@ public class EditDeckViewController {
         hBox.getChildren().addAll(textField, setCorrectAnswerButton, removeChoiceButton);
         hBox.setSpacing(2);
         choicesGrid.add(hBox, currentCol, currentRow);
+    }
+
+    private TextField getChoiceFieldTextField(MCQCard mcqCard, String choice, int index) {
+        TextField textField = new TextField(choice);
+        textField.setPromptText("Réponse");
+        textField.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(textField, Priority.ALWAYS);
+        textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) handleMCQAnswerEdit(mcqCard, textField, index);
+        });
+        return textField;
+    }
+
+    private Button getChoiceFieldCorrectAnswerButton(boolean correctAnswer) {
+        Button setCorrectAnswerButton = new Button();
+        FontIcon checkIcon = new FontIcon("mdi2c-check");
+        if (correctAnswer) {
+            checkIcon.setIconColor(Color.WHITE);
+            setCorrectAnswerButton.setStyle("-fx-background-color: green;");
+        }
+        setCorrectAnswerButton.setGraphic(checkIcon);
+        return setCorrectAnswerButton;
+    }
+
+    private static Button getChoiceFieldRemoveButton() {
+        Button removeChoiceButton = new Button();
+        FontIcon trashIcon = new FontIcon("mdi2t-trash-can-outline");
+        trashIcon.setIconColor(Color.WHITE);
+        removeChoiceButton.setGraphic(trashIcon);
+        removeChoiceButton.setStyle("-fx-background-color: red;");
+        return removeChoiceButton;
+    }
+
+    private void handleMCQAnswerEdit(MCQCard mcqCard, TextField textField, int index) {
+        listener.mcqAnswerEdit(mcqCard, textField.getText(), index);
     }
 
     public void loadSelectedCardEditor() {
@@ -446,6 +465,7 @@ public class EditDeckViewController {
         void tagAddedToDeck(Deck deck, String tagName, String color);
 
         void backOfFlashCardModified(FlashCard card, String newBack);
+        void mcqAnswerEdit(MCQCard mcqCard, String text, int index);
 
         void deckColorModified(Deck deck, Color color);
 
