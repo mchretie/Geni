@@ -18,28 +18,54 @@ import java.io.File;
 
 public class DeckViewController {
 
+    /* ====================================================================== */
+    /*                              FXML Attributes                           */
+    /* ====================================================================== */
+
     @FXML
     private StackPane stackPane;
+
     @FXML
     private ImageView backgroundImage;
+
     @FXML
     private Label playDeckLabel;
+
     @FXML
     private FontIcon editDeckIcon;
+
     @FXML
     private FontIcon removeDeckIcon;
+
     @FXML
     private FontIcon shareDeckIcon;
+
     @FXML
     private Rectangle colorRect;
 
+
+    /* ====================================================================== */
+    /*                              Model Attributes                          */
+    /* ====================================================================== */
+
     private Deck deck;
 
+
+    /* ====================================================================== */
+    /*                                Listener                                */
+    /* ====================================================================== */
+
     private Listener listener;
+
+
+    /* ====================================================================== */
+    /*                                Setters                                 */
+    /* ====================================================================== */
 
     public void setListener(Listener listener) {
         this.listener = listener;
     }
+
 
     /* ====================================================================== */
     /*                           Updating Deck                                */

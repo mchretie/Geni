@@ -21,7 +21,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     TagDAO tagDAO;
     UserDAO userDAO;
 
-    UUID user = UUID.randomUUID();
+    UUID user;
 
     @Override
     @BeforeEach
@@ -36,6 +36,9 @@ public class TestDeckDAO extends DatabaseUsingTest {
 
         this.deckDAO.setTagDao(this.tagDAO);
         this.tagDAO.setDeckDao(this.deckDAO);
+
+        userDAO.registerUser("user", "pass");
+        this.user = UUID.fromString(userDAO.getUserId("user"));
     }
 
     @Test

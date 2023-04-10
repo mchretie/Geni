@@ -7,7 +7,9 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane fx:id="borderPane" minHeight="200.0" minWidth="540.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController">
+<BorderPane fx:id="borderPane"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController">
     <!-- Search bar-->
     <top>
         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
