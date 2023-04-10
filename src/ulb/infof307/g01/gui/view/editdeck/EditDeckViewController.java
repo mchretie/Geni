@@ -339,7 +339,7 @@ public class EditDeckViewController {
 
     @FXML
     private void handleBackEdit() {
-        listener.backOfCardModified(selectedCard, backCardText.getText());
+        listener.backOfFlashCardModified((FlashCard) selectedCard, backCardText.getText());
     }
 
     @FXML
@@ -399,7 +399,7 @@ public class EditDeckViewController {
 
         void tagAddedToDeck(Deck deck, String tagName, String color);
 
-        void backOfCardModified(Card card, String newBack);
+        void backOfFlashCardModified(FlashCard card, String newBack);
 
         void deckColorModified(Deck deck, Color color);
 
