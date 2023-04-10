@@ -188,7 +188,7 @@ public class EditDeckViewController {
             int correctAnswerIndex = mcqCard.getCorrectAnswer();
             for (int i = 0; i < mcqCard.getAnswers().size(); i++) {
                 String choice = mcqCard.getAnswers().get(i);
-                addChoiceField(mcqCard, choice, i, correctAnswerIndex == i);
+                addChoiceField(choice, i, correctAnswerIndex == i);
                 currentCol++;
                 if (currentCol == 2) {
                     currentCol = 0;
@@ -200,10 +200,10 @@ public class EditDeckViewController {
         }
     }
 
-    private void addChoiceField(MCQCard mcqCard, String choice, int index, boolean correctAnswer) {
-        TextField textField = getChoiceFieldTextField(mcqCard, choice, index);
+    private void addChoiceField(String choice, int index, boolean correctAnswer) {
+        TextField textField = getChoiceFieldTextField(choice, index);
 
-        Button setCorrectAnswerButton = getChoiceFieldCorrectAnswerButton(correctAnswer);
+        Button setCorrectAnswerButton = getChoiceFieldCorrectAnswerButton(correctAnswer, index);
 
         Button removeChoiceButton = getChoiceFieldRemoveButton();
 
@@ -215,18 +215,18 @@ public class EditDeckViewController {
         choicesGrid.add(hBox, currentCol, currentRow);
     }
 
-    private TextField getChoiceFieldTextField(MCQCard mcqCard, String choice, int index) {
+    private TextField getChoiceFieldTextField(String choice, int index) {
         TextField textField = new TextField(choice);
         textField.setPromptText("Réponse");
         textField.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(textField, Priority.ALWAYS);
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) handleMCQAnswerEdit(mcqCard, textField, index);
+            if (!newValue) handleMCQAnswerEdit(textField, index);
         });
         return textField;
     }
 
-    private Button getChoiceFieldCorrectAnswerButton(boolean correctAnswer) {
+    private Button getChoiceFieldCorrectAnswerButton(boolean correctAnswer, int index) {
         Button setCorrectAnswerButton = new Button();
         FontIcon checkIcon = new FontIcon("mdi2c-check");
         if (correctAnswer) {
@@ -234,6 +234,10 @@ public class EditDeckViewController {
             setCorrectAnswerButton.setStyle("-fx-background-color: green;");
         }
         setCorrectAnswerButton.setGraphic(checkIcon);
+        setCorrectAnswerButton.setOnAction(event -> {
+            listener.mcqCorrectAnswerEdit((MCQCard) selectedCard, index);
+            loadSelectedCardEditor();
+        });
         return setCorrectAnswerButton;
     }
 
@@ -246,8 +250,8 @@ public class EditDeckViewController {
         return removeChoiceButton;
     }
 
-    private void handleMCQAnswerEdit(MCQCard mcqCard, TextField textField, int index) {
-        listener.mcqAnswerEdit(mcqCard, textField.getText(), index);
+    private void handleMCQAnswerEdit(TextField textField, int index) {
+        listener.mcqAnswerEdit((MCQCard) selectedCard, textField.getText(), index);
     }
 
     public void loadSelectedCardEditor() {
@@ -469,12 +473,16 @@ public class EditDeckViewController {
 
         void tagAddedToDeck(Deck deck, String tagName, String color);
 
-        void backOfFlashCardModified(FlashCard card, String newBack);
-        void mcqAnswerEdit(MCQCard mcqCard, String text, int index);
+        void backOfFlashCardModified(FlashCard selectedCard, String newBack);
+
+        void mcqAnswerEdit(MCQCard selectedCard, String text, int index);
+
+        void mcqCorrectAnswerEdit(MCQCard selectedCard, int i);
 
         void deckColorModified(Deck deck, Color color);
 
         void newCard();
+
         void newFlashCard();
 
         void newMCQCard();
