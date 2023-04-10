@@ -197,21 +197,26 @@ public class EditDeckViewController {
         currentCol = 0;
         currentRow = 0;
         int correctAnswerIndex = mcqCard.getCorrectAnswer();
-        for (int i = 0; i < mcqCard.getCardMax(); i++) {
-            if (i >= mcqCard.getAnswers().size()) {
+        for (int i = 0; i < mcqCard.getChoiceMax(); i++) {
+            if (i >= mcqCard.getNbAnswers()) {
                 addChoiceFieldButton();
                 break;
             }
-            String choice = mcqCard.getAnswers().get(i);
-            addChoiceField(choice, i, correctAnswerIndex == i);
-            currentCol++;
-            if (currentCol == 2) {
-                currentCol = 0;
-                currentRow++;
-            }
+
+            addChoiceField(mcqCard.getAnswer(i), i, correctAnswerIndex == i);
+            nextPosition();
         }
+
         backCard.setVisible(false);
         choicesGrid.setVisible(true);
+    }
+
+    private void nextPosition() {
+        currentCol++;
+        if (currentCol == 2) {
+            currentCol = 0;
+            currentRow++;
+        }
     }
 
     /**
@@ -231,6 +236,11 @@ public class EditDeckViewController {
 
     }
 
+
+    /**
+     * Adds a button that allows the user to add a choice field to the grid
+     *  when clicked.
+     */
     private void addChoiceFieldButton() {
         Button addChoiceButton = new Button();
         addChoiceButton.setGraphic(new FontIcon("mdi2p-plus"));
@@ -254,8 +264,16 @@ public class EditDeckViewController {
         TextField textField = getChoiceFieldTextField(choice, index);
 
         textField.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB)
-                focusNextChoiceField(index);
+            switch (event.getCode()) {
+                case ENTER -> {
+                    if (choiceFieldEmpty(textField, index))
+                        return;
+
+                    focusNextNode(index, true, false);
+                }
+
+                case TAB -> focusNextNode(index, false, true);
+            }
         });
 
         Button setCorrectAnswerButton = getChoiceFieldCorrectAnswerButton(correctAnswer, index);
@@ -270,19 +288,69 @@ public class EditDeckViewController {
     }
 
     /**
-     * Focuses the next choice field of the given index. If the index is the last
-     * choice field, focus is removed from all fields.
+     * Checks if the choice field is empty and removes it if it is.
+     *  Returns true if the choice field was removed.
+     *
+     * @param textField the text field of the choice field
+     * @param index the index of the choice field
+     *
+     * @return true if the choice field was removed
+     */
+    private boolean choiceFieldEmpty(TextField textField, int index) {
+        if (!textField.getText().isEmpty() || index < 2)
+            return false;
+
+        listener.mcqAnswerRemove((MCQCard) selectedCard, index);
+        loadSelectedCardEditor();
+        focusPreviousChoiceField(index);
+        return true;
+    }
+
+    /**
+     * Focuses the previous choice field of the given index.
      *
      * @param index the index of the choice field
      */
-    private void focusNextChoiceField(int index) {
+    private void focusPreviousChoiceField(int index) {
+        HBox hBox = (HBox) choicesGrid.getChildren().get(index - 1);
+        TextField textField = (TextField) hBox.getChildren().get(0);
+        textField.requestFocus();
+        textField.selectAll();
+    }
+
+    /**
+     * Focuses the next choice field of the given index.
+     *
+     * @param nextIndex the index of the choice field
+     */
+    private void focusNextChoiceField(int nextIndex) {
+        HBox hBox = (HBox) choicesGrid.getChildren().get(nextIndex);
+        TextField textField = (TextField) hBox.getChildren().get(0);
+        textField.requestFocus();
+        textField.selectAll();
+    }
+
+    /**
+     * Focuses the next eligible node after the choice field at the given index.
+     *
+     * @param index the index of the choice field
+     */
+    private void focusNextNode(int index, boolean createNextNode, boolean cycle) {
         int nextIndex = index + 1;
         if (nextIndex < ((MCQCard) selectedCard).getNbAnswers()) {
-            HBox hBox = (HBox) choicesGrid.getChildren().get(nextIndex);
-            TextField textField = (TextField) hBox.getChildren().get(0);
-            textField.requestFocus();
-        } else
+            focusNextChoiceField(nextIndex);
+
+        } else if (nextIndex < 4 && createNextNode) {
+            listener.mcqAnswerAdded((MCQCard) selectedCard);
+            loadSelectedCardEditor();
+            focusNextChoiceField(nextIndex);
+
+        } else if (cycle) {
+            focusNextChoiceField(0);
+
+        } else {
             mainHbox.requestFocus();
+        }
     }
 
     /**
@@ -299,7 +367,9 @@ public class EditDeckViewController {
         HBox.setHgrow(textField, Priority.ALWAYS);
 
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) listener.mcqAnswerEdit((MCQCard) selectedCard, textField.getText(), index);
+            if (!newValue && index < ((MCQCard) selectedCard).getNbAnswers()) {
+                listener.mcqAnswerEdit((MCQCard) selectedCard, textField.getText(), index);
+            };
         });
         return textField;
     }

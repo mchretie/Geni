@@ -34,12 +34,13 @@
                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 </columnConstraints>
+
                 <rowConstraints>
                     <RowConstraints maxHeight="300.0" minHeight="220.0" />
                 </rowConstraints>
 
                 <!-- Create deck rectangle -->
-                <VBox alignment="CENTER" maxWidth="500.0" spacing="20" maxHeight="175"
+                <VBox alignment="CENTER" minWidth="350" maxWidth="500.0" spacing="20" maxHeight="175"
                       style="-fx-border-color: black; -fx-border-radius: 20; -fx-border-style: dashed; -fx-background-color: #d3d1d1; -fx-background-radius: 20;"
                       xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
 
