@@ -24,7 +24,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     DeckDAO deckDAO;
     UserDAO userDAO;
 
-    UUID user = UUID.randomUUID();
+    UUID user;
 
     @Override
     @BeforeEach
@@ -40,7 +40,8 @@ public class TestTagDAO extends DatabaseUsingTest {
         this.deckDAO.setTagDao(this.tagDAO);
         this.tagDAO.setDeckDao(this.deckDAO);
 
-        // userDAO.registerGuest(user);
+        userDAO.registerUser("user", "pass");
+        this.user = UUID.fromString(userDAO.getUserId("user"));
     }
 
     @Test
@@ -133,6 +134,7 @@ public class TestTagDAO extends DatabaseUsingTest {
         Deck deck = new Deck("name");
         Tag tag = new Tag("name");
         deck.addTag(tag);
+        deckDAO.saveDeck(deck, user);
         tagDAO.saveTagsFor(deck);
 
         assertEquals(new HashSet<>(deck.getTags()),
@@ -144,6 +146,7 @@ public class TestTagDAO extends DatabaseUsingTest {
         Deck deck = new Deck("name");
         Tag tag = new Tag("name");
         deck.addTag(tag);
+        deckDAO.saveDeck(deck, user);
         tagDAO.saveTagsFor(deck);
         deck.removeTag(tag);
         tagDAO.saveTagsFor(deck);

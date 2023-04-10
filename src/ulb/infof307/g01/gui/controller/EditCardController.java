@@ -56,6 +56,7 @@ public class EditCardController implements EditCardViewController.Listener {
 
     public interface ControllerListener {
         void savingError(Exception e);
+
         void savedChanges();
     }
 }

@@ -19,9 +19,13 @@ import java.util.List;
 
 public class DeckMenuViewController {
 
+    /* ====================================================================== */
+    /*                              FXML Attributes                           */
+    /* ====================================================================== */
 
     @FXML
     private BorderPane borderPane;
+
     @FXML
     private GridPane gridPane;
 
@@ -33,12 +37,18 @@ public class DeckMenuViewController {
 
     @FXML
     private FontIcon searchIcon;
+
     @FXML
     private FontIcon createDeckIcon;
+
     @FXML
     private FontIcon importDeck;
 
-    private int colCount = 2;
+    private int colCount = 2;  // default
+
+    /* ====================================================================== */
+    /*                                Listener                                */
+    /* ====================================================================== */
 
     private Listener listener;
 
@@ -90,7 +100,9 @@ public class DeckMenuViewController {
     }
 
     /**
-     * Initialises the grid of decks.
+     * Initialize the grid of decks
+     * <p>
+     * Nodes are added to the grid at pos (0,0) and then redistributed.
      *
      * @param decks loaded FXML deck files
      */
@@ -106,7 +118,7 @@ public class DeckMenuViewController {
     }
 
     /**
-     * removes all rows from the gridPane except the first one
+     * Remove all row and column constraints from the grid
      */
     private void resetGrid() {
         int rowCount = gridPane.getRowConstraints().size();
@@ -167,7 +179,7 @@ public class DeckMenuViewController {
     }
 
     /**
-     * Redistributes the grid’s children in the grid
+     * Redistribute the grid’s children in the grid
      * <p>
      *     From top left through bottom right.
      * </p>
@@ -262,7 +274,6 @@ public class DeckMenuViewController {
     private void handleImportDeckExit() {
         importDeck.setIconColor(Color.web("#000000"));
     }
-
 
     /* ====================================================================== */
     /*                           Listener Interface                           */

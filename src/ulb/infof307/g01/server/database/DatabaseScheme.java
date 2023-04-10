@@ -65,10 +65,10 @@ class DatabaseScheme {
             """
         CREATE TABLE IF NOT EXISTS user_deck_score (
             user_id TEXT,
-            deck_id TEXT,
-            timestamp TEXT NOT NULL,
+            timestamp TEXT,
+            deck_id TEXT NOT NULL,
             score INTEGER NOT NULL,
-            PRIMARY KEY (user_id, deck_id),
+            PRIMARY KEY (user_id, timestamp),
             FOREIGN KEY (user_id)
                 REFERENCES user(user_id)
                 ON DELETE CASCADE,
