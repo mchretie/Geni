@@ -186,7 +186,11 @@ public class EditDeckViewController {
             currentCol = 0;
             currentRow = 0;
             int correctAnswerIndex = mcqCard.getCorrectAnswer();
-            for (int i = 0; i < mcqCard.getAnswers().size(); i++) {
+            for (int i = 0; i < 4; i++) {
+                if (i >= mcqCard.getAnswers().size()) {
+
+                    break;
+                }
                 String choice = mcqCard.getAnswers().get(i);
                 addChoiceField(choice, i, correctAnswerIndex == i);
                 currentCol++;
@@ -267,6 +271,7 @@ public class EditDeckViewController {
     public void hideSelectedCardEditor() {
         frontCard.setVisible(false);
         backCard.setVisible(false);
+        choicesGrid.setVisible(false);
     }
 
 
