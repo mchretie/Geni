@@ -35,9 +35,6 @@ public class EditDeckViewController {
     private GridPane choicesGrid;
 
     @FXML
-    private FontIcon addChoiceIcon;
-
-    @FXML
     private VBox leftVbox;
 
     @FXML
@@ -237,10 +234,12 @@ public class EditDeckViewController {
     private void addChoiceFieldButton() {
         Button addChoiceButton = new Button();
         addChoiceButton.setGraphic(new FontIcon("mdi2p-plus"));
+
         addChoiceButton.setOnAction(event -> {
             listener.mcqAnswerAdded((MCQCard) selectedCard);
             loadSelectedCardEditor();
         });
+
         choicesGrid.add(addChoiceButton, currentCol, currentRow);
     }
 
@@ -248,16 +247,16 @@ public class EditDeckViewController {
      * Adds a choice field to the grid
      *
      * @param choice the text of the choice
-     * @param index the index of the choice
+     * @param index the index of the choice in the grid
      *
      * @param correctAnswer true if the choice is the correct answer
      */
     private void addChoiceField(String choice, int index, boolean correctAnswer) {
         TextField textField = getChoiceFieldTextField(choice, index);
+
         textField.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                mainHbox.requestFocus();
-            }
+            if (event.getCode() == KeyCode.ENTER)
+                focusNextChoiceField(index);
         });
 
         Button setCorrectAnswerButton = getChoiceFieldCorrectAnswerButton(correctAnswer, index);
@@ -269,6 +268,24 @@ public class EditDeckViewController {
         hBox.getChildren().addAll(textField, setCorrectAnswerButton, removeChoiceButton);
         hBox.setSpacing(2);
         choicesGrid.add(hBox, currentCol, currentRow);
+    }
+
+    /**
+     * Focuses the next choice field of the given index. If the index is the last
+     *  choice field, focus is removed from all fields.
+     *
+     * @param index the index of the choice field
+     */
+    private void focusNextChoiceField(int index) {
+        int nextIndex = index + 1;
+        if (nextIndex < choicesGrid.getChildren().size()) {
+            HBox hBox = (HBox) choicesGrid.getChildren().get(nextIndex);
+            TextField textField = (TextField) hBox.getChildren().get(0);
+            textField.requestFocus();
+        }
+
+        else
+            mainHbox.requestFocus();
     }
 
     /**
