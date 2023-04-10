@@ -45,7 +45,6 @@ public class EditCardController implements EditCardViewController.Listener {
     }
 
     public void show() {
-      System.out.println("initialisation de editCardViewController");
       editCardViewController.setCard(card);
       mainWindowViewController.setEditCardViewVisible();
       mainWindowViewController.makeGoBackIconVisible();

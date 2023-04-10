@@ -26,22 +26,22 @@ public class MainWindowViewController {
     private FontIcon aboutIcon;
     @FXML
     private FontIcon goBackIcon;
-
-    @FXML private FontIcon userProfileIcon;
-
+    @FXML
+    private FontIcon userProfileIcon;
     @FXML
     private StackPane centerStackPane;
     @FXML
     private BorderPane deckMenuView;
     @FXML
     private AnchorPane editDeckView;
-    @FXML private BorderPane playDeckView;
+    @FXML
+    private BorderPane playDeckView;
     @FXML
     private AnchorPane editCardView;
-
-    // ICI
-    @FXML private AnchorPane loginView;
-    @FXML private AnchorPane profileView;
+    @FXML
+    private AnchorPane loginView;
+    @FXML
+    private AnchorPane profileView;
 
     @FXML
     private DeckMenuViewController deckMenuViewController;
@@ -50,13 +50,14 @@ public class MainWindowViewController {
     @FXML
     private PlayDeckViewController playDeckViewController;
 
-    //ICI
-    @FXML private LoginViewController loginViewController;
+    @FXML
+    private LoginViewController loginViewController;
 
     @FXML
     private EditCardViewController editCardViewController;
 
-    @FXML private ProfileViewController profileViewController;
+    @FXML
+    private ProfileViewController profileViewController;
 
     private NavigationListener listener;
 
@@ -85,21 +86,15 @@ public class MainWindowViewController {
         return playDeckViewController;
     }
 
-
     public EditCardViewController getEditCardViewController() {
         return editCardViewController;
     }
 
-    // ICI
     public LoginViewController getLoginViewController() {
         return loginViewController;
     }
 
-    // ICI
-    public ProfileViewController getProfileViewController() {
-      System.out.println("ProfileViewController: " + profileViewController);
-      return profileViewController;
-    }
+    public ProfileViewController getProfileViewController() { return profileViewController; }
 
     /* ====================================================================== */
     /*                              Alerts                                    */
@@ -141,11 +136,8 @@ public class MainWindowViewController {
         setAllInvisibleExcept(playDeckView);
     }
 
-    public void setEditCardViewVisible() {
-        setAllInvisibleExcept(editCardView);
-    }
+    public void setEditCardViewVisible() { setAllInvisibleExcept(editCardView); }
 
-    // ICI
     public void setLoginViewVisible() { setAllInvisibleExcept(loginView); }
 
     public void setProfileViewVisible() { setAllInvisibleExcept(profileView); }
@@ -174,7 +166,7 @@ public class MainWindowViewController {
 
     @FXML
     private void goToHomeClicked() {
-      listener.goToHomeClicked();
+        listener.goToHomeClicked();
     }
 
     @FXML
@@ -186,12 +178,9 @@ public class MainWindowViewController {
     private void goToAboutClicked() {
         listener.goToAboutClicked();
     }
-    // ICI
+
     @FXML
-    private void handleProfileClicked() {
-      System.out.println("Profile clicked handler");
-      listener.handleProfileClicked();
-    }
+    private void handleProfileClicked() { listener.handleProfileClicked();  }
 
     /* ====================================================================== */
     /*                              Hover handlers                            */
@@ -199,7 +188,7 @@ public class MainWindowViewController {
 
     @FXML
     private void handleHomeHover() {
-      homeIcon.setIconColor(Color.web("#FFFFFF"));
+        homeIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
@@ -253,10 +242,13 @@ public class MainWindowViewController {
 
     public interface NavigationListener {
         void goBackClicked();
+
         void goToHomeClicked();
+
         void goToCurrentDeckClicked();
+
         void goToAboutClicked();
-        // ICI
+
         void handleProfileClicked();
     }
 }

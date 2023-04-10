@@ -124,7 +124,7 @@ public class MainFxController
 
         // Todo : handle failed auto login. example:
         // This next line is IMPORTANT to reset the registery when deleting demo.db
-        // removeCredentials();
+        removeCredentials();
 
         if (userCredentialsExist()) {
             loginWithCredentials();
@@ -236,6 +236,10 @@ public class MainFxController
 
     @Override
     public void goBackClicked() {
+        System.out.println("goBackClicked");
+        System.out.println(viewStack);
+
+
         // If there is no view to go back to, do nothing (shouldn't happen)
         if (viewStack.size() == 1)
             return;

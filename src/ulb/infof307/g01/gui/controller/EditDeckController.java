@@ -59,7 +59,6 @@ public class EditDeckController implements EditDeckViewController.Listener {
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException {
-      System.out.println("initialisation de editDeckViewController");
       mainWindowViewController.setEditDeckViewVisible();
       mainWindowViewController.makeGoBackIconVisible();
 

@@ -34,11 +34,6 @@ public class LoginController implements LoginViewController.ViewListener {
         this.loginViewController =
                 mainWindowViewController.getLoginViewController();
 
-        System.out.println(
-                "initialisation de loginViewController setting listener de :");
-        System.out.println(this.loginViewController);
-        System.out.println(this);
-
         this.loginViewController.setListener(this);
     }
 
@@ -52,8 +47,6 @@ public class LoginController implements LoginViewController.ViewListener {
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException {
-        System.out.println("showing login");
-
         mainWindowViewController.setLoginViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
         stage.show();

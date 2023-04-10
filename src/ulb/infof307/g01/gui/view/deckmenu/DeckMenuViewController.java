@@ -38,11 +38,14 @@ public class DeckMenuViewController {
         this.listener = listener;
     }
 
-    // Guest Check disable if guest
-    // Disables the create deck by button and text field
-    public void setGuestMode(boolean isGuest) {
-        createDeckIcon.setDisable(isGuest);
-        createDeckField.setDisable(isGuest);
+    // Toggles create deck over button, text field and search field
+    public void setGuestMode(boolean OnOFF) {
+        System.out.println("setGuestMode");
+        createDeckIcon.setDisable(OnOFF);
+        createDeckField.setDisable(OnOFF);
+        searchBar.setDisable(OnOFF);
+        // !! !OnOFF
+        searchIcon.setVisible(!OnOFF);
     }
 
     /* ====================================================================== */

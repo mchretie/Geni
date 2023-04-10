@@ -58,7 +58,7 @@ public class LoginViewController {
     /* ====================================================================== */
 
     public interface ViewListener {
-        // ICI
+
         void loginClicked(String username, String password);
 
         void signupClicked(String username, String password);

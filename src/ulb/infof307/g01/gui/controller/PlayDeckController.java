@@ -53,7 +53,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     /* ====================================================================== */
 
     public void show() {
-      System.out.println("showing play deck controller");
       mainWindowViewController.setPlayDeckViewVisible();
       mainWindowViewController.makeGoBackIconVisible();
 
