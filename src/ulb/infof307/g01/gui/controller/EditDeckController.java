@@ -252,11 +252,12 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void newMCQCard() {
         try {
             String frontHtml = "Avant";
-            ArrayList<String> answers = new ArrayList<>();
-            answers.add("Réponse 1");
-            answers.add("Réponse 2");
-            answers.add("Réponse 3");
-            answers.add("Réponse 4");
+            List<String> answers = new ArrayList<>();
+
+            final int MAX_QCM_ANSWERS = 4;
+            for (int i = 0; i < MAX_QCM_ANSWERS; i++)
+                answers.add("Réponse " + i);
+
             deck.addCard(new MCQCard(frontHtml, answers, 0));
             deckDAO.saveDeck(deck);
 
@@ -276,6 +277,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deckDAO.saveDeck(deck);
             editDeckViewController.showCards();
             editDeckViewController.hideSelectedCardEditor();
+
             if (deck.cardCount() != 0) {
                 cardPreviewClicked(deck.getLastCard());
             }

@@ -7,7 +7,7 @@
 <?import javafx.scene.web.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<HBox fx:id="hbox" spacing="20" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.2-ea"
+<HBox fx:id="mainHbox" spacing="20" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.2-ea"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditDeckViewController">
 
     <!-- Left side -->
@@ -100,8 +100,9 @@
                     visible="false" VBox.vgrow="ALWAYS">
 
             <center>
-                <WebView fx:id="frontCardWebView" maxHeight="180.0" onKeyPressed="#handleTextFieldKeyPressed"
-                         BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS"></WebView>
+                <WebView fx:id="frontCardWebView" maxHeight="180.0"
+                         onKeyPressed="#handleTextFieldKeyPressed"
+                         BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS"/>
             </center>
 
             <right>

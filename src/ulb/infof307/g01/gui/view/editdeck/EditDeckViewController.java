@@ -25,13 +25,14 @@ import java.io.File;
 import java.util.List;
 
 public class EditDeckViewController {
-    public GridPane choicesGrid;
-    public BorderPane addChoiceField;
-    public FontIcon addChoiceIcon;
+
 
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
+
+    @FXML
+    private GridPane choicesGrid;
 
     @FXML
     private VBox leftVbox;
@@ -43,7 +44,7 @@ public class EditDeckViewController {
     private HBox cardTypeBox;
 
     @FXML
-    private HBox hbox;
+    private HBox mainHbox;
 
     @FXML
     private BorderPane frontCard;
@@ -174,34 +175,44 @@ public class EditDeckViewController {
         cardsContainer.refresh();
     }
 
+    private void loadFlashCardEditor(FlashCard flashCard) {
+        backCardText.setText(flashCard.getBack());
+        backCard.setVisible(true);
+        choicesGrid.setVisible(false);
+    }
+
+    private void loadQCMCardEditor(MCQCard mcqCard) {
+        choicesGrid.getChildren().clear();
+        currentCol = 0;
+        currentRow = 0;
+        int correctAnswerIndex = mcqCard.getCorrectAnswer();
+        for (int i = 0; i < mcqCard.getCardMax(); i++) {
+            if (i >= mcqCard.getAnswers().size()) {
+                addChoiceFieldButton();
+                break;
+            }
+            String choice = mcqCard.getAnswers().get(i);
+            addChoiceField(choice, i, correctAnswerIndex == i);
+            currentCol++;
+            if (currentCol == 2) {
+                currentCol = 0;
+                currentRow++;
+            }
+        }
+        backCard.setVisible(false);
+        choicesGrid.setVisible(true);
+    }
+
     private void loadCardEditor(Card card) {
         frontCardWebView.getEngine().loadContent(card.getFront());
         frontCard.setVisible(true);
-        if (card instanceof FlashCard flashCard) {
-            backCardText.setText(flashCard.getBack());
-            backCard.setVisible(true);
-            choicesGrid.setVisible(false);
-        } else if (card instanceof MCQCard mcqCard) {
-            choicesGrid.getChildren().clear();
-            currentCol = 0;
-            currentRow = 0;
-            int correctAnswerIndex = mcqCard.getCorrectAnswer();
-            for (int i = 0; i < mcqCard.getCardMax(); i++) {
-                if (i >= mcqCard.getAnswers().size()) {
-                    addChoiceFieldButton();
-                    break;
-                }
-                String choice = mcqCard.getAnswers().get(i);
-                addChoiceField(choice, i, correctAnswerIndex == i);
-                currentCol++;
-                if (currentCol == 2) {
-                    currentCol = 0;
-                    currentRow++;
-                }
-            }
-            backCard.setVisible(false);
-            choicesGrid.setVisible(true);
-        }
+
+        if (card instanceof FlashCard flashCard)
+            loadFlashCardEditor(flashCard);
+
+        else if (card instanceof MCQCard mcqCard)
+            loadQCMCardEditor(mcqCard);
+
     }
 
     private void addChoiceFieldButton() {
@@ -216,9 +227,13 @@ public class EditDeckViewController {
 
     private void addChoiceField(String choice, int index, boolean correctAnswer) {
         TextField textField = getChoiceFieldTextField(choice, index);
+        textField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                mainHbox.requestFocus();
+            }
+        });
 
         Button setCorrectAnswerButton = getChoiceFieldCorrectAnswerButton(correctAnswer, index);
-
         Button removeChoiceButton = getChoiceFieldRemoveButton(index);
 
         HBox hBox = new HBox();
@@ -341,7 +356,7 @@ public class EditDeckViewController {
     @FXML
     private void handleUploadImageClicked() {
         final FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(hbox.getScene().getWindow());
+        File file = fileChooser.showOpenDialog(mainHbox.getScene().getWindow());
         listener.uploadImage(file.toURI().toString());
     }
 
@@ -439,7 +454,7 @@ public class EditDeckViewController {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
 
-        hbox.requestFocus();
+        mainHbox.requestFocus();
     }
 
     @FXML
