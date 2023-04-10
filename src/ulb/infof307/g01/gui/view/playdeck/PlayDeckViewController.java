@@ -119,6 +119,7 @@ public class PlayDeckViewController {
     }
 
     public void loadAnswers() {
+        choicesGrid.getChildren().clear();
         MCQCard card = (MCQCard) currentCard;
         int correctAnswer = card.getCorrectAnswer();
         ArrayList<String> answers = new ArrayList<>(card.getAnswers());
@@ -175,6 +176,7 @@ public class PlayDeckViewController {
         for (int i = 0; i < choicesGrid.getChildren().size(); i++) {
             BorderPane answer = (BorderPane) choicesGrid.getChildren().get(i);
             Button checkButton = (Button) answer.getRight();
+            checkButton.setDisable(true);
             if (checkButton == correctAnswerButton) {
                 answer.setStyle("-fx-background-color: #659e40;");
             }
