@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<HBox fx:id="hbox" prefHeight="604.0" prefWidth="892.0" spacing="20" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditDeckViewController">
+<HBox fx:id="hbox" spacing="20" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.EditDeckViewController">
 
     <!-- Left side -->
     <VBox fx:id="leftVbox" HBox.hgrow="ALWAYS">
