@@ -54,6 +54,9 @@ public class ProfileController implements ProfileViewController.ViewListener {
         return  this.isLoggedIn;
     }
 
+    public void setUserNameInProfile(String userName) {
+        profileViewController.setUsernameDisplay(userName);    }
+
     /* ====================================================================== */
     /*                         Stage Manipulation                             */
     /* ====================================================================== */

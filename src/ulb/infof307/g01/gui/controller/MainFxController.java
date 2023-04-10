@@ -342,6 +342,7 @@ public class MainFxController
         profileController.setLoggedIn(true);
         viewStack.remove(View.LOGIN);
         saveCredentials(username, password);
+        profileController.setUserNameInProfile(username);
         try {
             profileController.show();
         } catch (IOException e) {
@@ -384,4 +385,6 @@ public class MainFxController
     public boolean isGuestSession() {
         return ! profileController.isLoggedIn();
     }
+
+
 }

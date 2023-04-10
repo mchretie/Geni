@@ -38,6 +38,9 @@ public class ProfileViewController implements Initializable {
         this.listener = listener;
     }
 
+    public void setUsernameDisplay(String username) {
+        usernameLabel.setText(username);
+    }
     /* ====================================================================== */
     /*                             Click handlers                             */
     /* ====================================================================== */
@@ -54,5 +57,7 @@ public class ProfileViewController implements Initializable {
     public interface ViewListener {
         // ICI
         void logoutButtonClicked();
+
+        //void setUsernameDisplay(String username);
     }
 }

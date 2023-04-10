@@ -83,6 +83,7 @@ public abstract class HttpDAO {
     /* ====================================================================== */
 
     protected void checkResponseCode(int responseCode) throws ServerRequestFailed {
+        System.out.println("Response code: " + responseCode);
         if (responseCode != 200)
             throw new ServerRequestFailed("Server request failed: "
                     + responseCode);
