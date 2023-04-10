@@ -26,7 +26,6 @@ import java.util.List;
 
 public class EditDeckViewController {
 
-
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
@@ -50,7 +49,7 @@ public class EditDeckViewController {
     private BorderPane frontCard;
 
     @FXML
-    private StackPane backCard;
+    private BorderPane backCard;
 
     @FXML
     private HBox tagsBox;
@@ -59,7 +58,7 @@ public class EditDeckViewController {
     private ListView<String> cardsContainer;
 
     @FXML
-    private TextField backCardText;
+    private WebView backCardWebView;
 
     @FXML
     private TextField deckNameText;
@@ -81,6 +80,9 @@ public class EditDeckViewController {
 
     @FXML
     public FontIcon frontCardEditIcon;
+
+    @FXML
+    private FontIcon backCardEditIcon;
 
     @FXML
     private ColorPicker colorPicker;
@@ -119,10 +121,6 @@ public class EditDeckViewController {
      * the parents size is needed to set the width of the left and right components.
      */
     public void init() {
-        backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) handleBackEdit();
-        });
-
         deckNameText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleUpdateDeckName();
         });
@@ -182,7 +180,7 @@ public class EditDeckViewController {
      * @param flashCard the card to load
      */
     private void loadFlashCardEditor(FlashCard flashCard) {
-        backCardText.setText(flashCard.getBack());
+        backCardWebView.getEngine().loadContent(flashCard.getBack());
         backCard.setVisible(true);
         choicesGrid.setVisible(false);
     }
@@ -233,7 +231,6 @@ public class EditDeckViewController {
 
         else if (card instanceof MCQCard mcqCard)
             loadQCMCardEditor(mcqCard);
-
     }
 
 
@@ -505,7 +502,12 @@ public class EditDeckViewController {
 
     @FXML
     private void handleFrontEditClicked() {
-        listener.editCardClicked(selectedCard);
+        listener.frontEditCardClicked(selectedCard);
+    }
+
+    @FXML
+    private void handleBackEditClicked() {
+        listener.backEditCardClicked(selectedCard);
     }
 
 
@@ -563,6 +565,17 @@ public class EditDeckViewController {
         frontCardEditIcon.setIconColor(Color.web("#000000"));
     }
 
+    @FXML
+    private void handleBackCardEditHoverExit() {
+        backCardEditIcon.setIconColor(Color.web("#000000"));
+    }
+
+    @FXML
+    private void handleBackCardEditHover() {
+        backCardEditIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+
     /* ====================================================================== */
     /*                            Modified text                               */
     /* ====================================================================== */
@@ -570,11 +583,6 @@ public class EditDeckViewController {
     @FXML
     private void handleUpdateDeckName() {
         listener.deckNameModified(deckNameText.getText());
-    }
-
-    @FXML
-    private void handleBackEdit() {
-        listener.backOfFlashCardModified((FlashCard) selectedCard, backCardText.getText());
     }
 
     @FXML
@@ -621,8 +629,6 @@ public class EditDeckViewController {
 
         void tagAddedToDeck(Deck deck, String tagName, String color);
 
-        void backOfFlashCardModified(FlashCard selectedCard, String newBack);
-
         void mcqAnswerEdit(MCQCard selectedCard, String text, int index);
 
         void mcqCorrectAnswerEdit(MCQCard selectedCard, int i);
@@ -641,10 +647,10 @@ public class EditDeckViewController {
 
         void cardPreviewClicked(Card card);
 
-        void editCardClicked(Card selectedCard);
+        void frontEditCardClicked(Card selectedCard);
 
         void uploadImage(String filePath);
 
-
+        void backEditCardClicked(Card selectedCard);
     }
 }

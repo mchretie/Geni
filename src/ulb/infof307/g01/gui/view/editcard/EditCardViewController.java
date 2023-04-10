@@ -17,13 +17,6 @@ public class EditCardViewController {
 
 
     /* ====================================================================== */
-    /*                              Model Attributes                          */
-    /* ====================================================================== */
-
-    private Card selectedCard;
-
-
-    /* ====================================================================== */
     /*                                  Listener                              */
     /* ====================================================================== */
 
@@ -39,9 +32,8 @@ public class EditCardViewController {
         this.listener = listener;
     }
 
-    public void setCard(Card selectedCard) {
-        this.selectedCard = selectedCard;
-        htmlEditor.setHtmlText(selectedCard.getFront());
+    public void setContent(String content) {
+        htmlEditor.setHtmlText(content);
     }
 
     /* ====================================================================== */
@@ -50,7 +42,7 @@ public class EditCardViewController {
 
     @FXML
     private void onSaveButtonClicked() {
-        listener.saveButtonClicked(selectedCard, htmlEditor.getHtmlText());
+        listener.saveButtonClicked(htmlEditor.getHtmlText());
     }
 
 
@@ -59,6 +51,6 @@ public class EditCardViewController {
     /* ====================================================================== */
 
     public interface Listener {
-        void saveButtonClicked(Card card, String html);
+        void saveButtonClicked(String html);
     }
 }
