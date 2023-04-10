@@ -127,8 +127,13 @@ public class MainFxController
         profileController =
                 new ProfileController(stage, mainWindowViewController, this);
 
-        System.out.println("is he guest");
+        // Todo : handle failed auto login. example:
+        // This line is IMPORTANT to reset the registery when deleting demo.db
+        //  removeCredentials();
+
+        System.out.println("is he guest ?");
         if (userCredentialsExist()) {
+            System.out.println("username :" + username + " password :" + password);
             System.out.println("credentials found. Not a guest. logging in");
             loginWithCredentials();
             profileController.setLoggedIn(true);
