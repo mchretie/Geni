@@ -205,7 +205,7 @@ public class EditDeckViewController {
 
         Button setCorrectAnswerButton = getChoiceFieldCorrectAnswerButton(correctAnswer, index);
 
-        Button removeChoiceButton = getChoiceFieldRemoveButton();
+        Button removeChoiceButton = getChoiceFieldRemoveButton(index);
 
         HBox hBox = new HBox();
         HBox.setHgrow(hBox, Priority.ALWAYS);
@@ -234,6 +234,7 @@ public class EditDeckViewController {
             setCorrectAnswerButton.setStyle("-fx-background-color: green;");
         }
         setCorrectAnswerButton.setGraphic(checkIcon);
+
         setCorrectAnswerButton.setOnAction(event -> {
             listener.mcqCorrectAnswerEdit((MCQCard) selectedCard, index);
             loadSelectedCardEditor();
@@ -241,12 +242,17 @@ public class EditDeckViewController {
         return setCorrectAnswerButton;
     }
 
-    private static Button getChoiceFieldRemoveButton() {
+    private Button getChoiceFieldRemoveButton(int index) {
         Button removeChoiceButton = new Button();
+        removeChoiceButton.setStyle("-fx-background-color: red;");
         FontIcon trashIcon = new FontIcon("mdi2t-trash-can-outline");
         trashIcon.setIconColor(Color.WHITE);
         removeChoiceButton.setGraphic(trashIcon);
-        removeChoiceButton.setStyle("-fx-background-color: red;");
+
+        removeChoiceButton.setOnAction(event -> {
+            listener.mcqAnswerRemove((MCQCard) selectedCard, index);
+            loadSelectedCardEditor();
+        });
         return removeChoiceButton;
     }
 
@@ -487,13 +493,14 @@ public class EditDeckViewController {
 
         void newMCQCard();
 
-        void removeCard(Card selectedCard);
 
+        void removeCard(Card selectedCard);
         void cardPreviewClicked(Card card);
 
         void editCardClicked(Card selectedCard);
 
         void uploadImage(String filePath);
 
+        void mcqAnswerRemove(MCQCard selectedCard, int index);
     }
 }

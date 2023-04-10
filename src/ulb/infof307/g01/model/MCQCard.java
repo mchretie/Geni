@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class MCQCard extends Card{
+public class MCQCard extends Card {
     @Expose
     private List<String> answers;
     @Expose
@@ -33,15 +33,34 @@ public class MCQCard extends Card{
         this.cardType = "MCQCard";
     }
 
-    public List<String> getAnswers() { return answers; }
+    public List<String> getAnswers() {
+        return answers;
+    }
 
-    public void setAnswers(List<String> answers) { this.answers = answers; }
+    public void setAnswers(List<String> answers) {
+        this.answers = answers;
+    }
 
-    public void setAnswer(int index, String answer) { this.answers.set(index, answer); }
+    public void removeAnswer(int index) {
+        // limit answer to min two
+        if (this.answers.size() <= 2)
+            return;
+        this.answers.remove(index);
+        if (this.correctAnswer == index)
+            this.correctAnswer = index - 1;
+    }
 
-    public int getCorrectAnswer() { return correctAnswer; }
+    public void setAnswer(int index, String answer) {
+        this.answers.set(index, answer);
+    }
 
-    public void setCorrectAnswer(int correctAnswer) { this.correctAnswer = correctAnswer; }
+    public int getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(int correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
 
     @Override
     public int hashCode() {
@@ -49,8 +68,7 @@ public class MCQCard extends Card{
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         UUID id = this.getId();
         UUID deckId = this.getDeckId();
         String front = this.getFront();
