@@ -17,6 +17,7 @@ import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.FlashCard;
 
 import java.io.File;
 import java.util.List;
@@ -173,9 +174,11 @@ public class EditDeckViewController {
 
     private void loadCardEditor(Card card) {
         frontCardWebView.getEngine().loadContent(card.getFront());
-//        backCardText.setText(card.getBack());
         frontCard.setVisible(true);
-        backCard.setVisible(true);
+        if (card instanceof FlashCard flashCard) {
+            backCardText.setText(flashCard.getBack());
+            backCard.setVisible(true);
+        }
     }
 
     public void loadSelectedCardEditor() {
@@ -353,8 +356,6 @@ public class EditDeckViewController {
         System.out.println("QCM selected " + backCard.visibleProperty());
         cardTypeSelected();
         choicesGrid.setVisible(true);
-
-
     }
 
     @FXML
