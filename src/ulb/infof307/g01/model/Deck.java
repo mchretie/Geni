@@ -134,7 +134,7 @@ public class Deck implements Iterable<Card> {
 
     public void setImage(String image) {
         this.image = image;
-        System.out.println("Deck setImage : " + this.image);
+        // System.out.println("Deck setImage : " + this.image);
     }
 
     public DeckMetadata getMetadata() {
