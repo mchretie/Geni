@@ -250,7 +250,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void answerChanged(MCQCard card, int idxOfAnswer, String newAnswer) throws IOException, InterruptedException {
+    public void answerChanged(MCQCard card, int idxOfAnswer, String newAnswer) {
         try {
             ArrayList<String> answers = new ArrayList<>(card.getAnswers());
             answers.set(idxOfAnswer, newAnswer);

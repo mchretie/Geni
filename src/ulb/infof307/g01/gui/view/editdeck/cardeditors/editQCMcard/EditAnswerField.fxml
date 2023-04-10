@@ -10,9 +10,12 @@
    </left>
    <right>
       <HBox>
-         <FontIcon fx:id="checkIcon" iconLiteral="mdi2c-check-circle-outline" iconSize="22" onMouseEntered="#handleCheckHover" onMouseExited="#handleCheckHoverExit" BorderPane.alignment="CENTER" />
-         <Button mnemonicParsing="false" onMouseClicked="#handleCorrectAnswer" style="-fx-background-color: transparent" BorderPane.alignment="CENTER" />
 
+         <Button mnemonicParsing="false" onMouseClicked="#handleCorrectAnswer" style="-fx-background-color: transparent" BorderPane.alignment="CENTER">
+            <graphic>
+               <FontIcon fx:id="checkIcon" iconLiteral="mdi2c-check-circle-outline" iconSize="22" onMouseEntered="#handleCheckHover" onMouseExited="#handleCheckHoverExit" BorderPane.alignment="CENTER" />
+            </graphic>
+         </Button>
          <Button alignment="TOP_LEFT" minWidth="20.0" mnemonicParsing="false" onMouseClicked="#handleDeleteAnswer" prefHeight="24.0" prefWidth="10.0" style="-fx-background-color: transparent" BorderPane.alignment="CENTER">
             <graphic>
                <FontIcon fx:id="deleteAnswerIcon" iconLiteral="mdi2t-trash-can-outline" iconSize="15" onMouseEntered="#handleDeleteHover" onMouseExited="#handleDeleteHoverExit" text="󰩺" wrappingWidth="25.0" />
