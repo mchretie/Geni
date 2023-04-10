@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class MCQCard extends Card {
+
     @Expose
     private List<String> answers;
     @Expose
@@ -33,7 +34,7 @@ public class MCQCard extends Card {
         this.cardType = "MCQCard";
     }
 
-    public int getCardMax(){
+    public int getChoiceMax(){
         return 4;
     }
 
@@ -47,6 +48,10 @@ public class MCQCard extends Card {
 
     public List<String> getAnswers() {
         return answers;
+    }
+
+    public String getAnswer(int index) {
+        return answers.get(index);
     }
 
     public void setAnswers(List<String> answers) {
