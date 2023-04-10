@@ -6,15 +6,14 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editdeck.TagViewController;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.Tag;
+import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EditDeckController implements EditDeckViewController.Listener,
@@ -163,9 +162,57 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void backOfCardModified(Card card, String newBack) {
+    public void backOfFlashCardModified(FlashCard flashCard, String newBack) {
         try {
-            card.setBack(newBack);
+            flashCard.setBack(newBack);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.showCards();
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void mcqAnswerEdit(MCQCard mcqCard, String text, int index) {
+        try {
+            mcqCard.setAnswer(index, text);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.showCards();
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void mcqCorrectAnswerEdit(MCQCard mcqCard, int index) {
+        try {
+            mcqCard.setCorrectAnswer(index);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.showCards();
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void mcqAnswerRemove(MCQCard mcqCard, int index) {
+        try {
+            mcqCard.removeAnswer(index);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.showCards();
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void mcqAnswerAdded(MCQCard mcqCard) {
+        try {
+            mcqCard.addAnswer("Nouvelle réponse");
             deckDAO.saveDeck(deck);
             editDeckViewController.showCards();
 
@@ -186,9 +233,32 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void newCard() {
+    public void newFlashCard() {
         try {
-            deck.addCard(new Card("Avant", "Arrière"));
+            String frontHtml = "Avant";
+            deck.addCard(new FlashCard(frontHtml, "Arrière"));
+            deckDAO.saveDeck(deck);
+
+            editDeckViewController.showCards();
+            editDeckViewController.setSelectedCard(deck.getLastCard());
+            cardPreviewClicked(deck.getLastCard());
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void newMCQCard() {
+        try {
+            String frontHtml = "Avant";
+            List<String> answers = new ArrayList<>();
+
+            final int MAX_QCM_ANSWERS = 4;
+            for (int i = 0; i < MAX_QCM_ANSWERS; i++)
+                answers.add("Réponse " + i);
+
+            deck.addCard(new MCQCard(frontHtml, answers, 0));
             deckDAO.saveDeck(deck);
 
             editDeckViewController.showCards();
@@ -207,6 +277,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deckDAO.saveDeck(deck);
             editDeckViewController.showCards();
             editDeckViewController.hideSelectedCardEditor();
+
             if (deck.cardCount() != 0) {
                 cardPreviewClicked(deck.getLastCard());
             }

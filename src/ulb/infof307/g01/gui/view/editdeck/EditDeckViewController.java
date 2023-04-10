@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.view.editdeck;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -17,18 +18,21 @@ import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.FlashCard;
+import ulb.infof307.g01.model.MCQCard;
 
 import java.io.File;
 import java.util.List;
 
 public class EditDeckViewController {
-    public GridPane choicesGrid;
-    public BorderPane addChoiceField;
-    public FontIcon addChoiceIcon;
+
 
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
+
+    @FXML
+    private GridPane choicesGrid;
 
     @FXML
     private VBox leftVbox;
@@ -40,7 +44,7 @@ public class EditDeckViewController {
     private HBox cardTypeBox;
 
     @FXML
-    private HBox hbox;
+    private HBox mainHbox;
 
     @FXML
     private BorderPane frontCard;
@@ -105,13 +109,14 @@ public class EditDeckViewController {
 
     private Listener listener;
 
+
     /* ====================================================================== */
     /*                              Initializer                               */
     /* ====================================================================== */
 
     /**
      * Initializes the controller class. Cannot happen during construction as
-     *  the parents size is needed to set the width of the left and right components.
+     * the parents size is needed to set the width of the left and right components.
      */
     public void init() {
         backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -162,7 +167,7 @@ public class EditDeckViewController {
 
         cardsContainer.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        for (Card card : deck){
+        for (Card card : deck) {
             Document doc = Jsoup.parse(card.getFront());
             Element body = doc.body();
             list.add(body.text());
@@ -171,11 +176,253 @@ public class EditDeckViewController {
         cardsContainer.refresh();
     }
 
+    /**
+     * Loads the card editor with the given card.
+     *
+     * @param flashCard the card to load
+     */
+    private void loadFlashCardEditor(FlashCard flashCard) {
+        backCardText.setText(flashCard.getBack());
+        backCard.setVisible(true);
+        choicesGrid.setVisible(false);
+    }
+
+    /**
+     * Loads the card editor with the given MCQ card.
+     *
+     * @param mcqCard the MCQ card to load
+     */
+    private void loadQCMCardEditor(MCQCard mcqCard) {
+        choicesGrid.getChildren().clear();
+        currentCol = 0;
+        currentRow = 0;
+        int correctAnswerIndex = mcqCard.getCorrectAnswer();
+        for (int i = 0; i < mcqCard.getChoiceMax(); i++) {
+            if (i >= mcqCard.getNbAnswers()) {
+                addChoiceFieldButton();
+                break;
+            }
+
+            addChoiceField(mcqCard.getAnswer(i), i, correctAnswerIndex == i);
+            nextPosition();
+        }
+
+        backCard.setVisible(false);
+        choicesGrid.setVisible(true);
+    }
+
+    private void nextPosition() {
+        currentCol++;
+        if (currentCol == 2) {
+            currentCol = 0;
+            currentRow++;
+        }
+    }
+
+    /**
+     * Loads the card editor with the given card.
+     *
+     * @param card the card to load
+     */
     private void loadCardEditor(Card card) {
         frontCardWebView.getEngine().loadContent(card.getFront());
-        backCardText.setText(card.getBack());
         frontCard.setVisible(true);
-        backCard.setVisible(true);
+
+        if (card instanceof FlashCard flashCard)
+            loadFlashCardEditor(flashCard);
+
+        else if (card instanceof MCQCard mcqCard)
+            loadQCMCardEditor(mcqCard);
+
+    }
+
+
+    /**
+     * Adds a button that allows the user to add a choice field to the grid
+     *  when clicked.
+     */
+    private void addChoiceFieldButton() {
+        Button addChoiceButton = new Button();
+        addChoiceButton.setGraphic(new FontIcon("mdi2p-plus"));
+
+        addChoiceButton.setOnAction(event -> {
+            listener.mcqAnswerAdded((MCQCard) selectedCard);
+            loadSelectedCardEditor();
+        });
+
+        choicesGrid.add(addChoiceButton, currentCol, currentRow);
+    }
+
+    /**
+     * Adds a choice field to the grid
+     *
+     * @param choice        the text of the choice
+     * @param index         the index of the choice in the grid
+     * @param correctAnswer true if the choice is the correct answer
+     */
+    private void addChoiceField(String choice, int index, boolean correctAnswer) {
+        TextField textField = getChoiceFieldTextField(choice, index);
+
+        textField.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case ENTER -> {
+                    if (choiceFieldEmpty(textField, index))
+                        return;
+
+                    focusNextNode(index, true, false);
+                }
+
+                case TAB -> focusNextNode(index, false, true);
+            }
+        });
+
+        Button setCorrectAnswerButton = getChoiceFieldCorrectAnswerButton(correctAnswer, index);
+        Button removeChoiceButton = getChoiceFieldRemoveButton(index);
+
+        HBox hBox = new HBox();
+        HBox.setHgrow(hBox, Priority.ALWAYS);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.getChildren().addAll(textField, setCorrectAnswerButton, removeChoiceButton);
+        hBox.setSpacing(2);
+        choicesGrid.add(hBox, currentCol, currentRow);
+    }
+
+    /**
+     * Checks if the choice field is empty and removes it if it is.
+     *  Returns true if the choice field was removed.
+     *
+     * @param textField the text field of the choice field
+     * @param index the index of the choice field
+     *
+     * @return true if the choice field was removed
+     */
+    private boolean choiceFieldEmpty(TextField textField, int index) {
+        if (!textField.getText().isEmpty() || index < 2)
+            return false;
+
+        listener.mcqAnswerRemove((MCQCard) selectedCard, index);
+        loadSelectedCardEditor();
+        focusPreviousChoiceField(index);
+        return true;
+    }
+
+    /**
+     * Focuses the previous choice field of the given index.
+     *
+     * @param index the index of the choice field
+     */
+    private void focusPreviousChoiceField(int index) {
+        HBox hBox = (HBox) choicesGrid.getChildren().get(index - 1);
+        TextField textField = (TextField) hBox.getChildren().get(0);
+        textField.requestFocus();
+        textField.selectAll();
+    }
+
+    /**
+     * Focuses the next choice field of the given index.
+     *
+     * @param nextIndex the index of the choice field
+     */
+    private void focusNextChoiceField(int nextIndex) {
+        HBox hBox = (HBox) choicesGrid.getChildren().get(nextIndex);
+        TextField textField = (TextField) hBox.getChildren().get(0);
+        textField.requestFocus();
+        textField.selectAll();
+    }
+
+    /**
+     * Focuses the next eligible node after the choice field at the given index.
+     *
+     * @param index the index of the choice field
+     */
+    private void focusNextNode(int index, boolean createNextNode, boolean cycle) {
+        int nextIndex = index + 1;
+        if (nextIndex < ((MCQCard) selectedCard).getNbAnswers()) {
+            focusNextChoiceField(nextIndex);
+
+        } else if (nextIndex < 4 && createNextNode) {
+            listener.mcqAnswerAdded((MCQCard) selectedCard);
+            loadSelectedCardEditor();
+            focusNextChoiceField(nextIndex);
+
+        } else if (cycle) {
+            focusNextChoiceField(0);
+
+        } else {
+            mainHbox.requestFocus();
+        }
+    }
+
+    /**
+     * Gets the text field for a choice field
+     *
+     * @param choice the text of the choice
+     * @param index  the index of the choice field
+     * @return the text field
+     */
+    private TextField getChoiceFieldTextField(String choice, int index) {
+        TextField textField = new TextField(choice);
+        textField.setPromptText("Réponse");
+        textField.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(textField, Priority.ALWAYS);
+
+        textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue && index < ((MCQCard) selectedCard).getNbAnswers()) {
+                listener.mcqAnswerEdit((MCQCard) selectedCard, textField.getText(), index);
+            };
+        });
+        return textField;
+    }
+
+    /**
+     * Gets the button to set the correct answer for a choice field
+     *
+     * @param correctAnswer true if the answer is the correct one
+     * @param index         the index of the choice field
+     * @return the button
+     */
+    private Button getChoiceFieldCorrectAnswerButton(boolean correctAnswer, int index) {
+        Button setCorrectAnswerButton = new Button();
+        FontIcon checkIcon = new FontIcon("mdi2c-check");
+
+        if (correctAnswer) {
+            checkIcon.setIconColor(Color.WHITE);
+            setCorrectAnswerButton.setStyle("-fx-background-color: green;");
+        }
+
+        setCorrectAnswerButton.setGraphic(checkIcon);
+
+        setCorrectAnswerButton.setOnAction(event -> {
+            listener.mcqCorrectAnswerEdit((MCQCard) selectedCard, index);
+            loadSelectedCardEditor();
+        });
+
+        return setCorrectAnswerButton;
+    }
+
+
+    /**
+     * Gets the remove button for a choice field
+     *
+     * @param index the index of the choice field to remove
+     * @return the button
+     */
+    private Button getChoiceFieldRemoveButton(int index) {
+        Button removeChoiceButton = new Button();
+        removeChoiceButton.setStyle("-fx-background-color: red;");
+        FontIcon trashIcon = new FontIcon("mdi2t-trash-can-outline");
+        trashIcon.setIconColor(Color.WHITE);
+        removeChoiceButton.setGraphic(trashIcon);
+
+        if (((MCQCard) selectedCard).isCardMin())
+            removeChoiceButton.setDisable(true);
+
+        removeChoiceButton.setOnAction(event -> {
+            listener.mcqAnswerRemove((MCQCard) selectedCard, index);
+            loadSelectedCardEditor();
+        });
+
+        return removeChoiceButton;
     }
 
     public void loadSelectedCardEditor() {
@@ -185,6 +432,7 @@ public class EditDeckViewController {
     public void hideSelectedCardEditor() {
         frontCard.setVisible(false);
         backCard.setVisible(false);
+        choicesGrid.setVisible(false);
     }
 
 
@@ -246,7 +494,7 @@ public class EditDeckViewController {
     @FXML
     private void handleUploadImageClicked() {
         final FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(hbox.getScene().getWindow());
+        File file = fileChooser.showOpenDialog(mainHbox.getScene().getWindow());
         listener.uploadImage(file.toURI().toString());
     }
 
@@ -315,16 +563,6 @@ public class EditDeckViewController {
         frontCardEditIcon.setIconColor(Color.web("#000000"));
     }
 
-    @FXML
-    private void handleAddChoiceHover() {
-        addChoiceIcon.setIconColor(Color.web("#FFFFFF"));
-    }
-
-    @FXML
-    private void handleAddChoiceHoverExit() {
-        addChoiceIcon.setIconColor(Color.web("#000000"));
-    }
-
     /* ====================================================================== */
     /*                            Modified text                               */
     /* ====================================================================== */
@@ -333,9 +571,10 @@ public class EditDeckViewController {
     private void handleUpdateDeckName() {
         listener.deckNameModified(deckNameText.getText());
     }
+
     @FXML
     private void handleBackEdit() {
-        listener.backOfCardModified(selectedCard, backCardText.getText());
+        listener.backOfFlashCardModified((FlashCard) selectedCard, backCardText.getText());
     }
 
     @FXML
@@ -343,47 +582,33 @@ public class EditDeckViewController {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
 
-        hbox.requestFocus();
+        mainHbox.requestFocus();
     }
 
     @FXML
-    private void handleQCMSelected() {
+    private void handleMCQCardSelected() {
         backCard.setVisible(false);
-        System.out.println("QCM selected " + backCard.visibleProperty());
+        listener.newMCQCard();
         cardTypeSelected();
+
         choicesGrid.setVisible(true);
-
-
     }
 
     @FXML
-    private void handleNormalSelected() {
+    private void handleFlashCardSelected() {
         choicesGrid.setVisible(false);
+        listener.newFlashCard();
         cardTypeSelected();
         backCard.setVisible(true);
     }
 
     private void cardTypeSelected() {
-        listener.newCard();
         setCardTypeButtonVisibility(false);
         frontCard.setVisible(true);
     }
 
     private void setCardTypeButtonVisibility(boolean visibility) {
         cardTypeBox.setVisible(visibility);
-    }
-
-    @FXML
-    private void handleAddNewChoice() {
-        int nextCol = currentCol ^ 1;
-        int nextRow = currentRow;
-        if (nextCol==0) nextRow +=1;
-
-        choicesGrid.getChildren().remove(addChoiceField);
-        GridPane.setConstraints(addChoiceField, nextCol, nextRow);
-        choicesGrid.getChildren().add(addChoiceField);
-
-        currentCol = nextCol; currentRow = nextRow;
     }
 
 
@@ -393,13 +618,33 @@ public class EditDeckViewController {
 
     public interface Listener {
         void deckNameModified(String newName);
+
         void tagAddedToDeck(Deck deck, String tagName, String color);
-        void backOfCardModified(Card card, String newBack);
+
+        void backOfFlashCardModified(FlashCard selectedCard, String newBack);
+
+        void mcqAnswerEdit(MCQCard selectedCard, String text, int index);
+
+        void mcqCorrectAnswerEdit(MCQCard selectedCard, int i);
+
+        void mcqAnswerRemove(MCQCard selectedCard, int index);
+
+        void mcqAnswerAdded(MCQCard selectedCard);
+
         void deckColorModified(Deck deck, Color color);
-        void newCard();
+
+        void newFlashCard();
+
+        void newMCQCard();
+
         void removeCard(Card selectedCard);
+
         void cardPreviewClicked(Card card);
+
         void editCardClicked(Card selectedCard);
+
         void uploadImage(String filePath);
+
+
     }
 }

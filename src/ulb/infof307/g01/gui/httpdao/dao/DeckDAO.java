@@ -1,12 +1,14 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import ulb.infof307.g01.model.Deck;
 
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DeckDAO extends HttpDAO {
@@ -25,6 +27,15 @@ public class DeckDAO extends HttpDAO {
         return Boolean.parseBoolean(response.body());
     }
 
+    private List<Deck> stringToDeckArray(String json) {
+        List<Deck> deckList = new ArrayList<>();
+        JsonArray jsonArray = new Gson().fromJson(json, JsonArray.class);
+        for (int i = 0; i < jsonArray.size(); i++) {
+            deckList.add(new Deck(jsonArray.get(i).getAsJsonObject()));
+        }
+        return deckList;
+    }
+
     public List<Deck> getAllDecks()
             throws IOException, InterruptedException {
 
@@ -32,7 +43,7 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        return stringToArray(response.body(), Deck[].class);
+        return stringToDeckArray(response.body());
     }
 
     /**
@@ -57,7 +68,7 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        return stringToArray(response.body(), Deck[].class);
+        return stringToDeckArray(response.body());
     }
 
     public void deleteDeck(Deck deck)

@@ -2,6 +2,8 @@ package ulb.infof307.g01.model;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -13,21 +15,25 @@ class DeckTest {
 
         assertEquals(0, deck.cardCount());
 
-        deck.addCard(new Card("Front", "Back"));
+        deck.addCard(new FlashCard("Front", "Back"));
+        deck.addCard(new MCQCard("Front", List.of("Answer 1", "Answer 2"), 1));
 
-        assertEquals(1, deck.cardCount());
+        assertEquals(2, deck.cardCount());
     }
 
     @Test
     void removeCard_FromInit_SizeDecrease() {
         Deck deck = new Deck("Test");
-        Card card = new Card("Front", "Back");
+        Card card = new FlashCard("Front", "Back");
+        Card card2 = new MCQCard("Front", List.of("Answer 1", "Answer 2"), 1);
 
         deck.addCard(card);
+        deck.addCard(card2);
 
-        assertEquals(1, deck.cardCount());
+        assertEquals(2, deck.cardCount());
 
         deck.removeCard(card);
+        deck.removeCard(card2);
 
         assertEquals(0, deck.cardCount());
     }
