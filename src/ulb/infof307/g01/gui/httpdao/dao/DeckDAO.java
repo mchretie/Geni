@@ -32,7 +32,7 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        return stringToArray(response.body(), Deck[].class);
+        return stringToDeckArray(response.body());
     }
 
     /**
@@ -57,7 +57,7 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        return stringToArray(response.body(), Deck[].class);
+        return stringToDeckArray(response.body());
     }
 
     public void deleteDeck(Deck deck)

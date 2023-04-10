@@ -28,6 +28,10 @@ public class EditDeckViewController {
     /* ====================================================================== */
     /*                            FXML Attributes                             */
     /* ====================================================================== */
+
+    @FXML
+    private HBox hbox;
+
     @FXML
     private VBox leftVbox;
 
@@ -247,7 +251,7 @@ public class EditDeckViewController {
     @FXML
     private void handleUploadImageClicked() {
         final FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
+        File file = fileChooser.showOpenDialog(hbox.getScene().getWindow());
         listener.uploadImage(file.toURI().toString());
     }
 
