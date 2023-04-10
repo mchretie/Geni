@@ -268,7 +268,12 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void newMCQCard() {
         try {
             String frontHtml = "Avant";
-            deck.addCard(new MCQCard(frontHtml, Arrays.asList("Réponse 1", "Réponse 2", "Réponse 3", "Réponse 4"), 0));
+            ArrayList<String> answers = new ArrayList<>();
+            answers.add("Réponse 1");
+            answers.add("Réponse 2");
+            answers.add("Réponse 3");
+            answers.add("Réponse 4");
+            deck.addCard(new MCQCard(frontHtml, answers, 0));
             deckDAO.saveDeck(deck);
 
             editDeckViewController.showCards();

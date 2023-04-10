@@ -61,7 +61,6 @@ public class MCQCard extends Card {
         // limit answer to min two
         if (this.answers.size() <= 2)
             return;
-        System.out.println("Removing answer " + index);
         this.answers.remove(index);
         if (this.correctAnswer == index)
             this.correctAnswer = index - 1;
