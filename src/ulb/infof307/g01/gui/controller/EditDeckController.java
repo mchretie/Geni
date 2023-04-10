@@ -5,23 +5,19 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.view.editdeck.cardeditors.editQCMcard.EditAnswerFieldController;
+import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
-import ulb.infof307.g01.gui.view.editdeck.cardeditors.editflashcard.EditFlashCardViewController;
-import ulb.infof307.g01.gui.view.editdeck.cardeditors.editQCMcard.EditQCMCardViewController;
-import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EditDeckController implements EditDeckViewController.Listener,
-                                           EditFlashCardViewController.Listener,
-                                           EditQCMCardViewController.Listener,
-                                           TagViewController.Listener {
+        TagViewController.Listener {
 
     /* ====================================================================== */
     /*                             Model Attributes                           */
@@ -43,8 +39,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
     private final MainWindowViewController mainWindowViewController;
     private final EditDeckViewController editDeckViewController;
-    private final EditFlashCardViewController editFlashCardViewController;
-    private final EditQCMCardViewController editQCMCardViewController;
 
 
     /* ====================================================================== */
@@ -68,7 +62,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public EditDeckController(Stage stage, Deck deck,
                               MainWindowViewController mainWindowViewController,
                               ControllerListener controllerListener,
-                              DeckDAO deckDAO) throws IOException {
+                              DeckDAO deckDAO) {
 
         this.stage = stage;
         this.deck = deck;
@@ -82,9 +76,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
         editDeckViewController.setListener(this);
         editDeckViewController.init();
         editDeckViewController.setDeck(deck);
-
-        editFlashCardViewController = setEditFlashCard();
-        editQCMCardViewController = setEditQCMCard();
     }
 
 
@@ -106,14 +97,13 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
         if (deck.cardCount() > 0) {
             editDeckViewController.setSelectedCard(deck.getFirstCard());
-            editFlashCardViewController.loadCardEditor(); //TODO
-        }
-
-        else
-            editDeckViewController.hideCardEditor();
+            editDeckViewController.loadSelectedCardEditor();
+        } else
+            editDeckViewController.hideSelectedCardEditor();
 
         stage.show();
     }
+
 
     private List<Node> loadTags() {
         try {
@@ -141,214 +131,19 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     /* ====================================================================== */
-    /*                        Card Editors Setters                            */
-    /* ====================================================================== */
-
-    public EditFlashCardViewController setEditFlashCard() throws IOException {
-        URL resource = EditDeckViewController
-                .class
-                .getResource("cardeditors/editflashcard/EditFlashCardView.fxml");
-        FXMLLoader loader = new FXMLLoader(resource);
-
-        Node node = loader.load();
-
-        EditFlashCardViewController flashCardController = loader.getController();
-
-        flashCardController.setListener(this);
-        editDeckViewController.setFlashCardEditor(node);
-
-        return  flashCardController;
-    }
-
-    public EditQCMCardViewController setEditQCMCard() throws IOException {
-        URL resource = EditDeckViewController
-                .class
-                .getResource("cardeditors/editQCMcard/EditQCMCardView.fxml");
-        FXMLLoader loader = new FXMLLoader(resource);
-
-        Node node = loader.load();
-
-        EditQCMCardViewController QCMCardController = loader.getController();
-        QCMCardController.setListener(this);
-        editDeckViewController.setQCMCardEditor(node);
-
-        return QCMCardController;
-    }
-
-    /* ====================================================================== */
-    /*                        View Listener Methods                           */
-    /* ====================================================================== */
-
-
-    /* ====================================================================== */
-    /*                             Modify Card                                */
+    /*                        View Listener Method                            */
     /* ====================================================================== */
 
     @Override
-    public void frontOfCardModified(Card card, String newFront) {
+    public void deckNameModified(String newName) {
         try {
-            card.setFront(newFront);
+            deck.setName(newName.trim());
             deckDAO.saveDeck(deck);
-            editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
         }
     }
-
-    @Override
-    public void editCardClicked(Card selectedCard) {
-        controllerListener.editCardClicked(deck, selectedCard);
-    }
-
-    @Override
-    public void backOfFlashCardModified(FlashCard card, String newBack) {
-        try {
-            card.setBack(newBack);
-            deckDAO.saveDeck(deck);
-            editDeckViewController.showCards();
-
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-    private List<Node> loadAnswers(MCQCard card){
-        try {
-            int idx = 0;
-            List<Node> answerViews = new ArrayList<>();
-            for (String answer: card.getAnswers()){
-                URL url = EditAnswerFieldController.class.getResource("EditAnswerField.fxml");
-                FXMLLoader loader = new FXMLLoader(url);
-
-                Node node = loader.load();
-                EditAnswerFieldController answerViewController = loader.getController();
-                answerViewController.setListener(editQCMCardViewController.get());
-                answerViewController.setAnswerText(answer, idx);
-                if (idx == card.getCorrectAnswer())
-                    answerViewController.setCorrectAnswer();
-                idx++;
-                answerViews.add(node);
-            }
-            return answerViews;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public void setCorrectAnswer(MCQCard card, int idxOfAnswer) {
-        try {
-            card.setCorrectAnswer(idxOfAnswer);
-            deckDAO.saveDeck(deck);
-            editQCMCardViewController.loadCardEditor(loadAnswers(card));
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-    @Override
-    public void answerChanged(MCQCard card, int idxOfAnswer, String newAnswer) {
-        try {
-            ArrayList<String> answers = new ArrayList<>(card.getAnswers());
-            answers.set(idxOfAnswer, newAnswer);
-            card.setAnswers(answers);
-            deckDAO.saveDeck(deck);
-            editQCMCardViewController.loadCardEditor(loadAnswers(card));
-
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-    @Override
-    public void addNewAnswerToCard(MCQCard card){
-        try {
-            ArrayList<String> answers = new ArrayList<>(card.getAnswers());
-            answers.add("");
-            card.setAnswers(answers);
-            deckDAO.saveDeck(deck);
-            editQCMCardViewController.loadCardEditor(loadAnswers(card));
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-    @Override
-    public void removeAnswerFromCard(MCQCard card, int idxOfAnswer){
-        try {
-            ArrayList<String> answers = new ArrayList<>(card.getAnswers());
-            answers.remove(idxOfAnswer);
-            card.setAnswers(answers);
-            deckDAO.saveDeck(deck);
-            editQCMCardViewController.loadCardEditor(loadAnswers(card));
-
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-
-    /* ====================================================================== */
-    /*                             Cards Manager                              */
-    /* ====================================================================== */
-
-    @Override
-    public void newCard(String type) {
-        try {
-            if (type.equals("flashCard"))
-            deck.addCard(new FlashCard("Avant", "Arrière"));
-            else
-                deck.addCard(new MCQCard("Avant", List.of("Réponse 1", "Réponse 2", "Répponse 3"), 1));
-            deckDAO.saveDeck(deck);
-
-            editDeckViewController.showCards();
-            editDeckViewController.setSelectedCard(deck.getLastCard());
-            cardPreviewClicked(deck.getLastCard());
-
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-    @Override
-    public void removeCard(Card selectedCard){
-        try {
-            deck.removeCard(selectedCard);
-            deckDAO.saveDeck(deck);
-            editDeckViewController.showCards();
-            editDeckViewController.hideCardEditor();
-            if (deck.cardCount() != 0) {
-                cardPreviewClicked(deck.getLastCard());
-            }
-
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-    @Override
-    public void cardPreviewClicked(Card card) {
-        editDeckViewController.setSelectedCard(card);
-
-        if (card instanceof FlashCard){
-            editFlashCardViewController.setCard((FlashCard) card);
-            editFlashCardViewController.loadCardEditor();
-            editDeckViewController.showFlashCardEditor();
-        }
-        else if (card instanceof MCQCard){
-            editQCMCardViewController.setCard((MCQCard) card);
-            editQCMCardViewController.loadCardEditor(loadAnswers((MCQCard) card));
-            editDeckViewController.showQCMCardEditor();
-        }
-    }
-
-    /* ====================================================================== */
-    /*                             Tags Manager                              */
-    /* ====================================================================== */
-
 
     @Override
     public void tagAddedToDeck(Deck deck, String tagName, String color) {
@@ -357,7 +152,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
                 return;
 
             deck.addTag(new Tag(tagName, color));
-            editDeckViewController.setTags( loadTags() );
+            editDeckViewController.setTags(loadTags());
 
             deckDAO.saveDeck(deck);
 
@@ -367,11 +162,11 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void tagNameChanged(Tag tag, String name) {
+    public void backOfFlashCardModified(FlashCard flashCard, String newBack) {
         try {
-            tag.setName(name);
+            flashCard.setBack(newBack);
             deckDAO.saveDeck(deck);
-            editDeckViewController.setTags( loadTags() );
+            editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
@@ -379,26 +174,47 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void tagDeleted(Tag tag) {
+    public void mcqAnswerEdit(MCQCard mcqCard, String text, int index) {
         try {
-            deck.removeTag(tag);
+            mcqCard.setAnswer(index, text);
             deckDAO.saveDeck(deck);
-            editDeckViewController.setTags( loadTags() );
+            editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
         }
     }
 
-    /* ====================================================================== */
-    /*                             Modify Deck                                */
-    /* ====================================================================== */
+    @Override
+    public void mcqCorrectAnswerEdit(MCQCard mcqCard, int index) {
+        try {
+            mcqCard.setCorrectAnswer(index);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.showCards();
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
 
     @Override
-    public void deckNameModified(String newName) {
+    public void mcqAnswerRemove(MCQCard mcqCard, int index) {
         try {
-            deck.setName(newName.trim());
+            mcqCard.removeAnswer(index);
             deckDAO.saveDeck(deck);
+            editDeckViewController.showCards();
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void mcqAnswerAdded(MCQCard mcqCard) {
+        try {
+            mcqCard.addAnswer("Nouvelle réponse");
+            deckDAO.saveDeck(deck);
+            editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
@@ -417,11 +233,99 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
+    public void newFlashCard() {
+        try {
+            String frontHtml = "Avant";
+            deck.addCard(new FlashCard(frontHtml, "Arrière"));
+            deckDAO.saveDeck(deck);
+
+            editDeckViewController.showCards();
+            editDeckViewController.setSelectedCard(deck.getLastCard());
+            cardPreviewClicked(deck.getLastCard());
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void newMCQCard() {
+        try {
+            String frontHtml = "Avant";
+            List<String> answers = new ArrayList<>();
+
+            final int MAX_QCM_ANSWERS = 4;
+            for (int i = 0; i < MAX_QCM_ANSWERS; i++)
+                answers.add("Réponse " + i);
+
+            deck.addCard(new MCQCard(frontHtml, answers, 0));
+            deckDAO.saveDeck(deck);
+
+            editDeckViewController.showCards();
+            editDeckViewController.setSelectedCard(deck.getLastCard());
+            cardPreviewClicked(deck.getLastCard());
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void removeCard(Card selectedCard) {
+        try {
+            deck.removeCard(selectedCard);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.showCards();
+            editDeckViewController.hideSelectedCardEditor();
+
+            if (deck.cardCount() != 0) {
+                cardPreviewClicked(deck.getLastCard());
+            }
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void cardPreviewClicked(Card card) {
+        editDeckViewController.setSelectedCard(card);
+        editDeckViewController.loadSelectedCardEditor();
+    }
+
+    @Override
     public void uploadImage(String filePath) {
         System.out.println(filePath);
     }
 
+    @Override
+    public void editCardClicked(Card selectedCard) {
+        controllerListener.editCardClicked(deck, selectedCard);
+    }
 
+    @Override
+    public void tagNameChanged(Tag tag, String name) {
+        try {
+            tag.setName(name);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.setTags(loadTags());
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void tagDeleted(Tag tag) {
+        try {
+            deck.removeTag(tag);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.setTags(loadTags());
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
 
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */
@@ -429,6 +333,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
     public interface ControllerListener {
         void savingError(Exception e);
+
         void editCardClicked(Deck deck, Card card);
     }
 }

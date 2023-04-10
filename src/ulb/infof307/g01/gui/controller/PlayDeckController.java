@@ -1,10 +1,7 @@
 package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.CardExtractor;
-import ulb.infof307.g01.model.CardExtractorRandom;
-import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 
@@ -56,9 +53,16 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         mainWindowViewController.setPlayDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
+        showCard();
         stage.show();
     }
 
+    public void showCard(){
+        if (currentCard instanceof FlashCard)
+            playDeckViewController.showNormalCard();
+        else if (currentCard instanceof MCQCard)
+            playDeckViewController.showMCQCard();
+    }
 
     /* ====================================================================== */
     /*                        View Listener Method                            */
@@ -66,11 +70,13 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     @Override
     public void cardClicked() {
-        if (frontShown)
-            playDeckViewController.flipToBackOfCard();
-        else
-            playDeckViewController.flipToFrontOfCard();
-        frontShown = !frontShown;
+        if (currentCard instanceof FlashCard){
+            if (frontShown)
+                playDeckViewController.flipToBackOfCard();
+            else
+                playDeckViewController.flipToFrontOfCard();
+            frontShown = !frontShown;
+        }
     }
 
     @Override
@@ -83,6 +89,8 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         else
             controllerListener.finishedPlayingDeck();
+
+        showCard();
     }
 
     @Override
@@ -94,6 +102,8 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         currentCard = previousCard;
         playDeckViewController.setCurrentCard(currentCard);
+
+        showCard();
     }
 
 
