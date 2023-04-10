@@ -255,7 +255,7 @@ public class EditDeckViewController {
         TextField textField = getChoiceFieldTextField(choice, index);
 
         textField.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER)
+            if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB)
                 focusNextChoiceField(index);
         });
 
