@@ -10,7 +10,7 @@ public class MCQCard extends Card{
     @Expose
     private List<String> answers;
     @Expose
-    private Integer correctAnswer;
+    private int correctAnswer;
 
     public MCQCard(String front, List<String> answers, int correctAnswer) {
         super(front);
