@@ -210,6 +210,18 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
+    public void mcqAnswerAdded(MCQCard mcqCard) {
+        try {
+            mcqCard.addAnswer("Nouvelle réponse");
+            deckDAO.saveDeck(deck);
+            editDeckViewController.showCards();
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
     public void deckColorModified(Deck deck, Color color) {
         try {
             deck.setColor(color.toString());

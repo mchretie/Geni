@@ -33,6 +33,18 @@ public class MCQCard extends Card {
         this.cardType = "MCQCard";
     }
 
+    public int getCardMax(){
+        return 4;
+    }
+
+    public int getCardMin(){
+        return 2;
+    }
+
+    public boolean isCardMin(){
+        return this.answers.size() == 2;
+    }
+
     public List<String> getAnswers() {
         return answers;
     }
@@ -41,10 +53,15 @@ public class MCQCard extends Card {
         this.answers = answers;
     }
 
+    public void addAnswer(String answer) {
+        this.answers.add(answer);
+    }
+
     public void removeAnswer(int index) {
         // limit answer to min two
         if (this.answers.size() <= 2)
             return;
+        System.out.println("Removing answer " + index);
         this.answers.remove(index);
         if (this.correctAnswer == index)
             this.correctAnswer = index - 1;

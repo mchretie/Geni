@@ -186,9 +186,9 @@ public class EditDeckViewController {
             currentCol = 0;
             currentRow = 0;
             int correctAnswerIndex = mcqCard.getCorrectAnswer();
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < mcqCard.getCardMax(); i++) {
                 if (i >= mcqCard.getAnswers().size()) {
-
+                    addChoiceFieldButton();
                     break;
                 }
                 String choice = mcqCard.getAnswers().get(i);
@@ -202,6 +202,16 @@ public class EditDeckViewController {
             backCard.setVisible(false);
             choicesGrid.setVisible(true);
         }
+    }
+
+    private void addChoiceFieldButton() {
+        Button addChoiceButton = new Button();
+        addChoiceButton.setGraphic(new FontIcon("mdi2p-plus"));
+        addChoiceButton.setOnAction(event -> {
+            listener.mcqAnswerAdded((MCQCard) selectedCard);
+            loadSelectedCardEditor();
+        });
+        choicesGrid.add(addChoiceButton, currentCol, currentRow);
     }
 
     private void addChoiceField(String choice, int index, boolean correctAnswer) {
@@ -225,7 +235,7 @@ public class EditDeckViewController {
         textField.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(textField, Priority.ALWAYS);
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) handleMCQAnswerEdit(textField, index);
+            if (!newValue) listener.mcqAnswerEdit((MCQCard) selectedCard, textField.getText(), index);
         });
         return textField;
     }
@@ -252,16 +262,14 @@ public class EditDeckViewController {
         FontIcon trashIcon = new FontIcon("mdi2t-trash-can-outline");
         trashIcon.setIconColor(Color.WHITE);
         removeChoiceButton.setGraphic(trashIcon);
+        if (((MCQCard) selectedCard).isCardMin())
+            removeChoiceButton.setDisable(true);
 
         removeChoiceButton.setOnAction(event -> {
             listener.mcqAnswerRemove((MCQCard) selectedCard, index);
             loadSelectedCardEditor();
         });
         return removeChoiceButton;
-    }
-
-    private void handleMCQAnswerEdit(TextField textField, int index) {
-        listener.mcqAnswerEdit((MCQCard) selectedCard, textField.getText(), index);
     }
 
     public void loadSelectedCardEditor() {
@@ -489,6 +497,9 @@ public class EditDeckViewController {
         void mcqAnswerEdit(MCQCard selectedCard, String text, int index);
 
         void mcqCorrectAnswerEdit(MCQCard selectedCard, int i);
+        void mcqAnswerRemove(MCQCard selectedCard, int index);
+
+        void mcqAnswerAdded(MCQCard selectedCard);
 
         void deckColorModified(Deck deck, Color color);
 
@@ -500,12 +511,13 @@ public class EditDeckViewController {
 
 
         void removeCard(Card selectedCard);
+
         void cardPreviewClicked(Card card);
 
         void editCardClicked(Card selectedCard);
 
         void uploadImage(String filePath);
 
-        void mcqAnswerRemove(MCQCard selectedCard, int index);
+
     }
 }
