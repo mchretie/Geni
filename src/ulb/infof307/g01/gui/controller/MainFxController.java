@@ -18,315 +18,370 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.prefs.Preferences;
+
+
 /**
  * Main class of the application which initializes the main view using the main
  * view handler and loads a menu view.
  */
 
 public class MainFxController
-    extends Application implements MainWindowViewController.NavigationListener,
-                                   DeckMenuController.ControllerListener,
-                                   PlayDeckController.ControllerListener,
-                                   EditDeckController.ControllerListener,
-                                   EditCardController.ControllerListener,
-                                   LoginController.ControllerListener,
-                                   ProfileController.ControllerListener {
+        extends Application implements MainWindowViewController.NavigationListener,
+        DeckMenuController.ControllerListener,
+        PlayDeckController.ControllerListener,
+        EditDeckController.ControllerListener,
+        EditCardController.ControllerListener,
+        LoginController.ControllerListener,
+        ProfileController.ControllerListener {
 
-  /* ====================================================================== */
-  /*                          Attribute: Controllers                        */
-  /* ====================================================================== */
+    /* ====================================================================== */
+    /*                          Attribute: Controllers                        */
+    /* ====================================================================== */
 
-  private DeckMenuController deckMenuController;
-  private EditDeckController editDeckController;
-  private PlayDeckController playDeckController;
-  private EditCardController editCardController;
-  private LoginController loginController;
-  private ProfileController profileController;
+    private DeckMenuController deckMenuController;
+    private EditDeckController editDeckController;
+    private PlayDeckController playDeckController;
+    private EditCardController editCardController;
+    private LoginController loginController;
+    private ProfileController profileController;
 
-  private MainWindowViewController mainWindowViewController;
+    private MainWindowViewController mainWindowViewController;
 
-  /* ====================================================================== */
-  /*                              DAO Attributes                            */
-  /* ====================================================================== */
+    /* ====================================================================== */
+    /*                              DAO Attributes                            */
+    /* ====================================================================== */
 
-  private final UserDAO userDAO = new UserDAO();
-  private final DeckDAO deckDAO = new DeckDAO();
+    private final UserDAO userDAO = new UserDAO();
+    private final DeckDAO deckDAO = new DeckDAO();
 
-  /* ====================================================================== */
-  /*                            View Stack Attributes                       */
-  /* ====================================================================== */
 
-  private enum View {
-    DECK_MENU,
-    PLAY_DECK,
-    EDIT_DECK,
-    HTML_EDITOR,
-    LOGIN,
-    PROFILE
-  }
+    /* ====================================================================== */
+    /*                            View Stack Attributes                       */
+    /* ====================================================================== */
 
-  List<View> viewStack = new ArrayList<>();
-
-  /* ====================================================================== */
-  /*                             Stage Attributes                           */
-  /* ====================================================================== */
-
-  Stage stage;
-
-  /* ====================================================================== */
-  /*                                  Main                                  */
-  /* ====================================================================== */
-
-  public static void main(String[] args) { launch(); }
-
-  /* ====================================================================== */
-  /*                           Application Methods                          */
-  /* ====================================================================== */
-
-  @Override
-  public void start(Stage stage) throws IOException, InterruptedException {
-
-    this.stage = stage;
-
-    // TODO: Title and login.
-    stage.setTitle("Pokémon TCG Deck Builder");
-
-    if (userDAO.userCredentialsExist()) {
-      userDAO.loginWithCredentials();
-    } else {
-      userDAO.loginAsGuest();
+    private enum View {
+        DECK_MENU,
+        PLAY_DECK,
+        EDIT_DECK,
+        HTML_EDITOR,
+        LOGIN,
+        PROFILE
     }
 
-    URL resource =
-        MainWindowViewController.class.getResource("MainWindowView.fxml");
+    List<View> viewStack = new ArrayList<>();
 
-    FXMLLoader fxmlLoader = new FXMLLoader(resource);
+    /* ====================================================================== */
+    /*                             Stage Attributes                           */
+    /* ====================================================================== */
 
-    Parent root = fxmlLoader.load();
+    Stage stage;
 
-    stage.setScene(new Scene(root));
-    stage.setResizable(false);
+    /* ====================================================================== */
+    /*                             Stage Attributes                           */
+    /* ====================================================================== */
 
-    mainWindowViewController = fxmlLoader.getController();
-    mainWindowViewController.setListener(this);
+    private Preferences prefs = Preferences.userNodeForPackage(UserDAO.class);
+    private String username;
+    private String password;
 
-    loginController =
-        new LoginController(stage, mainWindowViewController, this);
-    profileController =
-        new ProfileController(stage, mainWindowViewController, this);
+    /* ====================================================================== */
+    /*                                  Main                                  */
+    /* ====================================================================== */
 
-    System.out.println("something");
-    this.profileController =
-        new ProfileController(stage, mainWindowViewController, this);
-
-    try {
-      deckMenuController = new DeckMenuController(
-          stage, this, mainWindowViewController, deckDAO, userDAO);
-
-      viewStack.add(View.DECK_MENU);
-      System.out.println("showing deck menu on startup");
-      deckMenuController.show();
-
-    } catch (IOException | InterruptedException e) {
-      restartApplicationError(e);
+    public static void main(String[] args) {
+        launch();
     }
-  }
+    /* ====================================================================== */
+    /*                           Application Methods                          */
+    /* ====================================================================== */
 
-  /* ====================================================================== */
-  /*                      Error messages and handling                       */
-  /* ====================================================================== */
+    @Override
+    public void start(Stage stage) throws IOException, InterruptedException {
 
-  /**
-   * Used to communicate errors that require the user to restart
-   * the application
-   */
-  private void communicateError(Exception e, String messageToUser) {
-    mainWindowViewController.alertError(e.toString(), messageToUser);
-  }
+        this.stage = stage;
 
-  @Override
-  public void playDeckClicked(Deck deck) {
-    try {
-      playDeckController =
-          new PlayDeckController(stage, deck, mainWindowViewController, this);
+        // TODO: Title and login.
+        stage.setTitle("Pokémon TCG Deck Builder");
 
-      viewStack.add(View.PLAY_DECK);
-      System.out.println("showing play deck");
-      playDeckController.show();
-    } catch (EmptyDeckException e) {
-      String title = "Paquet vide.";
-      String description = "Le paquet que vous aviez ouvert est vide.";
-      mainWindowViewController.alertInformation(title, description);
-    }
-  }
 
-  /**
-   * For exceptions that indicate that the app cannot continue to
-   * function properly
-   */
-  private void restartApplicationError(Exception e) {
-    communicateError(e, "Veuillez redémarrer l'application.");
-    Platform.exit();
-  }
 
-  /**
-   * For when windows other than the main window fail to launch
-   */
-  private void returnToMenuError(Exception e) {
-    communicateError(e, "Vous reviendrez au menu principal.");
-  }
+        URL resource =
+                MainWindowViewController.class.getResource("MainWindowView.fxml");
 
-  /**
-   * For when changes to components (Decks, cards, etc.) fail to be saved in
-   * the db
-   */
-  private void databaseModificationError(Exception e) {
-    String message = "Vos modifications n’ont pas été enregistrées, "
-                     + "veuillez réessayer. Si le problème persiste, "
-                     + "redémarrez l’application";
+        FXMLLoader fxmlLoader = new FXMLLoader(resource);
 
-    communicateError(e, message);
-  }
+        Parent root = fxmlLoader.load();
 
-  /* ====================================================================== */
-  /*                     Controller Listener Methods                        */
-  /* ====================================================================== */
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
 
-  @Override
-  public void editDeckClicked(Deck deck) {
 
-    try {
-      editDeckController = new EditDeckController(
-          stage, deck, mainWindowViewController, this, deckDAO);
+        mainWindowViewController = fxmlLoader.getController();
+        mainWindowViewController.setListener(this);
 
-      viewStack.add(View.EDIT_DECK);
-      System.out.println("showing edit deck");
-      editDeckController.show();
 
-    } catch (IOException e) {
-      returnToMenuError(e);
-    }
-  }
 
-  @Override
-  public void editCardClicked(Deck deck, Card card) {
-    editCardController = new EditCardController(stage, deck, card, deckDAO,
-                                                mainWindowViewController, this);
-    System.out.println("showing edit card");
-    editCardController.show();
-    viewStack.add(View.HTML_EDITOR);
-  }
+        loginController =
+                new LoginController(stage, mainWindowViewController, this);
+        profileController =
+                new ProfileController(stage, mainWindowViewController, this);
 
-  @Override
-  public void fxmlLoadingError(IOException e) {
-    restartApplicationError(e);
-  }
+        System.out.println("is he guest");
+        if (userCredentialsExist()) {
+            System.out.println("credentials found. Not a guest. logging in");
+            loginWithCredentials();
+            profileController.setLoggedIn(true);
+        }
 
-  @Override
-  public void savingError(Exception e) {
-    databaseModificationError(e);
-  }
 
-  /* ====================================================================== */
-  /*                   Navigation Listener Methods                          */
-  /* ====================================================================== */
-
-  @Override
-  public void goBackClicked() {
-    // If there is no view to go back to, do nothing (shouldn't happen)
-    if (viewStack.size() == 1)
-      return;
-
-    try {
-      System.out.println("go back clicked");
-      viewStack.remove(viewStack.size() - 1);
-      switch (viewStack.get(viewStack.size() - 1)) {
-                    case DECK_MENU -> deckMenuController.show();
-                    case PLAY_DECK -> playDeckController.show();
-                    case EDIT_DECK -> editDeckController.show();
-                    case HTML_EDITOR -> editCardController.show();
-                    case LOGIN -> loginController.show();
-                    case PROFILE -> profileController.show();
-
-      }
-            } catch (IOException | InterruptedException e) {
-                restartApplicationError(e);
-            }
-          }
-
-      @Override
-      public void goToHomeClicked() {
         try {
-          deckMenuController.show();
+            deckMenuController = new DeckMenuController(
+                    stage, this, mainWindowViewController, deckDAO, userDAO);
+
+            viewStack.add(View.DECK_MENU);
+            System.out.println("showing deck menu on startup");
+            deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
-          restartApplicationError(e);
+            restartApplicationError(e);
         }
-      }
+    }
 
-      @Override
-      public void goToCurrentDeckClicked() {
+    /* ====================================================================== */
+    /*                      Error messages and handling                       */
+    /* ====================================================================== */
+
+    /**
+     * Used to communicate errors that require the user to restart
+     * the application
+     */
+    private void communicateError(Exception e, String messageToUser) {
+        mainWindowViewController.alertError(e.toString(), messageToUser);
+    }
+
+    @Override
+    public void playDeckClicked(Deck deck) {
+        try {
+            playDeckController =
+                    new PlayDeckController(stage, deck, mainWindowViewController, this);
+
+            viewStack.add(View.PLAY_DECK);
+            System.out.println("showing play deck");
+            playDeckController.show();
+        } catch (EmptyDeckException e) {
+            String title = "Paquet vide.";
+            String description = "Le paquet que vous aviez ouvert est vide.";
+            mainWindowViewController.alertInformation(title, description);
+        }
+    }
+
+    /**
+     * For exceptions that indicate that the app cannot continue to
+     * function properly
+     */
+    private void restartApplicationError(Exception e) {
+        communicateError(e, "Veuillez redémarrer l'application.");
+        Platform.exit();
+    }
+
+    /**
+     * For when windows other than the main window fail to launch
+     */
+    private void returnToMenuError(Exception e) {
+        communicateError(e, "Vous reviendrez au menu principal.");
+    }
+
+    /**
+     * For when changes to components (Decks, cards, etc.) fail to be saved in
+     * the db
+     */
+    private void databaseModificationError(Exception e) {
+        String message = "Vos modifications n’ont pas été enregistrées, "
+                + "veuillez réessayer. Si le problème persiste, "
+                + "redémarrez l’application";
+
+        communicateError(e, message);
+    }
+
+    /* ====================================================================== */
+    /*                     Controller Listener Methods                        */
+    /* ====================================================================== */
+
+    @Override
+    public void editDeckClicked(Deck deck) {
+
+        try {
+            editDeckController = new EditDeckController(
+                    stage, deck, mainWindowViewController, this, deckDAO);
+
+            viewStack.add(View.EDIT_DECK);
+            System.out.println("showing edit deck");
+            editDeckController.show();
+
+        } catch (IOException e) {
+            returnToMenuError(e);
+        }
+    }
+
+    @Override
+    public void editCardClicked(Deck deck, Card card) {
+        editCardController = new EditCardController(stage, deck, card, deckDAO,
+                mainWindowViewController, this);
+        System.out.println("showing edit card");
+        editCardController.show();
+        viewStack.add(View.HTML_EDITOR);
+    }
+
+    @Override
+    public void fxmlLoadingError(IOException e) {
+        restartApplicationError(e);
+    }
+
+    @Override
+    public void savingError(Exception e) {
+        databaseModificationError(e);
+    }
+
+    /* ====================================================================== */
+    /*                   Navigation Listener Methods                          */
+    /* ====================================================================== */
+
+    @Override
+    public void goBackClicked() {
+        // If there is no view to go back to, do nothing (shouldn't happen)
+        if (viewStack.size() == 1)
+            return;
+
+        try {
+            System.out.println("go back clicked");
+            viewStack.remove(viewStack.size() - 1);
+            switch (viewStack.get(viewStack.size() - 1)) {
+                case DECK_MENU -> deckMenuController.show();
+                case PLAY_DECK -> playDeckController.show();
+                case EDIT_DECK -> editDeckController.show();
+                case HTML_EDITOR -> editCardController.show();
+                case LOGIN -> loginController.show();
+                case PROFILE -> profileController.show();
+
+            }
+        } catch (IOException | InterruptedException e) {
+            restartApplicationError(e);
+        }
+    }
+
+    @Override
+    public void goToHomeClicked() {
+        try {
+            deckMenuController.show();
+
+        } catch (IOException | InterruptedException e) {
+            restartApplicationError(e);
+        }
+    }
+
+    @Override
+    public void goToCurrentDeckClicked() {
         if (playDeckController == null)
-          return;
+            return;
 
         playDeckController.show();
-      }
+    }
 
-      @Override
-      public void goToAboutClicked() {}
+    @Override
+    public void goToAboutClicked() {
+    }
 
-      @Override
-      public void finishedPlayingDeck() {
+    @Override
+    public void finishedPlayingDeck() {
         try {
-          deckMenuController.show();
+            deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
-          restartApplicationError(e);
+            restartApplicationError(e);
         }
-      }
+    }
 
-      @Override
-      public void handleProfileClicked() {
-          System.out.println("handleProfileClicked");
+    @Override
+    public void handleProfileClicked() {
+        System.out.println("handleProfileClicked");
 
-          if ( profileController.isLoggedIn() ) {
-              try {
-                  viewStack.add(View.PROFILE);
-                  profileController.show();
-              } catch (IOException e) {
-                  throw new RuntimeException(e);
-              }
-          }
-          else {
-            System.out.println("ICI#########");
+        if (profileController.isLoggedIn()) {
             try {
-              viewStack.add(View.LOGIN);
-              loginController.show();
+                viewStack.add(View.PROFILE);
+                profileController.show();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-          }
-      }
-      @Override
-      public void handleLogout() {
-          try {
-            userDAO.logout();
+        } else {
+            System.out.println("ICI#########");
+            try {
+                viewStack.add(View.LOGIN);
+                loginController.show();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @Override
+    public void handleLogout() {
+        try {
+            removeCredentials();
             profileController.setLoggedIn(false);
             viewStack.remove(View.PROFILE);
             loginController.show();
-          } catch (IOException e) {
-              throw new RuntimeException(e);
-          }
-      }
-      @Override
-      public void handleLogin() {
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void handleLogin(String username, String password) {
 
         profileController.setLoggedIn(true);
         viewStack.remove(View.LOGIN);
+        saveCredentials(username, password);
         try {
-          profileController.show();
+            profileController.show();
         } catch (IOException e) {
-          throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
-      }
     }
+
+    // maybe extract into profile class
+    public boolean userCredentialsExist() {
+        // Checks if the user has already logged in
+        this.username = this.prefs.get("localUsername", null);
+        this.password = this.prefs.get("localPassword", null);
+        return username != null && password != null;
+    }
+
+    public void loginWithCredentials() {
+        // Checks if the user has already logged in
+        try {
+            userDAO.login(this.username, this.password);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void removeCredentials() {
+        // Removes local credentials
+        this.prefs.remove("localUsername");
+        this.prefs.remove("localPassword");
+        System.out.println("creds removed");
+    }
+
+    public void saveCredentials(String username, String password) {
+        // Saves local credentials
+        this.prefs.put("localUsername", username);
+        this.prefs.put("localPassword", password);
+        System.out.println("creds saved");
+    }
+    // Caution : Guest == NOT logged in
+    @Override
+    public boolean isGuestSession() {
+        return ! profileController.isLoggedIn();
+    }
+}

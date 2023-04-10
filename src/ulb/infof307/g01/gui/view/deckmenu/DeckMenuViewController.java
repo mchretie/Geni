@@ -38,6 +38,13 @@ public class DeckMenuViewController {
         this.listener = listener;
     }
 
+    // Guest Check disable if guest
+    // Disables the create deck by button and text field
+    public void setGuestMode(boolean isGuest) {
+        createDeckIcon.setDisable(isGuest);
+        createDeckField.setDisable(isGuest);
+    }
+
     /* ====================================================================== */
     /*                           Deck Displaying                              */
     /* ====================================================================== */
@@ -141,5 +148,6 @@ public class DeckMenuViewController {
     public interface Listener {
         void createDeckClicked(String name);
         void searchDeckClicked(String name);
+
     }
 }

@@ -45,7 +45,11 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         this.mainWindowViewController = mainWindowViewController;
 
         this.deckDAO = deckDAO;
-        this.deckDAO.setToken(userDAO.getToken());
+
+        // Guest Check
+        if (!controllerListener.isGuestSession()) {
+            this.deckDAO.setToken(userDAO.getToken());
+        }
 
         this.deckMenuViewController
                 = mainWindowViewController.getDeckMenuViewController();
@@ -64,121 +68,129 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException, InterruptedException {
-      System.out.println("DeckMenuController.show()");
-      deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+        System.out.println("DeckMenuController.show()");
 
-      mainWindowViewController.setDeckMenuViewVisible();
-      //        mainWindowViewController.setEditCardViewVisible();
-      mainWindowViewController.makeGoBackIconInvisible();
-
-      stage.show();
-    }
-
-
-    /* ====================================================================== */
-    /*                          Database Access                               */
-    /* ====================================================================== */
-
-    /**
-     * @return List of loaded nodes representing decks
-     * @throws IOException if FXMLLoader.load() fails
-     */
-    private List<Node> loadDecks(List<Deck> decks) throws IOException {
-        List<Node> decksLoaded = new ArrayList<>();
-
-        for (Deck deck : decks) {
-
-            URL resource = DeckMenuViewController
-                    .class
-                    .getResource("DeckView.fxml");
-
-            FXMLLoader loader = new FXMLLoader(resource);
-
-            Node node = loader.load();
-
-            DeckViewController controller = loader.getController();
-            controller.setDeck(deck);
-            controller.setListener(this);
-
-            decksLoaded.add(node);
-        }
-
-        return decksLoaded;
-    }
-
-
-    /* ====================================================================== */
-    /*                        View Listener Method                            */
-    /* ====================================================================== */
-
-    @Override
-    public void createDeckClicked(String name) {
-
-        if (name.isEmpty())
-            return;
-
-        try {
-            deckDAO.saveDeck(new Deck(name));
+        // Guest Check
+        if (!controllerListener.isGuestSession()) {
+            System.out.println("DeckMenuController.show() : not guest");
             deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+            mainWindowViewController.setEditCardViewVisible();
+        }
+        // Guest Check
+        deckMenuViewController.setGuestMode(controllerListener.isGuestSession());
 
-        } catch (IOException e) {
-            controllerListener.fxmlLoadingError(e);
+        mainWindowViewController.setDeckMenuViewVisible();
+        mainWindowViewController.makeGoBackIconInvisible();
 
-        } catch (InterruptedException e) {
-            controllerListener.savingError(e);
+        stage.show();
         }
 
-    }
 
-    @Override
-    public void searchDeckClicked(String name) {
-        try {
-            deckMenuViewController.setDecks(loadDecks(deckDAO.searchDecks(name)));
+        /* ====================================================================== */
+        /*                          Database Access                               */
+        /* ====================================================================== */
 
-        } catch (IOException e) {
-            controllerListener.fxmlLoadingError(e);
+        /**
+         * @return List of loaded nodes representing decks
+         * @throws IOException if FXMLLoader.load() fails
+         */
+        private List<Node> loadDecks (List < Deck > decks) throws IOException {
+            List<Node> decksLoaded = new ArrayList<>();
 
-        } catch (InterruptedException e) {
-            controllerListener.savingError(e);
+            for (Deck deck : decks) {
+
+                URL resource = DeckMenuViewController
+                        .class
+                        .getResource("DeckView.fxml");
+
+                FXMLLoader loader = new FXMLLoader(resource);
+
+                Node node = loader.load();
+
+                DeckViewController controller = loader.getController();
+                controller.setDeck(deck);
+                controller.setListener(this);
+
+                decksLoaded.add(node);
+            }
+
+            return decksLoaded;
+        }
+
+
+        /* ====================================================================== */
+        /*                        View Listener Method                            */
+        /* ====================================================================== */
+
+        @Override
+        public void createDeckClicked (String name){
+
+            if (name.isEmpty())
+                return;
+
+            try {
+                deckDAO.saveDeck(new Deck(name));
+                deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+
+            } catch (IOException e) {
+                controllerListener.fxmlLoadingError(e);
+
+            } catch (InterruptedException e) {
+                controllerListener.savingError(e);
+            }
+
+        }
+
+        @Override
+        public void searchDeckClicked (String name){
+            try {
+                deckMenuViewController.setDecks(loadDecks(deckDAO.searchDecks(name)));
+
+            } catch (IOException e) {
+                controllerListener.fxmlLoadingError(e);
+
+            } catch (InterruptedException e) {
+                controllerListener.savingError(e);
+            }
+        }
+
+        @Override
+        public void deckRemoved (Deck deck){
+            try {
+                deckDAO.deleteDeck(deck);
+                deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+
+            } catch (IOException e) {
+                controllerListener.fxmlLoadingError(e);
+
+            } catch (InterruptedException e) {
+                controllerListener.savingError(e);
+            }
+        }
+
+        @Override
+        public void deckDoubleClicked (Deck deck){
+            controllerListener.playDeckClicked(deck);
+        }
+
+        @Override
+        public void editDeckClicked (Deck deck){
+            controllerListener.editDeckClicked(deck);
+        }
+
+        /* ====================================================================== */
+        /*                   Controller Listener Interface                        */
+        /* ====================================================================== */
+
+        public interface ControllerListener {
+            void editDeckClicked(Deck deck);
+
+            void playDeckClicked(Deck deck);
+
+            void fxmlLoadingError(IOException e);
+
+            void savingError(Exception e);
+
+            boolean isGuestSession();
         }
     }
-
-    @Override
-    public void deckRemoved(Deck deck) {
-        try {
-            deckDAO.deleteDeck(deck);
-            deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
-
-        } catch (IOException e) {
-            controllerListener.fxmlLoadingError(e);
-
-        } catch (InterruptedException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-    @Override
-    public void deckDoubleClicked(Deck deck) {
-        controllerListener.playDeckClicked(deck);
-    }
-
-    @Override
-    public void editDeckClicked(Deck deck) {
-        controllerListener.editDeckClicked(deck);
-    }
-
-
-    /* ====================================================================== */
-    /*                   Controller Listener Interface                        */
-    /* ====================================================================== */
-
-    public interface ControllerListener {
-        void editDeckClicked(Deck deck);
-
-        void playDeckClicked(Deck deck);
-
-        void fxmlLoadingError(IOException e);
-
-        void savingError(Exception e);
-    }
-}

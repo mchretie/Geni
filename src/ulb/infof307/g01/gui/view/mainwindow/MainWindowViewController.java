@@ -85,13 +85,14 @@ public class MainWindowViewController {
         return playDeckViewController;
     }
 
-    // ICI
-    public LoginViewController getLoginViewController() {
-      return loginViewController;
-    }
 
     public EditCardViewController getEditCardViewController() {
         return editCardViewController;
+    }
+
+    // ICI
+    public LoginViewController getLoginViewController() {
+        return loginViewController;
     }
 
     // ICI
