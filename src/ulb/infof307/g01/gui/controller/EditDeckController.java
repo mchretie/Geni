@@ -13,7 +13,6 @@ import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class EditDeckController implements EditDeckViewController.Listener,
@@ -162,18 +161,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void backOfFlashCardModified(FlashCard flashCard, String newBack) {
-        try {
-            flashCard.setBack(newBack);
-            deckDAO.saveDeck(deck);
-            editDeckViewController.showCards();
-
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-    @Override
     public void mcqAnswerEdit(MCQCard mcqCard, String text, int index) {
         try {
             mcqCard.setAnswer(index, text);
@@ -299,8 +286,13 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void editCardClicked(Card selectedCard) {
-        controllerListener.editCardClicked(deck, selectedCard);
+    public void backEditCardClicked(Card selectedCard) {
+        controllerListener.backEditCardClicked(deck, selectedCard);
+    }
+
+    @Override
+    public void frontEditCardClicked(Card selectedCard) {
+        controllerListener.frontEditCardClicked(deck, selectedCard);
     }
 
     @Override
@@ -334,6 +326,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public interface ControllerListener {
         void savingError(Exception e);
 
-        void editCardClicked(Deck deck, Card card);
+        void frontEditCardClicked(Deck deck, Card card);
+
+        void backEditCardClicked(Deck deck, Card selectedCard);
     }
 }

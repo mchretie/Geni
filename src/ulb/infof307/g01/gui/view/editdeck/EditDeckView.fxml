@@ -127,20 +127,35 @@
 
         <StackPane>
             <!-- Back of normal card -->
-            <StackPane fx:id="backCard" visible="false" VBox.vgrow="ALWAYS">
-                <TextField fx:id="backCardText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed"
-                           prefHeight="205.0"
-                           style="-fx-background-color: #f0f0f0; -fx-border-radius: 20px; -fx-background-radius: 20px;"
-                           VBox.vgrow="ALWAYS">
+            <BorderPane fx:id="backCard"
+                        style="-fx-border-color: black; -fx-border-radius: 15px; -fx-background-radius: 15px;"
+                        visible="false" VBox.vgrow="ALWAYS">
 
-                    <font>
-                        <Font size="24.0"/>
-                    </font>
-                    <StackPane.margin>
-                        <Insets right="10.0"/>
-                    </StackPane.margin>
-                </TextField>
-            </StackPane>
+                <center>
+                    <WebView fx:id="backCardWebView" maxHeight="180.0"
+                             onKeyPressed="#handleTextFieldKeyPressed"
+                             BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS"/>
+                </center>
+
+                <right>
+                    <Button onMousePressed="#handleBackEditClicked" style="-fx-background-color: transparent;">
+
+                        <graphic>
+                            <FontIcon fx:id="backCardEditIcon" iconLiteral="mdi2p-pencil" iconSize="22"
+                                      onMouseEntered="#handleBackCardEditHover"
+                                      onMouseExited="#handleBackCardEditHoverExit" wrappingWidth="25.0"/>
+                        </graphic>
+                    </Button>
+                </right>
+
+                <VBox.margin>
+                    <Insets bottom="15.0" right="10.0" top="15.0"/>
+                </VBox.margin>
+
+                <padding>
+                    <Insets bottom="5.0" left="5.0"/>
+                </padding>
+            </BorderPane>
 
             <!-- Back of QCM card -->
             <GridPane fx:id="choicesGrid" visible="false"
