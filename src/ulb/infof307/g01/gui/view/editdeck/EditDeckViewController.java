@@ -35,6 +35,9 @@ public class EditDeckViewController {
     private GridPane choicesGrid;
 
     @FXML
+    private FontIcon addChoiceIcon;
+
+    @FXML
     private VBox leftVbox;
 
     @FXML
@@ -109,6 +112,7 @@ public class EditDeckViewController {
 
     private Listener listener;
 
+
     /* ====================================================================== */
     /*                              Initializer                               */
     /* ====================================================================== */
@@ -175,12 +179,22 @@ public class EditDeckViewController {
         cardsContainer.refresh();
     }
 
+    /**
+     * Loads the card editor with the given card.
+     *
+     * @param flashCard the card to load
+     */
     private void loadFlashCardEditor(FlashCard flashCard) {
         backCardText.setText(flashCard.getBack());
         backCard.setVisible(true);
         choicesGrid.setVisible(false);
     }
 
+    /**
+     * Loads the card editor with the given MCQ card.
+     *
+     * @param mcqCard the MCQ card to load
+     */
     private void loadQCMCardEditor(MCQCard mcqCard) {
         choicesGrid.getChildren().clear();
         currentCol = 0;
@@ -203,6 +217,11 @@ public class EditDeckViewController {
         choicesGrid.setVisible(true);
     }
 
+    /**
+     * Loads the card editor with the given card.
+     *
+     * @param card the card to load
+     */
     private void loadCardEditor(Card card) {
         frontCardWebView.getEngine().loadContent(card.getFront());
         frontCard.setVisible(true);
@@ -225,6 +244,14 @@ public class EditDeckViewController {
         choicesGrid.add(addChoiceButton, currentCol, currentRow);
     }
 
+    /**
+     * Adds a choice field to the grid
+     *
+     * @param choice the text of the choice
+     * @param index the index of the choice
+     *
+     * @param correctAnswer true if the choice is the correct answer
+     */
     private void addChoiceField(String choice, int index, boolean correctAnswer) {
         TextField textField = getChoiceFieldTextField(choice, index);
         textField.setOnKeyPressed(event -> {
@@ -244,39 +271,68 @@ public class EditDeckViewController {
         choicesGrid.add(hBox, currentCol, currentRow);
     }
 
+    /**
+     * Gets the text field for a choice field
+     *
+     * @param choice the text of the choice
+     * @param index the index of the choice field
+     *
+     * @return the text field
+     */
     private TextField getChoiceFieldTextField(String choice, int index) {
         TextField textField = new TextField(choice);
         textField.setPromptText("Réponse");
         textField.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(textField, Priority.ALWAYS);
+
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) listener.mcqAnswerEdit((MCQCard) selectedCard, textField.getText(), index);
         });
         return textField;
     }
 
+    /**
+     * Gets the button to set the correct answer for a choice field
+     *
+     * @param correctAnswer true if the answer is the correct one
+     * @param index the index of the choice field
+     *
+     * @return the button
+     */
     private Button getChoiceFieldCorrectAnswerButton(boolean correctAnswer, int index) {
         Button setCorrectAnswerButton = new Button();
         FontIcon checkIcon = new FontIcon("mdi2c-check");
+
         if (correctAnswer) {
             checkIcon.setIconColor(Color.WHITE);
             setCorrectAnswerButton.setStyle("-fx-background-color: green;");
         }
+
         setCorrectAnswerButton.setGraphic(checkIcon);
 
         setCorrectAnswerButton.setOnAction(event -> {
             listener.mcqCorrectAnswerEdit((MCQCard) selectedCard, index);
             loadSelectedCardEditor();
         });
+
         return setCorrectAnswerButton;
     }
 
+
+    /**
+     * Gets the remove button for a choice field
+     *
+     * @param index the index of the choice field to remove
+     *
+     * @return the button
+     */
     private Button getChoiceFieldRemoveButton(int index) {
         Button removeChoiceButton = new Button();
         removeChoiceButton.setStyle("-fx-background-color: red;");
         FontIcon trashIcon = new FontIcon("mdi2t-trash-can-outline");
         trashIcon.setIconColor(Color.WHITE);
         removeChoiceButton.setGraphic(trashIcon);
+
         if (((MCQCard) selectedCard).isCardMin())
             removeChoiceButton.setDisable(true);
 
@@ -284,6 +340,7 @@ public class EditDeckViewController {
             listener.mcqAnswerRemove((MCQCard) selectedCard, index);
             loadSelectedCardEditor();
         });
+
         return removeChoiceButton;
     }
 
@@ -425,16 +482,6 @@ public class EditDeckViewController {
         frontCardEditIcon.setIconColor(Color.web("#000000"));
     }
 
-    @FXML
-    private void handleAddChoiceHover() {
-        addChoiceIcon.setIconColor(Color.web("#FFFFFF"));
-    }
-
-    @FXML
-    private void handleAddChoiceHoverExit() {
-        addChoiceIcon.setIconColor(Color.web("#000000"));
-    }
-
     /* ====================================================================== */
     /*                            Modified text                               */
     /* ====================================================================== */
@@ -507,7 +554,6 @@ public class EditDeckViewController {
         void newFlashCard();
 
         void newMCQCard();
-
 
         void removeCard(Card selectedCard);
 
