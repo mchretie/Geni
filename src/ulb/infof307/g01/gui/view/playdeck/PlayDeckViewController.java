@@ -18,9 +18,10 @@ import ulb.infof307.g01.model.FlashCard;
 import ulb.infof307.g01.model.MCQCard;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 
 public class PlayDeckViewController {
+    ArrayList<String> colors = new ArrayList<>(Arrays.asList("#cb9172", "#b8b662", "#7b8bc9", "#c078be"));
 
     /* ====================================================================== */
     /*                               FXML Attributes                          */
@@ -121,35 +122,28 @@ public class PlayDeckViewController {
         MCQCard card = (MCQCard) currentCard;
         int correctAnswer = card.getCorrectAnswer();
         ArrayList<String> answers = new ArrayList<>(card.getAnswers());
-        int row = 0;
-        int col = 0;
 
         for (int i = 0; i < ((MCQCard) currentCard).getAnswers().size(); i++) {
-            row = i / 2;
-            col = i % 2;
+            int row = i / 2;
+            int col = i % 2;
             boolean isCorrectAnswer = (correctAnswer == i);
-
-            BorderPane answer = addAnswer(answers.get(i), isCorrectAnswer);
+            BorderPane answer = addAnswer(answers.get(i), isCorrectAnswer, colors.get(i));
             choicesGrid.add(answer, col, row);
         }
     }
 
-    public BorderPane addAnswer(String answer, boolean isCorrectAnswer) {
+    public BorderPane addAnswer(String answer, boolean isCorrectAnswer, String color) {
         BorderPane answerPane = new BorderPane();
+        answerPane.setStyle("-fx-background-color: " + color + ";");
         TextField answerField = createAnswerField(answer);
 
         Button checkButton = createCorrectAnswerButton();
         FontIcon checkIcon = (FontIcon) checkButton.getGraphic();
-
+        if (isCorrectAnswer) correctAnswerButton = checkButton;
 
         checkButton.setOnAction(actionEvent -> {
             checkIcon.setIconColor(Color.WHITE);
-            if (isCorrectAnswer) {
-                checkButton.setStyle("-fx-background-color: green");
-            } else {
-                checkButton.setStyle("-fx-background-color: red");
-                //set Correct answer green
-            }
+            showCorrectAnswers();
         });
         answerPane.setLeft(answerField);
         answerPane.setRight(checkButton);
@@ -159,6 +153,7 @@ public class PlayDeckViewController {
     private TextField createAnswerField(String answer) {
         TextField answerField = new TextField();
         answerField.setMinHeight(30);
+        answerField.setStyle("-fx-background-color: transparent;" + "-fx-border-color: transparent;" );
         answerField.setText(answer);
         answerField.setEditable(false);
 
@@ -168,10 +163,23 @@ public class PlayDeckViewController {
     private Button createCorrectAnswerButton() {
         Button correctAnswerButton = new Button();
         FontIcon checkIcon = new FontIcon("mdi2c-check");
+        checkIcon.setIconSize(20);
         correctAnswerButton.setGraphic(checkIcon);
         correctAnswerButton.setMinHeight(30);
+        correctAnswerButton.setStyle("-fx-background-color:transparent");
 
         return correctAnswerButton;
+    }
+
+    private void showCorrectAnswers(){
+        for (int i = 0; i < choicesGrid.getChildren().size(); i++) {
+            BorderPane answer = (BorderPane) choicesGrid.getChildren().get(i);
+            Button checkButton = (Button) answer.getRight();
+            if (checkButton == correctAnswerButton) {
+                answer.setStyle("-fx-background-color: #659e40;");
+            }
+            else  answer.setStyle("-fx-background-color: #c45151;");
+        }
     }
 
     /* ====================================================================== */

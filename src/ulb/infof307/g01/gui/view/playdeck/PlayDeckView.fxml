@@ -77,7 +77,7 @@
                 </graphic>
             </Button>
                 <GridPane fx:id="choicesGrid" visible="true"
-                          style="-fx-padding: 8px 13px;
+                          style="-fx-padding: 15px 20px;
                                     -fx-border-insets: 3px 5px;
                                     -fx-background-insets: 3px 5px;" HBox.hgrow="ALWAYS" maxWidth="Infinity"
                           alignment="BASELINE_CENTER" hgap="10" vgap="10">
