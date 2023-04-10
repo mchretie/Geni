@@ -269,7 +269,10 @@ public class EditDeckViewController {
                     focusNextNode(index, true, false);
                 }
 
-                case TAB -> focusNextNode(index, false, true);
+                case TAB -> {
+                    choiceFieldEmpty(textField, index);
+                    focusNextNode(index, false, true);
+                }
             }
         });
 
@@ -291,10 +294,16 @@ public class EditDeckViewController {
      * @param textField the text field of the choice field
      * @param index the index of the choice field
      *
-     * @return true if the choice field was removed
+     * @return true if the choice field was removed or if the number of choice
+     *            fields is less than 3 and the field is empty.
      */
     private boolean choiceFieldEmpty(TextField textField, int index) {
-        if (!textField.getText().isEmpty() || index < 2)
+        if (textField.getText().isEmpty()
+                && ((MCQCard) selectedCard).getNbAnswers() < 3)
+
+            return true;
+
+        if (!textField.getText().isEmpty())
             return false;
 
         listener.mcqAnswerRemove((MCQCard) selectedCard, index);
@@ -331,6 +340,8 @@ public class EditDeckViewController {
      * Focuses the next eligible node after the choice field at the given index.
      *
      * @param index the index of the choice field
+     * @param createNextNode true if the next node should be created if it doesn't exist
+     * @param cycle true if the focus should cycle back to the first choice field
      */
     private void focusNextNode(int index, boolean createNextNode, boolean cycle) {
         int nextIndex = index + 1;
@@ -363,11 +374,15 @@ public class EditDeckViewController {
         textField.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(textField, Priority.ALWAYS);
 
+        // When the text field loses focus, the answer is updated
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue && index < ((MCQCard) selectedCard).getNbAnswers()) {
+                System.out.println("index: " + index + " text: " + textField.getText());
                 listener.mcqAnswerEdit((MCQCard) selectedCard, textField.getText(), index);
+                loadSelectedCardEditor();
             };
         });
+
         return textField;
     }
 
