@@ -129,7 +129,7 @@ public class MainFxController
 
         // Todo : handle failed auto login. example:
         // This line is IMPORTANT to reset the registery when deleting demo.db
-        //  removeCredentials();
+        //removeCredentials();
 
         System.out.println("is he guest ?");
         if (userCredentialsExist()) {
@@ -333,6 +333,7 @@ public class MainFxController
     public void handleLogout() {
         try {
             removeCredentials();
+            userDAO.removeToken();
             profileController.setLoggedIn(false);
             viewStack.remove(View.PROFILE);
             loginController.show();
