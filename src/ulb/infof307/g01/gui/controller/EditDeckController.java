@@ -233,22 +233,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void newCard() {
-        try {
-            String frontHtml = "<body style='background-color: #f0f0f0;'><h1>Avant</h1></body>";
-//            deck.addCard(new Card(frontHtml, "Arrière"));
-            deckDAO.saveDeck(deck);
-
-            editDeckViewController.showCards();
-            editDeckViewController.setSelectedCard(deck.getLastCard());
-            cardPreviewClicked(deck.getLastCard());
-
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-    @Override
     public void newFlashCard() {
         try {
             String frontHtml = "Avant";

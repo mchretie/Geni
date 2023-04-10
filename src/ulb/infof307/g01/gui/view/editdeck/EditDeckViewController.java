@@ -468,20 +468,6 @@ public class EditDeckViewController {
         cardTypeBox.setVisible(visibility);
     }
 
-    @FXML
-    private void handleAddNewChoice() {
-        int nextCol = currentCol ^ 1;
-        int nextRow = currentRow;
-        if (nextCol == 0) nextRow += 1;
-
-        choicesGrid.getChildren().remove(addChoiceField);
-        GridPane.setConstraints(addChoiceField, nextCol, nextRow);
-        choicesGrid.getChildren().add(addChoiceField);
-
-        currentCol = nextCol;
-        currentRow = nextRow;
-    }
-
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -502,8 +488,6 @@ public class EditDeckViewController {
         void mcqAnswerAdded(MCQCard selectedCard);
 
         void deckColorModified(Deck deck, Color color);
-
-        void newCard();
 
         void newFlashCard();
 
