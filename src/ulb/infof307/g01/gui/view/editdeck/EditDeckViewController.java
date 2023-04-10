@@ -179,6 +179,8 @@ public class EditDeckViewController {
         frontCard.setVisible(true);
         if (card instanceof FlashCard flashCard) {
             backCardText.setText(flashCard.getBack());
+            backCard.setVisible(true);
+            choicesGrid.setVisible(false);
         } else if (card instanceof MCQCard mcqCard) {
             choicesGrid.getChildren().clear();
             currentCol = 0;
@@ -193,6 +195,8 @@ public class EditDeckViewController {
                     currentRow++;
                 }
             }
+            backCard.setVisible(false);
+            choicesGrid.setVisible(true);
         }
     }
 
@@ -420,6 +424,7 @@ public class EditDeckViewController {
         backCard.setVisible(false);
         listener.newMCQCard();
         cardTypeSelected();
+
         choicesGrid.setVisible(true);
     }
 
