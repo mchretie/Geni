@@ -3,15 +3,11 @@ package ulb.infof307.g01.gui.view.editdeck;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.scene.web.WebView;
@@ -23,35 +19,40 @@ import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 
 import java.io.File;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class EditDeckViewController implements Initializable {
+public class EditDeckViewController {
+    public GridPane choicesGrid;
+    public BorderPane addChoiceField;
+    public FontIcon addChoiceIcon;
 
     /* ====================================================================== */
-    /*                         FXML: Panes & Containers                       */
+    /*                              FXML Attributes                           */
     /* ====================================================================== */
 
     @FXML
-    private StackPane frontCard;
+    private VBox leftVbox;
+
+    @FXML
+    private VBox rightVbox;
+
+    @FXML
+    private HBox cardTypeBox;
+
+    @FXML
+    private HBox hbox;
+
+    @FXML
+    private BorderPane frontCard;
 
     @FXML
     private StackPane backCard;
-
-    @FXML
-    private AnchorPane anchor;
 
     @FXML
     private HBox tagsBox;
 
     @FXML
     private ListView<String> cardsContainer;
-
-
-    /* ====================================================================== */
-    /*                            FXML: Text Fields                           */
-    /* ====================================================================== */
 
     @FXML
     private TextField backCardText;
@@ -65,18 +66,8 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private WebView frontCardWebView;
 
-
-    /* ====================================================================== */
-    /*                              FXML: Buttons                             */
-    /* ====================================================================== */
-
     @FXML
     private Button imageUploader;
-
-
-    /* ====================================================================== */
-    /*                               FXML: Icons                              */
-    /* ====================================================================== */
 
     @FXML
     private FontIcon removeCardIcon;
@@ -87,13 +78,16 @@ public class EditDeckViewController implements Initializable {
     @FXML
     public FontIcon frontCardEditIcon;
 
-
-    /* ====================================================================== */
-    /*                           FXML: Color picker                           */
-    /* ====================================================================== */
-
     @FXML
     private ColorPicker colorPicker;
+
+
+    /* ====================================================================== */
+    /*                           Card Editor Grid                             */
+    /* ====================================================================== */
+
+    private int currentCol = 0;
+    private int currentRow = 0;
 
 
     /* ====================================================================== */
@@ -115,8 +109,11 @@ public class EditDeckViewController implements Initializable {
     /*                              Initializer                               */
     /* ====================================================================== */
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    /**
+     * Initializes the controller class. Cannot happen during construction as
+     *  the parents size is needed to set the width of the left and right components.
+     */
+    public void init() {
         backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleBackEdit();
         });
@@ -124,6 +121,10 @@ public class EditDeckViewController implements Initializable {
         deckNameText.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) handleUpdateDeckName();
         });
+
+        double sceneWidth = leftVbox.getParent().getLayoutBounds().getWidth();
+        leftVbox.setPrefWidth(sceneWidth * 0.4);
+        rightVbox.setPrefWidth(sceneWidth * 0.6);
     }
 
 
@@ -223,7 +224,7 @@ public class EditDeckViewController implements Initializable {
 
     @FXML
     private void handleAddCardClicked() {
-        listener.newCard();
+        setCardTypeButtonVisibility(true);
     }
 
     @FXML
@@ -245,8 +246,18 @@ public class EditDeckViewController implements Initializable {
     @FXML
     private void handleUploadImageClicked() {
         final FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
+        File file = fileChooser.showOpenDialog(hbox.getScene().getWindow());
         listener.uploadImage(file.toURI().toString());
+    }
+
+    @FXML
+    public void handleColorButtonClicked() {
+        listener.deckColorModified(deck, colorPicker.getValue());
+    }
+
+    @FXML
+    private void handleFrontEditClicked() {
+        listener.editCardClicked(selectedCard);
     }
 
 
@@ -294,44 +305,6 @@ public class EditDeckViewController implements Initializable {
         imageUploader.setStyle("-fx-background-color: #5ab970");
     }
 
-
-    /* ====================================================================== */
-    /*                            Modified text                               */
-    /* ====================================================================== */
-
-    @FXML
-    private void handleUpdateDeckName() {
-        listener.deckNameModified(deckNameText.getText());
-    }
-
-    @FXML
-    private void handleFrontEdit() {
-        String newFront
-                = frontCardWebView.getEngine()
-                                  .executeScript("document.body.innerHTML")
-                                  .toString();
-
-        listener.frontOfCardModified(selectedCard, newFront);
-    }
-
-    @FXML
-    private void handleBackEdit() {
-        listener.backOfCardModified(selectedCard, backCardText.getText());
-    }
-
-    @FXML
-    private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
-        if (!keyEvent.getCode().equals(KeyCode.ENTER))
-            return;
-
-        anchor.requestFocus();
-    }
-
-    @FXML
-    public void handleColorButtonClicked() {
-        listener.deckColorModified(deck, colorPicker.getValue());
-    }
-
     @FXML
     private void handleFrontCardEditHover() {
         frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
@@ -343,19 +316,84 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
-    private void handleFrontEditClicked() {
-        listener.editCardClicked(selectedCard);
+    private void handleAddChoiceHover() {
+        addChoiceIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    private void handleAddChoiceHoverExit() {
+        addChoiceIcon.setIconColor(Color.web("#000000"));
+    }
+
+    /* ====================================================================== */
+    /*                            Modified text                               */
+    /* ====================================================================== */
+
+    @FXML
+    private void handleUpdateDeckName() {
+        listener.deckNameModified(deckNameText.getText());
+    }
+    @FXML
+    private void handleBackEdit() {
+        listener.backOfCardModified(selectedCard, backCardText.getText());
+    }
+
+    @FXML
+    private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
+        if (!keyEvent.getCode().equals(KeyCode.ENTER))
+            return;
+
+        hbox.requestFocus();
+    }
+
+    @FXML
+    private void handleQCMSelected() {
+        backCard.setVisible(false);
+        System.out.println("QCM selected " + backCard.visibleProperty());
+        cardTypeSelected();
+        choicesGrid.setVisible(true);
+
+
+    }
+
+    @FXML
+    private void handleNormalSelected() {
+        choicesGrid.setVisible(false);
+        cardTypeSelected();
+        backCard.setVisible(true);
+    }
+
+    private void cardTypeSelected() {
+        listener.newCard();
+        setCardTypeButtonVisibility(false);
+        frontCard.setVisible(true);
+    }
+
+    private void setCardTypeButtonVisibility(boolean visibility) {
+        cardTypeBox.setVisible(visibility);
+    }
+
+    @FXML
+    private void handleAddNewChoice() {
+        int nextCol = currentCol ^ 1;
+        int nextRow = currentRow;
+        if (nextCol==0) nextRow +=1;
+
+        choicesGrid.getChildren().remove(addChoiceField);
+        GridPane.setConstraints(addChoiceField, nextCol, nextRow);
+        choicesGrid.getChildren().add(addChoiceField);
+
+        currentCol = nextCol; currentRow = nextRow;
     }
 
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
-    /* ====================================================================== */
+    /* ==================================================================== */
 
     public interface Listener {
         void deckNameModified(String newName);
         void tagAddedToDeck(Deck deck, String tagName, String color);
-        void frontOfCardModified(Card card, String newFront);
         void backOfCardModified(Card card, String newBack);
         void deckColorModified(Deck deck, Color color);
         void newCard();

@@ -12,33 +12,64 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.Deck;
 
 import java.io.File;
 
 public class DeckViewController {
 
+    /* ====================================================================== */
+    /*                              FXML Attributes                           */
+    /* ====================================================================== */
+
     @FXML
     private StackPane stackPane;
+
     @FXML
     private ImageView backgroundImage;
+
     @FXML
     private Label playDeckLabel;
+
     @FXML
     private FontIcon editDeckIcon;
+
     @FXML
     private FontIcon removeDeckIcon;
+
     @FXML
     private FontIcon shareDeckIcon;
+
     @FXML
     private Rectangle colorRect;
 
+
+    /* ====================================================================== */
+    /*                              Model Attributes                          */
+    /* ====================================================================== */
+
     private Deck deck;
 
+
+    /* ====================================================================== */
+    /*                                Listener                                */
+    /* ====================================================================== */
+
     private Listener listener;
+    private ImageLoader imageLoader;
+
+
+    /* ====================================================================== */
+    /*                                Setters                                 */
+    /* ====================================================================== */
 
     public void setListener(Listener listener) {
         this.listener = listener;
+    }
+
+    public void setImageLoader(ImageLoader loader) {
+        this.imageLoader = loader;
     }
 
     /* ====================================================================== */
@@ -64,7 +95,7 @@ public class DeckViewController {
 
     private void setBackGroundImage(String filename) {
         // TODO: make image depend on deck image
-        Image img = new Image(filename);
+        Image img = imageLoader.get(filename);
         backgroundImage.setImage(img);
         backgroundImage.setPreserveRatio(false);
         backgroundImage.fitWidthProperty().bind(stackPane.widthProperty());
