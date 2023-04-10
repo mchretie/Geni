@@ -63,7 +63,8 @@ public class MCQCard extends Card {
             return;
         this.answers.remove(index);
         if (this.correctAnswer == index)
-            this.correctAnswer = index - 1;
+            this.correctAnswer = Math.max(index - 1, 0);
+
     }
 
     public void setAnswer(int index, String answer) {
