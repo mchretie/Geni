@@ -8,6 +8,7 @@ import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.FlashCard;
 import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -190,6 +191,22 @@ public class EditDeckController implements EditDeckViewController.Listener,
         try {
             String frontHtml = "<body style='background-color: #f0f0f0;'><h1>Avant</h1></body>";
 //            deck.addCard(new Card(frontHtml, "Arrière"));
+            deckDAO.saveDeck(deck);
+
+            editDeckViewController.showCards();
+            editDeckViewController.setSelectedCard(deck.getLastCard());
+            cardPreviewClicked(deck.getLastCard());
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void newFlashCard() {
+        try {
+            String frontHtml = "<body style='background-color: #f0f0f0;'><h1>Avant</h1></body>";
+            deck.addCard(new FlashCard(frontHtml, "Arrière"));
             deckDAO.saveDeck(deck);
 
             editDeckViewController.showCards();

@@ -111,7 +111,7 @@ public class EditDeckViewController {
 
     /**
      * Initializes the controller class. Cannot happen during construction as
-     *  the parents size is needed to set the width of the left and right components.
+     * the parents size is needed to set the width of the left and right components.
      */
     public void init() {
         backCardText.focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -162,7 +162,7 @@ public class EditDeckViewController {
 
         cardsContainer.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        for (Card card : deck){
+        for (Card card : deck) {
             Document doc = Jsoup.parse(card.getFront());
             Element body = doc.body();
             list.add(body.text());
@@ -333,6 +333,7 @@ public class EditDeckViewController {
     private void handleUpdateDeckName() {
         listener.deckNameModified(deckNameText.getText());
     }
+
     @FXML
     private void handleBackEdit() {
         listener.backOfCardModified(selectedCard, backCardText.getText());
@@ -357,14 +358,14 @@ public class EditDeckViewController {
     }
 
     @FXML
-    private void handleNormalSelected() {
+    private void handleFlashCardSelected() {
         choicesGrid.setVisible(false);
+        listener.newFlashCard();
         cardTypeSelected();
         backCard.setVisible(true);
     }
 
     private void cardTypeSelected() {
-        listener.newCard();
         setCardTypeButtonVisibility(false);
         frontCard.setVisible(true);
     }
@@ -377,13 +378,14 @@ public class EditDeckViewController {
     private void handleAddNewChoice() {
         int nextCol = currentCol ^ 1;
         int nextRow = currentRow;
-        if (nextCol==0) nextRow +=1;
+        if (nextCol == 0) nextRow += 1;
 
         choicesGrid.getChildren().remove(addChoiceField);
         GridPane.setConstraints(addChoiceField, nextCol, nextRow);
         choicesGrid.getChildren().add(addChoiceField);
 
-        currentCol = nextCol; currentRow = nextRow;
+        currentCol = nextCol;
+        currentRow = nextRow;
     }
 
 
@@ -393,13 +395,23 @@ public class EditDeckViewController {
 
     public interface Listener {
         void deckNameModified(String newName);
+
         void tagAddedToDeck(Deck deck, String tagName, String color);
+
         void backOfCardModified(Card card, String newBack);
+
         void deckColorModified(Deck deck, Color color);
+
         void newCard();
+        void newFlashCard();
+
         void removeCard(Card selectedCard);
+
         void cardPreviewClicked(Card card);
+
         void editCardClicked(Card selectedCard);
+
         void uploadImage(String filePath);
+
     }
 }
