@@ -70,7 +70,7 @@ public class PlayDeckViewController {
     }
 
     public void flipToBackOfCard() {
-        flipCard(currentCard.getBack());
+//        flipCard(currentCard.getBack());
     }
 
     private void flipCard(String newContent) {

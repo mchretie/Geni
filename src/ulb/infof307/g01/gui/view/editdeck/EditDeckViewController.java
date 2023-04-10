@@ -173,7 +173,7 @@ public class EditDeckViewController {
 
     private void loadCardEditor(Card card) {
         frontCardWebView.getEngine().loadContent(card.getFront());
-        backCardText.setText(card.getBack());
+//        backCardText.setText(card.getBack());
         frontCard.setVisible(true);
         backCard.setVisible(true);
     }

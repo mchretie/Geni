@@ -1,22 +1,25 @@
 package ulb.infof307.g01.model;
 
+import com.google.gson.*;
 import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 
 public class Deck implements Iterable<Card> {
 
-  private UUID id;
+    private UUID id;
 
-  @Expose
-  private String name;
-  @Expose
-  private final List<Card> cards;
-  @Expose
-  private final List<Tag> tags;
-  @Expose
-  private String color = "0x00000000";
+    @Expose
+    private String name;
+    @Expose
+    private final List<Card> cards;
+    @Expose
+    private final List<Tag> tags;
+    @Expose
+    private String color = "0x00000000";
 
     public Deck(String name) {
         this.name = name;
@@ -45,6 +48,17 @@ public class Deck implements Iterable<Card> {
         this.cards = cards;
         this.tags = tags;
         this.color = color;
+    }
+
+    public Deck(JsonObject deckGson){
+        Deck deck = new Gson().fromJson(deckGson.toString(), Deck.class);
+        JsonArray cardsJson = deckGson.getAsJsonArray("cards");
+        deck.setCardsFromJson(cardsJson);
+        this.name = deck.getName();
+        this.id = deck.getId();
+        this.cards = deck.getCards();
+        this.tags = deck.getTags();
+        this.color = deck.getColor();
     }
 
     public void setNewID() {
@@ -127,10 +141,10 @@ public class Deck implements Iterable<Card> {
 
     public DeckMetadata getMetadata() {
         return new DeckMetadata(id,
-                                color,
-                                cards.size(),
-                                tags,
-                                hashCode());
+                color,
+                cards.size(),
+                tags,
+                hashCode());
     }
 
     @Override
@@ -155,6 +169,18 @@ public class Deck implements Iterable<Card> {
 
     public Iterator<Card> iterator() {
         return cards.iterator();
+    }
 
+    public void setCardsFromJson(JsonArray cardsJson) {
+        this.cards.clear();
+        for (JsonElement card : cardsJson) {
+            JsonObject cardObject = card.getAsJsonObject();
+            String cardType = cardObject.get("cardType").getAsString();
+            switch (cardType) {
+                case "FlashCard" -> this.cards.add(new Gson().fromJson(card, FlashCard.class));
+                case "MCQCard" -> this.cards.add(new Gson().fromJson(card, MCQCard.class));
+                case "InputCard" -> this.cards.add(new Gson().fromJson(card, InputCard.class));
+            }
+        }
     }
 }

@@ -165,7 +165,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void backOfCardModified(Card card, String newBack) {
         try {
-            card.setBack(newBack);
+//            card.setBack(newBack);
             deckDAO.saveDeck(deck);
             editDeckViewController.showCards();
 
@@ -189,7 +189,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void newCard() {
         try {
             String frontHtml = "<body style='background-color: #f0f0f0;'><h1>Avant</h1></body>";
-            deck.addCard(new Card(frontHtml, "Arrière"));
+//            deck.addCard(new Card(frontHtml, "Arrière"));
             deckDAO.saveDeck(deck);
 
             editDeckViewController.showCards();
