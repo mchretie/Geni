@@ -27,7 +27,7 @@ public class DeckDAO extends HttpDAO {
         return Boolean.parseBoolean(response.body());
     }
 
-    private List<Deck> stringToDeckArray(String json) {
+    protected List<Deck> stringToDeckArray(String json) {
         List<Deck> deckList = new ArrayList<>();
         JsonArray jsonArray = new Gson().fromJson(json, JsonArray.class);
         for (int i = 0; i < jsonArray.size(); i++) {
