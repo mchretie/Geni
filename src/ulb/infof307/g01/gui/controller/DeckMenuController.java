@@ -68,11 +68,11 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException, InterruptedException {
-        System.out.println("DeckMenuController.show()");
 
         // Guest Check
         if (!controllerListener.isGuestSession()) {
-            System.out.println("DeckMenuController.show() : not guest");
+
+
             deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
             mainWindowViewController.setEditCardViewVisible();
         }

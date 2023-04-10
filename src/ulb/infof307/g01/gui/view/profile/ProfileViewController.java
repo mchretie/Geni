@@ -1,17 +1,11 @@
 package ulb.infof307.g01.gui.view.profile;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import ulb.infof307.g01.gui.view.login.LoginViewController;
 
-public class ProfileViewController implements Initializable {
+public class ProfileViewController {
 
     @FXML
     private Label usernameLabel;
@@ -21,14 +15,6 @@ public class ProfileViewController implements Initializable {
 
     protected ViewListener listener;
 
-    /* ====================================================================== */
-    /*                              Initializer                               */
-    /* ====================================================================== */
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        ;
-    }
 
     /* ====================================================================== */
     /*                                Setters                                 */
@@ -41,6 +27,7 @@ public class ProfileViewController implements Initializable {
     public void setUsernameDisplay(String username) {
         usernameLabel.setText(username);
     }
+
     /* ====================================================================== */
     /*                             Click handlers                             */
     /* ====================================================================== */
@@ -55,9 +42,7 @@ public class ProfileViewController implements Initializable {
     /* ====================================================================== */
 
     public interface ViewListener {
-        // ICI
         void logoutButtonClicked();
 
-        //void setUsernameDisplay(String username);
     }
 }

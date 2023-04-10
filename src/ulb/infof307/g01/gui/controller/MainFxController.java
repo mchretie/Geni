@@ -81,7 +81,7 @@ public class MainFxController
     /*                             Stage Attributes                           */
     /* ====================================================================== */
 
-    private Preferences prefs = Preferences.userNodeForPackage(UserDAO.class);
+    private final Preferences prefs = Preferences.userNodeForPackage(UserDAO.class);
     private String username;
     private String password;
 
@@ -104,8 +104,6 @@ public class MainFxController
         // TODO: Title and login.
         stage.setTitle("Pokémon TCG Deck Builder");
 
-
-
         URL resource =
                 MainWindowViewController.class.getResource("MainWindowView.fxml");
 
@@ -116,11 +114,8 @@ public class MainFxController
         stage.setScene(new Scene(root));
         stage.setResizable(false);
 
-
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
-
-
 
         loginController =
                 new LoginController(stage, mainWindowViewController, this);
@@ -128,24 +123,18 @@ public class MainFxController
                 new ProfileController(stage, mainWindowViewController, this);
 
         // Todo : handle failed auto login. example:
-        // This line is IMPORTANT to reset the registery when deleting demo.db
-        //removeCredentials();
+        // This next line is IMPORTANT to reset the registery when deleting demo.db
+        // removeCredentials();
 
-        System.out.println("is he guest ?");
         if (userCredentialsExist()) {
-            System.out.println("username :" + username + " password :" + password);
-            System.out.println("credentials found. Not a guest. logging in");
             loginWithCredentials();
+            profileController.setUserNameInProfile(username);
             profileController.setLoggedIn(true);
         }
-
-
         try {
             deckMenuController = new DeckMenuController(
                     stage, this, mainWindowViewController, deckDAO, userDAO);
-
             viewStack.add(View.DECK_MENU);
-            System.out.println("showing deck menu on startup");
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
@@ -172,7 +161,6 @@ public class MainFxController
                     new PlayDeckController(stage, deck, mainWindowViewController, this);
 
             viewStack.add(View.PLAY_DECK);
-            System.out.println("showing play deck");
             playDeckController.show();
         } catch (EmptyDeckException e) {
             String title = "Paquet vide.";
@@ -205,7 +193,6 @@ public class MainFxController
         String message = "Vos modifications n’ont pas été enregistrées, "
                 + "veuillez réessayer. Si le problème persiste, "
                 + "redémarrez l’application";
-
         communicateError(e, message);
     }
 
@@ -215,15 +202,11 @@ public class MainFxController
 
     @Override
     public void editDeckClicked(Deck deck) {
-
         try {
             editDeckController = new EditDeckController(
                     stage, deck, mainWindowViewController, this, deckDAO);
-
             viewStack.add(View.EDIT_DECK);
-            System.out.println("showing edit deck");
             editDeckController.show();
-
         } catch (IOException e) {
             returnToMenuError(e);
         }
@@ -233,7 +216,6 @@ public class MainFxController
     public void editCardClicked(Deck deck, Card card) {
         editCardController = new EditCardController(stage, deck, card, deckDAO,
                 mainWindowViewController, this);
-        System.out.println("showing edit card");
         editCardController.show();
         viewStack.add(View.HTML_EDITOR);
     }
@@ -259,7 +241,6 @@ public class MainFxController
             return;
 
         try {
-            System.out.println("go back clicked");
             viewStack.remove(viewStack.size() - 1);
             switch (viewStack.get(viewStack.size() - 1)) {
                 case DECK_MENU -> deckMenuController.show();
@@ -268,7 +249,6 @@ public class MainFxController
                 case HTML_EDITOR -> editCardController.show();
                 case LOGIN -> loginController.show();
                 case PROFILE -> profileController.show();
-
             }
         } catch (IOException | InterruptedException e) {
             restartApplicationError(e);
@@ -289,7 +269,6 @@ public class MainFxController
     public void goToCurrentDeckClicked() {
         if (playDeckController == null)
             return;
-
         playDeckController.show();
     }
 
@@ -301,7 +280,6 @@ public class MainFxController
     public void finishedPlayingDeck() {
         try {
             deckMenuController.show();
-
         } catch (IOException | InterruptedException e) {
             restartApplicationError(e);
         }
@@ -309,25 +287,19 @@ public class MainFxController
 
     @Override
     public void handleProfileClicked() {
-        System.out.println("handleProfileClicked");
-
-        if (profileController.isLoggedIn()) {
-            try {
+        try {
+            if (profileController.isLoggedIn()) {
                 viewStack.add(View.PROFILE);
                 profileController.show();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            System.out.println("ICI#########");
-            try {
+            } else {
                 viewStack.add(View.LOGIN);
                 loginController.show();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
+
 
     @Override
     public void handleLogout() {
@@ -344,7 +316,6 @@ public class MainFxController
 
     @Override
     public void handleLogin(String username, String password) {
-
         profileController.setLoggedIn(true);
         viewStack.remove(View.LOGIN);
         saveCredentials(username, password);
@@ -356,16 +327,14 @@ public class MainFxController
         }
     }
 
-    // maybe extract into profile class
+    // Checks if the user has already logged in and if so saves the credentials
     public boolean userCredentialsExist() {
-        // Checks if the user has already logged in
         this.username = this.prefs.get("localUsername", null);
         this.password = this.prefs.get("localPassword", null);
         return username != null && password != null;
     }
 
     public void loginWithCredentials() {
-        // Checks if the user has already logged in
         try {
             userDAO.login(this.username, this.password);
         } catch (IOException | InterruptedException e) {
@@ -374,22 +343,19 @@ public class MainFxController
     }
 
     public void removeCredentials() {
-        // Removes local credentials
         this.prefs.remove("localUsername");
         this.prefs.remove("localPassword");
-        System.out.println("creds removed");
     }
 
     public void saveCredentials(String username, String password) {
-        // Saves local credentials
         this.prefs.put("localUsername", username);
         this.prefs.put("localPassword", password);
-        System.out.println("creds saved");
     }
+
     // Caution : Guest == NOT logged in
     @Override
     public boolean isGuestSession() {
-        return ! profileController.isLoggedIn();
+        return !profileController.isLoggedIn();
     }
 
 

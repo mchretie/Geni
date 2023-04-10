@@ -33,12 +33,6 @@ public class ProfileController implements ProfileViewController.ViewListener {
 
         this.profileViewController =
                 mainWindowViewController.getProfileViewController();
-
-        System.out.println(
-                "initialisation de profileViewController setting listener de :");
-        System.out.println(this.profileViewController);
-        System.out.println(this);
-
         this.profileViewController.setListener(this);
     }
 
@@ -51,11 +45,12 @@ public class ProfileController implements ProfileViewController.ViewListener {
     }
 
     public boolean isLoggedIn() {
-        return  this.isLoggedIn;
+        return this.isLoggedIn;
     }
 
     public void setUserNameInProfile(String userName) {
-        profileViewController.setUsernameDisplay(userName);    }
+        profileViewController.setUsernameDisplay(userName);
+    }
 
     /* ====================================================================== */
     /*                         Stage Manipulation                             */
@@ -67,11 +62,8 @@ public class ProfileController implements ProfileViewController.ViewListener {
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException {
-        System.out.println("showing profile");
-
         mainWindowViewController.setProfileViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
-
         stage.show();
     }
 
@@ -81,7 +73,6 @@ public class ProfileController implements ProfileViewController.ViewListener {
 
     @Override
     public void logoutButtonClicked() {
-        System.out.println("logoutButton clicked clicked");
         controllerListener.handleLogout();
     }
 
