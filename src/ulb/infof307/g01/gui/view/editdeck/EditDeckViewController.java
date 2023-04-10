@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.view.editdeck;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -18,6 +19,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.FlashCard;
+import ulb.infof307.g01.model.MCQCard;
 
 import java.io.File;
 import java.util.List;
@@ -177,8 +179,52 @@ public class EditDeckViewController {
         frontCard.setVisible(true);
         if (card instanceof FlashCard flashCard) {
             backCardText.setText(flashCard.getBack());
-            backCard.setVisible(true);
+        } else if (card instanceof MCQCard mcqCard) {
+            choicesGrid.getChildren().clear();
+            currentCol = 0;
+            currentRow = 0;
+            int correctAnswerIndex = mcqCard.getCorrectAnswer();
+            for (int i = 0; i < mcqCard.getAnswers().size(); i++) {
+                String choice = mcqCard.getAnswers().get(i);
+                addChoiceField(choice, i, correctAnswerIndex == i);
+                currentCol++;
+                if (currentCol == 2) {
+                    currentCol = 0;
+                    currentRow++;
+                }
+            }
         }
+    }
+
+    private void addChoiceField(String choice, int index, boolean correctAnswer) {
+        TextField textField = new TextField(choice);
+        textField.setPromptText("Réponse");
+        textField.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(textField, Priority.ALWAYS);
+//        textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+//            if (!newValue) handleChoiceEdit(textField, index);
+//        });
+
+        Button setCorrectAnswerButton = new Button();
+        FontIcon checkIcon = new FontIcon("mdi2c-check");
+        if (correctAnswer) {
+            checkIcon.setIconColor(Color.WHITE);
+            setCorrectAnswerButton.setStyle("-fx-background-color: green;");
+        }
+        setCorrectAnswerButton.setGraphic(checkIcon);
+
+        Button removeChoiceButton = new Button();
+        FontIcon trashIcon = new FontIcon("mdi2t-trash-can-outline");
+        trashIcon.setIconColor(Color.WHITE);
+        removeChoiceButton.setGraphic(trashIcon);
+        removeChoiceButton.setStyle("-fx-background-color: red;");
+
+        HBox hBox = new HBox();
+        HBox.setHgrow(hBox, Priority.ALWAYS);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.getChildren().addAll(textField, setCorrectAnswerButton, removeChoiceButton);
+        hBox.setSpacing(2);
+        choicesGrid.add(hBox, currentCol, currentRow);
     }
 
     public void loadSelectedCardEditor() {
@@ -351,9 +397,9 @@ public class EditDeckViewController {
     }
 
     @FXML
-    private void handleQCMSelected() {
+    private void handleMCQCardSelected() {
         backCard.setVisible(false);
-        System.out.println("QCM selected " + backCard.visibleProperty());
+        listener.newMCQCard();
         cardTypeSelected();
         choicesGrid.setVisible(true);
     }
@@ -405,6 +451,8 @@ public class EditDeckViewController {
 
         void newCard();
         void newFlashCard();
+
+        void newMCQCard();
 
         void removeCard(Card selectedCard);
 

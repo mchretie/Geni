@@ -6,16 +6,14 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editdeck.TagViewController;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.FlashCard;
-import ulb.infof307.g01.model.Tag;
+import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EditDeckController implements EditDeckViewController.Listener,
@@ -207,6 +205,22 @@ public class EditDeckController implements EditDeckViewController.Listener,
         try {
             String frontHtml = "Avant";
             deck.addCard(new FlashCard(frontHtml, "Arrière"));
+            deckDAO.saveDeck(deck);
+
+            editDeckViewController.showCards();
+            editDeckViewController.setSelectedCard(deck.getLastCard());
+            cardPreviewClicked(deck.getLastCard());
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void newMCQCard() {
+        try {
+            String frontHtml = "Avant";
+            deck.addCard(new MCQCard(frontHtml, Arrays.asList("Réponse 1", "Réponse 2", "Réponse 3", "Réponse 4"), 0));
             deckDAO.saveDeck(deck);
 
             editDeckViewController.showCards();
