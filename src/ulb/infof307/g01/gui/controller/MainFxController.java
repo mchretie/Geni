@@ -349,6 +349,7 @@ public class MainFxController extends Application implements
     @Override
     public void finishedPlayingDeck() {
         try {
+            viewStack.remove(viewStack.size() - 1);
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
