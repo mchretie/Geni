@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
@@ -33,6 +34,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     private final MainWindowViewController mainWindowViewController;
 
     private final DeckDAO deckDAO;
+    private final ImageLoader imageLoader = new ImageLoader();
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -102,6 +104,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             Node node = loader.load();
 
             DeckViewController controller = loader.getController();
+            controller.setImageLoader(imageLoader);
             controller.setDeck(deck);
             controller.setListener(this);
 

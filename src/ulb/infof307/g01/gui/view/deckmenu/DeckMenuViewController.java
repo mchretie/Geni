@@ -97,7 +97,6 @@ public class DeckMenuViewController {
      */
     private void clearDecksFromGrid() {
         gridPane.getChildren().removeIf(this::clearNodeFromGridCondition);
-        resetGrid();
     }
 
     /**
