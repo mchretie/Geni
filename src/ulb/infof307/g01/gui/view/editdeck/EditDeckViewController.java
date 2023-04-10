@@ -246,9 +246,8 @@ public class EditDeckViewController {
     /**
      * Adds a choice field to the grid
      *
-     * @param choice the text of the choice
-     * @param index the index of the choice in the grid
-     *
+     * @param choice        the text of the choice
+     * @param index         the index of the choice in the grid
      * @param correctAnswer true if the choice is the correct answer
      */
     private void addChoiceField(String choice, int index, boolean correctAnswer) {
@@ -272,19 +271,17 @@ public class EditDeckViewController {
 
     /**
      * Focuses the next choice field of the given index. If the index is the last
-     *  choice field, focus is removed from all fields.
+     * choice field, focus is removed from all fields.
      *
      * @param index the index of the choice field
      */
     private void focusNextChoiceField(int index) {
         int nextIndex = index + 1;
-        if (nextIndex < choicesGrid.getChildren().size()) {
+        if (nextIndex < ((MCQCard) selectedCard).getNbAnswers()) {
             HBox hBox = (HBox) choicesGrid.getChildren().get(nextIndex);
             TextField textField = (TextField) hBox.getChildren().get(0);
             textField.requestFocus();
-        }
-
-        else
+        } else
             mainHbox.requestFocus();
     }
 
@@ -292,8 +289,7 @@ public class EditDeckViewController {
      * Gets the text field for a choice field
      *
      * @param choice the text of the choice
-     * @param index the index of the choice field
-     *
+     * @param index  the index of the choice field
      * @return the text field
      */
     private TextField getChoiceFieldTextField(String choice, int index) {
@@ -312,8 +308,7 @@ public class EditDeckViewController {
      * Gets the button to set the correct answer for a choice field
      *
      * @param correctAnswer true if the answer is the correct one
-     * @param index the index of the choice field
-     *
+     * @param index         the index of the choice field
      * @return the button
      */
     private Button getChoiceFieldCorrectAnswerButton(boolean correctAnswer, int index) {
@@ -340,7 +335,6 @@ public class EditDeckViewController {
      * Gets the remove button for a choice field
      *
      * @param index the index of the choice field to remove
-     *
      * @return the button
      */
     private Button getChoiceFieldRemoveButton(int index) {
@@ -562,6 +556,7 @@ public class EditDeckViewController {
         void mcqAnswerEdit(MCQCard selectedCard, String text, int index);
 
         void mcqCorrectAnswerEdit(MCQCard selectedCard, int i);
+
         void mcqAnswerRemove(MCQCard selectedCard, int index);
 
         void mcqAnswerAdded(MCQCard selectedCard);

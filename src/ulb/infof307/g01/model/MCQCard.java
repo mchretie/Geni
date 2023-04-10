@@ -102,4 +102,7 @@ public class MCQCard extends Card {
                 && correctAnswer == other.getCorrectAnswer();
     }
 
+    public int getNbAnswers() {
+        return answers.size();
+    }
 }
