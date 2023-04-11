@@ -4,24 +4,24 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import ulb.infof307.g01.gui.util.DeckCache;
 import ulb.infof307.g01.model.Deck;
-
 import ulb.infof307.g01.model.DeckMetadata;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Access to decks from a HTTP server
  * <p>
- *     The methods returning multiple decks return all metadata since
- *     most of the time, at most one deck will be open at a given moment.
- *     Consequently, the proper deck should be fetched only when needed.
- *     This is for increased performances.
+ * The methods returning multiple decks return all metadata since
+ * most of the time, at most one deck will be open at a given moment.
+ * Consequently, the proper deck should be fetched only when needed.
+ * This is for increased performances.
  * </p>
  */
 public class DeckDAO extends HttpDAO {
@@ -35,7 +35,7 @@ public class DeckDAO extends HttpDAO {
     /**
      * Init and set up the cache with user’s deck collection
      *
-     * @throws IOException Error during the fetching of decks
+     * @throws IOException          Error during the fetching of decks
      * @throws InterruptedException Error with the server
      */
     private void initCacheIfNot() throws IOException, InterruptedException {
@@ -91,11 +91,12 @@ public class DeckDAO extends HttpDAO {
      * Search for decks with the given name
      *
      * <p>
-     *     If the name is empty, return all. Useful for partial search.
-     *     The returned decks will match this regex: "name.*".
-     *
-     *     E.g. "deck" will return "deck1", "deck2"... "deck10".
+     * If the name is empty, return all. Useful for partial search.
+     * The returned decks will match this regex: "name.*".
+     * <p>
+     * E.g. "deck" will return "deck1", "deck2"... "deck10".
      * </p>
+     *
      * @param deckName The name of the deck to search for.
      */
     public List<DeckMetadata> searchDecks(String deckName)
@@ -113,7 +114,7 @@ public class DeckDAO extends HttpDAO {
     public void deleteDeck(DeckMetadata deck)
             throws IOException, InterruptedException {
 
-        String query =  "?deck_id=" + deck.id();
+        String query = "?deck_id=" + deck.id();
         String path = ServerPaths.DELETE_DECK_PATH;
         HttpResponse<String> response = delete(path + query);
 

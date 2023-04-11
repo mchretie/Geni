@@ -14,7 +14,7 @@ public class DeckCache {
     Set<UUID> allDecksIds = new HashSet<>();
 
     public DeckCache(Collection<DeckMetadata> allDecksMetadata) {
-        for (DeckMetadata deckMetadata: allDecksMetadata) {
+        for (DeckMetadata deckMetadata : allDecksMetadata) {
             var deckId = deckMetadata.id();
             this.allDecksIds.add(deckId);
             this.decksMetadata.put(deckId, deckMetadata);

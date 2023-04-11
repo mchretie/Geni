@@ -293,7 +293,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     public interface ControllerListener {
         void editDeckClicked(DeckMetadata deck);
-
         void playDeckClicked(DeckMetadata deck);
 
         void fxmlLoadingError(IOException e);
@@ -301,7 +300,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         void failedExport(IOException e);
         void failedImport(JsonSyntaxException e);
         void invalidDeckName(String name, char c);
-
         void failedFetch(InterruptedException e);
     }
 }
