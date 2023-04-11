@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController">
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="400.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" />
-            <HBox alignment="CENTER" prefHeight="41.0" prefWidth="600.0">
+            <VBox prefHeight="211.0" />
+            <HBox alignment="CENTER" prefHeight="16.0" style="-fx-background-color: #E2E2E2;">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Leaderboard" textAlignment="CENTER" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" text="Leaderboard" textAlignment="CENTER" textFill="#797979">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </Label>
                </children>
             </HBox>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0">
+            <ScrollPane prefHeight="169.0">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
               </content>
