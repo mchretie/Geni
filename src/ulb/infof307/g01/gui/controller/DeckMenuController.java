@@ -79,7 +79,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     private void showDecks() throws IOException, InterruptedException {
-        deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+        deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecksMetadata()));
     }
 
 
@@ -256,7 +256,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             return;
 
         try {
-            Deck deck = deckDAO.getDeck(deckMetadata);
+            Deck deck = deckDAO.getDeck(deckMetadata).orElse(null);
+            assert deck != null;
+
             String fileName
                     = deck.getName()
                           .replace(" ", "_")

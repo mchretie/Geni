@@ -1,7 +1,8 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import ulb.infof307.g01.gui.util.DeckCache;
 import ulb.infof307.g01.model.Deck;
 
 import ulb.infof307.g01.model.DeckMetadata;
@@ -12,74 +13,88 @@ import java.net.http.HttpResponse;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static java.util.stream.Collectors.*;
+
+/**
+ * Access to decks from a HTTP server
+ * <p>
+ *     The methods returning multiple decks return all metadata since
+ *     most of the time, at most one deck will be open at a given moment.
+ *     Consequently, the proper deck should be fetched only when needed.
+ *     This is for increased performances.
+ * </p>
+ */
 public class DeckDAO extends HttpDAO {
 
-    Map<UUID, Deck> cachedDecks = new HashMap<>();
-    Map<UUID, DeckMetadata> deckMetadata = new HashMap<>();
-    HashSet<UUID> allDecksIds = null;
-
     /* ====================================================================== */
-    /*                               DAO methods                              */
+    /*                               Cache                                    */
     /* ====================================================================== */
 
-    public boolean deckExists(String deckName) throws IOException, InterruptedException {
-        if (allDecksIds == null) {
-            // Fill the complete list of decks
-            fetchAllDecksMetadata();
-        }
-
-        for (UUID deckId: allDecksIds) {
-            assert deckMetadata.containsKey(deckId);
-
-            if (deckMetadata.get(deckId).name().equals(deckName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    DeckCache deckCache = null;
 
     /**
-     * Fill the cached data related to decks metadata
-     * @throws IOException
-     * @throws InterruptedException
+     * Init and set up the cache with user’s deck collection
+     *
+     * @throws IOException Error during the fetching of decks
+     * @throws InterruptedException Error with the server
      */
-    private void fetchAllDecksMetadata()
+    private void initCacheIfNot() throws IOException, InterruptedException {
+        if (deckCache == null) {
+            deckCache = new DeckCache(fetchAllDecksMetadata());
+        }
+    }
+
+    /* ====================================================================== */
+    /*                          Fetching methods                              */
+    /* ====================================================================== */
+
+    private List<DeckMetadata> fetchAllDecksMetadata()
             throws IOException, InterruptedException {
 
         HttpResponse<String> response = get(ServerPaths.GET_ALL_DECKS_PATH);
         checkResponseCode(response.statusCode());
 
-        allDecksIds = new HashSet<>();
-
-        List<DeckMetadata> decks =  stringToDeckArray(response.body());
-        for (DeckMetadata deck: decks) {
-            allDecksIds.add(deck.id());
-            deckMetadata.put(deck.id(), deck);
-        }
+        return stringToDeckArray(response.body());
     }
 
-    public List<DeckMetadata> getAllDecks()
+    private Deck fetchDeck(DeckMetadata deckMetadata)
             throws IOException, InterruptedException {
 
-        if (allDecksIds == null) {
-            fetchAllDecksMetadata();
-        }
+        String path = ServerPaths.GET_DECK_PATH;
+        String parameters = "?deck_id=%s".formatted(deckMetadata.id());
+        HttpResponse<String> response = get(path + parameters);
 
-        List<DeckMetadata> decks = new ArrayList<>();
-        for (UUID deckId: allDecksIds) {
-            decks.add(new DeckMetadata(deckMetadata.get(deckId)));
-        }
+        return new Deck(new Gson().fromJson(response.body(), JsonObject.class));
+    }
 
-        return decks;
+    /* ====================================================================== */
+    /*                               DAO methods                              */
+    /* ====================================================================== */
+
+    public boolean deckExists(String deckName)
+            throws IOException, InterruptedException {
+
+        initCacheIfNot();
+        return deckCache.getAllDecksMetadata().stream()
+                .anyMatch(deck -> deck.name().equals(deckName));
+    }
+
+
+    public List<DeckMetadata> getAllDecksMetadata()
+            throws IOException, InterruptedException {
+
+        initCacheIfNot();
+        return deckCache.getAllDecksMetadata();
     }
 
     /**
-     * Search for decks with the given name. If the name is empty, return all.
-     * Useful for partial search.
+     * Search for decks with the given name
      *
      * <p>
-     *   e.g. "deck" will return "deck1", "deck2"... "deck10".
+     *     If the name is empty, return all. Useful for partial search.
+     *     The returned decks will match this regex: "name.*".
+     *
+     *     E.g. "deck" will return "deck1", "deck2"... "deck10".
      * </p>
      * @param deckName The name of the deck to search for.
      */
@@ -87,63 +102,42 @@ public class DeckDAO extends HttpDAO {
             throws IOException, InterruptedException {
 
         if (deckName.isEmpty())
-            return getAllDecks();
+            return getAllDecksMetadata();
 
-        Pattern pattern = Pattern.compile(".*%s.*".formatted(deckName));
-        List<DeckMetadata> decks = new ArrayList<>();
-        for (DeckMetadata deck: getAllDecks()) {
-            if (pattern.matcher(deck.name()).matches()) {
-                decks.add(new DeckMetadata(deck));
-            }
-        }
-
-        return decks;
+        final Pattern pattern = Pattern.compile("%s.*".formatted(deckName));
+        return getAllDecksMetadata().stream()
+                .filter(deck -> pattern.matcher(deck.name()).matches())
+                .collect(toList());
     }
 
     public void deleteDeck(DeckMetadata deck)
             throws IOException, InterruptedException {
 
         String query =  "?deck_id=" + deck.id();
-        HttpResponse<String> response
-                = delete(ServerPaths.DELETE_DECK_PATH + query);
+        String path = ServerPaths.DELETE_DECK_PATH;
+        HttpResponse<String> response = delete(path + query);
 
         checkResponseCode(response.statusCode());
 
-        // Update cache
-        cachedDecks.remove(deck.id());
-        if (allDecksIds != null)
-            allDecksIds.remove(deck.id());
+        deckCache.removeDeck(deck);
     }
 
     public void saveDeck(Deck deck)
             throws IOException, InterruptedException {
 
-        HttpResponse<String> response
-                = post(ServerPaths.SAVE_DECK_PATH, new Gson().toJson(deck));
+        String path = ServerPaths.SAVE_DECK_PATH;
+        HttpResponse<String> response = post(path, new Gson().toJson(deck));
 
         checkResponseCode(response.statusCode());
 
-        // Update cache
-        cachedDecks.put(deck.getId(), deck);
-        allDecksIds.add(deck.getId());
-        deckMetadata.put(deck.getId(), deck.getMetadata());
+        deckCache.updateDeck(deck);
     }
 
-    private void fetchDeck(DeckMetadata deckMetadata)
+    public Optional<Deck> getDeck(DeckMetadata deckMetadata)
             throws IOException, InterruptedException {
-        String path = ServerPaths.GET_DECK_PATH;
-        String parameters = "?deck_id=%s".formatted(deckMetadata.id());
-        HttpResponse<String> response = get(path + parameters);
 
-        Deck receivedDeck = new Gson().fromJson(response.body(), Deck.class);
-        cachedDecks.put(deckMetadata.id(), receivedDeck);
-    }
-
-    public Deck getDeck(DeckMetadata deckMetadata)
-            throws IOException, InterruptedException {
-        if (!cachedDecks.containsKey(deckMetadata.id())) {
-            fetchDeck(deckMetadata);
-        }
-        return cachedDecks.get(deckMetadata.id());
+        if (deckCache.getDeck(deckMetadata).isEmpty())
+            deckCache.updateDeck(fetchDeck(deckMetadata));
+        return deckCache.getDeck(deckMetadata);
     }
 }

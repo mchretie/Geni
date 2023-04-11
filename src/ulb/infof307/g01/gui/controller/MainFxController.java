@@ -223,7 +223,7 @@ public class MainFxController extends Application implements
         try {
             editDeckController
                     = new EditDeckController(stage,
-                    deckDAO.getDeck(deckMetadata),
+                    deckDAO.getDeck(deckMetadata).orElse(null),
                     mainWindowViewController,
                     this,
                     deckDAO);
@@ -243,7 +243,7 @@ public class MainFxController extends Application implements
         try {
             playDeckController = new PlayDeckController(
                     stage,
-                    deckDAO.getDeck(deckMetadata),
+                    deckDAO.getDeck(deckMetadata).orElse(null),
                     mainWindowViewController,
                     this);
 
