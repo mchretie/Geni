@@ -9,6 +9,7 @@ import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.FlashCard;
 
 public class EditCardController implements EditCardViewController.Listener {
 
@@ -19,25 +20,39 @@ public class EditCardController implements EditCardViewController.Listener {
     private final DeckDAO deckDAO;
     private final Deck deck;
     private final Card card;
+    private final boolean front;
 
-    public EditCardController(Stage stage, Deck deck, Card card, DeckDAO deckDAO, MainWindowViewController mainWindowViewController, MainFxController mainFxController) {
+    public EditCardController(Stage stage,
+                              Deck deck,
+                              Card card,
+                              boolean front,
+                              DeckDAO deckDAO,
+                              MainWindowViewController mainWindowViewController,
+                              MainFxController mainFxController) {
+
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = mainFxController;
         this.editCardViewController = mainWindowViewController.getEditCardViewController();
         this.stage = stage;
         this.deck = deck;
         this.card = card;
+        this.front = front;
         this.deckDAO = deckDAO;
         editCardViewController.setListener(this);
     }
 
     @Override
-    public void saveButtonClicked(Card card, String html) {
+    public void saveButtonClicked(String html) {
         try {
             Document doc = Jsoup.parse(html);
             Element body = doc.body();
             body.removeAttr("contenteditable");
-            card.setFront(doc.html());
+
+            if (front)
+                card.setFront(doc.html());
+            else
+                ((FlashCard) card).setBack(doc.html());
+
             deckDAO.saveDeck(deck);
             controllerListener.savedChanges();
 
@@ -47,7 +62,11 @@ public class EditCardController implements EditCardViewController.Listener {
     }
 
     public void show() {
-        editCardViewController.setCard(card);
+        if (front)
+            editCardViewController.setContent(card.getFront());
+        else
+            editCardViewController.setContent(((FlashCard) card).getBack());
+
         mainWindowViewController.setEditCardViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
@@ -56,6 +75,7 @@ public class EditCardController implements EditCardViewController.Listener {
 
     public interface ControllerListener {
         void savingError(Exception e);
+
         void savedChanges();
     }
 }

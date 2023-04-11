@@ -1,6 +1,10 @@
 package ulb.infof307.g01.model;
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +23,11 @@ public record DeckMetadata(UUID id,
              deckMetadata.cardCount,
              List.copyOf(deckMetadata.tags),
              deckMetadata.deckHashCode);
+    }
+
+    public static DeckMetadata fromJson(JsonObject deckMetadataJson) {
+        return new Gson().fromJson(deckMetadataJson.toString(),
+                                   DeckMetadata.class);
     }
 
     @Override

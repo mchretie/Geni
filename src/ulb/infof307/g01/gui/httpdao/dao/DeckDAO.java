@@ -1,6 +1,7 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import ulb.infof307.g01.model.Deck;
 
 import ulb.infof307.g01.model.DeckMetadata;
@@ -51,7 +52,7 @@ public class DeckDAO extends HttpDAO {
 
         allDecksIds = new HashSet<>();
 
-        List<DeckMetadata> decks =  stringToArray(response.body(), DeckMetadata[].class);
+        List<DeckMetadata> decks =  stringToDeckArray(response.body());
         for (DeckMetadata deck: decks) {
             allDecksIds.add(deck.id());
             deckMetadata.put(deck.id(), deck);

@@ -1,36 +1,56 @@
 package ulb.infof307.g01.gui.view.editcard;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
-import javafx.scene.web.WebView;
 import ulb.infof307.g01.model.Card;
 
 public class EditCardViewController {
+    public VBox vbox;
+
+    /* ====================================================================== */
+    /*                               FXML Attributes                          */
+    /* ====================================================================== */
+
     @FXML
     private HTMLEditor htmlEditor;
-    @FXML
-    private Button saveButton;
 
-    private Card selectedCard;
+
+    /* ====================================================================== */
+    /*                                  Listener                              */
+    /* ====================================================================== */
+
     private Listener listener;
+
+    public void init() {} // PLEASE DO NOT DELETE
+
+    /* ====================================================================== */
+    /*                                   Setters                              */
+    /* ====================================================================== */
 
     public void setListener(Listener listener) {
         this.listener = listener;
     }
 
+    public void setContent(String content) {
+        htmlEditor.setHtmlText(content);
+    }
+
+    /* ====================================================================== */
+    /*                              Click handlers                            */
+    /* ====================================================================== */
+
     @FXML
     private void onSaveButtonClicked() {
-        listener.saveButtonClicked(selectedCard, htmlEditor.getHtmlText());
+        listener.saveButtonClicked(htmlEditor.getHtmlText());
     }
 
-    public void setCard(Card selectedCard) {
-        this.selectedCard = selectedCard;
-        htmlEditor.setHtmlText(selectedCard.getFront());
-    }
+
+    /* ====================================================================== */
+    /*                            Listener Interface                          */
+    /* ====================================================================== */
 
     public interface Listener {
-        void saveButtonClicked(Card card, String html);
+        void saveButtonClicked(String html);
     }
 }

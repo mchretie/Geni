@@ -1,7 +1,10 @@
 package ulb.infof307.g01.model;
 
+import com.google.gson.*;
 import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 
@@ -46,13 +49,26 @@ public class Deck implements Iterable<Card> {
         this.color = color;
     }
 
-    public void setNewID() {
-      this.id = UUID.randomUUID();
-
-      getCards().forEach(card -> card.setDeckId(this.id));
+    public Deck(JsonObject deckGson){
+        Deck deck = new Gson().fromJson(deckGson.toString(), Deck.class);
+        JsonArray cardsJson = deckGson.getAsJsonArray("cards");
+        deck.setCardsFromJson(cardsJson);
+        this.name = deck.getName();
+        this.id = deck.getId();
+        this.cards = deck.getCards();
+        this.tags = deck.getTags();
+        this.color = deck.getColor();
     }
 
-    public List<Tag> getTags() { return tags; }
+    public void setNewID() {
+        this.id = UUID.randomUUID();
+
+        getCards().forEach(card -> card.setDeckId(this.id));
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
 
     public Card getCard(int index) throws IndexOutOfBoundsException {
         return cards.get(index);
@@ -153,6 +169,18 @@ public class Deck implements Iterable<Card> {
 
     public Iterator<Card> iterator() {
         return cards.iterator();
+    }
 
+    public void setCardsFromJson(JsonArray cardsJson) {
+        this.cards.clear();
+        for (JsonElement card : cardsJson) {
+            JsonObject cardObject = card.getAsJsonObject();
+            String cardType = cardObject.get("cardType").getAsString();
+            switch (cardType) {
+                case "FlashCard" -> this.cards.add(new Gson().fromJson(card, FlashCard.class));
+                case "MCQCard" -> this.cards.add(new Gson().fromJson(card, MCQCard.class));
+                case "InputCard" -> this.cards.add(new Gson().fromJson(card, InputCard.class));
+            }
+        }
     }
 }

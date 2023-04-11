@@ -111,6 +111,8 @@ public class MainFxController extends Application implements
     public void start(Stage stage) throws IOException, InterruptedException {
 
         this.stage = stage;
+        stage.setWidth(1000);
+        stage.setHeight(800);
 
         // TODO: Title and login.
         stage.setTitle("Pokémon TCG Deck Builder");
@@ -124,11 +126,9 @@ public class MainFxController extends Application implements
         FXMLLoader fxmlLoader = new FXMLLoader(resource);
 
         Parent root = fxmlLoader.load();
-
         stage.setScene(new Scene(root));
-        stage.setMinHeight(400);
-        stage.setMinWidth(550);
-
+        stage.setMinHeight(500);
+        stage.setMinWidth(600);
 
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
@@ -199,8 +199,8 @@ public class MainFxController extends Application implements
     }
 
     private void failedDeckImportError(JsonSyntaxException e) {
-        String message = "L'importation du deck a échouée, " +
-                "veuillez vérifiez que le fichier est bien un fichier " +
+        String message = "L'importation du deck a échoué, " +
+                "veuillez vérifier que le fichier est bien un fichier " +
                 ".json.";
 
         communicateError(e, message);
@@ -262,10 +262,33 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void editCardClicked(Deck deck, Card card) {
-        editCardController = new EditCardController(stage, deck, card, deckDAO, mainWindowViewController, this);
-        editCardController.show();
+    public void frontEditCardClicked(Deck deck, Card selectedCard) {
+        editCardController
+                = new EditCardController(stage,
+                deck,
+                selectedCard,
+                true,
+                deckDAO,
+                mainWindowViewController,
+                this);
+
         viewStack.add(View.HTML_EDITOR);
+        editCardController.show();
+    }
+
+    @Override
+    public void backEditCardClicked(Deck deck, Card selectedCard) {
+        editCardController
+                = new EditCardController(stage,
+                                            deck,
+                                            selectedCard,
+                                       false,
+                                            deckDAO,
+                                            mainWindowViewController,
+                             this);
+
+        viewStack.add(View.HTML_EDITOR);
+        editCardController.show();
     }
 
     @Override
@@ -344,6 +367,7 @@ public class MainFxController extends Application implements
     @Override
     public void finishedPlayingDeck() {
         try {
+            viewStack.remove(viewStack.size() - 1);
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {

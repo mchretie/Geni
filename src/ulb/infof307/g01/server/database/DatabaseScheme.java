@@ -22,16 +22,44 @@ class DatabaseScheme {
                 ON DELETE CASCADE
         );
             """,
-            // TODO: 29/03/23 replace with content instead of front and back
             """
         CREATE TABLE IF NOT EXISTS card (
             card_id TEXT PRIMARY KEY,
             deck_id TEXT NOT NULL,
             front TEXT NOT NULL,
-            back TEXT NOT NULL,
             FOREIGN KEY (deck_id)
                 REFERENCES deck(deck_id)
                 ON DELETE CASCADE
+        );
+            """,
+            """
+        CREATE TABLE IF NOT EXISTS flash_card (
+            card_id TEXT PRIMARY KEY,
+            back TEXT NOT NULL,
+            FOREIGN KEY (card_id) REFERENCES card(card_id) ON DELETE CASCADE
+        );
+            """,
+            """
+        CREATE TABLE IF NOT EXISTS mcq_card (
+            card_id TEXT PRIMARY KEY,
+            correct_answer_index INTEGER NOT NULL,
+            FOREIGN KEY (card_id) REFERENCES card(card_id) ON DELETE CASCADE
+        );
+            """,
+            """
+        CREATE TABLE IF NOT EXISTS mcq_answer (
+            card_id TEXT,
+            answer_index INTEGER NOT NULL,
+            answer TEXT NOT NULL,
+            FOREIGN KEY (card_id) REFERENCES card(card_id) ON DELETE CASCADE,
+            PRIMARY KEY (card_id, answer_index)
+        );
+            """,
+            """
+        CREATE TABLE IF NOT EXISTS input_card (
+            card_id TEXT PRIMARY KEY,
+            answer TEXT NOT NULL,
+            FOREIGN KEY (card_id) REFERENCES card(card_id) ON DELETE CASCADE
         );
             """,
             """
@@ -65,10 +93,10 @@ class DatabaseScheme {
             """
         CREATE TABLE IF NOT EXISTS user_deck_score (
             user_id TEXT,
-            deck_id TEXT,
-            timestamp TEXT NOT NULL,
+            timestamp TEXT,
+            deck_id TEXT NOT NULL,
             score INTEGER NOT NULL,
-            PRIMARY KEY (user_id, deck_id),
+            PRIMARY KEY (user_id, timestamp),
             FOREIGN KEY (user_id)
                 REFERENCES user(user_id)
                 ON DELETE CASCADE,

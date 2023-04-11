@@ -1,10 +1,11 @@
 package ulb.infof307.g01.gui.view.deckmenu;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -13,32 +14,69 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.DeckMetadata;
+import ulb.infof307.g01.gui.util.ImageLoader;
+import ulb.infof307.g01.model.Tag;
 
 import java.io.File;
 
 public class DeckViewController {
 
+    /* ====================================================================== */
+    /*                              FXML Attributes                           */
+    /* ====================================================================== */
+
     @FXML
     private StackPane stackPane;
+
     @FXML
     private ImageView backgroundImage;
+
     @FXML
     private Label playDeckLabel;
+
     @FXML
     private FontIcon editDeckIcon;
+
     @FXML
     private FontIcon removeDeckIcon;
+
     @FXML
     private FontIcon shareDeckIcon;
+
     @FXML
     private Rectangle colorRect;
+    @FXML
+    private FlowPane tagsContainer;
+    @FXML
+    private Label amountCardsLabel;
+    @FXML
+    private Label amountTrophiesLabel;
+
+
+    /* ====================================================================== */
+    /*                              Model Attributes                          */
+    /* ====================================================================== */
 
     private DeckMetadata deck;
 
+
+    /* ====================================================================== */
+    /*                                Listener                                */
+    /* ====================================================================== */
+
     private Listener listener;
+    private ImageLoader imageLoader;
+
+    /* ====================================================================== */
+    /*                                Setters                                 */
+    /* ====================================================================== */
 
     public void setListener(Listener listener) {
         this.listener = listener;
+    }
+
+    public void setImageLoader(ImageLoader loader) {
+        this.imageLoader = loader;
     }
 
     /* ====================================================================== */
@@ -51,6 +89,9 @@ public class DeckViewController {
 
         this.setDeckColor();
         this.setBackGroundImage("file:res/img/tmpdeckimage.jpg");
+
+        this.setTags();
+        this.setStats();
     }
 
     private void setDeckColor() {
@@ -64,7 +105,7 @@ public class DeckViewController {
 
     private void setBackGroundImage(String filename) {
         // TODO: make image depend on deck image
-        Image img = new Image(filename);
+        Image img = imageLoader.get(filename);
         backgroundImage.setImage(img);
         backgroundImage.setPreserveRatio(false);
         backgroundImage.fitWidthProperty().bind(stackPane.widthProperty());
@@ -77,6 +118,29 @@ public class DeckViewController {
         clip.heightProperty().bind(backgroundImage.fitHeightProperty());
         clip.widthProperty().bind(backgroundImage.fitWidthProperty());
         backgroundImage.setClip(clip);
+    }
+
+    private void setTags() {
+        tagsContainer.setHgap(30);
+        tagsContainer.setVgap(10);
+
+        for (Tag tag : deck.tags()) {
+            Label tagLabel = new Label(tag.getName());
+
+            tagLabel.setBackground(new Background(new BackgroundFill(
+                    Color.web(tag.getColor()),
+                    new CornerRadii(10, false),
+                    new Insets(-2, -10, -2, -10))));
+
+            tagsContainer.getChildren().add(tagLabel);
+        }
+    }
+
+    private void setStats() {
+        amountCardsLabel.setText(String.valueOf(deck.cardCount()));
+        // TODO : use this when trophies are implemented
+        //amountTrophiesLabel.setText(String.valueOf(deck.getTrophies()));
+        amountTrophiesLabel.setText("666");
     }
 
     private LinearGradient makeGradient(Color color) {
