@@ -149,13 +149,13 @@ public class MainFxController extends Application implements
         mainWindowViewController.setListener(this);
 
         loginController =
-                new LoginController(stage, mainWindowViewController, this);
+                new LoginController(stage, mainWindowViewController, this, userDAO);
         profileController =
                 new ProfileController(stage, mainWindowViewController, this);
 
         // Todo : handle failed auto login. example:
         // IMPORTANT to reset the registry when deleting demo.db
-        removeCredentials();
+        //removeCredentials();
 
         if (userCredentialsExist()) {
             loginWithCredentials();
@@ -407,6 +407,8 @@ public class MainFxController extends Application implements
     public void handleLogout() {
         removeCredentials();
         userDAO.removeToken();
+        deckMenuController.setNewToken(null); // for good mesure
+        deckMenuController.clearDecks();
         profileController.setLoggedIn(false);
         showPreviousView();
     }
@@ -418,6 +420,8 @@ public class MainFxController extends Application implements
         saveCredentials(username, password);
         profileController.setUserNameInProfile(username);
         System.out.println("showing previous view");
+        System.out.println("token: " + userDAO.getToken());
+        deckMenuController.setNewToken(userDAO.getToken());
         showPreviousView();
     }
 

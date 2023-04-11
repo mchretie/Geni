@@ -62,6 +62,13 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         deckMenuViewController.setListener(this);
     }
 
+    /* ====================================================================== */
+    /*                              Setters                                   */
+    /* ====================================================================== */
+
+    public void setNewToken(String newToken){
+        this.deckDAO.setToken(newToken);
+    }
 
     /* ====================================================================== */
     /*                         Stage Manipulation                             */
@@ -74,6 +81,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      */
     public void show() throws IOException, InterruptedException {
 
+        System.out.println("isGuestSession: " + controllerListener.isGuestSession());
         // If Guest skip loading decks
         if (!controllerListener.isGuestSession()) {
             showDecks();
@@ -91,6 +99,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
     }
 
+    public void clearDecks() {
+        deckMenuViewController.clearDecksFromGrid();
+        deckMenuViewController.resetGrid();
+    }
 
     /* ====================================================================== */
     /*                          Database Access                               */

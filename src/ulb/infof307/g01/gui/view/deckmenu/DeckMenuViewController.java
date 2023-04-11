@@ -91,7 +91,7 @@ public class DeckMenuViewController {
         searchBar.setDisable(OnOFF);
         importDeckButton.setDisable(OnOFF);
         searchIconButton.setDisable(OnOFF);
-
+        
     }
 
     /* ====================================================================== */
@@ -114,7 +114,7 @@ public class DeckMenuViewController {
     /**
      * Clears the whole grid pane of decks. This circumvents a visual bug.
      */
-    private void clearDecksFromGrid() {
+    public void clearDecksFromGrid() {
         gridPane.getChildren().removeIf(this::clearNodeFromGridCondition);
     }
 
@@ -136,10 +136,12 @@ public class DeckMenuViewController {
         arrange();
     }
 
+
+
     /**
      * Remove all row and column constraints from the grid
      */
-    private void resetGrid() {
+    public void resetGrid() {
         int rowCount = gridPane.getRowConstraints().size();
         gridPane.getRowConstraints().remove(0, rowCount);
 

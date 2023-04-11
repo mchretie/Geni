@@ -17,7 +17,7 @@ public class LoginController implements LoginViewController.ViewListener {
 
     private final ControllerListener controllerListener;
 
-    private final UserDAO userDAO = new UserDAO();
+    private final UserDAO userDAO; // = new UserDAO();
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -25,11 +25,12 @@ public class LoginController implements LoginViewController.ViewListener {
 
     public LoginController(Stage stage,
                            MainWindowViewController mainWindowViewController,
-                           ControllerListener controllerListener) {
+                           ControllerListener controllerListener, UserDAO userDAO) {
 
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
+        this.userDAO = userDAO;
 
         this.loginViewController =
                 mainWindowViewController.getLoginViewController();
