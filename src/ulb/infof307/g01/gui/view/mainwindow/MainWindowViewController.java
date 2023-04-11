@@ -9,7 +9,9 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
+import ulb.infof307.g01.gui.view.login.LoginViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
+import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 
 public class MainWindowViewController {
 
@@ -48,6 +50,11 @@ public class MainWindowViewController {
     private VBox editCardView;
 
     @FXML
+    private AnchorPane loginView;
+    @FXML
+    private AnchorPane profileView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
@@ -58,6 +65,12 @@ public class MainWindowViewController {
 
     @FXML
     private EditCardViewController editCardViewController;
+
+    @FXML
+    private LoginViewController loginViewController;
+
+    @FXML
+    private ProfileViewController profileViewController;
 
 
     /* ====================================================================== */
@@ -95,6 +108,11 @@ public class MainWindowViewController {
         return editCardViewController;
     }
 
+    public LoginViewController getLoginViewController() {
+        return loginViewController;
+    }
+
+    public ProfileViewController getProfileViewController() { return profileViewController; }
 
     /* ====================================================================== */
     /*                              Alerts                                    */
@@ -140,6 +158,9 @@ public class MainWindowViewController {
         setAllInvisibleExcept(editCardView);
     }
 
+    public void setLoginViewVisible() { setAllInvisibleExcept(loginView); }
+
+    public void setProfileViewVisible() { setAllInvisibleExcept(profileView); }
 
     /* ====================================================================== */
     /*                          Icon Visibility                               */
@@ -178,6 +199,8 @@ public class MainWindowViewController {
         listener.goToAboutClicked();
     }
 
+    @FXML
+    private void handleProfileClicked() { listener.handleProfileClicked();  }
 
     /* ====================================================================== */
     /*                              Hover handlers                            */
@@ -242,5 +265,6 @@ public class MainWindowViewController {
         void goToHomeClicked();
         void goToCurrentDeckClicked();
         void goToAboutClicked();
+        void handleProfileClicked();
     }
 }

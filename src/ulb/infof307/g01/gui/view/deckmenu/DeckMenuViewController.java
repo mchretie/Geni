@@ -75,6 +75,16 @@ public class DeckMenuViewController {
         this.listener = listener;
     }
 
+    // Toggles create deck over button, text field and search field
+    public void setGuestMode(boolean OnOFF) {
+        System.out.println("setGuestMode");
+        createDeckIcon.setDisable(OnOFF);
+        createDeckField.setDisable(OnOFF);
+        searchBar.setDisable(OnOFF);
+        // !! !OnOFF
+        searchIcon.setVisible(!OnOFF);
+    }
+
     /* ====================================================================== */
     /*                           Deck Displaying                              */
     /* ====================================================================== */

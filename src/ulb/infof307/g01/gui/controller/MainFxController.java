@@ -19,6 +19,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.prefs.Preferences;
+
+
 /**
  * Main class of the application which initializes the main view using the main view handler and loads a menu view.
  */
@@ -27,7 +30,9 @@ public class MainFxController extends Application implements
         DeckMenuController.ControllerListener,
         PlayDeckController.ControllerListener,
         EditDeckController.ControllerListener,
-        EditCardController.ControllerListener {
+        EditCardController.ControllerListener,
+        LoginController.ControllerListener,
+        ProfileController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -37,7 +42,8 @@ public class MainFxController extends Application implements
     private EditDeckController editDeckController;
     private PlayDeckController playDeckController;
     private EditCardController editCardController;
-
+    private LoginController loginController;
+    private ProfileController profileController;
 
     private MainWindowViewController mainWindowViewController;
 
@@ -57,7 +63,9 @@ public class MainFxController extends Application implements
         DECK_MENU,
         PLAY_DECK,
         EDIT_DECK,
-        HTML_EDITOR
+        HTML_EDITOR,
+        LOGIN,
+        PROFILE
     }
 
     List<View> viewStack = new ArrayList<>();
@@ -68,6 +76,14 @@ public class MainFxController extends Application implements
     /* ====================================================================== */
 
     Stage stage;
+
+    /* ====================================================================== */
+    /*                             Stage Attributes                           */
+    /* ====================================================================== */
+
+    private final Preferences prefs = Preferences.userNodeForPackage(UserDAO.class);
+    private String username;
+    private String password;
 
     /* ====================================================================== */
     /*                                  Main                                  */
@@ -94,6 +110,8 @@ public class MainFxController extends Application implements
                 case PLAY_DECK -> playDeckController.show();
                 case EDIT_DECK -> editDeckController.show();
                 case HTML_EDITOR -> editCardController.show();
+                case LOGIN -> loginController.show();
+                case PROFILE -> profileController.show();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -115,8 +133,8 @@ public class MainFxController extends Application implements
 
         // TODO: Title and login.
         stage.setTitle("Pokémon TCG Deck Builder");
-        userDAO.register("guest", "guest");
-        userDAO.login("guest", "guest");
+//        userDAO.register("guest", "guest");
+//        userDAO.login("guest", "guest");
 
         URL resource = MainWindowViewController
                 .class
@@ -131,6 +149,21 @@ public class MainFxController extends Application implements
 
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
+
+        loginController =
+                new LoginController(stage, mainWindowViewController, this);
+        profileController =
+                new ProfileController(stage, mainWindowViewController, this);
+
+        // Todo : handle failed auto login. example:
+        // This next line is IMPORTANT to reset the registery when deleting demo.db
+        removeCredentials();
+
+        if (userCredentialsExist()) {
+            loginWithCredentials();
+            profileController.setUserNameInProfile(username);
+            profileController.setLoggedIn(true);
+        }
 
         try {
             deckMenuController = new DeckMenuController(
@@ -267,12 +300,12 @@ public class MainFxController extends Application implements
     public void backEditCardClicked(Deck deck, Card selectedCard) {
         editCardController
                 = new EditCardController(stage,
-                                            deck,
-                                            selectedCard,
-                                       false,
-                                            deckDAO,
-                                            mainWindowViewController,
-                             this);
+                deck,
+                selectedCard,
+                false,
+                deckDAO,
+                mainWindowViewController,
+                this);
 
         viewStack.add(View.HTML_EDITOR);
         editCardController.show();
@@ -355,5 +388,67 @@ public class MainFxController extends Application implements
         } catch (IOException | InterruptedException e) {
             restartApplicationError(e);
         }
+    }
+
+    @Override
+    public void handleProfileClicked() {
+        try {
+            if (profileController.isLoggedIn()) {
+                viewStack.add(View.PROFILE);
+                profileController.show();
+            } else {
+                viewStack.add(View.LOGIN);
+                loginController.show();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void handleLogout() {
+        removeCredentials();
+        userDAO.removeToken();
+        profileController.setLoggedIn(false);
+        showPreviousView();
+    }
+
+    @Override
+    public void handleLogin(String username, String password) {
+        profileController.setLoggedIn(true);
+        saveCredentials(username, password);
+        profileController.setUserNameInProfile(username);
+        showPreviousView();
+    }
+
+    // Checks if the user has already logged in and if so saves the credentials
+    public boolean userCredentialsExist() {
+        this.username = this.prefs.get("localUsername", null);
+        this.password = this.prefs.get("localPassword", null);
+        return username != null && password != null;
+    }
+
+    public void loginWithCredentials() {
+        try {
+            userDAO.login(this.username, this.password);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void removeCredentials() {
+        this.prefs.remove("localUsername");
+        this.prefs.remove("localPassword");
+    }
+
+    public void saveCredentials(String username, String password) {
+        this.prefs.put("localUsername", username);
+        this.prefs.put("localPassword", password);
+    }
+
+    // Caution : Guest == NOT logged in
+    @Override
+    public boolean isGuestSession() {
+        return !profileController.isLoggedIn();
     }
 }

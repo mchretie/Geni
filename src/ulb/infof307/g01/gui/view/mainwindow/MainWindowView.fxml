@@ -37,6 +37,8 @@
             <fx:include fx:id="deckMenuView" source="../deckmenu/DeckMenuView.fxml" />
             <fx:include fx:id="playDeckView" source="../playdeck/PlayDeckView.fxml" />
             <fx:include fx:id="editCardView" source="../editcard/EditCardView.fxml" />
+            <fx:include fx:id="loginView" source="../login/LoginView.fxml"/>
+            <fx:include fx:id="profileView" source="../profile/ProfileView.fxml"/>
         </StackPane>
     </center>
 

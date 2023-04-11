@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ulb.infof307.g01.gui.view.login.LoginViewController">
+
+   <Pane layoutX="315.0" layoutY="155.0">
+
+      <Label alignment="CENTER" layoutX="65.0" text="Profile" textAlignment="CENTER"/>
+
+      <TextField fx:id="usernameField" layoutY="59.0" promptText="User Name"/>
+
+      <PasswordField fx:id="passwordField" layoutY="121.0" promptText="Password"/>
+
+      <Button fx:id="loginButton" layoutX="19.0" layoutY="180.0" mnemonicParsing="false"
+              onMouseClicked="#handleLoginClicked" text="Login"/>
+
+      <Button fx:id="signupButton" layoutX="94.0" layoutY="180.0" mnemonicParsing="false"
+              onMouseClicked="#handleSignupClicked" text="Signup"/>
+   </Pane>
+</AnchorPane>
