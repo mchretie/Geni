@@ -137,23 +137,29 @@ public class PlayDeckViewController {
         }
     }
 
+
     public BorderPane addAnswer(String answer, boolean isCorrectAnswer, String color) {
         BorderPane answerPane = new BorderPane();
         answerPane.setStyle("-fx-background-color: " + color + ";");
-        TextField answerField = createAnswerField(answer);
 
+        TextField answerField = createAnswerField(answer);
         Button checkButton = createCorrectAnswerButton();
-        FontIcon checkIcon = (FontIcon) checkButton.getGraphic();
-        if (isCorrectAnswer) correctAnswerButton = checkButton;
+
+        if (isCorrectAnswer)
+            correctAnswerButton = checkButton;
 
         checkButton.setOnAction(actionEvent -> {
-            checkIcon.setIconColor(Color.WHITE);
+            FontIcon buttonIcon = (FontIcon) checkButton.getGraphic();
+            buttonIcon.setIconColor(Color.WHITE);
             showCorrectAnswers();
         });
+
         answerPane.setLeft(answerField);
         answerPane.setRight(checkButton);
+
         return answerPane;
     }
+
 
     private TextField createAnswerField(String answer) {
         TextField answerField = new TextField();
