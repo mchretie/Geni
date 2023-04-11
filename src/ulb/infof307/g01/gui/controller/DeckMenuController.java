@@ -74,12 +74,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      */
     public void show() throws IOException, InterruptedException {
 
-        System.out.println("is guestSession : " +controllerListener.isGuestSession());
         // If Guest skip loading decks
         if (!controllerListener.isGuestSession()) {
             showDecks();
         }
-
         // Toggles between guest and user mode
         deckMenuViewController.setGuestMode(controllerListener.isGuestSession());
 

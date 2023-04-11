@@ -131,10 +131,8 @@ public class MainFxController extends Application implements
         stage.setWidth(1000);
         stage.setHeight(800);
 
-        // TODO: Title and login.
+        // TODO: Title
         stage.setTitle("Pokémon TCG Deck Builder");
-//        userDAO.register("guest", "guest");
-//        userDAO.login("guest", "guest");
 
         URL resource = MainWindowViewController
                 .class
@@ -156,7 +154,7 @@ public class MainFxController extends Application implements
                 new ProfileController(stage, mainWindowViewController, this);
 
         // Todo : handle failed auto login. example:
-        // This next line is IMPORTANT to reset the registery when deleting demo.db
+        // IMPORTANT to reset the registry when deleting demo.db
         removeCredentials();
 
         if (userCredentialsExist()) {
@@ -415,9 +413,11 @@ public class MainFxController extends Application implements
 
     @Override
     public void handleLogin(String username, String password) {
+        System.out.println("Logging in with " + username + " and " + password);
         profileController.setLoggedIn(true);
         saveCredentials(username, password);
         profileController.setUserNameInProfile(username);
+        System.out.println("showing previous view");
         showPreviousView();
     }
 

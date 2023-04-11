@@ -15,7 +15,7 @@
         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <TextField fx:id="searchBar" alignment="CENTER" onKeyReleased="#handleSearchDeckEvent" prefWidth="200.0" promptText="Rechercher des paquets / tags" />
             <!-- Search Button-->
-            <Button layoutY="5" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent;">
+            <Button fx:id="searchIconButton" layoutY="5" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent;">
 
                 <graphic>
                     <FontIcon fx:id="searchIcon" iconLiteral="mdi2m-magnify" iconSize="30" onMouseClicked="#handleSearchDeckEvent" onMouseEntered="#handleSearchHover" onMouseExited="#handleSearchExit" />
@@ -60,7 +60,7 @@
                                 <FontIcon fx:id="createDeckIcon" iconLiteral="mdi2p-plus" iconSize="50" onMouseEntered="#handleCreateDeckHover" onMouseExited="#handleCreateDeckExit" />
                             </graphic>
                         </Button>
-                        <Button onMouseClicked="#handleImportDeck" style="-fx-background-color: transparent;">
+                        <Button fx:id="importDeckButton" onMouseClicked="#handleImportDeck" style="-fx-background-color: transparent;">
                             <graphic>
                                 <FontIcon fx:id="importDeck" iconLiteral="mdi2f-file-import" iconSize="50" onMouseEntered="#handleImportDeckHover" onMouseExited="#handleImportDeckExit" />
                             </graphic>

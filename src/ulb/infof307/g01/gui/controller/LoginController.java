@@ -64,6 +64,7 @@ public class LoginController implements LoginViewController.ViewListener {
             return;
         }
         try {
+            System.out.println("try Logging in with username: " + username + " and password: " + password);
             userDAO.login(username, password);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -79,10 +80,12 @@ public class LoginController implements LoginViewController.ViewListener {
             return;
         }
         try {
+            System.out.println("try Signing up with username: " + username + " and password: " + password);
             userDAO.register(username, password);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("Signup successful. Loggin in...");
         loginClicked(username, password);
     }
 

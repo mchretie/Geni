@@ -13,6 +13,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.beans.value.ChangeListener;
 import org.kordamp.ikonli.javafx.FontIcon;
+import javafx.scene.control.Button;
+
 
 import java.io.File;
 import java.util.List;
@@ -43,6 +45,12 @@ public class DeckMenuViewController {
 
     @FXML
     private FontIcon importDeck;
+
+    @FXML
+    private Button importDeckButton;
+
+    @FXML
+    private Button searchIconButton;
 
     private int colCount = 2;  // default
 
@@ -75,14 +83,15 @@ public class DeckMenuViewController {
         this.listener = listener;
     }
 
-    // Toggles create deck over button, text field and search field
+    // Toggles functionalities for guest mode
     public void setGuestMode(boolean OnOFF) {
-        System.out.println("setGuestMode");
+
         createDeckIcon.setDisable(OnOFF);
         createDeckField.setDisable(OnOFF);
         searchBar.setDisable(OnOFF);
-        // !! !OnOFF
-        searchIcon.setVisible(!OnOFF);
+        importDeckButton.setDisable(OnOFF);
+        searchIconButton.setDisable(OnOFF);
+
     }
 
     /* ====================================================================== */

@@ -18,7 +18,7 @@ public class UserDAO extends HttpDAO {
         String credentials = "?username=" + username + "&password=" + password;
         HttpResponse<String> response
                 = get(ServerPaths.LOGIN_PATH + credentials);
-
+        System.out.println("check login response code");
         checkResponseCode(response.statusCode());
 
         // TODO : throw exception if no token is found
@@ -35,6 +35,7 @@ public class UserDAO extends HttpDAO {
         HttpResponse<String> response
                 = post(ServerPaths.REGISTER_PATH + credentials, "");
 
+        System.out.println("check signup response code");
         checkResponseCode(response.statusCode());
     }
 }
