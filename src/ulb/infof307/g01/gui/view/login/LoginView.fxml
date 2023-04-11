@@ -2,23 +2,47 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;"
-            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ulb.infof307.g01.gui.view.login.LoginViewController">
 
-   <Pane layoutX="315.0" layoutY="155.0">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.login.LoginViewController"
+            prefWidth="600" prefHeight="400" fx:id="BIGPAIN">
+   <center>
+      <Pane fx:id="signupPane" >
+         <Label alignment="CENTER" layoutY="21.0" text="Register" textAlignment="CENTER">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <TextField fx:id="signupUsernameField" layoutX="-1.0" layoutY="65.0" promptText="User Name" />
+         <PasswordField fx:id="signupPasswordField" layoutX="-1.0" layoutY="104.0" promptText="Password" />
+         <PasswordField fx:id="confirmPasswordField" layoutX="-1.0" layoutY="139.0" promptText="Confirm Password" />
+         <Button fx:id="signupButton" layoutX="48.0" layoutY="177.0" mnemonicParsing="false" onMouseClicked="#handleSignupClicked" text="Register" />
+         <Hyperlink layoutX="42.0" layoutY="208.0" onMouseClicked="#handleToLoginClicked" text="Back to Login ?">
+            <font>
+               <Font size="10.0" />
+            </font>
+         </Hyperlink>
+      </Pane>
 
-      <Label alignment="CENTER" layoutX="65.0" text="Profile" textAlignment="CENTER"/>
+      <Pane fx:id="loginPane">
 
-      <TextField fx:id="usernameField" layoutY="59.0" promptText="User Name"/>
+         <Label alignment="CENTER" layoutY="21.0" text="Log in" textAlignment="CENTER">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
 
-      <PasswordField fx:id="passwordField" layoutY="121.0" promptText="Password"/>
+         <TextField fx:id="loginUsernameField" layoutX="-1.0" layoutY="65.0" promptText="User Name" />
 
-      <Button fx:id="loginButton" layoutX="19.0" layoutY="180.0" mnemonicParsing="false"
-              onMouseClicked="#handleLoginClicked" text="Login"/>
+         <PasswordField fx:id="loginPasswordField" layoutX="-1.0" layoutY="116.0" promptText="Password" />
 
-      <Button fx:id="signupButton" layoutX="94.0" layoutY="180.0" mnemonicParsing="false"
-              onMouseClicked="#handleSignupClicked" text="Signup"/>
-   </Pane>
-</AnchorPane>
+         <Button fx:id="loginButton" layoutX="58.0" layoutY="160.0" mnemonicParsing="false" onMouseClicked="#handleLoginClicked" text="Login" />
+         <Hyperlink layoutX="15.0" layoutY="198.0" onMouseClicked="#handleToSignupClicked" text="No account ? Sign-up here.">
+            <font>
+               <Font size="10.0" />
+            </font>
+         </Hyperlink>
+      </Pane>
+   </center>
+</BorderPane>

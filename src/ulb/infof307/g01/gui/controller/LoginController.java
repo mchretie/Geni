@@ -60,7 +60,7 @@ public class LoginController implements LoginViewController.ViewListener {
     @Override
     public void loginClicked(String username, String password) {
 
-        if (credentialsNOTValid(username, password)) {
+        if ( username.length() == 0 || password.length() == 0 ) {
             //Todo : Error message handling
             return;
         }
@@ -74,10 +74,11 @@ public class LoginController implements LoginViewController.ViewListener {
     }
 
     @Override
-    public void signupClicked(String username, String password) {
+    public void signupClicked(String username, String password, String confirmPassword) {
 
-        if (credentialsNOTValid(username, password)) {
-            //Todo : Error message handling
+        if (credentialsNOTValid(username, password, confirmPassword)) {
+            //Todo : Error message handling.
+            //throw new Exception("credentials not valid"); for later
             return;
         }
         try {
@@ -90,9 +91,10 @@ public class LoginController implements LoginViewController.ViewListener {
         loginClicked(username, password);
     }
 
-    private boolean credentialsNOTValid(String username, String password) {
+    private boolean credentialsNOTValid(String username, String password, String confirmPassword) {
         // Todo :  basic test for now
-        return username.length() == 0 && password.length() == 0;
+
+        return username.length() == 0 || password.length() == 0 || !password.equals(confirmPassword);
     }
 
     /* ====================================================================== */

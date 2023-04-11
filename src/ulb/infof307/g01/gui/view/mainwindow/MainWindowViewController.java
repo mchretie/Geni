@@ -50,7 +50,7 @@ public class MainWindowViewController {
     private VBox editCardView;
 
     @FXML
-    private AnchorPane loginView;
+    private BorderPane loginView;
 
     @FXML
     private AnchorPane profileView;
