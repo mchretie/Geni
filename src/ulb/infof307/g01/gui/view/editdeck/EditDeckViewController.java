@@ -255,9 +255,9 @@ public class EditDeckViewController {
      *
      * @param choice        the text of the choice
      * @param index         the index of the choice in the grid
-     * @param correctAnswer true if the choice is the correct answer
+     * @param isCorrectChoice true if the choice is the correct choice
      */
-    private void addChoiceField(String choice, int index, boolean correctAnswer) {
+    private void addChoiceField(String choice, int index, boolean isCorrectChoice) {
         TextField textField = getChoiceFieldTextField(choice, index);
 
         textField.setOnKeyPressed(event -> {
@@ -276,14 +276,19 @@ public class EditDeckViewController {
             }
         });
 
-        Button setCorrectAnswerButton = getChoiceFieldCorrectAnswerButton(correctAnswer, index);
-        Button removeChoiceButton = getChoiceFieldRemoveButton(index);
+        Button correctChoiceSelectionButton
+                = createCorrectChoiceSelectionButton(isCorrectChoice, index);
+        
+        Button removeChoiceButton = createRemoveChoiceButton(index);
 
-        HBox hBox = new HBox();
+        HBox hBox = new HBox(2,
+                            textField,
+                            correctChoiceSelectionButton,
+                            removeChoiceButton);
+
         HBox.setHgrow(hBox, Priority.ALWAYS);
         hBox.setAlignment(Pos.CENTER);
-        hBox.getChildren().addAll(textField, setCorrectAnswerButton, removeChoiceButton);
-        hBox.setSpacing(2);
+
         choicesGrid.add(hBox, currentCol, currentRow);
     }
 
@@ -393,7 +398,7 @@ public class EditDeckViewController {
      * @param index         the index of the choice field
      * @return the button
      */
-    private Button getChoiceFieldCorrectAnswerButton(boolean correctAnswer, int index) {
+    private Button createCorrectChoiceSelectionButton(boolean correctAnswer, int index) {
         Button setCorrectAnswerButton = new Button();
         FontIcon checkIcon = new FontIcon("mdi2c-check");
 
@@ -419,7 +424,7 @@ public class EditDeckViewController {
      * @param index the index of the choice field to remove
      * @return the button
      */
-    private Button getChoiceFieldRemoveButton(int index) {
+    private Button createRemoveChoiceButton(int index) {
         Button removeChoiceButton = new Button();
         removeChoiceButton.setStyle("-fx-background-color: red;");
         FontIcon trashIcon = new FontIcon("mdi2t-trash-can-outline");
