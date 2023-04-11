@@ -194,14 +194,14 @@ public class EditDeckViewController {
         choicesGrid.getChildren().clear();
         currentCol = 0;
         currentRow = 0;
-        int correctAnswerIndex = mcqCard.getCorrectAnswer();
+        int correctAnswerIndex = mcqCard.getCorrectChoiceIndex();
         for (int i = 0; i < mcqCard.getChoiceMax(); i++) {
-            if (i >= mcqCard.getNbAnswers()) {
+            if (i >= mcqCard.getNbOfChoices()) {
                 addChoiceFieldButton();
                 break;
             }
 
-            addChoiceField(mcqCard.getAnswer(i), i, correctAnswerIndex == i);
+            addChoiceField(mcqCard.getChoice(i), i, correctAnswerIndex == i);
             nextPosition();
         }
 
@@ -299,7 +299,7 @@ public class EditDeckViewController {
      */
     private boolean choiceFieldEmpty(TextField textField, int index) {
         if (textField.getText().isEmpty()
-                && ((MCQCard) selectedCard).getNbAnswers() < 3)
+                && ((MCQCard) selectedCard).getNbOfChoices() < 3)
 
             return true;
 
@@ -345,7 +345,7 @@ public class EditDeckViewController {
      */
     private void focusNextNode(int index, boolean createNextNode, boolean cycle) {
         int nextIndex = index + 1;
-        if (nextIndex < ((MCQCard) selectedCard).getNbAnswers()) {
+        if (nextIndex < ((MCQCard) selectedCard).getNbOfChoices()) {
             focusNextChoiceField(nextIndex);
 
         } else if (nextIndex < 4 && createNextNode) {
@@ -376,7 +376,7 @@ public class EditDeckViewController {
 
         // When the text field loses focus, the answer is updated
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue && index < ((MCQCard) selectedCard).getNbAnswers()) {
+            if (!newValue && index < ((MCQCard) selectedCard).getNbOfChoices()) {
                 System.out.println("index: " + index + " text: " + textField.getText());
                 listener.mcqAnswerEdit((MCQCard) selectedCard, textField.getText(), index);
                 loadSelectedCardEditor();

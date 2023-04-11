@@ -1,15 +1,17 @@
 package ulb.infof307.g01.gui.view.playdeck;
 
 import javafx.animation.RotateTransition;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -19,6 +21,7 @@ import ulb.infof307.g01.model.MCQCard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 
 public class PlayDeckViewController {
     ArrayList<String> colors = new ArrayList<>(Arrays.asList("#cb9172", "#b8b662", "#7b8bc9", "#c078be"));
@@ -36,7 +39,7 @@ public class PlayDeckViewController {
     private Button cardButton;
 
     @FXML
-    private Button correctAnswerButton;
+    private Button correctChoiceButton;
 
     @FXML
     private WebView cardWebView;
@@ -122,75 +125,82 @@ public class PlayDeckViewController {
         choicesGrid.getChildren().clear();
 
         MCQCard card = (MCQCard) currentCard;
-        int correctAnswer = card.getCorrectAnswer();
+        int correctChoiceIndex = card.getCorrectChoiceIndex();
 
-        for (int i = 0; i < card.getNbAnswers(); i++) {
+        for (int i = 0; i < card.getNbOfChoices(); i++) {
             int row = i / 2;
             int col = i % 2;
 
-            BorderPane answer
-                    = addAnswer(card.getAnswer(i),
-                    i == correctAnswer,
+            BorderPane choicePane
+                    = addChoice(card.getChoice(i),
+                    i == correctChoiceIndex,
                     colors.get(i));
 
-            choicesGrid.add(answer, col, row);
+            choicesGrid.add(choicePane, col, row);
         }
     }
 
 
-    public BorderPane addAnswer(String answer, boolean isCorrectAnswer, String color) {
-        BorderPane answerPane = new BorderPane();
-        answerPane.setStyle("-fx-background-color: " + color + ";");
+    public BorderPane addChoice(String answer, boolean isCorrectChoice, String color) {
+        BorderPane choicePane = new BorderPane();
+        choicePane.setStyle("-fx-background-color: " + color + ";");
 
-        TextField answerField = createAnswerField(answer);
-        Button checkButton = createCorrectAnswerButton();
+        TextField choiceField = createChoiceField(answer);
+        Button choiceSelectionButton = createChoiceSelectionButton();
 
-        if (isCorrectAnswer)
-            correctAnswerButton = checkButton;
+        if (isCorrectChoice)
+            correctChoiceButton = choiceSelectionButton;
 
-        checkButton.setOnAction(actionEvent -> {
-            FontIcon buttonIcon = (FontIcon) checkButton.getGraphic();
+        choiceSelectionButton.setOnAction(actionEvent -> {
+            FontIcon buttonIcon = (FontIcon) choiceSelectionButton.getGraphic();
             buttonIcon.setIconColor(Color.WHITE);
-            showCorrectAnswers();
+            showCorrectChoice();
         });
 
-        answerPane.setLeft(answerField);
-        answerPane.setRight(checkButton);
+        choicePane.setLeft(choiceField);
+        choicePane.setRight(choiceSelectionButton);
 
-        return answerPane;
+        return choicePane;
     }
 
 
-    private TextField createAnswerField(String answer) {
-        TextField answerField = new TextField();
-        answerField.setMinHeight(30);
-        answerField.setStyle("-fx-background-color: transparent;" + "-fx-border-color: transparent;" );
-        answerField.setText(answer);
-        answerField.setEditable(false);
+    private TextField createChoiceField(String choiceText) {
+        TextField choiceTextField = new TextField(choiceText);
+        choiceTextField.setMinHeight(30);
+        choiceTextField.setStyle("-fx-background-color: transparent;" +
+                                "-fx-border-color: transparent;");
+        choiceTextField.setEditable(false);
 
-        return answerField;
+        return choiceTextField;
     }
 
-    private Button createCorrectAnswerButton() {
-        Button correctAnswerButton = new Button();
+    private Button createChoiceSelectionButton() {
+        Button choiceSelectionButton = new Button();
         FontIcon checkIcon = new FontIcon("mdi2c-check");
         checkIcon.setIconSize(20);
-        correctAnswerButton.setGraphic(checkIcon);
-        correctAnswerButton.setMinHeight(30);
-        correctAnswerButton.setStyle("-fx-background-color:transparent");
+        choiceSelectionButton.setGraphic(checkIcon);
+        choiceSelectionButton.setMinHeight(30);
+        choiceSelectionButton.setStyle("-fx-background-color:transparent");
 
-        return correctAnswerButton;
+        return choiceSelectionButton;
     }
 
-    private void showCorrectAnswers(){
-        for (int i = 0; i < choicesGrid.getChildren().size(); i++) {
-            BorderPane answer = (BorderPane) choicesGrid.getChildren().get(i);
-            Button checkButton = (Button) answer.getRight();
-            checkButton.setDisable(true);
-            if (checkButton == correctAnswerButton) {
-                answer.setStyle("-fx-background-color: #659e40;");
+
+    private void showCorrectChoice(){
+        for (Node choiceNode : choicesGrid.lookupAll("BorderPane")) {
+            BorderPane choice = (BorderPane) choiceNode;
+
+            for (Node selectionNode : choice.lookupAll("Button")) {
+                Button selectionButton = (Button) selectionNode;
+
+                selectionButton.setDisable(true);
+
+                if (selectionButton == correctChoiceButton) {
+                    choice.setStyle("-fx-background-color: #659e40;");
+                } else {
+                    choice.setStyle("-fx-background-color: #c45151;");
+                }
             }
-            else  answer.setStyle("-fx-background-color: #c45151;");
         }
     }
 
