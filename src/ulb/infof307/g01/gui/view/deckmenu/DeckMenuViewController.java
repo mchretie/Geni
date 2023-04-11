@@ -91,7 +91,7 @@ public class DeckMenuViewController {
         searchBar.setDisable(OnOFF);
         importDeckButton.setDisable(OnOFF);
         searchIconButton.setDisable(OnOFF);
-        
+
     }
 
     /* ====================================================================== */
