@@ -161,7 +161,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void mcqAnswerEdit(MCQCard mcqCard, String text, int index) {
+    public void choiceModified(MCQCard mcqCard, String text, int index) {
         try {
             mcqCard.setAnswer(index, text);
             deckDAO.saveDeck(deck);
@@ -173,7 +173,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void mcqCorrectAnswerEdit(MCQCard mcqCard, int index) {
+    public void correctChoiceChanged(MCQCard mcqCard, int index) {
         try {
             mcqCard.setCorrectAnswer(index);
             deckDAO.saveDeck(deck);
@@ -185,7 +185,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void mcqAnswerRemove(MCQCard mcqCard, int index) {
+    public void choiceRemoved(MCQCard mcqCard, int index) {
         try {
             mcqCard.removeAnswer(index);
             deckDAO.saveDeck(deck);
@@ -197,7 +197,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void mcqAnswerAdded(MCQCard mcqCard) {
+    public void choiceAdded(MCQCard mcqCard) {
         try {
             mcqCard.addAnswer("Nouvelle réponse");
             deckDAO.saveDeck(deck);
@@ -286,13 +286,13 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void backEditCardClicked(Card selectedCard) {
-        controllerListener.backEditCardClicked(deck, selectedCard);
+    public void editBackOfCardClicked(FlashCard selectedCard) {
+        controllerListener.editBackOfCardClicked(deck, selectedCard);
     }
 
     @Override
-    public void frontEditCardClicked(Card selectedCard) {
-        controllerListener.frontEditCardClicked(deck, selectedCard);
+    public void editFrontOfCardClicked(Card selectedCard) {
+        controllerListener.editFrontOfCardClicked(deck, selectedCard);
     }
 
     @Override
@@ -326,8 +326,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public interface ControllerListener {
         void savingError(Exception e);
 
-        void frontEditCardClicked(Deck deck, Card card);
-
-        void backEditCardClicked(Deck deck, Card selectedCard);
+        void editFrontOfCardClicked(Deck deck, Card card);
+        void editBackOfCardClicked(Deck deck, FlashCard selectedCard);
     }
 }
