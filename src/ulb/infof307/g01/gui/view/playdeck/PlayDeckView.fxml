@@ -87,7 +87,25 @@
     </center>
 
     <bottom>
-        <HBox prefHeight="50" prefWidth="600" />
+        <HBox alignment="CENTER" prefHeight="50" prefWidth="600">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="currentCardIndexLabel">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Label>
+                  <Label layoutX="10.0" layoutY="10.0" text="/">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Label>
+                  <Label fx:id="cardNumberIndexLabel" layoutX="15.0" layoutY="10.0">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Label>
+               </children>
+            </HBox>
+         </children></HBox>
     </bottom>
 
 </BorderPane>

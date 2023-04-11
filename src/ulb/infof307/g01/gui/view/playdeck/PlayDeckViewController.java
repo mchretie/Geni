@@ -32,6 +32,7 @@ public class PlayDeckViewController {
 
     @FXML
     private GridPane choicesGrid;
+
     @FXML
     private Label deckNameLabel;
 
@@ -43,6 +44,12 @@ public class PlayDeckViewController {
 
     @FXML
     private WebView cardWebView;
+
+    @FXML
+    private Label currentCardIndexLabel;
+
+    @FXML
+    private Label cardNumberIndexLabel;
 
 
     /* ====================================================================== */
@@ -69,8 +76,13 @@ public class PlayDeckViewController {
 
     public void setDeckName(String deckName) { this.deckNameLabel.setText(deckName); }
 
-    public void setCurrentCard(Card currentCard) {
+    public void setNumberOfCards(int value) {
+        this.cardNumberIndexLabel.setText(String.valueOf(value));
+    }
+
+    public void setCurrentCard(Card currentCard, int index) {
         this.currentCard = currentCard;
+        this.currentCardIndexLabel.setText(String.valueOf(index+1));
         showFrontOfCard();
     }
 

@@ -40,8 +40,9 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         this.playDeckViewController = mainWindowViewController.getPlayDeckViewController();
         playDeckViewController.setListener(this);
-        playDeckViewController.setCurrentCard(currentCard);
+        playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
         playDeckViewController.setDeckName(deck.getName());
+        playDeckViewController.setNumberOfCards(deck.cardCount());
     }
 
 
@@ -85,7 +86,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         currentCard = cardExtractor.getNextCard();
 
         if (currentCard != null)
-            playDeckViewController.setCurrentCard(currentCard);
+            playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
 
         else
             controllerListener.finishedPlayingDeck();
@@ -101,7 +102,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             return;
 
         currentCard = previousCard;
-        playDeckViewController.setCurrentCard(currentCard);
+        playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
 
         showCard();
     }
