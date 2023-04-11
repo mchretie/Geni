@@ -324,8 +324,8 @@ public class DeckDAO extends DAO {
 
         database.executeUpdate(upsertMCQCard,
                                  card.getId().toString(),
-                                 card.getCorrectAnswer(),
-                                 card.getCorrectAnswer());
+                                 card.getCorrectChoiceIndex(),
+                                 card.getCorrectChoiceIndex());
 
         String upsertMCQCardAnswer = """
                 INSERT INTO mcq_answer (card_id, answer, answer_index)

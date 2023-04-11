@@ -50,7 +50,7 @@ public class MCQCard extends Card {
         return answers;
     }
 
-    public String getAnswer(int index) {
+    public String getChoice(int index) {
         return answers.get(index);
     }
 
@@ -76,7 +76,7 @@ public class MCQCard extends Card {
         this.answers.set(index, answer);
     }
 
-    public int getCorrectAnswer() {
+    public int getCorrectChoiceIndex() {
         return correctAnswer;
     }
 
@@ -105,10 +105,10 @@ public class MCQCard extends Card {
                 && (deckId == other.getDeckId() || deckId.equals(other.getDeckId()))
                 && front.equals(other.getFront())
                 && answers.equals(other.getAnswers())
-                && correctAnswer == other.getCorrectAnswer();
+                && correctAnswer == other.getCorrectChoiceIndex();
     }
 
-    public int getNbAnswers() {
+    public int getNbOfChoices() {
         return answers.size();
     }
 }
