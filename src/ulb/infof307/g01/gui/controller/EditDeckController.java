@@ -161,6 +161,18 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
+    public void inputAnswerModified(InputCard inputcard, String answer) {
+        try {
+            inputcard.setAnswer(answer);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.showCards();
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
     public void mcqAnswerEdit(MCQCard mcqCard, String text, int index) {
         try {
             mcqCard.setAnswer(index, text);
@@ -224,6 +236,22 @@ public class EditDeckController implements EditDeckViewController.Listener,
         try {
             String frontHtml = "Avant";
             deck.addCard(new FlashCard(frontHtml, "Arrière"));
+            deckDAO.saveDeck(deck);
+
+            editDeckViewController.showCards();
+            editDeckViewController.setSelectedCard(deck.getLastCard());
+            cardPreviewClicked(deck.getLastCard());
+
+        } catch (InterruptedException | IOException e) {
+            controllerListener.savingError(e);
+        }
+    }
+
+    @Override
+    public void newInputCard() {
+        try {
+            String frontHtml = "Avant";
+            deck.addCard(new InputCard(frontHtml, "Réponse"));
             deckDAO.saveDeck(deck);
 
             editDeckViewController.showCards();

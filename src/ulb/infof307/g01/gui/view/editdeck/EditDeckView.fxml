@@ -55,11 +55,14 @@
             </Button>
         </HBox>
 
+        <!--Card types Box-->
         <HBox fx:id="cardTypeBox" alignment="CENTER" spacing="30" visible="false" HBox.hgrow="ALWAYS">
 
             <Button minWidth="100" onMouseClicked="#handleMCQCardSelected" text="QCM Card" HBox.hgrow="ALWAYS" />
 
             <Button minWidth="100" onMouseClicked="#handleFlashCardSelected" text="Flash Card" HBox.hgrow="ALWAYS" />
+
+            <Button minWidth="100" onMouseClicked="#handleInputCardSelected" text="Input Card" HBox.hgrow="ALWAYS" />
 
             <VBox.margin>
                 <Insets top="5.0" />
@@ -109,7 +112,7 @@
 
         <StackPane>
             <!-- Back of normal card -->
-            <BorderPane fx:id="backCard" style="-fx-border-color: black; -fx-border-radius: 15px; -fx-background-radius: 15px;" visible="true" VBox.vgrow="ALWAYS">
+            <BorderPane fx:id="backCard" style="-fx-border-color: black; -fx-border-radius: 15px; -fx-background-radius: 15px;" VBox.vgrow="ALWAYS">
 
                 <center>
                     <WebView fx:id="backCardWebView" onKeyPressed="#handleTextFieldKeyPressed" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS" />
@@ -138,8 +141,10 @@
 
             <!-- Back of QCM card -->
             <GridPane fx:id="choicesGrid" alignment="BASELINE_CENTER" hgap="10" maxWidth="Infinity" style="-fx-padding: 6px 10px;                                 -fx-border-insets: 3px 5px;                                 -fx-background-insets: 3px 5px;" vgap="10" visible="false" HBox.hgrow="ALWAYS">
-
             </GridPane>
+
+            <!--Back Of input Card-->
+            <TextField fx:id="answerOfInputCard"  minHeight="30"  maxWidth="200" onKeyPressed="#handleInputTextFieldKeyPressed" onKeyReleased="#handleAnswerOfInputEdit" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS" />
         </StackPane>
 
 
