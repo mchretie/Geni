@@ -120,15 +120,19 @@ public class PlayDeckViewController {
 
     public void loadAnswers() {
         choicesGrid.getChildren().clear();
+
         MCQCard card = (MCQCard) currentCard;
         int correctAnswer = card.getCorrectAnswer();
-        ArrayList<String> answers = new ArrayList<>(card.getAnswers());
 
-        for (int i = 0; i < ((MCQCard) currentCard).getAnswers().size(); i++) {
+        for (int i = 0; i < card.getNbAnswers(); i++) {
             int row = i / 2;
             int col = i % 2;
-            boolean isCorrectAnswer = (correctAnswer == i);
-            BorderPane answer = addAnswer(answers.get(i), isCorrectAnswer, colors.get(i));
+
+            BorderPane answer
+                    = addAnswer(card.getAnswer(i),
+                    i == correctAnswer,
+                    colors.get(i));
+
             choicesGrid.add(answer, col, row);
         }
     }
