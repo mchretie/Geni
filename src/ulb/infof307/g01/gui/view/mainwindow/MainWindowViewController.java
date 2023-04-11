@@ -9,6 +9,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
+import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 
 public class MainWindowViewController {
@@ -24,7 +25,7 @@ public class MainWindowViewController {
     private FontIcon currentDeckIcon;
 
     @FXML
-    private FontIcon aboutIcon;
+    private FontIcon leaderboardIcon;
 
     @FXML
     private FontIcon goBackIcon;
@@ -48,6 +49,9 @@ public class MainWindowViewController {
     private VBox editCardView;
 
     @FXML
+    private BorderPane leaderboardView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
@@ -58,6 +62,9 @@ public class MainWindowViewController {
 
     @FXML
     private EditCardViewController editCardViewController;
+
+    @FXML
+    private LeaderboardViewController leaderboardViewController;
 
 
     /* ====================================================================== */
@@ -91,9 +98,9 @@ public class MainWindowViewController {
         return playDeckViewController;
     }
 
-    public EditCardViewController getEditCardViewController() {
-        return editCardViewController;
-    }
+    public EditCardViewController getEditCardViewController() { return editCardViewController; }
+
+    public LeaderboardViewController getLeaderboardViewController() { return leaderboardViewController; }
 
 
     /* ====================================================================== */
@@ -140,6 +147,8 @@ public class MainWindowViewController {
         setAllInvisibleExcept(editCardView);
     }
 
+    public void setLeaderboardViewVisible() { setAllInvisibleExcept(leaderboardView); }
+
 
     /* ====================================================================== */
     /*                          Icon Visibility                               */
@@ -174,10 +183,7 @@ public class MainWindowViewController {
     }
 
     @FXML
-    private void goToAboutClicked() {
-        listener.goToAboutClicked();
-    }
-
+    private void goToLeaderboardClicked() { System.out.println("hey"); listener.goToLeaderboardClicked(); }
 
     /* ====================================================================== */
     /*                              Hover handlers                            */
@@ -204,13 +210,13 @@ public class MainWindowViewController {
     }
 
     @FXML
-    private void handleAboutHover() {
-        aboutIcon.setIconColor(Color.web("#FFFFFF"));
+    private void handleLeaderboardHover() {
+        leaderboardIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    private void handleAboutExitHover() {
-        aboutIcon.setIconColor(Color.web("#000000"));
+    private void handleLeaderboardExitHover() {
+        leaderboardIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
@@ -241,6 +247,6 @@ public class MainWindowViewController {
         void goBackClicked();
         void goToHomeClicked();
         void goToCurrentDeckClicked();
-        void goToAboutClicked();
+        void goToLeaderboardClicked();
     }
 }

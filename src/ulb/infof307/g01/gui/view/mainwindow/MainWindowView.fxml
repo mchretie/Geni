@@ -37,6 +37,7 @@
             <fx:include fx:id="deckMenuView" source="../deckmenu/DeckMenuView.fxml" />
             <fx:include fx:id="playDeckView" source="../playdeck/PlayDeckView.fxml" />
             <fx:include fx:id="editCardView" source="../editcard/EditCardView.fxml" />
+            <fx:include fx:id="leaderboardView" source="../leaderboard/LeaderboardView.fxml" />
         </StackPane>
     </center>
 
@@ -59,10 +60,10 @@
                 </graphic>
             </Button>
 
-            <!-- Go to about button -->
-            <Button layoutX="500.0" mnemonicParsing="false" onMouseClicked="#goToAboutClicked" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
+            <!-- Leaderboard button -->
+            <Button layoutX="500.0" mnemonicParsing="false" onMouseClicked="#goToLeaderboardClicked" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
                 <graphic>
-                    <FontIcon fx:id="aboutIcon" iconLiteral="mdi2t-trophy" iconSize="50" onMouseEntered="#handleAboutHover" onMouseExited="#handleAboutExitHover" />
+                    <FontIcon fx:id="leaderboardIcon" iconLiteral="mdi2t-trophy" iconSize="50" onMouseEntered="#handleLeaderboardHover" onMouseExited="#handleLeaderboardExitHover" />
 
                 </graphic>
             </Button>

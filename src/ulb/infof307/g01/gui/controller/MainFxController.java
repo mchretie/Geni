@@ -28,7 +28,8 @@ public class MainFxController extends Application implements
         DeckMenuController.ControllerListener,
         PlayDeckController.ControllerListener,
         EditDeckController.ControllerListener,
-        EditCardController.ControllerListener {
+        EditCardController.ControllerListener,
+        LeaderboardController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -38,6 +39,7 @@ public class MainFxController extends Application implements
     private EditDeckController editDeckController;
     private PlayDeckController playDeckController;
     private EditCardController editCardController;
+    private LeaderboardController leaderboardController;
 
 
     private MainWindowViewController mainWindowViewController;
@@ -58,7 +60,8 @@ public class MainFxController extends Application implements
         DECK_MENU,
         PLAY_DECK,
         EDIT_DECK,
-        HTML_EDITOR
+        HTML_EDITOR,
+        LEADERBOARD
     }
 
     List<View> viewStack = new ArrayList<>();
@@ -95,6 +98,7 @@ public class MainFxController extends Application implements
                 case PLAY_DECK -> playDeckController.show();
                 case EDIT_DECK -> editDeckController.show();
                 case HTML_EDITOR -> editCardController.show();
+                case LEADERBOARD -> leaderboardController.show();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -250,6 +254,23 @@ public class MainFxController extends Application implements
     }
 
     @Override
+    public void leaderboardClicked() {
+        try {
+            leaderboardController = new LeaderboardController(
+                    stage,
+                    mainWindowViewController, this);
+
+            viewStack.add(View.LEADERBOARD);
+            leaderboardController.show(); //TODO : trycatch help OC
+
+        } catch (IOException e) {
+            returnToMenuError(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void editFrontOfCardClicked(Deck deck, Card selectedCard) {
         editCardController
                 = new EditCardController(stage,
@@ -343,8 +364,20 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void goToAboutClicked() {
+    public void goToLeaderboardClicked() {
+        try {
+            if (leaderboardController == null) {
+                System.out.println("Creating new leaderboard controller");
+                leaderboardController = new LeaderboardController(
+                        stage,
+                        mainWindowViewController, this);
+            }
 
+            leaderboardController.show();
+
+        } catch (IOException | InterruptedException e) {
+            restartApplicationError(e);
+        }
     }
 
     @Override
