@@ -1,13 +1,11 @@
 package ulb.infof307.g01.gui.view.playdeck;
 
 import javafx.animation.RotateTransition;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -21,7 +19,6 @@ import ulb.infof307.g01.model.MCQCard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Set;
 
 public class PlayDeckViewController {
     ArrayList<String> colors = new ArrayList<>(Arrays.asList("#cb9172", "#b8b662", "#7b8bc9", "#c078be"));
