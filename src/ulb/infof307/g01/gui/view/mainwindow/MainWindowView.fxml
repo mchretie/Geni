@@ -62,7 +62,7 @@
             <!-- Go to about button -->
             <Button layoutX="500.0" mnemonicParsing="false" onMouseClicked="#goToAboutClicked" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
                 <graphic>
-                    <FontIcon fx:id="aboutIcon" iconLiteral="mdi2i-information-outline" iconSize="50" onMouseEntered="#handleAboutHover" onMouseExited="#handleAboutExitHover" />
+                    <FontIcon fx:id="aboutIcon" iconLiteral="mdi2t-trophy" iconSize="50" onMouseEntered="#handleAboutHover" onMouseExited="#handleAboutExitHover" />
 
                 </graphic>
             </Button>
