@@ -143,7 +143,7 @@ public class PlayDeckViewController {
         checkButton.setMinHeight(30);
         checkButton.setMinWidth(200);
         checkButton.setContentDisplay(ContentDisplay.RIGHT);
-        checkButton.setStyle("-fx-background-color: " + color + ";");
+        checkButton.setStyle("-fx-background-color: " + color + "; -fx-border-radius: 5; -fx-background-radius: 5;");
 
         if (isCorrectAnswer) correctAnswerButton = checkButton;
 
@@ -159,11 +159,11 @@ public class PlayDeckViewController {
         for (int i = 0; i < choicesGrid.getChildren().size(); i++) {
             Button answer = (Button) choicesGrid.getChildren().get(i);
             answer.setDisable(true);
+            answer.setTextFill(Color.WHITE);
             if (answer == correctAnswerButton) {
                 answer.setOpacity(1);
                 answer.setStyle("-fx-background-color: #659e40;");
             } else {
-                answer.setTextFill(Color.WHITE);
                 answer.setStyle("-fx-background-color: #c45151;");
             }
         }
