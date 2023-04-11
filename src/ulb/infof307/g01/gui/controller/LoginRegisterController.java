@@ -37,6 +37,7 @@ public class LoginRegisterController implements LoginRegisterViewController.List
     public void onLoginClicked(String username, String password) {
         try {
             userDAO.login(username, password);
+            controllerListener.logInSucceeded();
             
         } catch (IOException | InterruptedException e) {
             controllerListener.logInFailed(e);
@@ -45,5 +46,6 @@ public class LoginRegisterController implements LoginRegisterViewController.List
 
     public interface ControllerListener {
         void logInFailed(Exception e);
+        void logInSucceeded();
     }
 }

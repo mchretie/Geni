@@ -333,6 +333,17 @@ public class MainFxController extends Application implements
         mainWindowViewController.alertInformation(title, description);
     }
 
+    @Override
+    public void logInSucceeded() {
+        try {
+            viewStack.remove(viewStack.size() - 1);
+            deckMenuController.show();
+
+        } catch (IOException | InterruptedException e) {
+            restartApplicationError(e);
+        }
+    }
+
 
     /* ====================================================================== */
     /*                   Navigation Listener Methods                          */
