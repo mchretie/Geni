@@ -51,6 +51,7 @@ public class MainWindowViewController {
 
     @FXML
     private AnchorPane loginView;
+
     @FXML
     private AnchorPane profileView;
 
