@@ -109,7 +109,7 @@
 
         <StackPane>
             <!-- Back of normal card -->
-            <BorderPane fx:id="backCard" style="-fx-border-color: black; -fx-border-radius: 15px; -fx-background-radius: 15px;" visible="true" VBox.vgrow="ALWAYS">
+            <BorderPane fx:id="backCard" style="-fx-border-color: black; -fx-border-radius: 15px; -fx-background-radius: 15px;" VBox.vgrow="ALWAYS">
 
                 <center>
                     <WebView fx:id="backCardWebView" onKeyPressed="#handleTextFieldKeyPressed" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS" />

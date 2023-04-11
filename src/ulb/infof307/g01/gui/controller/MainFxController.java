@@ -28,7 +28,8 @@ public class MainFxController extends Application implements
         DeckMenuController.ControllerListener,
         PlayDeckController.ControllerListener,
         EditDeckController.ControllerListener,
-        EditCardController.ControllerListener {
+        EditCardController.ControllerListener,
+        LoginRegisterController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -38,6 +39,7 @@ public class MainFxController extends Application implements
     private EditDeckController editDeckController;
     private PlayDeckController playDeckController;
     private EditCardController editCardController;
+    private LoginRegisterController loginRegisterController;
 
 
     private MainWindowViewController mainWindowViewController;
@@ -50,6 +52,7 @@ public class MainFxController extends Application implements
     private final DeckDAO deckDAO = new DeckDAO();
 
 
+
     /* ====================================================================== */
     /*                            View Stack Attributes                       */
     /* ====================================================================== */
@@ -58,7 +61,8 @@ public class MainFxController extends Application implements
         DECK_MENU,
         PLAY_DECK,
         EDIT_DECK,
-        HTML_EDITOR
+        HTML_EDITOR,
+        LOGIN_REGISTER
     }
 
     List<View> viewStack = new ArrayList<>();
@@ -95,6 +99,7 @@ public class MainFxController extends Application implements
                 case PLAY_DECK -> playDeckController.show();
                 case EDIT_DECK -> editDeckController.show();
                 case HTML_EDITOR -> editCardController.show();
+                case LOGIN_REGISTER -> loginRegisterController.show();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -109,31 +114,36 @@ public class MainFxController extends Application implements
 
     @Override
     public void start(Stage stage) throws IOException, InterruptedException {
-
-        this.stage = stage;
-        stage.setWidth(1000);
-        stage.setHeight(800);
-
-        // TODO: Title and login.
-        stage.setTitle("Pokémon TCG Deck Builder");
-        userDAO.register("guest", "guest");
-        userDAO.login("guest", "guest");
-
-        URL resource = MainWindowViewController
-                .class
-                .getResource("MainWindowView.fxml");
-
-        FXMLLoader fxmlLoader = new FXMLLoader(resource);
-
-        Parent root = fxmlLoader.load();
-        stage.setScene(new Scene(root));
-        stage.setMinHeight(500);
-        stage.setMinWidth(600);
-
-        mainWindowViewController = fxmlLoader.getController();
-        mainWindowViewController.setListener(this);
-
         try {
+            this.stage = stage;
+            stage.setWidth(1000);
+            stage.setHeight(800);
+
+            // TODO: Title and login.
+            stage.setTitle("Pokémon TCG Deck Builder");
+            userDAO.register("guest", "guest");
+            userDAO.login("guest", "guest");
+
+            URL resource = MainWindowViewController
+                    .class
+                    .getResource("MainWindowView.fxml");
+
+            FXMLLoader fxmlLoader = new FXMLLoader(resource);
+
+            Parent root = fxmlLoader.load();
+            stage.setScene(new Scene(root));
+            stage.setMinHeight(500);
+            stage.setMinWidth(600);
+
+            mainWindowViewController = fxmlLoader.getController();
+            mainWindowViewController.setListener(this);
+
+            loginRegisterController = new LoginRegisterController(
+                    stage,
+                    this,
+                    mainWindowViewController,
+                    userDAO);
+
             deckMenuController = new DeckMenuController(
                     stage,
                     this,
@@ -345,6 +355,12 @@ public class MainFxController extends Application implements
     @Override
     public void goToAboutClicked() {
 
+    }
+
+    @Override
+    public void goToUserProfileClicked() {
+        viewStack.add(View.LOGIN_REGISTER);
+        loginRegisterController.show();
     }
 
     @Override

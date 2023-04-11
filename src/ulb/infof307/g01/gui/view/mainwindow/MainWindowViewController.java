@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.view.mainwindow;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -10,6 +11,7 @@ import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
+import ulb.infof307.g01.gui.view.userauth.LoginRegisterViewController;
 
 public class MainWindowViewController {
 
@@ -48,6 +50,9 @@ public class MainWindowViewController {
     private VBox editCardView;
 
     @FXML
+    private BorderPane loginRegisterView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
@@ -58,6 +63,9 @@ public class MainWindowViewController {
 
     @FXML
     private EditCardViewController editCardViewController;
+
+    @FXML
+    private LoginRegisterViewController loginRegisterViewController;
 
 
     /* ====================================================================== */
@@ -93,6 +101,10 @@ public class MainWindowViewController {
 
     public EditCardViewController getEditCardViewController() {
         return editCardViewController;
+    }
+
+    public LoginRegisterViewController getLoginRegisterViewController() {
+        return loginRegisterViewController;
     }
 
 
@@ -140,6 +152,10 @@ public class MainWindowViewController {
         setAllInvisibleExcept(editCardView);
     }
 
+    public void setLoginRegisterViewVisible() {
+        setAllInvisibleExcept(loginRegisterView);
+    }
+
 
     /* ====================================================================== */
     /*                          Icon Visibility                               */
@@ -176,6 +192,11 @@ public class MainWindowViewController {
     @FXML
     private void goToAboutClicked() {
         listener.goToAboutClicked();
+    }
+
+    @FXML
+    private void handleUserProfileClicked() {
+        listener.goToUserProfileClicked();
     }
 
 
@@ -242,5 +263,6 @@ public class MainWindowViewController {
         void goToHomeClicked();
         void goToCurrentDeckClicked();
         void goToAboutClicked();
+        void goToUserProfileClicked();
     }
 }
