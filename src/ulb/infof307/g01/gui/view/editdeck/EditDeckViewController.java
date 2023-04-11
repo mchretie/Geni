@@ -526,12 +526,12 @@ public class EditDeckViewController {
 
     @FXML
     private void handleFrontEditClicked() {
-        listener.frontEditCardClicked(selectedCard);
+        listener.editFrontOfCardClicked(selectedCard);
     }
 
     @FXML
     private void handleBackEditClicked() {
-        listener.backEditCardClicked(selectedCard);
+        listener.editBackOfCardClicked((FlashCard) selectedCard);
     }
 
 
@@ -649,32 +649,26 @@ public class EditDeckViewController {
     /* ==================================================================== */
 
     public interface Listener {
+        /* Deck */
         void deckNameModified(String newName);
-
         void tagAddedToDeck(Deck deck, String tagName, String color);
-
-        void choiceModified(MCQCard selectedCard, String text, int index);
-
-        void correctChoiceChanged(MCQCard selectedCard, int i);
-
-        void choiceRemoved(MCQCard selectedCard, int index);
-
-        void choiceAdded(MCQCard selectedCard);
-
         void deckColorModified(Deck deck, Color color);
-
-        void newFlashCard();
-
-        void newMCQCard();
-
+        void uploadImage(String filePath);
         void removeCard(Card selectedCard);
 
+        /* Card */
         void cardPreviewClicked(Card card);
+        void editFrontOfCardClicked(Card selectedCard);
 
-        void frontEditCardClicked(Card selectedCard);
+        /* MCQ Card */
+        void newMCQCard();
+        void choiceModified(MCQCard selectedCard, String text, int index);
+        void correctChoiceChanged(MCQCard selectedCard, int i);
+        void choiceRemoved(MCQCard selectedCard, int index);
+        void choiceAdded(MCQCard selectedCard);
 
-        void uploadImage(String filePath);
-
-        void backEditCardClicked(Card selectedCard);
+        /* Flash Card */
+        void newFlashCard();
+        void editBackOfCardClicked(FlashCard selectedCard);
     }
 }

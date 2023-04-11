@@ -286,13 +286,13 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void backEditCardClicked(Card selectedCard) {
-        controllerListener.backEditCardClicked(deck, selectedCard);
+    public void editBackOfCardClicked(FlashCard selectedCard) {
+        controllerListener.editBackOfCardClicked(deck, selectedCard);
     }
 
     @Override
-    public void frontEditCardClicked(Card selectedCard) {
-        controllerListener.frontEditCardClicked(deck, selectedCard);
+    public void editFrontOfCardClicked(Card selectedCard) {
+        controllerListener.editFrontOfCardClicked(deck, selectedCard);
     }
 
     @Override
@@ -326,8 +326,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public interface ControllerListener {
         void savingError(Exception e);
 
-        void frontEditCardClicked(Deck deck, Card card);
-
-        void backEditCardClicked(Deck deck, Card selectedCard);
+        void editFrontOfCardClicked(Deck deck, Card card);
+        void editBackOfCardClicked(Deck deck, FlashCard selectedCard);
     }
 }
