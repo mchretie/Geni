@@ -377,7 +377,6 @@ public class EditDeckViewController {
         // When the text field loses focus, the answer is updated
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue && index < ((MCQCard) selectedCard).getNbAnswers()) {
-                System.out.println("index: " + index + " text: " + textField.getText());
                 listener.mcqAnswerEdit((MCQCard) selectedCard, textField.getText(), index);
                 loadSelectedCardEditor();
             };
