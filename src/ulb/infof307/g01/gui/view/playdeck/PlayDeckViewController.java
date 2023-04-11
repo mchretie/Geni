@@ -3,9 +3,8 @@ package ulb.infof307.g01.gui.view.playdeck;
 import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
@@ -64,7 +63,9 @@ public class PlayDeckViewController {
         this.listener = listener;
     }
 
-    public void setDeckName(String deckName) { this.deckNameLabel.setText(deckName); }
+    public void setDeckName(String deckName) {
+        this.deckNameLabel.setText(deckName);
+    }
 
     public void setCurrentCard(Card currentCard) {
         this.currentCard = currentCard;
@@ -102,18 +103,19 @@ public class PlayDeckViewController {
 
             rotateTransition.setFromAngle(90);
             rotateTransition.setToAngle(0);
-            rotateTransition.setOnFinished(_e -> {});
+            rotateTransition.setOnFinished(_e -> {
+            });
             rotateTransition.play();
         });
 
         rotateTransition.play();
     }
 
-    public void showNormalCard(){
+    public void showNormalCard() {
         choicesGrid.setVisible(false);
     }
 
-    public void showMCQCard(){
+    public void showMCQCard() {
         choicesGrid.setVisible(true);
         loadAnswers();
     }
@@ -128,59 +130,42 @@ public class PlayDeckViewController {
             int row = i / 2;
             int col = i % 2;
             boolean isCorrectAnswer = (correctAnswer == i);
-            BorderPane answer = addAnswer(answers.get(i), isCorrectAnswer, colors.get(i));
+            Button answer = addAnswer(answers.get(i), isCorrectAnswer, colors.get(i));
             choicesGrid.add(answer, col, row);
         }
     }
 
-    public BorderPane addAnswer(String answer, boolean isCorrectAnswer, String color) {
-        BorderPane answerPane = new BorderPane();
-        answerPane.setStyle("-fx-background-color: " + color + ";");
-        TextField answerField = createAnswerField(answer);
+    public Button addAnswer(String answer, boolean isCorrectAnswer, String color) {
+        Button checkButton = new Button(answer);
+        FontIcon checkIcon = new FontIcon("mdi2c-check");
+        checkIcon.setIconSize(20);
+        checkButton.setGraphic(checkIcon);
+        checkButton.setMinHeight(30);
+        checkButton.setMinWidth(200);
+        checkButton.setContentDisplay(ContentDisplay.RIGHT);
+        checkButton.setStyle("-fx-background-color: " + color + ";");
 
-        Button checkButton = createCorrectAnswerButton();
-        FontIcon checkIcon = (FontIcon) checkButton.getGraphic();
         if (isCorrectAnswer) correctAnswerButton = checkButton;
 
         checkButton.setOnAction(actionEvent -> {
             checkIcon.setIconColor(Color.WHITE);
             showCorrectAnswers();
         });
-        answerPane.setLeft(answerField);
-        answerPane.setRight(checkButton);
-        return answerPane;
+
+        return checkButton;
     }
 
-    private TextField createAnswerField(String answer) {
-        TextField answerField = new TextField();
-        answerField.setMinHeight(30);
-        answerField.setStyle("-fx-background-color: transparent;" + "-fx-border-color: transparent;" );
-        answerField.setText(answer);
-        answerField.setEditable(false);
-
-        return answerField;
-    }
-
-    private Button createCorrectAnswerButton() {
-        Button correctAnswerButton = new Button();
-        FontIcon checkIcon = new FontIcon("mdi2c-check");
-        checkIcon.setIconSize(20);
-        correctAnswerButton.setGraphic(checkIcon);
-        correctAnswerButton.setMinHeight(30);
-        correctAnswerButton.setStyle("-fx-background-color:transparent");
-
-        return correctAnswerButton;
-    }
-
-    private void showCorrectAnswers(){
+    private void showCorrectAnswers() {
         for (int i = 0; i < choicesGrid.getChildren().size(); i++) {
-            BorderPane answer = (BorderPane) choicesGrid.getChildren().get(i);
-            Button checkButton = (Button) answer.getRight();
-            checkButton.setDisable(true);
-            if (checkButton == correctAnswerButton) {
+            Button answer = (Button) choicesGrid.getChildren().get(i);
+            answer.setDisable(true);
+            if (answer == correctAnswerButton) {
+                answer.setOpacity(1);
                 answer.setStyle("-fx-background-color: #659e40;");
+            } else {
+                answer.setTextFill(Color.WHITE);
+                answer.setStyle("-fx-background-color: #c45151;");
             }
-            else  answer.setStyle("-fx-background-color: #c45151;");
         }
     }
 
@@ -209,7 +194,9 @@ public class PlayDeckViewController {
 
     public interface Listener {
         void cardClicked();
+
         void nextCardClicked();
+
         void previousCardClicked();
     }
 }
