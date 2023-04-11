@@ -59,6 +59,9 @@ public class MainWindowViewController {
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
+    private BorderPane guestModeDeckMenuView;
+
+    @FXML
     private EditDeckViewController editDeckViewController;
 
     @FXML
@@ -113,7 +116,9 @@ public class MainWindowViewController {
         return loginViewController;
     }
 
-    public ProfileViewController getProfileViewController() { return profileViewController; }
+    public ProfileViewController getProfileViewController() {
+        return profileViewController;
+    }
 
     /* ====================================================================== */
     /*                              Alerts                                    */
@@ -159,9 +164,17 @@ public class MainWindowViewController {
         setAllInvisibleExcept(editCardView);
     }
 
-    public void setLoginViewVisible() { setAllInvisibleExcept(loginView); }
+    public void setLoginViewVisible() {
+        setAllInvisibleExcept(loginView);
+    }
 
-    public void setProfileViewVisible() { setAllInvisibleExcept(profileView); }
+    public void setProfileViewVisible() {
+        setAllInvisibleExcept(profileView);
+    }
+
+    public void setGuestModeVisible() {
+        setAllInvisibleExcept(guestModeDeckMenuView);
+    }
 
     /* ====================================================================== */
     /*                          Icon Visibility                               */

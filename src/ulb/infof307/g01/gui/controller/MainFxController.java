@@ -155,7 +155,7 @@ public class MainFxController extends Application implements
 
         // Todo : handle failed auto login. example:
         // IMPORTANT to reset the registry when deleting demo.db
-        //removeCredentials();
+        removeCredentials();
 
         if (userCredentialsExist()) {
             loginWithCredentials();
@@ -407,8 +407,7 @@ public class MainFxController extends Application implements
     public void handleLogout() {
         removeCredentials();
         userDAO.removeToken();
-        deckMenuController.setNewToken(null); // for good mesure
-        deckMenuController.clearDecks();
+        deckMenuController.setNewToken(null); // for good mesures
         profileController.setLoggedIn(false);
         showPreviousView();
     }

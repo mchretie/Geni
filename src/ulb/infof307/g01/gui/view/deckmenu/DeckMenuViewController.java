@@ -83,17 +83,6 @@ public class DeckMenuViewController {
         this.listener = listener;
     }
 
-    // Toggles functionalities for guest mode
-    public void setGuestMode(boolean OnOFF) {
-
-        createDeckIcon.setDisable(OnOFF);
-        createDeckField.setDisable(OnOFF);
-        searchBar.setDisable(OnOFF);
-        importDeckButton.setDisable(OnOFF);
-        searchIconButton.setDisable(OnOFF);
-
-    }
-
     /* ====================================================================== */
     /*                           Deck Displaying                              */
     /* ====================================================================== */
@@ -114,7 +103,7 @@ public class DeckMenuViewController {
     /**
      * Clears the whole grid pane of decks. This circumvents a visual bug.
      */
-    public void clearDecksFromGrid() {
+    private void clearDecksFromGrid() {
         gridPane.getChildren().removeIf(this::clearNodeFromGridCondition);
     }
 
@@ -141,7 +130,7 @@ public class DeckMenuViewController {
     /**
      * Remove all row and column constraints from the grid
      */
-    public void resetGrid() {
+    private void resetGrid() {
         int rowCount = gridPane.getRowConstraints().size();
         gridPane.getRowConstraints().remove(0, rowCount);
 

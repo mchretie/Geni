@@ -81,15 +81,15 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      */
     public void show() throws IOException, InterruptedException {
 
-        System.out.println("isGuestSession: " + controllerListener.isGuestSession());
         // If Guest skip loading decks
-        if (!controllerListener.isGuestSession()) {
-            showDecks();
+        if (controllerListener.isGuestSession()) {
+           mainWindowViewController.setGuestModeVisible();
         }
-        // Toggles between guest and user mode
-        deckMenuViewController.setGuestMode(controllerListener.isGuestSession());
+        else {
+            showDecks();
+            mainWindowViewController.setDeckMenuViewVisible();
+        }
 
-        mainWindowViewController.setDeckMenuViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
 
         stage.show();
@@ -97,11 +97,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     private void showDecks() throws IOException, InterruptedException {
         deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
-    }
-
-    public void clearDecks() {
-        deckMenuViewController.clearDecksFromGrid();
-        deckMenuViewController.resetGrid();
     }
 
     /* ====================================================================== */
