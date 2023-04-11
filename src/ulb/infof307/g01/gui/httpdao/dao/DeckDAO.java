@@ -125,6 +125,8 @@ public class DeckDAO extends HttpDAO {
 
         // Update cache
         cachedDecks.put(deck.getId(), deck);
+        allDecksIds.add(deck.getId());
+        deckMetadata.put(deck.getId(), deck.getMetadata());
     }
 
     private void fetchDeck(DeckMetadata deckMetadata)
