@@ -192,16 +192,18 @@ public class EditDeckViewController {
      */
     private void loadQCMCardEditor(MCQCard mcqCard) {
         choicesGrid.getChildren().clear();
+
         currentCol = 0;
         currentRow = 0;
-        int correctAnswerIndex = mcqCard.getCorrectChoiceIndex();
+
+        int correctChoiceIndex = mcqCard.getCorrectChoiceIndex();
         for (int i = 0; i < mcqCard.getChoiceMax(); i++) {
             if (i >= mcqCard.getNbOfChoices()) {
                 addChoiceFieldButton();
                 break;
             }
 
-            addChoiceField(mcqCard.getChoice(i), i, correctAnswerIndex == i);
+            addChoiceField(mcqCard.getChoice(i), i, correctChoiceIndex == i);
             nextPosition();
         }
 
@@ -243,12 +245,13 @@ public class EditDeckViewController {
         addChoiceButton.setGraphic(new FontIcon("mdi2p-plus"));
 
         addChoiceButton.setOnAction(event -> {
-            listener.mcqAnswerAdded((MCQCard) selectedCard);
+            listener.choiceAdded((MCQCard) selectedCard);
             loadSelectedCardEditor();
         });
 
         choicesGrid.add(addChoiceButton, currentCol, currentRow);
     }
+
 
     /**
      * Adds a choice field to the grid
@@ -292,6 +295,7 @@ public class EditDeckViewController {
         choicesGrid.add(hBox, currentCol, currentRow);
     }
 
+
     /**
      * Checks if the choice field is empty and removes it if it is.
      *  Returns true if the choice field was removed.
@@ -311,7 +315,8 @@ public class EditDeckViewController {
         if (!textField.getText().isEmpty())
             return false;
 
-        listener.mcqAnswerRemove((MCQCard) selectedCard, index);
+        listener.choiceRemoved((MCQCard) selectedCard, index);
+
         loadSelectedCardEditor();
         focusPreviousChoiceField(index);
         return true;
@@ -354,7 +359,7 @@ public class EditDeckViewController {
             focusNextChoiceField(nextIndex);
 
         } else if (nextIndex < 4 && createNextNode) {
-            listener.mcqAnswerAdded((MCQCard) selectedCard);
+            listener.choiceAdded((MCQCard) selectedCard);
             loadSelectedCardEditor();
             focusNextChoiceField(nextIndex);
 
@@ -379,11 +384,10 @@ public class EditDeckViewController {
         textField.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(textField, Priority.ALWAYS);
 
-        // When the text field loses focus, the answer is updated
+        // When the text field loses focus, the choice is updated
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue && index < ((MCQCard) selectedCard).getNbOfChoices()) {
-                System.out.println("index: " + index + " text: " + textField.getText());
-                listener.mcqAnswerEdit((MCQCard) selectedCard, textField.getText(), index);
+                listener.choiceModified((MCQCard) selectedCard, textField.getText(), index);
                 loadSelectedCardEditor();
             };
         });
@@ -392,29 +396,29 @@ public class EditDeckViewController {
     }
 
     /**
-     * Gets the button to set the correct answer for a choice field
+     * Gets the button to set the correct choice for a choice field
      *
-     * @param correctAnswer true if the answer is the correct one
+     * @param isCorrectChoice true if the choice is the correct one
      * @param index         the index of the choice field
      * @return the button
      */
-    private Button createCorrectChoiceSelectionButton(boolean correctAnswer, int index) {
-        Button setCorrectAnswerButton = new Button();
+    private Button createCorrectChoiceSelectionButton(boolean isCorrectChoice, int index) {
+        Button selectCorrectChoiceButton = new Button();
         FontIcon checkIcon = new FontIcon("mdi2c-check");
 
-        if (correctAnswer) {
+        if (isCorrectChoice) {
             checkIcon.setIconColor(Color.WHITE);
-            setCorrectAnswerButton.setStyle("-fx-background-color: green;");
+            selectCorrectChoiceButton.setStyle("-fx-background-color: green;");
         }
 
-        setCorrectAnswerButton.setGraphic(checkIcon);
+        selectCorrectChoiceButton.setGraphic(checkIcon);
 
-        setCorrectAnswerButton.setOnAction(event -> {
-            listener.mcqCorrectAnswerEdit((MCQCard) selectedCard, index);
+        selectCorrectChoiceButton.setOnAction(event -> {
+            listener.correctChoiceChanged((MCQCard) selectedCard, index);
             loadSelectedCardEditor();
         });
 
-        return setCorrectAnswerButton;
+        return selectCorrectChoiceButton;
     }
 
 
@@ -435,7 +439,7 @@ public class EditDeckViewController {
             removeChoiceButton.setDisable(true);
 
         removeChoiceButton.setOnAction(event -> {
-            listener.mcqAnswerRemove((MCQCard) selectedCard, index);
+            listener.choiceRemoved((MCQCard) selectedCard, index);
             loadSelectedCardEditor();
         });
 
@@ -649,13 +653,13 @@ public class EditDeckViewController {
 
         void tagAddedToDeck(Deck deck, String tagName, String color);
 
-        void mcqAnswerEdit(MCQCard selectedCard, String text, int index);
+        void choiceModified(MCQCard selectedCard, String text, int index);
 
-        void mcqCorrectAnswerEdit(MCQCard selectedCard, int i);
+        void correctChoiceChanged(MCQCard selectedCard, int i);
 
-        void mcqAnswerRemove(MCQCard selectedCard, int index);
+        void choiceRemoved(MCQCard selectedCard, int index);
 
-        void mcqAnswerAdded(MCQCard selectedCard);
+        void choiceAdded(MCQCard selectedCard);
 
         void deckColorModified(Deck deck, Color color);
 
