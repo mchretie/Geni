@@ -3,7 +3,6 @@ package ulb.infof307.g01.gui.view.mainwindow;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -51,6 +50,9 @@ public class MainWindowViewController {
 
     @FXML
     private BorderPane loginRegisterView;
+
+    @FXML
+    private BorderPane notLoggedInDeckView;
 
     @FXML
     private DeckMenuViewController deckMenuViewController;
@@ -154,6 +156,10 @@ public class MainWindowViewController {
 
     public void setLoginRegisterViewVisible() {
         setAllInvisibleExcept(loginRegisterView);
+    }
+
+    public void setNotLoggedInViewVisible() {
+        setAllInvisibleExcept(notLoggedInDeckView);
     }
 
 

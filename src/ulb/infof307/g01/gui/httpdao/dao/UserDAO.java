@@ -25,7 +25,10 @@ public class UserDAO extends HttpDAO {
         Optional<String> authorization
                 = response.headers().firstValue("Authorization");
 
+
         authorization.ifPresent(this::setToken);
+
+        System.out.println("Token : " + getToken());
     }
 
     public void register(String username, String password)
@@ -36,5 +39,9 @@ public class UserDAO extends HttpDAO {
                 = post(ServerPaths.REGISTER_PATH + credentials, "");
 
         checkResponseCode(response.statusCode());
+    }
+
+    public boolean isLoggedIn() {
+        return !getToken().isEmpty();
     }
 }

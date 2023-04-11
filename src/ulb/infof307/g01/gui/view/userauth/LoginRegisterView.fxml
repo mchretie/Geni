@@ -23,7 +23,7 @@
                   </VBox.margin></PasswordField>
 
                     <HBox alignment="CENTER">
-                        <Button fx:id="loginButton" text="Log-in" />
+                        <Button fx:id="loginButton" onMouseClicked="#handleLoginClicked" text="Log-in" />
                     </HBox>
                 </VBox>
 

@@ -53,6 +53,8 @@ public class MainFxController extends Application implements
 
 
 
+
+
     /* ====================================================================== */
     /*                            View Stack Attributes                       */
     /* ====================================================================== */
@@ -82,38 +84,12 @@ public class MainFxController extends Application implements
         launch();
     }
 
-
-    /* ====================================================================== */
-    /*                             View stack methods                         */
-    /* ====================================================================== */
-
-    private void showPreviousView() {
-
-        if (viewStack.size() == 1)
-            return;
-
-        try {
-            viewStack.remove(viewStack.size() - 1);
-            switch (viewStack.get(viewStack.size() - 1)) {
-                case DECK_MENU -> deckMenuController.show();
-                case PLAY_DECK -> playDeckController.show();
-                case EDIT_DECK -> editDeckController.show();
-                case HTML_EDITOR -> editCardController.show();
-                case LOGIN_REGISTER -> loginRegisterController.show();
-            }
-
-        } catch (IOException | InterruptedException e) {
-            restartApplicationError(e);
-        }
-    }
-
-
     /* ====================================================================== */
     /*                           Application Methods                          */
     /* ====================================================================== */
 
     @Override
-    public void start(Stage stage) throws IOException, InterruptedException {
+    public void start(Stage stage) {
         try {
             this.stage = stage;
             stage.setWidth(1000);
@@ -121,8 +97,8 @@ public class MainFxController extends Application implements
 
             // TODO: Title and login.
             stage.setTitle("Pokémon TCG Deck Builder");
-            userDAO.register("guest", "guest");
-            userDAO.login("guest", "guest");
+            // userDAO.register("guest", "guest");
+            // userDAO.login("guest", "guest");
 
             URL resource = MainWindowViewController
                     .class
@@ -153,6 +129,31 @@ public class MainFxController extends Application implements
 
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
+
+        } catch (IOException | InterruptedException e) {
+            restartApplicationError(e);
+        }
+    }
+
+
+    /* ====================================================================== */
+    /*                             View stack methods                         */
+    /* ====================================================================== */
+
+    private void showPreviousView() {
+
+        if (viewStack.size() == 1)
+            return;
+
+        try {
+            viewStack.remove(viewStack.size() - 1);
+            switch (viewStack.get(viewStack.size() - 1)) {
+                case DECK_MENU -> deckMenuController.show();
+                case PLAY_DECK -> playDeckController.show();
+                case EDIT_DECK -> editDeckController.show();
+                case HTML_EDITOR -> editCardController.show();
+                case LOGIN_REGISTER -> loginRegisterController.show();
+            }
 
         } catch (IOException | InterruptedException e) {
             restartApplicationError(e);
@@ -322,6 +323,14 @@ public class MainFxController extends Application implements
     @Override
     public void savedChanges() {
         showPreviousView();
+    }
+
+    @Override
+    public void logInFailed(Exception e) {
+        String title = "Échec de la connexion.";
+        String description = "La connexion a échoué, veuillez réessayer.";
+
+        mainWindowViewController.alertInformation(title, description);
     }
 
 

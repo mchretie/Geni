@@ -5,6 +5,8 @@ import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.userauth.LoginRegisterViewController;
 
+import java.io.IOException;
+
 public class LoginRegisterController implements LoginRegisterViewController.Listener {
     private final Stage stage;
     private final ControllerListener controllerListener;
@@ -31,6 +33,17 @@ public class LoginRegisterController implements LoginRegisterViewController.List
         stage.show();
     }
 
+    @Override
+    public void onLoginClicked(String username, String password) {
+        try {
+            userDAO.login(username, password);
+            
+        } catch (IOException | InterruptedException e) {
+            controllerListener.logInFailed(e);
+        }
+    }
+
     public interface ControllerListener {
+        void logInFailed(Exception e);
     }
 }
