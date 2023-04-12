@@ -157,13 +157,16 @@ public class PlayDeckViewController {
         TextField choiceField = createChoiceField(answer);
         Button choiceSelectionButton = createChoiceSelectionButton();
 
-        if (isCorrectChoice)
+        if (isCorrectChoice) {
             correctChoiceButton = choiceSelectionButton;
+        }
 
         choiceSelectionButton.setOnAction(actionEvent -> {
             FontIcon buttonIcon = (FontIcon) choiceSelectionButton.getGraphic();
             buttonIcon.setIconColor(Color.WHITE);
             showCorrectChoice();
+            if (isCorrectChoice)
+                listener.correctChoiceButtonClicked();
         });
 
         choicePane.setLeft(choiceField);
@@ -240,5 +243,6 @@ public class PlayDeckViewController {
         void cardClicked();
         void nextCardClicked();
         void previousCardClicked();
+        void correctChoiceButtonClicked();
     }
 }

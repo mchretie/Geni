@@ -128,6 +128,11 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         showCard();
     }
 
+    @Override
+    public void correctChoiceButtonClicked() {
+        score.increment(1);
+    }
+
 
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */
