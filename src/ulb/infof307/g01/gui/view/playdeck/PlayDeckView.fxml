@@ -64,10 +64,12 @@
 
     <center>
         <!--Card box-->
-        <VBox alignment="CENTER">
+        <VBox fx:id="cardBox" alignment="CENTER">
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
+
+            <!--Normal card-->
             <Button fx:id="cardButton" onMouseClicked="#onCardClicked" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF;" textAlignment="CENTER">
                 <effect>
                     <DropShadow color="#000000" radius="5" spread="0.5" />
@@ -76,13 +78,25 @@
                     <WebView fx:id="cardWebView" prefHeight="200.0" prefWidth="200.0" />
                 </graphic>
             </Button>
-                <GridPane fx:id="choicesGrid" visible="true"
-                          style="-fx-padding: 15px 20px;
-                                    -fx-border-insets: 3px 5px;
-                                    -fx-background-insets: 3px 5px;" HBox.hgrow="ALWAYS" maxWidth="Infinity"
-                          alignment="BASELINE_CENTER" hgap="10" vgap="10">
 
-                </GridPane>
+            <!--MCQ card-->
+            <GridPane fx:id="choicesGrid" visible="true"
+                      style="-fx-padding: 15px 20px;
+                                -fx-border-insets: 3px 5px;
+                                -fx-background-insets: 3px 5px;" HBox.hgrow="ALWAYS" maxWidth="Infinity"
+                      alignment="BASELINE_CENTER" hgap="10" vgap="10">
+            </GridPane>
+
+            <!--Input card-->
+            <VBox fx:id="inputBox" maxWidth="230" visible="false">
+                <BorderPane fx:id="inputPane"  BorderPane.alignment="CENTER">
+                    <center>
+                        <TextField fx:id="inputTextField" onKeyPressed="#handleTextFieldKeyPressed"  />
+                    </center>
+                </BorderPane>
+            </VBox>
+
+
         </VBox>
     </center>
 

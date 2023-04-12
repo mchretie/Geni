@@ -144,7 +144,7 @@
             </GridPane>
 
             <!--Back Of input Card-->
-            <TextField fx:id="answerOfInputCard"  minHeight="30"  maxWidth="200" onKeyPressed="#handleInputTextFieldKeyPressed" onKeyReleased="#handleAnswerOfInputEdit" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS" />
+            <TextField fx:id="answerOfInputCard"  visible="false" minHeight="30"  maxWidth="200" onKeyPressed="#handleInputTextFieldKeyPressed" onKeyReleased="#handleAnswerOfInputEdit" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS" />
         </StackPane>
 
 
