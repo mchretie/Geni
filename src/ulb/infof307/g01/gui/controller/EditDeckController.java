@@ -231,58 +231,53 @@ public class EditDeckController implements EditDeckViewController.Listener,
         }
     }
 
-    @Override
-    public void newFlashCard() {
+    private void newCard(Card card) {
         try {
-            String frontHtml = "Avant";
-            deck.addCard(new FlashCard(frontHtml, "Arrière"));
+            deck.addCard(card);
             deckDAO.saveDeck(deck);
-
-            editDeckViewController.showCards();
-            editDeckViewController.setSelectedCard(deck.getLastCard());
-            cardPreviewClicked(deck.getLastCard());
-
         } catch (InterruptedException | IOException e) {
             controllerListener.savingError(e);
         }
+    }
+
+    @Override
+    public void newFlashCard() {
+        String frontHtml = "Avant";
+        newCard(new FlashCard(frontHtml, ""));
+
+        editDeckViewController.showCards();
+        editDeckViewController.setSelectedCard(deck.getLastCard());
+        cardPreviewClicked(deck.getLastCard());
+
     }
 
     @Override
     public void newInputCard() {
-        try {
-            String frontHtml = "Avant";
-            deck.addCard(new InputCard(frontHtml, "Réponse"));
-            deckDAO.saveDeck(deck);
+        String frontHtml = "Avant";
+        newCard(new InputCard(frontHtml, ""));
 
-            editDeckViewController.showCards();
-            editDeckViewController.setSelectedCard(deck.getLastCard());
-            cardPreviewClicked(deck.getLastCard());
+        editDeckViewController.showCards();
+        editDeckViewController.setSelectedCard(deck.getLastCard());
+        cardPreviewClicked(deck.getLastCard());
 
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
+
     }
 
     @Override
     public void newMCQCard() {
-        try {
-            String frontHtml = "Avant";
-            List<String> answers = new ArrayList<>();
+        String frontHtml = "Avant";
+        List<String> answers = new ArrayList<>();
 
-            final int MAX_QCM_ANSWERS = 4;
-            for (int i = 0; i < MAX_QCM_ANSWERS; i++)
-                answers.add("Réponse " + i);
+        final int MAX_QCM_ANSWERS = 4;
+        for (int i = 0; i < MAX_QCM_ANSWERS; i++)
+            answers.add("Réponse " + i);
 
-            deck.addCard(new MCQCard(frontHtml, answers, 0));
-            deckDAO.saveDeck(deck);
+        newCard(new MCQCard(frontHtml, answers, 0));
 
-            editDeckViewController.showCards();
-            editDeckViewController.setSelectedCard(deck.getLastCard());
-            cardPreviewClicked(deck.getLastCard());
+        editDeckViewController.showCards();
+        editDeckViewController.setSelectedCard(deck.getLastCard());
+        cardPreviewClicked(deck.getLastCard());
 
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
     }
 
     @Override
