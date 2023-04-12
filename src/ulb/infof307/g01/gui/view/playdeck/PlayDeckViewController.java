@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Set;
 
 public class PlayDeckViewController {
+
     ArrayList<String> colors = new ArrayList<>(Arrays.asList("#cb9172", "#b8b662", "#7b8bc9", "#c078be"));
 
     /* ====================================================================== */
@@ -56,6 +57,9 @@ public class PlayDeckViewController {
 
     @FXML
     private VBox inputBox;
+
+    @FXML
+    private Button approveAnswer;
 
     @FXML
     private TextField inputTextField;
@@ -234,7 +238,7 @@ public class PlayDeckViewController {
         inputTextField.setText("");
         inputTextField.setStyle("");
         inputPane.setStyle("");
-        inputPane.setRight(null);
+        inputPane.setRight(approveAnswer);
 
         if (inputBox.getChildren().size() > 1) inputBox.getChildren().remove(1);
     }
@@ -253,6 +257,7 @@ public class PlayDeckViewController {
         cardBox.requestFocus();
     }
 
+    @FXML
     private void handleInputText(){
         InputCard card = (InputCard) currentCard;
 

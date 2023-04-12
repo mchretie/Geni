@@ -26,7 +26,6 @@
 
                 <graphic>
                     <FontIcon iconLiteral="mdi2c-chevron-left" iconSize="30" />
-
                 </graphic>
 
                 <VBox.margin>
@@ -80,19 +79,22 @@
             </Button>
 
             <!--MCQ card-->
-            <GridPane fx:id="choicesGrid" visible="true"
-                      style="-fx-padding: 15px 20px;
-                                -fx-border-insets: 3px 5px;
-                                -fx-background-insets: 3px 5px;" HBox.hgrow="ALWAYS" maxWidth="Infinity"
-                      alignment="BASELINE_CENTER" hgap="10" vgap="10">
+            <GridPane fx:id="choicesGrid" alignment="BASELINE_CENTER" hgap="10" maxWidth="Infinity" style="-fx-padding: 15px 20px;                                 -fx-border-insets: 3px 5px;                                 -fx-background-insets: 3px 5px;" vgap="10" visible="true" HBox.hgrow="ALWAYS">
             </GridPane>
 
             <!--Input card-->
-            <VBox fx:id="inputBox" maxWidth="230" visible="false">
-                <BorderPane fx:id="inputPane"  BorderPane.alignment="CENTER">
-                    <center>
-                        <TextField fx:id="inputTextField" onKeyPressed="#handleTextFieldKeyPressed"  />
-                    </center>
+            <VBox fx:id="inputBox" maxWidth="230">
+                <BorderPane fx:id="inputPane" BorderPane.alignment="CENTER">
+                   <center>
+                      <TextField fx:id="inputTextField" onKeyPressed="#handleTextFieldKeyPressed" BorderPane.alignment="CENTER" />
+                   </center>
+                    <right>
+                        <Button fx:id="approveAnswer" onMouseClicked="#handleInputText">
+                            <graphic>
+                                <FontIcon iconLiteral="mdi2c-check" iconSize="18" />
+                            </graphic>
+                        </Button>
+                    </right>
                 </BorderPane>
             </VBox>
 
