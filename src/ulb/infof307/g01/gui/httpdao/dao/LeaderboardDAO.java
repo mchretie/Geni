@@ -16,7 +16,7 @@ public class LeaderboardDAO extends HttpDAO {
     /* ====================================================================== */
 
     public void addScore(Score score) throws IOException, InterruptedException {
-        HttpResponse<String> response = post(ServerPaths.SAVE_TAG_PATH, new Gson().toJson(score));
+        HttpResponse<String> response = post(ServerPaths.SAVE_SCORE_PATH, new Gson().toJson(score));
 
         checkResponseCode(response.statusCode());
     }
