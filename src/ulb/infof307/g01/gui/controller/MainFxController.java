@@ -13,6 +13,7 @@ import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.model.FlashCard;
 
 import java.io.IOException;
 import java.net.URL;
@@ -249,7 +250,7 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void frontEditCardClicked(Deck deck, Card selectedCard) {
+    public void editFrontOfCardClicked(Deck deck, Card selectedCard) {
         editCardController
                 = new EditCardController(stage,
                 deck,
@@ -264,7 +265,7 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void backEditCardClicked(Deck deck, Card selectedCard) {
+    public void editBackOfCardClicked(Deck deck, FlashCard selectedCard) {
         editCardController
                 = new EditCardController(stage,
                                             deck,
