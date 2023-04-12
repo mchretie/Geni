@@ -16,10 +16,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.FlashCard;
-import ulb.infof307.g01.model.MCQCard;
+import ulb.infof307.g01.model.*;
 
 import java.io.File;
 import java.util.List;
@@ -86,6 +83,9 @@ public class EditDeckViewController {
 
     @FXML
     private ColorPicker colorPicker;
+
+    @FXML
+    private TextField answerOfInputCard;
 
 
     /* ====================================================================== */
@@ -177,13 +177,42 @@ public class EditDeckViewController {
     /**
      * Loads the card editor with the given card.
      *
+     * @param card the card to load
+     */
+    private void loadCardEditor(Card card) {
+        frontCardWebView.getEngine().loadContent(card.getFront());
+        frontCard.setVisible(true);
+
+        if (card instanceof FlashCard flashCard)
+            loadFlashCardEditor(flashCard);
+
+        else if (card instanceof MCQCard mcqCard)
+            loadQCMCardEditor(mcqCard);
+
+        else if (card instanceof InputCard inputCard)
+            loadInputCardEditor(inputCard);
+    }
+
+    /**
+     * Loads the card editor with the given card.
+     *
      * @param flashCard the card to load
      */
     private void loadFlashCardEditor(FlashCard flashCard) {
         backCardWebView.getEngine().loadContent(flashCard.getBack());
         backCard.setVisible(true);
+        answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(false);
+
     }
+
+    private void loadInputCardEditor(InputCard inputCard) {
+        answerOfInputCard.setText(inputCard.getAnswer());
+        answerOfInputCard.setVisible(true);
+        choicesGrid.setVisible(false);
+        backCard.setVisible(false);
+    }
+
 
     /**
      * Loads the card editor with the given MCQ card.
@@ -208,6 +237,7 @@ public class EditDeckViewController {
         }
 
         backCard.setVisible(false);
+        answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(true);
     }
 
@@ -217,22 +247,6 @@ public class EditDeckViewController {
             currentCol = 0;
             currentRow++;
         }
-    }
-
-    /**
-     * Loads the card editor with the given card.
-     *
-     * @param card the card to load
-     */
-    private void loadCardEditor(Card card) {
-        frontCardWebView.getEngine().loadContent(card.getFront());
-        frontCard.setVisible(true);
-
-        if (card instanceof FlashCard flashCard)
-            loadFlashCardEditor(flashCard);
-
-        else if (card instanceof MCQCard mcqCard)
-            loadQCMCardEditor(mcqCard);
     }
 
 
@@ -281,7 +295,7 @@ public class EditDeckViewController {
 
         Button correctChoiceSelectionButton
                 = createCorrectChoiceSelectionButton(isCorrectChoice, index);
-        
+
         Button removeChoiceButton = createRemoveChoiceButton(index);
 
         HBox hBox = new HBox(2,
@@ -610,6 +624,22 @@ public class EditDeckViewController {
     }
 
     @FXML
+    private void handleAnswerOfInputEdit() {
+        listener.inputAnswerModified((InputCard) selectedCard, answerOfInputCard.getText());
+    }
+
+    @FXML
+    private void handleInputTextFieldKeyPressed(KeyEvent keyEvent) {
+        answerOfInputCard.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            if (" ".equals(event.getCharacter()))
+                event.consume(); // Consume the space character
+        });
+        if (!keyEvent.getCode().equals(KeyCode.ENTER))
+            return;
+        mainHbox.requestFocus();
+    }
+
+    @FXML
     private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
@@ -620,6 +650,7 @@ public class EditDeckViewController {
     @FXML
     private void handleMCQCardSelected() {
         backCard.setVisible(false);
+        answerOfInputCard.setVisible(false);
         listener.newMCQCard();
         cardTypeSelected();
 
@@ -627,8 +658,18 @@ public class EditDeckViewController {
     }
 
     @FXML
+    private void handleInputCardSelected() {
+        choicesGrid.setVisible(false);
+        backCard.setVisible(false);
+        listener.newInputCard();
+        cardTypeSelected();
+        answerOfInputCard.setVisible(true);
+    }
+
+    @FXML
     private void handleFlashCardSelected() {
         choicesGrid.setVisible(false);
+        answerOfInputCard.setVisible(false);
         listener.newFlashCard();
         cardTypeSelected();
         backCard.setVisible(true);
@@ -670,5 +711,9 @@ public class EditDeckViewController {
         /* Flash Card */
         void newFlashCard();
         void editBackOfCardClicked(FlashCard selectedCard);
+
+        /* Input Card */
+        void newInputCard();
+        void inputAnswerModified(InputCard selectedCard, String answer);
     }
 }
