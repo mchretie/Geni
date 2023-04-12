@@ -213,7 +213,10 @@ public class PlayDeckViewController {
     private void showCorrectChoice(){
         for (Node choiceNode : choicesGrid.lookupAll("BorderPane")) {
             BorderPane choice = (BorderPane) choiceNode;
-
+            for (Node selectionNode : choice.lookupAll("TextField")) {
+                TextField selectionTextField = (TextField) selectionNode;
+                selectionTextField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+            }
             for (Node selectionNode : choice.lookupAll("Button")) {
                 Button selectionButton = (Button) selectionNode;
 
@@ -261,7 +264,7 @@ public class PlayDeckViewController {
     private void handleInputText(){
         InputCard card = (InputCard) currentCard;
 
-        inputTextField.setStyle("-fx-background-color: transparent");
+        inputTextField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
         if ((card.isInputCorrect(inputTextField.getText()))){
             inputPane.setRight(setIcon("mdi2c-check", Color.WHITE));
             inputPane.setStyle("-fx-background-color: #659e40;");
@@ -281,7 +284,7 @@ public class PlayDeckViewController {
         BorderPane correctInputPane = new BorderPane();
         TextField correctInputField = new TextField(string);
         correctInputField.setEditable(false);
-        correctInputField.setStyle("-fx-background-color: transparent ");
+        correctInputField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
 
         correctInputPane.setStyle("-fx-background-color: #6bb862; -fx-border-color:#aad4a5");
         correctInputPane.setCenter(correctInputField);
