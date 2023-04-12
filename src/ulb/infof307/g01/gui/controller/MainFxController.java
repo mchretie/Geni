@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
+import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
@@ -48,6 +49,7 @@ public class MainFxController extends Application implements
 
     private final UserDAO userDAO = new UserDAO();
     private final DeckDAO deckDAO = new DeckDAO();
+    private final LeaderboardDAO leaderboardDAO = new LeaderboardDAO();
 
 
     /* ====================================================================== */
@@ -237,7 +239,9 @@ public class MainFxController extends Application implements
                     stage,
                     deck,
                     mainWindowViewController,
-                    this);
+                    this,
+                    leaderboardDAO,
+                    userDAO);
 
             viewStack.add(View.PLAY_DECK);
             playDeckController.show();
@@ -312,6 +316,11 @@ public class MainFxController extends Application implements
     @Override
     public void savedChanges() {
         showPreviousView();
+    }
+
+    @Override
+    public void addScoreFailed(Exception e) {
+        communicateError(e, "Votre score n'a pu être sauvegardé.");
     }
 
 

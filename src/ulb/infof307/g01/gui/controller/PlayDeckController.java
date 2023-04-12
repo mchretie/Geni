@@ -1,23 +1,30 @@
 package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
+import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
+import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 
+import java.io.IOException;
+import java.util.UUID;
+
 public class PlayDeckController implements PlayDeckViewController.Listener {
 
+    private final Stage stage;
+    private final MainWindowViewController mainWindowViewController;
+    private final PlayDeckViewController playDeckViewController;
+    private final ControllerListener controllerListener;
+
+    private final LeaderboardDAO leaderboardDAO;
+    private final Score score;
     private final CardExtractor cardExtractor;
     private Card currentCard;
     private boolean frontShown = true;
 
-    private final Stage stage;
-
-    private final MainWindowViewController mainWindowViewController;
-    private final PlayDeckViewController playDeckViewController;
-    private final ControllerListener controllerListener;
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -25,11 +32,19 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     public PlayDeckController(Stage stage, Deck deck,
                               MainWindowViewController mainWindowViewController,
-                              ControllerListener controllerListener) {
+                              ControllerListener controllerListener,
+                              LeaderboardDAO leaderboardDAO, UserDAO userDAO) {
 
         this.stage = stage;
         this.cardExtractor = new CardExtractorRandom(deck);
         this.currentCard = cardExtractor.getNextCard();
+        // TODO change hardcoded value / get User instance
+        this.score = Score.createNewScore(
+                UUID.fromString("3d9f80f8-f923-46a3-8178-1fe3067e5d7e"),
+                "guest",
+                deck.getId());
+        this.leaderboardDAO = leaderboardDAO;
+        this.leaderboardDAO.setToken(userDAO.getToken());
 
         if (currentCard == null)
             throw new EmptyDeckException("Deck does not contain any cards.");
@@ -85,13 +100,19 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         frontShown = true;
         currentCard = cardExtractor.getNextCard();
 
-        if (currentCard != null)
+        if (currentCard != null) {
             playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+            showCard();
+            return;
+        }
 
-        else
+        try {
+            leaderboardDAO.addScore(score);
+        } catch (Exception e) {
+            controllerListener.addScoreFailed(e);
+        } finally {
             controllerListener.finishedPlayingDeck();
-
-        showCard();
+        }
     }
 
     @Override
@@ -114,5 +135,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     public interface ControllerListener {
         void finishedPlayingDeck();
+        void addScoreFailed(Exception e);
     }
 }
