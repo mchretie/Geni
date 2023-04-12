@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.result.ResultViewController">
+   <children>
+      <Label text="Your score : ">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <Label fx:id="scoreLabel" text="200">
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font></Label>
+      <Button fx:id="goToMenuButton" mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Go to menu">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Button>
+   </children>
+</VBox>
