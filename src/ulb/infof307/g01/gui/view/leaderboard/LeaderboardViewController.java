@@ -27,6 +27,6 @@ public class LeaderboardViewController {
     /* ====================================================================== */
 
     public interface Listener {
-    
+
     }
 }
