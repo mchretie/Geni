@@ -9,7 +9,6 @@ import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -115,7 +114,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         } catch (Exception e) {
             controllerListener.addScoreFailed(e);
         } finally {
-            controllerListener.finishedPlayingDeck();
+            controllerListener.finishedPlayingDeck(score);
         }
     }
 
@@ -149,7 +148,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     /* ====================================================================== */
 
     public interface ControllerListener {
-        void finishedPlayingDeck();
+        void finishedPlayingDeck(Score score);
         void addScoreFailed(Exception e);
     }
 }

@@ -10,6 +10,7 @@ import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
+import ulb.infof307.g01.gui.view.result.ResultViewController;
 
 public class MainWindowViewController {
 
@@ -48,6 +49,9 @@ public class MainWindowViewController {
     private VBox editCardView;
 
     @FXML
+    private VBox resultView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
@@ -58,6 +62,9 @@ public class MainWindowViewController {
 
     @FXML
     private EditCardViewController editCardViewController;
+
+    @FXML
+    private ResultViewController resultViewController;
 
 
     /* ====================================================================== */
@@ -93,6 +100,10 @@ public class MainWindowViewController {
 
     public EditCardViewController getEditCardViewController() {
         return editCardViewController;
+    }
+
+    public ResultViewController getResultViewController() {
+        return resultViewController;
     }
 
 
@@ -138,6 +149,10 @@ public class MainWindowViewController {
 
     public void setEditCardViewVisible() {
         setAllInvisibleExcept(editCardView);
+    }
+
+    public void setResultViewVisible() {
+        setAllInvisibleExcept(resultView);
     }
 
 

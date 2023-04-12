@@ -15,6 +15,7 @@ import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.FlashCard;
+import ulb.infof307.g01.model.Score;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,7 +30,8 @@ public class MainFxController extends Application implements
         DeckMenuController.ControllerListener,
         PlayDeckController.ControllerListener,
         EditDeckController.ControllerListener,
-        EditCardController.ControllerListener {
+        EditCardController.ControllerListener,
+        ResultController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -39,6 +41,7 @@ public class MainFxController extends Application implements
     private EditDeckController editDeckController;
     private PlayDeckController playDeckController;
     private EditCardController editCardController;
+    private ResultController resultController;
 
 
     private MainWindowViewController mainWindowViewController;
@@ -60,7 +63,8 @@ public class MainFxController extends Application implements
         DECK_MENU,
         PLAY_DECK,
         EDIT_DECK,
-        HTML_EDITOR
+        HTML_EDITOR,
+        RESULT
     }
 
     List<View> viewStack = new ArrayList<>();
@@ -97,6 +101,7 @@ public class MainFxController extends Application implements
                 case PLAY_DECK -> playDeckController.show();
                 case EDIT_DECK -> editDeckController.show();
                 case HTML_EDITOR -> editCardController.show();
+                case RESULT -> resultController.show();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -323,6 +328,29 @@ public class MainFxController extends Application implements
         communicateError(e, "Votre score n'a pu être sauvegardé.");
     }
 
+    @Override
+    public void finishedPlayingDeck(Score score) {
+        viewStack.remove(viewStack.size() - 1);
+        resultController = new ResultController(
+                stage,
+                mainWindowViewController,
+                this,
+                score
+                );
+        viewStack.add(View.RESULT);
+        resultController.show();
+    }
+
+    @Override
+    public void goBackToMenu() {
+        try {
+            viewStack.remove(viewStack.size() - 1);
+            deckMenuController.show();
+        } catch (IOException | InterruptedException e) {
+            restartApplicationError(e);
+        }
+    }
+
 
     /* ====================================================================== */
     /*                   Navigation Listener Methods                          */
@@ -354,16 +382,5 @@ public class MainFxController extends Application implements
     @Override
     public void goToAboutClicked() {
 
-    }
-
-    @Override
-    public void finishedPlayingDeck() {
-        try {
-            viewStack.remove(viewStack.size() - 1);
-            deckMenuController.show();
-
-        } catch (IOException | InterruptedException e) {
-            restartApplicationError(e);
-        }
     }
 }
