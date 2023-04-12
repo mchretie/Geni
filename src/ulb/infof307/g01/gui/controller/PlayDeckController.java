@@ -10,6 +10,7 @@ import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class PlayDeckController implements PlayDeckViewController.Listener {
@@ -24,6 +25,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     private final CardExtractor cardExtractor;
     private Card currentCard;
     private boolean frontShown = true;
+    private boolean[] answeredCards;    // needed because user can go back to previous question
 
 
     /* ====================================================================== */
@@ -43,6 +45,8 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
                 UUID.fromString("3d9f80f8-f923-46a3-8178-1fe3067e5d7e"),
                 "guest",
                 deck.getId());
+        this.answeredCards = new boolean[deck.cardCount()];
+        Arrays.fill(answeredCards, false);
         this.leaderboardDAO = leaderboardDAO;
         this.leaderboardDAO.setToken(userDAO.getToken());
 
@@ -129,8 +133,14 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     }
 
     @Override
-    public void correctChoiceButtonClicked() {
-        score.increment(1);
+    public void choiceButtonClicked(boolean isGoodChoice) {
+        int cardIndex = cardExtractor.getCurrentCardIndex();
+        if (answeredCards[cardIndex])
+            return;
+
+        answeredCards[cardIndex] = true;
+        if (isGoodChoice)
+            score.increment(1);
     }
 
 

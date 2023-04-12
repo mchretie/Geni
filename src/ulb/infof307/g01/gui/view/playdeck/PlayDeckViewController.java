@@ -166,7 +166,9 @@ public class PlayDeckViewController {
             buttonIcon.setIconColor(Color.WHITE);
             showCorrectChoice();
             if (isCorrectChoice)
-                listener.correctChoiceButtonClicked();
+                listener.choiceButtonClicked(true);
+            else
+                listener.choiceButtonClicked(false);
         });
 
         choicePane.setLeft(choiceField);
@@ -243,6 +245,6 @@ public class PlayDeckViewController {
         void cardClicked();
         void nextCardClicked();
         void previousCardClicked();
-        void correctChoiceButtonClicked();
+        void choiceButtonClicked(boolean isGoodChoice);
     }
 }
