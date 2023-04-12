@@ -6,14 +6,16 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 
 public class LoginViewController {
 
     @FXML
-    private BorderPane BIGPAIN;
+    private StackPane BIGPAIN;
 
     @FXML
-    private Pane loginPane;
+    private VBox loginVBOX;
 
     @FXML
     private TextField loginUsernameField;
@@ -25,7 +27,7 @@ public class LoginViewController {
     private Button loginButton;
 
     @FXML
-    private Pane signupPane;
+    private VBox signupVBOX;
 
     @FXML
     private TextField signupUsernameField;
@@ -50,18 +52,18 @@ public class LoginViewController {
     }
 
     public void setSignupPaneVisible() {
-        BIGPAIN.setCenter(signupPane);
-        //this.loginPane.setVisible(false);
+        //BIGPAIN.setCenter(signupPane);
+        this.loginVBOX.setVisible(false);
         //this.loginPane.toBack();
-        //this.signupPane.toFront();
-        //this.signupPane.setVisible(true);
+        //this.signupVBOX.toFront();
+        this.signupVBOX.setVisible(true);
     }
 
     public void setLoginPaneVisible() {
-        BIGPAIN.setCenter(loginPane);
-        //this.loginPane.setVisible(true);
-        //this.signupPane.setVisible(false);
-        //this.loginPane.toFront();
+        //BIGPAIN.setCenter(loginPane);
+        this.loginVBOX.setVisible(true);
+        this.signupVBOX.setVisible(false);
+        //this.loginVBOX.toFront();
         //this.signupPane.toBack();
 
     }

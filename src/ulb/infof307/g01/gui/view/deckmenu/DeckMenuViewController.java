@@ -65,9 +65,11 @@ public class DeckMenuViewController {
     }
 
     private void initWidthListener() {
+        System.out.println("initWidthListener() called");
         final ChangeListener<Number> listener = new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                System.out.println("changed() called");
                 widthChangeHandler();
             }
         };
@@ -216,6 +218,7 @@ public class DeckMenuViewController {
     /* ====================================================================== */
 
     private void widthChangeHandler() {
+        System.out.println("widthChangeHandler() called");
         double newWidth = gridPane.getWidth();
         int newColumnCount = (int) (newWidth / 400);  // TODO: change this magic
 

@@ -50,10 +50,10 @@ public class MainWindowViewController {
     private VBox editCardView;
 
     @FXML
-    private BorderPane loginView;
+    private StackPane loginView;
 
     @FXML
-    private AnchorPane profileView;
+    private VBox profileView;
 
     @FXML
     private DeckMenuViewController deckMenuViewController;
