@@ -76,7 +76,7 @@
                </font>
             </Text>
          </HBox>
-         <ListView VBox.vgrow="ALWAYS" />
+         <ListView fx:id="boardContainer" VBox.vgrow="ALWAYS" />
       </VBox>
    </center>
 </BorderPane>
