@@ -28,4 +28,12 @@ public class LeaderboardDAO extends HttpDAO {
 
         return new Gson().fromJson(response.body(), Leaderboard.class);
     }
+
+    public Score getBestScoreForDeck(UUID deckId) throws IOException, InterruptedException {
+        HttpResponse<String> response = get(ServerPaths.GET_BEST_SCORE_PATH + "?deck=" + deckId.toString());
+
+        checkResponseCode(response.statusCode());
+
+        return new Gson().fromJson(response.body(), Score.class);
+    }
 }

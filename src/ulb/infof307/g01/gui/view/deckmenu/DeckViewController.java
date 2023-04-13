@@ -15,6 +15,7 @@ import javafx.stage.DirectoryChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.DeckMetadata;
 import ulb.infof307.g01.gui.util.ImageLoader;
+import ulb.infof307.g01.model.Score;
 import ulb.infof307.g01.model.Tag;
 
 import java.io.File;
@@ -83,7 +84,7 @@ public class DeckViewController {
     /*                           Updating Deck                                */
     /* ====================================================================== */
 
-    public void setDeck(DeckMetadata deck) {
+    public void setDeck(DeckMetadata deck, Score bestScore) {
         this.deck = deck;
         this.updateDeckLabelName();
 
@@ -91,7 +92,10 @@ public class DeckViewController {
         this.setBackGroundImage("file:res/img/tmpdeckimage.jpg");
 
         this.setTags();
-        this.setStats();
+        if (bestScore == null)
+            this.setStats("N/A");
+        else
+            this.setStats(String.valueOf(bestScore.getScore()));
     }
 
     private void setDeckColor() {
@@ -136,11 +140,9 @@ public class DeckViewController {
         }
     }
 
-    private void setStats() {
+    private void setStats(String bestScore) {
         amountCardsLabel.setText(String.valueOf(deck.cardCount()));
-        // TODO : use this when trophies are implemented
-        //amountTrophiesLabel.setText(String.valueOf(deck.getTrophies()));
-        amountTrophiesLabel.setText("666");
+        amountTrophiesLabel.setText(bestScore);
     }
 
     private LinearGradient makeGradient(Color color) {

@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
+import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.Card;
@@ -14,6 +15,7 @@ import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.DeckMetadata;
+import ulb.infof307.g01.model.Score;
 
 import java.io.*;
 import java.net.URL;
@@ -35,6 +37,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     private final MainWindowViewController mainWindowViewController;
 
     private final DeckDAO deckDAO;
+    private final LeaderboardDAO leaderboardDAO;
     private final ImageLoader imageLoader = new ImageLoader();
 
     /* ====================================================================== */
@@ -44,7 +47,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     public DeckMenuController(Stage stage,
                               ControllerListener controllerListener,
                               MainWindowViewController mainWindowViewController,
-                              DeckDAO deckDAO, UserDAO userDAO) throws IOException, InterruptedException {
+                              DeckDAO deckDAO, UserDAO userDAO,
+                              LeaderboardDAO leaderboardDAO) throws IOException, InterruptedException {
 
         this.stage = stage;
         this.controllerListener = controllerListener;
@@ -52,6 +56,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         this.deckDAO = deckDAO;
         this.deckDAO.setToken(userDAO.getToken());
+
+        this.leaderboardDAO = leaderboardDAO;
+        this.leaderboardDAO.setToken(userDAO.getToken());
 
         this.deckMenuViewController
                 = mainWindowViewController.getDeckMenuViewController();
@@ -91,7 +98,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @return List of loaded nodes representing decks
      * @throws IOException if FXMLLoader.load() fails
      */
-    private List<Node> loadDecks(List<DeckMetadata> decks) throws IOException {
+    private List<Node> loadDecks(List<DeckMetadata> decks) throws IOException, InterruptedException {
         List<Node> decksLoaded = new ArrayList<>();
 
         for (DeckMetadata deck : decks) {
@@ -106,7 +113,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             DeckViewController controller = loader.getController();
             controller.setImageLoader(imageLoader);
-            controller.setDeck(deck);
+            Score bestScore = leaderboardDAO.getBestScoreForDeck(deck.id());
+            controller.setDeck(deck, bestScore);
             controller.setListener(this);
 
             decksLoaded.add(node);

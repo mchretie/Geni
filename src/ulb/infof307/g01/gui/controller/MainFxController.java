@@ -148,7 +148,8 @@ public class MainFxController extends Application implements
                     this,
                     mainWindowViewController,
                     deckDAO,
-                    userDAO);
+                    userDAO,
+                    leaderboardDAO);
 
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
