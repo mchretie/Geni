@@ -50,6 +50,8 @@ public class LoginController implements LoginViewController.ViewListener {
     public void show() throws IOException {
         mainWindowViewController.setLoginViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
+
+        loginViewController.setLoginPaneVisible();
         stage.show();
     }
 
