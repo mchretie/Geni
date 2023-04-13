@@ -9,14 +9,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
-import ulb.infof307.g01.gui.httpdao.exceptions.ServerRequestFailed;
+import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
-import java.lang.reflect.Executable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +51,7 @@ public class MainFxController extends Application implements
     /*                              DAO Attributes                            */
     /* ====================================================================== */
 
-    private final UserDAO userDAO = new UserDAO();
+    private final UserSessionDAO userSessionDAO = new UserSessionDAO();
     private final DeckDAO deckDAO = new DeckDAO();
 
 
@@ -78,14 +76,6 @@ public class MainFxController extends Application implements
     /* ====================================================================== */
 
     Stage stage;
-
-    /* ====================================================================== */
-    /*                             Stage Attributes                           */
-    /* ====================================================================== */
-
-    private final Preferences prefs = Preferences.userNodeForPackage(UserDAO.class);
-    private String username;
-    private String password;
 
     /* ====================================================================== */
     /*                                  Main                                  */
@@ -126,6 +116,7 @@ public class MainFxController extends Application implements
     /*                           Application Methods                          */
     /* ====================================================================== */
 
+
     @Override
     public void start(Stage stage) throws IOException, InterruptedException {
 
@@ -151,11 +142,20 @@ public class MainFxController extends Application implements
         mainWindowViewController.setListener(this);
 
         loginController =
-                new LoginController(stage, mainWindowViewController, this, userDAO);
+                new LoginController(stage, mainWindowViewController, this, userSessionDAO);
         profileController =
                 new ProfileController(stage, mainWindowViewController, this);
 
+        mainWindowViewController.setGuestModeVisible();
+        stage.show();
 
+        try {
+            userSessionDAO.attemptAutologin();
+
+        } catch (IOException | InterruptedException e) {
+            userSessionDAO.removeCredentials();
+            autoLoginError(e);
+        }
 
         try {
             deckMenuController = new DeckMenuController(
@@ -163,17 +163,15 @@ public class MainFxController extends Application implements
                     this,
                     mainWindowViewController,
                     deckDAO,
-                    userDAO);
+                    userSessionDAO);
 
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
+
         } catch (IOException | InterruptedException e) {
             restartApplicationError(e);
         }
-        attemptAutologin();
-
     }
-
 
     /* ====================================================================== */
     /*                      Error messages and handling                       */
@@ -361,6 +359,23 @@ public class MainFxController extends Application implements
 
         communicateError(e, message);
     }
+
+    /* ====================================================================== */
+    /*                       Login Listener Methods                           */
+    /* ====================================================================== */
+
+    @Override
+    public void handleLogout() {
+        userSessionDAO.logout();
+        showPreviousView();
+    }
+
+    @Override
+    public void handleLogin(String username, String password) {
+        profileController.setUserNameInProfile(username);
+        showPreviousView();
+    }
+
     /* ====================================================================== */
     /*                   Navigation Listener Methods                          */
     /* ====================================================================== */
@@ -382,7 +397,7 @@ public class MainFxController extends Application implements
 
     @Override
     public void goToCurrentDeckClicked() {
-        if (playDeckController == null)
+        if (playDeckController == null || !userSessionDAO.isLoggedIn())
             return;
 
         playDeckController.show();
@@ -407,8 +422,9 @@ public class MainFxController extends Application implements
     @Override
     public void handleProfileClicked() {
         try {
-            if (profileController.isLoggedIn()) {
+            if (userSessionDAO.isLoggedIn()) {
                 viewStack.add(View.PROFILE);
+                profileController.setUserNameInProfile(userSessionDAO.getUsername());
                 profileController.show();
             } else {
                 viewStack.add(View.LOGIN);
@@ -416,71 +432,6 @@ public class MainFxController extends Application implements
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void handleLogout() {
-        removeCredentials();
-        userDAO.removeToken();
-        deckMenuController.setNewToken(null); // for good mesures
-        profileController.setLoggedIn(false);
-        showPreviousView();
-    }
-
-    @Override
-    public void handleLogin(String username, String password) {
-        System.out.println("Logging in with " + username + " and " + password);
-        profileController.setLoggedIn(true);
-        saveCredentials(username, password);
-        profileController.setUserNameInProfile(username);
-        System.out.println("showing previous view");
-        System.out.println("token: " + userDAO.getToken());
-        deckMenuController.setNewToken(userDAO.getToken());
-        showPreviousView();
-    }
-
-    /* ====================================================================== */
-    /*                                Login                                   */
-    /* ====================================================================== */
-
-    // Checks if the user has already logged in and if so saves the credentials
-    public boolean userCredentialsExist() {
-        this.username = this.prefs.get("localUsername", null);
-        this.password = this.prefs.get("localPassword", null);
-        return username != null && password != null;
-    }
-
-
-    public void removeCredentials() {
-        this.prefs.remove("localUsername");
-        this.prefs.remove("localPassword");
-    }
-
-    public void saveCredentials(String username, String password) {
-        this.prefs.put("localUsername", username);
-        this.prefs.put("localPassword", password);
-    }
-
-    // Caution : Guest == NOT logged in
-    @Override
-    public boolean isGuestSession() {
-        return !profileController.isLoggedIn();
-    }
-
-    private void attemptAutologin() {
-
-        if (userCredentialsExist()) {
-            try {
-                System.out.println("Attempting autologin with " + username + " and " + password);
-                userDAO.login(this.username, this.password);
-                profileController.setUserNameInProfile(username);
-                profileController.setLoggedIn(true);
-            } catch (IOException | InterruptedException e) {
-                System.out.println("Autologin failed removing credentials");
-                removeCredentials();
-                autoLoginError(e);
-            }
         }
     }
 }

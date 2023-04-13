@@ -9,8 +9,25 @@ import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.Map;
 import java.util.Optional;
+import java.util.prefs.Preferences;
 
-public class UserDAO extends HttpDAO {
+
+public class UserSessionDAO extends HttpDAO {
+
+    /* ====================================================================== */
+    /*                               Session attributes                       */
+    /* ====================================================================== */
+
+    private String username;
+    private final Preferences prefs = Preferences.userNodeForPackage(UserSessionDAO.class);
+
+    /* ====================================================================== */
+    /*                               Getters Setters                          */
+    /* ====================================================================== */
+
+    public String getUsername() {
+        return username;
+    }
 
     /* ====================================================================== */
     /*                               DAO methods                              */
@@ -22,24 +39,13 @@ public class UserDAO extends HttpDAO {
         String credentials = "?username=" + username + "&password=" + password;
         HttpResponse<String> response
                 = get(ServerPaths.LOGIN_PATH + credentials);
-        System.out.println("check login response code");
         checkResponseCode(response.statusCode());
+        checkResponseBody(response.body());
+        saveCredentials(username, password);
+        this.username = username;
 
-        System.out.println(response.body());
-
-
-        Gson gson = new Gson();
-        Map<String, String> attributes = gson.fromJson(response.body(), Map.class);
-
-        if ( attributes.get("success").equals("false") ) {
-            throw new ServerRequestFailed("Login failed");
-        }
-
-        // TODO : throw exception if no token is found
         Optional<String> authorization
                 = response.headers().firstValue("Authorization");
-
-
 
         authorization.ifPresent(this::setToken);
     }
@@ -51,17 +57,49 @@ public class UserDAO extends HttpDAO {
         HttpResponse<String> response
                 = post(ServerPaths.REGISTER_PATH + credentials, "");
 
-        System.out.println("check signup response code");
-
         checkResponseCode(response.statusCode());
+        checkResponseBody(response.body());
+    }
 
+    private void checkResponseBody(String response) throws ServerRequestFailed {
         Gson gson = new Gson();
-        Map<String, String> attributes = gson.fromJson(response.body(), Map.class);
+        Map<String, String> attributes = gson.fromJson(response, Map.class);
 
-        if ( attributes.get("success").equals("false") ) {
-            throw new ServerRequestFailed("Register failed");
+        if (attributes.get("success").equals("false")) {
+            throw new ServerRequestFailed("Register/Login failed");
         }
+    }
 
-        System.out.println(response.body());
+    /* ====================================================================== */
+    /*                                Login                                   */
+    /* ====================================================================== */
+
+    public boolean isLoggedIn() {
+        return !getToken().isEmpty();
+    }
+
+    public void removeCredentials() {
+        this.prefs.remove("localUsername");
+        this.prefs.remove("localPassword");
+    }
+
+    public void saveCredentials(String username, String password) {
+        this.prefs.put("localUsername", username);
+        this.prefs.put("localPassword", password);
+    }
+
+    public void attemptAutologin() throws IOException, InterruptedException {
+
+        String username = this.prefs.get("localUsername", null);
+        String password = this.prefs.get("localPassword", null);
+
+        if (username != null && password != null) {
+            login(username, password);
+        }
+    }
+
+    public void logout() {
+        removeCredentials();
+        removeToken();
     }
 }

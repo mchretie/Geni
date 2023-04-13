@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
@@ -34,6 +34,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     private final MainWindowViewController mainWindowViewController;
 
     private final DeckDAO deckDAO;
+    private final UserSessionDAO userSessionDAO;
     private final ImageLoader imageLoader = new ImageLoader();
 
     /* ====================================================================== */
@@ -43,17 +44,16 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     public DeckMenuController(Stage stage,
                               ControllerListener controllerListener,
                               MainWindowViewController mainWindowViewController,
-                              DeckDAO deckDAO, UserDAO userDAO) throws IOException, InterruptedException {
+                              DeckDAO deckDAO, UserSessionDAO userSessionDAO) throws IOException, InterruptedException {
 
         this.stage = stage;
         this.controllerListener = controllerListener;
         this.mainWindowViewController = mainWindowViewController;
-
+        this.userSessionDAO = userSessionDAO;
         this.deckDAO = deckDAO;
 
-        // Guest Check
-        if (!controllerListener.isGuestSession()) {
-            this.deckDAO.setToken(userDAO.getToken());
+        if (userSessionDAO.isLoggedIn()) {
+            this.deckDAO.setToken(userSessionDAO.getToken());
         }
 
         this.deckMenuViewController
@@ -62,13 +62,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         deckMenuViewController.setListener(this);
     }
 
-    /* ====================================================================== */
-    /*                              Setters                                   */
-    /* ====================================================================== */
-
-    public void setNewToken(String newToken){
-        this.deckDAO.setToken(newToken);
-    }
 
     /* ====================================================================== */
     /*                         Stage Manipulation                             */
@@ -77,21 +70,20 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     /**
      * Loads and displays the Deck Menu onto the main scene
      *
-     * @throws IOException if FXMLLoader.load() fails
+     * @throws IOException if FXMLLoader fails
      */
     public void show() throws IOException, InterruptedException {
 
-        // If Guest skip loading decks
-        if (controllerListener.isGuestSession()) {
-           mainWindowViewController.setGuestModeVisible();
-        }
-        else {
+        if (!userSessionDAO.isLoggedIn()) {
+            mainWindowViewController.setGuestModeVisible();
+
+        } else {
+            deckDAO.setToken(userSessionDAO.getToken());
             showDecks();
             mainWindowViewController.setDeckMenuViewVisible();
         }
 
         mainWindowViewController.makeGoBackIconInvisible();
-
         stage.show();
     }
 
@@ -105,7 +97,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     /**
      * @return List of loaded nodes representing decks
-     * @throws IOException if FXMLLoader.load() fails
+     * @throws IOException if FXMLLoader fails
      */
     private List<Node> loadDecks(List<Deck> decks) throws IOException {
         List<Node> decksLoaded = new ArrayList<>();
@@ -131,7 +123,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         return decksLoaded;
     }
 
-
     /* ====================================================================== */
     /*                         Deck Name Validation                           */
     /* ====================================================================== */
@@ -149,7 +140,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
                 return false;
             }
         }
-
         return true;
     }
 
@@ -174,7 +164,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         } catch (InterruptedException e) {
             controllerListener.savingError(e);
         }
-
     }
 
     @Override
@@ -245,7 +234,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     /**
      * Assigns a name to the deck if it already exists. The name will be
-     *  the same as the original name with a number in parentheses.
+     * the same as the original name with a number in parentheses.
      *
      * @param deck the deck to assign a name to
      */
@@ -275,8 +264,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             String fileName
                     = deck.getName()
-                          .replace(" ", "_")
-                          .toLowerCase();
+                    .replace(" ", "_")
+                    .toLowerCase();
 
             String filePath
                     = file.getAbsoluteFile() + "/" + fileName + ".json";
@@ -297,19 +286,23 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         }
     }
 
-
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */
     /* ====================================================================== */
 
     public interface ControllerListener {
         void editDeckClicked(Deck deck);
+
         void playDeckClicked(Deck deck);
+
         void fxmlLoadingError(IOException e);
+
         void savingError(Exception e);
+
         void failedExport(IOException e);
+
         void failedImport(JsonSyntaxException e);
+
         void invalidDeckName(String name, char c);
-        boolean isGuestSession();
     }
 }

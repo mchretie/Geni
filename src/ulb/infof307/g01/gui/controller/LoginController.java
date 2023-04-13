@@ -3,21 +3,19 @@ package ulb.infof307.g01.gui.controller;
 import java.io.IOException;
 
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.login.LoginViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
-public class LoginController implements LoginViewController.ViewListener {
+public class LoginController implements LoginViewController.Listener {
 
     private final Stage stage;
 
     private final MainWindowViewController mainWindowViewController;
-
     private final LoginViewController loginViewController;
-
     private final ControllerListener controllerListener;
 
-    private final UserDAO userDAO; // = new UserDAO();
+    private final UserSessionDAO userSessionDAO;
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -25,12 +23,13 @@ public class LoginController implements LoginViewController.ViewListener {
 
     public LoginController(Stage stage,
                            MainWindowViewController mainWindowViewController,
-                           ControllerListener controllerListener, UserDAO userDAO) {
+                           ControllerListener controllerListener,
+                           UserSessionDAO userSessionDAO) {
 
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
-        this.userDAO = userDAO;
+        this.userSessionDAO = userSessionDAO;
 
         this.loginViewController =
                 mainWindowViewController.getLoginViewController();
@@ -62,47 +61,38 @@ public class LoginController implements LoginViewController.ViewListener {
     @Override
     public void loginClicked(String username, String password) {
 
-        if ( username.length() == 0 || password.length() == 0 ) {
-            //Todo : Error message handling
+        if (username.isEmpty() || password.isEmpty())
             return;
-        }
+
         try {
-            System.out.println("try Logging in with username: " + username + " and password: " + password);
-            userDAO.login(username, password);
+            userSessionDAO.login(username, password);
             controllerListener.handleLogin(username, password);
 
-        }catch (IOException | InterruptedException e) {
-            System.out.println("Autologin failed removing credentials");
+        } catch (IOException | InterruptedException e) {
             controllerListener.failedLogin(e);
         }
-
     }
 
     @Override
-    public void signupClicked(String username, String password, String confirmPassword) {
+    public void registerClicked(String username, String password, String confirmPassword) {
 
-        if (credentialsNOTValid(username, password, confirmPassword)) {
-            //Todo : Error message handling.
-            //throw new Exception("credentials not valid"); for later
+        if (areCredentialsInvalid(username, password, confirmPassword)) {
             return;
         }
+
         try {
-            System.out.println("try Signing up with username: " + username + " and password: " + password);
-            userDAO.register(username, password);
+            userSessionDAO.register(username, password);
             loginClicked(username, password);
 
-        }catch (IOException | InterruptedException e) {
-                System.out.println("Autologin failed removing credentials");
-                controllerListener.failedRegister(e);
+        } catch (IOException | InterruptedException e) {
+            controllerListener.failedRegister(e);
         }
-        System.out.println("Signup successful. Loggin in...");
-
     }
 
-    private boolean credentialsNOTValid(String username, String password, String confirmPassword) {
-        // Todo :  basic test for now
-
-        return username.length() == 0 || password.length() == 0 || !password.equals(confirmPassword);
+    private boolean areCredentialsInvalid(String username, String password, String confirmPassword) {
+        return username.isEmpty()
+                || password.isEmpty()
+                || !password.equals(confirmPassword);
     }
 
     /* ====================================================================== */
@@ -111,10 +101,7 @@ public class LoginController implements LoginViewController.ViewListener {
 
     public interface ControllerListener {
         void handleLogin(String username, String password);
-
         void failedRegister(Exception e);
-
         void failedLogin(Exception e);
-
     }
 }

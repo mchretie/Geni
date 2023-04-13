@@ -3,7 +3,6 @@ package ulb.infof307.g01.gui.controller;
 import java.io.IOException;
 
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 
@@ -12,13 +11,8 @@ public class ProfileController implements ProfileViewController.ViewListener {
     private final Stage stage;
 
     private final MainWindowViewController mainWindowViewController;
-
     private final ProfileViewController profileViewController;
-
     private final ControllerListener controllerListener;
-
-    private boolean isLoggedIn = false;
-
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -39,14 +33,6 @@ public class ProfileController implements ProfileViewController.ViewListener {
     /* ====================================================================== */
     /*                         Setter & Getters                               */
     /* ====================================================================== */
-
-    public void setLoggedIn(boolean logginStatus) {
-        this.isLoggedIn = logginStatus;
-    }
-
-    public boolean isLoggedIn() {
-        return this.isLoggedIn;
-    }
 
     public void setUserNameInProfile(String userName) {
         profileViewController.setUsernameDisplay(userName);

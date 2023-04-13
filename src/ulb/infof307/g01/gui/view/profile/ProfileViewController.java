@@ -13,7 +13,11 @@ public class ProfileViewController {
     @FXML
     private Button logoutButton;
 
-    protected ViewListener listener;
+    /* ====================================================================== */
+    /*                                Listener                                */
+    /* ====================================================================== */
+
+    private ViewListener listener;
 
 
     /* ====================================================================== */
