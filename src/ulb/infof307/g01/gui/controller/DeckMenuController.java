@@ -128,10 +128,11 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         String bannedCharacters = "!\"#$%&()*+,./:;<=>?@[\\]^_`{}~";
 
         for (char c : bannedCharacters.toCharArray()) {
-            if (name.contains(String.valueOf(c))) {
-                controllerListener.invalidDeckName(name, c);
-                return false;
-            }
+            if (!name.contains(String.valueOf(c)))
+                continue;
+
+            controllerListener.invalidDeckName(name, c);
+            return false;
         }
 
         return true;
