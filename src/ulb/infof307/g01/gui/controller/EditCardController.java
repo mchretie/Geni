@@ -4,6 +4,7 @@ import javafx.stage.Stage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -21,16 +22,19 @@ public class EditCardController implements EditCardViewController.Listener {
     private final Deck deck;
     private final Card card;
     private final boolean front;
+    private final ErrorHandler errorHandler;
 
     public EditCardController(Stage stage,
                               Deck deck,
                               Card card,
                               boolean front,
                               DeckDAO deckDAO,
+                              ErrorHandler errorHandler,
                               MainWindowViewController mainWindowViewController,
                               MainFxController mainFxController) {
 
         this.mainWindowViewController = mainWindowViewController;
+        this.errorHandler = errorHandler;
         this.controllerListener = mainFxController;
         this.editCardViewController = mainWindowViewController.getEditCardViewController();
         this.stage = stage;
@@ -57,7 +61,7 @@ public class EditCardController implements EditCardViewController.Listener {
             controllerListener.savedChanges();
 
         } catch (Exception e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -74,8 +78,6 @@ public class EditCardController implements EditCardViewController.Listener {
     }
 
     public interface ControllerListener {
-        void savingError(Exception e);
-
         void savedChanges();
     }
 }
