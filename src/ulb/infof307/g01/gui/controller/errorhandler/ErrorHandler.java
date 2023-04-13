@@ -14,6 +14,10 @@ public class ErrorHandler {
         this.mainWindowViewController = mainWindowViewController;
     }
 
+    /* ====================================================================== */
+    /*                   Base error communication methods                     */
+    /* ====================================================================== */
+
     /**
      * Used to communicate errors that raised exceptions and require the user
      *  to restart the application.
@@ -23,24 +27,27 @@ public class ErrorHandler {
     }
 
     /**
+     * Used to communicate user errors that do not require the application to
+     *  be restarted.
+     *
+     * @param title Title of the error
+     * @param messageToUser Message to display to the user
+     */
+    private void communicateError(String title, String messageToUser) {
+        mainWindowViewController.alertError(title, messageToUser);
+    }
+
+    /* ====================================================================== */
+    /*                   Specific error communication methods                 */
+    /* ====================================================================== */
+
+    /**
      * For exceptions that indicate that the app cannot continue to
      * function properly
      */
     public void restartApplicationError(Exception e) {
         communicateError(e, "Veuillez redémarrer l'application.");
         Platform.exit();
-    }
-
-    /**
-     * For when changes to components (Decks, cards, etc.) fail to be saved in
-     * the db
-     */
-    private void databaseModificationError(Exception e) {
-        String message = "Vos modifications n’ont pas été enregistrées, "
-                + "veuillez réessayer. Si le problème persiste, "
-                + "redémarrez l’application";
-
-        communicateError(e, message);
     }
 
     public void failedDeckExportError(Exception e) {
@@ -57,23 +64,6 @@ public class ErrorHandler {
                 ".json.";
 
         communicateError(e, message);
-    }
-
-    private void failedFetchError(Exception e) {
-        String message = "Le téléchargement depuis le serveur a échoué";
-
-        communicateError(e, message);
-    }
-
-    /**
-     * Used to communicate user errors that do not require the application to
-     *  be restarted.
-     *
-     * @param title Title of the error
-     * @param messageToUser Message to display to the user
-     */
-    private void communicateError(String title, String messageToUser) {
-        mainWindowViewController.alertError(title, messageToUser);
     }
 
     public void invalidDeckName(char c) {
@@ -102,6 +92,10 @@ public class ErrorHandler {
     }
 
     public void savingError(Exception e) {
-        databaseModificationError(e);
+        String message = "Vos modifications n’ont pas été enregistrées, "
+                + "veuillez réessayer. Si le problème persiste, "
+                + "redémarrez l’application";
+
+        communicateError(e, message);
     }
 }

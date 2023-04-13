@@ -152,7 +152,6 @@ public class MainFxController extends Application implements
         } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
         }
-
     }
 
     /* ====================================================================== */
