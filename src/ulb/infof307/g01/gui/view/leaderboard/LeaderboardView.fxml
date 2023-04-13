@@ -1,48 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController">
    <center>
-      <VBox alignment="CENTER" prefHeight="400.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" prefHeight="211.0">
+            <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" text="Pseudo" />
-                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" spacing="7.8">
+                  <HBox alignment="CENTER" prefHeight="140.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rank" />
-                           </children></VBox>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Score" />
-                           </children></VBox>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Pseudo" wrapText="true" />
                      </children>
                   </HBox>
-                  <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0">
+                  <HBox alignment="CENTER" prefHeight="140.0" spacing="8.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Decks" />
+                        <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="296.0" style="-fx-background-color: #E2E2E2;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rank">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin></Text>
+                           </children></VBox>
+                        <VBox alignment="CENTER" prefWidth="296.0" style="-fx-background-color: #E2E2E2;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Score">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin></Text>
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></VBox>
                      </children>
-                  </VBox>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="140.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Decks" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
                </children></VBox>
-            <HBox alignment="CENTER" prefHeight="16.0" style="-fx-background-color: #E2E2E2;">
+            <HBox alignment="CENTER" style="-fx-background-color: #E2E2E2;" VBox.vgrow="SOMETIMES">
                <children>
                   <Text fill="#797979" strokeType="OUTSIDE" strokeWidth="0.0" text="Leaderboard" textAlignment="CENTER">
                      <font>
-                        <Font size="32.0" />
+                        <Font size="20.0" />
                      </font>
                   </Text>
                </children>
             </HBox>
-            <ScrollPane prefHeight="169.0">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-              </content>
-            </ScrollPane>
+            <ListView VBox.vgrow="ALWAYS" />
          </children></VBox>
    </center>
 </BorderPane>
