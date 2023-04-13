@@ -3,7 +3,6 @@ package ulb.infof307.g01.gui.view.editdeck;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -16,12 +15,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.gui.view.editdeck.subcomponents.ChoiceView;
 import ulb.infof307.g01.model.*;
 
 import java.io.File;
 import java.util.List;
 
-public class EditDeckViewController {
+public class EditDeckViewController implements ChoiceView.Listener
+{
 
     /* ====================================================================== */
     /*                              FXML Attributes                           */
@@ -203,7 +204,6 @@ public class EditDeckViewController {
         backCard.setVisible(true);
         answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(false);
-
     }
 
     private void loadInputCardEditor(InputCard inputCard) {
@@ -275,65 +275,16 @@ public class EditDeckViewController {
      * @param isCorrectChoice true if the choice is the correct choice
      */
     private void addChoiceField(String choice, int index, boolean isCorrectChoice) {
-        TextField textField = getChoiceFieldTextField(choice, index);
+        ChoiceView choiceView
+                = new ChoiceView(choice, index, isCorrectChoice, (MCQCard) selectedCard, this);
 
-        textField.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case ENTER -> {
-                    if (choiceFieldEmpty(textField, index))
-                        return;
-
-                    focusNextNode(index, true, false);
-                }
-
-                case TAB -> {
-                    choiceFieldEmpty(textField, index);
-                    focusNextNode(index, false, true);
-                }
-            }
-        });
-
-        Button correctChoiceSelectionButton
-                = createCorrectChoiceSelectionButton(isCorrectChoice, index);
-
-        Button removeChoiceButton = createRemoveChoiceButton(index);
-
-        HBox hBox = new HBox(2,
-                            textField,
-                            correctChoiceSelectionButton,
-                            removeChoiceButton);
-
-        HBox.setHgrow(hBox, Priority.ALWAYS);
-        hBox.setAlignment(Pos.CENTER);
-
-        choicesGrid.add(hBox, currentCol, currentRow);
+        choicesGrid.add(choiceView, currentCol, currentRow);
     }
 
-
-    /**
-     * Checks if the choice field is empty and removes it if it is.
-     *  Returns true if the choice field was removed.
-     *
-     * @param textField the text field of the choice field
-     * @param index the index of the choice field
-     *
-     * @return true if the choice field was removed or if the number of choice
-     *            fields is less than 3 and the field is empty.
-     */
-    private boolean choiceFieldEmpty(TextField textField, int index) {
-        if (textField.getText().isEmpty()
-                && ((MCQCard) selectedCard).getNbOfChoices() < 3)
-
-            return true;
-
-        if (!textField.getText().isEmpty())
-            return false;
-
+    private void removeChoiceAtIndex(int index) {
         listener.choiceRemoved((MCQCard) selectedCard, index);
-
         loadSelectedCardEditor();
         focusPreviousChoiceField(index);
-        return true;
     }
 
     /**
@@ -342,10 +293,10 @@ public class EditDeckViewController {
      * @param index the index of the choice field
      */
     private void focusPreviousChoiceField(int index) {
-        HBox hBox = (HBox) choicesGrid.getChildren().get(index - 1);
-        TextField textField = (TextField) hBox.getChildren().get(0);
-        textField.requestFocus();
-        textField.selectAll();
+        ChoiceView choiceView
+                = (ChoiceView) choicesGrid.getChildren().get(index - 1);
+
+        choiceView.requestFocus();
     }
 
     /**
@@ -354,10 +305,8 @@ public class EditDeckViewController {
      * @param nextIndex the index of the choice field
      */
     private void focusNextChoiceField(int nextIndex) {
-        HBox hBox = (HBox) choicesGrid.getChildren().get(nextIndex);
-        TextField textField = (TextField) hBox.getChildren().get(0);
-        textField.requestFocus();
-        textField.selectAll();
+        ChoiceView choiceView = (ChoiceView) choicesGrid.getChildren().get(nextIndex);
+        choiceView.requestFocus();
     }
 
     /**
@@ -383,81 +332,6 @@ public class EditDeckViewController {
         } else {
             mainHbox.requestFocus();
         }
-    }
-
-    /**
-     * Gets the text field for a choice field
-     *
-     * @param choice the text of the choice
-     * @param index  the index of the choice field
-     * @return the text field
-     */
-    private TextField getChoiceFieldTextField(String choice, int index) {
-        TextField textField = new TextField(choice);
-        textField.setPromptText("Réponse");
-        textField.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(textField, Priority.ALWAYS);
-
-        // When the text field loses focus, the choice is updated
-        textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue && index < ((MCQCard) selectedCard).getNbOfChoices()) {
-                listener.choiceModified((MCQCard) selectedCard, textField.getText(), index);
-                loadSelectedCardEditor();
-            };
-        });
-
-        return textField;
-    }
-
-    /**
-     * Gets the button to set the correct choice for a choice field
-     *
-     * @param isCorrectChoice true if the choice is the correct one
-     * @param index         the index of the choice field
-     * @return the button
-     */
-    private Button createCorrectChoiceSelectionButton(boolean isCorrectChoice, int index) {
-        Button selectCorrectChoiceButton = new Button();
-        FontIcon checkIcon = new FontIcon("mdi2c-check");
-
-        if (isCorrectChoice) {
-            checkIcon.setIconColor(Color.WHITE);
-            selectCorrectChoiceButton.setStyle("-fx-background-color: green;");
-        }
-
-        selectCorrectChoiceButton.setGraphic(checkIcon);
-
-        selectCorrectChoiceButton.setOnAction(event -> {
-            listener.correctChoiceChanged((MCQCard) selectedCard, index);
-            loadSelectedCardEditor();
-        });
-
-        return selectCorrectChoiceButton;
-    }
-
-
-    /**
-     * Gets the remove button for a choice field
-     *
-     * @param index the index of the choice field to remove
-     * @return the button
-     */
-    private Button createRemoveChoiceButton(int index) {
-        Button removeChoiceButton = new Button();
-        removeChoiceButton.setStyle("-fx-background-color: red;");
-        FontIcon trashIcon = new FontIcon("mdi2t-trash-can-outline");
-        trashIcon.setIconColor(Color.WHITE);
-        removeChoiceButton.setGraphic(trashIcon);
-
-        if (((MCQCard) selectedCard).isCardMin())
-            removeChoiceButton.setDisable(true);
-
-        removeChoiceButton.setOnAction(event -> {
-            listener.choiceRemoved((MCQCard) selectedCard, index);
-            loadSelectedCardEditor();
-        });
-
-        return removeChoiceButton;
     }
 
     public void loadSelectedCardEditor() {
@@ -682,6 +556,33 @@ public class EditDeckViewController {
 
     private void setCardTypeButtonVisibility(boolean visibility) {
         cardTypeBox.setVisible(visibility);
+    }
+
+    /* ====================================================================== */
+    /*                       Sub-component listener methods                   */
+    /* ====================================================================== */
+
+    @Override
+    public void choiceModified(MCQCard selectedCard, String text, int index) {
+        listener.choiceModified(selectedCard, text, index);
+        loadSelectedCardEditor();
+    }
+
+    @Override
+    public void correctChoiceChanged(MCQCard selectedCard, int index) {
+        listener.correctChoiceChanged(selectedCard, index);
+        loadSelectedCardEditor();
+    }
+
+    @Override
+    public void choiceRemoved(MCQCard selectedCard, int index) {
+        removeChoiceAtIndex(index);
+        loadSelectedCardEditor();
+    }
+
+    @Override
+    public void focusNextNode(int index, KeyCode keyCode) {
+        focusNextNode(index, keyCode == KeyCode.ENTER, keyCode == KeyCode.TAB);
     }
 
 
