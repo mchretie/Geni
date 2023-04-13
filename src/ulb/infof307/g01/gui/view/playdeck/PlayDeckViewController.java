@@ -21,7 +21,6 @@ import ulb.infof307.g01.model.FlashCard;
 import ulb.infof307.g01.model.InputCard;
 import ulb.infof307.g01.model.MCQCard;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -191,10 +190,7 @@ public class PlayDeckViewController {
             FontIcon buttonIcon = (FontIcon) choiceSelectionButton.getGraphic();
             buttonIcon.setIconColor(Color.WHITE);
             showCorrectChoice();
-            if (isCorrectChoice)
-                listener.choiceButtonClicked(true);
-            else
-                listener.choiceButtonClicked(false);
+            listener.onChoiceEntered(isCorrectChoice);
         });
 
         choicePane.setLeft(choiceField);
@@ -282,13 +278,15 @@ public class PlayDeckViewController {
 
         inputTextField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
         inputTextField.setDisable(true);
-        
+
         if ((card.isInputCorrect(inputTextField.getText()))){
+            listener.onChoiceEntered(true);
             inputPane.setRight(setIcon("mdi2c-check", Color.WHITE));
             inputPane.setStyle("-fx-background-color: #659e40;");
         }
 
         else {
+            listener.onChoiceEntered(false);
             inputPane.setStyle("-fx-background-color: #c45151;");
             inputPane.setRight(setIcon("mdi2c-close", Color.BLACK));
             showCorrectInput();
@@ -310,7 +308,6 @@ public class PlayDeckViewController {
 
         inputBox.getChildren().add(correctInputPane);
 
-        System.out.println("je disable");
         inputTextField.setDisable(true);
     }
 
@@ -349,6 +346,6 @@ public class PlayDeckViewController {
         void cardClicked();
         void nextCardClicked();
         void previousCardClicked();
-        void choiceButtonClicked(boolean isGoodChoice);
+        void onChoiceEntered(boolean isGoodChoice);
     }
 }

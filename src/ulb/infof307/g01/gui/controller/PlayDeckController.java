@@ -41,7 +41,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         this.currentCard = cardExtractor.getNextCard();
         // TODO change hardcoded value / get User instance
         this.score = Score.createNewScore(
-                UUID.fromString("3d9f80f8-f923-46a3-8178-1fe3067e5d7e"),
+                UUID.fromString("4f68e1bd-cd68-4047-b5be-5b5d87de5d65"),
                 "guest",
                 deck.getId());
         this.answeredCards = new boolean[deck.cardCount()];
@@ -134,7 +134,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     }
 
     @Override
-    public void choiceButtonClicked(boolean isGoodChoice) {
+    public void onChoiceEntered(boolean isGoodChoice) {
         int cardIndex = cardExtractor.getCurrentCardIndex();
         if (answeredCards[cardIndex])
             return;
