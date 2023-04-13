@@ -28,6 +28,7 @@ public class LeaderboardRequestHandler extends Handler {
     public void init() {
         post(SAVE_SCORE_PATH, this::saveScore, toJson());
         get(GET_LEADERBOARD_PATH, this::getLeaderboardByDeckId, toJson());
+        get(GET_BEST_SCORE_PATH, this::getBestScoreByDeckId, toJson());
     }
 
     private Map<String, String> saveScore(Request req, Response res) {
@@ -65,5 +66,14 @@ public class LeaderboardRequestHandler extends Handler {
             halt(500, errorMessage);
             return null;
         }
+    }
+
+    private Score getBestScoreByDeckId(Request request, Response response) {
+        Leaderboard leaderboard = getLeaderboardByDeckId(request, response);
+
+        if (leaderboard == null || leaderboard.isEmpty())
+            return null;
+
+        return leaderboard.getLeaderboard().get(0);
     }
 }
