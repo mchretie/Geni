@@ -36,6 +36,7 @@ public class PlayDeckViewController {
     @FXML
     private GridPane choicesGrid;
 
+    @FXML
     private VBox cardBox;
 
     @FXML
