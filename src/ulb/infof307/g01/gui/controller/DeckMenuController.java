@@ -164,7 +164,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void searchDeckClicked(String name) {
         try {
-            deckMenuViewController.setDecks(loadDecks(deckDAO.searchDecks(name)));
+            List<DeckMetadata> decks = deckDAO.searchDecks(name);
+            deckMenuViewController.setDecks(loadDecks(decks));
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
@@ -256,7 +257,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             return;
 
         try {
+
             Deck deck = deckDAO.getDeck(deckMetadata).orElse(null);
+
             assert deck != null;
 
             String fileName
@@ -280,6 +283,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         } catch (IOException e) {
             controllerListener.failedExport(e);
             e.printStackTrace();
+
         } catch (InterruptedException e) {
             controllerListener.failedFetch(e);
             e.printStackTrace();
@@ -294,7 +298,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     public interface ControllerListener {
         void editDeckClicked(DeckMetadata deck);
         void playDeckClicked(DeckMetadata deck);
-
         void fxmlLoadingError(IOException e);
         void savingError(Exception e);
         void failedExport(IOException e);

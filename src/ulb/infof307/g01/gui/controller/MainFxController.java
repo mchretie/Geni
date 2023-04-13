@@ -157,8 +157,8 @@ public class MainFxController extends Application implements
     /* ====================================================================== */
 
     /**
-     * Used to communicate errors that require the user to restart
-     * the application
+     * Used to communicate errors that raised exceptions and require the user
+     *  to restart the application.
      */
     private void communicateError(Exception e, String messageToUser) {
         mainWindowViewController.alertError(e.toString(), messageToUser);
@@ -171,13 +171,6 @@ public class MainFxController extends Application implements
     private void restartApplicationError(Exception e) {
         communicateError(e, "Veuillez redémarrer l'application.");
         Platform.exit();
-    }
-
-    /**
-     * For when windows other than the main window fail to launch
-     */
-    private void returnToMenuError(Exception e) {
-        communicateError(e, "Vous reviendrez au menu principal.");
     }
 
     /**
@@ -214,6 +207,38 @@ public class MainFxController extends Application implements
         communicateError(e, message);
     }
 
+    /**
+     * Used to communicate user errors that do not require the application to
+     *  be restarted.
+     *
+     * @param title Title of the error
+     * @param messageToUser Message to display to the user
+     */
+    private void communicateError(String title, String messageToUser) {
+        mainWindowViewController.alertError(title, messageToUser);
+    }
+
+    private void invalidDeckNameError(char c) {
+        String title = "Nom de paquet invalide.";
+        String description = "Le nom de paquet que vous avez entré est invalide. "
+                + "Veuillez entrer un nom de paquet qui ne contient pas le "
+                + "caractère " + c + ".";
+
+        communicateError(title, description);
+    }
+
+    private void emptyPacketError() {
+        String title = "Paquet vide.";
+        String description = "Le paquet que vous avez ouvert est vide.";
+        communicateError(title, description);
+    }
+
+    private void severConnectionError() {
+        String title = "Erreur avec le serveur";
+        String description = "Le paquet n’a pu être téléchargé.";
+        communicateError(title, description);
+    }
+
 
     /* ====================================================================== */
     /*                     Controller Listener Methods                        */
@@ -230,13 +255,11 @@ public class MainFxController extends Application implements
                     this,
                     deckDAO);
 
-            viewStack.add(View.EDIT_DECK);
             editDeckController.show();
+            viewStack.add(View.EDIT_DECK);
 
         } catch (InterruptedException | IOException e) {
-            String title = "Erreur avec le serveur";
-            String description = "Le paquet n’a pu être téléchargé.";
-            mainWindowViewController.alertInformation(title, description);
+            severConnectionError();
         }
     }
 
@@ -249,17 +272,14 @@ public class MainFxController extends Application implements
                     mainWindowViewController,
                     this);
 
-            viewStack.add(View.PLAY_DECK);
             playDeckController.show();
+            viewStack.add(View.PLAY_DECK);
 
         } catch (EmptyDeckException e) {
-            String title = "Paquet vide.";
-            String description = "Le paquet que vous avez ouvert est vide.";
-            mainWindowViewController.alertInformation(title, description);
+            emptyPacketError();
+
         } catch (InterruptedException | IOException e) {
-            String title = "Erreur avec le serveur";
-            String description = "Le paquet n’a pu être téléchargé.";
-            mainWindowViewController.alertInformation(title, description);
+            severConnectionError();
         }
     }
 
@@ -320,12 +340,7 @@ public class MainFxController extends Application implements
 
     @Override
     public void invalidDeckName(String name, char c) {
-        String title = "Nom de paquet invalide.";
-        String description = "Le nom de paquet que vous avez entré est invalide. "
-                + "Veuillez entrer un nom de paquet qui ne contient pas le "
-                + "caractère " + c + ".";
-
-        mainWindowViewController.alertInformation(title, description);
+        invalidDeckNameError(c);
     }
 
     @Override
