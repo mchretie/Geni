@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+
+<BorderPane fx:id="tagPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.TagViewController">
+   <right>
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+             <Button style="-fx-background-color: transparent" HBox.hgrow="ALWAYS">
+                 <graphic>
+                     <FontIcon iconLiteral="mdi2t-trophy" iconSize="40" />
+                 </graphic>
+             </Button>
+            <Label text="421" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font size="22.5" />
+               </font></Label>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pts" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font size="22.5" />
+               </font></Text>
+         </children>
+         <BorderPane.margin>
+            <Insets right="50.0" />
+         </BorderPane.margin></HBox>
+   </right>
+   <left>
+      <Label text="Kevin" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets left="50.0" />
+         </BorderPane.margin>
+         <font>
+            <Font size="22.5" />
+         </font>
+      </Label>
+   </left>
+</BorderPane>
