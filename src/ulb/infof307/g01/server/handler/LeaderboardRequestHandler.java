@@ -37,11 +37,10 @@ public class LeaderboardRequestHandler extends Handler {
             if (token == null || !jwtService.isTokenValid(token))
                 throw new RuntimeException("Token is " + (token == null ? "null" : "not valid"));
 
-            // check if userId from token and userId from score are the same
+            // check if username from token and username from score are the same
             String username = jwtService.getUsernameFromToken(token);
-            UUID userId = UUID.fromString(database.getUserId(username));
             Score score = new Gson().fromJson(req.body(), Score.class);
-            if (! userId.equals(score.getUserId()))
+            if (! username.equals(score.getUsername()))
                 throw new RuntimeException("userId from token doesn't match userId from score.");
 
             database.saveScore(score);

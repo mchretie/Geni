@@ -39,11 +39,8 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         this.stage = stage;
         this.cardExtractor = new CardExtractorRandom(deck);
         this.currentCard = cardExtractor.getNextCard();
-        // TODO change hardcoded value / get User instance
-        this.score = Score.createNewScore(
-                UUID.fromString("4f68e1bd-cd68-4047-b5be-5b5d87de5d65"),
-                "guest",
-                deck.getId());
+        // TODO change hardcoded username
+        this.score = Score.createNewScore("guest", deck.getId());
         this.answeredCards = new boolean[deck.cardCount()];
         Arrays.fill(answeredCards, false);
         this.leaderboardDAO = leaderboardDAO;
