@@ -14,13 +14,11 @@ import ulb.infof307.g01.model.MCQCard;
 public class ChoiceView extends HBox {
     private final Listener listener;
     private final MCQCard selectedCard;
-    private TextField textField;
-    private Button selectCorrectChoiceButton;
+    private final TextField textField;
     private Button removeChoiceButton;
 
-    private int index;
-    private boolean isCorrect;
-
+    private final int index;
+    private final boolean isCorrect;
 
     public ChoiceView(String text,
                       int index,
@@ -35,7 +33,7 @@ public class ChoiceView extends HBox {
         this.isCorrect = isCorrect;
 
         this.textField = createTextField(text);
-        this.selectCorrectChoiceButton = createCorrectChoiceSelector();
+        Button selectCorrectChoiceButton = createCorrectChoiceSelector();
         this.removeChoiceButton = createRemoveChoiceButton();
 
         HBox.setHgrow(this, Priority.ALWAYS);
