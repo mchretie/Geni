@@ -253,6 +253,7 @@ public class PlayDeckViewController {
         inputBox.setVisible(true);
         choicesGrid.setVisible(false);
 
+        inputTextField.setDisable(false);
         inputTextField.setText("");
         inputTextField.setStyle("");
         inputPane.setStyle("");
@@ -280,6 +281,8 @@ public class PlayDeckViewController {
         InputCard card = (InputCard) currentCard;
 
         inputTextField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+        inputTextField.setDisable(true);
+        
         if ((card.isInputCorrect(inputTextField.getText()))){
             inputPane.setRight(setIcon("mdi2c-check", Color.WHITE));
             inputPane.setStyle("-fx-background-color: #659e40;");
@@ -306,6 +309,9 @@ public class PlayDeckViewController {
         correctInputPane.setRight(setIcon("mdi2c-check", Color.WHITE));
 
         inputBox.getChildren().add(correctInputPane);
+
+        System.out.println("je disable");
+        inputTextField.setDisable(true);
     }
 
     private FontIcon setIcon(String iconLiteral, Color color){
