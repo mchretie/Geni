@@ -5,6 +5,7 @@ import com.google.gson.stream.JsonReader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.gui.util.ImageLoader;
@@ -34,6 +35,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     private final DeckMenuViewController deckMenuViewController;
     private final MainWindowViewController mainWindowViewController;
 
+    private final ErrorHandler errorHandler;
+
     private final DeckDAO deckDAO;
     private final ImageLoader imageLoader = new ImageLoader();
 
@@ -42,11 +45,15 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     /* ====================================================================== */
 
     public DeckMenuController(Stage stage,
+                              ErrorHandler errorHandler,
                               ControllerListener controllerListener,
                               MainWindowViewController mainWindowViewController,
                               DeckDAO deckDAO, UserDAO userDAO) throws IOException, InterruptedException {
 
         this.stage = stage;
+
+        this.errorHandler = errorHandler;
+
         this.controllerListener = controllerListener;
         this.mainWindowViewController = mainWindowViewController;
 
@@ -131,7 +138,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             if (!name.contains(String.valueOf(c)))
                 continue;
 
-            controllerListener.invalidDeckName(name, c);
+            errorHandler.invalidDeckName(c);
             return false;
         }
 
@@ -154,10 +161,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             showDecks();
 
         } catch (IOException e) {
-            controllerListener.fxmlLoadingError(e);
+            errorHandler.failedLoading(e);
 
         } catch (InterruptedException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
 
     }
@@ -169,10 +176,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             deckMenuViewController.setDecks(loadDecks(decks));
 
         } catch (IOException e) {
-            controllerListener.fxmlLoadingError(e);
+            errorHandler.failedLoading(e);
 
         } catch (InterruptedException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -183,10 +190,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             showDecks();
 
         } catch (IOException e) {
-            controllerListener.fxmlLoadingError(e);
+            errorHandler.failedLoading(e);
 
         } catch (InterruptedException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -219,13 +226,13 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             showDecks();
 
         } catch (JsonSyntaxException e) {
-            controllerListener.failedImport(e);
+            errorHandler.failedDeckImportError(e);
 
         } catch (IOException e) {
-            controllerListener.fxmlLoadingError(e);
+            errorHandler.failedLoading(e);
 
         } catch (InterruptedException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -281,13 +288,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             fileWriter.flush();
 
-        } catch (IOException e) {
-            controllerListener.failedExport(e);
-            e.printStackTrace();
-
-        } catch (InterruptedException e) {
-            controllerListener.failedFetch(e);
-            e.printStackTrace();
+        } catch (IOException | InterruptedException e) {
+            errorHandler.failedDeckExportError(e);
         }
     }
 
@@ -299,11 +301,5 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     public interface ControllerListener {
         void editDeckClicked(DeckMetadata deck);
         void playDeckClicked(DeckMetadata deck);
-        void fxmlLoadingError(IOException e);
-        void savingError(Exception e);
-        void failedExport(IOException e);
-        void failedImport(JsonSyntaxException e);
-        void invalidDeckName(String name, char c);
-        void failedFetch(InterruptedException e);
     }
 }
