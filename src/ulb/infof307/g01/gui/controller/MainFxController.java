@@ -10,11 +10,13 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.gui.httpdao.exceptions.ServerRequestFailed;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
+import java.lang.reflect.Executable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,15 +155,7 @@ public class MainFxController extends Application implements
         profileController =
                 new ProfileController(stage, mainWindowViewController, this);
 
-        // Todo : handle failed auto login. example:
-        // IMPORTANT to reset the registry when deleting demo.db
-        //removeCredentials();
 
-        if (userCredentialsExist()) {
-            loginWithCredentials();
-            profileController.setUserNameInProfile(username);
-            profileController.setLoggedIn(true);
-        }
 
         try {
             deckMenuController = new DeckMenuController(
@@ -173,10 +167,11 @@ public class MainFxController extends Application implements
 
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
-
         } catch (IOException | InterruptedException e) {
             restartApplicationError(e);
         }
+        attemptAutologin();
+
     }
 
 
@@ -235,6 +230,14 @@ public class MainFxController extends Application implements
 
         communicateError(e, message);
     }
+
+    private void autoLoginError(Exception e) {
+        String message = "L'auto-login a échoué, " +
+                "veuillez vous reconnecter.";
+
+        communicateError(e, message);
+    }
+
 
 
     /* ====================================================================== */
@@ -344,7 +347,20 @@ public class MainFxController extends Application implements
         showPreviousView();
     }
 
+    @Override
+    public void failedLogin(Exception e) {
+        String message = "La connexion a échoué, " +
+                "veuillez vérifier vos identifiants.";
 
+        communicateError(e, message);
+    }
+
+    @Override
+    public void failedRegister(Exception e) {
+        String message = "L'enregistrement a échoué ";
+
+        communicateError(e, message);
+    }
     /* ====================================================================== */
     /*                   Navigation Listener Methods                          */
     /* ====================================================================== */
@@ -424,6 +440,10 @@ public class MainFxController extends Application implements
         showPreviousView();
     }
 
+    /* ====================================================================== */
+    /*                                Login                                   */
+    /* ====================================================================== */
+
     // Checks if the user has already logged in and if so saves the credentials
     public boolean userCredentialsExist() {
         this.username = this.prefs.get("localUsername", null);
@@ -431,13 +451,6 @@ public class MainFxController extends Application implements
         return username != null && password != null;
     }
 
-    public void loginWithCredentials() {
-        try {
-            userDAO.login(this.username, this.password);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public void removeCredentials() {
         this.prefs.remove("localUsername");
@@ -453,5 +466,21 @@ public class MainFxController extends Application implements
     @Override
     public boolean isGuestSession() {
         return !profileController.isLoggedIn();
+    }
+
+    private void attemptAutologin() {
+
+        if (userCredentialsExist()) {
+            try {
+                System.out.println("Attempting autologin with " + username + " and " + password);
+                userDAO.login(this.username, this.password);
+                profileController.setUserNameInProfile(username);
+                profileController.setLoggedIn(true);
+            } catch (IOException | InterruptedException e) {
+                System.out.println("Autologin failed removing credentials");
+                removeCredentials();
+                autoLoginError(e);
+            }
+        }
     }
 }

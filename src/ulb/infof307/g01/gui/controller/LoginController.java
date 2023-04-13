@@ -69,10 +69,13 @@ public class LoginController implements LoginViewController.ViewListener {
         try {
             System.out.println("try Logging in with username: " + username + " and password: " + password);
             userDAO.login(username, password);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            controllerListener.handleLogin(username, password);
+
+        }catch (IOException | InterruptedException e) {
+            System.out.println("Autologin failed removing credentials");
+            controllerListener.failedLogin(e);
         }
-        controllerListener.handleLogin(username, password);
+
     }
 
     @Override
@@ -86,11 +89,14 @@ public class LoginController implements LoginViewController.ViewListener {
         try {
             System.out.println("try Signing up with username: " + username + " and password: " + password);
             userDAO.register(username, password);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            loginClicked(username, password);
+
+        }catch (IOException | InterruptedException e) {
+                System.out.println("Autologin failed removing credentials");
+                controllerListener.failedRegister(e);
         }
         System.out.println("Signup successful. Loggin in...");
-        loginClicked(username, password);
+
     }
 
     private boolean credentialsNOTValid(String username, String password, String confirmPassword) {
@@ -105,5 +111,10 @@ public class LoginController implements LoginViewController.ViewListener {
 
     public interface ControllerListener {
         void handleLogin(String username, String password);
+
+        void failedRegister(Exception e);
+
+        void failedLogin(Exception e);
+
     }
 }
