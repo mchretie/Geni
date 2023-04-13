@@ -1,43 +1,33 @@
 package ulb.infof307.g01.model;
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
-public class DeckMetadata {
-    private final UUID id;
-    private final String color;
-    private final int cardCount;
-    private final List<Tag> tags;
-    private final int deckHashCode;
+public record DeckMetadata(UUID id,
+                           String name,
+                           String color,
+                           int cardCount,
+                           List<Tag> tags,
+                           int deckHashCode) {
 
-    public DeckMetadata(UUID id, String color, int cardCount, List<Tag> tags, int deckHashCode) {
-        this.id = id;
-        this.color = color;
-        this.cardCount = cardCount;
-        this.tags = tags;
-        this.deckHashCode = deckHashCode;
+    public DeckMetadata(DeckMetadata deckMetadata) {
+        this(deckMetadata.id,
+             deckMetadata.name,
+             deckMetadata.color,
+             deckMetadata.cardCount,
+             List.copyOf(deckMetadata.tags),
+             deckMetadata.deckHashCode);
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public int getCardCount() {
-        return cardCount;
-    }
-
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public int getDeckHashCode() {
-        return deckHashCode;
+    public static DeckMetadata fromJson(JsonObject deckMetadataJson) {
+        return new Gson().fromJson(deckMetadataJson.toString(),
+                                   DeckMetadata.class);
     }
 
     @Override
@@ -48,12 +38,9 @@ public class DeckMetadata {
         return cardCount == that.cardCount
                 && deckHashCode == that.deckHashCode
                 && id.equals(that.id)
+                && name.equals(that.name)
                 && color.equals(that.color)
                 && tags.equals(that.tags);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, color, cardCount, tags, deckHashCode);
-    }
 }

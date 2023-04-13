@@ -13,7 +13,9 @@ import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.model.DeckMetadata;
 import ulb.infof307.g01.model.FlashCard;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -206,18 +208,24 @@ public class MainFxController extends Application implements
         communicateError(e, message);
     }
 
+    private void failedFetchError(Exception e) {
+        String message = "Le téléchargement depuis le serveur a échoué";
+
+        communicateError(e, message);
+    }
+
 
     /* ====================================================================== */
     /*                     Controller Listener Methods                        */
     /* ====================================================================== */
 
     @Override
-    public void editDeckClicked(Deck deck) {
+    public void editDeckClicked(DeckMetadata deckMetadata) {
 
         try {
             editDeckController
                     = new EditDeckController(stage,
-                    deck,
+                    deckDAO.getDeck(deckMetadata).orElse(null),
                     mainWindowViewController,
                     this,
                     deckDAO);
@@ -225,17 +233,19 @@ public class MainFxController extends Application implements
             viewStack.add(View.EDIT_DECK);
             editDeckController.show();
 
-        } catch (IOException e) {
-            returnToMenuError(e);
+        } catch (InterruptedException | IOException e) {
+            String title = "Erreur avec le serveur";
+            String description = "Le paquet n’a pu être téléchargé.";
+            mainWindowViewController.alertInformation(title, description);
         }
     }
 
     @Override
-    public void playDeckClicked(Deck deck) {
+    public void playDeckClicked(DeckMetadata deckMetadata) {
         try {
             playDeckController = new PlayDeckController(
                     stage,
-                    deck,
+                    deckDAO.getDeck(deckMetadata).orElse(null),
                     mainWindowViewController,
                     this);
 
@@ -245,6 +255,10 @@ public class MainFxController extends Application implements
         } catch (EmptyDeckException e) {
             String title = "Paquet vide.";
             String description = "Le paquet que vous avez ouvert est vide.";
+            mainWindowViewController.alertInformation(title, description);
+        } catch (InterruptedException | IOException e) {
+            String title = "Erreur avec le serveur";
+            String description = "Le paquet n’a pu être téléchargé.";
             mainWindowViewController.alertInformation(title, description);
         }
     }
@@ -292,6 +306,11 @@ public class MainFxController extends Application implements
     @Override
     public void failedExport(IOException e) {
         failedDeckExportError(e);
+    }
+
+    @Override
+    public void failedFetch(InterruptedException e) {
+        failedFetchError(e);
     }
 
     @Override

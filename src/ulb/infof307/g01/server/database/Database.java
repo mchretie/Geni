@@ -4,6 +4,7 @@ import ulb.infof307.g01.model.Leaderboard;
 import ulb.infof307.g01.model.Score;
 import ulb.infof307.g01.server.database.dao.*;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.DeckMetadata;
 import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
@@ -57,8 +58,8 @@ public class Database {
         deckDao.saveDeck(deck, userId);
     }
 
-    public Deck getDeck(UUID uuid) throws DatabaseException {
-        return deckDao.getDeck(uuid);
+    public Deck getDeck(UUID deckId, UUID userId) throws DatabaseException {
+        return deckDao.getDeck(deckId, userId);
     }
 
     public List<Deck> getAllDecks() throws DatabaseException {
@@ -69,6 +70,10 @@ public class Database {
         return deckDao.getAllUserDecks(userId);
     }
 
+    public List<DeckMetadata> getAllUserDecksMetadata(UUID userId) throws DatabaseException {
+        return deckDao.getAllUserDecksMetadata(userId);
+    }
+
     public void deleteDeck(UUID deckId, UUID userId) throws DatabaseException {
         deckDao.deleteDeck(deckId, userId);
     }
@@ -77,10 +82,13 @@ public class Database {
         return deckDao.searchDecks(userSearch, userId);
     }
 
+    public List<DeckMetadata> searchDecksMetadata(String userSearch, UUID userId) throws DatabaseException {
+        return deckDao.searchDecksMetadata(userSearch, userId);
+    }
+
     public boolean deckIdExists(UUID deckId) throws DatabaseException {
         return deckDao.deckIdExists(deckId);
     }
-
 
     /* ====================================================================== */
     /*                              Tag                                       */

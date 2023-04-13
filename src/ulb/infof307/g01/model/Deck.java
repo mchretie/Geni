@@ -9,7 +9,6 @@ import java.util.*;
 
 
 public class Deck implements Iterable<Card> {
-
     private UUID id;
 
     @Expose
@@ -141,10 +140,11 @@ public class Deck implements Iterable<Card> {
 
     public DeckMetadata getMetadata() {
         return new DeckMetadata(id,
-                color,
-                cards.size(),
-                tags,
-                hashCode());
+                                name,
+                                color,
+                                cards.size(),
+                                tags,
+                                hashCode());
     }
 
     @Override
