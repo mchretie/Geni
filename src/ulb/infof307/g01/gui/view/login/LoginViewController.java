@@ -118,8 +118,7 @@ public class LoginViewController {
     }
 
     @FXML
-    private void handleRegisterConfPasswordActionEvent(KeyEvent actionEvent) {
-        System.out.println("handleRegisterConfPasswordActionEvent " + actionEvent.getCharacter());
+    private void handleRegisterConfPasswordKeyTyped(KeyEvent actionEvent) {
         if (!registerPasswordField.getText().equals(confirmPasswordField.getText())) {
             registerPasswordField.setStyle("-fx-border-color: red");
             confirmPasswordField.setStyle("-fx-border-color: red");
@@ -129,11 +128,13 @@ public class LoginViewController {
             registerPasswordField.setStyle("-fx-border-color: green");
             confirmPasswordField.setStyle("-fx-border-color: green");
             registerButton.setDisable(false);
-            System.out.println("actionEvent.getCode() = " + actionEvent.getCode());
-            if (actionEvent.getCode().equals(KeyCode.ENTER)){
-                handleRegister();
-            }
         }
+    }
+
+    @FXML
+    private void handleRegisterConfPasswordKeyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode().equals(KeyCode.ENTER))
+            handleRegister();
     }
 
     @FXML

@@ -63,11 +63,10 @@ public class UserSessionDAO extends HttpDAO {
 
     private void checkResponseBody(String response) throws ServerRequestFailed {
         Gson gson = new Gson();
-        Map<String, String> attributes = gson.fromJson(response, Map.class);
+        Map<String, Boolean> attributes = gson.fromJson(response, Map.class);
 
-        if (attributes.get("success").equals("false")) {
+        if (!attributes.get("success"))
             throw new ServerRequestFailed("Register/Login failed");
-        }
     }
 
     /* ====================================================================== */
