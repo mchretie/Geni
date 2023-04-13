@@ -13,6 +13,7 @@ import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.model.DeckMetadata;
 
 import java.io.*;
 import java.net.URL;
@@ -78,7 +79,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     private void showDecks() throws IOException, InterruptedException {
-        deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecks()));
+        deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecksMetadata()));
     }
 
 
@@ -90,10 +91,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @return List of loaded nodes representing decks
      * @throws IOException if FXMLLoader.load() fails
      */
-    private List<Node> loadDecks(List<Deck> decks) throws IOException {
+    private List<Node> loadDecks(List<DeckMetadata> decks) throws IOException {
         List<Node> decksLoaded = new ArrayList<>();
 
-        for (Deck deck : decks) {
+        for (DeckMetadata deck : decks) {
 
             URL resource = DeckMenuViewController
                     .class
@@ -127,10 +128,11 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         String bannedCharacters = "!\"#$%&()*+,./:;<=>?@[\\]^_`{}~";
 
         for (char c : bannedCharacters.toCharArray()) {
-            if (name.contains(String.valueOf(c))) {
-                controllerListener.invalidDeckName(name, c);
-                return false;
-            }
+            if (!name.contains(String.valueOf(c)))
+                continue;
+
+            controllerListener.invalidDeckName(name, c);
+            return false;
         }
 
         return true;
@@ -163,7 +165,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void searchDeckClicked(String name) {
         try {
-            deckMenuViewController.setDecks(loadDecks(deckDAO.searchDecks(name)));
+            List<DeckMetadata> decks = deckDAO.searchDecks(name);
+            deckMenuViewController.setDecks(loadDecks(decks));
 
         } catch (IOException e) {
             controllerListener.fxmlLoadingError(e);
@@ -174,7 +177,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void deckRemoved(Deck deck) {
+    public void deckRemoved(DeckMetadata deck) {
         try {
             deckDAO.deleteDeck(deck);
             showDecks();
@@ -188,12 +191,12 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void deckDoubleClicked(Deck deck) {
+    public void deckDoubleClicked(DeckMetadata deck) {
         controllerListener.playDeckClicked(deck);
     }
 
     @Override
-    public void editDeckClicked(Deck deck) {
+    public void editDeckClicked(DeckMetadata deck) {
         controllerListener.editDeckClicked(deck);
     }
 
@@ -250,11 +253,15 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void shareDeckClicked(Deck deck, File file) {
+    public void shareDeckClicked(DeckMetadata deckMetadata, File file) {
         if (file == null || !file.isDirectory())
             return;
 
         try {
+
+            Deck deck = deckDAO.getDeck(deckMetadata).orElse(null);
+
+            assert deck != null;
 
             String fileName
                     = deck.getName()
@@ -277,6 +284,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         } catch (IOException e) {
             controllerListener.failedExport(e);
             e.printStackTrace();
+
+        } catch (InterruptedException e) {
+            controllerListener.failedFetch(e);
+            e.printStackTrace();
         }
     }
 
@@ -286,12 +297,13 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     /* ====================================================================== */
 
     public interface ControllerListener {
-        void editDeckClicked(Deck deck);
-        void playDeckClicked(Deck deck);
+        void editDeckClicked(DeckMetadata deck);
+        void playDeckClicked(DeckMetadata deck);
         void fxmlLoadingError(IOException e);
         void savingError(Exception e);
         void failedExport(IOException e);
         void failedImport(JsonSyntaxException e);
         void invalidDeckName(String name, char c);
+        void failedFetch(InterruptedException e);
     }
 }

@@ -81,6 +81,8 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             playDeckViewController.showNormalCard();
         else if (currentCard instanceof MCQCard)
             playDeckViewController.showMCQCard();
+        else if (currentCard instanceof InputCard)
+            playDeckViewController.showInputCard();
     }
 
     /* ====================================================================== */

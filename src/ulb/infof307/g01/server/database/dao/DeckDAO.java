@@ -104,14 +104,30 @@ public class DeckDAO extends DAO {
      *
      * @return The deck requested or null if it does not exist.
      */
-    public Deck getDeck(UUID uuid) throws DatabaseException {
+    public Deck getDeck(UUID deckId, UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT deck_id, name, color
+                FROM deck
+                WHERE deck_id = ? AND user_id = ?
+                """;
+
+        ResultSet res = database.executeQuery(sql,
+                                              deckId.toString(),
+                                              userId.toString());
+        if (!checkedNext(res))
+            return null;
+        return extractDeckFrom(res);
+    }
+
+    public Deck getDeck(UUID deckId) throws DatabaseException {
         String sql = """
                 SELECT deck_id, name, color
                 FROM deck
                 WHERE deck_id = ?
                 """;
 
-        ResultSet res = database.executeQuery(sql, uuid.toString());
+        ResultSet res = database.executeQuery(sql,
+                                              deckId.toString());
         if (!checkedNext(res))
             return null;
         return extractDeckFrom(res);
@@ -166,6 +182,24 @@ public class DeckDAO extends DAO {
     }
 
     /**
+     * Get all decks associated with given user
+     *
+     * @return A list of all decks, empty if none are saved.
+     */
+    public List<DeckMetadata> getAllUserDecksMetadata(UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT deck_id
+                FROM deck
+                WHERE deck.user_id = ?
+                """;
+
+
+        ResultSet res = database.executeQuery(sql, userId.toString());
+        List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
+        return extractDeckMetadata(getDecks(deckIds));
+    }
+
+    /**
      * Approximate search of decks with given search string
      *
      * @param userSearch query
@@ -184,6 +218,21 @@ public class DeckDAO extends DAO {
         List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
 
         return getDecks(deckIds);
+    }
+
+    // TODO: optimize the deck fetching
+    public List<DeckMetadata> searchDecksMetadata(String userSearch, UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT deck_id
+                FROM deck
+                WHERE user_id = ? AND name LIKE ?
+                """;
+
+        String pattern = userSearch + "%";
+        ResultSet res = database.executeQuery(sql, userId.toString(), pattern);
+        List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
+
+        return extractDeckMetadata(getDecks(deckIds));
     }
 
     /**
@@ -464,6 +513,12 @@ public class DeckDAO extends DAO {
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
+    }
+
+    private List<DeckMetadata> extractDeckMetadata(List<Deck> decks) {
+        List<DeckMetadata> decksMetadata = new ArrayList<>();
+        decks.forEach((d) -> decksMetadata.add(d.getMetadata()));
+        return decksMetadata;
     }
 
     public boolean deckIdExists(UUID deckId) throws DatabaseException {

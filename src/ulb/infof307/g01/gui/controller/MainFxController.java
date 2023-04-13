@@ -14,8 +14,10 @@ import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.model.DeckMetadata;
 import ulb.infof307.g01.model.FlashCard;
 import ulb.infof307.g01.model.Score;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -162,8 +164,8 @@ public class MainFxController extends Application implements
     /* ====================================================================== */
 
     /**
-     * Used to communicate errors that require the user to restart
-     * the application
+     * Used to communicate errors that raised exceptions and require the user
+     *  to restart the application.
      */
     private void communicateError(Exception e, String messageToUser) {
         mainWindowViewController.alertError(e.toString(), messageToUser);
@@ -176,13 +178,6 @@ public class MainFxController extends Application implements
     private void restartApplicationError(Exception e) {
         communicateError(e, "Veuillez redémarrer l'application.");
         Platform.exit();
-    }
-
-    /**
-     * For when windows other than the main window fail to launch
-     */
-    private void returnToMenuError(Exception e) {
-        communicateError(e, "Vous reviendrez au menu principal.");
     }
 
     /**
@@ -213,48 +208,87 @@ public class MainFxController extends Application implements
         communicateError(e, message);
     }
 
+    private void failedFetchError(Exception e) {
+        String message = "Le téléchargement depuis le serveur a échoué";
+
+        communicateError(e, message);
+    }
+
+    /**
+     * Used to communicate user errors that do not require the application to
+     *  be restarted.
+     *
+     * @param title Title of the error
+     * @param messageToUser Message to display to the user
+     */
+    private void communicateError(String title, String messageToUser) {
+        mainWindowViewController.alertError(title, messageToUser);
+    }
+
+    private void invalidDeckNameError(char c) {
+        String title = "Nom de paquet invalide.";
+        String description = "Le nom de paquet que vous avez entré est invalide. "
+                + "Veuillez entrer un nom de paquet qui ne contient pas le "
+                + "caractère " + c + ".";
+
+        communicateError(title, description);
+    }
+
+    private void emptyPacketError() {
+        String title = "Paquet vide.";
+        String description = "Le paquet que vous avez ouvert est vide.";
+        communicateError(title, description);
+    }
+
+    private void severConnectionError() {
+        String title = "Erreur avec le serveur";
+        String description = "Le paquet n’a pu être téléchargé.";
+        communicateError(title, description);
+    }
+
 
     /* ====================================================================== */
     /*                     Controller Listener Methods                        */
     /* ====================================================================== */
 
     @Override
-    public void editDeckClicked(Deck deck) {
+    public void editDeckClicked(DeckMetadata deckMetadata) {
 
         try {
             editDeckController
                     = new EditDeckController(stage,
-                    deck,
+                    deckDAO.getDeck(deckMetadata).orElse(null),
                     mainWindowViewController,
                     this,
                     deckDAO);
 
-            viewStack.add(View.EDIT_DECK);
             editDeckController.show();
+            viewStack.add(View.EDIT_DECK);
 
-        } catch (IOException e) {
-            returnToMenuError(e);
+        } catch (InterruptedException | IOException e) {
+            severConnectionError();
         }
     }
 
     @Override
-    public void playDeckClicked(Deck deck) {
+    public void playDeckClicked(DeckMetadata deckMetadata) {
         try {
             playDeckController = new PlayDeckController(
                     stage,
-                    deck,
+                    deckDAO.getDeck(deckMetadata).orElse(null),
                     mainWindowViewController,
                     this,
                     leaderboardDAO,
                     userDAO);
 
-            viewStack.add(View.PLAY_DECK);
             playDeckController.show();
+            viewStack.add(View.PLAY_DECK);
 
         } catch (EmptyDeckException e) {
-            String title = "Paquet vide.";
-            String description = "Le paquet que vous avez ouvert est vide.";
-            mainWindowViewController.alertInformation(title, description);
+            emptyPacketError();
+
+        } catch (InterruptedException | IOException e) {
+            severConnectionError();
         }
     }
 
@@ -304,18 +338,18 @@ public class MainFxController extends Application implements
     }
 
     @Override
+    public void failedFetch(InterruptedException e) {
+        failedFetchError(e);
+    }
+
+    @Override
     public void failedImport(JsonSyntaxException e) {
         failedDeckImportError(e);
     }
 
     @Override
     public void invalidDeckName(String name, char c) {
-        String title = "Nom de paquet invalide.";
-        String description = "Le nom de paquet que vous avez entré est invalide. "
-                + "Veuillez entrer un nom de paquet qui ne contient pas le "
-                + "caractère " + c + ".";
-
-        mainWindowViewController.alertInformation(title, description);
+        invalidDeckNameError(c);
     }
 
     @Override
