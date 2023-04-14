@@ -22,9 +22,12 @@ import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static org.apache.maven.surefire.shade.org.apache.maven.shared.utils.io.FileUtils.copyFile;
 
 public class EditDeckViewController implements Initializable {
 
@@ -325,10 +328,13 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
-    private void handleUploadImageClicked() {
+    private void handleUploadImageClicked() throws IOException {
         final FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
-        listener.deckImageModified(deck, file.toURI().toString());
+        File dest = new File("img/" + deck.getId().toString() + ".jpg");
+        copyFile(file, dest);
+        System.out.println("filename : " + dest.getName());
+        listener.deckImageModified(deck, dest.toURI().toString());
     }
 
     @FXML

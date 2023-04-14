@@ -1,5 +1,6 @@
 package ulb.infof307.g01.server;
 
+import spark.Spark;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.server.handler.DeckRequestHandler;
@@ -37,6 +38,7 @@ public class Server {
     public void start() {
         logger.info("Starting server");
         port(port);
+        Spark.staticFiles.externalLocation("img");
         get("/", (req, res) -> "You have reached the server");
         launchHandlers();
         logger.info("Server started on port " + port);
