@@ -113,8 +113,8 @@ public class MainFxController extends Application implements
         initMainWindowView(stage);
 
         try {
-            userSessionDAO.attemptAutologin();
             initControllers(stage);
+            userSessionDAO.attemptAutologin();
 
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
