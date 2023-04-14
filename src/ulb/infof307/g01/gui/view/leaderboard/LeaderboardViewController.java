@@ -4,8 +4,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
+import ulb.infof307.g01.model.Score;
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ public class LeaderboardViewController {
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
+    @FXML
+    private Label usernameLabel;
     @FXML
     private ListView<Node> boardContainer;
 
@@ -42,6 +46,11 @@ public class LeaderboardViewController {
         boardContainer.setItems(items);
         boardContainer.refresh();
 
+    }
+
+    public void setPersonalInformation(String username, Score score) {
+        //TODO set username and score in the view
+        usernameLabel.setText(username);
     }
 
     /* ====================================================================== */

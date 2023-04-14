@@ -3,7 +3,8 @@ package ulb.infof307.g01.gui.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.util.ImageLoader;
+import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
+import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.leaderboard.PlayerScoreItemViewController;
@@ -18,19 +19,22 @@ public class LeaderboardController implements LeaderboardViewController.Listener
     private final ControllerListener controllerListener;
     private final LeaderboardViewController leaderboardViewController;
     private final MainWindowViewController mainWindowViewController;
-    private final ImageLoader imageLoader = new ImageLoader();
+    private final UserSessionDAO userDAO;
+    private final LeaderboardDAO leaderboardDAO;
 
     /* ====================================================================== */
     /*                              Constructor                               */
     /* ====================================================================== */
 
-    public LeaderboardController(Stage stage, MainWindowViewController mainWindowViewController, ControllerListener controllerListener) {
+    public LeaderboardController(Stage stage, MainWindowViewController mainWindowViewController, ControllerListener controllerListener, UserSessionDAO userDAO, LeaderboardDAO leaderboardDAO) {
         this.stage = stage;
         this.controllerListener = controllerListener;
         this.mainWindowViewController = mainWindowViewController;
 
         this.leaderboardViewController = mainWindowViewController.getLeaderboardViewController();
 
+        this.userDAO = userDAO;
+        this.leaderboardDAO = leaderboardDAO;
         leaderboardViewController.setListener(this);
 
     }
@@ -42,10 +46,10 @@ public class LeaderboardController implements LeaderboardViewController.Listener
 
     public void show() throws IOException, InterruptedException {
         // TODO
-        System.out.println("LeaderboardController.show()");
         mainWindowViewController.setLeaderboardViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
 
+        leaderboardViewController.setPersonalInformation(userDAO.getUsername(), leaderboardDAO.getScore(userDAO.getUsername()));
         leaderboardViewController.setBoard(loadBoard());
 
         stage.show();

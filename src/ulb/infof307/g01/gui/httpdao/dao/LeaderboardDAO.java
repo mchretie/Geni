@@ -36,4 +36,9 @@ public class LeaderboardDAO extends HttpDAO {
 
         return new Gson().fromJson(response.body(), Score.class);
     }
+
+    public Score getScore(String username) {
+        //TODO
+        return null;
+    }
 }

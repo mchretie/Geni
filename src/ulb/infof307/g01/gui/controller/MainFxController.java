@@ -269,7 +269,10 @@ public class MainFxController extends Application implements
         try {
             leaderboardController = new LeaderboardController(
                     stage,
-                    mainWindowViewController, this);
+                    mainWindowViewController,
+                    this,
+                    userSessionDAO,
+                    leaderboardDAO);
 
             viewStack.add(View.LEADERBOARD);
             leaderboardController.show(); //TODO : trycatch help OC
@@ -401,7 +404,10 @@ public class MainFxController extends Application implements
                 System.out.println("Creating new leaderboard controller");
                 leaderboardController = new LeaderboardController(
                         stage,
-                        mainWindowViewController, this);
+                        mainWindowViewController,
+                        this,
+                        userSessionDAO,
+                        leaderboardDAO);
             }
 
             leaderboardController.show();
