@@ -2,8 +2,7 @@ package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import ulb.infof307.g01.gui.httpdao.exceptions.ServerRequestFailed;
-import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.gui.httpdao.exceptions.ServerRequestFailedException;
 import ulb.infof307.g01.model.DeckMetadata;
 
 import java.io.IOException;
@@ -84,9 +83,9 @@ public abstract class HttpDAO {
     /*                          Response code reaction                        */
     /* ====================================================================== */
 
-    protected void checkResponseCode(int responseCode) throws ServerRequestFailed {
+    protected void checkResponseCode(int responseCode) throws ServerRequestFailedException {
         if (responseCode != 200)
-            throw new ServerRequestFailed("Server request failed: "
+            throw new ServerRequestFailedException("Server request failed: "
                     + responseCode);
     }
 

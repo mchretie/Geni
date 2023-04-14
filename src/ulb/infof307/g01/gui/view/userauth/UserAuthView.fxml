@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.userauth.UserAuthViewController">
+
+    <VBox fx:id="registerVBOX" alignment="CENTER" fillWidth="false" visible="false">
+        <Label alignment="CENTER" text="Register" textAlignment="CENTER">
+            <font>
+                <Font size="16.0" />
+            </font>
+            <VBox.margin>
+                <Insets bottom="30.0" />
+            </VBox.margin>
+        </Label>
+
+        <TextField fx:id="registerUsernameField" onKeyPressed="#handleRegisterUsernameKeyPressed" promptText="User Name">
+            <VBox.margin>
+                <Insets bottom="20.0" />
+            </VBox.margin>
+        </TextField>
+
+        <PasswordField fx:id="registerPasswordField" onKeyPressed="#handleRegisterPasswordKeyPressed" promptText="Password">
+            <VBox.margin>
+                <Insets bottom="20.0" />
+            </VBox.margin>
+        </PasswordField>
+
+        <PasswordField fx:id="confirmPasswordField" onKeyTyped="#handleRegisterConfPasswordKeyTyped"
+                       onKeyPressed="#handleRegisterConfPasswordKeyPressed" promptText="Confirm Password">
+            <VBox.margin>
+                <Insets bottom="20.0" />
+            </VBox.margin>
+        </PasswordField>
+
+        <Button fx:id="registerButton" mnemonicParsing="false" onMouseClicked="#handleRegisterButtonClicked" text="Register">
+            <VBox.margin>
+                <Insets bottom="10.0" />
+            </VBox.margin>
+        </Button>
+
+        <Hyperlink onMouseClicked="#handleToLoginClicked" text="Back to Login ?">
+            <font>
+                <Font size="10.0" />
+            </font>
+        </Hyperlink>
+
+    </VBox>
+
+    <VBox fx:id="loginVBOX" alignment="CENTER" fillWidth="false">
+        <Label alignment="CENTER" text="Log in" textAlignment="CENTER">
+            <font>
+                <Font size="16.0" />
+            </font>
+            <VBox.margin>
+                <Insets bottom="30.0" />
+            </VBox.margin>
+        </Label>
+
+        <TextField fx:id="loginUsernameField" onKeyPressed="#handleLoginUsernameKeyPressed" promptText="User Name">
+            <VBox.margin>
+                <Insets bottom="20.0" />
+            </VBox.margin>
+        </TextField>
+
+        <PasswordField fx:id="loginPasswordField" onKeyPressed="#handleLoginPasswordKeyPressed" promptText="Password">
+            <VBox.margin>
+                <Insets bottom="20.0" />
+            </VBox.margin>
+        </PasswordField>
+
+        <Button fx:id="loginButton" mnemonicParsing="false" onMouseClicked="#handleLoginButtonClicked" text="Login">
+            <VBox.margin>
+                <Insets bottom="10.0" />
+            </VBox.margin>
+        </Button>
+        <Hyperlink onMouseClicked="#handleToRegisterClicked" text="No account ? Register here.">
+            <font>
+                <Font size="10.0" />
+            </font>
+        </Hyperlink>
+    </VBox>
+
+</StackPane>
