@@ -2,6 +2,7 @@ package ulb.infof307.g01.gui.controller.errorhandler;
 
 import com.google.gson.JsonSyntaxException;
 import javafx.application.Platform;
+import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
@@ -106,6 +107,12 @@ public class ErrorHandler {
     }
     public void failedLogin(Exception e) {
          String message = "L'authentification à échoué, veuillez réesayer";
+
+        communicateError(e, message);
+    }
+
+    public void failedAutoLogin(AuthenticationFailedException e) {
+        String message = "L'authentification automatique à échoué, veuillez réesayer.";
 
         communicateError(e, message);
     }

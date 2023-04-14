@@ -9,6 +9,7 @@ import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
+import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -75,8 +76,14 @@ public class MainFxController extends Application implements
 
     Stage stage;
 
+    
+    /* ====================================================================== */
+    /*                              Error Handler                             */
+    /* ====================================================================== */
+
     private ErrorHandler errorHandler;
 
+    
     /* ====================================================================== */
     /*                                  Main                                  */
     /* ====================================================================== */
@@ -85,6 +92,87 @@ public class MainFxController extends Application implements
         launch();
     }
 
+
+    /* ====================================================================== */
+    /*                           Application Methods                          */
+    /* ====================================================================== */
+
+    @Override
+    public void start(Stage stage) throws IOException {
+
+        this.stage = stage;
+
+        configureStage(stage);
+        initMainWindowView(stage);
+
+        try {
+            userSessionDAO.attemptAutologin();
+            initControllers(stage);
+
+            viewStack.add(View.DECK_MENU);
+            deckMenuController.show();
+
+        } catch (AuthenticationFailedException e) {
+            errorHandler.failedAutoLogin(e);
+
+        } catch (IOException | InterruptedException e) {
+            errorHandler.restartApplicationError(e);
+        }
+    }
+
+
+    /* ====================================================================== */
+    /*                         Config / init Methods                          */
+    /* ====================================================================== */
+
+    private void configureStage(Stage stage) {
+        stage.setWidth(1000);
+        stage.setHeight(800);
+        stage.setMinHeight(500);
+        stage.setMinWidth(600);
+        stage.setTitle("Pokémon TCG Deck Builder");
+    }
+
+    private void initMainWindowView(Stage stage) throws IOException {
+        URL resource = MainWindowViewController
+                .class
+                .getResource("MainWindowView.fxml");
+
+        FXMLLoader fxmlLoader = new FXMLLoader(resource);
+
+        Parent root = fxmlLoader.load();
+        stage.setScene(new Scene(root));
+
+        this.mainWindowViewController = fxmlLoader.getController();
+        this.mainWindowViewController.setListener(this);
+    }
+
+    private void initControllers(Stage stage) throws IOException, InterruptedException {
+
+        errorHandler = new ErrorHandler(mainWindowViewController);
+
+        this.userAuthController
+                = new UserAuthController(stage,
+                errorHandler,
+                mainWindowViewController,
+                this,
+                userSessionDAO);
+
+        this.profileController
+                = new ProfileController(stage,
+                mainWindowViewController,
+                this,
+                userSessionDAO);
+
+        this.deckMenuController
+                = new DeckMenuController(
+                stage,
+                errorHandler,
+                this,
+                mainWindowViewController,
+                deckDAO,
+                userSessionDAO);
+    }
 
     /* ====================================================================== */
     /*                             View stack methods                         */
@@ -102,8 +190,12 @@ public class MainFxController extends Application implements
                 case PLAY_DECK -> playDeckController.show();
                 case EDIT_DECK -> editDeckController.show();
                 case HTML_EDITOR -> editCardController.show();
-                case LOGIN_PROFILE -> userAuthController.show();
-                case PROFILE -> profileController.show();
+                case LOGIN_PROFILE -> {
+                    if (userSessionDAO.isLoggedIn())
+                        profileController.show();
+                    else
+                        userAuthController.show();
+                }
             }
 
         } catch (IOException | InterruptedException e) {
@@ -111,67 +203,6 @@ public class MainFxController extends Application implements
         }
     }
 
-
-    /* ====================================================================== */
-    /*                           Application Methods                          */
-    /* ====================================================================== */
-
-    @Override
-    public void start(Stage stage) throws IOException, InterruptedException {
-
-        this.stage = stage;
-        stage.setWidth(1000);
-        stage.setHeight(800);
-        stage.setMinHeight(500);
-        stage.setMinWidth(600);
-
-        stage.setTitle("Pokémon TCG Deck Builder");
-        //userSessionDAO.register("guest", "guest");
-        userSessionDAO.login("guest", "guest");
-
-        URL resource = MainWindowViewController
-                .class
-                .getResource("MainWindowView.fxml");
-
-        FXMLLoader fxmlLoader = new FXMLLoader(resource);
-
-        Parent root = fxmlLoader.load();
-        stage.setScene(new Scene(root));
-
-        mainWindowViewController = fxmlLoader.getController();
-        mainWindowViewController.setListener(this);
-
-        errorHandler = new ErrorHandler(mainWindowViewController);
-
-        this.userAuthController
-                = new UserAuthController(stage,
-                                            errorHandler,
-                                            mainWindowViewController,
-                                            this,
-                                            userSessionDAO);
-
-        this.profileController
-                = new ProfileController(stage,
-                                        mainWindowViewController,
-                                        this,
-                                        userSessionDAO);
-
-        try {
-            deckMenuController = new DeckMenuController(
-                    stage,
-                    errorHandler,
-                    this,
-                    mainWindowViewController,
-                    deckDAO,
-                    userSessionDAO);
-
-            viewStack.add(View.DECK_MENU);
-            deckMenuController.show();
-
-        } catch (IOException | InterruptedException e) {
-            errorHandler.restartApplicationError(e);
-        }
-    }
 
     /* ====================================================================== */
     /*                     Controller Listener Methods                        */
@@ -298,11 +329,12 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void goToCurrentDeckClicked() {
+    public void goToCurrentPlayingDeck() {
         if (playDeckController == null || !userSessionDAO.isLoggedIn())
             return;
 
         playDeckController.show();
+        viewStack.add(View.PLAY_DECK);
     }
 
     @Override

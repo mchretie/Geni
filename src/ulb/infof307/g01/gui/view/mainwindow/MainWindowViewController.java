@@ -3,7 +3,6 @@ package ulb.infof307.g01.gui.view.mainwindow;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -207,7 +206,7 @@ public class MainWindowViewController {
 
     @FXML
     private void goToCurrentDeckClicked() {
-        listener.goToCurrentDeckClicked();
+        listener.goToCurrentPlayingDeck();
     }
 
     @FXML
@@ -281,7 +280,7 @@ public class MainWindowViewController {
     public interface NavigationListener {
         void goBackClicked();
         void goToHomeClicked();
-        void goToCurrentDeckClicked();
+        void goToCurrentPlayingDeck();
         void goToAboutClicked();
 
         void goToProfileClicked();

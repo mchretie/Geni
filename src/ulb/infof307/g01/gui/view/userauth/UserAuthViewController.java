@@ -95,6 +95,7 @@ public class UserAuthViewController {
     @FXML
     private void handleRegisterButtonClicked() {
         handleRegister();
+        resetTextFieldStyle();
     }
 
     @FXML
@@ -118,7 +119,7 @@ public class UserAuthViewController {
     }
 
     @FXML
-    private void handleRegisterConfPasswordActionEvent(KeyEvent actionEvent) {
+    private void handleRegisterConfPasswordKeyTyped() {
 
         if (!registerPasswordField.getText().equals(confirmPasswordField.getText())) {
             registerPasswordField.setStyle("-fx-border-color: red");
@@ -130,10 +131,21 @@ public class UserAuthViewController {
             registerPasswordField.setStyle("-fx-border-color: green");
             confirmPasswordField.setStyle("-fx-border-color: green");
             registerButton.setDisable(false);
-
-            if (actionEvent.getCode().equals(KeyCode.ENTER))
-                handleRegister();
         }
+    }
+
+    @FXML
+    private void handleRegisterConfPasswordKeyPressed(KeyEvent keyEvent) {
+        if (!keyEvent.getCode().equals(KeyCode.ENTER))
+            return;
+
+        handleRegister();
+        resetTextFieldStyle();
+    }
+
+    private void resetTextFieldStyle() {
+        registerPasswordField.setStyle("-fx-border-color: transparent");
+        confirmPasswordField.setStyle("-fx-border-color: transparent");
     }
 
     @FXML
