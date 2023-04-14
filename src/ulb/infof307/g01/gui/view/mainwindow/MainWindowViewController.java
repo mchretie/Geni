@@ -10,6 +10,9 @@ import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
+import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
+import ulb.infof307.g01.gui.view.profile.ProfileViewController;
+
 
 public class MainWindowViewController {
 
@@ -48,6 +51,12 @@ public class MainWindowViewController {
     private VBox editCardView;
 
     @FXML
+    private VBox profileView;
+
+    @FXML
+    private StackPane userAuthView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
@@ -58,6 +67,12 @@ public class MainWindowViewController {
 
     @FXML
     private EditCardViewController editCardViewController;
+
+    @FXML
+    private ProfileViewController profileViewController;
+
+    @FXML
+    private UserAuthViewController userAuthViewController;
 
 
     /* ====================================================================== */
@@ -95,6 +110,12 @@ public class MainWindowViewController {
         return editCardViewController;
     }
 
+    public ProfileViewController getProfileViewController() {
+        return profileViewController;
+    }
+    public UserAuthViewController getUserAuthViewController() {
+        return userAuthViewController;
+    }
 
     /* ====================================================================== */
     /*                              Alerts                                    */
@@ -138,6 +159,14 @@ public class MainWindowViewController {
 
     public void setEditCardViewVisible() {
         setAllInvisibleExcept(editCardView);
+    }
+
+    public void setProfileViewVisible() {
+        setAllInvisibleExcept(profileView);
+    }
+
+    public void setUserAuthViewController() {
+        setAllInvisibleExcept(userAuthView);
     }
 
 
