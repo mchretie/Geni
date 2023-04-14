@@ -245,6 +245,7 @@ public class MainFxController extends Application implements
                     deckDAO.getDeck(deckMetadata).orElse(null),
                     mainWindowViewController,
                     this,
+                    errorHandler,
                     leaderboardDAO,
                     userSessionDAO);
 
@@ -318,12 +319,6 @@ public class MainFxController extends Application implements
         } catch (IOException | InterruptedException e) {
             errorHandler.failedLoading(e);
         }
-    }
-
-    @Override
-    public void addScoreFailed(Exception e) {
-        // TODO maybe put errorHandler instance in playDeck ?
-        errorHandler.failedAddScore(e);
     }
 
     @Override

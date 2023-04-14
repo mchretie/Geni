@@ -1,6 +1,7 @@
 package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
+import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.model.*;
@@ -17,7 +18,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     private final MainWindowViewController mainWindowViewController;
     private final PlayDeckViewController playDeckViewController;
     private final ControllerListener controllerListener;
-
+    private final ErrorHandler errorHandler;
     private final LeaderboardDAO leaderboardDAO;
     private final Score score;
     private final CardExtractor cardExtractor;
@@ -33,6 +34,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     public PlayDeckController(Stage stage, Deck deck,
                               MainWindowViewController mainWindowViewController,
                               ControllerListener controllerListener,
+                              ErrorHandler errorHandler,
                               LeaderboardDAO leaderboardDAO, UserSessionDAO userDAO) {
 
         this.stage = stage;
@@ -48,6 +50,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             throw new EmptyDeckException("Deck does not contain any cards.");
 
         this.controllerListener = controllerListener;
+        this.errorHandler = errorHandler;
         this.mainWindowViewController = mainWindowViewController;
         mainWindowViewController.makeGoBackIconVisible();
 
@@ -109,7 +112,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         try {
             leaderboardDAO.addScore(score);
         } catch (Exception e) {
-            controllerListener.addScoreFailed(e);
+            errorHandler.failedAddScore(e);
         } finally {
             controllerListener.finishedPlayingDeck(score);
         }
@@ -146,6 +149,5 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     public interface ControllerListener {
         void finishedPlayingDeck(Score score);
-        void addScoreFailed(Exception e);
     }
 }
