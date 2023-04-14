@@ -1,22 +1,20 @@
 package ulb.infof307.g01.gui.controller;
 
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.view.editdeck.TagViewController;
+import ulb.infof307.g01.gui.view.editdeck.subcomponents.TagView;
 import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditDeckController implements EditDeckViewController.Listener,
-        TagViewController.Listener {
+        TagView.Listener {
 
     /* ====================================================================== */
     /*                             Model Attributes                           */
@@ -105,28 +103,13 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
 
     private List<Node> loadTags() {
-        try {
-            List<Node> tagViews = new ArrayList<>();
+        List<Node> tagViews = new ArrayList<>();
 
-            for (Tag tag : deck.getTags()) {
-
-                URL url = TagViewController.class.getResource("TagView.fxml");
-                FXMLLoader loader = new FXMLLoader(url);
-
-                Node node = loader.load();
-                TagViewController tagViewController = loader.getController();
-                tagViewController.setListener(this);
-                tagViewController.setTag(tag);
-
-                tagViews.add(node);
-            }
-
-            return tagViews;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        for (Tag tag : deck.getTags()) {
+            tagViews.add(new TagView(tag, this));
         }
+
+        return tagViews;
     }
 
     /* ====================================================================== */
