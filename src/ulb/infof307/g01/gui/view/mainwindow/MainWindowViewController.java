@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.view.mainwindow;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -214,6 +215,10 @@ public class MainWindowViewController {
         listener.goToAboutClicked();
     }
 
+    @FXML
+    private void handleProfileClicked() {
+        listener.goToProfileClicked();
+    }
 
     /* ====================================================================== */
     /*                              Hover handlers                            */
@@ -278,5 +283,7 @@ public class MainWindowViewController {
         void goToHomeClicked();
         void goToCurrentDeckClicked();
         void goToAboutClicked();
+
+        void goToProfileClicked();
     }
 }

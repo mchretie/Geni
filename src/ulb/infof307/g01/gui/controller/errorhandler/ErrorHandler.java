@@ -87,7 +87,7 @@ public class ErrorHandler {
         communicateError(title, description);
     }
 
-    public void failedLoading(IOException e) {
+    public void failedLoading(Exception e) {
         restartApplicationError(e);
     }
 

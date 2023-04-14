@@ -141,4 +141,10 @@ public class DeckDAO extends HttpDAO {
             deckCache.updateDeck(fetchDeck(deckMetadata));
         return deckCache.getDeck(deckMetadata);
     }
+
+    @Override
+    public void setToken(String token) {
+        deckCache = null;
+        super.setToken(token);
+    }
 }

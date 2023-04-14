@@ -36,7 +36,9 @@
             <Region prefHeight="50.0" HBox.hgrow="ALWAYS" />
 
             <!-- User profile button -->
-            <Button mnemonicParsing="false"
+            <Button fx:id="profileIcon"
+                    onMouseClicked="#handleProfileClicked"
+                    mnemonicParsing="false"
                     prefHeight="50.0" prefWidth="50.0"
                     style="-fx-background-color: transparent;"
                     BorderPane.alignment="CENTER">

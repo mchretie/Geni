@@ -66,7 +66,7 @@ public class UserAuthController implements UserAuthViewController.Listener {
 
         try {
             userSessionDAO.login(username, password);
-            controllerListener.handleLogin(username, password);
+            controllerListener.userLoggedIn();
 
         } catch (IOException | InterruptedException e) {
             errorHandler.failedLogin(e);
@@ -100,6 +100,6 @@ public class UserAuthController implements UserAuthViewController.Listener {
     /* ====================================================================== */
 
     public interface ControllerListener {
-        void handleLogin(String username, String password);
+        void userLoggedIn();
     }
 }

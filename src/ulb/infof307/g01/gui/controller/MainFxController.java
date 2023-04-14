@@ -29,7 +29,9 @@ public class MainFxController extends Application implements
         DeckMenuController.ControllerListener,
         PlayDeckController.ControllerListener,
         EditDeckController.ControllerListener,
-        EditCardController.ControllerListener {
+        EditCardController.ControllerListener,
+        UserAuthController.ControllerListener,
+        ProfileController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -39,6 +41,8 @@ public class MainFxController extends Application implements
     private EditDeckController editDeckController;
     private PlayDeckController playDeckController;
     private EditCardController editCardController;
+    private UserAuthController userAuthController;
+    private ProfileController profileController;
 
     private MainWindowViewController mainWindowViewController;
 
@@ -49,7 +53,6 @@ public class MainFxController extends Application implements
     private final UserSessionDAO userSessionDAO = new UserSessionDAO();
     private final DeckDAO deckDAO = new DeckDAO();
 
-
     /* ====================================================================== */
     /*                            View Stack Attributes                       */
     /* ====================================================================== */
@@ -58,7 +61,9 @@ public class MainFxController extends Application implements
         DECK_MENU,
         PLAY_DECK,
         EDIT_DECK,
-        HTML_EDITOR
+        HTML_EDITOR,
+        LOGIN_PROFILE,
+        PROFILE
     }
 
     List<View> viewStack = new ArrayList<>();
@@ -97,6 +102,8 @@ public class MainFxController extends Application implements
                 case PLAY_DECK -> playDeckController.show();
                 case EDIT_DECK -> editDeckController.show();
                 case HTML_EDITOR -> editCardController.show();
+                case LOGIN_PROFILE -> userAuthController.show();
+                case PROFILE -> profileController.show();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -119,7 +126,7 @@ public class MainFxController extends Application implements
         stage.setMinWidth(600);
 
         stage.setTitle("Pokémon TCG Deck Builder");
-        userSessionDAO.register("guest", "guest");
+        //userSessionDAO.register("guest", "guest");
         userSessionDAO.login("guest", "guest");
 
         URL resource = MainWindowViewController
@@ -133,7 +140,21 @@ public class MainFxController extends Application implements
 
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
+
         errorHandler = new ErrorHandler(mainWindowViewController);
+
+        this.userAuthController
+                = new UserAuthController(stage,
+                                            errorHandler,
+                                            mainWindowViewController,
+                                            this,
+                                            userSessionDAO);
+
+        this.profileController
+                = new ProfileController(stage,
+                                        mainWindowViewController,
+                                        this,
+                                        userSessionDAO);
 
         try {
             deckMenuController = new DeckMenuController(
@@ -233,6 +254,29 @@ public class MainFxController extends Application implements
         showPreviousView();
     }
 
+    @Override
+    public void userLoggedIn() {
+        try {
+            deckMenuController.show();
+
+        } catch (IOException | InterruptedException e) {
+            errorHandler.failedLoading(e);
+        }
+    }
+
+    @Override
+    public void userLoggedOut(){
+        try {
+            userSessionDAO.logout();
+            viewStack.clear();
+            viewStack.add(View.DECK_MENU);
+            deckMenuController.show();
+        
+        } catch (IOException | InterruptedException e) {
+            errorHandler.failedLoading(e);
+        }
+    }
+
 
     /* ====================================================================== */
     /*                   Navigation Listener Methods                          */
@@ -255,7 +299,7 @@ public class MainFxController extends Application implements
 
     @Override
     public void goToCurrentDeckClicked() {
-        if (playDeckController == null)
+        if (playDeckController == null || !userSessionDAO.isLoggedIn())
             return;
 
         playDeckController.show();
@@ -264,6 +308,23 @@ public class MainFxController extends Application implements
     @Override
     public void goToAboutClicked() {
 
+    }
+
+    @Override
+    public void goToProfileClicked() {
+        try {
+            if (userSessionDAO.isLoggedIn()) {
+                profileController.show();
+
+            } else {
+                userAuthController.show();
+            }
+
+            viewStack.add(View.LOGIN_PROFILE);
+
+        } catch (IOException e) {
+            errorHandler.failedLoading(e);
+        }
     }
 
     @Override

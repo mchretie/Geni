@@ -38,6 +38,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     private final ErrorHandler errorHandler;
 
     private final DeckDAO deckDAO;
+    private final UserSessionDAO userSessionDAO;
     private final ImageLoader imageLoader = new ImageLoader();
 
     /* ====================================================================== */
@@ -58,6 +59,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         this.mainWindowViewController = mainWindowViewController;
 
         this.deckDAO = deckDAO;
+        this.userSessionDAO = userSessionDAO;
         this.deckDAO.setToken(userSessionDAO.getToken());
 
         this.deckMenuViewController
@@ -77,11 +79,18 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException, InterruptedException {
-        showDecks();
 
-        mainWindowViewController.setDeckMenuViewVisible();
+        if (userSessionDAO.isLoggedIn()) {
+            deckDAO.setToken(userSessionDAO.getToken());
+            showDecks();
+            mainWindowViewController.setDeckMenuViewVisible();
+        }
+
+        else {
+            mainWindowViewController.setGuestModeDeckMenuViewVisible();
+        }
+
         mainWindowViewController.makeGoBackIconInvisible();
-
         stage.show();
     }
 
