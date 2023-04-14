@@ -98,4 +98,15 @@ public class ErrorHandler {
 
         communicateError(e, message);
     }
+
+    public void failedRegister(Exception e) {
+        String message = "L'enregistrement à échoué, veuillez réesayer.";
+
+        communicateError(e, message);
+    }
+    public void failedLogin(Exception e) {
+         String message = "L'authentification à échoué, veuillez réesayer";
+
+        communicateError(e, message);
+    }
 }
