@@ -7,7 +7,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
@@ -48,7 +48,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
                               ErrorHandler errorHandler,
                               ControllerListener controllerListener,
                               MainWindowViewController mainWindowViewController,
-                              DeckDAO deckDAO, UserDAO userDAO) throws IOException, InterruptedException {
+                              DeckDAO deckDAO, UserSessionDAO userSessionDAO) throws IOException, InterruptedException {
 
         this.stage = stage;
 
@@ -58,7 +58,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         this.mainWindowViewController = mainWindowViewController;
 
         this.deckDAO = deckDAO;
-        this.deckDAO.setToken(userDAO.getToken());
+        this.deckDAO.setToken(userSessionDAO.getToken());
 
         this.deckMenuViewController
                 = mainWindowViewController.getDeckMenuViewController();

@@ -1,8 +1,6 @@
 package ulb.infof307.g01.gui.controller;
 
-import com.google.gson.JsonSyntaxException;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,7 +8,7 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -48,7 +46,7 @@ public class MainFxController extends Application implements
     /*                              DAO Attributes                            */
     /* ====================================================================== */
 
-    private final UserDAO userDAO = new UserDAO();
+    private final UserSessionDAO userSessionDAO = new UserSessionDAO();
     private final DeckDAO deckDAO = new DeckDAO();
 
 
@@ -121,8 +119,8 @@ public class MainFxController extends Application implements
         stage.setMinWidth(600);
 
         stage.setTitle("Pokémon TCG Deck Builder");
-        userDAO.register("guest", "guest");
-        userDAO.login("guest", "guest");
+        userSessionDAO.register("guest", "guest");
+        userSessionDAO.login("guest", "guest");
 
         URL resource = MainWindowViewController
                 .class
@@ -144,7 +142,7 @@ public class MainFxController extends Application implements
                     this,
                     mainWindowViewController,
                     deckDAO,
-                    userDAO);
+                    userSessionDAO);
 
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
