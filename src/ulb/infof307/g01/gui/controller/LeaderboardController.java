@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
@@ -16,25 +17,34 @@ import java.util.List;
 
 public class LeaderboardController implements LeaderboardViewController.Listener, PlayerScoreItemViewController.Listener{
     private final Stage stage;
-    private final ControllerListener controllerListener;
-    private final LeaderboardViewController leaderboardViewController;
     private final MainWindowViewController mainWindowViewController;
+    private final ControllerListener controllerListener;
     private final UserSessionDAO userDAO;
+    private final DeckDAO deckDAO;
     private final LeaderboardDAO leaderboardDAO;
+    private final LeaderboardViewController leaderboardViewController;
+
+
+
 
     /* ====================================================================== */
     /*                              Constructor                               */
     /* ====================================================================== */
 
-    public LeaderboardController(Stage stage, MainWindowViewController mainWindowViewController, ControllerListener controllerListener, UserSessionDAO userDAO, LeaderboardDAO leaderboardDAO) {
+    public LeaderboardController(Stage stage,
+                                 MainWindowViewController mainWindowViewController,
+                                 ControllerListener controllerListener,
+                                 UserSessionDAO userDAO,
+                                 DeckDAO deckDAO,
+                                 LeaderboardDAO leaderboardDAO) {
         this.stage = stage;
-        this.controllerListener = controllerListener;
         this.mainWindowViewController = mainWindowViewController;
+        this.controllerListener = controllerListener;
+        this.userDAO = userDAO;
+        this.deckDAO = deckDAO;
+        this.leaderboardDAO = leaderboardDAO;
 
         this.leaderboardViewController = mainWindowViewController.getLeaderboardViewController();
-
-        this.userDAO = userDAO;
-        this.leaderboardDAO = leaderboardDAO;
         leaderboardViewController.setListener(this);
 
     }
@@ -48,8 +58,10 @@ public class LeaderboardController implements LeaderboardViewController.Listener
         // TODO
         mainWindowViewController.setLeaderboardViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
-
-        leaderboardViewController.setPersonalInformation(userDAO.getUsername(), leaderboardDAO.getScore(userDAO.getUsername()));
+        leaderboardViewController.setPersonalInformation(userDAO.getUsername(),
+                String.valueOf(leaderboardDAO.getRank(userDAO.getUsername())),
+                String.valueOf(leaderboardDAO.getScore(userDAO.getUsername())),
+                String.valueOf(deckDAO.getAllDecksMetadata().size()));
         leaderboardViewController.setBoard(loadBoard());
 
         stage.show();

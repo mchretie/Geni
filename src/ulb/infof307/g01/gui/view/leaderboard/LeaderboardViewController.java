@@ -19,6 +19,12 @@ public class LeaderboardViewController {
     @FXML
     private Label usernameLabel;
     @FXML
+    private Label rangLabel;
+    @FXML
+    private Label scoreLabel;
+    @FXML
+    private Label numberDecksLabel;
+    @FXML
     private ListView<Node> boardContainer;
 
 
@@ -48,9 +54,11 @@ public class LeaderboardViewController {
 
     }
 
-    public void setPersonalInformation(String username, Score score) {
-        //TODO set username and score in the view
+    public void setPersonalInformation(String username, String rang, String score, String numberDecks) {
         usernameLabel.setText(username);
+        rangLabel.setText(rang);
+        scoreLabel.setText(score);
+        numberDecksLabel.setText(numberDecks);
     }
 
     /* ====================================================================== */

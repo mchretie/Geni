@@ -272,6 +272,7 @@ public class MainFxController extends Application implements
                     mainWindowViewController,
                     this,
                     userSessionDAO,
+                    deckDAO,
                     leaderboardDAO);
 
             viewStack.add(View.LEADERBOARD);
@@ -407,6 +408,7 @@ public class MainFxController extends Application implements
                         mainWindowViewController,
                         this,
                         userSessionDAO,
+                        deckDAO,
                         leaderboardDAO);
             }
 

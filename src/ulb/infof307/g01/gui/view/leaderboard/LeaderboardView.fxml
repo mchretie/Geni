@@ -19,12 +19,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="140.0" spacing="8.0" VBox.vgrow="ALWAYS">
                <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="296.0" style="-fx-background-color: #E2E2E2;" HBox.hgrow="ALWAYS">
-                  <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Rank">
+                  <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Rang">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </Text>
-                  <Label contentDisplay="CENTER" text="1 st" textFill="#83bcff">
+                  <Label fx:id="rangLabel" contentDisplay="CENTER" text="1 st" textFill="#83bcff">
                      <font>
                         <Font size="25.0" />
                      </font>
@@ -39,7 +39,7 @@
                         <Insets />
                      </VBox.margin>
                   </Text>
-                  <Label text="421" textFill="#449b6c">
+                  <Label fx:id="scoreLabel" text="421" textFill="#449b6c">
                      <font>
                         <Font size="25.0" />
                      </font>
@@ -55,7 +55,7 @@
                            <FontIcon iconLiteral="mdi2f-file" iconSize="40" />
                         </graphic>
                      </Button>
-                     <Label alignment="CENTER_RIGHT" text="6" textFill="#d0a2ec">
+                     <Label fx:id="numberDecksLabel" alignment="CENTER_RIGHT" textFill="#d0a2ec">
                         <font>
                            <Font size="20.0" />
                         </font></Label>
