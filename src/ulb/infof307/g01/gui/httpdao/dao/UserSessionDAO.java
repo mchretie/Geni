@@ -39,6 +39,7 @@ public class UserSessionDAO extends HttpDAO {
         checkResponseCode(response.statusCode());
         checkResponseBody(response.body(), "Login");
 
+        saveCredentials(username, password);
         this.username = username;
 
         Optional<String> authorization
@@ -59,10 +60,10 @@ public class UserSessionDAO extends HttpDAO {
     }
 
     private void checkResponseBody(String response, String type) throws AuthenticationFailedException {
-        Map<String, Boolean> responseMap
+        Map<String, String> responseMap
                 = new Gson().fromJson(response, Map.class);
 
-        if (!responseMap.get("success")) {
+        if (!Boolean.parseBoolean(responseMap.get("success"))) {
             throw new AuthenticationFailedException(type + " failed");
         }
     }
