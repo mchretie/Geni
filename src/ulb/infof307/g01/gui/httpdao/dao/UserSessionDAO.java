@@ -39,6 +39,8 @@ public class UserSessionDAO extends HttpDAO {
         checkResponseCode(response.statusCode());
         checkResponseBody(response.body(), "Login");
 
+        this.username = username;
+
         Optional<String> authorization
                 = response.headers().firstValue("Authorization");
 
@@ -77,6 +79,7 @@ public class UserSessionDAO extends HttpDAO {
     }
 
     public void removeCredentials() {
+        this.username = "";
         this.prefs.remove("localUsername");
         this.prefs.remove("localPassword");
     }
