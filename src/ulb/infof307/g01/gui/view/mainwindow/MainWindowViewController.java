@@ -57,6 +57,9 @@ public class MainWindowViewController {
     private StackPane userAuthView;
 
     @FXML
+    private BorderPane guestModeDeckMenuView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
@@ -167,6 +170,10 @@ public class MainWindowViewController {
 
     public void setUserAuthViewController() {
         setAllInvisibleExcept(userAuthView);
+    }
+
+    public void setGuestModeDeckMenuViewVisible() {
+        setAllInvisibleExcept(guestModeDeckMenuView);
     }
 
 
