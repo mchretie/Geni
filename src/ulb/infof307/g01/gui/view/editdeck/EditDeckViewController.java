@@ -300,16 +300,6 @@ public class EditDeckViewController implements Initializable {
     }
 
     @FXML
-    private void handleFrontEdit() {
-        String newFront
-                = frontCardWebView.getEngine()
-                                  .executeScript("document.body.innerHTML")
-                                  .toString();
-
-        listener.frontOfCardModified(selectedCard, newFront);
-    }
-
-    @FXML
     private void handleBackEdit() {
         listener.backOfCardModified(selectedCard, backCardText.getText());
     }
@@ -360,7 +350,6 @@ public class EditDeckViewController implements Initializable {
     public interface Listener {
         void deckNameModified(String newName);
         void tagAddedToDeck(Deck deck, String tagName, String color);
-        void frontOfCardModified(Card card, String newFront);
         void backOfCardModified(Card card, String newBack);
         void deckImageModified(Deck deck, String filePath);
         void deckColorModified(Deck deck, Color color);
