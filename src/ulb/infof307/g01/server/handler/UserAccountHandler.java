@@ -24,8 +24,8 @@ public class UserAccountHandler extends Handler {
 
     @Override
     public void init() {
-        post(REGISTER_PATH, this::registerUser);
-        get(LOGIN_PATH, this::loginUser);
+        post(REGISTER_PATH, this::registerUser, toJson());
+        get(LOGIN_PATH, this::loginUser, toJson());
     }
 
     private Map<String, String> loginUser(Request request, Response response) {

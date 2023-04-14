@@ -7,7 +7,8 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
+import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
@@ -15,6 +16,7 @@ import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.DeckMetadata;
+import ulb.infof307.g01.model.Score;
 
 import java.io.*;
 import java.net.URL;
@@ -38,6 +40,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     private final ErrorHandler errorHandler;
 
     private final DeckDAO deckDAO;
+    private final LeaderboardDAO leaderboardDAO;
+    private final UserSessionDAO userSessionDAO;
     private final ImageLoader imageLoader = new ImageLoader();
 
     /* ====================================================================== */
@@ -48,7 +52,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
                               ErrorHandler errorHandler,
                               ControllerListener controllerListener,
                               MainWindowViewController mainWindowViewController,
-                              DeckDAO deckDAO, UserDAO userDAO) throws IOException, InterruptedException {
+                              DeckDAO deckDAO, UserSessionDAO userSessionDAO,
+                              LeaderboardDAO leaderboardDAO) throws IOException, InterruptedException {
 
         this.stage = stage;
 
@@ -58,7 +63,11 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         this.mainWindowViewController = mainWindowViewController;
 
         this.deckDAO = deckDAO;
-        this.deckDAO.setToken(userDAO.getToken());
+        this.userSessionDAO = userSessionDAO;
+        this.deckDAO.setToken(userSessionDAO.getToken());
+
+        this.leaderboardDAO = leaderboardDAO;
+        this.leaderboardDAO.setToken(userSessionDAO.getToken());
 
         this.deckMenuViewController
                 = mainWindowViewController.getDeckMenuViewController();
@@ -77,11 +86,18 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException, InterruptedException {
-        showDecks();
 
-        mainWindowViewController.setDeckMenuViewVisible();
+        if (userSessionDAO.isLoggedIn()) {
+            deckDAO.setToken(userSessionDAO.getToken());
+            showDecks();
+            mainWindowViewController.setDeckMenuViewVisible();
+        }
+
+        else {
+            mainWindowViewController.setGuestModeDeckMenuViewVisible();
+        }
+
         mainWindowViewController.makeGoBackIconInvisible();
-
         stage.show();
     }
 
@@ -98,7 +114,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @return List of loaded nodes representing decks
      * @throws IOException if FXMLLoader.load() fails
      */
-    private List<Node> loadDecks(List<DeckMetadata> decks) throws IOException {
+    private List<Node> loadDecks(List<DeckMetadata> decks) throws IOException, InterruptedException {
         List<Node> decksLoaded = new ArrayList<>();
 
         for (DeckMetadata deck : decks) {
@@ -113,7 +129,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             DeckViewController controller = loader.getController();
             controller.setImageLoader(imageLoader);
-            controller.setDeck(deck);
+            Score bestScore = leaderboardDAO.getBestScoreForDeck(deck.id());
+            controller.setDeck(deck, bestScore);
             controller.setListener(this);
 
             decksLoaded.add(node);

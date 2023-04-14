@@ -24,6 +24,10 @@ public class Leaderboard {
         return scores;
     }
 
+    public boolean isEmpty() {
+        return scores.isEmpty();
+    }
+
     public void addScore(Score score) {
         scores.add(score);
         this.sortByScore();

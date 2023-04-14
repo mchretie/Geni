@@ -2,6 +2,7 @@ package ulb.infof307.g01.gui.controller.errorhandler;
 
 import com.google.gson.JsonSyntaxException;
 import javafx.application.Platform;
+import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 import java.io.IOException;
@@ -87,7 +88,7 @@ public class ErrorHandler {
         communicateError(title, description);
     }
 
-    public void failedLoading(IOException e) {
+    public void failedLoading(Exception e) {
         restartApplicationError(e);
     }
 
@@ -95,6 +96,29 @@ public class ErrorHandler {
         String message = "Vos modifications n’ont pas été enregistrées, "
                 + "veuillez réessayer. Si le problème persiste, "
                 + "redémarrez l’application";
+
+        communicateError(e, message);
+    }
+
+    public void failedRegister(Exception e) {
+        String message = "L'enregistrement à échoué, veuillez réesayer.";
+
+        communicateError(e, message);
+    }
+    public void failedLogin(Exception e) {
+         String message = "L'authentification à échoué, veuillez réesayer";
+
+        communicateError(e, message);
+    }
+
+    public void failedAutoLogin(AuthenticationFailedException e) {
+        String message = "L'authentification automatique à échoué, veuillez réesayer.";
+
+        communicateError(e, message);
+    }
+
+    public void failedAddScore(Exception e) {
+        String message = "Votre score n'a pas pu être sauvegardé.";
 
         communicateError(e, message);
     }
