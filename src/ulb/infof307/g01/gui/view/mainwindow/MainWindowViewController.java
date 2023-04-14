@@ -11,6 +11,9 @@ import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.gui.view.result.ResultViewController;
+import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
+import ulb.infof307.g01.gui.view.profile.ProfileViewController;
+
 
 public class MainWindowViewController {
 
@@ -49,6 +52,15 @@ public class MainWindowViewController {
     private VBox editCardView;
 
     @FXML
+    private VBox profileView;
+
+    @FXML
+    private StackPane userAuthView;
+
+    @FXML
+    private BorderPane guestModeDeckMenuView;
+
+    @FXML
     private VBox resultView;
 
     @FXML
@@ -62,6 +74,12 @@ public class MainWindowViewController {
 
     @FXML
     private EditCardViewController editCardViewController;
+
+    @FXML
+    private ProfileViewController profileViewController;
+
+    @FXML
+    private UserAuthViewController userAuthViewController;
 
     @FXML
     private ResultViewController resultViewController;
@@ -102,6 +120,12 @@ public class MainWindowViewController {
         return editCardViewController;
     }
 
+    public ProfileViewController getProfileViewController() {
+        return profileViewController;
+    }
+    public UserAuthViewController getUserAuthViewController() {
+        return userAuthViewController;
+    }
     public ResultViewController getResultViewController() {
         return resultViewController;
     }
@@ -151,6 +175,18 @@ public class MainWindowViewController {
         setAllInvisibleExcept(editCardView);
     }
 
+    public void setProfileViewVisible() {
+        setAllInvisibleExcept(profileView);
+    }
+
+    public void setUserAuthViewController() {
+        setAllInvisibleExcept(userAuthView);
+    }
+
+    public void setGuestModeDeckMenuViewVisible() {
+        setAllInvisibleExcept(guestModeDeckMenuView);
+    }
+
     public void setResultViewVisible() {
         setAllInvisibleExcept(resultView);
     }
@@ -185,7 +221,7 @@ public class MainWindowViewController {
 
     @FXML
     private void goToCurrentDeckClicked() {
-        listener.goToCurrentDeckClicked();
+        listener.goToCurrentPlayingDeck();
     }
 
     @FXML
@@ -193,6 +229,10 @@ public class MainWindowViewController {
         listener.goToAboutClicked();
     }
 
+    @FXML
+    private void handleProfileClicked() {
+        listener.goToProfileClicked();
+    }
 
     /* ====================================================================== */
     /*                              Hover handlers                            */
@@ -255,7 +295,8 @@ public class MainWindowViewController {
     public interface NavigationListener {
         void goBackClicked();
         void goToHomeClicked();
-        void goToCurrentDeckClicked();
+        void goToCurrentPlayingDeck();
         void goToAboutClicked();
+        void goToProfileClicked();
     }
 }

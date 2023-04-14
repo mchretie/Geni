@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.model.*;
@@ -52,18 +53,20 @@ public class EditDeckController implements EditDeckViewController.Listener,
     /* ====================================================================== */
 
     private final Stage stage;
-
+    private final ErrorHandler errorHandler;
 
     /* ====================================================================== */
     /*                              Constructor                               */
     /* ====================================================================== */
 
     public EditDeckController(Stage stage, Deck deck,
+                              ErrorHandler errorHandler,
                               MainWindowViewController mainWindowViewController,
                               ControllerListener controllerListener,
                               DeckDAO deckDAO) {
 
         this.stage = stage;
+        this.errorHandler = errorHandler;
         this.deck = deck;
         this.deckDAO = deckDAO;
         this.mainWindowViewController = mainWindowViewController;
@@ -140,7 +143,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -156,7 +159,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -168,7 +171,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -180,7 +183,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -192,7 +195,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -204,7 +207,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -216,7 +219,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -227,7 +230,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -236,7 +239,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deck.addCard(card);
             deckDAO.saveDeck(deck);
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -293,7 +296,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             }
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -326,7 +329,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.setTags(loadTags());
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -338,7 +341,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.setTags(loadTags());
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -347,8 +350,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
     /* ====================================================================== */
 
     public interface ControllerListener {
-        void savingError(Exception e);
-
         void editFrontOfCardClicked(Deck deck, Card card);
         void editBackOfCardClicked(Deck deck, FlashCard selectedCard);
     }

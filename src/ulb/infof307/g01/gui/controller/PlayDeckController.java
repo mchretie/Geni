@@ -2,7 +2,7 @@ package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
+import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
@@ -10,7 +10,6 @@ import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 public class PlayDeckController implements PlayDeckViewController.Listener {
 
@@ -34,7 +33,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     public PlayDeckController(Stage stage, Deck deck,
                               MainWindowViewController mainWindowViewController,
                               ControllerListener controllerListener,
-                              LeaderboardDAO leaderboardDAO, UserDAO userDAO) {
+                              LeaderboardDAO leaderboardDAO, UserSessionDAO userDAO) {
 
         this.stage = stage;
         this.cardExtractor = new CardExtractorRandom(deck);
