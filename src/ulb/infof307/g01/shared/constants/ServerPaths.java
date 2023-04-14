@@ -29,6 +29,7 @@ public final class ServerPaths {
   public static final String GET_ALL_DECKS_PATH = DECK_BASE_PATH + "/all";
   public static final String SEARCH_DECKS_PATH = DECK_BASE_PATH + "/search";
   public static final String DECK_EXISTS_PATH = DECK_BASE_PATH + "/exists";
+  public static final String GET_DECK_PATH = DECK_BASE_PATH + "/get";
 
   // Used by LeaderboardRequestHandler
   public static final String LEADERBOARD_BASE_PATH = BASE + "/leaderboard";

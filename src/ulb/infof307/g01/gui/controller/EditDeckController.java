@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.model.*;
@@ -52,18 +53,20 @@ public class EditDeckController implements EditDeckViewController.Listener,
     /* ====================================================================== */
 
     private final Stage stage;
-
+    private final ErrorHandler errorHandler;
 
     /* ====================================================================== */
     /*                              Constructor                               */
     /* ====================================================================== */
 
     public EditDeckController(Stage stage, Deck deck,
+                              ErrorHandler errorHandler,
                               MainWindowViewController mainWindowViewController,
                               ControllerListener controllerListener,
                               DeckDAO deckDAO) {
 
         this.stage = stage;
+        this.errorHandler = errorHandler;
         this.deck = deck;
         this.deckDAO = deckDAO;
         this.mainWindowViewController = mainWindowViewController;
@@ -140,7 +143,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -156,7 +159,19 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
+        }
+    }
+
+    @Override
+    public void inputAnswerModified(InputCard inputcard, String answer) {
+        try {
+            inputcard.setAnswer(answer);
+            deckDAO.saveDeck(deck);
+            editDeckViewController.showCards();
+
+        } catch (InterruptedException | IOException e) {
+            errorHandler.savingError(e);
         }
     }
 
@@ -168,7 +183,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -180,7 +195,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -192,7 +207,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -204,7 +219,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -215,46 +230,57 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
+        }
+    }
+
+    private void newCard(Card card) {
+        try {
+            deck.addCard(card);
+            deckDAO.saveDeck(deck);
+        } catch (InterruptedException | IOException e) {
+            errorHandler.savingError(e);
         }
     }
 
     @Override
     public void newFlashCard() {
-        try {
-            String frontHtml = "Avant";
-            deck.addCard(new FlashCard(frontHtml, "Arrière"));
-            deckDAO.saveDeck(deck);
+        String frontHtml = "Avant";
+        newCard(new FlashCard(frontHtml, ""));
 
-            editDeckViewController.showCards();
-            editDeckViewController.setSelectedCard(deck.getLastCard());
-            cardPreviewClicked(deck.getLastCard());
+        editDeckViewController.showCards();
+        editDeckViewController.setSelectedCard(deck.getLastCard());
+        cardPreviewClicked(deck.getLastCard());
 
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
+    }
+
+    @Override
+    public void newInputCard() {
+        String frontHtml = "Avant";
+        newCard(new InputCard(frontHtml, ""));
+
+        editDeckViewController.showCards();
+        editDeckViewController.setSelectedCard(deck.getLastCard());
+        cardPreviewClicked(deck.getLastCard());
+
+
     }
 
     @Override
     public void newMCQCard() {
-        try {
-            String frontHtml = "Avant";
-            List<String> answers = new ArrayList<>();
+        String frontHtml = "Avant";
+        List<String> answers = new ArrayList<>();
 
-            final int MAX_QCM_ANSWERS = 4;
-            for (int i = 0; i < MAX_QCM_ANSWERS; i++)
-                answers.add("Réponse " + i);
+        final int MAX_QCM_ANSWERS = 4;
+        for (int i = 0; i < MAX_QCM_ANSWERS; i++)
+            answers.add("Réponse " + i);
 
-            deck.addCard(new MCQCard(frontHtml, answers, 0));
-            deckDAO.saveDeck(deck);
+        newCard(new MCQCard(frontHtml, answers, 0));
 
-            editDeckViewController.showCards();
-            editDeckViewController.setSelectedCard(deck.getLastCard());
-            cardPreviewClicked(deck.getLastCard());
+        editDeckViewController.showCards();
+        editDeckViewController.setSelectedCard(deck.getLastCard());
+        cardPreviewClicked(deck.getLastCard());
 
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
     }
 
     @Override
@@ -270,7 +296,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             }
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -303,7 +329,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.setTags(loadTags());
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -315,7 +341,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.setTags(loadTags());
 
         } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
+            errorHandler.savingError(e);
         }
     }
 
@@ -324,8 +350,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
     /* ====================================================================== */
 
     public interface ControllerListener {
-        void savingError(Exception e);
-
         void editFrontOfCardClicked(Deck deck, Card card);
         void editBackOfCardClicked(Deck deck, FlashCard selectedCard);
     }

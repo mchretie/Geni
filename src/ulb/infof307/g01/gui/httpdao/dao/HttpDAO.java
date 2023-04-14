@@ -4,13 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import ulb.infof307.g01.gui.httpdao.exceptions.ServerRequestFailed;
 import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.DeckMetadata;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -95,11 +95,11 @@ public abstract class HttpDAO {
     /*                        JSON string interpreters                        */
     /* ====================================================================== */
 
-    protected List<Deck> stringToDeckArray(String json) {
-            List<Deck> deckList = new ArrayList<>();
+    protected List<DeckMetadata> stringToDeckArray(String json) {
+            List<DeckMetadata> deckList = new ArrayList<>();
             JsonArray jsonArray = new Gson().fromJson(json, JsonArray.class);
             for (int i = 0; i < jsonArray.size(); i++) {
-                deckList.add(new Deck(jsonArray.get(i).getAsJsonObject()));
+                deckList.add(DeckMetadata.fromJson(jsonArray.get(i).getAsJsonObject()));
             }
             return deckList;
     }

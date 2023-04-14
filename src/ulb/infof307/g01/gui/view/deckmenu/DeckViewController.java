@@ -13,8 +13,8 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.model.DeckMetadata;
 import ulb.infof307.g01.gui.util.ImageLoader;
-import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
 
 import java.io.File;
@@ -57,7 +57,7 @@ public class DeckViewController {
     /*                              Model Attributes                          */
     /* ====================================================================== */
 
-    private Deck deck;
+    private DeckMetadata deck;
 
 
     /* ====================================================================== */
@@ -66,7 +66,6 @@ public class DeckViewController {
 
     private Listener listener;
     private ImageLoader imageLoader;
-
 
     /* ====================================================================== */
     /*                                Setters                                 */
@@ -84,7 +83,7 @@ public class DeckViewController {
     /*                           Updating Deck                                */
     /* ====================================================================== */
 
-    public void setDeck(Deck deck) {
+    public void setDeck(DeckMetadata deck) {
         this.deck = deck;
         this.updateDeckLabelName();
 
@@ -100,7 +99,7 @@ public class DeckViewController {
         colorRect.setArcWidth(40);
         colorRect.heightProperty().bind(backgroundImage.fitHeightProperty());
         colorRect.widthProperty().bind(backgroundImage.fitWidthProperty());
-        Color color = Color.web(deck.getColor());
+        Color color = Color.web(deck.color());
         colorRect.setFill(makeGradient(color));
     }
 
@@ -125,7 +124,7 @@ public class DeckViewController {
         tagsContainer.setHgap(30);
         tagsContainer.setVgap(10);
 
-        for (Tag tag : deck.getTags()) {
+        for (Tag tag : deck.tags()) {
             Label tagLabel = new Label(tag.getName());
 
             tagLabel.setBackground(new Background(new BackgroundFill(
@@ -163,7 +162,7 @@ public class DeckViewController {
     }
 
     private void updateDeckLabelName() {
-        this.playDeckLabel.setText(this.deck.getName());
+        this.playDeckLabel.setText(this.deck.name());
     }
 
 
@@ -241,9 +240,9 @@ public class DeckViewController {
     /* ====================================================================== */
 
     public interface Listener {
-        void deckRemoved(Deck deck);
-        void deckDoubleClicked(Deck deck);
-        void editDeckClicked(Deck deck);
-        void shareDeckClicked(Deck deck, File file);
+        void deckRemoved(DeckMetadata deck);
+        void deckDoubleClicked(DeckMetadata deck);
+        void editDeckClicked(DeckMetadata deck);
+        void shareDeckClicked(DeckMetadata deck, File file);
     }
 }

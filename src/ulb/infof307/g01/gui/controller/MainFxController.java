@@ -7,13 +7,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserDAO;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.model.DeckMetadata;
 import ulb.infof307.g01.model.FlashCard;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,7 +43,6 @@ public class MainFxController extends Application implements
     private PlayDeckController playDeckController;
     private EditCardController editCardController;
     private LeaderboardController leaderboardController;
-
 
     private MainWindowViewController mainWindowViewController;
 
@@ -73,6 +75,8 @@ public class MainFxController extends Application implements
 
     Stage stage;
 
+    private ErrorHandler errorHandler;
+
     /* ====================================================================== */
     /*                                  Main                                  */
     /* ====================================================================== */
@@ -102,7 +106,7 @@ public class MainFxController extends Application implements
             }
 
         } catch (IOException | InterruptedException e) {
-            restartApplicationError(e);
+            errorHandler.restartApplicationError(e);
         }
     }
 
@@ -117,8 +121,9 @@ public class MainFxController extends Application implements
         this.stage = stage;
         stage.setWidth(1000);
         stage.setHeight(800);
+        stage.setMinHeight(500);
+        stage.setMinWidth(600);
 
-        // TODO: Title and login.
         stage.setTitle("Pokémon TCG Deck Builder");
         userDAO.register("guest", "guest");
         userDAO.login("guest", "guest");
@@ -131,15 +136,15 @@ public class MainFxController extends Application implements
 
         Parent root = fxmlLoader.load();
         stage.setScene(new Scene(root));
-        stage.setMinHeight(500);
-        stage.setMinWidth(600);
 
         mainWindowViewController = fxmlLoader.getController();
         mainWindowViewController.setListener(this);
+        errorHandler = new ErrorHandler(mainWindowViewController);
 
         try {
             deckMenuController = new DeckMenuController(
                     stage,
+                    errorHandler,
                     this,
                     mainWindowViewController,
                     deckDAO,
@@ -149,107 +154,51 @@ public class MainFxController extends Application implements
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
-            restartApplicationError(e);
+            errorHandler.restartApplicationError(e);
         }
     }
-
-
-    /* ====================================================================== */
-    /*                      Error messages and handling                       */
-    /* ====================================================================== */
-
-    /**
-     * Used to communicate errors that require the user to restart
-     * the application
-     */
-    private void communicateError(Exception e, String messageToUser) {
-        mainWindowViewController.alertError(e.toString(), messageToUser);
-    }
-
-    /**
-     * For exceptions that indicate that the app cannot continue to
-     * function properly
-     */
-    private void restartApplicationError(Exception e) {
-        communicateError(e, "Veuillez redémarrer l'application.");
-        Platform.exit();
-    }
-
-    /**
-     * For when windows other than the main window fail to launch
-     */
-    private void returnToMenuError(Exception e) {
-        communicateError(e, "Vous reviendrez au menu principal.");
-    }
-
-    /**
-     * For when changes to components (Decks, cards, etc.) fail to be saved in
-     * the db
-     */
-    private void databaseModificationError(Exception e) {
-        String message = "Vos modifications n’ont pas été enregistrées, "
-                + "veuillez réessayer. Si le problème persiste, "
-                + "redémarrez l’application";
-
-        communicateError(e, message);
-    }
-
-    private void failedDeckExportError(Exception e) {
-        String message = "L'exportation de votre deck a échoué "
-                + "veuillez réessayer. Si le problème persiste, "
-                + "redémarrez l’application";
-
-        communicateError(e, message);
-    }
-
-    private void failedDeckImportError(JsonSyntaxException e) {
-        String message = "L'importation du deck a échoué, " +
-                "veuillez vérifier que le fichier est bien un fichier " +
-                ".json.";
-
-        communicateError(e, message);
-    }
-
 
     /* ====================================================================== */
     /*                     Controller Listener Methods                        */
     /* ====================================================================== */
 
     @Override
-    public void editDeckClicked(Deck deck) {
+    public void editDeckClicked(DeckMetadata deckMetadata) {
 
         try {
             editDeckController
                     = new EditDeckController(stage,
-                    deck,
+                    deckDAO.getDeck(deckMetadata).orElse(null),
+                    errorHandler,
                     mainWindowViewController,
                     this,
                     deckDAO);
 
-            viewStack.add(View.EDIT_DECK);
             editDeckController.show();
+            viewStack.add(View.EDIT_DECK);
 
-        } catch (IOException e) {
-            returnToMenuError(e);
+        } catch (InterruptedException | IOException e) {
+            errorHandler.severConnectionError();
         }
     }
 
     @Override
-    public void playDeckClicked(Deck deck) {
+    public void playDeckClicked(DeckMetadata deckMetadata) {
         try {
             playDeckController = new PlayDeckController(
                     stage,
-                    deck,
+                    deckDAO.getDeck(deckMetadata).orElse(null),
                     mainWindowViewController,
                     this);
 
-            viewStack.add(View.PLAY_DECK);
             playDeckController.show();
+            viewStack.add(View.PLAY_DECK);
 
         } catch (EmptyDeckException e) {
-            String title = "Paquet vide.";
-            String description = "Le paquet que vous avez ouvert est vide.";
-            mainWindowViewController.alertInformation(title, description);
+            errorHandler.emptyPacketError();
+
+        } catch (InterruptedException | IOException e) {
+            errorHandler.severConnectionError();
         }
     }
 
@@ -278,6 +227,7 @@ public class MainFxController extends Application implements
                 selectedCard,
                 true,
                 deckDAO,
+                errorHandler,
                 mainWindowViewController,
                 this);
 
@@ -293,41 +243,12 @@ public class MainFxController extends Application implements
                                             selectedCard,
                                        false,
                                             deckDAO,
+                                            errorHandler,
                                             mainWindowViewController,
                              this);
 
         viewStack.add(View.HTML_EDITOR);
         editCardController.show();
-    }
-
-    @Override
-    public void fxmlLoadingError(IOException e) {
-        restartApplicationError(e);
-    }
-
-    @Override
-    public void savingError(Exception e) {
-        databaseModificationError(e);
-    }
-
-    @Override
-    public void failedExport(IOException e) {
-        failedDeckExportError(e);
-    }
-
-    @Override
-    public void failedImport(JsonSyntaxException e) {
-        failedDeckImportError(e);
-    }
-
-    @Override
-    public void invalidDeckName(String name, char c) {
-        String title = "Nom de paquet invalide.";
-        String description = "Le nom de paquet que vous avez entré est invalide. "
-                + "Veuillez entrer un nom de paquet qui ne contient pas le "
-                + "caractère " + c + ".";
-
-        mainWindowViewController.alertInformation(title, description);
     }
 
     @Override
@@ -351,7 +272,7 @@ public class MainFxController extends Application implements
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
-            restartApplicationError(e);
+            errorHandler.restartApplicationError(e);
         }
     }
 
@@ -387,7 +308,7 @@ public class MainFxController extends Application implements
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
-            restartApplicationError(e);
+            errorHandler.restartApplicationError(e);
         }
     }
 }
