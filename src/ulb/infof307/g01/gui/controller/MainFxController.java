@@ -289,6 +289,7 @@ public class MainFxController extends Application implements
     public void userLoggedIn() {
         try {
             deckMenuController.show();
+            viewStack.add(View.DECK_MENU);
 
         } catch (IOException | InterruptedException e) {
             errorHandler.failedLoading(e);
