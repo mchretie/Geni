@@ -164,18 +164,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void frontOfCardModified(Card card, String newFront) {
-        try {
-            card.setFront(newFront);
-            deckDAO.saveDeck(deck);
-            editDeckViewController.showCards();
-
-        } catch (InterruptedException | IOException e) {
-            controllerListener.savingError(e);
-        }
-    }
-
-    @Override
     public void backOfCardModified(Card card, String newBack) {
         try {
             card.setBack(newBack);
