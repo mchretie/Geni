@@ -212,9 +212,9 @@ public class MainFxController extends Application implements
             viewStack.add(View.LEADERBOARD);
             leaderboardController.show(); //TODO : trycatch help OC
 
-        } catch (IOException e) {
-            returnToMenuError(e);
         } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -295,9 +295,10 @@ public class MainFxController extends Application implements
             }
 
             leaderboardController.show();
-
-        } catch (IOException | InterruptedException e) {
-            restartApplicationError(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
