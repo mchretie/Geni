@@ -67,14 +67,14 @@ public abstract class HttpDAO {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    protected HttpResponse<String> upload(String path, File file)
+    protected HttpResponse<String> upload(String path, File file, String filename)
             throws IOException, InterruptedException {
 
         HttpRequest uploadFileRequest = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + path))
                 .header("Content-Type", "application/octet-stream")
                 .header(AUTH_HEADER, token)
-                .header("File-Name", file.getName())
+                .header("File-Name", filename)
                 .POST(HttpRequest.BodyPublishers.ofFile(file.toPath()))
                 .build();
 

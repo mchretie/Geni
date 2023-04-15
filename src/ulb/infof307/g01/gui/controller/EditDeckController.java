@@ -177,11 +177,11 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void deckImageModified(Deck deck, File image) {
+    public void deckImageModified(Deck deck, File image, String filename) {
         try {
             deck.setImage(image.getName());
             System.out.println("sending : " + image.getPath());
-            deckDAO.uploadImage(image);
+            deckDAO.uploadImage(image, filename);
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {

@@ -321,7 +321,7 @@ public class EditDeckViewController implements Initializable {
         File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
 /*        File dest = new File(deck.getId().toString() + ".jpg");
         copyFile(file, dest);*/
-        listener.deckImageModified(deck, file);
+        listener.deckImageModified(deck, file, deck.getId().toString() + ".jpg");
     }
 
     @FXML
@@ -348,7 +348,7 @@ public class EditDeckViewController implements Initializable {
         void deckNameModified(String newName);
         void tagAddedToDeck(Deck deck, String tagName, String color);
         void backOfCardModified(Card card, String newBack);
-        void deckImageModified(Deck deck, File image);
+        void deckImageModified(Deck deck, File image, String filename);
         void deckColorModified(Deck deck, Color color);
         void newCard();
         void removeCard(Card selectedCard);

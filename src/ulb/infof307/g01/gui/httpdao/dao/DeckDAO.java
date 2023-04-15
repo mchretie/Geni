@@ -79,11 +79,11 @@ public class DeckDAO extends HttpDAO {
         checkResponseCode(response.statusCode());
     }
 
-    public void uploadImage(File image)
+    public void uploadImage(File image, String filename)
             throws IOException, InterruptedException {
 
         HttpResponse<String> response
-                = upload(ServerPaths.SAVE_DECK_IMAGE_PATH, image);
+                = upload(ServerPaths.SAVE_DECK_IMAGE_PATH, image, filename);
 
         checkResponseCode(response.statusCode());
     }
