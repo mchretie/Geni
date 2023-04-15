@@ -2,9 +2,9 @@ package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
 import ulb.infof307.g01.model.Deck;
-
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.List;
@@ -78,4 +78,14 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
     }
+
+    public void uploadImage(File image)
+            throws IOException, InterruptedException {
+
+        HttpResponse<String> response
+                = upload(ServerPaths.SAVE_DECK_IMAGE_PATH, image);
+
+        checkResponseCode(response.statusCode());
+    }
+
 }
