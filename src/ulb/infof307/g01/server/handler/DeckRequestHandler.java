@@ -154,7 +154,7 @@ public class DeckRequestHandler extends Handler {
       String fileName = req.headers("File-Name");
       byte[] fileContent = req.bodyAsBytes();
       // Save the file to disk
-      Path filePath = Paths.get("res/img", fileName);
+      Path filePath = Paths.get("res/", fileName);
       Files.write(filePath, fileContent);
       return successfulResponse;
 
