@@ -4,6 +4,7 @@ import static spark.Spark.*;
 import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 
 import com.google.gson.Gson;
+import javafx.util.Pair;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.Leaderboard;
@@ -11,6 +12,7 @@ import ulb.infof307.g01.model.Score;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -78,16 +80,15 @@ public class LeaderboardRequestHandler extends Handler {
         return leaderboard.getLeaderboard().get(0);
     }
 
-    public int getBestScoreByUserID(Request req, Response res) {
+    public List<Pair<String, Integer>> getBestScoreByUserID(Request req, Response res) {
         try {
-            UUID userId = UUID.fromString(req.queryParams("userId"));
-            return database.getLeaderboardFromUserID(userId);
+            return database.getLeaderboardFromUserID();
         } catch (Exception e) {
             String errorMessage = "Failed to get user score: " + e.getMessage();
             logger.warning(errorMessage);
             halt(500, errorMessage);
 
         }
-        return -1;
+        return null;
     }
 }

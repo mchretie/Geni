@@ -1,6 +1,7 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
+import javafx.util.Pair;
 import ulb.infof307.g01.model.Leaderboard;
 import ulb.infof307.g01.model.Score;
 import ulb.infof307.g01.shared.constants.ServerPaths;
@@ -41,18 +42,12 @@ public class LeaderboardDAO extends HttpDAO {
         return new Gson().fromJson(response.body(), Score.class);
     }
 
-    public int getRank(String osef) {
-        //TODO
-        return 0;
-    }
-
-    public int getScore(UUID userId) throws IOException, InterruptedException {
-        //TODO
-        HttpResponse<String> response = get(ServerPaths.GET_BEST_SCORE_USER_ID_PATH + "?deck=" + userId.toString());
+    public List<Pair<String, Integer>> getGlobalLeaderboard() throws IOException, InterruptedException {
+        HttpResponse<String> response = get(ServerPaths.GET_BEST_SCORE_USER_ID_PATH);
 
         checkResponseCode(response.statusCode());
 
-        return new Gson().fromJson(response.body(), int.class);
+        return new Gson().fromJson(response.body(), List.class);
     }
 
 

@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
@@ -60,13 +61,6 @@ public class LeaderboardController implements LeaderboardViewController.Listener
         // TODO
         mainWindowViewController.setLeaderboardViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
-        int bestScore = leaderboardDAO.getScore(userSessionDAO.getUserId());
-
-
-        leaderboardViewController.setPersonalInformation(userSessionDAO.getUsername(),
-                String.valueOf(leaderboardDAO.getRank(userSessionDAO.getUsername())),
-                String.valueOf(bestScore),
-                String.valueOf(deckDAO.getAllDecksMetadata().size()));
         leaderboardViewController.setBoard(loadBoard());
 
         stage.show();
@@ -74,9 +68,20 @@ public class LeaderboardController implements LeaderboardViewController.Listener
 
     private List<Node> loadBoard() {
         try {
-            List<Node> PlayersScoreItem = new ArrayList<>();
+            List<Node> playersScoreItem = new ArrayList<>();
             //TODO Display depending of the backend
-            for (int i = 0; i < 10; i++) {
+
+            List<Pair<String, Integer>> leaderboard = leaderboardDAO.getGlobalLeaderboard();
+
+            for (int i = 0; i < leaderboard.size(); i++) {
+                Pair<String, Integer> pair = leaderboard.get(i);
+
+                if (pair.getKey().equals(userSessionDAO.getUsername())) {
+                    leaderboardViewController.setPersonalInformation(userSessionDAO.getUsername(),
+                            String.valueOf(i+1),
+                            String.valueOf(pair.getValue()),
+                            String.valueOf(deckDAO.getAllDecksMetadata().size()));  //TODO get the number of decks played
+                }
 
                 URL url = PlayerScoreItemViewController.class.getResource("PlayerScoreItemView.fxml");
                 FXMLLoader loader = new FXMLLoader(url);
@@ -86,14 +91,16 @@ public class LeaderboardController implements LeaderboardViewController.Listener
                 playerScoreItemViewController.setListener(this);
                 playerScoreItemViewController.setPlayerScoreItem();
 
-                PlayersScoreItem.add(node);
+                playersScoreItem.add(node);
             }
 
-            return PlayersScoreItem;
+            return playersScoreItem;
 
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

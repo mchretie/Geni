@@ -1,5 +1,6 @@
 package ulb.infof307.g01.server.database;
 
+import javafx.util.Pair;
 import ulb.infof307.g01.model.Leaderboard;
 import ulb.infof307.g01.model.Score;
 import ulb.infof307.g01.server.database.dao.*;
@@ -164,7 +165,7 @@ public class Database {
         return new Leaderboard(deckId, scoreDao.getScoresForDeck(deckId));
     }
 
-    public int getLeaderboardFromUserID(UUID userId) {
-        return scoreDao.getAllUserDeckScore(userId);
+    public List<Pair<String, Integer>> getLeaderboardFromUserID() {
+        return scoreDao.getAllUserDeckScore();
     }
 }

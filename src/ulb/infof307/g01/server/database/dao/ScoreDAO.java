@@ -6,10 +6,8 @@ import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import javafx.util.Pair;
 
 public class ScoreDAO extends DAO {
     private final DatabaseAccess database;
@@ -88,17 +86,25 @@ public class ScoreDAO extends DAO {
         }
     }
 
-    public int getAllUserDeckScore(UUID userId) throws DatabaseException{
+    public List<Pair<String, Integer>> getAllUserDeckScore() throws DatabaseException{
         String sql = """
-                SELECT sum(score) 
-                FROM user_deck_score 
-                WHERE user_id = ?;
+                SELECT U.username, sum(score) as total_score
+                FROM user_deck_score S, user U
+                WHERE U.user_id = S.user_id
+                GROUP BY U.username;
                 """;
 
         try {
-            int res = database.executeQuery(sql, userId.toString());
-
-            return res;
+            ResultSet res = database.executeQuery(sql);
+            List<Pair<String, Integer>> leaderboard = new ArrayList<>();
+            while (res.next()) {
+                leaderboard.add(new Pair<>(
+                        res.getString("username"),
+                        res.getInt("total_score")));
+            }
+            leaderboard.sort(Comparator.comparing(Pair<String, Integer>::getValue).reversed());
+            System.out.println("leaderboard: " + leaderboard);
+            return leaderboard;
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
