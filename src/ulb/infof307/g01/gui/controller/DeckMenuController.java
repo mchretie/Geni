@@ -9,12 +9,14 @@ import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.util.ImageLoader;
+import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.DeckMetadata;
+
 
 import java.io.*;
 import java.net.URL;
@@ -26,7 +28,8 @@ import java.util.List;
  * DeckMenuViewController
  */
 public class DeckMenuController implements DeckMenuViewController.Listener,
-        DeckViewController.Listener {
+        DeckViewController.Listener
+        {
 
     private final Stage stage;
 
@@ -34,6 +37,13 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     private final DeckMenuViewController deckMenuViewController;
     private final MainWindowViewController mainWindowViewController;
+
+
+
+
+
+
+
 
     private final ErrorHandler errorHandler;
 
@@ -58,6 +68,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         this.controllerListener = controllerListener;
         this.mainWindowViewController = mainWindowViewController;
 
+
         this.deckDAO = deckDAO;
         this.userSessionDAO = userSessionDAO;
         this.deckDAO.setToken(userSessionDAO.getToken());
@@ -66,6 +77,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
                 = mainWindowViewController.getDeckMenuViewController();
 
         deckMenuViewController.setListener(this);
+
     }
 
 
@@ -87,10 +99,15 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         }
 
         else {
-            mainWindowViewController.setGuestModeDeckMenuViewVisible();
+            mainWindowViewController.setUserAuthViewController();
+            mainWindowViewController.makebottomNavigationBarInvisible();
+            mainWindowViewController.makeTopNavigationBarInvisible();
+            mainWindowViewController.setMyBorderPaneDarkgrey();
+            //mainWindowViewController.setUserAuthViewController();
         }
 
         mainWindowViewController.makeGoBackIconInvisible();
+        //mainWindowViewController.m
         stage.show();
     }
 

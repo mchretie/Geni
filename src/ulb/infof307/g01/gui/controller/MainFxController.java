@@ -346,13 +346,8 @@ public class MainFxController extends Application implements
     @Override
     public void goToProfileClicked() {
         try {
-            if (userSessionDAO.isLoggedIn()) {
-                profileController.show();
-
-            } else {
-                userAuthController.show();
-            }
-
+            userSessionDAO.isLoggedIn();
+            profileController.show();
             viewStack.add(View.LOGIN_PROFILE);
 
         } catch (IOException e) {

@@ -56,6 +56,7 @@ public class UserAccountHandler extends Handler {
         String username = request.queryParams("username");
         String password = request.queryParams("password");
 
+
         boolean isRegistered = database.registerUser(username, password);
         return isRegistered ? successfulResponse : failedResponse;
     }
