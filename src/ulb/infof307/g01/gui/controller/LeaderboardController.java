@@ -59,9 +59,23 @@ public class LeaderboardController implements LeaderboardViewController.Listener
     /* ====================================================================== */
 
     public void show() throws IOException, InterruptedException {
-        mainWindowViewController.setLeaderboardViewVisible();
-        mainWindowViewController.makeGoBackIconInvisible();
-        leaderboardViewController.setBoard(loadBoard());
+        if (userSessionDAO.isLoggedIn()) {
+            mainWindowViewController.setLeaderboardViewVisible();
+            mainWindowViewController.makeGoBackIconInvisible();
+            mainWindowViewController.makeGoBackIconInvisible();
+
+            leaderboardViewController.setPersonalInformation(userSessionDAO.getUsername(),
+                    "None",
+                    "None",
+                    String.valueOf(deckDAO.getAllDecksMetadata().size()));  //TODO get the number of decks played
+
+            leaderboardViewController.setBoard(loadBoard());
+        }
+
+        else {
+            //TODO make a guest mode leaderboard
+            mainWindowViewController.setGuestModeDeckMenuViewVisible();
+        }
 
         stage.show();
     }
