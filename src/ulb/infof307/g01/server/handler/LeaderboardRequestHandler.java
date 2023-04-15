@@ -31,7 +31,7 @@ public class LeaderboardRequestHandler extends Handler {
         get(GET_BEST_SCORE_PATH, this::getBestScoreByDeckId, toJson());
     }
 
-    private Map<String, String> saveScore(Request req, Response res) {
+    private Map<String, Boolean> saveScore(Request req, Response res) {
         try {
             // check if token is valid
             String token = req.headers("Authorization");

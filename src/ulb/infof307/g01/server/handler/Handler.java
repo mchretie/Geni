@@ -9,11 +9,11 @@ import java.util.logging.Logger;
 
 public abstract class Handler {
 
-    protected final Map<String, String> successfulResponse
-            = Map.of("success", "true");
+    protected final Map<String, Boolean> successfulResponse
+            = Map.of("success", true);
 
-    protected final Map<String, String> failedResponse
-            = Map.of("success", "false");
+    protected final Map<String, Boolean> failedResponse
+            = Map.of("success", false);
 
     protected final Logger logger = Logger.getLogger(getClass().getName());
 

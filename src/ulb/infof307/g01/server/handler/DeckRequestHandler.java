@@ -57,7 +57,7 @@ public class DeckRequestHandler extends Handler {
       }
   }
 
-  private Map<String, String> saveDeck(Request req, Response res) {
+  private Map<String, Boolean> saveDeck(Request req, Response res) {
     try {
       String username = usernameFromRequest(req);
       UUID userId = UUID.fromString(database.getUserId(username));
@@ -76,7 +76,7 @@ public class DeckRequestHandler extends Handler {
     }
   }
 
-  private Map<String, String> deleteDeck(Request req, Response res) {
+  private Map<String, Boolean> deleteDeck(Request req, Response res) {
     try {
       String username = usernameFromRequest(req);
       UUID userId = UUID.fromString(database.getUserId(username));
