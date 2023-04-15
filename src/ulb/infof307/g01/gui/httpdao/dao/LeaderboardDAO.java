@@ -6,6 +6,7 @@ import ulb.infof307.g01.model.Score;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.UUID;
@@ -45,13 +46,13 @@ public class LeaderboardDAO extends HttpDAO {
         return 0;
     }
 
-    public Score getScore(UUID userId) throws IOException, InterruptedException {
+    public int getScore(UUID userId) throws IOException, InterruptedException {
         //TODO
         HttpResponse<String> response = get(ServerPaths.GET_BEST_SCORE_USER_ID_PATH + "?deck=" + userId.toString());
 
         checkResponseCode(response.statusCode());
 
-        return new Gson().fromJson(response.body(), Score.class);
+        return new Gson().fromJson(response.body(), int.class);
     }
 
 

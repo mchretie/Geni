@@ -88,18 +88,17 @@ public class ScoreDAO extends DAO {
         }
     }
 
-    public List<Score> getAllUserDeckScore(UUID userId) throws DatabaseException{
+    public int getAllUserDeckScore(UUID userId) throws DatabaseException{
         String sql = """
-                SELECT sum(score) from user_deck_score where user_id = ?;
+                SELECT sum(score) 
+                FROM user_deck_score 
+                WHERE user_id = ?;
                 """;
 
         try {
-            ResultSet res = database.executeQuery(sql, userId.toString());
-            List<Score> scores = new ArrayList<>();
-            while (res.next()) {
-                scores.add(extractScore(res));
-            }
-            return scores;
+            int res = database.executeQuery(sql, userId.toString());
+
+            return res;
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }

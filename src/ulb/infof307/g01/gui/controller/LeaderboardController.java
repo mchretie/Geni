@@ -60,12 +60,12 @@ public class LeaderboardController implements LeaderboardViewController.Listener
         // TODO
         mainWindowViewController.setLeaderboardViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
-        Score bestScore = leaderboardDAO.getScore(userSessionDAO.getUserId());
+        int bestScore = leaderboardDAO.getScore(userSessionDAO.getUserId());
 
 
         leaderboardViewController.setPersonalInformation(userSessionDAO.getUsername(),
                 String.valueOf(leaderboardDAO.getRank(userSessionDAO.getUsername())),
-                String.valueOf(bestScore.getScore()),
+                String.valueOf(bestScore),
                 String.valueOf(deckDAO.getAllDecksMetadata().size()));
         leaderboardViewController.setBoard(loadBoard());
 
