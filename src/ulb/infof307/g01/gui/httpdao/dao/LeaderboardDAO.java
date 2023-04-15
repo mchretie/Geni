@@ -1,13 +1,11 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
-import javafx.util.Pair;
 import ulb.infof307.g01.model.Leaderboard;
 import ulb.infof307.g01.model.Score;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;

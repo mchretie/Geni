@@ -4,7 +4,6 @@ import static spark.Spark.*;
 import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 
 import com.google.gson.Gson;
-import javafx.util.Pair;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.Leaderboard;

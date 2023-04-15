@@ -47,11 +47,9 @@ public class LeaderboardViewController {
     /*                              Leaderboard                               */
     /* ====================================================================== */
     public void setBoard(List<Node> PlayersScoreItem){
-        //TODO add Players Score item to boardContainer
         ObservableList<Node> items = FXCollections.observableArrayList(PlayersScoreItem);
         boardContainer.setItems(items);
         boardContainer.refresh();
-        System.out.println("test");
 
     }
 

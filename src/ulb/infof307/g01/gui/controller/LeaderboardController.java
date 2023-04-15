@@ -59,7 +59,6 @@ public class LeaderboardController implements LeaderboardViewController.Listener
     /* ====================================================================== */
 
     public void show() throws IOException, InterruptedException {
-        // TODO
         mainWindowViewController.setLeaderboardViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
         leaderboardViewController.setBoard(loadBoard());
@@ -70,14 +69,12 @@ public class LeaderboardController implements LeaderboardViewController.Listener
     private List<Node> loadBoard() {
         try {
             List<Node> playersScoreItem = new ArrayList<>();
-            //TODO Display depending of the backend
-
             List<Map<String, String>> leaderboard = leaderboardDAO.getGlobalLeaderboard();
 
             for (int i = 0; i < leaderboard.size(); i++) {
                 Map<String, String> leaderboardEntry = leaderboard.get(i);
+
                 if (leaderboardEntry.get("username").equals(userSessionDAO.getUsername())) {
-                    System.out.println("I am here");
                     leaderboardViewController.setPersonalInformation(userSessionDAO.getUsername(),
                             String.valueOf(i+1),
                             String.valueOf(leaderboardEntry.get("total_score")),

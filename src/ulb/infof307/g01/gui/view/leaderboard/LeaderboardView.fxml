@@ -24,7 +24,7 @@
                         <Insets />
                      </VBox.margin>
                   </Text>
-                  <Label fx:id="rangLabel" contentDisplay="CENTER" text="1 st" textFill="#83bcff">
+                  <Label fx:id="rangLabel" contentDisplay="CENTER" text="None" textFill="#83bcff">
                      <font>
                         <Font size="25.0" />
                      </font>
@@ -39,7 +39,7 @@
                         <Insets />
                      </VBox.margin>
                   </Text>
-                  <Label fx:id="scoreLabel" text="421" textFill="#449b6c">
+                  <Label fx:id="scoreLabel" text="None" textFill="#449b6c">
                      <font>
                         <Font size="25.0" />
                      </font>
