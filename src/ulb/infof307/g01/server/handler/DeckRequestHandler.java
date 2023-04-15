@@ -153,12 +153,9 @@ public class DeckRequestHandler extends Handler {
     try {
       String fileName = req.headers("File-Name");
       byte[] fileContent = req.bodyAsBytes();
-      System.out.println("1");
       // Save the file to disk
-      Path filePath = Paths.get("uploads", fileName);
-      System.out.println("ici ?");
+      Path filePath = Paths.get("res/img", fileName);
       Files.write(filePath, fileContent);
-      System.out.println("2");
       return successfulResponse;
 
     } catch (Exception e) {

@@ -319,8 +319,8 @@ public class EditDeckViewController implements Initializable {
     private void handleUploadImageClicked() throws IOException {
         final FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
-        File dest = new File("img/" + deck.getId().toString() + ".jpg");
-        // copyFile(file, dest);
+/*        File dest = new File(deck.getId().toString() + ".jpg");
+        copyFile(file, dest);*/
         listener.deckImageModified(deck, file);
     }
 
