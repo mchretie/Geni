@@ -9,6 +9,8 @@ import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.leaderboard.PlayerScoreItemViewController;
+import ulb.infof307.g01.model.Score;
+import ulb.infof307.g01.model.User;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,7 +21,7 @@ public class LeaderboardController implements LeaderboardViewController.Listener
     private final Stage stage;
     private final MainWindowViewController mainWindowViewController;
     private final ControllerListener controllerListener;
-    private final UserSessionDAO userDAO;
+    private final UserSessionDAO userSessionDAO;
     private final DeckDAO deckDAO;
     private final LeaderboardDAO leaderboardDAO;
     private final LeaderboardViewController leaderboardViewController;
@@ -34,13 +36,13 @@ public class LeaderboardController implements LeaderboardViewController.Listener
     public LeaderboardController(Stage stage,
                                  MainWindowViewController mainWindowViewController,
                                  ControllerListener controllerListener,
-                                 UserSessionDAO userDAO,
+                                 UserSessionDAO userSessionDAO,
                                  DeckDAO deckDAO,
                                  LeaderboardDAO leaderboardDAO) {
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
-        this.userDAO = userDAO;
+        this.userSessionDAO = userSessionDAO;
         this.deckDAO = deckDAO;
         this.leaderboardDAO = leaderboardDAO;
 
@@ -58,9 +60,12 @@ public class LeaderboardController implements LeaderboardViewController.Listener
         // TODO
         mainWindowViewController.setLeaderboardViewVisible();
         mainWindowViewController.makeGoBackIconInvisible();
-        leaderboardViewController.setPersonalInformation(userDAO.getUsername(),
-                String.valueOf(leaderboardDAO.getRank(userDAO.getUsername())),
-                String.valueOf(leaderboardDAO.getScore(userDAO.getUsername())),
+        Score bestScore = leaderboardDAO.getScore(userSessionDAO.getUserId());
+
+
+        leaderboardViewController.setPersonalInformation(userSessionDAO.getUsername(),
+                String.valueOf(leaderboardDAO.getRank(userSessionDAO.getUsername())),
+                String.valueOf(bestScore.getScore()),
                 String.valueOf(deckDAO.getAllDecksMetadata().size()));
         leaderboardViewController.setBoard(loadBoard());
 

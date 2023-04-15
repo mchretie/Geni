@@ -29,6 +29,8 @@ public class LeaderboardRequestHandler extends Handler {
         post(SAVE_SCORE_PATH, this::saveScore, toJson());
         get(GET_LEADERBOARD_PATH, this::getLeaderboardByDeckId, toJson());
         get(GET_BEST_SCORE_PATH, this::getBestScoreByDeckId, toJson());
+        get(GET_LEADERBOARD_USER_ID_PATH, this::getLeaderboardByUserID, toJson());
+        get(GET_BEST_SCORE_USER_ID_PATH, this::getBestScoreByUserID, toJson());
     }
 
     private Map<String, String> saveScore(Request req, Response res) {
@@ -70,6 +72,27 @@ public class LeaderboardRequestHandler extends Handler {
 
     private Score getBestScoreByDeckId(Request request, Response response) {
         Leaderboard leaderboard = getLeaderboardByDeckId(request, response);
+
+        if (leaderboard == null || leaderboard.isEmpty())
+            return null;
+
+        return leaderboard.getLeaderboard().get(0);
+    }
+
+    public Leaderboard getLeaderboardByUserID(Request req, Response res) {
+        try {
+            UUID userId = UUID.fromString(req.queryParams("userId"));
+            return database.getLeaderboardFromUserID(userId);
+        } catch (Exception e) {
+            String errorMessage = "Failed to get user score: " + e.getMessage();
+            logger.warning(errorMessage);
+            halt(500, errorMessage);
+            return null;
+        }
+    }
+
+    private Score getBestScoreByUserID(Request request, Response response) {
+        Leaderboard leaderboard = getLeaderboardByUserID(request, response);
 
         if (leaderboard == null || leaderboard.isEmpty())
             return null;
