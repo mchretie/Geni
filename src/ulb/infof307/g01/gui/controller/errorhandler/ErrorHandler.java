@@ -38,6 +38,10 @@ public class ErrorHandler {
         mainWindowViewController.alertError(title, messageToUser);
     }
 
+    private void communicateInfo(String title, String messageToUser) {
+        mainWindowViewController.alertInformation(title, messageToUser);
+    }
+
     /* ====================================================================== */
     /*                   Specific error communication methods                 */
     /* ====================================================================== */
@@ -79,7 +83,7 @@ public class ErrorHandler {
     public void emptyPacketError() {
         String title = "Paquet vide.";
         String description = "Le paquet que vous avez ouvert est vide.";
-        communicateError(title, description);
+        communicateInfo(title, description);
     }
 
     public void severConnectionError() {

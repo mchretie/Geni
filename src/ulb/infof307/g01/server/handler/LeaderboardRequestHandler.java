@@ -33,7 +33,7 @@ public class LeaderboardRequestHandler extends Handler {
         get(GET_BEST_SCORE_USER_ID_PATH, this::getBestScoreByUserID, toJson());
     }
 
-    private Map<String, String> saveScore(Request req, Response res) {
+    private Map<String, Boolean> saveScore(Request req, Response res) {
         try {
             // check if token is valid
             String token = req.headers("Authorization");
