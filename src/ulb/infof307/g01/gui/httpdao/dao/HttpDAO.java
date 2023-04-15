@@ -24,7 +24,7 @@ public abstract class HttpDAO {
 
     private final HttpClient httpClient = HttpClient.newBuilder().build();
 
-    private final String BASE_URL    = "http://localhost:8080";
+    protected final String BASE_URL    = "http://localhost:8080";
     private final String AUTH_HEADER = "Authorization";
 
     /* ====================================================================== */

@@ -25,6 +25,16 @@ public class DeckDAO extends HttpDAO {
         return Boolean.parseBoolean(response.body());
     }
 
+    private List<Deck> recreateDecks(String stringOfDecks) {
+        List<Deck> allDecks = stringToArray(stringOfDecks, Deck[].class);
+
+        for (Deck deck: allDecks) {
+            deck.setImage(BASE_URL + deck.getImage());
+        }
+
+        return allDecks;
+    }
+
     public List<Deck> getAllDecks()
             throws IOException, InterruptedException {
 
@@ -32,7 +42,9 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        return stringToArray(response.body(), Deck[].class);
+        return recreateDecks(response.body());
+
+
     }
 
     /**
@@ -57,7 +69,7 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        return stringToArray(response.body(), Deck[].class);
+        return recreateDecks(response.body());
     }
 
     public void deleteDeck(Deck deck)
