@@ -27,8 +27,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static org.apache.maven.surefire.shade.org.apache.maven.shared.utils.io.FileUtils.copyFile;
-
 public class EditDeckViewController implements Initializable {
 
     /* ====================================================================== */
@@ -322,9 +320,8 @@ public class EditDeckViewController implements Initializable {
         final FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(anchor.getScene().getWindow());
         File dest = new File("img/" + deck.getId().toString() + ".jpg");
-        copyFile(file, dest);
-        System.out.println("filename : " + dest.getName());
-        listener.deckImageModified(deck, dest.toURI().toString());
+        // copyFile(file, dest);
+        listener.deckImageModified(deck, file);
     }
 
     @FXML
@@ -351,7 +348,7 @@ public class EditDeckViewController implements Initializable {
         void deckNameModified(String newName);
         void tagAddedToDeck(Deck deck, String tagName, String color);
         void backOfCardModified(Card card, String newBack);
-        void deckImageModified(Deck deck, String filePath);
+        void deckImageModified(Deck deck, File image);
         void deckColorModified(Deck deck, Color color);
         void newCard();
         void removeCard(Card selectedCard);

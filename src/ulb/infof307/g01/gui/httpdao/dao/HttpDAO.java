@@ -74,6 +74,7 @@ public abstract class HttpDAO {
                 .uri(URI.create(BASE_URL + path))
                 .header("Content-Type", "application/octet-stream")
                 .header(AUTH_HEADER, token)
+                .header("File-Name", file.getName())
                 .POST(HttpRequest.BodyPublishers.ofFile(file.toPath()))
                 .build();
 

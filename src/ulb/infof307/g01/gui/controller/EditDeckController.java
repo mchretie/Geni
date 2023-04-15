@@ -5,13 +5,14 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
+import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.editdeck.TagViewController;
+import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.Tag;
-import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
-import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -176,9 +177,11 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void deckImageModified(Deck deck, String filePath) {
+    public void deckImageModified(Deck deck, File image) {
         try {
-            deck.setImage(filePath);
+            deck.setImage(image.getName());
+            System.out.println("sending : " + image.getPath());
+            deckDAO.uploadImage(image);
             deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {

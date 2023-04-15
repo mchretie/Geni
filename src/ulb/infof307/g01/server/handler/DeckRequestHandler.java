@@ -7,6 +7,9 @@ import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,7 @@ public class DeckRequestHandler extends Handler {
       get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
       get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
       get(DECK_EXISTS_PATH, this::deckExists, toJson());
+      post(SAVE_DECK_IMAGE_PATH, this::saveImage);
   }
 
   private boolean deckExists(Request request, Response response) {
@@ -143,5 +147,26 @@ public class DeckRequestHandler extends Handler {
       halt(401, "Token is " + (token == null ? "null" : "not valid"));
     }
     return jwtService.getUsernameFromToken(token);
+  }
+
+  private Map<String, String> saveImage(Request req, Response res) {
+    try {
+      String fileName = req.headers("File-Name");
+      byte[] fileContent = req.bodyAsBytes();
+      System.out.println("1");
+      // Save the file to disk
+      Path filePath = Paths.get("uploads", fileName);
+      System.out.println("ici ?");
+      Files.write(filePath, fileContent);
+      System.out.println("2");
+      return successfulResponse;
+
+    } catch (Exception e) {
+      String message = "Failed to save image: " + e.getMessage();
+      logger.warning(message);
+      halt(500, message);
+
+      return failedResponse;
+    }
   }
 }
