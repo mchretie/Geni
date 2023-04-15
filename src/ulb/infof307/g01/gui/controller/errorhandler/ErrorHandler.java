@@ -116,4 +116,10 @@ public class ErrorHandler {
 
         communicateError(e, message);
     }
+
+    public void failedAddScore(Exception e) {
+        String message = "Votre score n'a pas pu être sauvegardé.";
+
+        communicateError(e, message);
+    }
 }

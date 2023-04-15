@@ -21,10 +21,8 @@ import ulb.infof307.g01.model.FlashCard;
 import ulb.infof307.g01.model.InputCard;
 import ulb.infof307.g01.model.MCQCard;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Set;
 
 public class PlayDeckViewController {
 
@@ -33,6 +31,9 @@ public class PlayDeckViewController {
     /* ====================================================================== */
     /*                               FXML Attributes                          */
     /* ====================================================================== */
+
+    @FXML
+    private GridPane choicesGrid;
 
     @FXML
     private VBox cardBox;
@@ -45,9 +46,6 @@ public class PlayDeckViewController {
 
     @FXML
     private WebView cardWebView;
-
-    @FXML
-    private GridPane choicesGrid;
 
     @FXML
     private Button correctChoiceButton;
@@ -63,6 +61,12 @@ public class PlayDeckViewController {
 
     @FXML
     private TextField inputTextField;
+    @FXML
+    private Label currentCardIndexLabel;
+
+    @FXML
+    private Label cardNumberIndexLabel;
+
 
     /* ====================================================================== */
     /*                              Model Attributes                          */
@@ -88,8 +92,13 @@ public class PlayDeckViewController {
 
     public void setDeckName(String deckName) { this.deckNameLabel.setText(deckName); }
 
-    public void setCurrentCard(Card currentCard) {
+    public void setNumberOfCards(int value) {
+        this.cardNumberIndexLabel.setText(String.valueOf(value));
+    }
+
+    public void setCurrentCard(Card currentCard, int index) {
         this.currentCard = currentCard;
+        this.currentCardIndexLabel.setText(String.valueOf(index+1));
         showFrontOfCard();
     }
 
@@ -173,13 +182,15 @@ public class PlayDeckViewController {
         TextField choiceField = createChoiceField(answer);
         Button choiceSelectionButton = createChoiceSelectionButton();
 
-        if (isCorrectChoice)
+        if (isCorrectChoice) {
             correctChoiceButton = choiceSelectionButton;
+        }
 
         choiceSelectionButton.setOnAction(actionEvent -> {
             FontIcon buttonIcon = (FontIcon) choiceSelectionButton.getGraphic();
             buttonIcon.setIconColor(Color.WHITE);
             showCorrectChoice();
+            listener.onChoiceEntered(isCorrectChoice);
         });
 
         choicePane.setLeft(choiceField);
@@ -238,6 +249,7 @@ public class PlayDeckViewController {
         inputBox.setVisible(true);
         choicesGrid.setVisible(false);
 
+        inputTextField.setDisable(false);
         inputTextField.setText("");
         inputTextField.setStyle("");
         inputPane.setStyle("");
@@ -265,12 +277,16 @@ public class PlayDeckViewController {
         InputCard card = (InputCard) currentCard;
 
         inputTextField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+        inputTextField.setDisable(true);
+
         if ((card.isInputCorrect(inputTextField.getText()))){
+            listener.onChoiceEntered(true);
             inputPane.setRight(setIcon("mdi2c-check", Color.WHITE));
             inputPane.setStyle("-fx-background-color: #659e40;");
         }
 
         else {
+            listener.onChoiceEntered(false);
             inputPane.setStyle("-fx-background-color: #c45151;");
             inputPane.setRight(setIcon("mdi2c-close", Color.BLACK));
             showCorrectInput();
@@ -291,6 +307,8 @@ public class PlayDeckViewController {
         correctInputPane.setRight(setIcon("mdi2c-check", Color.WHITE));
 
         inputBox.getChildren().add(correctInputPane);
+
+        inputTextField.setDisable(true);
     }
 
     private FontIcon setIcon(String iconLiteral, Color color){
@@ -328,5 +346,6 @@ public class PlayDeckViewController {
         void cardClicked();
         void nextCardClicked();
         void previousCardClicked();
+        void onChoiceEntered(boolean isGoodChoice);
     }
 }

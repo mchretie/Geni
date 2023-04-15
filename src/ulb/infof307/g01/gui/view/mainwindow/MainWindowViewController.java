@@ -10,6 +10,7 @@ import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
+import ulb.infof307.g01.gui.view.result.ResultViewController;
 import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 
@@ -60,6 +61,9 @@ public class MainWindowViewController {
     private BorderPane guestModeDeckMenuView;
 
     @FXML
+    private VBox resultView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
@@ -76,6 +80,9 @@ public class MainWindowViewController {
 
     @FXML
     private UserAuthViewController userAuthViewController;
+
+    @FXML
+    private ResultViewController resultViewController;
 
 
     /* ====================================================================== */
@@ -119,6 +126,10 @@ public class MainWindowViewController {
     public UserAuthViewController getUserAuthViewController() {
         return userAuthViewController;
     }
+    public ResultViewController getResultViewController() {
+        return resultViewController;
+    }
+
 
     /* ====================================================================== */
     /*                              Alerts                                    */
@@ -174,6 +185,10 @@ public class MainWindowViewController {
 
     public void setGuestModeDeckMenuViewVisible() {
         setAllInvisibleExcept(guestModeDeckMenuView);
+    }
+
+    public void setResultViewVisible() {
+        setAllInvisibleExcept(resultView);
     }
 
 
@@ -282,7 +297,6 @@ public class MainWindowViewController {
         void goToHomeClicked();
         void goToCurrentPlayingDeck();
         void goToAboutClicked();
-
         void goToProfileClicked();
     }
 }

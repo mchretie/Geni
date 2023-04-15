@@ -23,27 +23,28 @@ public class ScoreDAO extends DAO {
         this.userDAO = userDAO;
     }
 
-    public void addScore(Score score) {
+    public void addScore(Score score) throws DatabaseException {
         String sql = """
                 INSERT INTO user_deck_score (user_id, timestamp, deck_id, score)
                 VALUES (?, ?, ?, ?)
                 """;
 
+        String userId = userDAO.getUserId(score.getUsername());
         database.executeUpdate(sql,
-                score.getUserId().toString(),
+                userId,
                 Long.toString(score.getTimestamp().getTime()),
                 score.getDeckId().toString(),
                 score.getScore());
     }
 
-    private Score extractScore(ResultSet res) {
+    private Score extractScore(ResultSet res) throws DatabaseException {
         try {
             UUID userId = UUID.fromString(res.getString("user_id"));
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             int score = res.getInt("score");
             Date date = new Date(res.getLong("timestamp"));
             String username = userDAO.getUsername(userId);
-            return new Score(userId, username, deckId, score, date);
+            return new Score(username, deckId, score, date);
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }

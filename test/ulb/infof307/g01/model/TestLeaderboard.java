@@ -24,8 +24,8 @@ public class TestLeaderboard {
     @Test
     void addScore_FromInit_ScoreAdded() {
         User user = new User("user", "pass");
-        Score scoreBad = new Score(user.getUserId(), user.getUsername(), deck.getId(), 360, new Date(1586503737));
-        Score scoreGood = new Score(user.getUserId(), user.getUsername(), deck.getId(), 1024, new Date(1585812537));
+        Score scoreBad = new Score(user.getUsername(), deck.getId(), 360, new Date(1586503737));
+        Score scoreGood = new Score(user.getUsername(), deck.getId(), 1024, new Date(1585812537));
         
         leaderboard.addScore(scoreGood);
         leaderboard.addScore(scoreBad);
@@ -37,9 +37,9 @@ public class TestLeaderboard {
     @Test
     void addScores_FromInit_AddingMultipleScoresAtOnce() {
         User user = new User("user", "pass");
-        Score scoreBad = new Score(user.getUserId(), user.getUsername(), deck.getId(), 360, new Date(1586503737));
-        Score scoreGood = new Score(user.getUserId(), user.getUsername(), deck.getId(), 1024, new Date(1585812537));
-        Score scoreAverage = new Score(user.getUserId(), user.getUsername(), deck.getId(), 512, new Date(1096961337));
+        Score scoreBad = new Score(user.getUsername(), deck.getId(), 360, new Date(1586503737));
+        Score scoreGood = new Score(user.getUsername(), deck.getId(), 1024, new Date(1585812537));
+        Score scoreAverage = new Score(user.getUsername(), deck.getId(), 512, new Date(1096961337));
 
         List<Score> scores = new ArrayList<>(Arrays.asList(scoreAverage, scoreBad, scoreGood));
         leaderboard.addScores(scores);
