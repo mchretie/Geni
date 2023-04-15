@@ -80,7 +80,7 @@ public class LeaderboardRequestHandler extends Handler {
         return leaderboard.getLeaderboard().get(0);
     }
 
-    public List<Pair<String, Integer>> getBestScoreByUserID(Request req, Response res) {
+    public List<Map<String, String>> getBestScoreByUserID(Request req, Response res) {
         try {
             return database.getLeaderboardFromUserID();
         } catch (Exception e) {

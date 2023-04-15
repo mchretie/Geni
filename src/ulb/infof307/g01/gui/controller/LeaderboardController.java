@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class LeaderboardController implements LeaderboardViewController.Listener, PlayerScoreItemViewController.Listener{
     private final Stage stage;
@@ -71,15 +72,15 @@ public class LeaderboardController implements LeaderboardViewController.Listener
             List<Node> playersScoreItem = new ArrayList<>();
             //TODO Display depending of the backend
 
-            List<Pair<String, Integer>> leaderboard = leaderboardDAO.getGlobalLeaderboard();
+            List<Map<String, String>> leaderboard = leaderboardDAO.getGlobalLeaderboard();
 
             for (int i = 0; i < leaderboard.size(); i++) {
-                Pair<String, Integer> pair = leaderboard.get(i);
-
-                if (pair.getKey().equals(userSessionDAO.getUsername())) {
+                Map<String, String> leaderboardEntry = leaderboard.get(i);
+                if (leaderboardEntry.get("username").equals(userSessionDAO.getUsername())) {
+                    System.out.println("I am here");
                     leaderboardViewController.setPersonalInformation(userSessionDAO.getUsername(),
                             String.valueOf(i+1),
-                            String.valueOf(pair.getValue()),
+                            String.valueOf(leaderboardEntry.get("total_score")),
                             String.valueOf(deckDAO.getAllDecksMetadata().size()));  //TODO get the number of decks played
                 }
 
@@ -89,7 +90,9 @@ public class LeaderboardController implements LeaderboardViewController.Listener
                 Node node = loader.load();
                 PlayerScoreItemViewController playerScoreItemViewController = loader.getController();
                 playerScoreItemViewController.setListener(this);
-                playerScoreItemViewController.setPlayerScoreItem();
+                playerScoreItemViewController.setPlayerScoreItem(
+                        leaderboardEntry.get("username"),
+                        leaderboardEntry.get("total_score"));
 
                 playersScoreItem.add(node);
             }

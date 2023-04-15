@@ -51,6 +51,7 @@ public class LeaderboardViewController {
         ObservableList<Node> items = FXCollections.observableArrayList(PlayersScoreItem);
         boardContainer.setItems(items);
         boardContainer.refresh();
+        System.out.println("test");
 
     }
 

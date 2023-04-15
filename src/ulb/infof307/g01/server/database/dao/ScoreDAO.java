@@ -86,7 +86,7 @@ public class ScoreDAO extends DAO {
         }
     }
 
-    public List<Pair<String, Integer>> getAllUserDeckScore() throws DatabaseException{
+    public List<Map<String, String>> getAllUserDeckScore() throws DatabaseException{
         String sql = """
                 SELECT U.username, sum(score) as total_score
                 FROM user_deck_score S, user U
@@ -96,14 +96,18 @@ public class ScoreDAO extends DAO {
 
         try {
             ResultSet res = database.executeQuery(sql);
-            List<Pair<String, Integer>> leaderboard = new ArrayList<>();
+            List<Map<String, String>> leaderboard = new ArrayList<>();
             while (res.next()) {
-                leaderboard.add(new Pair<>(
-                        res.getString("username"),
-                        res.getInt("total_score")));
+                Map<String, String> leaderboardEntry = new HashMap<>();
+                leaderboardEntry.put("username", res.getString("username"));
+                leaderboardEntry.put("total_score", res.getString("total_score"));
+                leaderboard.add(leaderboardEntry);
             }
-            leaderboard.sort(Comparator.comparing(Pair<String, Integer>::getValue).reversed());
-            System.out.println("leaderboard: " + leaderboard);
+
+            leaderboard.sort((a, b) -> Integer.compare(
+                    Integer.parseInt(b.get("total_score")),
+                    Integer.parseInt(a.get("total_score"))));
+
             return leaderboard;
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static ulb.infof307.g01.shared.constants.ServerPaths.GET_BEST_SCORE_USER_ID_PATH;
@@ -42,7 +43,7 @@ public class LeaderboardDAO extends HttpDAO {
         return new Gson().fromJson(response.body(), Score.class);
     }
 
-    public List<Pair<String, Integer>> getGlobalLeaderboard() throws IOException, InterruptedException {
+    public List<Map<String, String>> getGlobalLeaderboard() throws IOException, InterruptedException {
         HttpResponse<String> response = get(ServerPaths.GET_BEST_SCORE_USER_ID_PATH);
 
         checkResponseCode(response.statusCode());

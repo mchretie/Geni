@@ -11,6 +11,7 @@ import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -165,7 +166,7 @@ public class Database {
         return new Leaderboard(deckId, scoreDao.getScoresForDeck(deckId));
     }
 
-    public List<Pair<String, Integer>> getLeaderboardFromUserID() {
+    public List<Map<String, String>> getLeaderboardFromUserID() {
         return scoreDao.getAllUserDeckScore();
     }
 }
