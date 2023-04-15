@@ -3,15 +3,12 @@ package ulb.infof307.g01.gui.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.leaderboard.PlayerScoreItemViewController;
-import ulb.infof307.g01.model.Score;
-import ulb.infof307.g01.model.User;
 
 import java.io.IOException;
 import java.net.URL;
@@ -74,7 +71,7 @@ public class LeaderboardController implements LeaderboardViewController.Listener
 
         else {
             //TODO make a guest mode leaderboard
-            mainWindowViewController.setGuestModeDeckMenuViewVisible();
+            mainWindowViewController.setGuestModeLeaderboardViewVisible();
         }
 
         stage.show();

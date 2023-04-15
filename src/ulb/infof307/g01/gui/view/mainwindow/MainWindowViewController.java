@@ -62,6 +62,9 @@ public class MainWindowViewController {
     private BorderPane guestModeDeckMenuView;
 
     @FXML
+    private BorderPane guestModeLeaderboardView;
+
+    @FXML
     private VBox resultView;
 
     @FXML
@@ -194,9 +197,7 @@ public class MainWindowViewController {
         setAllInvisibleExcept(userAuthView);
     }
 
-    public void setGuestModeDeckMenuViewVisible() {
-        setAllInvisibleExcept(guestModeDeckMenuView);
-    }
+    public void setGuestModeDeckMenuViewVisible() { setAllInvisibleExcept(guestModeDeckMenuView); }
 
     public void setResultViewVisible() {
         setAllInvisibleExcept(resultView);
@@ -205,6 +206,8 @@ public class MainWindowViewController {
     public void setLeaderboardViewVisible() { 
         setAllInvisibleExcept(leaderboardView); 
     }
+
+    public void setGuestModeLeaderboardViewVisible() { setAllInvisibleExcept(guestModeLeaderboardView); }
 
 
     /* ====================================================================== */
@@ -302,6 +305,7 @@ public class MainWindowViewController {
     private void handleUserProfileExitHover() {
         userProfileIcon.setIconColor(Color.web("#000000"));
     }
+
 
     /* ====================================================================== */
     /*                        Listener interface                              */
