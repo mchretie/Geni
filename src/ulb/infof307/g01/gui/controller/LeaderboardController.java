@@ -59,7 +59,6 @@ public class LeaderboardController implements LeaderboardViewController.Listener
         if (userSessionDAO.isLoggedIn()) {
             mainWindowViewController.setLeaderboardViewVisible();
             mainWindowViewController.makeGoBackIconInvisible();
-            mainWindowViewController.makeGoBackIconInvisible();
 
             leaderboardViewController.setPersonalInformation(userSessionDAO.getUsername(),
                     "None",
@@ -70,7 +69,6 @@ public class LeaderboardController implements LeaderboardViewController.Listener
         }
 
         else {
-            //TODO make a guest mode leaderboard
             mainWindowViewController.setGuestModeLeaderboardViewVisible();
         }
 

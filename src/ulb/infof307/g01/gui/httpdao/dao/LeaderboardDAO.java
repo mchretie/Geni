@@ -1,6 +1,7 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import ulb.infof307.g01.model.Leaderboard;
 import ulb.infof307.g01.model.Score;
 import ulb.infof307.g01.shared.constants.ServerPaths;
@@ -10,8 +11,6 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import static ulb.infof307.g01.shared.constants.ServerPaths.GET_BEST_SCORE_USER_ID_PATH;
 
 public class LeaderboardDAO extends HttpDAO {
 
@@ -46,7 +45,8 @@ public class LeaderboardDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        return new Gson().fromJson(response.body(), List.class);
+        return new Gson().fromJson(response.body(), new TypeToken<List<Map<String, String>>>() {}.getType());
+
     }
 
 
