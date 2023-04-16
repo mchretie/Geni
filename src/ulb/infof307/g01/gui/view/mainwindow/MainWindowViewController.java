@@ -9,6 +9,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
+import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.gui.view.result.ResultViewController;
 import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
@@ -28,7 +29,7 @@ public class MainWindowViewController {
     private FontIcon currentDeckIcon;
 
     @FXML
-    private FontIcon aboutIcon;
+    private FontIcon leaderboardIcon;
 
     @FXML
     private FontIcon goBackIcon;
@@ -61,7 +62,13 @@ public class MainWindowViewController {
     private BorderPane guestModeDeckMenuView;
 
     @FXML
+    private BorderPane guestModeLeaderboardView;
+
+    @FXML
     private VBox resultView;
+
+    @FXML
+    private BorderPane leaderboardView;
 
     @FXML
     private DeckMenuViewController deckMenuViewController;
@@ -83,6 +90,9 @@ public class MainWindowViewController {
 
     @FXML
     private ResultViewController resultViewController;
+
+    @FXML
+    private LeaderboardViewController leaderboardViewController;
 
 
     /* ====================================================================== */
@@ -116,8 +126,12 @@ public class MainWindowViewController {
         return playDeckViewController;
     }
 
-    public EditCardViewController getEditCardViewController() {
-        return editCardViewController;
+    public EditCardViewController getEditCardViewController() { 
+        return editCardViewController; 
+    }
+
+    public LeaderboardViewController getLeaderboardViewController() { 
+        return leaderboardViewController; 
     }
 
     public ProfileViewController getProfileViewController() {
@@ -183,13 +197,17 @@ public class MainWindowViewController {
         setAllInvisibleExcept(userAuthView);
     }
 
-    public void setGuestModeDeckMenuViewVisible() {
-        setAllInvisibleExcept(guestModeDeckMenuView);
-    }
+    public void setGuestModeDeckMenuViewVisible() { setAllInvisibleExcept(guestModeDeckMenuView); }
 
     public void setResultViewVisible() {
         setAllInvisibleExcept(resultView);
     }
+
+    public void setLeaderboardViewVisible() { 
+        setAllInvisibleExcept(leaderboardView); 
+    }
+
+    public void setGuestModeLeaderboardViewVisible() { setAllInvisibleExcept(guestModeLeaderboardView); }
 
 
     /* ====================================================================== */
@@ -225,8 +243,8 @@ public class MainWindowViewController {
     }
 
     @FXML
-    private void goToAboutClicked() {
-        listener.goToAboutClicked();
+    private void goToLeaderboardClicked() { 
+        listener.goToLeaderboardClicked(); 
     }
 
     @FXML
@@ -259,13 +277,13 @@ public class MainWindowViewController {
     }
 
     @FXML
-    private void handleAboutHover() {
-        aboutIcon.setIconColor(Color.web("#FFFFFF"));
+    private void handleLeaderboardHover() {
+        leaderboardIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    private void handleAboutExitHover() {
-        aboutIcon.setIconColor(Color.web("#000000"));
+    private void handleLeaderboardExitHover() {
+        leaderboardIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
@@ -288,6 +306,7 @@ public class MainWindowViewController {
         userProfileIcon.setIconColor(Color.web("#000000"));
     }
 
+
     /* ====================================================================== */
     /*                        Listener interface                              */
     /* ====================================================================== */
@@ -296,7 +315,7 @@ public class MainWindowViewController {
         void goBackClicked();
         void goToHomeClicked();
         void goToCurrentPlayingDeck();
-        void goToAboutClicked();
+        void goToLeaderboardClicked();
         void goToProfileClicked();
     }
 }

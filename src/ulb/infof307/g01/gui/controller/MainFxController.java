@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.eclipse.jetty.util.IO;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
@@ -35,7 +36,8 @@ public class MainFxController extends Application implements
         EditCardController.ControllerListener,
         ResultController.ControllerListener,
         UserAuthController.ControllerListener,
-        ProfileController.ControllerListener {
+        ProfileController.ControllerListener,
+        GlobalLeaderboardController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -48,6 +50,7 @@ public class MainFxController extends Application implements
     private ResultController resultController;
     private UserAuthController userAuthController;
     private ProfileController profileController;
+    private GlobalLeaderboardController leaderboardController;
 
     private MainWindowViewController mainWindowViewController;
 
@@ -71,7 +74,8 @@ public class MainFxController extends Application implements
         HTML_EDITOR,
         LOGIN_PROFILE,
         PROFILE,
-        RESULT
+        RESULT,
+        LEADERBOARD
     }
 
     List<View> viewStack = new ArrayList<>();
@@ -208,6 +212,7 @@ public class MainFxController extends Application implements
                         userAuthController.show();
                 }
                 case RESULT -> resultController.show();
+                case LEADERBOARD -> leaderboardController.show();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -260,6 +265,26 @@ public class MainFxController extends Application implements
 
         } catch (InterruptedException | IOException e) {
             errorHandler.severConnectionError();
+        }
+    }
+
+    @Override
+    public void leaderboardClicked() {
+        try {
+            leaderboardController = new GlobalLeaderboardController(
+                    stage,
+                    mainWindowViewController,
+                    errorHandler,
+                    this,
+                    userSessionDAO,
+                    deckDAO,
+                    leaderboardDAO);
+
+            viewStack.add(View.LEADERBOARD);
+            leaderboardController.show();
+
+        } catch (IOException | InterruptedException e) {
+            errorHandler.failedLoading(e);
         }
     }
 
@@ -377,8 +402,24 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void goToAboutClicked() {
+    public void goToLeaderboardClicked() {
+        try {
+            if (leaderboardController == null) {
+                leaderboardController = new GlobalLeaderboardController(
+                        stage,
+                        mainWindowViewController,
+                        errorHandler,
+                        this,
+                        userSessionDAO,
+                        deckDAO,
+                        leaderboardDAO);
+            }
 
+            leaderboardController.show();
+
+        } catch (InterruptedException | IOException e) {
+            errorHandler.failedLoading(e);
+        }
     }
 
     @Override
