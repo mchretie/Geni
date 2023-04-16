@@ -22,7 +22,6 @@ import ulb.infof307.g01.model.FlashCard;
 import ulb.infof307.g01.model.InputCard;
 import ulb.infof307.g01.model.MCQCard;
 
-import java.beans.EventHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -218,7 +217,7 @@ public class PlayDeckViewController {
         FontIcon checkIcon = new FontIcon("mdi2c-check");
         checkIcon.setIconSize(18);
         approveAnswer.setGraphic(checkIcon);
-        approveAnswer.onMouseClickedProperty().set(EventHandler -> {
+        approveAnswer.onMouseClickedProperty().set(mouseEvent -> {
             handleInputText();
         });
 

@@ -86,7 +86,7 @@
             <!--MCQ card-->
             <GridPane fx:id="choicesGrid" alignment="BASELINE_CENTER" hgap="10" maxWidth="Infinity"
                       style="-fx-padding: 15px 20px;-fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;"
-                      vgap="10" visible="true" HBox.hgrow="ALWAYS" />
+                      vgap="10" HBox.hgrow="ALWAYS" />
 
             <!--Input card-->
             <VBox fx:id="inputBox" maxWidth="230"/>
@@ -96,9 +96,7 @@
 
     <bottom>
         <HBox alignment="CENTER" prefHeight="50" prefWidth="600">
-            <children>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                    <children>
                         <Label fx:id="currentCardIndexLabel">
                             <font>
                                 <Font size="20.0"/>
@@ -114,9 +112,7 @@
                                 <Font size="20.0"/>
                             </font>
                         </Label>
-                    </children>
                 </HBox>
-            </children>
         </HBox>
     </bottom>
 
