@@ -25,6 +25,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
     private final Deck deck;
 
+    private int selectedCardIndex = 0;
+
 
     /* ====================================================================== */
     /*                         Controller Listener                            */
@@ -98,7 +100,11 @@ public class EditDeckController implements EditDeckViewController.Listener,
         editDeckViewController.showCards();
 
         if (deck.cardCount() > 0) {
-            editDeckViewController.setSelectedCard(deck.getFirstCard());
+            List<Card> deckCards =deck.getCards();
+            if (selectedCardIndex >= deckCards.size()) {
+                selectedCardIndex = 0;
+            }
+            editDeckViewController.setSelectedCard(deckCards.get(selectedCardIndex));
             editDeckViewController.loadSelectedCardEditor();
         } else
             editDeckViewController.hideSelectedCardEditor();
@@ -145,6 +151,11 @@ public class EditDeckController implements EditDeckViewController.Listener,
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);
         }
+    }
+
+    @Override
+    public void setSelectedCardIndex(int index) {
+        selectedCardIndex = index;
     }
 
     @Override

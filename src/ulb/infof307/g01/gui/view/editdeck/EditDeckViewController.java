@@ -151,6 +151,7 @@ public class EditDeckViewController {
         int cardIndex = deck.getCards().indexOf(selectedCard);
         if (cardIndex >= 0) {
             cardsContainer.getSelectionModel().select(cardIndex);
+            listener.setSelectedCardIndex(cardIndex);
         }
     }
 
@@ -726,5 +727,7 @@ public class EditDeckViewController {
         void newInputCard();
 
         void inputAnswerModified(InputCard selectedCard, String answer);
+
+        void setSelectedCardIndex(int cardIndex);
     }
 }
