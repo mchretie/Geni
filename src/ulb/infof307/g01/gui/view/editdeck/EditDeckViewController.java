@@ -16,7 +16,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.model.*;
+import ulb.infof307.g01.model.Card;
+import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.FlashCard;
+import ulb.infof307.g01.model.MCQCard;
+import ulb.infof307.g01.model.InputCard;
 
 import java.io.File;
 import java.util.List;
@@ -298,11 +302,7 @@ public class EditDeckViewController {
 
         Button removeChoiceButton = createRemoveChoiceButton(index);
 
-        HBox hBox = new HBox(2,
-                            textField,
-                            correctChoiceSelectionButton,
-                            removeChoiceButton);
-
+        HBox hBox = new HBox();
         HBox.setHgrow(hBox, Priority.ALWAYS);
         hBox.setAlignment(Pos.CENTER);
 
