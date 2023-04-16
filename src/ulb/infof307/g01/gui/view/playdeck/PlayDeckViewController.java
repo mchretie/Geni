@@ -217,9 +217,7 @@ public class PlayDeckViewController {
         FontIcon checkIcon = new FontIcon("mdi2c-check");
         checkIcon.setIconSize(18);
         approveAnswer.setGraphic(checkIcon);
-        approveAnswer.onMouseClickedProperty().set(mouseEvent -> {
-            handleInputText();
-        });
+        approveAnswer.onMouseClickedProperty().set(mouseEvent -> handleInputText());
 
         inputHBox = new HBox(2);
         inputHBox.setAlignment(Pos.BASELINE_CENTER);
