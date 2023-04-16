@@ -112,17 +112,20 @@ public class MainFxController extends Application implements
         configureStage(stage);
         initMainWindowView(stage);
 
+        errorHandler = new ErrorHandler(mainWindowViewController);
+
+        try {
+            userSessionDAO.attemptAutologin();
+
+        } catch (AuthenticationFailedException | InterruptedException e) {
+            errorHandler.failedAutoLogin(e);
+        }
+
         try {
             initControllers(stage);
-//            userSessionDAO.register("louis", "test");
-//            userSessionDAO.login("louis", "test");
-            userSessionDAO.attemptAutologin();
 
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
-
-        } catch (AuthenticationFailedException e) {
-            errorHandler.failedAutoLogin(e);
 
         } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
@@ -157,8 +160,6 @@ public class MainFxController extends Application implements
     }
 
     private void initControllers(Stage stage) throws IOException, InterruptedException {
-
-        errorHandler = new ErrorHandler(mainWindowViewController);
 
         this.userAuthController
                 = new UserAuthController(stage,

@@ -115,10 +115,11 @@ public class ErrorHandler {
         communicateError(e, message);
     }
 
-    public void failedAutoLogin(AuthenticationFailedException e) {
+    public void failedAutoLogin(Exception e) {
+        String title = "Erreur avec le serveur";
         String message = "L'authentification automatique à échoué, veuillez réesayer.";
 
-        communicateError(e, message);
+        communicateError(title, message);
     }
 
     public void failedAddScore(Exception e) {
