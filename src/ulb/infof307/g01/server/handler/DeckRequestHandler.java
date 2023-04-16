@@ -20,12 +20,8 @@ import ulb.infof307.g01.server.service.JWTService;
 
 public class DeckRequestHandler extends Handler {
 
-  private final Database database;
-  private final JWTService jwtService;
-
   public DeckRequestHandler(JWTService jwtService, Database database) {
-    this.jwtService = jwtService;
-    this.database = database;
+    super(database, jwtService);
   }
 
   @Override
@@ -135,23 +131,5 @@ public class DeckRequestHandler extends Handler {
 
       return new ArrayList<>();
     }
-  }
-
-  /**
-   * Extracts the username from the request's Authorization header.
-   * <p>
-   *     If the token is invalid, the request is halted.
-   *     Otherwise, the username is returned.
-   * </p>
-   *
-   * @param req the request
-   * @return the username
-   */
-  private String usernameFromRequest(Request req) {
-    String token = req.headers("Authorization");
-    if (token == null || !jwtService.isTokenValid(token)) {
-      halt(401, "Token is " + (token == null ? "null" : "not valid"));
-    }
-    return jwtService.getUsernameFromToken(token);
   }
 }

@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.eclipse.jetty.util.IO;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
@@ -35,7 +36,8 @@ public class MainFxController extends Application implements
         EditCardController.ControllerListener,
         ResultController.ControllerListener,
         UserAuthController.ControllerListener,
-        ProfileController.ControllerListener {
+        ProfileController.ControllerListener,
+        GlobalLeaderboardController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -48,6 +50,7 @@ public class MainFxController extends Application implements
     private ResultController resultController;
     private UserAuthController userAuthController;
     private ProfileController profileController;
+    private GlobalLeaderboardController leaderboardController;
 
     private MainWindowViewController mainWindowViewController;
 
@@ -71,7 +74,8 @@ public class MainFxController extends Application implements
         HTML_EDITOR,
         LOGIN_PROFILE,
         PROFILE,
-        RESULT
+        RESULT,
+        LEADERBOARD
     }
 
     List<View> viewStack = new ArrayList<>();
@@ -112,15 +116,20 @@ public class MainFxController extends Application implements
         configureStage(stage);
         initMainWindowView(stage);
 
+        errorHandler = new ErrorHandler(mainWindowViewController);
+
+        try {
+            userSessionDAO.attemptAutologin();
+
+        } catch (AuthenticationFailedException | InterruptedException e) {
+            errorHandler.failedAutoLogin(e);
+        }
+
         try {
             initControllers(stage);
-            userSessionDAO.attemptAutologin();
 
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
-
-        } catch (AuthenticationFailedException e) {
-            errorHandler.failedAutoLogin(e);
 
         } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
@@ -155,8 +164,6 @@ public class MainFxController extends Application implements
     }
 
     private void initControllers(Stage stage) throws IOException, InterruptedException {
-
-        errorHandler = new ErrorHandler(mainWindowViewController);
 
         this.userAuthController
                 = new UserAuthController(stage,
@@ -205,6 +212,7 @@ public class MainFxController extends Application implements
                         userAuthController.show();
                 }
                 case RESULT -> resultController.show();
+                case LEADERBOARD -> leaderboardController.show();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -261,6 +269,26 @@ public class MainFxController extends Application implements
     }
 
     @Override
+    public void leaderboardClicked() {
+        try {
+            leaderboardController = new GlobalLeaderboardController(
+                    stage,
+                    mainWindowViewController,
+                    errorHandler,
+                    this,
+                    userSessionDAO,
+                    deckDAO,
+                    leaderboardDAO);
+
+            viewStack.add(View.LEADERBOARD);
+            leaderboardController.show();
+
+        } catch (IOException | InterruptedException e) {
+            errorHandler.failedLoading(e);
+        }
+    }
+
+    @Override
     public void editFrontOfCardClicked(Deck deck, Card selectedCard) {
         editCardController
                 = new EditCardController(stage,
@@ -280,13 +308,13 @@ public class MainFxController extends Application implements
     public void editBackOfCardClicked(Deck deck, FlashCard selectedCard) {
         editCardController
                 = new EditCardController(stage,
-                                            deck,
-                                            selectedCard,
-                                       false,
-                                            deckDAO,
-                                            errorHandler,
-                                            mainWindowViewController,
-                             this);
+                deck,
+                selectedCard,
+                false,
+                deckDAO,
+                errorHandler,
+                mainWindowViewController,
+                this);
 
         viewStack.add(View.HTML_EDITOR);
         editCardController.show();
@@ -309,7 +337,7 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void userLoggedOut(){
+    public void userLoggedOut() {
         try {
             userSessionDAO.logout();
             viewStack.clear();
@@ -329,7 +357,7 @@ public class MainFxController extends Application implements
                 mainWindowViewController,
                 this,
                 score
-                );
+        );
         viewStack.add(View.RESULT);
         resultController.show();
     }
@@ -374,8 +402,24 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void goToAboutClicked() {
+    public void goToLeaderboardClicked() {
+        try {
+            if (leaderboardController == null) {
+                leaderboardController = new GlobalLeaderboardController(
+                        stage,
+                        mainWindowViewController,
+                        errorHandler,
+                        this,
+                        userSessionDAO,
+                        deckDAO,
+                        leaderboardDAO);
+            }
 
+            leaderboardController.show();
+
+        } catch (InterruptedException | IOException e) {
+            errorHandler.failedLoading(e);
+        }
     }
 
     @Override

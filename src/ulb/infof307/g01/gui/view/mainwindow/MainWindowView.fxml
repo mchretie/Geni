@@ -67,6 +67,8 @@
             <fx:include fx:id="profileView" source="../profile/ProfileView.fxml" />
             <fx:include fx:id="userAuthView" source="../userauth/UserAuthView.fxml" />
             <fx:include fx:id="resultView" source="../result/ResultView.fxml" />
+            <fx:include fx:id="leaderboardView" source="../leaderboard/LeaderboardView.fxml" />
+            <fx:include fx:id="guestModeLeaderboardView" source="../leaderboard/GuestModeLeaderboardView.fxml" />
         </StackPane>
     </center>
 
@@ -89,10 +91,10 @@
                 </graphic>
             </Button>
 
-            <!-- Go to about button -->
-            <Button layoutX="500.0" mnemonicParsing="false" onMouseClicked="#goToAboutClicked" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
+            <!-- Leaderboard button -->
+            <Button layoutX="500.0" mnemonicParsing="false" onMouseClicked="#goToLeaderboardClicked" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
                 <graphic>
-                    <FontIcon fx:id="aboutIcon" iconLiteral="mdi2i-information-outline" iconSize="50" onMouseEntered="#handleAboutHover" onMouseExited="#handleAboutExitHover" />
+                    <FontIcon fx:id="leaderboardIcon" iconLiteral="mdi2t-trophy" iconSize="50" onMouseEntered="#handleLeaderboardHover" onMouseExited="#handleLeaderboardExitHover" />
 
                 </graphic>
             </Button>
