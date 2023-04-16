@@ -188,7 +188,7 @@ public class EditDeckViewController {
             loadFlashCardEditor(flashCard);
 
         else if (card instanceof MCQCard mcqCard)
-            loadQCMCardEditor(mcqCard);
+            loadMCQCardEditor(mcqCard);
 
         else if (card instanceof InputCard inputCard)
             loadInputCardEditor(inputCard);
@@ -220,7 +220,7 @@ public class EditDeckViewController {
      *
      * @param mcqCard the MCQ card to load
      */
-    private void loadQCMCardEditor(MCQCard mcqCard) {
+    private void loadMCQCardEditor(MCQCard mcqCard) {
         choicesGrid.getChildren().clear();
 
         currentCol = 0;

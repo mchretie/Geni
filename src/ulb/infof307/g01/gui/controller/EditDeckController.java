@@ -100,7 +100,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         editDeckViewController.showCards();
 
         if (deck.cardCount() > 0) {
-            List<Card> deckCards =deck.getCards();
+            List<Card> deckCards = deck.getCards();
             if (selectedCardIndex >= deckCards.size()) {
                 selectedCardIndex = 0;
             }
@@ -362,6 +362,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
     public interface ControllerListener {
         void editFrontOfCardClicked(Deck deck, Card card);
+
         void editBackOfCardClicked(Deck deck, FlashCard selectedCard);
     }
 }
