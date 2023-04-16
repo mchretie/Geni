@@ -76,14 +76,17 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
     private List<Node> loadBoard() {
         try {
             List<Node> playersScoreItem = new ArrayList<>();
-            GlobalLeaderboard leaderboard = leaderboardDAO.getGlobalLeaderboard();
+
+            GlobalLeaderboard leaderboard
+                    = leaderboardDAO.getGlobalLeaderboard();
+
             String username = userSessionDAO.getUsername();
 
             leaderboardViewController
                     .setPersonalInformation(
                             username,
-                            leaderboard.getUserScore(username),
                             leaderboard.getUserRank(username),
+                            leaderboard.getUserScore(username),
                             deckDAO.getAllDecksMetadata().size() + "");
 
             for (Map<String, String> entry : leaderboard) {
