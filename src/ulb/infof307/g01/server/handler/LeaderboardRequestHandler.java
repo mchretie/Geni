@@ -16,12 +16,9 @@ import java.util.Map;
 import java.util.UUID;
 
 public class LeaderboardRequestHandler extends Handler {
-    private final Database database;
-    private final JWTService jwtService;
 
     public LeaderboardRequestHandler(Database database, JWTService jwtService) {
-        this.database = database;
-        this.jwtService = jwtService;
+        super(database, jwtService);
     }
 
 

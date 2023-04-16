@@ -14,12 +14,8 @@ public class UserAccountHandler extends Handler {
 
     private final String AUTH_HEADER = "Authorization";
 
-    private final Database database;
-    private final JWTService jwtService;
-
     public UserAccountHandler(JWTService jwtService, Database database) {
-        this.jwtService = jwtService;
-        this.database = database;
+        super(database, jwtService);
     }
 
     @Override

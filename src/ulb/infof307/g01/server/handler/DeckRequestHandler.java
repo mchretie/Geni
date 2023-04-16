@@ -20,12 +20,8 @@ import ulb.infof307.g01.server.service.JWTService;
 
 public class DeckRequestHandler extends Handler {
 
-  private final Database database;
-  private final JWTService jwtService;
-
   public DeckRequestHandler(JWTService jwtService, Database database) {
-    this.jwtService = jwtService;
-    this.database = database;
+    super(database, jwtService);
   }
 
   @Override
