@@ -132,22 +132,4 @@ public class DeckRequestHandler extends Handler {
       return new ArrayList<>();
     }
   }
-
-  /**
-   * Extracts the username from the request's Authorization header.
-   * <p>
-   *     If the token is invalid, the request is halted.
-   *     Otherwise, the username is returned.
-   * </p>
-   *
-   * @param req the request
-   * @return the username
-   */
-  private String usernameFromRequest(Request req) {
-    String token = req.headers("Authorization");
-    if (token == null || !jwtService.isTokenValid(token)) {
-      halt(401, "Token is " + (token == null ? "null" : "not valid"));
-    }
-    return jwtService.getUsernameFromToken(token);
-  }
 }

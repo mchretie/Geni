@@ -21,7 +21,6 @@ public class LeaderboardRequestHandler extends Handler {
         super(database, jwtService);
     }
 
-
     @Override
     public void init() {
         post(SAVE_SCORE_PATH, this::saveScore, toJson());
@@ -32,24 +31,22 @@ public class LeaderboardRequestHandler extends Handler {
 
     private Map<String, Boolean> saveScore(Request req, Response res) {
         try {
-            // check if token is valid
-            String token = req.headers("Authorization");
-            if (token == null || !jwtService.isTokenValid(token))
-                throw new RuntimeException("Token is " + (token == null ? "null" : "not valid"));
-
-            // check if username from token and username from score are the same
-            String username = jwtService.getUsernameFromToken(token);
+            String username = usernameFromRequest(req);
             Score score = new Gson().fromJson(req.body(), Score.class);
-            if (! username.equals(score.getUsername()))
-                throw new RuntimeException("userId from token doesn't match userId from score.");
+
+            // Does this ever happen?
+            if (!username.equals(score.getUsername()))
+                throw new RuntimeException("UserId from token doesn't match userId from score.");
 
             database.saveScore(score);
+
             return successfulResponse;
 
         } catch (Exception e) {
             String errorMessage = "Failed to add score: " + e.getMessage();
             logger.warning(errorMessage);
             halt(500, errorMessage);
+
             return failedResponse;
         }
     }
@@ -57,9 +54,13 @@ public class LeaderboardRequestHandler extends Handler {
     private DeckLeaderboard getLeaderboardByDeckId(Request req, Response res) {
         try {
             UUID deckId = UUID.fromString(req.queryParams("deck"));
-            if (! database.deckIdExists(deckId))
-                throw new RuntimeException("DeckId '"+ deckId +"' does not exists.");
+
+            // Does this ever happen?
+            if (!database.deckIdExists(deckId))
+                return null;
+
             return database.getLeaderboardFromDeckId(deckId);
+
         } catch (Exception e) {
             String errorMessage = "Failed to get leaderboard: " + e.getMessage();
             logger.warning(errorMessage);
@@ -85,7 +86,7 @@ public class LeaderboardRequestHandler extends Handler {
             String errorMessage = "Failed to get user score: " + e.getMessage();
             logger.warning(errorMessage);
             halt(500, errorMessage);
+            return null;
         }
-        return null;
     }
 }
