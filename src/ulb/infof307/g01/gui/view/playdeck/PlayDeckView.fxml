@@ -84,18 +84,18 @@
 
             <!--Input card-->
             <VBox fx:id="inputBox" maxWidth="230">
-                <BorderPane fx:id="inputPane" BorderPane.alignment="CENTER">
-                   <center>
-                      <TextField fx:id="inputTextField" onKeyPressed="#handleTextFieldKeyPressed" BorderPane.alignment="CENTER" />
-                   </center>
-                    <right>
-                        <Button fx:id="approveAnswer" onMouseClicked="#handleInputText">
-                            <graphic>
-                                <FontIcon iconLiteral="mdi2c-check" iconSize="18" />
-                            </graphic>
-                        </Button>
-                    </right>
-                </BorderPane>
+<!--                <BorderPane fx:id="inputPane" BorderPane.alignment="CENTER">-->
+<!--                   <center>-->
+<!--                      <TextField fx:id="inputTextField" onKeyPressed="#handleTextFieldKeyPressed" BorderPane.alignment="CENTER" />-->
+<!--                   </center>-->
+<!--                    <right>-->
+<!--                        <Button fx:id="approveAnswer" onMouseClicked="#handleInputText">-->
+<!--                            <graphic>-->
+<!--                                <FontIcon iconLiteral="mdi2c-check" iconSize="18" />-->
+<!--                            </graphic>-->
+<!--                        </Button>-->
+<!--                    </right>-->
+<!--                </BorderPane>-->
             </VBox>
 
 

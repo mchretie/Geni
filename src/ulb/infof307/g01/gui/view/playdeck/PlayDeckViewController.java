@@ -13,6 +13,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.web.WebView;
@@ -23,6 +24,7 @@ import ulb.infof307.g01.model.FlashCard;
 import ulb.infof307.g01.model.InputCard;
 import ulb.infof307.g01.model.MCQCard;
 
+import java.beans.EventHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -49,19 +51,20 @@ public class PlayDeckViewController {
     @FXML
     private WebView cardWebView;
 
-    @FXML
     private Button correctChoiceButton;
 
-    @FXML
-    private BorderPane inputPane;
+//    @FXML
+//    private BorderPane inputPane;
+
+    private HBox inputHBox;
 
     @FXML
     private VBox inputBox;
 
-    @FXML
+    //    @FXML
     private Button approveAnswer;
 
-    @FXML
+    //    @FXML
     private TextField inputTextField;
     @FXML
     private Label currentCardIndexLabel;
@@ -213,15 +216,34 @@ public class PlayDeckViewController {
     /*---------------------Input card ---------------------- */
 
     @FXML
-    public void showInputCard(){
+    public void showInputCard() {
         inputBox.setVisible(true);
         choicesGrid.setVisible(false);
 
-        inputTextField.setDisable(false);
-        inputTextField.setText("");
-        inputTextField.setStyle("");
-        inputPane.setStyle("");
-        inputPane.setRight(approveAnswer);
+        inputTextField = new TextField();
+        inputTextField.onKeyPressedProperty().set(this::handleTextFieldKeyPressed);
+
+        approveAnswer = new Button();
+        FontIcon checkIcon = new FontIcon("mdi2c-check");
+        checkIcon.setIconSize(18);
+        approveAnswer.setGraphic(checkIcon);
+        approveAnswer.onMouseClickedProperty().set(EventHandler -> {
+            handleInputText();
+        });
+
+        inputHBox = new HBox(2);
+//        inputHBox.setStyle("-fx-background-color: #6bb862; -fx-border-color:#aad4a5; -fx-border-radius: 5; -fx-background-radius: 5;");
+        inputHBox.setAlignment(Pos.BASELINE_CENTER);
+//        inputHBox.setPadding(new Insets(5, 5, 5, 5));
+        inputHBox.getChildren().addAll(inputTextField, approveAnswer);
+
+        inputBox.getChildren().add(inputHBox);
+
+//        inputTextField.setDisable(false);
+//        inputTextField.setText("");
+//        inputTextField.setStyle("");
+//        inputPane.setStyle("");
+//        inputPane.setRight(approveAnswer);
 
         if (inputBox.getChildren().size() > 1) inputBox.getChildren().remove(1);
     }
@@ -233,7 +255,7 @@ public class PlayDeckViewController {
                 event.consume(); // Consume the space character
         });
 
-        if (! keyEvent.getCode().equals(KeyCode.ENTER)) {
+        if (!keyEvent.getCode().equals(KeyCode.ENTER)) {
             return;
         }
         handleInputText();
@@ -241,27 +263,56 @@ public class PlayDeckViewController {
     }
 
     @FXML
-    private void handleInputText(){
+    private void handleInputText() {
         InputCard card = (InputCard) currentCard;
 
         inputTextField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
         inputTextField.setDisable(true);
 
-        if ((card.isInputCorrect(inputTextField.getText()))){
-            listener.onChoiceEntered(true);
-            inputPane.setRight(setIcon("mdi2c-check", Color.WHITE));
-            inputPane.setStyle("-fx-background-color: #659e40;");
-        }
+        String input = inputTextField.getText();
 
-        else {
+        inputBox.getChildren().remove(inputHBox);
+        inputBox.setSpacing(2);
+
+        if ((card.isInputCorrect(inputTextField.getText()))) {
+            listener.onChoiceEntered(true);
+//            inputBox.getChildren().add(setIcon("mdi2c-check", Color.WHITE));
+//            inputPane.setRight(setIcon("mdi2c-check", Color.WHITE));
+//            inputPane.setStyle("-fx-background-color: #659e40;");
+        } else {
             listener.onChoiceEntered(false);
-            inputPane.setStyle("-fx-background-color: #c45151;");
-            inputPane.setRight(setIcon("mdi2c-close", Color.BLACK));
-            showCorrectInput();
+            showInput(input, false);
+//            inputPane.setStyle("-fx-background-color: #c45151;");
+//            inputPane.setRight(setIcon("mdi2c-close", Color.BLACK));
         }
+//        showCorrectInput();
+        showInput(card.getAnswer(), true);
     }
 
-    private void showCorrectInput(){
+    private void showInput(String input, Boolean correct) {
+        Text inputText = new Text(input);
+        inputText.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+
+        HBox inputHbox = new HBox(2);
+        String color = correct ? "#659e40" : "#c45151";
+        inputHbox.setStyle("-fx-background-color: " + color + "; -fx-border-radius: 5; -fx-background-radius: 5;");
+
+        inputHbox.setAlignment(Pos.BASELINE_CENTER);
+        inputHbox.setPadding(new Insets(5, 5, 5, 5));
+
+        Region region = new Region();
+        HBox.setHgrow(region, Priority.ALWAYS);
+
+        FontIcon checkIcon = correct ? setIcon("mdi2c-check", Color.WHITE) : setIcon("mdi2c-close", Color.BLACK);
+
+        inputHbox.getChildren().add(inputText);
+        inputHbox.getChildren().add(region);
+        inputHbox.getChildren().add(checkIcon);
+
+        inputBox.getChildren().add(inputHbox);
+    }
+
+    private void showCorrectInput() {
         InputCard card = (InputCard) currentCard;
         String string = card.getAnswer();
 
@@ -269,7 +320,7 @@ public class PlayDeckViewController {
         correctInputText.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
 
         HBox correctInputHbox = new HBox(2);
-        correctInputHbox.setStyle("-fx-background-color: #6bb862; -fx-border-color:#aad4a5");
+        correctInputHbox.setStyle("-fx-background-color: #6bb862; -fx-border-color:#aad4a5; -fx-border-radius: 5; -fx-background-radius: 5;");
         correctInputHbox.setAlignment(Pos.BASELINE_CENTER);
         correctInputHbox.setPadding(new Insets(5, 5, 5, 5));
 
@@ -285,7 +336,7 @@ public class PlayDeckViewController {
         inputTextField.setDisable(true);
     }
 
-    private FontIcon setIcon(String iconLiteral, Color color){
+    private FontIcon setIcon(String iconLiteral, Color color) {
         FontIcon icon = new FontIcon();
         icon.setIconLiteral(iconLiteral);
         icon.setIconSize(20);
@@ -319,8 +370,11 @@ public class PlayDeckViewController {
 
     public interface Listener {
         void cardClicked();
+
         void nextCardClicked();
+
         void previousCardClicked();
+
         void onChoiceEntered(boolean isGoodChoice);
     }
 }
