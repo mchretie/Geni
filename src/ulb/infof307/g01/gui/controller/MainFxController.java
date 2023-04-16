@@ -308,13 +308,13 @@ public class MainFxController extends Application implements
     public void editBackOfCardClicked(Deck deck, FlashCard selectedCard) {
         editCardController
                 = new EditCardController(stage,
-                                            deck,
-                                            selectedCard,
-                                       false,
-                                            deckDAO,
-                                            errorHandler,
-                                            mainWindowViewController,
-                             this);
+                deck,
+                selectedCard,
+                false,
+                deckDAO,
+                errorHandler,
+                mainWindowViewController,
+                this);
 
         viewStack.add(View.HTML_EDITOR);
         editCardController.show();
@@ -337,7 +337,7 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void userLoggedOut(){
+    public void userLoggedOut() {
         try {
             userSessionDAO.logout();
             viewStack.clear();
@@ -357,7 +357,7 @@ public class MainFxController extends Application implements
                 mainWindowViewController,
                 this,
                 score
-                );
+        );
         viewStack.add(View.RESULT);
         resultController.show();
     }
