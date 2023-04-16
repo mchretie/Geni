@@ -52,9 +52,9 @@ public class TagViewController {
     }
 
     private void determineTagNameLabelColor() {
-        String color = this.tag.isBackgroundDark() ? "#FFFFFF" : "#000000";
-        tagNameLabel.setStyle(tagNameLabel.getStyle() + "-fx-text-fill: " + color + ";");
-        trashIcon.setIconColor(Color.web(color));
+        Color color = this.tag.isBackgroundDark() ? Color.WHITE : Color.BLACK;
+        tagNameLabel.setTextFill(color);
+        trashIcon.setIconColor(color);
     }
 
     public void setTag(Tag tag) {
