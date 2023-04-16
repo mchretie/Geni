@@ -8,13 +8,16 @@ import java.util.function.Consumer;
 
 public class GlobalLeaderboard implements Iterable<Map<String, String>>  {
 
+    public static final String ENTRY_USERNAME = "username";
+    public static final String ENTRY_TOTAL_SCORE = "total_score";
+
     private final List<Map<String, String>> leaderboard;
 
     public GlobalLeaderboard(List<Map<String, String>> allUserDeckScore) {
-        leaderboard = allUserDeckScore;
-        leaderboard.sort((a, b) -> Integer.compare(
-                Integer.parseInt(b.get("total_score")),
-                Integer.parseInt(a.get("total_score"))));
+        this.leaderboard = allUserDeckScore;
+        this.leaderboard.sort((a, b) -> Integer.compare(
+                Integer.parseInt(b.get(ENTRY_TOTAL_SCORE)),
+                Integer.parseInt(a.get(ENTRY_TOTAL_SCORE))));
     }
 
     public String getUserScore(String username) {

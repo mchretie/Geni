@@ -1,5 +1,6 @@
 package ulb.infof307.g01.server.database.dao;
 
+import ulb.infof307.g01.model.GlobalLeaderboard;
 import ulb.infof307.g01.model.Score;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
@@ -7,7 +8,6 @@ import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import javafx.util.Pair;
 
 public class ScoreDAO extends DAO {
     private final DatabaseAccess database;
@@ -100,8 +100,14 @@ public class ScoreDAO extends DAO {
             List<Map<String, String>> leaderboard = new ArrayList<>();
             while (res.next()) {
                 Map<String, String> leaderboardEntry = new HashMap<>();
-                leaderboardEntry.put("username", res.getString("username"));
-                leaderboardEntry.put("total_score", res.getString("total_score"));
+                leaderboardEntry
+                        .put(GlobalLeaderboard.ENTRY_USERNAME,
+                                res.getString("username"));
+
+                leaderboardEntry
+                        .put(GlobalLeaderboard.ENTRY_TOTAL_SCORE,
+                                res.getString("total_score"));
+
                 leaderboard.add(leaderboardEntry);
             }
 

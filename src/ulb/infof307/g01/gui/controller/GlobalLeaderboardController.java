@@ -28,6 +28,8 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
     private final LeaderboardViewController leaderboardViewController;
     private final ErrorHandler errorHandler;
 
+    private GlobalLeaderboard leaderboard;
+
     /* ====================================================================== */
     /*                              Constructor                               */
     /* ====================================================================== */
@@ -77,8 +79,7 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
         try {
             List<Node> playersScoreItem = new ArrayList<>();
 
-            GlobalLeaderboard leaderboard
-                    = leaderboardDAO.getGlobalLeaderboard();
+            leaderboard = leaderboardDAO.getGlobalLeaderboard();
 
             String username = userSessionDAO.getUsername();
 
@@ -89,8 +90,8 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
                             leaderboard.getUserScore(username),
                             deckDAO.getAllDecksMetadata().size() + "");
 
-            for (Map<String, String> entry : leaderboard) {
-                Node node = loadEntry(leaderboard, entry);
+            for (Map<String, String> leaderboardEntry : leaderboard) {
+                Node node = loadEntry(leaderboardEntry);
                 playersScoreItem.add(node);
             }
 
@@ -102,7 +103,7 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
         }
     }
 
-    private Node loadEntry(GlobalLeaderboard leaderboard, Map<String, String> entry) throws IOException {
+    private Node loadEntry(Map<String, String> leaderboardEntry) throws IOException {
         URL url = PlayerScoreItemViewController
                         .class.getResource("PlayerScoreItemView.fxml");
 
@@ -114,12 +115,12 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
 
         playerScoreItemViewController.setListener(this);
 
-        String entryUsername = entry.get("username");
+        String entryUsername = leaderboardEntry.get(GlobalLeaderboard.ENTRY_USERNAME);
         playerScoreItemViewController
                 .setPlayerScoreItem(
                         leaderboard.getUserRank(entryUsername),
                         entryUsername,
-                        leaderboard.getUserScore(entryUsername));
+                        leaderboardEntry.get(GlobalLeaderboard.ENTRY_TOTAL_SCORE));
 
         return node;
     }
