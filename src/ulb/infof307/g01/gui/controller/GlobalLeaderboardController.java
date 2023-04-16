@@ -114,9 +114,9 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
         String entryUsername = entry.get("username");
         playerScoreItemViewController
                 .setPlayerScoreItem(
-                    entryUsername,
-                    leaderboard.getUserRank(entryUsername),
-                    leaderboard.getUserScore(entryUsername));
+                        leaderboard.getUserRank(entryUsername),
+                        entryUsername,
+                        leaderboard.getUserScore(entryUsername));
 
         return node;
     }

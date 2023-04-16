@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 public class GlobalLeaderboard implements Iterable<Map<String, String>>  {
 
-    private List<Map<String, String>> leaderboard;
+    private final List<Map<String, String>> leaderboard;
 
     public GlobalLeaderboard(List<Map<String, String>> allUserDeckScore) {
         leaderboard = allUserDeckScore;
