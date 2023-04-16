@@ -35,7 +35,7 @@ public class GlobalLeaderboard implements Iterable<Map<String, String>>  {
                 return String.valueOf(i + 1);
             }
         }
-        return "0";
+        return "Pas de rang";
     }
 
     @Override

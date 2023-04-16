@@ -11,7 +11,7 @@
             prefHeight="400.0" prefWidth="600.0">
 
     <center>
-        <Label text="Sorry, you need to be logged in to access this feature." />
+        <Label text="Désolé le deck-menu n'est pas accessible sans connection." />
     </center>
 
 
