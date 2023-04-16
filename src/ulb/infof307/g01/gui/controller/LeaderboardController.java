@@ -97,6 +97,7 @@ public class LeaderboardController implements LeaderboardViewController.Listener
                 PlayerScoreItemViewController playerScoreItemViewController = loader.getController();
                 playerScoreItemViewController.setListener(this);
                 playerScoreItemViewController.setPlayerScoreItem(
+                        String.valueOf(i+1),
                         leaderboardEntry.get("username"),
                         leaderboardEntry.get("total_score"));
 

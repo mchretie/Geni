@@ -8,6 +8,8 @@ public class PlayerScoreItemViewController {
     /*                              FXML Attributes                           */
     /* ====================================================================== */
     @FXML
+    private Label rankLabel;
+    @FXML
     private Label usernameLabel;
     @FXML
     private Label scoreLabel;
@@ -28,7 +30,8 @@ public class PlayerScoreItemViewController {
         this.listener = listener;
     }
 
-    public void setPlayerScoreItem(String username, String score) {
+    public void setPlayerScoreItem(String rank, String username, String score) {
+        rankLabel.setText(rank);
         usernameLabel.setText(username);
         scoreLabel.setText(score);
     }
