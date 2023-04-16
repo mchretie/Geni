@@ -31,12 +31,34 @@ public class Tag {
         this.color = color;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public String getColor() { return color; }
-    public UUID getId() { return id; }
+    public String getColor() {
+        return color;
+    }
 
-    public void setName(String name) { this.name = name; }
+    public UUID getId() {
+        return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isBackgroundDark() {
+        // Convert the hex string to an RGB color value
+        int r = Integer.parseInt(color.substring(1, 3), 16);
+        int g = Integer.parseInt(color.substring(3, 5), 16);
+        int b = Integer.parseInt(color.substring(5, 7), 16);
+
+        // Calculate the brightness value of the color
+        double brightness = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+        // Return true if the brightness is less than 0.5 (i.e., the color is "dark")
+        return brightness < 0.3;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -47,8 +69,8 @@ public class Tag {
 
         Tag other = (Tag) obj;
         return id.equals(other.id)
-            && name.equals(other.name)
-            && color.equals(other.color);
+                && name.equals(other.name)
+                && color.equals(other.color);
     }
 
     @Override

@@ -46,10 +46,13 @@ public class DeckViewController {
 
     @FXML
     private Rectangle colorRect;
+
     @FXML
     private FlowPane tagsContainer;
+
     @FXML
     private Label amountCardsLabel;
+
     @FXML
     private Label amountTrophiesLabel;
 
@@ -149,8 +152,8 @@ public class DeckViewController {
         float gradientHeight = 0.6f;
         float gradientStrengthInverted = 1.2f;
 
-        Stop[] stops = { new Stop(0, color),
-                         new Stop(gradientHeight, Color.web("#FFFFFF00"))};
+        Stop[] stops = {new Stop(0, color),
+                new Stop(gradientHeight, Color.web("#FFFFFF00"))};
 
         return new LinearGradient(
                 1,
@@ -194,9 +197,9 @@ public class DeckViewController {
 
         File file = directoryChooser.showDialog(
                 stackPane.getParent()
-                                    .getScene()
-                                    .getWindow()
-                    );
+                        .getScene()
+                        .getWindow()
+        );
 
         listener.shareDeckClicked(deck, file);
     }
@@ -243,8 +246,11 @@ public class DeckViewController {
 
     public interface Listener {
         void deckRemoved(DeckMetadata deck);
+
         void deckDoubleClicked(DeckMetadata deck);
+
         void editDeckClicked(DeckMetadata deck);
+
         void shareDeckClicked(DeckMetadata deck, File file);
     }
 }

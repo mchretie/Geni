@@ -52,22 +52,9 @@ public class TagViewController {
     }
 
     private void determineTagNameLabelColor() {
-        String color = isDarkHex(tag.getColor()) ? "#FFFFFF" : "#000000";
+        String color = this.tag.isBackgroundDark() ? "#FFFFFF" : "#000000";
         tagNameLabel.setStyle(tagNameLabel.getStyle() + "-fx-text-fill: " + color + ";");
         trashIcon.setIconColor(Color.web(color));
-    }
-
-    private boolean isDarkHex(String hexString) {
-        // Convert the hex string to an RGB color value
-        int r = Integer.parseInt(hexString.substring(1, 3), 16);
-        int g = Integer.parseInt(hexString.substring(3, 5), 16);
-        int b = Integer.parseInt(hexString.substring(5, 7), 16);
-
-        // Calculate the brightness value of the color
-        double brightness = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-
-        // Return true if the brightness is less than 0.5 (i.e., the color is "dark")
-        return brightness < 0.3;
     }
 
     public void setTag(Tag tag) {
