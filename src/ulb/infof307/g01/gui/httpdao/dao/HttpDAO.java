@@ -1,7 +1,9 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
-import ulb.infof307.g01.gui.httpdao.exceptions.ServerRequestFailed;
+import com.google.gson.JsonArray;
+import ulb.infof307.g01.gui.httpdao.exceptions.ServerRequestFailedException;
+import ulb.infof307.g01.model.DeckMetadata;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +12,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -86,9 +87,9 @@ public abstract class HttpDAO {
     /*                          Response code reaction                        */
     /* ====================================================================== */
 
-    protected void checkResponseCode(int responseCode) throws ServerRequestFailed {
+    protected void checkResponseCode(int responseCode) throws ServerRequestFailedException {
         if (responseCode != 200)
-            throw new ServerRequestFailed("Server request failed: "
+            throw new ServerRequestFailedException("Server request failed: "
                     + responseCode);
     }
 
@@ -97,9 +98,13 @@ public abstract class HttpDAO {
     /*                        JSON string interpreters                        */
     /* ====================================================================== */
 
-    protected <T> List<T> stringToArray(String s, Class<T[]> elementClass) {
-        T[] arr = new Gson().fromJson(s, elementClass);
-        return arr == null ? new ArrayList<>() : Arrays.asList(arr);
+    protected List<DeckMetadata> stringToDeckArray(String json) {
+            List<DeckMetadata> deckList = new ArrayList<>();
+            JsonArray jsonArray = new Gson().fromJson(json, JsonArray.class);
+            for (int i = 0; i < jsonArray.size(); i++) {
+                deckList.add(DeckMetadata.fromJson(jsonArray.get(i).getAsJsonObject()));
+            }
+            return deckList;
     }
 
     /* ====================================================================== */

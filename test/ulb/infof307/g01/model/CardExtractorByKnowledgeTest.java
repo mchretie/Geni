@@ -25,12 +25,12 @@ class CardExtractorByKnowledgeTest {
     void init() {
         deck = new Deck("sorted deck test");
 
-        cardUnseen = new Card("", "", Card.KnowledgeLevel.NEVER_SEEN);
-        cardVeryBad = new Card("", "", Card.KnowledgeLevel.VERY_BAD);
-        cardBad = new Card("", "", Card.KnowledgeLevel.BAD);
-        cardAverage = new Card("", "", Card.KnowledgeLevel.AVERAGE);
-        cardGood = new Card("", "", Card.KnowledgeLevel.GOOD);
-        cardVeryGood = new Card("", "", Card.KnowledgeLevel.VERY_GOOD);
+        cardUnseen = new FlashCard("", "", Card.KnowledgeLevel.NEVER_SEEN);
+        cardVeryBad = new FlashCard("", "", Card.KnowledgeLevel.VERY_BAD);
+        cardBad = new FlashCard("", "", Card.KnowledgeLevel.BAD);
+        cardAverage = new FlashCard("", "", Card.KnowledgeLevel.AVERAGE);
+        cardGood = new FlashCard("", "", Card.KnowledgeLevel.GOOD);
+        cardVeryGood = new FlashCard("", "", Card.KnowledgeLevel.VERY_GOOD);
 
         deck.addCard(cardGood);
         deck.addCard(cardUnseen);
@@ -68,7 +68,7 @@ class CardExtractorByKnowledgeTest {
         CardExtractorByKnowledge t = new CardExtractorByKnowledge(deck);
 
         assertEquals(cardUnseen, t.getNextCard());
-        assertEquals(null, t.getPreviousCard());
+        assertNull(t.getPreviousCard());
 
         assertEquals(cardVeryBad, t.getNextCard());
         assertEquals(cardUnseen, t.getPreviousCard());
@@ -78,6 +78,6 @@ class CardExtractorByKnowledgeTest {
         assertEquals(cardAverage, t.getNextCard());
         assertEquals(cardGood, t.getNextCard());
         assertEquals(cardVeryGood, t.getNextCard());
-        assertEquals(null, t.getNextCard());
+        assertNull(t.getNextCard());
     }
 }

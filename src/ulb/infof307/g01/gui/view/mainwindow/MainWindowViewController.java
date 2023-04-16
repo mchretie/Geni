@@ -3,53 +3,101 @@ package ulb.infof307.g01.gui.view.mainwindow;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.gui.controller.EditCardController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
+import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
-import ulb.infof307.g01.model.Card;
+import ulb.infof307.g01.gui.view.result.ResultViewController;
+import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
+import ulb.infof307.g01.gui.view.profile.ProfileViewController;
+
 
 public class MainWindowViewController {
 
+    /* ====================================================================== */
+    /*                               FXML Attributes                          */
+    /* ====================================================================== */
+
     @FXML
     private FontIcon homeIcon;
+
     @FXML
     private FontIcon currentDeckIcon;
+
     @FXML
-    private FontIcon aboutIcon;
+    private FontIcon leaderboardIcon;
+
     @FXML
     private FontIcon goBackIcon;
+
     @FXML
     private FontIcon userProfileIcon;
 
     @FXML
     private StackPane centerStackPane;
+
     @FXML
     private BorderPane deckMenuView;
+
     @FXML
-    private AnchorPane editDeckView;
+    private HBox editDeckView;
+
     @FXML
     private BorderPane playDeckView;
 
     @FXML
-    private AnchorPane editCardView;
+    private VBox editCardView;
+
+    @FXML
+    private VBox profileView;
+
+    @FXML
+    private StackPane userAuthView;
+
+    @FXML
+    private BorderPane guestModeDeckMenuView;
+
+    @FXML
+    private BorderPane guestModeLeaderboardView;
+
+    @FXML
+    private VBox resultView;
+
+    @FXML
+    private BorderPane leaderboardView;
 
     @FXML
     private DeckMenuViewController deckMenuViewController;
+
     @FXML
     private EditDeckViewController editDeckViewController;
+
     @FXML
     private PlayDeckViewController playDeckViewController;
 
     @FXML
     private EditCardViewController editCardViewController;
+
+    @FXML
+    private ProfileViewController profileViewController;
+
+    @FXML
+    private UserAuthViewController userAuthViewController;
+
+    @FXML
+    private ResultViewController resultViewController;
+
+    @FXML
+    private LeaderboardViewController leaderboardViewController;
+
+
+    /* ====================================================================== */
+    /*                                 Listener                               */
+    /* ====================================================================== */
 
     private NavigationListener listener;
 
@@ -78,8 +126,22 @@ public class MainWindowViewController {
         return playDeckViewController;
     }
 
-    public EditCardViewController getEditCardViewController() {
-        return editCardViewController;
+    public EditCardViewController getEditCardViewController() { 
+        return editCardViewController; 
+    }
+
+    public LeaderboardViewController getLeaderboardViewController() { 
+        return leaderboardViewController; 
+    }
+
+    public ProfileViewController getProfileViewController() {
+        return profileViewController;
+    }
+    public UserAuthViewController getUserAuthViewController() {
+        return userAuthViewController;
+    }
+    public ResultViewController getResultViewController() {
+        return resultViewController;
     }
 
 
@@ -127,6 +189,26 @@ public class MainWindowViewController {
         setAllInvisibleExcept(editCardView);
     }
 
+    public void setProfileViewVisible() {
+        setAllInvisibleExcept(profileView);
+    }
+
+    public void setUserAuthViewController() {
+        setAllInvisibleExcept(userAuthView);
+    }
+
+    public void setGuestModeDeckMenuViewVisible() { setAllInvisibleExcept(guestModeDeckMenuView); }
+
+    public void setResultViewVisible() {
+        setAllInvisibleExcept(resultView);
+    }
+
+    public void setLeaderboardViewVisible() { 
+        setAllInvisibleExcept(leaderboardView); 
+    }
+
+    public void setGuestModeLeaderboardViewVisible() { setAllInvisibleExcept(guestModeLeaderboardView); }
+
 
     /* ====================================================================== */
     /*                          Icon Visibility                               */
@@ -157,14 +239,18 @@ public class MainWindowViewController {
 
     @FXML
     private void goToCurrentDeckClicked() {
-        listener.goToCurrentDeckClicked();
+        listener.goToCurrentPlayingDeck();
     }
 
     @FXML
-    private void goToAboutClicked() {
-        listener.goToAboutClicked();
+    private void goToLeaderboardClicked() { 
+        listener.goToLeaderboardClicked(); 
     }
 
+    @FXML
+    private void handleProfileClicked() {
+        listener.goToProfileClicked();
+    }
 
     /* ====================================================================== */
     /*                              Hover handlers                            */
@@ -191,13 +277,13 @@ public class MainWindowViewController {
     }
 
     @FXML
-    private void handleAboutHover() {
-        aboutIcon.setIconColor(Color.web("#FFFFFF"));
+    private void handleLeaderboardHover() {
+        leaderboardIcon.setIconColor(Color.web("#FFFFFF"));
     }
 
     @FXML
-    private void handleAboutExitHover() {
-        aboutIcon.setIconColor(Color.web("#000000"));
+    private void handleLeaderboardExitHover() {
+        leaderboardIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
@@ -220,6 +306,7 @@ public class MainWindowViewController {
         userProfileIcon.setIconColor(Color.web("#000000"));
     }
 
+
     /* ====================================================================== */
     /*                        Listener interface                              */
     /* ====================================================================== */
@@ -227,7 +314,8 @@ public class MainWindowViewController {
     public interface NavigationListener {
         void goBackClicked();
         void goToHomeClicked();
-        void goToCurrentDeckClicked();
-        void goToAboutClicked();
+        void goToCurrentPlayingDeck();
+        void goToLeaderboardClicked();
+        void goToProfileClicked();
     }
 }

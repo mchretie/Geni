@@ -3,7 +3,6 @@ package ulb.infof307.g01.model;
 import com.google.gson.annotations.Expose;
 
 import java.util.UUID;
-import java.util.Objects;
 
 public class Card {
     private UUID deckId;
@@ -12,9 +11,10 @@ public class Card {
     @Expose
     private String front;
     @Expose
-    private String back;
-    @Expose
     private KnowledgeLevel knowledge;
+
+    @Expose
+    protected String cardType;
 
     public enum KnowledgeLevel {
         NEVER_SEEN(0), VERY_BAD(1), BAD(2), AVERAGE(3), GOOD(4), VERY_GOOD(5);
@@ -27,23 +27,23 @@ public class Card {
         }
     }
 
-    public Card(String front, String back) {
-        this(UUID.randomUUID(), null, front, back);
+    protected Card (String front) {
+        this.id = UUID.randomUUID();
+        this.front = front;
+        this.knowledge = KnowledgeLevel.NEVER_SEEN;
     }
 
-    public Card(UUID uuid, UUID deckId, String front, String back)
+    protected Card(UUID uuid, UUID deckId, String front)
     {
         this.id = uuid;
         this.deckId = deckId;
         this.front = front;
-        this.back = back;
         this.knowledge = KnowledgeLevel.NEVER_SEEN;
     }
 
-    public Card(String front, String back, KnowledgeLevel knowledge) {
+    protected Card(String front, KnowledgeLevel knowledge) {
         this.id = UUID.randomUUID();
         this.front = front;
-        this.back = back;
         this.knowledge = knowledge;
     }
 
@@ -56,7 +56,6 @@ public class Card {
     }
 
     public String getFront() { return front; }
-    public String getBack() { return back; }
     public UUID getId() { return id; }
     public UUID getDeckId() { return deckId; }
 
@@ -64,25 +63,5 @@ public class Card {
         this.id = UUID.randomUUID();
     }
     public void setFront(String front) { this.front = front; }
-    public void setBack(String back) { this.back = back; }
     public void setDeckId(UUID deckId) { this.deckId = deckId; }
-
-    public boolean equals(Object o)
-    {
-        if (o == this)
-            return true;
-        if (o == null || o.getClass() != this.getClass())
-            return false;
-
-        Card other = (Card)o;
-        return id.equals(other.id)
-            && (deckId == other.deckId || deckId.equals(other.deckId))
-            && front.equals(other.front)
-            && back.equals(other.back);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, deckId, front, back);
-    }
 }

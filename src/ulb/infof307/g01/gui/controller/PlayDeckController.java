@@ -1,26 +1,31 @@
 package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.CardExtractor;
-import ulb.infof307.g01.model.CardExtractorRandom;
-import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
+import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
+import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
+import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 
+import java.util.Arrays;
+
 public class PlayDeckController implements PlayDeckViewController.Listener {
 
-    private final CardExtractor cardExtractor;
-    private Card currentCard;
-    private boolean frontShown = true;
-
     private final Stage stage;
-
     private final MainWindowViewController mainWindowViewController;
     private final PlayDeckViewController playDeckViewController;
     private final ControllerListener controllerListener;
+    private final ErrorHandler errorHandler;
+    private final LeaderboardDAO leaderboardDAO;
+    private final Score score;
+    private final CardExtractor cardExtractor;
+    private Card currentCard;
+    private boolean frontShown = true;
+    private boolean[] answeredCards;    // needed because user can go back to previous question
+
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -28,23 +33,32 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     public PlayDeckController(Stage stage, Deck deck,
                               MainWindowViewController mainWindowViewController,
-                              ControllerListener controllerListener) {
+                              ControllerListener controllerListener,
+                              ErrorHandler errorHandler,
+                              LeaderboardDAO leaderboardDAO, UserSessionDAO userDAO) {
 
         this.stage = stage;
         this.cardExtractor = new CardExtractorRandom(deck);
         this.currentCard = cardExtractor.getNextCard();
+        this.score = Score.createNewScore(userDAO.getUsername(), deck.getId());
+        this.answeredCards = new boolean[deck.cardCount()];
+        Arrays.fill(answeredCards, false);
+        this.leaderboardDAO = leaderboardDAO;
+        this.leaderboardDAO.setToken(userDAO.getToken());
 
         if (currentCard == null)
             throw new EmptyDeckException("Deck does not contain any cards.");
 
         this.controllerListener = controllerListener;
+        this.errorHandler = errorHandler;
         this.mainWindowViewController = mainWindowViewController;
         mainWindowViewController.makeGoBackIconVisible();
 
         this.playDeckViewController = mainWindowViewController.getPlayDeckViewController();
         playDeckViewController.setListener(this);
-        playDeckViewController.setCurrentCard(currentCard);
+        playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
         playDeckViewController.setDeckName(deck.getName());
+        playDeckViewController.setNumberOfCards(deck.cardCount());
     }
 
 
@@ -56,9 +70,18 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         mainWindowViewController.setPlayDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
+        showCard();
         stage.show();
     }
 
+    public void showCard(){
+        if (currentCard instanceof FlashCard)
+            playDeckViewController.showNormalCard();
+        else if (currentCard instanceof MCQCard)
+            playDeckViewController.showMCQCard();
+        else if (currentCard instanceof InputCard)
+            playDeckViewController.showInputCard();
+    }
 
     /* ====================================================================== */
     /*                        View Listener Method                            */
@@ -66,11 +89,13 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     @Override
     public void cardClicked() {
-        if (frontShown)
-            playDeckViewController.flipToBackOfCard();
-        else
-            playDeckViewController.flipToFrontOfCard();
-        frontShown = !frontShown;
+        if (currentCard instanceof FlashCard){
+            if (frontShown)
+                playDeckViewController.flipToBackOfCard();
+            else
+                playDeckViewController.flipToFrontOfCard();
+            frontShown = !frontShown;
+        }
     }
 
     @Override
@@ -78,11 +103,19 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         frontShown = true;
         currentCard = cardExtractor.getNextCard();
 
-        if (currentCard != null)
-            playDeckViewController.setCurrentCard(currentCard);
+        if (currentCard != null) {
+            playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+            showCard();
+            return;
+        }
 
-        else
-            controllerListener.finishedPlayingDeck();
+        try {
+            leaderboardDAO.addScore(score);
+        } catch (Exception e) {
+            errorHandler.failedAddScore(e);
+        } finally {
+            controllerListener.finishedPlayingDeck(score);
+        }
     }
 
     @Override
@@ -93,7 +126,20 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             return;
 
         currentCard = previousCard;
-        playDeckViewController.setCurrentCard(currentCard);
+        playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+
+        showCard();
+    }
+
+    @Override
+    public void onChoiceEntered(boolean isGoodChoice) {
+        int cardIndex = cardExtractor.getCurrentCardIndex();
+        if (answeredCards[cardIndex])
+            return;
+
+        answeredCards[cardIndex] = true;
+        if (isGoodChoice)
+            score.increment(1);
     }
 
 
@@ -102,6 +148,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     /* ====================================================================== */
 
     public interface ControllerListener {
-        void finishedPlayingDeck();
+        void finishedPlayingDeck(Score score);
     }
 }

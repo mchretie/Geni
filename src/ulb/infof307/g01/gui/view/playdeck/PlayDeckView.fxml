@@ -24,13 +24,11 @@
 
     <left>
         <VBox alignment="CENTER_RIGHT" prefHeight="352.0" prefWidth="60.0">
-            <Button fx:id="previousCardButton" onMouseClicked="#handlePreviousCardClicked"
-                    prefHeight="30" prefWidth="30" style="-fx-border-radius: 50%;"
-                    textAlignment="CENTER">
+            <Button onMouseClicked="#handlePreviousCardClicked" prefHeight="30" prefWidth="30"
+                    style="-fx-border-radius: 50%;" textAlignment="CENTER">
 
                 <graphic>
-                    <FontIcon iconLiteral="mdi2c-chevron-left" iconSize="30" wrappingWidth="35.0"/>
-
+                    <FontIcon iconLiteral="mdi2c-chevron-left" iconSize="30"/>
                 </graphic>
 
                 <VBox.margin>
@@ -46,8 +44,7 @@
 
     <right>
         <VBox alignment="CENTER_LEFT" prefHeight="363.0">
-            <Button fx:id="nextCardButton" alignment="CENTER"
-                    onMouseClicked="#handleNextCardClicked" prefHeight="30" prefWidth="30"
+            <Button alignment="CENTER" onMouseClicked="#handleNextCardClicked" prefHeight="30" prefWidth="30"
                     style="-fx-border-radius: 50%">
 
                 <graphic>
@@ -69,13 +66,15 @@
     </right>
 
     <center>
-        <VBox alignment="CENTER">
+        <!--Card box-->
+        <VBox fx:id="cardBox" alignment="CENTER">
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </padding>
-            <Button fx:id="cardButton" onMouseClicked="#onCardClicked" prefHeight="200.0"
-                    prefWidth="400.0" style="-fx-background-color: #FFFFFF;"
-                    textAlignment="CENTER">
+
+            <!--Normal card-->
+            <Button fx:id="cardButton" onMouseClicked="#onCardClicked" prefHeight="200.0" prefWidth="400.0"
+                    style="-fx-background-color: #FFFFFF;" textAlignment="CENTER">
                 <effect>
                     <DropShadow color="#000000" radius="5" spread="0.5"/>
                 </effect>
@@ -83,12 +82,38 @@
                     <WebView fx:id="cardWebView" prefHeight="200.0" prefWidth="200.0"/>
                 </graphic>
             </Button>
-        </VBox>
 
+            <!--MCQ card-->
+            <GridPane fx:id="choicesGrid" alignment="BASELINE_CENTER" hgap="10" maxWidth="Infinity"
+                      style="-fx-padding: 15px 20px;-fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;"
+                      vgap="10" HBox.hgrow="ALWAYS" />
+
+            <!--Input card-->
+            <VBox fx:id="inputBox" maxWidth="230"/>
+
+        </VBox>
     </center>
 
     <bottom>
-        <HBox prefHeight="50" prefWidth="600"/>
+        <HBox alignment="CENTER" prefHeight="50" prefWidth="600">
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                        <Label fx:id="currentCardIndexLabel">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label layoutX="10.0" layoutY="10.0" text="/">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="cardNumberIndexLabel" layoutX="15.0" layoutY="10.0">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Label>
+                </HBox>
+        </HBox>
     </bottom>
 
 </BorderPane>

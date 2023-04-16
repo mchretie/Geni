@@ -8,9 +8,15 @@ import java.util.UUID;
 import java.util.logging.Logger;
 import spark.Request;
 import spark.Response;
+import ulb.infof307.g01.server.database.Database;
+import ulb.infof307.g01.server.service.JWTService;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class TagRequestHandler extends Handler {
+
+    public TagRequestHandler(JWTService jwtService, Database database) {
+        super(database, jwtService);
+    }
 
     @Override
     public void init() {

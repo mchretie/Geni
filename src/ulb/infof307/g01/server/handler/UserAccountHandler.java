@@ -14,21 +14,17 @@ public class UserAccountHandler extends Handler {
 
     private final String AUTH_HEADER = "Authorization";
 
-    private final Database database;
-    private final JWTService jwtService;
-
     public UserAccountHandler(JWTService jwtService, Database database) {
-        this.jwtService = jwtService;
-        this.database = database;
+        super(database, jwtService);
     }
 
     @Override
     public void init() {
-        post(REGISTER_PATH, this::registerUser);
-        get(LOGIN_PATH, this::loginUser);
+        post(REGISTER_PATH, this::registerUser, toJson());
+        get(LOGIN_PATH, this::loginUser, toJson());
     }
 
-    private Map<String, String> loginUser(Request request, Response response) {
+    private Map<String, Boolean> loginUser(Request request, Response response) {
         try {
             String username = request.queryParams("username");
             String password = request.queryParams("password");
@@ -52,7 +48,7 @@ public class UserAccountHandler extends Handler {
         }
     }
 
-    private Map<String, String> registerUser(Request request, Response response) {
+    private Map<String, Boolean> registerUser(Request request, Response response) {
         String username = request.queryParams("username");
         String password = request.queryParams("password");
 

@@ -1,32 +1,28 @@
 package ulb.infof307.g01.gui.view.editdeck;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.Tag;
 
 public class TagViewController {
 
     /* ====================================================================== */
-    /*                                FXML: Panes                             */
+    /*                              FXML Attributes                           */
     /* ====================================================================== */
 
     @FXML
     private BorderPane tagPane;
 
-
-    /* ====================================================================== */
-    /*                              FXML:Text Fields                          */
-    /* ====================================================================== */
+    @FXML
+    private Label tagNameLabel;
 
     @FXML
-    private TextField tagNameField;
+    public FontIcon trashIcon;
 
 
     /* ====================================================================== */
@@ -55,11 +51,17 @@ public class TagViewController {
         tagPane.setStyle(tagPane.getStyle() + "-fx-background-color: " + color + ";");
     }
 
+    private void determineTagNameLabelColor() {
+        Color color = this.tag.isBackgroundDark() ? Color.WHITE : Color.BLACK;
+        tagNameLabel.setTextFill(color);
+        trashIcon.setIconColor(color);
+    }
+
     public void setTag(Tag tag) {
         this.tag = tag;
-        tagNameField.setText(tag.getName());
-        tagPane.setPrefWidth(tagNameField.getText().length() * 10 + 50);
+        tagNameLabel.setText(tag.getName());
         setTagColor(tag.getColor());
+        determineTagNameLabelColor();
     }
 
 
@@ -70,7 +72,7 @@ public class TagViewController {
     @FXML
     private void handleKeyPressedOnTextField(KeyEvent keyEvent) {
         if (keyEvent.getCode().equals(KeyCode.ENTER))
-            listener.tagNameChanged(tag, tagNameField.getText());
+            listener.tagNameChanged(tag, tagNameLabel.getText());
     }
 
     @FXML
@@ -78,9 +80,6 @@ public class TagViewController {
         listener.tagDeleted(tag);
     }
 
-    @FXML
-    private void handleEditTagButton(ActionEvent actionEvent) {
-    }
 
     /* ====================================================================== */
     /*                              Listener                                  */
@@ -88,6 +87,7 @@ public class TagViewController {
 
     public interface Listener {
         void tagNameChanged(Tag tag, String tagName);
+
         void tagDeleted(Tag tag);
     }
 }

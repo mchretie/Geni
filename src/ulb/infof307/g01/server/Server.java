@@ -4,6 +4,7 @@ import spark.Spark;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.server.handler.DeckRequestHandler;
+import ulb.infof307.g01.server.handler.LeaderboardRequestHandler;
 import ulb.infof307.g01.server.handler.UserAccountHandler;
 import ulb.infof307.g01.server.service.JWTService;
 
@@ -59,5 +60,6 @@ public class Server {
     private void launchHandlers() {
         new DeckRequestHandler(jwtService,db).init();
         new UserAccountHandler(jwtService, db).init();
+        new LeaderboardRequestHandler(db, jwtService).init();
     }
 }
