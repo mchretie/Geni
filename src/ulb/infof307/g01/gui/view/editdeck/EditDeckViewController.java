@@ -404,7 +404,6 @@ public class EditDeckViewController {
                 listener.choiceModified((MCQCard) selectedCard, textField.getText(), index);
                 loadSelectedCardEditor();
             }
-            ;
         });
 
         return textField;
