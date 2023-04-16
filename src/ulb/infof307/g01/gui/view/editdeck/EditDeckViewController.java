@@ -16,11 +16,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.FlashCard;
-import ulb.infof307.g01.model.MCQCard;
-import ulb.infof307.g01.model.InputCard;
+import ulb.infof307.g01.model.*;
 
 import java.io.File;
 import java.util.List;
@@ -256,7 +252,7 @@ public class EditDeckViewController {
 
     /**
      * Adds a button that allows the user to add a choice field to the grid
-     *  when clicked.
+     * when clicked.
      */
     private void addChoiceFieldButton() {
         Button addChoiceButton = new Button();
@@ -274,8 +270,8 @@ public class EditDeckViewController {
     /**
      * Adds a choice field to the grid
      *
-     * @param choice        the text of the choice
-     * @param index         the index of the choice in the grid
+     * @param choice          the text of the choice
+     * @param index           the index of the choice in the grid
      * @param isCorrectChoice true if the choice is the correct choice
      */
     private void addChoiceField(String choice, int index, boolean isCorrectChoice) {
@@ -302,7 +298,11 @@ public class EditDeckViewController {
 
         Button removeChoiceButton = createRemoveChoiceButton(index);
 
-        HBox hBox = new HBox();
+        HBox hBox = new HBox(2,
+                textField,
+                correctChoiceSelectionButton,
+                removeChoiceButton);
+
         HBox.setHgrow(hBox, Priority.ALWAYS);
         hBox.setAlignment(Pos.CENTER);
 
@@ -312,13 +312,12 @@ public class EditDeckViewController {
 
     /**
      * Checks if the choice field is empty and removes it if it is.
-     *  Returns true if the choice field was removed.
+     * Returns true if the choice field was removed.
      *
      * @param textField the text field of the choice field
-     * @param index the index of the choice field
-     *
+     * @param index     the index of the choice field
      * @return true if the choice field was removed or if the number of choice
-     *            fields is less than 3 and the field is empty.
+     * fields is less than 3 and the field is empty.
      */
     private boolean choiceFieldEmpty(TextField textField, int index) {
         if (textField.getText().isEmpty()
@@ -363,9 +362,9 @@ public class EditDeckViewController {
     /**
      * Focuses the next eligible node after the choice field at the given index.
      *
-     * @param index the index of the choice field
+     * @param index          the index of the choice field
      * @param createNextNode true if the next node should be created if it doesn't exist
-     * @param cycle true if the focus should cycle back to the first choice field
+     * @param cycle          true if the focus should cycle back to the first choice field
      */
     private void focusNextNode(int index, boolean createNextNode, boolean cycle) {
         int nextIndex = index + 1;
@@ -403,7 +402,8 @@ public class EditDeckViewController {
             if (!newValue && index < ((MCQCard) selectedCard).getNbOfChoices()) {
                 listener.choiceModified((MCQCard) selectedCard, textField.getText(), index);
                 loadSelectedCardEditor();
-            };
+            }
+            ;
         });
 
         return textField;
@@ -413,7 +413,7 @@ public class EditDeckViewController {
      * Gets the button to set the correct choice for a choice field
      *
      * @param isCorrectChoice true if the choice is the correct one
-     * @param index         the index of the choice field
+     * @param index           the index of the choice field
      * @return the button
      */
     private Button createCorrectChoiceSelectionButton(boolean isCorrectChoice, int index) {
@@ -692,28 +692,39 @@ public class EditDeckViewController {
     public interface Listener {
         /* Deck */
         void deckNameModified(String newName);
+
         void tagAddedToDeck(Deck deck, String tagName, String color);
+
         void deckColorModified(Deck deck, Color color);
+
         void uploadImage(String filePath);
+
         void removeCard(Card selectedCard);
 
         /* Card */
         void cardPreviewClicked(Card card);
+
         void editFrontOfCardClicked(Card selectedCard);
 
         /* MCQ Card */
         void newMCQCard();
+
         void choiceModified(MCQCard selectedCard, String text, int index);
+
         void correctChoiceChanged(MCQCard selectedCard, int i);
+
         void choiceRemoved(MCQCard selectedCard, int index);
+
         void choiceAdded(MCQCard selectedCard);
 
         /* Flash Card */
         void newFlashCard();
+
         void editBackOfCardClicked(FlashCard selectedCard);
 
         /* Input Card */
         void newInputCard();
+
         void inputAnswerModified(InputCard selectedCard, String answer);
     }
 }
