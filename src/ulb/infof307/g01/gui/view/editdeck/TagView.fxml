@@ -28,7 +28,7 @@
     <right>
         <Button onAction="#handleDeleteTagButton" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER_RIGHT">
             <graphic>
-                <FontIcon iconLiteral="mdi2t-trash-can-outline" />
+                <FontIcon fx:id="trashIcon" iconLiteral="mdi2t-trash-can-outline" />
             </graphic>
          <BorderPane.margin>
             <Insets />
