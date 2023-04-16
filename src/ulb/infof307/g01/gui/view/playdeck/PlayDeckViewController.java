@@ -2,6 +2,8 @@ package ulb.infof307.g01.gui.view.playdeck;
 
 import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -9,10 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
@@ -264,16 +265,22 @@ public class PlayDeckViewController {
         InputCard card = (InputCard) currentCard;
         String string = card.getAnswer();
 
-        BorderPane correctInputPane = new BorderPane();
-        TextField correctInputField = new TextField(string);
-        correctInputField.setEditable(false);
-        correctInputField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+        Text correctInputText = new Text(string);
+        correctInputText.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
 
-        correctInputPane.setStyle("-fx-background-color: #6bb862; -fx-border-color:#aad4a5");
-        correctInputPane.setCenter(correctInputField);
-        correctInputPane.setRight(setIcon("mdi2c-check", Color.WHITE));
+        HBox correctInputHbox = new HBox(2);
+        correctInputHbox.setStyle("-fx-background-color: #6bb862; -fx-border-color:#aad4a5");
+        correctInputHbox.setAlignment(Pos.BASELINE_CENTER);
+        correctInputHbox.setPadding(new Insets(5, 5, 5, 5));
 
-        inputBox.getChildren().add(correctInputPane);
+        Region region = new Region();
+        HBox.setHgrow(region, Priority.ALWAYS);
+
+        correctInputHbox.getChildren().add(correctInputText);
+        correctInputHbox.getChildren().add(region);
+        correctInputHbox.getChildren().add(setIcon("mdi2c-check", Color.WHITE));
+
+        inputBox.getChildren().add(correctInputHbox);
 
         inputTextField.setDisable(true);
     }
