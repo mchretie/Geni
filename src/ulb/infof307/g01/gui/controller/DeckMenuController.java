@@ -10,6 +10,7 @@ import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.util.ImageLoader;
+import ulb.infof307.g01.gui.view.deckmenu.SearchPopUpViewController;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
@@ -105,6 +106,25 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecksMetadata()));
     }
 
+    private Node loadSearchPopUp() throws IOException {
+        URL resource = DeckMenuViewController
+                .class
+                .getResource("SearchPopUpView.fxml");
+
+        FXMLLoader loader = new FXMLLoader(resource);
+
+        Node node = loader.load();
+
+        SearchPopUpViewController controller = loader.getController();
+
+        controller.setListener(this);
+
+        return node;
+    }
+
+    private void showSearchPopUp() throws IOException {
+        deckMenuViewController.setSearchPopUp(loadSearchPopUp());
+    }
 
     /* ====================================================================== */
     /*                          Database Access                               */
@@ -189,6 +209,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void searchDeckClicked(String name) {
         try {
+            showSearchPopUp();
             List<DeckMetadata> decks = deckDAO.searchDecks(name);
             deckMenuViewController.setDecks(loadDecks(decks));
 

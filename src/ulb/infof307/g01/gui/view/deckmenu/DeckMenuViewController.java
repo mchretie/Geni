@@ -201,6 +201,16 @@ public class DeckMenuViewController {
         }
     }
 
+
+    /* ====================================================================== */
+    /*                           Search Pop Up Display                        */
+    /* ====================================================================== */
+
+    public void setSearchPopUp(Node node) {
+        gridPane.add(node, 0, 0);
+    }
+
+
     /* ====================================================================== */
     /*                             Resize handlers                            */
     /* ====================================================================== */
@@ -274,6 +284,7 @@ public class DeckMenuViewController {
     private void handleImportDeckExit() {
         importDeck.setIconColor(Color.web("#000000"));
     }
+
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
