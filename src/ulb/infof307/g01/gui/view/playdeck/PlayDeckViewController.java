@@ -50,8 +50,6 @@ public class PlayDeckViewController {
 
     private Button correctChoiceButton;
 
-    private HBox inputHBox;
-
     @FXML
     private VBox inputBox;
 
@@ -210,16 +208,17 @@ public class PlayDeckViewController {
         inputBox.setVisible(true);
         choicesGrid.setVisible(false);
 
+        inputBox.getChildren().clear();
+
         inputTextField = new TextField();
         inputTextField.onKeyPressedProperty().set(this::handleTextFieldKeyPressed);
 
         Button approveAnswer = new Button();
-        FontIcon checkIcon = new FontIcon("mdi2c-check");
-        checkIcon.setIconSize(18);
+        FontIcon checkIcon = setIcon("mdi2c-check", Color.BLACK);
         approveAnswer.setGraphic(checkIcon);
         approveAnswer.onMouseClickedProperty().set(mouseEvent -> handleInputText());
 
-        inputHBox = new HBox(2);
+        HBox inputHBox = new HBox(2);
         inputHBox.setAlignment(Pos.BASELINE_CENTER);
         inputHBox.getChildren().addAll(inputTextField, approveAnswer);
 
@@ -251,7 +250,7 @@ public class PlayDeckViewController {
 
         String input = inputTextField.getText();
 
-        inputBox.getChildren().remove(inputHBox);
+        inputBox.getChildren().clear();
         inputBox.setSpacing(2);
 
         boolean correct = card.isInputCorrect(input);
@@ -265,7 +264,8 @@ public class PlayDeckViewController {
 
     private void showInput(String input, Boolean correct) {
         Text inputText = new Text(input);
-        inputText.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+        inputText.setStyle("-fx-background-color: transparent;");
+        if (correct) inputText.setFill(Color.WHITE);
 
         HBox inputHbox = new HBox(2);
         String color = correct ? "#659e40" : "#c45151";
