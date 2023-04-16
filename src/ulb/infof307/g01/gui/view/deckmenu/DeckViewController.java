@@ -139,6 +139,8 @@ public class DeckViewController {
                     new CornerRadii(10, false),
                     new Insets(-2, -10, -2, -10))));
 
+            tagLabel.setTextFill(tag.isBackgroundDark() ? Color.WHITE : Color.BLACK);
+
             tagsContainer.getChildren().add(tagLabel);
         }
     }
