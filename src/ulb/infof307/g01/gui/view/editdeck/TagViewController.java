@@ -1,7 +1,7 @@
 package ulb.infof307.g01.gui.view.editdeck;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -17,7 +17,7 @@ public class TagViewController {
     private BorderPane tagPane;
 
     @FXML
-    private TextField tagNameField;
+    private Label tagNameLabel;
 
 
     /* ====================================================================== */
@@ -48,8 +48,7 @@ public class TagViewController {
 
     public void setTag(Tag tag) {
         this.tag = tag;
-        tagNameField.setText(tag.getName());
-        tagPane.setPrefWidth(tagNameField.getText().length() * 10 + 50);
+        tagNameLabel.setText(tag.getName());
         setTagColor(tag.getColor());
     }
 
@@ -61,7 +60,7 @@ public class TagViewController {
     @FXML
     private void handleKeyPressedOnTextField(KeyEvent keyEvent) {
         if (keyEvent.getCode().equals(KeyCode.ENTER))
-            listener.tagNameChanged(tag, tagNameField.getText());
+            listener.tagNameChanged(tag, tagNameLabel.getText());
     }
 
     @FXML

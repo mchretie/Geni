@@ -7,10 +7,10 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane fx:id="tagPane" prefWidth="201.0" style="-fx-border-color: #000000; -fx-border-insets: 3px 5px; -fx-border-radius: 15px; -fx-background-radius: 15px; -fx-background-insets: 3px 5px;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.TagViewController">
+<BorderPane fx:id="tagPane" style="-fx-border-color: #000000; -fx-border-insets: 3px 5px; -fx-border-radius: 15px; -fx-background-radius: 15px; -fx-background-insets: 3px 5px;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.TagViewController">
 
     <center>
-        <TextField fx:id="tagNameField" alignment="CENTER" minHeight="10.0" onKeyPressed="#handleKeyPressedOnTextField" prefWidth="139.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
+        <Label fx:id="tagNameLabel" alignment="CENTER" onKeyPressed="#handleKeyPressedOnTextField" style="-fx-background-color: transparent;" text="Name" BorderPane.alignment="CENTER">
 
             <cursor>
                 <Cursor fx:constant="DEFAULT" />
@@ -22,11 +22,11 @@
             <Insets />
          </BorderPane.margin>
 
-        </TextField>
+        </Label>
     </center>
 
     <right>
-        <Button onAction="#handleDeleteTagButton" style="-fx-background-color: transparent;">
+        <Button onAction="#handleDeleteTagButton" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER_RIGHT">
             <graphic>
                 <FontIcon iconLiteral="mdi2t-trash-can-outline" />
             </graphic>
@@ -36,4 +36,7 @@
 
         </Button>
     </right>
+   <padding>
+      <Insets left="10.0" />
+   </padding>
 </BorderPane>
