@@ -1,17 +1,11 @@
 package ulb.infof307.g01.server.database;
 
-import javafx.util.Pair;
-import ulb.infof307.g01.model.Leaderboard;
-import ulb.infof307.g01.model.Score;
+import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.server.database.dao.*;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.DeckMetadata;
-import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -162,11 +156,11 @@ public class Database {
         scoreDao.addScore(score);
     }
 
-    public Leaderboard getLeaderboardFromDeckId(UUID deckId) {
-        return new Leaderboard(deckId, scoreDao.getScoresForDeck(deckId));
+    public DeckLeaderboard getLeaderboardFromDeckId(UUID deckId) {
+        return new DeckLeaderboard(deckId, scoreDao.getScoresForDeck(deckId));
     }
 
-    public List<Map<String, String>> getLeaderboardFromUserID() {
-        return scoreDao.getAllUserDeckScore();
+    public GlobalLeaderboard getLeaderboardFromUserID() {
+        return new GlobalLeaderboard(scoreDao.getAllUserDeckScore());
     }
 }

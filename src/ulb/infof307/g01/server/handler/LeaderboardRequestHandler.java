@@ -6,12 +6,12 @@ import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
-import ulb.infof307.g01.model.Leaderboard;
+import ulb.infof307.g01.model.GlobalLeaderboard;
+import ulb.infof307.g01.model.DeckLeaderboard;
 import ulb.infof307.g01.model.Score;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -48,6 +48,7 @@ public class LeaderboardRequestHandler extends Handler {
 
             database.saveScore(score);
             return successfulResponse;
+
         } catch (Exception e) {
             String errorMessage = "Failed to add score: " + e.getMessage();
             logger.warning(errorMessage);
@@ -56,7 +57,7 @@ public class LeaderboardRequestHandler extends Handler {
         }
     }
 
-    private Leaderboard getLeaderboardByDeckId(Request req, Response res) {
+    private DeckLeaderboard getLeaderboardByDeckId(Request req, Response res) {
         try {
             UUID deckId = UUID.fromString(req.queryParams("deck"));
             if (! database.deckIdExists(deckId))
@@ -71,7 +72,7 @@ public class LeaderboardRequestHandler extends Handler {
     }
 
     private Score getBestScoreByDeckId(Request request, Response response) {
-        Leaderboard leaderboard = getLeaderboardByDeckId(request, response);
+        DeckLeaderboard leaderboard = getLeaderboardByDeckId(request, response);
 
         if (leaderboard == null || leaderboard.isEmpty())
             return null;
@@ -79,14 +80,14 @@ public class LeaderboardRequestHandler extends Handler {
         return leaderboard.getLeaderboard().get(0);
     }
 
-    public List<Map<String, String>> getBestScoreByUserID(Request req, Response res) {
+    public GlobalLeaderboard getBestScoreByUserID(Request req, Response res) {
         try {
             return database.getLeaderboardFromUserID();
+
         } catch (Exception e) {
             String errorMessage = "Failed to get user score: " + e.getMessage();
             logger.warning(errorMessage);
             halt(500, errorMessage);
-
         }
         return null;
     }

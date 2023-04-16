@@ -1,6 +1,5 @@
 package ulb.infof307.g01.model;
 
-import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,14 +10,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestLeaderboard {
+public class TestDeckLeaderboard {
     private Deck deck;
-    private Leaderboard leaderboard;
+    private DeckLeaderboard leaderboard;
 
     @BeforeEach
     void init() {
         this.deck = new Deck("test");
-        this.leaderboard = new Leaderboard(deck.getId());
+        this.leaderboard = new DeckLeaderboard(deck.getId());
     }
 
     @Test

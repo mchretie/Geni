@@ -81,6 +81,7 @@ public class ScoreDAO extends DAO {
                 scores.add(extractScore(res));
             }
             return scores;
+
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -104,11 +105,8 @@ public class ScoreDAO extends DAO {
                 leaderboard.add(leaderboardEntry);
             }
 
-            leaderboard.sort((a, b) -> Integer.compare(
-                    Integer.parseInt(b.get("total_score")),
-                    Integer.parseInt(a.get("total_score"))));
-
             return leaderboard;
+
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }

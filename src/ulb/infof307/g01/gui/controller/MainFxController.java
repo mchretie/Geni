@@ -36,7 +36,7 @@ public class MainFxController extends Application implements
         ResultController.ControllerListener,
         UserAuthController.ControllerListener,
         ProfileController.ControllerListener,
-        LeaderboardController.ControllerListener {
+        GlobalLeaderboardController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -49,7 +49,7 @@ public class MainFxController extends Application implements
     private ResultController resultController;
     private UserAuthController userAuthController;
     private ProfileController profileController;
-    private LeaderboardController leaderboardController;
+    private GlobalLeaderboardController leaderboardController;
 
     private MainWindowViewController mainWindowViewController;
 
@@ -267,9 +267,10 @@ public class MainFxController extends Application implements
     @Override
     public void leaderboardClicked() {
         try {
-            leaderboardController = new LeaderboardController(
+            leaderboardController = new GlobalLeaderboardController(
                     stage,
                     mainWindowViewController,
+                    errorHandler,
                     this,
                     userSessionDAO,
                     deckDAO,
@@ -402,10 +403,10 @@ public class MainFxController extends Application implements
     public void goToLeaderboardClicked() {
         try {
             if (leaderboardController == null) {
-                System.out.println("Creating new leaderboard controller");
-                leaderboardController = new LeaderboardController(
+                leaderboardController = new GlobalLeaderboardController(
                         stage,
                         mainWindowViewController,
+                        errorHandler,
                         this,
                         userSessionDAO,
                         deckDAO,

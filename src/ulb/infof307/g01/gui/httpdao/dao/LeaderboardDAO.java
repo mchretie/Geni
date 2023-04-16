@@ -1,15 +1,13 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import ulb.infof307.g01.model.Leaderboard;
+import ulb.infof307.g01.model.GlobalLeaderboard;
+import ulb.infof307.g01.model.DeckLeaderboard;
 import ulb.infof307.g01.model.Score;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class LeaderboardDAO extends HttpDAO {
@@ -24,12 +22,12 @@ public class LeaderboardDAO extends HttpDAO {
         checkResponseCode(response.statusCode());
     }
 
-    public Leaderboard getLeaderboardForDeck(UUID deckId) throws IOException, InterruptedException {
+    public DeckLeaderboard getLeaderboardForDeck(UUID deckId) throws IOException, InterruptedException {
         HttpResponse<String> response = get(ServerPaths.GET_LEADERBOARD_PATH + "?deck=" + deckId.toString());
 
         checkResponseCode(response.statusCode());
 
-        return new Gson().fromJson(response.body(), Leaderboard.class);
+        return new Gson().fromJson(response.body(), DeckLeaderboard.class);
     }
 
     public Score getBestScoreForDeck(UUID deckId) throws IOException, InterruptedException {
@@ -40,14 +38,11 @@ public class LeaderboardDAO extends HttpDAO {
         return new Gson().fromJson(response.body(), Score.class);
     }
 
-    public List<Map<String, String>> getGlobalLeaderboard() throws IOException, InterruptedException {
+    public GlobalLeaderboard getGlobalLeaderboard() throws IOException, InterruptedException {
         HttpResponse<String> response = get(ServerPaths.GET_BEST_SCORE_USER_ID_PATH);
 
         checkResponseCode(response.statusCode());
 
-        return new Gson().fromJson(response.body(), new TypeToken<List<Map<String, String>>>() {}.getType());
-
+        return new Gson().fromJson(response.body(), GlobalLeaderboard.class);
     }
-
-
 }
