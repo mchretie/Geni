@@ -4,7 +4,6 @@ import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
@@ -13,7 +12,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.web.WebView;
@@ -53,18 +51,11 @@ public class PlayDeckViewController {
 
     private Button correctChoiceButton;
 
-//    @FXML
-//    private BorderPane inputPane;
-
     private HBox inputHBox;
 
     @FXML
     private VBox inputBox;
 
-    //    @FXML
-    private Button approveAnswer;
-
-    //    @FXML
     private TextField inputTextField;
     @FXML
     private Label currentCardIndexLabel;
@@ -223,7 +214,7 @@ public class PlayDeckViewController {
         inputTextField = new TextField();
         inputTextField.onKeyPressedProperty().set(this::handleTextFieldKeyPressed);
 
-        approveAnswer = new Button();
+        Button approveAnswer = new Button();
         FontIcon checkIcon = new FontIcon("mdi2c-check");
         checkIcon.setIconSize(18);
         approveAnswer.setGraphic(checkIcon);
@@ -232,18 +223,10 @@ public class PlayDeckViewController {
         });
 
         inputHBox = new HBox(2);
-//        inputHBox.setStyle("-fx-background-color: #6bb862; -fx-border-color:#aad4a5; -fx-border-radius: 5; -fx-background-radius: 5;");
         inputHBox.setAlignment(Pos.BASELINE_CENTER);
-//        inputHBox.setPadding(new Insets(5, 5, 5, 5));
         inputHBox.getChildren().addAll(inputTextField, approveAnswer);
 
         inputBox.getChildren().add(inputHBox);
-
-//        inputTextField.setDisable(false);
-//        inputTextField.setText("");
-//        inputTextField.setStyle("");
-//        inputPane.setStyle("");
-//        inputPane.setRight(approveAnswer);
 
         if (inputBox.getChildren().size() > 1) inputBox.getChildren().remove(1);
     }
@@ -274,18 +257,12 @@ public class PlayDeckViewController {
         inputBox.getChildren().remove(inputHBox);
         inputBox.setSpacing(2);
 
-        if ((card.isInputCorrect(inputTextField.getText()))) {
-            listener.onChoiceEntered(true);
-//            inputBox.getChildren().add(setIcon("mdi2c-check", Color.WHITE));
-//            inputPane.setRight(setIcon("mdi2c-check", Color.WHITE));
-//            inputPane.setStyle("-fx-background-color: #659e40;");
-        } else {
-            listener.onChoiceEntered(false);
-            showInput(input, false);
-//            inputPane.setStyle("-fx-background-color: #c45151;");
-//            inputPane.setRight(setIcon("mdi2c-close", Color.BLACK));
-        }
-//        showCorrectInput();
+        boolean correct = card.isInputCorrect(input);
+
+        listener.onChoiceEntered(correct);
+
+        if (!correct) showInput(input, false);
+
         showInput(card.getAnswer(), true);
     }
 
@@ -312,29 +289,6 @@ public class PlayDeckViewController {
         inputBox.getChildren().add(inputHbox);
     }
 
-    private void showCorrectInput() {
-        InputCard card = (InputCard) currentCard;
-        String string = card.getAnswer();
-
-        Text correctInputText = new Text(string);
-        correctInputText.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
-
-        HBox correctInputHbox = new HBox(2);
-        correctInputHbox.setStyle("-fx-background-color: #6bb862; -fx-border-color:#aad4a5; -fx-border-radius: 5; -fx-background-radius: 5;");
-        correctInputHbox.setAlignment(Pos.BASELINE_CENTER);
-        correctInputHbox.setPadding(new Insets(5, 5, 5, 5));
-
-        Region region = new Region();
-        HBox.setHgrow(region, Priority.ALWAYS);
-
-        correctInputHbox.getChildren().add(correctInputText);
-        correctInputHbox.getChildren().add(region);
-        correctInputHbox.getChildren().add(setIcon("mdi2c-check", Color.WHITE));
-
-        inputBox.getChildren().add(correctInputHbox);
-
-        inputTextField.setDisable(true);
-    }
 
     private FontIcon setIcon(String iconLiteral, Color color) {
         FontIcon icon = new FontIcon();
