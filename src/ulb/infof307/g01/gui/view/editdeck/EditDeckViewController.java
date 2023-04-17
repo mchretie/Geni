@@ -623,6 +623,7 @@ public class EditDeckViewController {
 
     @FXML
     private void handleUpdateDeckName() {
+        System.out.println("deck name modified");
         listener.deckNameModified(deckNameText.getText());
     }
 
@@ -644,8 +645,11 @@ public class EditDeckViewController {
 
     @FXML
     private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
-        if (!keyEvent.getCode().equals(KeyCode.ENTER))
+        System.out.println("key pressed");
+        if (!keyEvent.getCode().equals(KeyCode.ENTER)){
+            System.out.println("not enter");
             return;
+        }
 
         mainHbox.requestFocus();
     }

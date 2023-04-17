@@ -169,8 +169,10 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void deckNameModified(String newName) {
         try {
-            if (!isDeckNameValid(newName))
+            if (!isDeckNameValid(newName)){
+                editDeckViewController.setDeck(deck);
                 return;
+            }
             deck.setName(newName.trim());
             deckDAO.saveDeck(deck);
 

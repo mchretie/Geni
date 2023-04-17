@@ -13,7 +13,7 @@
     <VBox fx:id="leftVbox" HBox.hgrow="ALWAYS">
         <!-- Deck name -->
         <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-            <TextField fx:id="deckNameText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" onKeyReleased="#handleUpdateDeckName" style="-fx-background-color: #00000000;" text="Deck Name">
+            <TextField fx:id="deckNameText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" style="-fx-background-color: #00000000;" text="Deck Name">
 
                 <font>
                     <Font name="System Italic" size="28.0" />
