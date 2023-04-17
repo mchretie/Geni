@@ -16,8 +16,6 @@ public class GameHistoryDAO extends HttpDAO {
         HttpResponse<String> response = get(ServerPaths.GAME_HISTORY_PATH);
         checkResponseCode(response.statusCode());
 
-        System.out.println(response.body());
-
         return new Gson().fromJson(response.body(), GameHistory.class);
     }
 }
