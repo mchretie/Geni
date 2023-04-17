@@ -8,5 +8,8 @@ test:
 pack:
 	mvn package
 
-run:
+run-client:
 	mvn clean javafx:run
+
+run-server:
+	mvn compile exec:java -Dexec.mainClass="ulb.infof307.g01.server.LaunchServer"
