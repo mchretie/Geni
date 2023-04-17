@@ -12,6 +12,7 @@ import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.gui.view.result.ResultViewController;
+import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
 import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 
@@ -94,6 +95,9 @@ public class MainWindowViewController {
     @FXML
     private LeaderboardViewController leaderboardViewController;
 
+    @FXML
+    private StatisticsViewController statisticsViewController;
+
 
     /* ====================================================================== */
     /*                                 Listener                               */
@@ -117,23 +121,16 @@ public class MainWindowViewController {
     public DeckMenuViewController getDeckMenuViewController() {
         return deckMenuViewController;
     }
-
     public EditDeckViewController getEditDeckViewController() {
         return editDeckViewController;
     }
-
     public PlayDeckViewController getPlayDeckViewController() {
         return playDeckViewController;
     }
-
     public EditCardViewController getEditCardViewController() { 
         return editCardViewController; 
     }
-
-    public LeaderboardViewController getLeaderboardViewController() { 
-        return leaderboardViewController; 
-    }
-
+    public LeaderboardViewController getLeaderboardViewController() { return leaderboardViewController; }
     public ProfileViewController getProfileViewController() {
         return profileViewController;
     }
@@ -143,6 +140,7 @@ public class MainWindowViewController {
     public ResultViewController getResultViewController() {
         return resultViewController;
     }
+    public StatisticsViewController getStatisticsViewController() { return statisticsViewController; }
 
 
     /* ====================================================================== */

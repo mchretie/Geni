@@ -36,7 +36,8 @@ public class MainFxController extends Application implements
         ResultController.ControllerListener,
         UserAuthController.ControllerListener,
         ProfileController.ControllerListener,
-        GlobalLeaderboardController.ControllerListener {
+        GlobalLeaderboardController.ControllerListener,
+        StatisticsController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -50,6 +51,7 @@ public class MainFxController extends Application implements
     private UserAuthController userAuthController;
     private ProfileController profileController;
     private GlobalLeaderboardController leaderboardController;
+    private StatisticsController statisticsController;
 
     private MainWindowViewController mainWindowViewController;
 
@@ -74,7 +76,8 @@ public class MainFxController extends Application implements
         LOGIN_PROFILE,
         PROFILE,
         RESULT,
-        LEADERBOARD
+        LEADERBOARD,
+        STATISTICS
     }
 
     List<View> viewStack = new ArrayList<>();
@@ -215,6 +218,7 @@ public class MainFxController extends Application implements
                 }
                 case RESULT -> resultController.show();
                 case LEADERBOARD -> leaderboardController.show();
+                case STATISTICS -> statisticsController.show();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -372,6 +376,21 @@ public class MainFxController extends Application implements
         } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
         }
+    }
+
+    @Override
+    public void StatisticsClicked() {
+        statisticsController = new StatisticsController(
+                stage,
+                errorHandler,
+                mainWindowViewController,
+                this,
+                userSessionDAO
+                );
+
+        viewStack.add(View.STATISTICS);
+        statisticsController.show();
+
     }
 
 

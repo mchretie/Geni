@@ -1,16 +1,39 @@
 package ulb.infof307.g01.gui.view.statistics;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
 
-public class StatisticsViewController extends Application {
+public class StatisticsViewController {
 
-    public static void main(String[] args) {
-        launch(args);
+    /* ====================================================================== */
+    /*                              FXML Attributes                           */
+    /* ====================================================================== */
+
+
+    /* ====================================================================== */
+    /*                                Listener                                */
+    /* ====================================================================== */
+    private Listener listener;
+
+
+    /* ====================================================================== */
+    /*                                Setters                                 */
+    /* ====================================================================== */
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+
+    /* ====================================================================== */
+    /*                               Statistics                               */
+    /* ====================================================================== */
+
+
+    /* ====================================================================== */
+    /*                           Listener Interface                           */
+    /* ====================================================================== */
+
+    public interface Listener {
 
     }
 }
