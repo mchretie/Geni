@@ -22,6 +22,7 @@ import ulb.infof307.g01.model.Score;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -117,6 +118,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      */
     private List<Node> loadDecks(List<DeckMetadata> decks) throws IOException, InterruptedException {
         List<Node> decksLoaded = new ArrayList<>();
+
+        decks.sort(Comparator.comparing(DeckMetadata::name));
 
         for (DeckMetadata deck : decks) {
 
