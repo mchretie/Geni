@@ -71,11 +71,11 @@ public class DeckMenuViewController {
     private void initComboBox() {
         ObservableList<String> options =
                 FXCollections.observableArrayList(
-                        "Name",
+                        "Nom",
                         "Tag"
                 );
         comboBox.setItems(options);
-        comboBox.setValue("Name");
+        comboBox.setValue("Nom");
     }
 
     private void initWidthListener() {
@@ -105,7 +105,7 @@ public class DeckMenuViewController {
         SearchType searchType = null;
         String searchTypeText = comboBox.getValue();
 
-        if (searchTypeText.equals("Name")) {
+        if (searchTypeText.equals("Nom")) {
             searchType = SearchType.Name;
         } else if (searchTypeText.equals("Tag")) {
             searchType =  SearchType.Tag;
