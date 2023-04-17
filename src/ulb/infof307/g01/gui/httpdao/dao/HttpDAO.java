@@ -5,7 +5,9 @@ import com.google.gson.JsonArray;
 import ulb.infof307.g01.gui.httpdao.exceptions.ServerRequestFailedException;
 import ulb.infof307.g01.model.DeckMetadata;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -54,18 +56,6 @@ public abstract class HttpDAO {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    protected HttpResponse<String> put(String path, String body)
-            throws IOException, InterruptedException {
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(java.net.URI.create(BASE_URL + path))
-                .PUT(HttpRequest.BodyPublishers.ofString(body))
-                .header(AUTH_HEADER, token)
-                .build();
-
-        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
     protected HttpResponse<String> delete(String path)
             throws IOException, InterruptedException {
 
@@ -76,6 +66,20 @@ public abstract class HttpDAO {
                 .build();
 
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    protected HttpResponse<String> upload(String path, File file, String filename)
+            throws IOException, InterruptedException {
+
+        HttpRequest uploadFileRequest = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + path))
+                .header("Content-Type", "application/octet-stream")
+                .header(AUTH_HEADER, token)
+                .header("File-Name", filename)
+                .POST(HttpRequest.BodyPublishers.ofFile(file.toPath()))
+                .build();
+
+        return httpClient.send(uploadFileRequest, HttpResponse.BodyHandlers.ofString());
     }
 
 

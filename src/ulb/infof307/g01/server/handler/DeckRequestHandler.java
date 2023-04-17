@@ -1,14 +1,6 @@
 package ulb.infof307.g01.server.handler;
 
-import static spark.Spark.*;
-import static ulb.infof307.g01.shared.constants.ServerPaths.*;
-
 import com.google.gson.Gson;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import com.google.gson.JsonObject;
 import spark.Request;
 import spark.Response;
@@ -16,6 +8,18 @@ import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.DeckMetadata;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import static spark.Spark.*;
+import static ulb.infof307.g01.shared.constants.ServerPaths.*;
+import static java.util.stream.Collectors.toList;
 
 
 public class DeckRequestHandler extends Handler {
@@ -26,39 +30,42 @@ public class DeckRequestHandler extends Handler {
 
   @Override
   public void init() {
-      post(SAVE_DECK_PATH, this::saveDeck, toJson());
-      delete(DELETE_DECK_PATH, this::deleteDeck, toJson());
-      get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
-      get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
-      get(GET_DECK_PATH, this::getDeck, toJson());
-      get(DECK_EXISTS_PATH, this::deckExists, toJson());
+    post(SAVE_DECK_PATH, this::saveDeck, toJson());
+    delete(DELETE_DECK_PATH, this::deleteDeck, toJson());
+    get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
+    get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
+    get(GET_DECK_PATH, this::getDeck, toJson());
+    get(DECK_EXISTS_PATH, this::deckExists, toJson());
+    post(SAVE_DECK_IMAGE_PATH, this::saveImage);
   }
 
   private boolean deckExists(Request request, Response response) {
-      try {
-          String username = usernameFromRequest(request);
-          UUID userId = UUID.fromString(database.getUserId(username));
+    try {
+      String username = usernameFromRequest(request);
+      UUID userId = UUID.fromString(database.getUserId(username));
 
-          String deckName = request.queryParams("name");
-          deckName = deckName.replace("_", " ");
+      String deckName = request.queryParams("name");
+      deckName = deckName.replace("_", " ");
 
-          return database.deckNameExists(deckName, userId);
+      return database.deckNameExists(deckName, userId);
 
-      } catch (Exception e) {
-          String message = "Failed to check if deck exists: " + e.getMessage();
-          logger.warning(message);
-          halt(500, message);
+    } catch (Exception e) {
+      String message = "Failed to check if deck exists: " + e.getMessage();
+      logger.warning(message);
+      halt(500, message);
 
-          return false;
-      }
+      return false;
+    }
   }
 
   private Map<String, Boolean> saveDeck(Request req, Response res) {
+    // TODO maybe divide into two methods addDeck and updateDeck
     try {
       String username = usernameFromRequest(req);
       UUID userId = UUID.fromString(database.getUserId(username));
 
       Deck deck = new Deck(new Gson().fromJson(req.body(), JsonObject.class));
+      deck.setImage(deck.getImage().replace(BASE_URL, ""));
 
       database.saveDeck(deck, userId);
       return successfulResponse;
@@ -92,10 +99,27 @@ public class DeckRequestHandler extends Handler {
   }
 
   private Deck getDeck(Request req, Response res) {
-      String username = usernameFromRequest(req);
-      UUID userId = UUID.fromString(database.getUserId(username));
-      UUID deckId = UUID.fromString(req.queryParams("deck_id"));
-      return database.getDeck(deckId, userId);
+    String username = usernameFromRequest(req);
+    UUID userId = UUID.fromString(database.getUserId(username));
+    UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+    Deck deck = database.getDeck(deckId, userId);
+    deck.setImage(BASE_URL + deck.getImage());
+    return deck;
+  }
+
+  private DeckMetadata setupImagePath(DeckMetadata deckMetadata) {
+    return new DeckMetadata(deckMetadata.id(),
+              deckMetadata.name(),
+              deckMetadata.color(),
+              BASE_URL + deckMetadata.image(),
+              deckMetadata.cardCount(),
+              deckMetadata.tags(),
+              deckMetadata.deckHashCode());
+  }
+  private List<DeckMetadata> setupImagePath(List<DeckMetadata> deckMetadatas) {
+    return deckMetadatas.stream()
+            .map(this::setupImagePath)
+            .collect(toList());
   }
 
   private List<DeckMetadata> getAllDecks(Request req, Response res) {
@@ -103,7 +127,7 @@ public class DeckRequestHandler extends Handler {
       String username = usernameFromRequest(req);
       UUID userId = UUID.fromString(database.getUserId(username));
 
-      return database.getAllUserDecksMetadata(userId);
+      return setupImagePath(database.getAllUserDecksMetadata(userId));
 
     } catch (Exception e) {
       String message = "Failed to get all decks: " + e.getMessage();
@@ -122,7 +146,7 @@ public class DeckRequestHandler extends Handler {
       String userSearch = req.queryParams("name");
       userSearch = userSearch.replace("_", " ");
 
-      return database.searchDecksMetadata(userSearch, userId);
+      return setupImagePath(database.searchDecksMetadata(userSearch, userId));
 
     } catch (Exception e) {
       String message = "Failed to search decks: " + e.getMessage();
@@ -130,6 +154,24 @@ public class DeckRequestHandler extends Handler {
       halt(500, message);
 
       return new ArrayList<>();
+    }
+  }
+
+  private Map<String, Boolean> saveImage(Request req, Response res) {
+    try {
+      String fileName = req.headers("File-Name");
+      byte[] fileContent = req.bodyAsBytes();
+      // Save the file to disk
+      Path filePath = Paths.get("images", fileName);
+      Files.write(filePath, fileContent);
+      return successfulResponse;
+
+    } catch (Exception e) {
+      String message = "Failed to save image: " + e.getMessage();
+      logger.warning(message);
+      halt(500, message);
+
+      return failedResponse;
     }
   }
 }

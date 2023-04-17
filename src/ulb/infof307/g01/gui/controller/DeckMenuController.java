@@ -13,6 +13,7 @@ import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
+import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController.SearchType;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.DeckMetadata;
@@ -188,7 +189,13 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void searchDeckClicked(String name) {
         try {
-            List<DeckMetadata> decks = deckDAO.searchDecks(name);
+            List<DeckMetadata> decks = null;
+            if (deckMenuViewController.getSearchType().equals(SearchType.Name)) {
+                decks = deckDAO.searchDecks(name);
+            } else if (deckMenuViewController.getSearchType().equals(SearchType.Tag)) {
+                decks = deckDAO.searchDecksByTags(name);
+            }
+            assert decks != null;
             deckMenuViewController.setDecks(loadDecks(decks));
 
         } catch (IOException e) {
