@@ -23,7 +23,7 @@
                   <font>
                      <Font size="22.5" />
                   </font></Text>
-               <Label alignment="CENTER" opacity="0.65" text="69" textFill="RED">
+               <Label fx:id="totalGamesPlayedLabel" alignment="CENTER" opacity="0.65" text="69" textFill="RED">
                   <font>
                      <Font size="22.5" />
                   </font></Label>
@@ -36,7 +36,7 @@
                   <font>
                      <Font size="22.5" />
                   </font></Text>
-               <Label alignment="CENTER" opacity="0.65" text="0" textFill="RED">
+               <Label fx:id="gamesPlayedTodayLabel" alignment="CENTER" opacity="0.65" text="0" textFill="RED">
                   <font>
                      <Font size="22.5" />
                   </font></Label>
@@ -49,7 +49,7 @@
                   <font>
                      <Font size="22.5" />
                   </font></Text>
-               <Label alignment="CENTER" text="16" textFill="#d0a2ec">
+               <Label fx:id="totalDecksLabel" alignment="CENTER" text="16" textFill="#d0a2ec">
                   <font>
                      <Font size="22.5" />
                   </font></Label>
@@ -62,7 +62,7 @@
                   <font>
                      <Font size="22.5" />
                   </font></Text>
-               <Label alignment="CENTER" text="420" textFill="#449b6c">
+               <Label fx:id="totalScoreLabel" alignment="CENTER" text="420" textFill="#449b6c">
                   <font>
                      <Font size="22.5" />
                   </font></Label>
