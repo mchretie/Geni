@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -61,16 +62,19 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
                <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Game History" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Historique des jeux " textAlignment="CENTER" HBox.hgrow="ALWAYS">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Text>
                </HBox>
-               <ListView fx:id="gameHistoryContainer">
+               <ListView fx:id="gameHistoryContainer" onMousePressed="#gameHistoryContainerClicked">
                   <VBox.margin>
                      <Insets bottom="50.0" left="50.0" right="50.0" />
-                  </VBox.margin></ListView>
+                  </VBox.margin>
+                  <cursor>
+                     <Cursor fx:constant="DEFAULT" />
+                  </cursor></ListView>
             </VBox>
          </HBox>
       </VBox>

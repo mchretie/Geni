@@ -6,6 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ public class StatisticsViewController {
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
+    @FXML
+    private BorderPane borderPane;
     @FXML
     private Label totalGamesPlayedLabel;
     @FXML
@@ -53,9 +57,18 @@ public class StatisticsViewController {
     /*                              Game History                              */
     /* ====================================================================== */
     public void setGameHistory(List<Node> gameHistoryItem) {
+
         ObservableList<Node> items = FXCollections.observableArrayList(gameHistoryItem);
         gameHistoryContainer.setItems(items);
+
+        borderPane.requestFocus();
+
         gameHistoryContainer.refresh();
+    }
+
+    public void gameHistoryContainerClicked(MouseEvent mouseEvent) {
+        gameHistoryContainer.getSelectionModel().clearSelection();
+        borderPane.requestFocus();
     }
 
 
