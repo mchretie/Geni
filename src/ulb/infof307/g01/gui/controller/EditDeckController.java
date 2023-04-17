@@ -11,6 +11,7 @@ import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -245,6 +246,18 @@ public class EditDeckController implements EditDeckViewController.Listener,
         }
     }
 
+    @Override
+    public void deckImageModified(Deck deck, File image, String filename) {
+        try {
+            deck.setImage(filename);
+            deckDAO.uploadImage(image, filename);
+            deckDAO.saveDeck(deck);
+
+        } catch (InterruptedException | IOException e) {
+            errorHandler.savingError(e);
+        }
+    }
+
     private void newCard(Card card) {
         try {
             deck.addCard(card);
@@ -315,11 +328,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void cardPreviewClicked(Card card) {
         editDeckViewController.setSelectedCard(card);
         editDeckViewController.loadSelectedCardEditor();
-    }
-
-    @Override
-    public void uploadImage(String filePath) {
-        System.out.println(filePath);
     }
 
     @Override

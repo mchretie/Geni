@@ -7,6 +7,7 @@ import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.model.DeckMetadata;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.List;
@@ -59,11 +60,9 @@ public class DeckDAO extends HttpDAO {
 
     private Deck fetchDeck(DeckMetadata deckMetadata)
             throws IOException, InterruptedException {
-
         String path = ServerPaths.GET_DECK_PATH;
         String parameters = "?deck_id=%s".formatted(deckMetadata.id());
         HttpResponse<String> response = get(path + parameters);
-
         return new Deck(new Gson().fromJson(response.body(), JsonObject.class));
     }
 
@@ -143,7 +142,7 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        deckCache.updateDeck(deck);
+        deckCache.updateDeck(fetchDeck(deck.getMetadata()));
     }
 
     public Optional<Deck> getDeck(DeckMetadata deckMetadata)
@@ -158,6 +157,15 @@ public class DeckDAO extends HttpDAO {
     public void setToken(String token) {
         deckCache = null;
         super.setToken(token);
+    }
+
+    public void uploadImage(File image, String filename)
+            throws IOException, InterruptedException {
+
+        HttpResponse<String> response
+                = upload(ServerPaths.SAVE_DECK_IMAGE_PATH, image, filename);
+
+        checkResponseCode(response.statusCode());
     }
 
 }
