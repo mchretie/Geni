@@ -94,12 +94,11 @@ public class StatisticsController implements StatisticsViewController.Listener {
         GameHistoryItemViewController gameHistoryItemViewController
                 = loader.getController();
 
-        String date = game.getTimestamp();
-        String deckName = game.getDeckName();
-        String score = game.getScore();
-
         gameHistoryItemViewController
-                .setGameHistoryItem(date, deckName, score);
+                .setGameHistoryItem(
+                        game.getFormattedTimestamp(),
+                        game.deckName(),
+                        game.score());
 
         return node;
 

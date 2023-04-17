@@ -124,7 +124,7 @@ public class ScoreDAO extends DAO {
         String sql = """
                 SELECT d.name AS deck_name, s.score, s.timestamp
                 FROM deck d
-                INNER JOIN user_deck_score s ON d.deck_id = s.deck_id;
+                INNER JOIN user_deck_score s ON d.deck_id = s.deck_id
                 WHERE s.user_id = ?;
                 """;
 
@@ -136,14 +136,10 @@ public class ScoreDAO extends DAO {
                 int score = res.getInt("score");
                 Date date = new Date(res.getLong("timestamp"));
 
-                games.add(new Game(date.toString(), deckName, score + ""));
+                games.add(new Game(date, deckName, score + ""));
             }
 
             return games;
-
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-            return null;
 
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());

@@ -10,6 +10,7 @@ public class GameHistory implements Iterable<Game> {
 
     public GameHistory(List<Game> games) {
         this.games = games;
+        games.sort((a, b) -> b.timestamp().compareTo(a.timestamp()));
     }
 
     @Override

@@ -1,25 +1,12 @@
 package ulb.infof307.g01.model;
 
-public class Game {
-    private final String timestamp;
-    private final String deckName;
-    private final String score;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-    public Game(String timestamp, String deckName, String score) {
-        this.timestamp = timestamp;
-        this.deckName = deckName;
-        this.score = score;
-    }
+public record Game(Date timestamp, String deckName, String score) {
 
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public String getDeckName() {
-        return deckName;
-    }
-
-    public String getScore() {
-        return score;
+    public String getFormattedTimestamp() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(timestamp);
     }
 }
