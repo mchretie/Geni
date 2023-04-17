@@ -150,7 +150,7 @@ public class MainFxController extends Application implements
         stage.setHeight(800);
         stage.setMinHeight(500);
         stage.setMinWidth(600);
-        stage.setTitle("Pokémon TCG Deck Builder");
+        stage.setTitle("Quinzelette");
     }
 
     private void initMainWindowView(Stage stage) throws IOException {

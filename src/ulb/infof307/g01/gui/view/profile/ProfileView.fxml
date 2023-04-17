@@ -8,7 +8,7 @@
 
 <VBox alignment="CENTER" fillWidth="false" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.profile.ProfileViewController">
 
-        <Label prefHeight="31.0" prefWidth="187.0" text="Your Profile">
+        <Label prefHeight="31.0" prefWidth="187.0" text="Votre Profile">
             <font>
                 <Font size="26.0" />
             </font>
@@ -18,7 +18,7 @@
             </VBox.margin>
         </Label>
 
-        <Label prefHeight="16.0" prefWidth="189.0" text="Username :">
+        <Label prefHeight="16.0" prefWidth="189.0" text="Identifiant :">
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin>
