@@ -80,7 +80,7 @@
                      </font>
                   </Text>
                </HBox>
-               <ListView prefWidth="0.0">
+               <ListView fx:id="gameHistoryContainer" >
                   <VBox.margin>
                      <Insets bottom="50.0" left="50.0" right="50.0" />
                   </VBox.margin></ListView>
