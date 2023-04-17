@@ -108,11 +108,9 @@ public class DeckRequestHandler extends Handler {
 
   private DeckMetadata setupImagePath(DeckMetadata deckMetadata) {
     if (deckMetadata.image().contains(BASE_URL)) {
-      System.out.println("in if : " + deckMetadata.image());
       return deckMetadata;
     }
     else {
-      System.out.println("in else : " + deckMetadata.image());
       return new DeckMetadata(deckMetadata.id(),
               deckMetadata.name(),
               deckMetadata.color(),
