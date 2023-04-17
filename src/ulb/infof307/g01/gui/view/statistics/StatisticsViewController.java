@@ -44,7 +44,7 @@ public class StatisticsViewController {
     /*                               Statistics                               */
     /* ====================================================================== */
 
-    void setMainStatistics(String totalGamesPlayed, String gamesPlayedToday, String totalDecks, String totalScore) {
+    public void setMainStatistics(String totalGamesPlayed, String gamesPlayedToday, String totalDecks, String totalScore) {
         totalGamesPlayedLabel.setText(totalGamesPlayed);
         gamesPlayedTodayLabel.setText(gamesPlayedToday);
         totalDecksLabel.setText(totalDecks);
@@ -55,7 +55,7 @@ public class StatisticsViewController {
     /* ====================================================================== */
     /*                              Game History                              */
     /* ====================================================================== */
-    void setGameHistory(List<Node> gameHistoryItem) {
+    public void setGameHistory(List<Node> gameHistoryItem) {
         ObservableList<Node> items = FXCollections.observableArrayList(gameHistoryItem);
         gameHistoryContainer.setItems(items);
         gameHistoryContainer.refresh();

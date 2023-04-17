@@ -10,6 +10,7 @@ import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
+import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
 import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
@@ -62,6 +63,7 @@ public class MainFxController extends Application implements
     private final UserSessionDAO userSessionDAO = new UserSessionDAO();
     private final DeckDAO deckDAO = new DeckDAO();
     private final LeaderboardDAO leaderboardDAO = new LeaderboardDAO();
+    private final GameHistoryDAO gameHistoryDAO = new GameHistoryDAO();
 
 
     /* ====================================================================== */
@@ -378,13 +380,14 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void StatisticsClicked() {
+    public void StatisticsClicked() throws IOException {
         statisticsController = new StatisticsController(
                 stage,
                 errorHandler,
                 mainWindowViewController,
                 this,
-                userSessionDAO
+                userSessionDAO,
+                gameHistoryDAO
                 );
 
         viewStack.add(View.STATISTICS);

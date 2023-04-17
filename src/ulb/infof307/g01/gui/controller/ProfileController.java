@@ -73,6 +73,6 @@ public class ProfileController implements ProfileViewController.Listener {
 
     public interface ControllerListener {
         void userLoggedOut();
-        void StatisticsClicked();
+        void StatisticsClicked() throws IOException;
     }
 }
