@@ -7,12 +7,11 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane fx:id="borderPane"
-            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController">
+<BorderPane fx:id="borderPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController">
     <!-- Search bar-->
     <top>
         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <ComboBox fx:id="comboBox" />
             <TextField fx:id="searchBar" alignment="CENTER" onKeyReleased="#handleSearchDeckEvent" prefWidth="200.0" promptText="Rechercher des paquets / tags" />
             <!-- Search Button-->
             <Button layoutY="5" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent;">
@@ -40,12 +39,9 @@
                 </rowConstraints>
 
                 <!-- Create deck rectangle -->
-                <VBox alignment="CENTER" minWidth="350" maxWidth="500.0" spacing="20" maxHeight="175"
-                      style="-fx-border-color: black; -fx-border-radius: 20; -fx-border-style: dashed; -fx-background-color: #d3d1d1; -fx-background-radius: 20;"
-                      xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+                <VBox alignment="CENTER" maxHeight="175" maxWidth="500.0" minWidth="350" spacing="20" style="-fx-border-color: black; -fx-border-radius: 20; -fx-border-style: dashed; -fx-background-color: #d3d1d1; -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
 
-                    <TextField fx:id="createDeckField" alignment="CENTER" onAction="#handleCreateDeckClicked"
-                               promptText="Nom du paquet..." style="-fx-background-color: transparent;">
+                    <TextField fx:id="createDeckField" alignment="CENTER" onAction="#handleCreateDeckClicked" promptText="Nom du paquet..." style="-fx-background-color: transparent;">
                         <cursor>
                             <Cursor fx:constant="DEFAULT" />
                         </cursor>
