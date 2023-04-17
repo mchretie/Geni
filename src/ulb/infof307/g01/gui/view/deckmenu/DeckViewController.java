@@ -106,13 +106,13 @@ public class DeckViewController {
         colorBackground.setArcWidth(40);
         colorBackground.heightProperty().bind(imageBackground.fitHeightProperty());
         colorBackground.widthProperty().bind(imageBackground.fitWidthProperty());
-        Color color = Color.web(deck.getColor());
+        Color color = Color.web(deck.color());
         colorBackground.setFill(makeGradient(color));
     }
 
     private void setDeckImage() {
-        System.out.println("DeckViewController setDeckImage() : " + deck.getImage());
-        Image img = new Image(deck.getImage());
+        System.out.println("DeckViewController setDeckImage() : " + deck.image());
+        Image img = new Image(deck.image());
         imageBackground.setImage(img);
         imageBackground.setPreserveRatio(false);
         imageBackground.fitWidthProperty().bind(stackPane.widthProperty());
@@ -131,7 +131,7 @@ public class DeckViewController {
         tagsContainer.setHgap(30);
         tagsContainer.setVgap(10);
 
-        for (Tag tag : deck.getTags()) {
+        for (Tag tag : deck.tags()) {
             Label tagLabel = new Label(tag.getName());
 
             tagLabel.setBackground(new Background(new BackgroundFill(
@@ -146,7 +146,7 @@ public class DeckViewController {
     }
 
     private void setStats(String bestScore) {
-        amountCardsLabel.setText(String.valueOf(deck.getCardCount()));
+        amountCardsLabel.setText(String.valueOf(deck.cardCount()));
         amountTrophiesLabel.setText(bestScore);
     }
 
@@ -169,7 +169,7 @@ public class DeckViewController {
     }
 
     private void updateDeckLabelName() {
-        this.playDeckLabel.setText(this.deck.getName());
+        this.playDeckLabel.setText(this.deck.name());
     }
 
 

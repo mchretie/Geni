@@ -15,7 +15,7 @@ public class DeckCache {
 
     public DeckCache(Collection<DeckMetadata> allDecksMetadata) {
         for (DeckMetadata deckMetadata : allDecksMetadata) {
-            var deckId = deckMetadata.getId();
+            var deckId = deckMetadata.id();
             this.allDecksIds.add(deckId);
             this.decksMetadata.put(deckId, deckMetadata);
         }
@@ -29,15 +29,15 @@ public class DeckCache {
     }
 
     public void removeDeck(DeckMetadata deckMetadata) {
-        var deckId = deckMetadata.getId();
+        var deckId = deckMetadata.id();
         decks.remove(deckId);
         decksMetadata.remove(deckId);
         allDecksIds.remove(deckId);
     }
 
     public Optional<Deck> getDeck(DeckMetadata deckMetadata) {
-        return decks.containsKey(deckMetadata.getId()) ?
-                Optional.of(decks.get(deckMetadata.getId())) :
+        return decks.containsKey(deckMetadata.id()) ?
+                Optional.of(decks.get(deckMetadata.id())) :
                 Optional.empty();
     }
 

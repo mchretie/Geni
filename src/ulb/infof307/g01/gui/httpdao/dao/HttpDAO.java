@@ -102,11 +102,7 @@ public abstract class HttpDAO {
             List<DeckMetadata> deckList = new ArrayList<>();
             JsonArray jsonArray = new Gson().fromJson(json, JsonArray.class);
             for (int i = 0; i < jsonArray.size(); i++) {
-                DeckMetadata deckMetadata = DeckMetadata.fromJson(jsonArray.get(i).getAsJsonObject());
-                System.out.println("HttpDAO before setImage() : " + deckMetadata.getImage());
-                deckMetadata.setImage(BASE_URL + deckMetadata.getImage());
-                System.out.println("HttpDAO after setImage() : " + deckMetadata.getImage());
-                deckList.add(deckMetadata);
+                deckList.add(DeckMetadata.fromJson(jsonArray.get(i).getAsJsonObject()));
             }
             return deckList;
     }

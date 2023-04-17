@@ -129,7 +129,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             DeckViewController controller = loader.getController();
             controller.setImageLoader(imageLoader);
-            Score bestScore = leaderboardDAO.getBestScoreForDeck(deck.getId());
+            Score bestScore = leaderboardDAO.getBestScoreForDeck(deck.id());
             controller.setDeck(deck, bestScore);
             controller.setListener(this);
 

@@ -62,7 +62,7 @@ public class DeckDAO extends HttpDAO {
             throws IOException, InterruptedException {
 
         String path = ServerPaths.GET_DECK_PATH;
-        String parameters = "?deck_id=%s".formatted(deckMetadata.getId());
+        String parameters = "?deck_id=%s".formatted(deckMetadata.id());
         HttpResponse<String> response = get(path + parameters);
 
         return new Deck(new Gson().fromJson(response.body(), JsonObject.class));
@@ -77,7 +77,7 @@ public class DeckDAO extends HttpDAO {
 
         initCacheIfNot();
         return deckCache.getAllDecksMetadata().stream()
-                .anyMatch(deck -> deck.getName().equals(deckName));
+                .anyMatch(deck -> deck.name().equals(deckName));
     }
 
 
@@ -108,14 +108,14 @@ public class DeckDAO extends HttpDAO {
 
         final Pattern pattern = Pattern.compile("%s.*".formatted(deckName));
         return getAllDecksMetadata().stream()
-                .filter(deck -> pattern.matcher(deck.getName()).matches())
+                .filter(deck -> pattern.matcher(deck.name()).matches())
                 .collect(toList());
     }
 
     public void deleteDeck(DeckMetadata deck)
             throws IOException, InterruptedException {
 
-        String query = "?deck_id=" + deck.getId();
+        String query = "?deck_id=" + deck.id();
         String path = ServerPaths.DELETE_DECK_PATH;
         HttpResponse<String> response = delete(path + query);
 
