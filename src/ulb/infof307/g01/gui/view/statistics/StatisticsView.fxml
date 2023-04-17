@@ -19,29 +19,53 @@
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-               <Label text="Label" />
+               <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Total des parties jouées">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Text>
+               <Label alignment="CENTER" opacity="0.65" text="69" textFill="RED">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Label>
             </VBox>
             <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-               <Label text="Label" />
+               <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Parties jouées aujourd'hui">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Text>
+               <Label alignment="CENTER" opacity="0.65" text="0" textFill="RED">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Label>
             </VBox>
             <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-               <Label text="Label" />
+               <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Decks">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Text>
+               <Label alignment="CENTER" text="16" textFill="#d0a2ec">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Label>
             </VBox>
             <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-               <Label text="Label" />
+               <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Score">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Text>
+               <Label alignment="CENTER" text="420" textFill="#449b6c">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Label>
             </VBox>
          </HBox>
          <HBox alignment="CENTER" VBox.vgrow="ALWAYS">

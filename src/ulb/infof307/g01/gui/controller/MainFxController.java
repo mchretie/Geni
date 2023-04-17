@@ -74,7 +74,6 @@ public class MainFxController extends Application implements
         EDIT_DECK,
         HTML_EDITOR,
         LOGIN_PROFILE,
-        PROFILE,
         RESULT,
         LEADERBOARD,
         STATISTICS
