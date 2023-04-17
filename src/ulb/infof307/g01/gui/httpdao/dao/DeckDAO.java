@@ -110,6 +110,18 @@ public class DeckDAO extends HttpDAO {
                 .collect(toList());
     }
 
+    public List<DeckMetadata> searchDecksByTags(String name)
+            throws IOException, InterruptedException {
+        if (name.isEmpty())
+            return getAllDecksMetadata();
+
+        final Pattern pattern = Pattern.compile("%s.*".formatted(name));
+        return getAllDecksMetadata().stream()
+                .filter(deck -> deck.tags().stream()
+                        .anyMatch(tag -> pattern.matcher(tag.getName()).matches()))
+                .collect(toList());
+    }
+
     public void deleteDeck(DeckMetadata deck)
             throws IOException, InterruptedException {
 

@@ -1,11 +1,14 @@
 package ulb.infof307.g01.gui.view.deckmenu;
 
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -18,6 +21,11 @@ import java.io.File;
 import java.util.List;
 
 public class DeckMenuViewController {
+
+    public enum SearchType {
+        Name,
+        Tag
+    }
 
     /* ====================================================================== */
     /*                              FXML Attributes                           */
@@ -44,6 +52,9 @@ public class DeckMenuViewController {
     @FXML
     private FontIcon importDeck;
 
+    @FXML
+    private ComboBox<String> comboBox;
+
     private int colCount = 2;  // default
 
     /* ====================================================================== */
@@ -54,6 +65,17 @@ public class DeckMenuViewController {
 
     public void initialize() {
         initWidthListener();
+        initComboBox();
+    }
+
+    private void initComboBox() {
+        ObservableList<String> options =
+                FXCollections.observableArrayList(
+                        "Name",
+                        "Tag"
+                );
+        comboBox.setItems(options);
+        comboBox.setValue("Name");
     }
 
     private void initWidthListener() {
@@ -73,6 +95,23 @@ public class DeckMenuViewController {
 
     public void setListener(Listener listener) {
         this.listener = listener;
+    }
+    
+    /* ====================================================================== */
+    /*                                Getters                                 */
+    /* ====================================================================== */
+    
+    public SearchType getSearchType() {
+        SearchType searchType = null;
+        String searchTypeText = comboBox.getValue();
+
+        if (searchTypeText.equals("Name")) {
+            searchType = SearchType.Name;
+        } else if (searchTypeText.equals("Tag")) {
+            searchType =  SearchType.Tag;
+        }
+
+        return searchType;
     }
 
     /* ====================================================================== */
@@ -230,7 +269,9 @@ public class DeckMenuViewController {
         if (event instanceof MouseEvent) {
             searchBar.requestFocus();
         }
-        listener.searchDeckClicked(searchBar.getText());
+
+        String searchText = searchBar.getText();
+        listener.searchDeckClicked(searchText);
     }
 
     @FXML
