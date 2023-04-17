@@ -9,6 +9,7 @@ target
 # Tags and test database
 tags
 *.db
+images
 
 # Compiled class file
 *.class
