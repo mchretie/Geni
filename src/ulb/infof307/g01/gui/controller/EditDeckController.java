@@ -10,14 +10,13 @@ import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.gui.util.InputStringChecker;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class EditDeckController implements EditDeckViewController.Listener,
         TagViewController.Listener {
@@ -141,26 +140,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
         }
     }
 
-    /* ====================================================================== */
-    /*                         Deck Name Validation                           */
-    /* ====================================================================== */
-
-    private boolean isDeckNameValid(String name) {
-
-        if (name.isEmpty())
-            return false;
-
-        Pattern bannedCharacters = Pattern.compile("[^A-Za-z0-9]");
-        Matcher matcher = bannedCharacters.matcher(name);
-
-        if (matcher.find()) {
-            char match = name.charAt(matcher.start());
-            errorHandler.invalidDeckName(match);
-            return false;
-        }
-        return true;
-
-    }
 
     /* ====================================================================== */
     /*                        View Listener Method                            */
@@ -169,12 +148,14 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void deckNameModified(String newName) {
         try {
-            if (!isDeckNameValid(newName)){
-                editDeckViewController.setDeck(deck);
-                return;
+            if (InputStringChecker.isValidDeckName(newName)){
+                deck.setName(newName.trim());
+                deckDAO.saveDeck(deck);
             }
-            deck.setName(newName.trim());
-            deckDAO.saveDeck(deck);
+            else {
+                editDeckViewController.setDeck(deck);
+                errorHandler.invalidDeckName();
+            }
 
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);

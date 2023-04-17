@@ -71,11 +71,11 @@ public class ErrorHandler {
         communicateError(e, message);
     }
 
-    public void invalidDeckName(char c) {
+    public void invalidDeckName() {
         String title = "Nom de paquet invalide.";
         String description = "Le nom de paquet que vous avez entré est invalide. "
-                + "Veuillez entrer un nom de paquet qui ne contient pas le "
-                + "caractère \"" + c + "\".";
+                + "Les noms de paquets ne peuvent pas contenir de caractères" +
+                " spéciaux.";
 
         communicateError(title, description);
     }
@@ -128,12 +128,11 @@ public class ErrorHandler {
         communicateError(e, message);
     }
 
-    public void invalidAuthenticationInput(char c) {
+    public void invalidAuthenticationInput() {
         String title = "Les informations entrées sont invalides";
         String message = "Veuillez entrer un nom d'utilisateur " +
-                "et un mot de passe qui ne contient pas le " +
-                "caractère \"" + c + "\".\n\n" +
-                "Les espaces et caractères spéciaux ne sont pas permis.";
+                "et un mot de passe qui ne contient pas de d'espaces ou" +
+                " de caractères spéciaux.";
 
         communicateError(title, message);
     }

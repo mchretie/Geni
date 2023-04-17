@@ -10,6 +10,7 @@ import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.util.ImageLoader;
+import ulb.infof307.g01.gui.util.InputStringChecker;
 import ulb.infof307.g01.model.Card;
 import ulb.infof307.g01.model.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
@@ -148,36 +149,17 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
 
     /* ====================================================================== */
-    /*                         Deck Name Validation                           */
-    /* ====================================================================== */
-
-    private boolean isDeckNameValid(String name) {
-
-        if (name.isEmpty())
-            return false;
-
-        Pattern bannedCharacters = Pattern.compile("[^A-Za-z0-9]");
-        Matcher matcher = bannedCharacters.matcher(name);
-
-        if (matcher.find()) {
-            char match = name.charAt(matcher.start());
-            errorHandler.invalidDeckName(match);
-            return false;
-        }
-        return true;
-
-    }
-
-
-    /* ====================================================================== */
     /*                        View Listener Method                            */
     /* ====================================================================== */
 
     @Override
     public void createDeckClicked(String name) {
         try {
-            if (!isDeckNameValid(name) || deckDAO.deckExists(name))
+            if (!InputStringChecker.isValidDeckName(name)
+                    || deckDAO.deckExists(name)) {
+                errorHandler.invalidDeckName();
                 return;
+            }
 
             deckDAO.saveDeck(new Deck(name));
             showDecks();

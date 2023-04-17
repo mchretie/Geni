@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.controller;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
+import ulb.infof307.g01.gui.util.InputStringChecker;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
 import java.util.regex.Matcher;
@@ -106,15 +107,11 @@ public class UserAuthController implements UserAuthViewController.Listener {
     public boolean isInputStringClean(String input) {
         // Check for unauthorized characters
         // if char is not a letter or a number
-        Pattern bannedCharacters = Pattern.compile("[^A-Za-z0-9]");
-        Matcher matcher = bannedCharacters.matcher(input);
-
-        if (matcher.find()) {
-            char match = input.charAt(matcher.start());
-            errorHandler.invalidAuthenticationInput(match);
-            return false;
-        }
-        return true;
+       if( !InputStringChecker.isValidCredential(input)) {
+           errorHandler.invalidAuthenticationInput();
+              return false;
+       }
+       return true;
     }
 
 
