@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import static spark.Spark.*;
 import static ulb.infof307.g01.shared.constants.ServerPaths.*;
+import static java.util.stream.Collectors.toList;
 
 
 public class DeckRequestHandler extends Handler {
@@ -99,7 +100,24 @@ public class DeckRequestHandler extends Handler {
     String username = usernameFromRequest(req);
     UUID userId = UUID.fromString(database.getUserId(username));
     UUID deckId = UUID.fromString(req.queryParams("deck_id"));
-    return database.getDeck(deckId, userId);
+    Deck deck = database.getDeck(deckId, userId);
+    deck.setImage(BASE_URL + deck.getImage());
+    return deck;
+  }
+
+  private DeckMetadata setupImagePath(DeckMetadata deckMetadata) {
+    return new DeckMetadata(deckMetadata.id(),
+            deckMetadata.name(),
+            deckMetadata.color(),
+            BASE_URL + deckMetadata.image(),
+            deckMetadata.cardCount(),
+            deckMetadata.tags(),
+            deckMetadata.deckHashCode());
+  }
+  private List<DeckMetadata> setupImagePath(List<DeckMetadata> deckMetadatas) {
+    return deckMetadatas.stream()
+            .map(this::setupImagePath)
+            .collect(toList());
   }
 
   private List<DeckMetadata> getAllDecks(Request req, Response res) {
@@ -107,7 +125,7 @@ public class DeckRequestHandler extends Handler {
       String username = usernameFromRequest(req);
       UUID userId = UUID.fromString(database.getUserId(username));
 
-      return database.getAllUserDecksMetadata(userId);
+      return setupImagePath(database.getAllUserDecksMetadata(userId));
 
     } catch (Exception e) {
       String message = "Failed to get all decks: " + e.getMessage();
@@ -126,7 +144,7 @@ public class DeckRequestHandler extends Handler {
       String userSearch = req.queryParams("name");
       userSearch = userSearch.replace("_", " ");
 
-      return database.searchDecksMetadata(userSearch, userId);
+      return setupImagePath(database.searchDecksMetadata(userSearch, userId));
 
     } catch (Exception e) {
       String message = "Failed to search decks: " + e.getMessage();
