@@ -285,7 +285,7 @@ public class MainWindowViewController {
     }
 
     private void onClick(Button button) {
-        button.setStyle("-fx-background-color: \"#90EE90\";");
+        button.setStyle("-fx-background-color: \"#50C878\";");
         resetButtonExcept(button);
     }
 
