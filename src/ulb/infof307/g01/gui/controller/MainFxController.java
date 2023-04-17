@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.eclipse.jetty.util.IO;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
@@ -117,6 +116,9 @@ public class MainFxController extends Application implements
         initMainWindowView(stage);
 
         errorHandler = new ErrorHandler(mainWindowViewController);
+
+        mainWindowViewController.setAllInvisible();
+        stage.show();
 
         try {
             userSessionDAO.attemptAutologin();

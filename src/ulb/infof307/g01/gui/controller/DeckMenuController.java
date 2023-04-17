@@ -169,11 +169,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     @Override
     public void createDeckClicked(String name) {
-
-        if (!isDeckNameValid(name))
-            return;
-
         try {
+            if (!isDeckNameValid(name) || deckDAO.deckExists(name))
+                return;
+
             deckDAO.saveDeck(new Deck(name));
             showDecks();
 

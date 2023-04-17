@@ -173,6 +173,11 @@ public class MainWindowViewController {
             child.setVisible(pane == child);
     }
 
+    public void setAllInvisible() {
+        for (Node child : centerStackPane.getChildren())
+            child.setVisible(false);
+    }
+
     public void setDeckMenuViewVisible() {
         setAllInvisibleExcept(deckMenuView);
     }
