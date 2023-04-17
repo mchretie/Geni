@@ -72,6 +72,9 @@ public class MainWindowViewController {
     private BorderPane leaderboardView;
 
     @FXML
+    private BorderPane statisticsView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
@@ -211,6 +214,8 @@ public class MainWindowViewController {
     }
 
     public void setGuestModeLeaderboardViewVisible() { setAllInvisibleExcept(guestModeLeaderboardView); }
+
+    public void setStatisticsViewVisible() { setAllInvisibleExcept(statisticsView); }
 
 
     /* ====================================================================== */

@@ -2,7 +2,8 @@
 
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
+<BorderPane fx:id="borderPane"
+            xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="ulb.infof307.g01.gui.view.statistics.StatisticsViewController"
             prefHeight="400.0" prefWidth="600.0">

@@ -29,7 +29,7 @@ public class StatisticsController implements StatisticsViewController.Listener {
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
         this.userSessionDAO = userSessionDAO;
-        
+
         this.statisticsViewController = mainWindowViewController.getStatisticsViewController();
         statisticsViewController.setListener(this);
     }
@@ -40,6 +40,7 @@ public class StatisticsController implements StatisticsViewController.Listener {
     /* ====================================================================== */
 
     public void show() {
+        mainWindowViewController.setStatisticsViewVisible();
         //TODO: implement
         stage.show();
     }

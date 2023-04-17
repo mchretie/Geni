@@ -1,7 +1,5 @@
 package ulb.infof307.g01.gui.view.statistics;
 
-import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
-
 public class StatisticsViewController {
 
     /* ====================================================================== */

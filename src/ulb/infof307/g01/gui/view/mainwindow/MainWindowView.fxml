@@ -69,6 +69,7 @@
             <fx:include fx:id="resultView" source="../result/ResultView.fxml" />
             <fx:include fx:id="leaderboardView" source="../leaderboard/LeaderboardView.fxml" />
             <fx:include fx:id="guestModeLeaderboardView" source="../leaderboard/GuestModeLeaderboardView.fxml" />
+            <fx:include fx:id="statisticsView" source="../statistics/StatisticsView.fxml" />
         </StackPane>
     </center>
 
