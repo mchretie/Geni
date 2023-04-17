@@ -102,7 +102,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             mainWindowViewController.setUserAuthViewController();
             mainWindowViewController.makebottomNavigationBarInvisible();
             mainWindowViewController.makeTopNavigationBarInvisible();
-            mainWindowViewController.setMyBorderPaneDarkgrey();
+            //mainWindowViewController.setInfoAppViewVisible();
+
             //mainWindowViewController.setUserAuthViewController();
         }
 

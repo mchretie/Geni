@@ -71,6 +71,10 @@
         </StackPane>
     </center>
 
+    <right>
+        <fx:include fx:id="infoAppView" source="../userauth/InfoAppView.fxml" />
+    </right>
+
 
     <!-- Bottom navigation bar -->
     <bottom>

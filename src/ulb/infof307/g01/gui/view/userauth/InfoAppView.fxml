@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="1000" minWidth="600" prefHeight="1000.0" prefWidth="600.0" style="-fx-background-color: #3EB942;;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" >
+   <children>
+      <FontIcon iconLiteral="mdi2c-cards-outline" iconSize="60"/>
+   </children>
+   <alignment>
+      <javafx.geometry.Pos fx:constant="TOP_CENTER"/>
+   </alignment>
+</StackPane>

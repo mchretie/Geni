@@ -68,6 +68,9 @@ public class MainWindowViewController {
     private BorderPane guestModeDeckMenuView;
 
     @FXML
+    private BorderPane InfoAppView;
+
+    @FXML
     private BorderPane Profileview;
 
     @FXML
@@ -187,6 +190,7 @@ public class MainWindowViewController {
         setAllInvisibleExcept(guestModeDeckMenuView);
     }
 
+    public void setInfoAppViewVisible(){setAllInvisibleExcept(InfoAppView);}
     public void setMyBorderPaneDarkgrey(){myBorderPane.setStyle("-fx-background-color: #2C3F4E");}
 
 
@@ -202,13 +206,25 @@ public class MainWindowViewController {
         goBackIcon.setVisible(false);
     }
 
-    public void makeTopNavigationBarVisible(){topHBox.setVisible(true);}
+    public void makeTopNavigationBarVisible() {
+        topHBox.setVisible(true);
+        topHBox.setManaged(true);
+    }
 
-    public void makeTopNavigationBarInvisible(){topHBox.setVisible(false);}
+    public void makeTopNavigationBarInvisible() {
+        topHBox.setVisible(false);
+        topHBox.setManaged(false);
+    }
 
-    public void makebottomNavigationBarVisible(){bottomHBox.setVisible(true);}
+    public void makebottomNavigationBarVisible() {
+        bottomHBox.setVisible(true);
+        bottomHBox.setManaged(true);
+    }
 
-    public void makebottomNavigationBarInvisible(){bottomHBox.setVisible(false);}
+    public void makebottomNavigationBarInvisible() {
+        bottomHBox.setVisible(false);
+        bottomHBox.setManaged(false);
+    }
 
 
     /* ====================================================================== */
