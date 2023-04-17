@@ -68,6 +68,7 @@
             <fx:include fx:id="editCardView" source="../editcard/EditCardView.fxml" />
             <fx:include fx:id="profileView" source="../profile/ProfileView.fxml" />
             <fx:include fx:id="userAuthView" source="../userauth/UserAuthView.fxml" />
+
         </StackPane>
     </center>
 

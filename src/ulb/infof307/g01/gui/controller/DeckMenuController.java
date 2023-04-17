@@ -96,13 +96,15 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             deckDAO.setToken(userSessionDAO.getToken());
             showDecks();
             mainWindowViewController.setDeckMenuViewVisible();
+            mainWindowViewController.makebottomNavigationBarVisible();
+            mainWindowViewController.makeTopNavigationBarVisible();
         }
 
         else {
             mainWindowViewController.setUserAuthViewController();
             mainWindowViewController.makebottomNavigationBarInvisible();
             mainWindowViewController.makeTopNavigationBarInvisible();
-            //mainWindowViewController.setInfoAppViewVisible();
+            mainWindowViewController.setInfoAppViewVisible();
 
             //mainWindowViewController.setUserAuthViewController();
         }
