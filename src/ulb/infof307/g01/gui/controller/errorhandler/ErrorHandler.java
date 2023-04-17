@@ -75,7 +75,7 @@ public class ErrorHandler {
         String title = "Nom de paquet invalide.";
         String description = "Le nom de paquet que vous avez entré est invalide. "
                 + "Veuillez entrer un nom de paquet qui ne contient pas le "
-                + "caractère " + c + ".";
+                + "caractère \"" + c + "\".";
 
         communicateError(title, description);
     }

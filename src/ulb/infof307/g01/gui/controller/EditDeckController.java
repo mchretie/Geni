@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EditDeckController implements EditDeckViewController.Listener,
         TagViewController.Listener {
@@ -140,12 +142,35 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     /* ====================================================================== */
+    /*                         Deck Name Validation                           */
+    /* ====================================================================== */
+
+    private boolean isDeckNameValid(String name) {
+
+        if (name.isEmpty())
+            return false;
+
+        Pattern bannedCharacters = Pattern.compile("[^A-Za-z0-9]");
+        Matcher matcher = bannedCharacters.matcher(name);
+
+        if (matcher.find()) {
+            char match = name.charAt(matcher.start());
+            errorHandler.invalidDeckName(match);
+            return false;
+        }
+        return true;
+
+    }
+
+    /* ====================================================================== */
     /*                        View Listener Method                            */
     /* ====================================================================== */
 
     @Override
     public void deckNameModified(String newName) {
         try {
+            if (!isDeckNameValid(newName))
+                return;
             deck.setName(newName.trim());
             deckDAO.saveDeck(deck);
 
