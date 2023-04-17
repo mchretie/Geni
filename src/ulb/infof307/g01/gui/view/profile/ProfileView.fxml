@@ -42,14 +42,7 @@
             </VBox.margin>
         </Label>
 
-        <Label rotate="-26.6" text="More features soon available">
-            <VBox.margin>
-                <Insets bottom="60.0" />
-            </VBox.margin>
-        </Label>
-
-        <Button fx:id="logoutButton"
-                mnemonicParsing="false"
+        <Button mnemonicParsing="false"
                 onMouseClicked="#handleLogoutButtonClicked"
                 text="Logout" />
     
