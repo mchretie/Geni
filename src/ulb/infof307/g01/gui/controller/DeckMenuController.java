@@ -24,6 +24,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  * Class responsible for display the deck menu and listening to
@@ -153,8 +156,17 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         if (name.isEmpty())
             return false;
 
-        String bannedCharacters = "!\"#$%&()*+,./:;<=>?@[\\]^_`{}~";
+        Pattern bannedCharacters = Pattern.compile("[^A-Za-z0-9]");
+        Matcher matcher = bannedCharacters.matcher(name);
 
+        if (matcher.find()) {
+            char match = name.charAt(matcher.start());
+            errorHandler.invalidDeckName(match);
+            return false;
+        }
+        return true;
+
+        /* String bannedCharacters = "!\"#$%&()*+,./:;<=>?@[\\]^_`{}~";
         for (char c : bannedCharacters.toCharArray()) {
             if (!name.contains(String.valueOf(c)))
                 continue;
@@ -163,7 +175,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             return false;
         }
 
-        return true;
+        return true;*/
+
     }
 
 

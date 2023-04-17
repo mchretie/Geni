@@ -127,4 +127,15 @@ public class ErrorHandler {
 
         communicateError(e, message);
     }
+
+    public void invalidAuthenticationInput(char c) {
+        String title = "Les informations entrées sont invalides";
+        String message = "Veuillez entrer un nom d'utilisateur " +
+                "et un mot de passe qui ne contient pas le " +
+                "caractère \"" + c + "\".\n\n" +
+                "Les espaces et caractères spéciaux ne sont pas permis.";
+
+        communicateError(title, message);
+    }
+
 }

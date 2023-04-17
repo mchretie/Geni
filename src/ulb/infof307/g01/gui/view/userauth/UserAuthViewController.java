@@ -66,9 +66,13 @@ public class UserAuthViewController {
         String password = this.loginPasswordField.getText();
         String username = this.loginUsernameField.getText();
 
-        this.loginPasswordField.clear();
-        this.loginUsernameField.clear();
-        listener.loginClicked(username, password);
+        if (!username.isEmpty() && !password.isEmpty()) {
+
+            this.loginPasswordField.clear();
+            this.loginUsernameField.clear();
+
+            listener.loginClicked(username, password);
+        }
     }
 
     private void handleRegister() {
@@ -76,11 +80,16 @@ public class UserAuthViewController {
         String password =  this.registerPasswordField.getText();
         String confirmPassword = this.confirmPasswordField.getText();
 
-        this.registerUsernameField.clear();
-        this.registerPasswordField.clear();
-        this.confirmPasswordField.clear();
+        if (!username.isEmpty() && !password.isEmpty()
+                && password.equals(confirmPassword)) {
 
-        listener.registerClicked(username, password, confirmPassword);
+            this.registerUsernameField.clear();
+            this.registerPasswordField.clear();
+            this.confirmPasswordField.clear();
+            resetTextFieldStyle();
+
+            listener.registerClicked(username, password, confirmPassword);
+        }
     }
 
     /* ====================================================================== */
@@ -95,7 +104,6 @@ public class UserAuthViewController {
     @FXML
     private void handleRegisterButtonClicked() {
         handleRegister();
-        resetTextFieldStyle();
     }
 
     @FXML
@@ -138,9 +146,7 @@ public class UserAuthViewController {
     private void handleRegisterConfPasswordKeyPressed(KeyEvent keyEvent) {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
-
         handleRegister();
-        resetTextFieldStyle();
     }
 
     private void resetTextFieldStyle() {

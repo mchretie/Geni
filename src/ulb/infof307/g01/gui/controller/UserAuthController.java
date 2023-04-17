@@ -5,6 +5,8 @@ import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import java.io.IOException;
 
@@ -12,6 +14,7 @@ public class UserAuthController implements UserAuthViewController.Listener {
     private final Stage stage;
 
     private final ErrorHandler errorHandler;
+
 
     private final MainWindowViewController mainWindowViewController;
     private final UserAuthViewController userAuthViewController;
@@ -61,9 +64,9 @@ public class UserAuthController implements UserAuthViewController.Listener {
 
     @Override
     public void loginClicked(String username, String password) {
-        if (username.isEmpty() || password.isEmpty())
+        if (!areCredentialsValid(username, password)) {
             return;
-
+        }
         try {
             userSessionDAO.login(username, password);
             controllerListener.userLoggedIn();
@@ -88,10 +91,30 @@ public class UserAuthController implements UserAuthViewController.Listener {
         }
     }
 
-    private boolean areCredentialsValid(String username, String password, String confirmPassword) {
-        return !username.isEmpty()
-                && !password.isEmpty()
+    private boolean areCredentialsValid(String username, String password) {
+        return isInputStringClean(username)
+                && isInputStringClean(password);
+    }
+    // Overloading method
+    private boolean areCredentialsValid(String username, String password,
+                                        String confirmPassword) {
+        return isInputStringClean(username)
+                && isInputStringClean(password)
                 && password.equals(confirmPassword);
+    }
+
+    public boolean isInputStringClean(String input) {
+        // Check for unauthorized characters
+        // if char is not a letter or a number
+        Pattern bannedCharacters = Pattern.compile("[^A-Za-z0-9]");
+        Matcher matcher = bannedCharacters.matcher(input);
+
+        if (matcher.find()) {
+            char match = input.charAt(matcher.start());
+            errorHandler.invalidAuthenticationInput(match);
+            return false;
+        }
+        return true;
     }
 
 
