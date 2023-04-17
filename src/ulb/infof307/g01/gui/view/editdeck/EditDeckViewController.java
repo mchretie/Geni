@@ -536,7 +536,9 @@ public class EditDeckViewController {
     private void handleUploadImageClicked() {
         final FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(mainHbox.getScene().getWindow());
-        listener.deckImageModified(deck, file, "/img/" + deck.getId().toString() + ".jpg");
+        if (file != null) {
+            listener.deckImageModified(deck, file, "/img/" + deck.getId().toString() + ".jpg");
+        }
     }
 
     @FXML
