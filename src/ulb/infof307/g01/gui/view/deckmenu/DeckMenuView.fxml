@@ -39,7 +39,7 @@
                 </rowConstraints>
 
                 <!-- Create deck rectangle -->
-                <VBox alignment="CENTER" maxHeight="175" maxWidth="500.0" minWidth="350" spacing="20" style="-fx-border-color: black; -fx-border-radius: 20; -fx-border-style: dashed; -fx-background-color: #d3d1d1; -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+                <VBox alignment="CENTER" maxHeight="175" maxWidth="500.0" minWidth="350" minHeight="175" spacing="20" style="-fx-border-color: black; -fx-border-radius: 20; -fx-border-style: dashed; -fx-background-color: #d3d1d1; -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
 
                     <TextField fx:id="createDeckField" alignment="CENTER" onAction="#handleCreateDeckClicked" promptText="Nom du paquet..." style="-fx-background-color: transparent;">
                         <cursor>
