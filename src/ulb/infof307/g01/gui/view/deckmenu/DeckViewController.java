@@ -111,7 +111,6 @@ public class DeckViewController {
     }
 
     private void setDeckImage() {
-        System.out.println("DeckViewController setDeckImage() : " + deck.image());
         Image img = new Image(deck.image());
         imageBackground.setImage(img);
         imageBackground.setPreserveRatio(false);

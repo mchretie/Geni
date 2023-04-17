@@ -1,10 +1,11 @@
 package ulb.infof307.g01.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.*;
 
 
@@ -61,6 +62,7 @@ public class Deck implements Iterable<Card> {
         this.cards = deck.getCards();
         this.tags = deck.getTags();
         this.color = deck.getColor();
+        this.image = deck.getImage();
     }
 
     public void setNewID() {

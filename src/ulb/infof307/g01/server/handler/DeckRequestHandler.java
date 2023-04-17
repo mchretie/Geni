@@ -1,9 +1,13 @@
 package ulb.infof307.g01.server.handler;
 
-import static spark.Spark.*;
-import static ulb.infof307.g01.shared.constants.ServerPaths.*;
-
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import spark.Request;
+import spark.Response;
+import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.DeckMetadata;
+import ulb.infof307.g01.server.database.Database;
+import ulb.infof307.g01.server.service.JWTService;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,13 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.google.gson.JsonObject;
-import spark.Request;
-import spark.Response;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.DeckMetadata;
-import ulb.infof307.g01.server.database.Database;
-import ulb.infof307.g01.server.service.JWTService;
+import static spark.Spark.*;
+import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 
 
 public class DeckRequestHandler extends Handler {
@@ -36,6 +35,7 @@ public class DeckRequestHandler extends Handler {
     get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
     get(GET_DECK_PATH, this::getDeck, toJson());
     get(DECK_EXISTS_PATH, this::deckExists, toJson());
+    post(SAVE_DECK_IMAGE_PATH, this::saveImage);
   }
 
   private boolean deckExists(Request request, Response response) {

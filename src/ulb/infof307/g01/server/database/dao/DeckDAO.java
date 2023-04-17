@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import static ulb.infof307.g01.shared.constants.ServerPaths.BASE_URL;
+
 /**
  * Save and retrieve decks from long-term memory
  * <p>
@@ -106,7 +108,7 @@ public class DeckDAO extends DAO {
      */
     public Deck getDeck(UUID deckId, UUID userId) throws DatabaseException {
         String sql = """
-                SELECT deck_id, name, color
+                SELECT deck_id, name, color, image
                 FROM deck
                 WHERE deck_id = ? AND user_id = ?
                 """;
@@ -508,7 +510,7 @@ public class DeckDAO extends DAO {
             UUID uuid = UUID.fromString(res.getString("deck_id"));
             String name = res.getString("name");
             String color = res.getString("color");
-            String image = res.getString("image");
+            String image = BASE_URL + res.getString("image");
             List<Card> cards = getCardsFor(uuid);
             List<Tag> tags = tagDao.getTagsFor(uuid);
 
