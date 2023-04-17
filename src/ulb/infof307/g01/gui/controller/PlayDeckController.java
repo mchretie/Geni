@@ -4,11 +4,13 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
-import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
+import ulb.infof307.g01.model.card.*;
+import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.Score;
 
 import java.util.Arrays;
 

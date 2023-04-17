@@ -1,31 +1,31 @@
-package ulb.infof307.g01.gui.view.leaderboard;
+package ulb.infof307.g01.gui.view.statistics;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
 import java.util.List;
 
-public class LeaderboardViewController {
-    public BorderPane borderPane;
+public class StatisticsViewController {
+
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
     @FXML
-    private Label usernameLabel;
+    private BorderPane borderPane;
     @FXML
-    private Label rangLabel;
+    private Label totalGamesPlayedLabel;
     @FXML
-    private Label scoreLabel;
+    private Label totalDecksLabel;
     @FXML
-    private Label numberDecksLabel;
+    private Label totalScoreLabel;
     @FXML
-    private ListView<Node> boardContainer;
-
+    private ListView<Node> gameHistoryContainer;
 
     /* ====================================================================== */
     /*                                Listener                                */
@@ -43,21 +43,34 @@ public class LeaderboardViewController {
 
 
     /* ====================================================================== */
-    /*                              Leaderboard                               */
+    /*                               Statistics                               */
     /* ====================================================================== */
-    public void setBoard(List<Node> PlayersScoreItem){
-        ObservableList<Node> items = FXCollections.observableArrayList(PlayersScoreItem);
-        boardContainer.setItems(items);
-        boardContainer.refresh();
 
+    public void setMainStatistics(String totalGamesPlayed, String totalDecks, String totalScore) {
+        totalGamesPlayedLabel.setText(totalGamesPlayed);
+        totalDecksLabel.setText(totalDecks);
+        totalScoreLabel.setText(totalScore);
     }
 
-    public void setPersonalInformation(String username, String rang, String score, String numberDecks) {
-        usernameLabel.setText(username);
-        rangLabel.setText(rang);
-        scoreLabel.setText(score);
-        numberDecksLabel.setText(numberDecks);
+
+    /* ====================================================================== */
+    /*                              Game History                              */
+    /* ====================================================================== */
+    public void setGameHistory(List<Node> gameHistoryItem) {
+
+        ObservableList<Node> items = FXCollections.observableArrayList(gameHistoryItem);
+        gameHistoryContainer.setItems(items);
+
+        borderPane.requestFocus();
+
+        gameHistoryContainer.refresh();
     }
+
+    public void gameHistoryContainerClicked(MouseEvent mouseEvent) {
+        gameHistoryContainer.getSelectionModel().clearSelection();
+        borderPane.requestFocus();
+    }
+
 
     /* ====================================================================== */
     /*                           Listener Interface                           */

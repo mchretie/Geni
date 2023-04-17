@@ -82,7 +82,7 @@
         <HBox alignment="CENTER" spacing="50">
             <ColorPicker fx:id="colorPicker" onAction="#handleColorButtonClicked" onMouseEntered="#handleColorPickerHover" onMouseExited="#handleColorPickerExit" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #5ab970;" />
 
-            <Button fx:id="imageUploader" mnemonicParsing="false" onAction="#handleUploadImageClicked" onMouseEntered="#handleUploadImageHover" onMouseExited="#handleUploadImageExit" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #5ab970;" text="Ajouter une image de fond" />
+            <Button fx:id="imageUploader" mnemonicParsing="false" onAction="#handleUploadImageClicked" onMouseEntered="#handleUploadImageHover" onMouseExited="#handleUploadImageExit" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #5ab970;" text="Image de fond" />
         </HBox>
 
         <!-- Font of Card (constant) -->

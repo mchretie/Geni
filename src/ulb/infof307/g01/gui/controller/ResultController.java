@@ -3,7 +3,7 @@ package ulb.infof307.g01.gui.controller;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.result.ResultViewController;
-import ulb.infof307.g01.model.Score;
+import ulb.infof307.g01.model.deck.Score;
 
 
 public class ResultController implements ResultViewController.Listener {

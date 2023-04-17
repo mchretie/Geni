@@ -10,7 +10,7 @@ import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.leaderboard.PlayerScoreItemViewController;
-import ulb.infof307.g01.model.GlobalLeaderboard;
+import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,7 +21,6 @@ import java.util.Map;
 public class GlobalLeaderboardController implements LeaderboardViewController.Listener, PlayerScoreItemViewController.Listener{
     private final Stage stage;
     private final MainWindowViewController mainWindowViewController;
-    private final ControllerListener controllerListener;
     private final UserSessionDAO userSessionDAO;
     private final DeckDAO deckDAO;
     private final LeaderboardDAO leaderboardDAO;
@@ -37,7 +36,6 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
     public GlobalLeaderboardController(Stage stage,
                                        MainWindowViewController mainWindowViewController,
                                        ErrorHandler errorHandler,
-                                       ControllerListener controllerListener,
                                        UserSessionDAO userSessionDAO,
                                        DeckDAO deckDAO,
                                        LeaderboardDAO leaderboardDAO) {
@@ -45,7 +43,6 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.errorHandler = errorHandler;
-        this.controllerListener = controllerListener;
         this.userSessionDAO = userSessionDAO;
         this.deckDAO = deckDAO;
         this.leaderboardDAO = leaderboardDAO;
@@ -123,13 +120,5 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
                         leaderboardEntry.get(GlobalLeaderboard.ENTRY_TOTAL_SCORE));
 
         return node;
-    }
-
-    /* ====================================================================== */
-    /*                   Controller Listener Interface                        */
-    /* ====================================================================== */
-
-    public interface ControllerListener {
-        void leaderboardClicked();
     }
 }

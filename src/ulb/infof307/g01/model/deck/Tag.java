@@ -1,4 +1,4 @@
-package ulb.infof307.g01.model;
+package ulb.infof307.g01.model.deck;
 
 import com.google.gson.annotations.Expose;
 

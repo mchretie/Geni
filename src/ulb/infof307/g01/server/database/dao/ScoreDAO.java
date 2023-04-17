@@ -1,7 +1,8 @@
 package ulb.infof307.g01.server.database.dao;
 
-import ulb.infof307.g01.model.GlobalLeaderboard;
-import ulb.infof307.g01.model.Score;
+import ulb.infof307.g01.model.Game;
+import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
+import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
@@ -117,5 +118,31 @@ public class ScoreDAO extends DAO {
             throw new DatabaseException(e.getMessage());
         }
 
+    }
+
+    public List<Game> getGameHistory(UUID userId) {
+        String sql = """
+                SELECT d.name AS deck_name, s.score, s.timestamp
+                FROM deck d
+                INNER JOIN user_deck_score s ON d.deck_id = s.deck_id
+                WHERE s.user_id = ?;
+                """;
+
+        try (ResultSet res = database.executeQuery(sql, userId.toString())) {
+            List<Game> games = new ArrayList<>();
+
+            while (res.next()) {
+                String deckName = res.getString("deck_name");
+                int score = res.getInt("score");
+                Date date = new Date(res.getLong("timestamp"));
+
+                games.add(new Game(date, deckName, score + ""));
+            }
+
+            return games;
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 }
