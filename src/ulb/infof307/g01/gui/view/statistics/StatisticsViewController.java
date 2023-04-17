@@ -17,8 +17,6 @@ public class StatisticsViewController {
     @FXML
     private Label totalGamesPlayedLabel;
     @FXML
-    private Label gamesPlayedTodayLabel;
-    @FXML
     private Label totalDecksLabel;
     @FXML
     private Label totalScoreLabel;

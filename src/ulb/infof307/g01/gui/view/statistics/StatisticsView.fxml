@@ -32,19 +32,6 @@
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
-               <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Parties jouées aujourd'hui">
-                  <font>
-                     <Font size="22.5" />
-                  </font></Text>
-               <Label fx:id="gamesPlayedTodayLabel" alignment="CENTER" opacity="0.65" text="0" textFill="RED">
-                  <font>
-                     <Font size="22.5" />
-                  </font></Label>
-            </VBox>
-            <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
                <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Decks">
                   <font>
                      <Font size="22.5" />
@@ -80,7 +67,7 @@
                      </font>
                   </Text>
                </HBox>
-               <ListView fx:id="gameHistoryContainer" >
+               <ListView fx:id="gameHistoryContainer">
                   <VBox.margin>
                      <Insets bottom="50.0" left="50.0" right="50.0" />
                   </VBox.margin></ListView>
