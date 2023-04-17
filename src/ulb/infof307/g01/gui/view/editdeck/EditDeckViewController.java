@@ -537,7 +537,7 @@ public class EditDeckViewController {
         final FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(mainHbox.getScene().getWindow());
         if (file != null) {
-            listener.deckImageModified(deck, file, "/img/" + deck.getId().toString() + ".jpg");
+            listener.deckImageModified(deck, file, "/backgrounds/" + deck.getId().toString() + ".jpg");
         }
     }
 

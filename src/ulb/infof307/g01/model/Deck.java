@@ -21,7 +21,7 @@ public class Deck implements Iterable<Card> {
     @Expose
     private String color = "0x00000000";
   @Expose
-  private String image = "/img/default_background.jpg";
+  private String image = "/backgrounds/default_background.jpg";
 
     public Deck(String name) {
         this.name = name;
