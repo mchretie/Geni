@@ -17,6 +17,7 @@ class DatabaseScheme {
             user_id TEXT,
             name TEXT UNIQUE NOT NULL,
             color TEXT NOT NULL,
+            image TEXT NOT NULL,
             FOREIGN KEY (user_id)
                 REFERENCES user(user_id)
                 ON DELETE CASCADE

@@ -10,8 +10,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -527,15 +527,18 @@ public class EditDeckViewController {
     }
 
     @FXML
+    public void handleColorButtonClicked() {
+        listener.deckColorModified(deck, colorPicker.getValue());
+    }
+
+
+    @FXML
     private void handleUploadImageClicked() {
         final FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(mainHbox.getScene().getWindow());
-        listener.uploadImage(file.toURI().toString());
-    }
-
-    @FXML
-    public void handleColorButtonClicked() {
-        listener.deckColorModified(deck, colorPicker.getValue());
+        if (file != null) {
+            listener.deckImageModified(deck, file, "/backgrounds/" + deck.getId().toString() + ".jpg");
+        }
     }
 
     @FXML
@@ -697,7 +700,7 @@ public class EditDeckViewController {
 
         void deckColorModified(Deck deck, Color color);
 
-        void uploadImage(String filePath);
+        void deckImageModified(Deck deck, File image, String filename);
 
         void removeCard(Card selectedCard);
 

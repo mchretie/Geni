@@ -1,10 +1,11 @@
 package ulb.infof307.g01.model;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.*;
 
 
@@ -19,6 +20,8 @@ public class Deck implements Iterable<Card> {
     private final List<Tag> tags;
     @Expose
     private String color = "0x00000000";
+  @Expose
+  private String image = "/backgrounds/default_background.jpg";
 
     public Deck(String name) {
         this.name = name;
@@ -41,12 +44,13 @@ public class Deck implements Iterable<Card> {
         this.tags = tags;
     }
 
-    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color) {
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image) {
         this.name = name;
         this.id = id;
         this.cards = cards;
         this.tags = tags;
         this.color = color;
+        this.image = image;
     }
 
     public Deck(JsonObject deckGson){
@@ -58,6 +62,7 @@ public class Deck implements Iterable<Card> {
         this.cards = deck.getCards();
         this.tags = deck.getTags();
         this.color = deck.getColor();
+        this.image = deck.getImage();
     }
 
     public void setNewID() {
@@ -138,10 +143,19 @@ public class Deck implements Iterable<Card> {
         return color;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public DeckMetadata getMetadata() {
         return new DeckMetadata(id,
                                 name,
                                 color,
+                                image,
                                 cards.size(),
                                 tags,
                                 hashCode());
@@ -159,12 +173,13 @@ public class Deck implements Iterable<Card> {
                 && this.name.equals(other.name)
                 && this.cards.equals(other.cards)
                 && this.tags.equals(other.tags)
-                && this.color.equals(other.color);
+                && this.color.equals(other.color)
+                && this.image.equals(other.image);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, cards, tags, color);
+        return Objects.hash(name, id, cards, tags, color, image);
     }
 
     public Iterator<Card> iterator() {
