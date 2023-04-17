@@ -65,6 +65,7 @@ public class DeckRequestHandler extends Handler {
       UUID userId = UUID.fromString(database.getUserId(username));
 
       Deck deck = new Deck(new Gson().fromJson(req.body(), JsonObject.class));
+      deck.setImage(deck.getImage().replace(BASE_URL, ""));
 
       database.saveDeck(deck, userId);
       return successfulResponse;
@@ -107,18 +108,13 @@ public class DeckRequestHandler extends Handler {
   }
 
   private DeckMetadata setupImagePath(DeckMetadata deckMetadata) {
-    if (deckMetadata.image().contains(BASE_URL)) {
-      return deckMetadata;
-    }
-    else {
-      return new DeckMetadata(deckMetadata.id(),
+    return new DeckMetadata(deckMetadata.id(),
               deckMetadata.name(),
               deckMetadata.color(),
               BASE_URL + deckMetadata.image(),
               deckMetadata.cardCount(),
               deckMetadata.tags(),
               deckMetadata.deckHashCode());
-    }
   }
   private List<DeckMetadata> setupImagePath(List<DeckMetadata> deckMetadatas) {
     return deckMetadatas.stream()
