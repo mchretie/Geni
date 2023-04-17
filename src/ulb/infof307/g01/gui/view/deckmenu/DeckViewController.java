@@ -194,8 +194,7 @@ public class DeckViewController {
     @FXML
     private void handleShareDeckClicked() {
         final DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Choose a directory to share your deck");
-
+        directoryChooser.setTitle("Choisissez un dossier dans lequel sauvegarder votre paquet.");
         File file = directoryChooser.showDialog(
                 stackPane.getParent()
                         .getScene()

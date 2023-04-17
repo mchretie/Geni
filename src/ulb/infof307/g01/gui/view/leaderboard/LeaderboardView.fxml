@@ -24,7 +24,7 @@
                         <Insets />
                      </VBox.margin>
                   </Text>
-                  <Label fx:id="rangLabel" contentDisplay="CENTER" text="None" textFill="#83bcff">
+                  <Label fx:id="rangLabel" contentDisplay="CENTER" text="N/A" textFill="#83bcff">
                      <font>
                         <Font size="25.0" />
                      </font>
@@ -39,7 +39,7 @@
                         <Insets />
                      </VBox.margin>
                   </Text>
-                  <Label fx:id="scoreLabel" text="None" textFill="#449b6c">
+                  <Label fx:id="scoreLabel" text="N/A" textFill="#449b6c">
                      <font>
                         <Font size="25.0" />
                      </font>
@@ -48,7 +48,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="140.0" VBox.vgrow="ALWAYS">
                <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Decks" VBox.vgrow="ALWAYS" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Paquets" VBox.vgrow="ALWAYS" />
                   <HBox alignment="CENTER" fillHeight="false" maxHeight="-Infinity" VBox.vgrow="ALWAYS">
                      <Button style="-fx-background-color: transparent" HBox.hgrow="ALWAYS">
                         <graphic>
@@ -70,7 +70,7 @@
             </HBox>
          </VBox>
          <HBox alignment="CENTER" style="-fx-background-color: #E2E2E2;" VBox.vgrow="SOMETIMES">
-            <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Leaderboard" textAlignment="CENTER">
+            <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Classement" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>

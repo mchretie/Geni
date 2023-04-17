@@ -8,7 +8,7 @@
 <StackPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.userauth.UserAuthViewController">
 
     <VBox fx:id="registerVBOX" alignment="CENTER" fillWidth="false" visible="false">
-        <Label alignment="CENTER" text="Register" textAlignment="CENTER">
+        <Label alignment="CENTER" text="Inscription" textAlignment="CENTER">
             <font>
                 <Font size="16.0" />
             </font>
@@ -17,32 +17,31 @@
             </VBox.margin>
         </Label>
 
-        <TextField fx:id="registerUsernameField" onKeyPressed="#handleRegisterUsernameKeyPressed" promptText="User Name">
+        <TextField fx:id="registerUsernameField" onKeyPressed="#handleRegisterUsernameKeyPressed" promptText="Username">
             <VBox.margin>
                 <Insets bottom="20.0" />
             </VBox.margin>
         </TextField>
 
-        <PasswordField fx:id="registerPasswordField" onKeyPressed="#handleRegisterPasswordKeyPressed" promptText="Password">
+        <PasswordField fx:id="registerPasswordField" onKeyPressed="#handleRegisterPasswordKeyPressed" promptText="Mot de passe">
             <VBox.margin>
                 <Insets bottom="20.0" />
             </VBox.margin>
         </PasswordField>
 
-        <PasswordField fx:id="confirmPasswordField" onKeyTyped="#handleRegisterConfPasswordKeyTyped"
-                       onKeyPressed="#handleRegisterConfPasswordKeyPressed" promptText="Confirm Password">
+        <PasswordField fx:id="confirmPasswordField" onKeyPressed="#handleRegisterConfPasswordKeyPressed" onKeyTyped="#handleRegisterConfPasswordKeyTyped" promptText="Confirmez le mot de passe">
             <VBox.margin>
                 <Insets bottom="20.0" />
             </VBox.margin>
         </PasswordField>
 
-        <Button fx:id="registerButton" mnemonicParsing="false" onMouseClicked="#handleRegisterButtonClicked" text="Register">
+        <Button fx:id="registerButton" mnemonicParsing="false" onMouseClicked="#handleRegisterButtonClicked" text="S'inscrire">
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin>
         </Button>
 
-        <Hyperlink onMouseClicked="#handleToLoginClicked" text="Back to Login ?">
+        <Hyperlink onMouseClicked="#handleToLoginClicked" text="Déjà un compte ? Connectez-vous.">
             <font>
                 <Font size="10.0" />
             </font>
@@ -51,7 +50,7 @@
     </VBox>
 
     <VBox fx:id="loginVBOX" alignment="CENTER" fillWidth="false">
-        <Label alignment="CENTER" text="Log in" textAlignment="CENTER">
+        <Label alignment="CENTER" text="Connexion" textAlignment="CENTER">
             <font>
                 <Font size="16.0" />
             </font>
@@ -60,24 +59,24 @@
             </VBox.margin>
         </Label>
 
-        <TextField fx:id="loginUsernameField" onKeyPressed="#handleLoginUsernameKeyPressed" promptText="User Name">
+        <TextField fx:id="loginUsernameField" onKeyPressed="#handleLoginUsernameKeyPressed" promptText="Username">
             <VBox.margin>
                 <Insets bottom="20.0" />
             </VBox.margin>
         </TextField>
 
-        <PasswordField fx:id="loginPasswordField" onKeyPressed="#handleLoginPasswordKeyPressed" promptText="Password">
+        <PasswordField fx:id="loginPasswordField" onKeyPressed="#handleLoginPasswordKeyPressed" promptText="Mot de passe">
             <VBox.margin>
                 <Insets bottom="20.0" />
             </VBox.margin>
         </PasswordField>
 
-        <Button fx:id="loginButton" mnemonicParsing="false" onMouseClicked="#handleLoginButtonClicked" text="Login">
+        <Button fx:id="loginButton" mnemonicParsing="false" onMouseClicked="#handleLoginButtonClicked" text="Se connecter">
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin>
         </Button>
-        <Hyperlink onMouseClicked="#handleToRegisterClicked" text="No account ? Register here.">
+        <Hyperlink onMouseClicked="#handleToRegisterClicked" text="Pas de compte ? Inscrivez-vous ici.">
             <font>
                 <Font size="10.0" />
             </font>
