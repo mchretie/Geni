@@ -13,6 +13,17 @@ public class GameHistory implements Iterable<Game> {
         games.sort((a, b) -> b.timestamp().compareTo(a.timestamp()));
     }
 
+    public int getNumberOfGames() {
+        return games.size();
+    }
+
+    public int totalScore() {
+        return games
+                .stream()
+                .mapToInt(Game::getScore)
+                .sum();
+    }
+
     @Override
     public Iterator<Game> iterator() {
         return games.iterator();

@@ -4,12 +4,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
+import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
 import ulb.infof307.g01.gui.view.statistics.GameHistoryItemViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
 import ulb.infof307.g01.model.Game;
+import ulb.infof307.g01.model.GameHistory;
 
 
 import java.io.IOException;
@@ -25,6 +27,7 @@ public class StatisticsController implements StatisticsViewController.Listener {
     private final GameHistoryDAO gameHistoryDAO;
 
     private final StatisticsViewController statisticsViewController;
+    private final DeckDAO deckDAO;
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -34,14 +37,18 @@ public class StatisticsController implements StatisticsViewController.Listener {
                                 ErrorHandler errorHandler,
                                 MainWindowViewController mainWindowViewController,
                                 UserSessionDAO userSessionDAO,
+                                DeckDAO deckDAO,
                                 GameHistoryDAO gameHistoryDAO) {
         this.stage = stage;
         this.errorHandler = errorHandler;
         this.mainWindowViewController = mainWindowViewController;
         this.userSessionDAO = userSessionDAO;
+        this.deckDAO = deckDAO;
         this.gameHistoryDAO = gameHistoryDAO;
 
-        this.statisticsViewController = mainWindowViewController.getStatisticsViewController();
+        this.statisticsViewController
+                = mainWindowViewController.getStatisticsViewController();
+
         statisticsViewController.setListener(this);
     }
 
@@ -71,10 +78,18 @@ public class StatisticsController implements StatisticsViewController.Listener {
         try {
             List<Node> playersScoreItem = new ArrayList<>();
 
-            for (Game game : gameHistoryDAO.getGameHistory()) {
+            GameHistory gameHistory = gameHistoryDAO.getGameHistory();
+
+            for (Game game : gameHistory) {
                 Node node = loadGameHistoryItem(game);
                 playersScoreItem.add(node);
             }
+
+            statisticsViewController
+                    .setMainStatistics(
+                            gameHistory.getNumberOfGames() + "",
+                            deckDAO.getDeckCount() + "",
+                            gameHistory.totalScore() + "");
 
             return playersScoreItem;
 

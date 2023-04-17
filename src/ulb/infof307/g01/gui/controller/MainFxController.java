@@ -36,8 +36,7 @@ public class MainFxController extends Application implements
         EditCardController.ControllerListener,
         ResultController.ControllerListener,
         UserAuthController.ControllerListener,
-        ProfileController.ControllerListener,
-        GlobalLeaderboardController.ControllerListener {
+        ProfileController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -275,26 +274,6 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void leaderboardClicked() {
-        try {
-            leaderboardController = new GlobalLeaderboardController(
-                    stage,
-                    mainWindowViewController,
-                    errorHandler,
-                    this,
-                    userSessionDAO,
-                    deckDAO,
-                    leaderboardDAO);
-
-            viewStack.add(View.LEADERBOARD);
-            leaderboardController.show();
-
-        } catch (IOException | InterruptedException e) {
-            errorHandler.failedLoading(e);
-        }
-    }
-
-    @Override
     public void editFrontOfCardClicked(Deck deck, Card selectedCard) {
         editCardController
                 = new EditCardController(stage,
@@ -386,6 +365,7 @@ public class MainFxController extends Application implements
                     errorHandler,
                     mainWindowViewController,
                     userSessionDAO,
+                    deckDAO,
                     gameHistoryDAO
             );
 
@@ -434,7 +414,6 @@ public class MainFxController extends Application implements
                         stage,
                         mainWindowViewController,
                         errorHandler,
-                        this,
                         userSessionDAO,
                         deckDAO,
                         leaderboardDAO);

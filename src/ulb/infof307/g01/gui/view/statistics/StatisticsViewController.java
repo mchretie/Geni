@@ -44,9 +44,8 @@ public class StatisticsViewController {
     /*                               Statistics                               */
     /* ====================================================================== */
 
-    public void setMainStatistics(String totalGamesPlayed, String gamesPlayedToday, String totalDecks, String totalScore) {
+    public void setMainStatistics(String totalGamesPlayed, String totalDecks, String totalScore) {
         totalGamesPlayedLabel.setText(totalGamesPlayed);
-        gamesPlayedTodayLabel.setText(gamesPlayedToday);
         totalDecksLabel.setText(totalDecks);
         totalScoreLabel.setText(totalScore);
     }

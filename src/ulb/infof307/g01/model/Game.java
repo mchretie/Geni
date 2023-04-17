@@ -9,4 +9,8 @@ public record Game(Date timestamp, String deckName, String score) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(timestamp);
     }
+
+    public int getScore() {
+        return Integer.parseInt(score);
+    }
 }

@@ -153,6 +153,11 @@ public class DeckDAO extends HttpDAO {
         return deckCache.getDeck(deckMetadata);
     }
 
+    public int getDeckCount() throws IOException, InterruptedException {
+        initCacheIfNot();
+        return deckCache.getAllDecksMetadata().size();
+    }
+
     @Override
     public void setToken(String token) {
         deckCache = null;
