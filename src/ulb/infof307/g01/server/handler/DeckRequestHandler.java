@@ -59,6 +59,7 @@ public class DeckRequestHandler extends Handler {
   }
 
   private Map<String, Boolean> saveDeck(Request req, Response res) {
+    // TODO maybe divide into two methods addDeck and updateDeck
     try {
       String username = usernameFromRequest(req);
       UUID userId = UUID.fromString(database.getUserId(username));
@@ -106,13 +107,20 @@ public class DeckRequestHandler extends Handler {
   }
 
   private DeckMetadata setupImagePath(DeckMetadata deckMetadata) {
-    return new DeckMetadata(deckMetadata.id(),
-            deckMetadata.name(),
-            deckMetadata.color(),
-            BASE_URL + deckMetadata.image(),
-            deckMetadata.cardCount(),
-            deckMetadata.tags(),
-            deckMetadata.deckHashCode());
+    if (deckMetadata.image().contains(BASE_URL)) {
+      System.out.println("in if : " + deckMetadata.image());
+      return deckMetadata;
+    }
+    else {
+      System.out.println("in else : " + deckMetadata.image());
+      return new DeckMetadata(deckMetadata.id(),
+              deckMetadata.name(),
+              deckMetadata.color(),
+              BASE_URL + deckMetadata.image(),
+              deckMetadata.cardCount(),
+              deckMetadata.tags(),
+              deckMetadata.deckHashCode());
+    }
   }
   private List<DeckMetadata> setupImagePath(List<DeckMetadata> deckMetadatas) {
     return deckMetadatas.stream()
