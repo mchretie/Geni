@@ -16,7 +16,7 @@
       <VBox.margin>
          <Insets />
       </VBox.margin></HTMLEditor>
-    <Button mnemonicParsing="false" onMousePressed="#onSaveButtonClicked" text="Save">
+    <Button mnemonicParsing="false" onMousePressed="#onSaveButtonClicked" text="Enregistrer">
       <VBox.margin>
          <Insets top="10.0" />
       </VBox.margin></Button>

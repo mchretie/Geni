@@ -267,8 +267,6 @@ public class DeckDAO extends DAO {
                 VALUES (?, ?, ?, ?, ?)
                 ON CONFLICT(deck_id)
                 DO UPDATE SET name = ?, color = ?, image = ?
-                ON CONFLICT(name)
-                DO NOTHING
                 """;
 
         database.executeUpdate(sql,

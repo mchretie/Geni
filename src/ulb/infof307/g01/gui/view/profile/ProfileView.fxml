@@ -14,7 +14,7 @@
             </font>
 
             <VBox.margin>
-                <Insets bottom="15.0" />
+                <Insets bottom="30.0" />
             </VBox.margin>
         </Label>
 
@@ -30,11 +30,11 @@
                 <Font size="18.0" />
             </font>
             <VBox.margin>
-                <Insets bottom="50.0" />
+                <Insets bottom="60.0" />
             </VBox.margin>
         </Label>
 
-        
+
     <!-- Statistics button -->
     <Button onMouseClicked="#goToStatisticsClicked"
             onMouseEntered="#handleStatisticsHover"
@@ -44,10 +44,10 @@
             <FontIcon fx:id="statisticsIcon" iconLiteral="mdi2c-chart-areaspline" iconSize="40" />
         </graphic>
     </Button>
-    
-    <Button fx:id="logoutButton" mnemonicParsing="false" onMouseClicked="#handleLogoutButtonClicked" text="Logout" />
+
+    <Button mnemonicParsing="false" onMouseClicked="#handleLogoutButtonClicked" text="Se déconnecter" />
    <padding>
       <Insets bottom="10.0" />
    </padding>
-    
+
 </VBox>

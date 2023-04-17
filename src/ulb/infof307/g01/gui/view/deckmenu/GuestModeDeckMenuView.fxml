@@ -11,7 +11,7 @@
             prefHeight="400.0" prefWidth="600.0">
 
     <center>
-        <Label text="Désolé le deck-menu n'est pas accessible sans connection." />
+        <Label text="Veuillez vous connecter / inscrire pour pouvoir créer des paquets de cartes." />
     </center>
 
 

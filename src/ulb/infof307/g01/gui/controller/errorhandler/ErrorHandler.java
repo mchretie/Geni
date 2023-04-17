@@ -2,10 +2,7 @@ package ulb.infof307.g01.gui.controller.errorhandler;
 
 import com.google.gson.JsonSyntaxException;
 import javafx.application.Platform;
-import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
-
-import java.io.IOException;
 
 public class ErrorHandler {
 
@@ -56,7 +53,7 @@ public class ErrorHandler {
     }
 
     public void failedDeckExportError(Exception e) {
-        String message = "L'exportation de votre deck a échoué "
+        String message = "L'exportation de votre deck a échoué, "
                 + "veuillez réessayer. Si le problème persiste, "
                 + "redémarrez l’application";
 
@@ -105,19 +102,19 @@ public class ErrorHandler {
     }
 
     public void failedRegister(Exception e) {
-        String message = "L'enregistrement à échoué, veuillez réesayer.";
+        String message = "L'enregistrement a échoué, veuillez réessayer.";
 
         communicateError(e, message);
     }
     public void failedLogin(Exception e) {
-         String message = "L'authentification à échoué, veuillez réesayer";
+         String message = "L'authentification a échoué, veuillez réessayer";
 
         communicateError(e, message);
     }
 
     public void failedAutoLogin(Exception e) {
         String title = "Erreur avec le serveur";
-        String message = "L'authentification automatique à échoué, veuillez réesayer.";
+        String message = "L'authentification automatique a échoué, veuillez réessayer.";
 
         communicateError(title, message);
     }
