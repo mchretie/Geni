@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.view.mainwindow;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -16,12 +17,29 @@ import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
 import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 public class MainWindowViewController {
+
+    private final String initialButtonStyle = "-fx-background-color: transparent;";
 
     /* ====================================================================== */
     /*                               FXML Attributes                          */
     /* ====================================================================== */
+
+    @FXML
+    private Button currentDeckButton;
+
+    @FXML
+    private Button leaderboardButton;
+
+    @FXML
+    private Button profileButton;
+
+    @FXML
+    private Button homeButton;
 
     @FXML
     private FontIcon homeIcon;
@@ -124,26 +142,37 @@ public class MainWindowViewController {
     public DeckMenuViewController getDeckMenuViewController() {
         return deckMenuViewController;
     }
+
     public EditDeckViewController getEditDeckViewController() {
         return editDeckViewController;
     }
+
     public PlayDeckViewController getPlayDeckViewController() {
         return playDeckViewController;
     }
+
     public EditCardViewController getEditCardViewController() { 
         return editCardViewController; 
     }
-    public LeaderboardViewController getLeaderboardViewController() { return leaderboardViewController; }
+
+    public LeaderboardViewController getLeaderboardViewController() {
+        return leaderboardViewController;
+    }
+
     public ProfileViewController getProfileViewController() {
         return profileViewController;
     }
     public UserAuthViewController getUserAuthViewController() {
         return userAuthViewController;
     }
+
     public ResultViewController getResultViewController() {
         return resultViewController;
     }
-    public StatisticsViewController getStatisticsViewController() { return statisticsViewController; }
+
+    public StatisticsViewController getStatisticsViewController() {
+        return statisticsViewController;
+    }
 
 
     /* ====================================================================== */
@@ -181,6 +210,7 @@ public class MainWindowViewController {
 
     public void setDeckMenuViewVisible() {
         setAllInvisibleExcept(deckMenuView);
+        onClick(homeButton);
     }
 
     public void setEditDeckViewVisible() {
@@ -189,6 +219,7 @@ public class MainWindowViewController {
 
     public void setPlayDeckViewVisible() {
         setAllInvisibleExcept(playDeckView);
+        onClick(currentDeckButton);
     }
 
     public void setEditCardViewVisible() {
@@ -197,25 +228,36 @@ public class MainWindowViewController {
 
     public void setProfileViewVisible() {
         setAllInvisibleExcept(profileView);
+        onClick(profileButton);
     }
 
     public void setUserAuthViewController() {
         setAllInvisibleExcept(userAuthView);
+        onClick(profileButton);
     }
 
-    public void setGuestModeDeckMenuViewVisible() { setAllInvisibleExcept(guestModeDeckMenuView); }
+    public void setGuestModeDeckMenuViewVisible() {
+        setAllInvisibleExcept(guestModeDeckMenuView);
+        onClick(homeButton);
+    }
 
     public void setResultViewVisible() {
         setAllInvisibleExcept(resultView);
     }
 
     public void setLeaderboardViewVisible() { 
-        setAllInvisibleExcept(leaderboardView); 
+        setAllInvisibleExcept(leaderboardView);
+        onClick(leaderboardButton);
     }
 
-    public void setGuestModeLeaderboardViewVisible() { setAllInvisibleExcept(guestModeLeaderboardView); }
+    public void setGuestModeLeaderboardViewVisible() {
+        setAllInvisibleExcept(guestModeLeaderboardView);
+        onClick(leaderboardButton);
+    }
 
-    public void setStatisticsViewVisible() { setAllInvisibleExcept(statisticsView); }
+    public void setStatisticsViewVisible() {
+        setAllInvisibleExcept(statisticsView);
+    }
 
 
     /* ====================================================================== */
@@ -235,6 +277,18 @@ public class MainWindowViewController {
     /*                               Click handlers                           */
     /* ====================================================================== */
 
+    private void resetButtonExcept(Button button) {
+        List<Button> buttons = Arrays.asList(homeButton, profileButton, currentDeckButton, leaderboardButton);
+        for (Button b : buttons)
+            if (b != button)
+                b.setStyle(initialButtonStyle);
+    }
+
+    private void onClick(Button button) {
+        button.setStyle("-fx-background-color: \"#90EE90\";");
+        resetButtonExcept(button);
+    }
+
     @FXML
     private void handleGoBackClicked() {
         listener.goBackClicked();
@@ -251,8 +305,8 @@ public class MainWindowViewController {
     }
 
     @FXML
-    private void goToLeaderboardClicked() { 
-        listener.goToLeaderboardClicked(); 
+    private void goToLeaderboardClicked() {
+        listener.goToLeaderboardClicked();
     }
 
     @FXML

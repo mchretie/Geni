@@ -325,8 +325,7 @@ public class MainFxController extends Application implements
     public void userLoggedOut() {
         try {
             userSessionDAO.logout();
-            viewStack.clear();
-            viewStack.add(View.DECK_MENU);
+            resetViewStack(View.DECK_MENU);
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
@@ -390,6 +389,7 @@ public class MainFxController extends Application implements
     @Override
     public void goToHomeClicked() {
         try {
+            resetViewStack(View.DECK_MENU);
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
@@ -419,11 +419,18 @@ public class MainFxController extends Application implements
                         leaderboardDAO);
             }
 
+            resetViewStack(View.LEADERBOARD);
             leaderboardController.show();
+
 
         } catch (InterruptedException | IOException e) {
             errorHandler.failedLoading(e);
         }
+    }
+
+    private void resetViewStack(View prevView) {
+        viewStack.clear();
+        viewStack.add(prevView);
     }
 
     @Override
