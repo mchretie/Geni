@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.statistics.StatisticsViewController">
+   <center>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <HBox alignment="CENTER" spacing="15.0" VBox.vgrow="ALWAYS">
+            <VBox.margin>
+               <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+            <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Total des parties jouées">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Text>
+               <Label fx:id="totalGamesPlayedLabel" alignment="CENTER" opacity="0.65" text="69" textFill="RED">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Label>
+            </VBox>
+            <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Decks">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Text>
+               <Label fx:id="totalDecksLabel" alignment="CENTER" text="16" textFill="#d0a2ec">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Label>
+            </VBox>
+            <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Score">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Text>
+               <Label fx:id="totalScoreLabel" alignment="CENTER" text="420" textFill="#449b6c">
+                  <font>
+                     <Font size="22.5" />
+                  </font></Label>
+            </VBox>
+         </HBox>
+         <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+            <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Historique des jeux " textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </HBox>
+               <ListView fx:id="gameHistoryContainer" onMousePressed="#gameHistoryContainerClicked">
+                  <VBox.margin>
+                     <Insets bottom="50.0" left="50.0" right="50.0" />
+                  </VBox.margin>
+                  <cursor>
+                     <Cursor fx:constant="DEFAULT" />
+                  </cursor></ListView>
+            </VBox>
+         </HBox>
+      </VBox>
+   </center>
+</BorderPane>

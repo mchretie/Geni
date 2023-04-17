@@ -13,7 +13,7 @@
     <VBox fx:id="leftVbox" HBox.hgrow="ALWAYS">
         <!-- Deck name -->
         <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
-            <TextField fx:id="deckNameText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" onKeyReleased="#handleUpdateDeckName" style="-fx-background-color: #00000000;" text="Deck Name">
+            <TextField fx:id="deckNameText" alignment="CENTER" onKeyPressed="#handleTextFieldKeyPressed" onKeyReleased="#handleUpdateDeckName" style="-fx-background-color: #00000000;" text="Nom du paquet">
 
                 <font>
                     <Font name="System Italic" size="28.0" />
@@ -58,11 +58,11 @@
         <!--Card types Box-->
         <HBox fx:id="cardTypeBox" alignment="CENTER" spacing="30" visible="false" HBox.hgrow="ALWAYS">
 
-            <Button minWidth="100" onMouseClicked="#handleMCQCardSelected" text="QCM Card" HBox.hgrow="ALWAYS" />
+            <Button minWidth="100" onMouseClicked="#handleMCQCardSelected" text="Carte QCM" HBox.hgrow="ALWAYS" />
 
-            <Button minWidth="100" onMouseClicked="#handleFlashCardSelected" text="Flash Card" HBox.hgrow="ALWAYS" />
+            <Button minWidth="100" onMouseClicked="#handleFlashCardSelected" text="Flashcard" HBox.hgrow="ALWAYS" />
 
-            <Button minWidth="100" onMouseClicked="#handleInputCardSelected" text="Input Card" HBox.hgrow="ALWAYS" />
+            <Button minWidth="100" onMouseClicked="#handleInputCardSelected" text="Carte à réponse ouverte" HBox.hgrow="ALWAYS" />
 
             <VBox.margin>
                 <Insets top="5.0" />
@@ -82,11 +82,11 @@
         <HBox alignment="CENTER" spacing="50">
             <ColorPicker fx:id="colorPicker" onAction="#handleColorButtonClicked" onMouseEntered="#handleColorPickerHover" onMouseExited="#handleColorPickerExit" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #5ab970;" />
 
-            <Button fx:id="imageUploader" mnemonicParsing="false" onAction="#handleUploadImageClicked" onMouseEntered="#handleUploadImageHover" onMouseExited="#handleUploadImageExit" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #5ab970;" text="Upload image" />
+            <Button fx:id="imageUploader" mnemonicParsing="false" onAction="#handleUploadImageClicked" onMouseEntered="#handleUploadImageHover" onMouseExited="#handleUploadImageExit" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #5ab970;" text="Image de fond" />
         </HBox>
 
         <!-- Font of Card (constant) -->
-        <BorderPane fx:id="frontCard" style="-fx-border-color: black; -fx-border-radius: 15px; -fx-background-radius: 15px;" visible="true" VBox.vgrow="ALWAYS">
+        <BorderPane fx:id="frontCard" style="-fx-border-color: black; -fx-border-radius: 15px; -fx-background-radius: 15px;" VBox.vgrow="ALWAYS">
 
             <center>
                 <WebView fx:id="frontCardWebView" onKeyPressed="#handleTextFieldKeyPressed" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS" />
@@ -144,7 +144,7 @@
             </GridPane>
 
             <!--Back Of input Card-->
-            <TextField fx:id="answerOfInputCard"  visible="false" minHeight="30"  maxWidth="200" onKeyPressed="#handleInputTextFieldKeyPressed" onKeyReleased="#handleAnswerOfInputEdit" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS" />
+            <TextField fx:id="answerOfInputCard" maxWidth="200" minHeight="30" onKeyPressed="#handleInputTextFieldKeyPressed" onKeyReleased="#handleAnswerOfInputEdit" visible="false" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS" />
         </StackPane>
 
 

@@ -1,8 +1,10 @@
 package ulb.infof307.g01.model;
 
-import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,21 +13,21 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestLeaderboard {
+public class TestDeckLeaderboard {
     private Deck deck;
-    private Leaderboard leaderboard;
+    private DeckLeaderboard leaderboard;
 
     @BeforeEach
     void init() {
         this.deck = new Deck("test");
-        this.leaderboard = new Leaderboard(deck.getId());
+        this.leaderboard = new DeckLeaderboard(deck.getId());
     }
 
     @Test
     void addScore_FromInit_ScoreAdded() {
         User user = new User("user", "pass");
-        Score scoreBad = new Score(user.getUserId(), user.getUsername(), deck.getId(), 360, new Date(1586503737));
-        Score scoreGood = new Score(user.getUserId(), user.getUsername(), deck.getId(), 1024, new Date(1585812537));
+        Score scoreBad = new Score(user.getUsername(), deck.getId(), 360, new Date(1586503737));
+        Score scoreGood = new Score(user.getUsername(), deck.getId(), 1024, new Date(1585812537));
         
         leaderboard.addScore(scoreGood);
         leaderboard.addScore(scoreBad);
@@ -37,9 +39,9 @@ public class TestLeaderboard {
     @Test
     void addScores_FromInit_AddingMultipleScoresAtOnce() {
         User user = new User("user", "pass");
-        Score scoreBad = new Score(user.getUserId(), user.getUsername(), deck.getId(), 360, new Date(1586503737));
-        Score scoreGood = new Score(user.getUserId(), user.getUsername(), deck.getId(), 1024, new Date(1585812537));
-        Score scoreAverage = new Score(user.getUserId(), user.getUsername(), deck.getId(), 512, new Date(1096961337));
+        Score scoreBad = new Score(user.getUsername(), deck.getId(), 360, new Date(1586503737));
+        Score scoreGood = new Score(user.getUsername(), deck.getId(), 1024, new Date(1585812537));
+        Score scoreAverage = new Score(user.getUsername(), deck.getId(), 512, new Date(1096961337));
 
         List<Score> scores = new ArrayList<>(Arrays.asList(scoreAverage, scoreBad, scoreGood));
         leaderboard.addScores(scores);

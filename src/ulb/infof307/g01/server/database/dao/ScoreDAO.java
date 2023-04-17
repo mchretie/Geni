@@ -1,15 +1,14 @@
 package ulb.infof307.g01.server.database.dao;
 
-import ulb.infof307.g01.model.Score;
+import ulb.infof307.g01.model.Game;
+import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
+import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ScoreDAO extends DAO {
     private final DatabaseAccess database;
@@ -23,27 +22,28 @@ public class ScoreDAO extends DAO {
         this.userDAO = userDAO;
     }
 
-    public void addScore(Score score) {
+    public void addScore(Score score) throws DatabaseException {
         String sql = """
                 INSERT INTO user_deck_score (user_id, timestamp, deck_id, score)
                 VALUES (?, ?, ?, ?)
                 """;
 
+        String userId = userDAO.getUserId(score.getUsername());
         database.executeUpdate(sql,
-                score.getUserId().toString(),
+                userId,
                 Long.toString(score.getTimestamp().getTime()),
                 score.getDeckId().toString(),
                 score.getScore());
     }
 
-    private Score extractScore(ResultSet res) {
+    private Score extractScore(ResultSet res) throws DatabaseException {
         try {
             UUID userId = UUID.fromString(res.getString("user_id"));
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             int score = res.getInt("score");
             Date date = new Date(res.getLong("timestamp"));
             String username = userDAO.getUsername(userId);
-            return new Score(userId, username, deckId, score, date);
+            return new Score(username, deckId, score, date);
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -82,6 +82,65 @@ public class ScoreDAO extends DAO {
                 scores.add(extractScore(res));
             }
             return scores;
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public List<Map<String, String>> getAllUserDeckScore() throws DatabaseException{
+        String sql = """
+                SELECT U.username, sum(score) as total_score
+                FROM user_deck_score S, user U
+                WHERE U.user_id = S.user_id
+                GROUP BY U.username;
+                """;
+
+        try {
+            ResultSet res = database.executeQuery(sql);
+            List<Map<String, String>> leaderboard = new ArrayList<>();
+            while (res.next()) {
+                Map<String, String> leaderboardEntry = new HashMap<>();
+                leaderboardEntry
+                        .put(GlobalLeaderboard.ENTRY_USERNAME,
+                                res.getString("username"));
+
+                leaderboardEntry
+                        .put(GlobalLeaderboard.ENTRY_TOTAL_SCORE,
+                                res.getString("total_score"));
+
+                leaderboard.add(leaderboardEntry);
+            }
+
+            return leaderboard;
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
+    public List<Game> getGameHistory(UUID userId) {
+        String sql = """
+                SELECT d.name AS deck_name, s.score, s.timestamp
+                FROM deck d
+                INNER JOIN user_deck_score s ON d.deck_id = s.deck_id
+                WHERE s.user_id = ?;
+                """;
+
+        try (ResultSet res = database.executeQuery(sql, userId.toString())) {
+            List<Game> games = new ArrayList<>();
+
+            while (res.next()) {
+                String deckName = res.getString("deck_name");
+                int score = res.getInt("score");
+                Date date = new Date(res.getLong("timestamp"));
+
+                games.add(new Game(date, deckName, score + ""));
+            }
+
+            return games;
+
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }

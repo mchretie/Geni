@@ -1,11 +1,13 @@
 package ulb.infof307.g01.server.database;
 
-import ulb.infof307.g01.model.Leaderboard;
-import ulb.infof307.g01.model.Score;
+import ulb.infof307.g01.model.GameHistory;
+import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.DeckMetadata;
+import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.model.deck.Tag;
+import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
+import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.server.database.dao.*;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.DeckMetadata;
-import ulb.infof307.g01.model.Tag;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.io.File;
@@ -160,7 +162,15 @@ public class Database {
         scoreDao.addScore(score);
     }
 
-    public Leaderboard getLeaderboardFromDeckId(UUID deckId) {
-        return new Leaderboard(deckId,  scoreDao.getScoresForDeck(deckId));
+    public DeckLeaderboard getLeaderboardFromDeckId(UUID deckId) {
+        return new DeckLeaderboard(deckId, scoreDao.getScoresForDeck(deckId));
+    }
+
+    public GlobalLeaderboard getLeaderboardFromUserID() {
+        return new GlobalLeaderboard(scoreDao.getAllUserDeckScore());
+    }
+
+    public GameHistory getGameHistory(UUID userId) {
+        return new GameHistory(scoreDao.getGameHistory(userId));
     }
 }

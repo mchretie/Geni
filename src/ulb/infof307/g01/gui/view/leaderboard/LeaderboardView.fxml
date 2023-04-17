@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+
+<BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController">
+   <center>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER" prefHeight="140.0" VBox.vgrow="ALWAYS">
+               <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" wrapText="true">
+                  <font>
+                     <Font size="20.0" />
+                  </font>
+               </Label>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="140.0" spacing="8.0" VBox.vgrow="ALWAYS">
+               <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="296.0" style="-fx-background-color: #E2E2E2;" HBox.hgrow="ALWAYS">
+                  <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Rang">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Text>
+                  <Label fx:id="rangLabel" contentDisplay="CENTER" text="N/A" textFill="#83bcff">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+               </VBox>
+               <VBox alignment="CENTER" prefWidth="296.0" style="-fx-background-color: #E2E2E2;" HBox.hgrow="ALWAYS">
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin>
+                  <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Score">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Text>
+                  <Label fx:id="scoreLabel" text="N/A" textFill="#449b6c">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+               </VBox>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="140.0" VBox.vgrow="ALWAYS">
+               <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Paquets" VBox.vgrow="ALWAYS" />
+                  <HBox alignment="CENTER" fillHeight="false" maxHeight="-Infinity" VBox.vgrow="ALWAYS">
+                     <Button style="-fx-background-color: transparent" HBox.hgrow="ALWAYS">
+                        <graphic>
+                           <FontIcon iconLiteral="mdi2f-file" iconSize="40" />
+                        </graphic>
+                     </Button>
+                     <Label fx:id="numberDecksLabel" alignment="CENTER_RIGHT" textFill="#d0a2ec">
+                        <font>
+                           <Font size="20.0" />
+                        </font></Label>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <padding>
+                     <Insets top="10.0" />
+                  </padding>
+               </VBox>
+            </HBox>
+         </VBox>
+         <HBox alignment="CENTER" style="-fx-background-color: #E2E2E2;" VBox.vgrow="SOMETIMES">
+            <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Classement" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+         </HBox>
+         <ListView fx:id="boardContainer" VBox.vgrow="ALWAYS" />
+      </VBox>
+   </center>
+</BorderPane>

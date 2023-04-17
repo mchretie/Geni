@@ -7,10 +7,16 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editdeck.TagViewController;
-import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.model.card.Card;
+import ulb.infof307.g01.model.card.FlashCard;
+import ulb.infof307.g01.model.card.InputCard;
+import ulb.infof307.g01.model.card.MCQCard;
+import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.Tag;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -24,6 +30,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
     /* ====================================================================== */
 
     private final Deck deck;
+
+    private int selectedCardIndex = 0;
 
 
     /* ====================================================================== */
@@ -98,7 +106,11 @@ public class EditDeckController implements EditDeckViewController.Listener,
         editDeckViewController.showCards();
 
         if (deck.cardCount() > 0) {
-            editDeckViewController.setSelectedCard(deck.getFirstCard());
+            List<Card> deckCards = deck.getCards();
+            if (selectedCardIndex >= deckCards.size()) {
+                selectedCardIndex = 0;
+            }
+            editDeckViewController.setSelectedCard(deckCards.get(selectedCardIndex));
             editDeckViewController.loadSelectedCardEditor();
         } else
             editDeckViewController.hideSelectedCardEditor();
@@ -145,6 +157,11 @@ public class EditDeckController implements EditDeckViewController.Listener,
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);
         }
+    }
+
+    @Override
+    public void setSelectedCardIndex(int index) {
+        selectedCardIndex = index;
     }
 
     @Override
@@ -234,6 +251,18 @@ public class EditDeckController implements EditDeckViewController.Listener,
         }
     }
 
+    @Override
+    public void deckImageModified(Deck deck, File image, String filename) {
+        try {
+            deck.setImage(filename);
+            deckDAO.uploadImage(image, filename);
+            deckDAO.saveDeck(deck);
+
+        } catch (InterruptedException | IOException e) {
+            errorHandler.savingError(e);
+        }
+    }
+
     private void newCard(Card card) {
         try {
             deck.addCard(card);
@@ -307,11 +336,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void uploadImage(String filePath) {
-        System.out.println(filePath);
-    }
-
-    @Override
     public void editBackOfCardClicked(FlashCard selectedCard) {
         controllerListener.editBackOfCardClicked(deck, selectedCard);
     }
@@ -351,6 +375,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
     public interface ControllerListener {
         void editFrontOfCardClicked(Deck deck, Card card);
+
         void editBackOfCardClicked(Deck deck, FlashCard selectedCard);
     }
 }

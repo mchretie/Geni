@@ -1,10 +1,12 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.http.HttpResponse;
 import java.util.Map;
 import java.util.Optional;
@@ -61,10 +63,14 @@ public class UserSessionDAO extends HttpDAO {
     }
 
     private void checkResponseBody(String response, String type) throws AuthenticationFailedException {
-        Map<String, String> responseMap
-                = new Gson().fromJson(response, Map.class);
 
-        if (!Boolean.parseBoolean(responseMap.get("success"))) {
+        Type stringBooleanMap
+                = new TypeToken<Map<String, Boolean>>() {}.getType();
+
+        Map<String, Boolean> responseMap
+                = new Gson().fromJson(response, stringBooleanMap);
+
+        if (!responseMap.get("success")) {
             throw new AuthenticationFailedException(type + " failed");
         }
     }

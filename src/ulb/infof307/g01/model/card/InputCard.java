@@ -1,9 +1,9 @@
-package ulb.infof307.g01.model;
+package ulb.infof307.g01.model.card;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public class InputCard extends Card{
+public class InputCard extends Card {
     private String answer;
 
     public InputCard(String front, String answer) {

@@ -13,9 +13,10 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.model.DeckMetadata;
+import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.gui.util.ImageLoader;
-import ulb.infof307.g01.model.Tag;
+import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.model.deck.Tag;
 
 import java.io.File;
 
@@ -27,9 +28,6 @@ public class DeckViewController {
 
     @FXML
     private StackPane stackPane;
-
-    @FXML
-    private ImageView backgroundImage;
 
     @FXML
     private Label playDeckLabel;
@@ -44,11 +42,17 @@ public class DeckViewController {
     private FontIcon shareDeckIcon;
 
     @FXML
-    private Rectangle colorRect;
+    private ImageView imageBackground;
+
+    @FXML
+    private Rectangle colorBackground;
+
     @FXML
     private FlowPane tagsContainer;
+
     @FXML
     private Label amountCardsLabel;
+
     @FXML
     private Label amountTrophiesLabel;
 
@@ -83,41 +87,43 @@ public class DeckViewController {
     /*                           Updating Deck                                */
     /* ====================================================================== */
 
-    public void setDeck(DeckMetadata deck) {
+    public void setDeck(DeckMetadata deck, Score bestScore) {
         this.deck = deck;
         this.updateDeckLabelName();
 
+        this.setDeckImage();
         this.setDeckColor();
-        this.setBackGroundImage("file:res/img/tmpdeckimage.jpg");
 
         this.setTags();
-        this.setStats();
+        if (bestScore == null)
+            this.setStats("N/A");
+        else
+            this.setStats(String.valueOf(bestScore.getScore()));
     }
 
     private void setDeckColor() {
-        colorRect.setArcHeight(40);
-        colorRect.setArcWidth(40);
-        colorRect.heightProperty().bind(backgroundImage.fitHeightProperty());
-        colorRect.widthProperty().bind(backgroundImage.fitWidthProperty());
+        colorBackground.setArcHeight(40);
+        colorBackground.setArcWidth(40);
+        colorBackground.heightProperty().bind(imageBackground.fitHeightProperty());
+        colorBackground.widthProperty().bind(imageBackground.fitWidthProperty());
         Color color = Color.web(deck.color());
-        colorRect.setFill(makeGradient(color));
+        colorBackground.setFill(makeGradient(color));
     }
 
-    private void setBackGroundImage(String filename) {
-        // TODO: make image depend on deck image
-        Image img = imageLoader.get(filename);
-        backgroundImage.setImage(img);
-        backgroundImage.setPreserveRatio(false);
-        backgroundImage.fitWidthProperty().bind(stackPane.widthProperty());
-        backgroundImage.fitHeightProperty().bind(stackPane.heightProperty());
+    private void setDeckImage() {
+        Image img = new Image(deck.image());
+        imageBackground.setImage(img);
+        imageBackground.setPreserveRatio(false);
+        imageBackground.fitWidthProperty().bind(stackPane.widthProperty());
+        imageBackground.fitHeightProperty().bind(stackPane.heightProperty());
 
         // add clip to image so that it has rounded corner
         Rectangle clip = new Rectangle();
         clip.setArcHeight(40);
         clip.setArcWidth(40);
-        clip.heightProperty().bind(backgroundImage.fitHeightProperty());
-        clip.widthProperty().bind(backgroundImage.fitWidthProperty());
-        backgroundImage.setClip(clip);
+        clip.heightProperty().bind(imageBackground.fitHeightProperty());
+        clip.widthProperty().bind(imageBackground.fitWidthProperty());
+        imageBackground.setClip(clip);
     }
 
     private void setTags() {
@@ -132,23 +138,23 @@ public class DeckViewController {
                     new CornerRadii(10, false),
                     new Insets(-2, -10, -2, -10))));
 
+            tagLabel.setTextFill(tag.isBackgroundDark() ? Color.WHITE : Color.BLACK);
+
             tagsContainer.getChildren().add(tagLabel);
         }
     }
 
-    private void setStats() {
+    private void setStats(String bestScore) {
         amountCardsLabel.setText(String.valueOf(deck.cardCount()));
-        // TODO : use this when trophies are implemented
-        //amountTrophiesLabel.setText(String.valueOf(deck.getTrophies()));
-        amountTrophiesLabel.setText("666");
+        amountTrophiesLabel.setText(bestScore);
     }
 
     private LinearGradient makeGradient(Color color) {
         float gradientHeight = 0.6f;
         float gradientStrengthInverted = 1.2f;
 
-        Stop[] stops = { new Stop(0, color),
-                         new Stop(gradientHeight, Color.web("#FFFFFF00"))};
+        Stop[] stops = {new Stop(0, color),
+                new Stop(gradientHeight, Color.web("#FFFFFF00"))};
 
         return new LinearGradient(
                 1,
@@ -188,13 +194,12 @@ public class DeckViewController {
     @FXML
     private void handleShareDeckClicked() {
         final DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Choose a directory to share your deck");
-
+        directoryChooser.setTitle("Choisissez un dossier dans lequel sauvegarder votre paquet.");
         File file = directoryChooser.showDialog(
                 stackPane.getParent()
-                                    .getScene()
-                                    .getWindow()
-                    );
+                        .getScene()
+                        .getWindow()
+        );
 
         listener.shareDeckClicked(deck, file);
     }
@@ -241,8 +246,11 @@ public class DeckViewController {
 
     public interface Listener {
         void deckRemoved(DeckMetadata deck);
+
         void deckDoubleClicked(DeckMetadata deck);
+
         void editDeckClicked(DeckMetadata deck);
+
         void shareDeckClicked(DeckMetadata deck, File file);
     }
 }

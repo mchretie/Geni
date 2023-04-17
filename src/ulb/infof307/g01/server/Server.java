@@ -1,10 +1,12 @@
 package ulb.infof307.g01.server;
 
+import spark.Spark;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.server.handler.DeckRequestHandler;
 import ulb.infof307.g01.server.handler.LeaderboardRequestHandler;
 import ulb.infof307.g01.server.handler.UserAccountHandler;
+import ulb.infof307.g01.server.handler.GameHistoryRequestHandler;
 import ulb.infof307.g01.server.service.JWTService;
 
 import java.io.File;
@@ -38,6 +40,7 @@ public class Server {
     public void start() {
         logger.info("Starting server");
         port(port);
+        Spark.staticFiles.externalLocation("images");
         get("/", (req, res) -> "You have reached the server");
         launchHandlers();
         logger.info("Server started on port " + port);
@@ -59,5 +62,6 @@ public class Server {
         new DeckRequestHandler(jwtService,db).init();
         new UserAccountHandler(jwtService, db).init();
         new LeaderboardRequestHandler(db, jwtService).init();
+        new GameHistoryRequestHandler(db, jwtService).init();
     }
 }

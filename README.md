@@ -16,7 +16,7 @@ mvn javafx:run  # pour lancer l’application frontend
 mvn compile exec:java -Dexec.mainClass="ulb.infof307.g01.server.LaunchServer" # pour lancer le backend
 ```
 
-Un makefile avec les cibles `test`, `pack` et `run` est également fourni.
+Un makefile avec les cibles `test`, `pack`, `run-server` et `run-client` est également fourni.
 
 ### IntelliJ
 

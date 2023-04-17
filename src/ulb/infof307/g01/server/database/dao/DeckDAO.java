@@ -1,6 +1,12 @@
 package ulb.infof307.g01.server.database.dao;
 
-import ulb.infof307.g01.model.*;
+import ulb.infof307.g01.model.card.Card;
+import ulb.infof307.g01.model.card.FlashCard;
+import ulb.infof307.g01.model.card.InputCard;
+import ulb.infof307.g01.model.card.MCQCard;
+import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.DeckMetadata;
+import ulb.infof307.g01.model.deck.Tag;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
@@ -106,7 +112,7 @@ public class DeckDAO extends DAO {
      */
     public Deck getDeck(UUID deckId, UUID userId) throws DatabaseException {
         String sql = """
-                SELECT deck_id, name, color
+                SELECT deck_id, name, color, image
                 FROM deck
                 WHERE deck_id = ? AND user_id = ?
                 """;
@@ -121,7 +127,7 @@ public class DeckDAO extends DAO {
 
     public Deck getDeck(UUID deckId) throws DatabaseException {
         String sql = """
-                SELECT deck_id, name, color
+                SELECT deck_id, name, color, image
                 FROM deck
                 WHERE deck_id = ?
                 """;
@@ -257,12 +263,10 @@ public class DeckDAO extends DAO {
      */
     private void saveDeckIdentity(Deck deck, UUID userId) throws DatabaseException {
         String sql = """
-                INSERT INTO deck (deck_id, user_id, name, color)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO deck (deck_id, user_id, name, color, image)
+                VALUES (?, ?, ?, ?, ?)
                 ON CONFLICT(deck_id)
-                DO UPDATE SET name = ?, color = ?
-                ON CONFLICT(name)
-                DO NOTHING
+                DO UPDATE SET name = ?, color = ?, image = ?
                 """;
 
         database.executeUpdate(sql,
@@ -270,9 +274,11 @@ public class DeckDAO extends DAO {
                                userId.toString(),
                                deck.getName(),
                                deck.getColor(),
+                               deck.getImage(),
 
                                deck.getName(),
-                               deck.getColor());
+                               deck.getColor(),
+                               deck.getImage());
     }
 
     private void saveDeckTags(Deck deck) throws DatabaseException {
@@ -506,10 +512,11 @@ public class DeckDAO extends DAO {
             UUID uuid = UUID.fromString(res.getString("deck_id"));
             String name = res.getString("name");
             String color = res.getString("color");
+            String image = res.getString("image");
             List<Card> cards = getCardsFor(uuid);
             List<Tag> tags = tagDao.getTagsFor(uuid);
 
-            return new Deck(name, uuid, cards, tags, color);
+            return new Deck(name, uuid, cards, tags, color, image);
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }

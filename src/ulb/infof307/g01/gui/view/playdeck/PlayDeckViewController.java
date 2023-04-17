@@ -2,29 +2,28 @@ package ulb.infof307.g01.gui.view.playdeck;
 
 import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.FlashCard;
-import ulb.infof307.g01.model.InputCard;
-import ulb.infof307.g01.model.MCQCard;
+import ulb.infof307.g01.model.card.Card;
+import ulb.infof307.g01.model.card.FlashCard;
+import ulb.infof307.g01.model.card.InputCard;
+import ulb.infof307.g01.model.card.MCQCard;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Set;
 
 public class PlayDeckViewController {
 
@@ -33,6 +32,9 @@ public class PlayDeckViewController {
     /* ====================================================================== */
     /*                               FXML Attributes                          */
     /* ====================================================================== */
+
+    @FXML
+    private GridPane choicesGrid;
 
     @FXML
     private VBox cardBox;
@@ -46,23 +48,18 @@ public class PlayDeckViewController {
     @FXML
     private WebView cardWebView;
 
-    @FXML
-    private GridPane choicesGrid;
-
-    @FXML
     private Button correctChoiceButton;
-
-    @FXML
-    private BorderPane inputPane;
 
     @FXML
     private VBox inputBox;
 
+    private TextField inputTextField;
     @FXML
-    private Button approveAnswer;
+    private Label currentCardIndexLabel;
 
     @FXML
-    private TextField inputTextField;
+    private Label cardNumberIndexLabel;
+
 
     /* ====================================================================== */
     /*                              Model Attributes                          */
@@ -86,10 +83,17 @@ public class PlayDeckViewController {
         this.listener = listener;
     }
 
-    public void setDeckName(String deckName) { this.deckNameLabel.setText(deckName); }
+    public void setDeckName(String deckName) {
+        this.deckNameLabel.setText(deckName);
+    }
 
-    public void setCurrentCard(Card currentCard) {
+    public void setNumberOfCards(int value) {
+        this.cardNumberIndexLabel.setText(String.valueOf(value));
+    }
+
+    public void setCurrentCard(Card currentCard, int index) {
         this.currentCard = currentCard;
+        this.currentCardIndexLabel.setText(String.valueOf(index + 1));
         showFrontOfCard();
     }
 
@@ -105,7 +109,7 @@ public class PlayDeckViewController {
 
     /*---------------------Normal Card ---------------------- */
 
-    public void showNormalCard(){
+    public void showNormalCard() {
         choicesGrid.setVisible(false);
         inputBox.setVisible(false);
     }
@@ -131,7 +135,8 @@ public class PlayDeckViewController {
 
             rotateTransition.setFromAngle(90);
             rotateTransition.setToAngle(0);
-            rotateTransition.setOnFinished(_e -> {});
+            rotateTransition.setOnFinished(_e -> {
+            });
             rotateTransition.play();
         });
 
@@ -140,7 +145,7 @@ public class PlayDeckViewController {
 
     /*---------------------- MCQ Card ---------------------- */
 
-    public void showMCQCard(){
+    public void showMCQCard() {
         choicesGrid.setVisible(true);
         inputBox.setVisible(false);
         loadAnswers();
@@ -155,78 +160,43 @@ public class PlayDeckViewController {
         for (int i = 0; i < card.getNbOfChoices(); i++) {
             int row = i / 2;
             int col = i % 2;
-
-            BorderPane choicePane
-                    = addChoice(card.getChoice(i),
-                    i == correctChoiceIndex,
-                    colors.get(i));
-
-            choicesGrid.add(choicePane, col, row);
+            boolean isCorrectAnswer = (correctChoiceIndex == i);
+            Button answer = addAnswer(card.getChoice(i), isCorrectAnswer, colors.get(i));
+            choicesGrid.add(answer, col, row);
         }
     }
 
+    public Button addAnswer(String answer, boolean isCorrectChoice, String color) {
+        Button checkButton = new Button(answer);
+        FontIcon checkIcon = new FontIcon("mdi2c-check");
+        checkIcon.setIconSize(20);
+        checkButton.setGraphic(checkIcon);
+        checkButton.setMinHeight(30);
+        checkButton.setMinWidth(200);
+        checkButton.setContentDisplay(ContentDisplay.RIGHT);
+        checkButton.setStyle("-fx-background-color: " + color + "; -fx-border-radius: 5; -fx-background-radius: 5;");
 
-    public BorderPane addChoice(String answer, boolean isCorrectChoice, String color) {
-        BorderPane choicePane = new BorderPane();
-        choicePane.setStyle("-fx-background-color: " + color + ";");
+        if (isCorrectChoice) correctChoiceButton = checkButton;
 
-        TextField choiceField = createChoiceField(answer);
-        Button choiceSelectionButton = createChoiceSelectionButton();
-
-        if (isCorrectChoice)
-            correctChoiceButton = choiceSelectionButton;
-
-        choiceSelectionButton.setOnAction(actionEvent -> {
-            FontIcon buttonIcon = (FontIcon) choiceSelectionButton.getGraphic();
-            buttonIcon.setIconColor(Color.WHITE);
-            showCorrectChoice();
+        checkButton.setOnAction(actionEvent -> {
+            checkIcon.setIconColor(Color.WHITE);
+            showCorrectAnswers();
+            listener.onChoiceEntered(isCorrectChoice);
         });
 
-        choicePane.setLeft(choiceField);
-        choicePane.setRight(choiceSelectionButton);
-
-        return choicePane;
+        return checkButton;
     }
 
-
-    private TextField createChoiceField(String choiceText) {
-        TextField choiceTextField = new TextField(choiceText);
-        choiceTextField.setMinHeight(30);
-        choiceTextField.setStyle("-fx-background-color: transparent;" +
-                                "-fx-border-color: transparent;");
-        choiceTextField.setEditable(false);
-
-        return choiceTextField;
-    }
-
-    private Button createChoiceSelectionButton() {
-        Button choiceSelectionButton = new Button();
-        FontIcon checkIcon = setIcon("mdi2c-check", Color.BLACK);
-        choiceSelectionButton.setGraphic(checkIcon);
-        choiceSelectionButton.setMinHeight(30);
-        choiceSelectionButton.setStyle("-fx-background-color:transparent");
-
-        return choiceSelectionButton;
-    }
-
-
-    private void showCorrectChoice(){
-        for (Node choiceNode : choicesGrid.lookupAll("BorderPane")) {
-            BorderPane choice = (BorderPane) choiceNode;
-            for (Node selectionNode : choice.lookupAll("TextField")) {
-                TextField selectionTextField = (TextField) selectionNode;
-                selectionTextField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
-            }
-            for (Node selectionNode : choice.lookupAll("Button")) {
-                Button selectionButton = (Button) selectionNode;
-
-                selectionButton.setDisable(true);
-
-                if (selectionButton == correctChoiceButton) {
-                    choice.setStyle("-fx-background-color: #659e40;");
-                } else {
-                    choice.setStyle("-fx-background-color: #c45151;");
-                }
+    private void showCorrectAnswers() {
+        for (int i = 0; i < choicesGrid.getChildren().size(); i++) {
+            Button answer = (Button) choicesGrid.getChildren().get(i);
+            answer.setDisable(true);
+            answer.setTextFill(Color.WHITE);
+            if (answer == correctChoiceButton) {
+                answer.setOpacity(1);
+                answer.setStyle("-fx-background-color: #659e40;");
+            } else {
+                answer.setStyle("-fx-background-color: #c45151;");
             }
         }
     }
@@ -234,14 +204,25 @@ public class PlayDeckViewController {
     /*---------------------Input card ---------------------- */
 
     @FXML
-    public void showInputCard(){
+    public void showInputCard() {
         inputBox.setVisible(true);
         choicesGrid.setVisible(false);
 
-        inputTextField.setText("");
-        inputTextField.setStyle("");
-        inputPane.setStyle("");
-        inputPane.setRight(approveAnswer);
+        inputBox.getChildren().clear();
+
+        inputTextField = new TextField();
+        inputTextField.onKeyPressedProperty().set(this::handleTextFieldKeyPressed);
+
+        Button approveAnswer = new Button();
+        FontIcon checkIcon = setIcon("mdi2c-check", Color.BLACK);
+        approveAnswer.setGraphic(checkIcon);
+        approveAnswer.onMouseClickedProperty().set(mouseEvent -> handleInputText());
+
+        HBox inputHBox = new HBox(2);
+        inputHBox.setAlignment(Pos.BASELINE_CENTER);
+        inputHBox.getChildren().addAll(inputTextField, approveAnswer);
+
+        inputBox.getChildren().add(inputHBox);
 
         if (inputBox.getChildren().size() > 1) inputBox.getChildren().remove(1);
     }
@@ -253,7 +234,7 @@ public class PlayDeckViewController {
                 event.consume(); // Consume the space character
         });
 
-        if (! keyEvent.getCode().equals(KeyCode.ENTER)) {
+        if (!keyEvent.getCode().equals(KeyCode.ENTER)) {
             return;
         }
         handleInputText();
@@ -261,45 +242,59 @@ public class PlayDeckViewController {
     }
 
     @FXML
-    private void handleInputText(){
+    private void handleInputText() {
         InputCard card = (InputCard) currentCard;
 
         inputTextField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
-        if ((card.isInputCorrect(inputTextField.getText()))){
-            inputPane.setRight(setIcon("mdi2c-check", Color.WHITE));
-            inputPane.setStyle("-fx-background-color: #659e40;");
-        }
+        inputTextField.setDisable(true);
 
-        else {
-            inputPane.setStyle("-fx-background-color: #c45151;");
-            inputPane.setRight(setIcon("mdi2c-close", Color.BLACK));
-            showCorrectInput();
-        }
+        String input = inputTextField.getText();
+
+        inputBox.getChildren().clear();
+        inputBox.setSpacing(2);
+
+        boolean correct = card.isInputCorrect(input);
+
+        listener.onChoiceEntered(correct);
+
+        if (!correct) showInput(input, false);
+
+        showInput(card.getAnswer(), true);
     }
 
-    private void showCorrectInput(){
-        InputCard card = (InputCard) currentCard;
-        String string = card.getAnswer();
+    private void showInput(String input, Boolean correct) {
+        Text inputText = new Text(input);
+        inputText.setStyle("-fx-background-color: transparent;");
+        if (correct) inputText.setFill(Color.WHITE);
 
-        BorderPane correctInputPane = new BorderPane();
-        TextField correctInputField = new TextField(string);
-        correctInputField.setEditable(false);
-        correctInputField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+        HBox inputHbox = new HBox(2);
+        String color = correct ? "#659e40" : "#c45151";
+        inputHbox.setStyle("-fx-background-color: " + color + "; -fx-border-radius: 5; -fx-background-radius: 5;");
 
-        correctInputPane.setStyle("-fx-background-color: #6bb862; -fx-border-color:#aad4a5");
-        correctInputPane.setCenter(correctInputField);
-        correctInputPane.setRight(setIcon("mdi2c-check", Color.WHITE));
+        inputHbox.setAlignment(Pos.BASELINE_CENTER);
+        inputHbox.setPadding(new Insets(5, 5, 5, 5));
 
-        inputBox.getChildren().add(correctInputPane);
+        Region region = new Region();
+        HBox.setHgrow(region, Priority.ALWAYS);
+
+        FontIcon checkIcon = correct ? setIcon("mdi2c-check", Color.WHITE) : setIcon("mdi2c-close", Color.BLACK);
+
+        inputHbox.getChildren().add(inputText);
+        inputHbox.getChildren().add(region);
+        inputHbox.getChildren().add(checkIcon);
+
+        inputBox.getChildren().add(inputHbox);
     }
 
-    private FontIcon setIcon(String iconLiteral, Color color){
+
+    private FontIcon setIcon(String iconLiteral, Color color) {
         FontIcon icon = new FontIcon();
         icon.setIconLiteral(iconLiteral);
         icon.setIconSize(20);
         icon.setIconColor(color);
         return icon;
     }
+
 
     /* ====================================================================== */
     /*                              Click handlers                            */
@@ -326,7 +321,11 @@ public class PlayDeckViewController {
 
     public interface Listener {
         void cardClicked();
+
         void nextCardClicked();
+
         void previousCardClicked();
+
+        void onChoiceEntered(boolean isGoodChoice);
     }
 }

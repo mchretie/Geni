@@ -1,4 +1,6 @@
-package ulb.infof307.g01.model;
+package ulb.infof307.g01.model.card;
+
+import ulb.infof307.g01.model.deck.Deck;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,7 +8,7 @@ import java.util.List;
 
 abstract public class CardExtractor implements Iterable<Card> {
 
-    final List<Card> sortedCards;
+    protected final List<Card> sortedCards;
     private int currentCardIndex; // to know where we are in the deck during the drawing
 
     public CardExtractor(Deck deck) {
@@ -16,6 +18,10 @@ abstract public class CardExtractor implements Iterable<Card> {
     }
 
     abstract void sortDeck();
+
+    public int getCurrentCardIndex() {
+        return currentCardIndex;
+    }
 
     public List<Card> getSortedCards() {
         return sortedCards;

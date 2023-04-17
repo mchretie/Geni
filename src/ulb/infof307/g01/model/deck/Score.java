@@ -1,34 +1,32 @@
-package ulb.infof307.g01.model;
+package ulb.infof307.g01.model.deck;
 
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Score {
-    private final UUID userId;
     private final String username;
     private final UUID deckId;
     private int score;
     private final Date timestamp;
 
-    public Score(UUID userId, String username, UUID deckId, int score, Date timestamp) {
-        this.userId = userId;
+    public Score(String username, UUID deckId, int score, Date timestamp) {
         this.username = username;
         this.deckId = deckId;
         this.score = score;
         this.timestamp = timestamp;
     }
 
-    static public Score createNewScore(UUID userId, String username, UUID deckId) {
-        return new Score(userId, username, deckId, 0, new Date());
+    static public Score createNewScore(String username, UUID deckId) {
+        return new Score(username, deckId, 0, new Date());
     }
 
     public void increment(int value) {
         this.score += value;
     }
 
-    public UUID getUserId() {
-        return this.userId;
+    public String getUsername() {
+        return this.username;
     }
 
     public UUID getDeckId() {
@@ -50,7 +48,7 @@ public class Score {
             return false;
 
         Score other = (Score) o;
-        return userId.equals(other.userId) &&
+        return username.equals(other.username) &&
                 deckId.equals(other.deckId) &&
                 score == other.score &&
                 timestamp.equals(other.timestamp);
@@ -58,6 +56,6 @@ public class Score {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username, deckId, score, timestamp);
+        return Objects.hash(username, deckId, score, timestamp);
     }
 }

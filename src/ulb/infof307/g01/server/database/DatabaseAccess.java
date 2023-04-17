@@ -6,6 +6,7 @@ import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.io.File;
 import java.sql.*;
+import java.util.Arrays;
 
 /**
  * Provide access to database
