@@ -3,8 +3,8 @@ package ulb.infof307.g01.gui.httpdao.dao;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import ulb.infof307.g01.gui.util.DeckCache;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.DeckMetadata;
+import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.File;

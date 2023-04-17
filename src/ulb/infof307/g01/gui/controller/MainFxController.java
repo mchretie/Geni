@@ -12,12 +12,12 @@ import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
 import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.Deck;
+import ulb.infof307.g01.model.card.Card;
+import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
-import ulb.infof307.g01.model.DeckMetadata;
-import ulb.infof307.g01.model.FlashCard;
-import ulb.infof307.g01.model.Score;
+import ulb.infof307.g01.model.deck.DeckMetadata;
+import ulb.infof307.g01.model.card.FlashCard;
+import ulb.infof307.g01.model.deck.Score;
 
 
 import java.io.IOException;
@@ -37,8 +37,7 @@ public class MainFxController extends Application implements
         ResultController.ControllerListener,
         UserAuthController.ControllerListener,
         ProfileController.ControllerListener,
-        GlobalLeaderboardController.ControllerListener,
-        StatisticsController.ControllerListener {
+        GlobalLeaderboardController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -380,19 +379,22 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void StatisticsClicked() throws IOException {
-        statisticsController = new StatisticsController(
-                stage,
-                errorHandler,
-                mainWindowViewController,
-                this,
-                userSessionDAO,
-                gameHistoryDAO
-                );
+    public void statisticsClicked() {
+        try {
+            statisticsController = new StatisticsController(
+                    stage,
+                    errorHandler,
+                    mainWindowViewController,
+                    userSessionDAO,
+                    gameHistoryDAO
+            );
 
-        viewStack.add(View.STATISTICS);
-        statisticsController.show();
+            viewStack.add(View.STATISTICS);
+            statisticsController.show();
 
+        } catch (IOException e) {
+            errorHandler.restartApplicationError(e);
+        }
     }
 
 

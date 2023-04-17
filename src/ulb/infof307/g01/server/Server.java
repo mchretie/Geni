@@ -6,6 +6,7 @@ import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.server.handler.DeckRequestHandler;
 import ulb.infof307.g01.server.handler.LeaderboardRequestHandler;
 import ulb.infof307.g01.server.handler.UserAccountHandler;
+import ulb.infof307.g01.server.handler.GameHistoryRequestHandler;
 import ulb.infof307.g01.server.service.JWTService;
 
 import java.io.File;
@@ -61,5 +62,6 @@ public class Server {
         new DeckRequestHandler(jwtService,db).init();
         new UserAccountHandler(jwtService, db).init();
         new LeaderboardRequestHandler(db, jwtService).init();
+        new GameHistoryRequestHandler(db, jwtService).init();
     }
 }

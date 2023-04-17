@@ -10,7 +10,7 @@ import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.leaderboard.PlayerScoreItemViewController;
-import ulb.infof307.g01.model.GlobalLeaderboard;
+import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 
 import java.io.IOException;
 import java.net.URL;

@@ -1,6 +1,10 @@
 package ulb.infof307.g01.model;
 
 import org.junit.jupiter.api.Test;
+import ulb.infof307.g01.model.card.Card;
+import ulb.infof307.g01.model.card.FlashCard;
+import ulb.infof307.g01.model.card.MCQCard;
+import ulb.infof307.g01.model.deck.Deck;
 
 import java.util.List;
 

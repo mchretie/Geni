@@ -7,9 +7,14 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editdeck.TagViewController;
-import ulb.infof307.g01.model.*;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.model.card.Card;
+import ulb.infof307.g01.model.card.FlashCard;
+import ulb.infof307.g01.model.card.InputCard;
+import ulb.infof307.g01.model.card.MCQCard;
+import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.Tag;
 
 import java.io.File;
 import java.io.IOException;

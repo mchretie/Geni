@@ -2,8 +2,8 @@ package ulb.infof307.g01.server.database;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.Score;
+import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
 import ulb.infof307.g01.server.database.dao.ScoreDAO;
 import ulb.infof307.g01.server.database.dao.TagDAO;

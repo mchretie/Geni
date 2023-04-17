@@ -1,4 +1,6 @@
-package ulb.infof307.g01.model;
+package ulb.infof307.g01.model.leaderboard;
+
+import ulb.infof307.g01.model.deck.Score;
 
 import java.util.ArrayList;
 import java.util.Comparator;

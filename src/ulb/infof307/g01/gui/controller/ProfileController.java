@@ -68,11 +68,12 @@ public class ProfileController implements ProfileViewController.Listener {
 
     @Override
     public void logoutButtonClicked() { controllerListener.userLoggedOut(); }
+
     @Override
-    public void StatisticsClicked() { controllerListener.StatisticsClicked();}
+    public void statisticsClicked() { controllerListener.statisticsClicked();}
 
     public interface ControllerListener {
         void userLoggedOut();
-        void StatisticsClicked() throws IOException;
+        void statisticsClicked();
     }
 }

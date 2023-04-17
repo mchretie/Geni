@@ -17,10 +17,10 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.model.Card;
-import ulb.infof307.g01.model.FlashCard;
-import ulb.infof307.g01.model.InputCard;
-import ulb.infof307.g01.model.MCQCard;
+import ulb.infof307.g01.model.card.Card;
+import ulb.infof307.g01.model.card.FlashCard;
+import ulb.infof307.g01.model.card.InputCard;
+import ulb.infof307.g01.model.card.MCQCard;
 
 import java.util.ArrayList;
 import java.util.Arrays;

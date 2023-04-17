@@ -13,10 +13,10 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.model.DeckMetadata;
+import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.gui.util.ImageLoader;
-import ulb.infof307.g01.model.Score;
-import ulb.infof307.g01.model.Tag;
+import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.model.deck.Tag;
 
 import java.io.File;
 

@@ -9,27 +9,22 @@ import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
 import ulb.infof307.g01.gui.view.statistics.GameHistoryItemViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
-import ulb.infof307.g01.model.GameHistory;
-import ulb.infof307.g01.model.Statistics;
+import ulb.infof307.g01.model.Game;
 
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class StatisticsController implements StatisticsViewController.Listener {
     private final Stage stage;
     private final ErrorHandler errorHandler;
     private final MainWindowViewController mainWindowViewController;
-    private final ControllerListener controllerListener;
     private final UserSessionDAO userSessionDAO;
     private final GameHistoryDAO gameHistoryDAO;
 
     private final StatisticsViewController statisticsViewController;
-
-    private GameHistory gameHistory;
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -38,13 +33,11 @@ public class StatisticsController implements StatisticsViewController.Listener {
     public StatisticsController(Stage stage,
                                 ErrorHandler errorHandler,
                                 MainWindowViewController mainWindowViewController,
-                                ControllerListener controllerListener,
                                 UserSessionDAO userSessionDAO,
                                 GameHistoryDAO gameHistoryDAO) {
         this.stage = stage;
         this.errorHandler = errorHandler;
         this.mainWindowViewController = mainWindowViewController;
-        this.controllerListener = controllerListener;
         this.userSessionDAO = userSessionDAO;
         this.gameHistoryDAO = gameHistoryDAO;
 
@@ -60,8 +53,9 @@ public class StatisticsController implements StatisticsViewController.Listener {
     public void show() throws IOException {
         mainWindowViewController.setStatisticsViewVisible();
         if (userSessionDAO.isLoggedIn()) {
-            mainWindowViewController.setLeaderboardViewVisible();
-            mainWindowViewController.makeGoBackIconInvisible();
+            gameHistoryDAO.setToken(userSessionDAO.getToken());
+            mainWindowViewController.setStatisticsViewVisible();
+            mainWindowViewController.makeGoBackIconVisible();
 
             statisticsViewController.setGameHistory(loadGameHistory());
         }
@@ -77,10 +71,8 @@ public class StatisticsController implements StatisticsViewController.Listener {
         try {
             List<Node> playersScoreItem = new ArrayList<>();
 
-            gameHistory = gameHistoryDAO.getGameHistory();
-
-            for (Map<String, String> leaderboardEntry : gameHistory) {
-                Node node = loadGameHistoryItem(leaderboardEntry);
+            for (Game game : gameHistoryDAO.getGameHistory()) {
+                Node node = loadGameHistoryItem(game);
                 playersScoreItem.add(node);
             }
 
@@ -90,10 +82,9 @@ public class StatisticsController implements StatisticsViewController.Listener {
             errorHandler.failedLoading(e);
             return new ArrayList<>();
         }
-
     }
 
-    private Node loadGameHistoryItem(Map<String, String> gameHistory) throws IOException {
+    private Node loadGameHistoryItem(Game game) throws IOException {
         URL url = GameHistoryItemViewController
                 .class.getResource("GameHistoryItemView.fxml");
 
@@ -103,21 +94,14 @@ public class StatisticsController implements StatisticsViewController.Listener {
         GameHistoryItemViewController gameHistoryItemViewController
                 = loader.getController();
 
-        String date = gameHistory.get(Statistics.ENTRY_DATE);
-        String deckName = gameHistory.get(Statistics.ENTRY_DECK_NAME);
-        String score = gameHistory.get(Statistics.ENTRY_SCORE);
-        gameHistoryItemViewController.setGameHistoryItem(date, deckName, score);
+        String date = game.getTimestamp();
+        String deckName = game.getDeckName();
+        String score = game.getScore();
+
+        gameHistoryItemViewController
+                .setGameHistoryItem(date, deckName, score);
 
         return node;
 
     }
-
-    /* ====================================================================== */
-    /*                   Controller Listener Interface                        */
-    /* ====================================================================== */
-
-    public interface ControllerListener {
-        void StatisticsClicked() throws IOException;
-    }
-
 }

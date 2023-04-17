@@ -1,7 +1,5 @@
 package ulb.infof307.g01.server.database;
 
-import org.eclipse.jetty.server.Authentication;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
@@ -10,8 +8,8 @@ import ulb.infof307.g01.server.database.dao.TagDAO;
 import ulb.infof307.g01.server.database.dao.UserDAO;
 
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
-import ulb.infof307.g01.model.Deck;
-import ulb.infof307.g01.model.Tag;
+import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.Tag;
 
 import java.sql.SQLException;
 import java.util.*;

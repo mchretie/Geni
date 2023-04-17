@@ -2,6 +2,9 @@ package ulb.infof307.g01.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;

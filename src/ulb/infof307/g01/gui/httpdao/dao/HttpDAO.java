@@ -3,7 +3,7 @@ package ulb.infof307.g01.gui.httpdao.dao;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import ulb.infof307.g01.gui.httpdao.exceptions.ServerRequestFailedException;
-import ulb.infof307.g01.model.DeckMetadata;
+import ulb.infof307.g01.model.deck.DeckMetadata;
 
 import java.io.File;
 import java.io.IOException;

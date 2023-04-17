@@ -33,7 +33,7 @@ public class ProfileViewController {
     @FXML
     private void handleLogoutButtonClicked() { listener.logoutButtonClicked(); }
     @FXML
-    public void goToStatisticsClicked() { listener.StatisticsClicked(); }
+    public void goToStatisticsClicked() { listener.statisticsClicked(); }
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -41,6 +41,6 @@ public class ProfileViewController {
 
     public interface Listener {
         void logoutButtonClicked();
-        void StatisticsClicked();
+        void statisticsClicked();
     }
 }
