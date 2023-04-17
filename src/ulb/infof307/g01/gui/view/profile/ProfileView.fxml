@@ -36,9 +36,12 @@
 
         
     <!-- Statistics button -->
-    <Button onMouseClicked="#goToStatisticsClicked" style="-fx-background-color: transparent">
+    <Button onMouseClicked="#goToStatisticsClicked"
+            onMouseEntered="#handleStatisticsHover"
+            onMouseExited="#handleStatisticsExitHover"
+            style="-fx-background-color: transparent">
         <graphic>
-            <FontIcon iconLiteral="mdi2c-chart-areaspline" iconSize="40" />
+            <FontIcon fx:id="statisticsIcon" iconLiteral="mdi2c-chart-areaspline" iconSize="40" />
         </graphic>
     </Button>
     
