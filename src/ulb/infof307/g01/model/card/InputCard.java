@@ -1,9 +1,13 @@
 package ulb.infof307.g01.model.card;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Objects;
 import java.util.UUID;
 
 public class InputCard extends Card {
+
+    @Expose
     private String answer;
 
     public InputCard(String front, String answer) {
