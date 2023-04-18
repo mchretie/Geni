@@ -12,7 +12,7 @@ public class IndulgentValidator {
     private final String userAnswer;
     public final List<String> DETERMINERS = List.of("le", "la", "l'", "les", "de", "du", "des");
 
-    IndulgentValidator(String answer, String userAnswer) {
+    public IndulgentValidator(String answer, String userAnswer) {
         this.answer = answer;
         this.userAnswer = userAnswer;
     }
