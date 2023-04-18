@@ -93,6 +93,7 @@ public class MainWindowViewController {
 
     @FXML
     private BorderPane Profileview;
+    @FXML
     private BorderPane guestModeLeaderboardView;
 
     @FXML

@@ -133,7 +133,7 @@ public class MainFxController extends Application implements
             initControllers(stage);
 
             viewStack.add(View.DECK_MENU);
-            deckMenuController.show();
+            (deckMenuController).show();
 
         } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
@@ -146,10 +146,10 @@ public class MainFxController extends Application implements
     /* ====================================================================== */
 
     private void configureStage(Stage stage) {
-        stage.setWidth(1200);
+        stage.setWidth(1300);
         stage.setHeight(800);
         stage.setMinHeight(500);
-        stage.setMinWidth(600);
+        stage.setMinWidth(800);
         stage.setTitle("Quinzelette");
     }
 
