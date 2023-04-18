@@ -8,14 +8,14 @@ import java.util.Objects;
 
 public class IndulgentValidator {
 
-    public final List<String> DETERMINERS = List.of("le ", "la ", "l'", "les ", "de ", "du ", "des ");
-
     public String removeAccents(String text) {
         return StringUtils.stripAccents(text);
     }
 
     public String removeDeterminers(String text) {
-        for (String determiner : this.DETERMINERS) {
+        List<String> determiners = List.of("le ", "la ", "l'", "les ", "de ", "du ", "des ");
+
+        for (String determiner : determiners) {
             text = StringUtils.remove(text, determiner);
         }
         return text;
@@ -34,5 +34,4 @@ public class IndulgentValidator {
 
         return Objects.equals(cardAnswerWithTol, userAnswerWithTol);
     }
-
 }
