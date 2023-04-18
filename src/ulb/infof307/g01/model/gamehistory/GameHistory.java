@@ -1,4 +1,4 @@
-package ulb.infof307.g01.model;
+package ulb.infof307.g01.model.gamehistory;
 
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +10,7 @@ public class GameHistory implements Iterable<Game> {
 
     public GameHistory(List<Game> games) {
         this.games = games;
-        games.sort((a, b) -> b.timestamp().compareTo(a.timestamp()));
+        games.sort(Game::compareTo);
     }
 
     public int getNumberOfGames() {
