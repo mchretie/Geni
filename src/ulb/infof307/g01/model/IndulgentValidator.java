@@ -8,14 +8,7 @@ import java.util.Objects;
 
 public class IndulgentValidator {
 
-    private final String answer;
-    private final String userAnswer;
-    public final List<String> DETERMINERS = List.of("le", "la", "l'", "les", "de", "du", "des");
-
-    public IndulgentValidator(String answer, String userAnswer) {
-        this.answer = answer;
-        this.userAnswer = userAnswer;
-    }
+    public final List<String> DETERMINERS = List.of("le ", "la ", "l'", "les ", "de ", "du ", "des ");
 
     public String removeAccents(String text) {
         return StringUtils.stripAccents(text);
@@ -35,9 +28,9 @@ public class IndulgentValidator {
         return text;
     }
 
-    public boolean isAnswerValid() {
-        String cardAnswerWithTol = this.addTolerance(this.answer);
-        String userAnswerWithTol = this.addTolerance(this.userAnswer);
+    public boolean isEquals(String text1, String text2) {
+        String cardAnswerWithTol = this.addTolerance(text1);
+        String userAnswerWithTol = this.addTolerance(text2);
 
         return Objects.equals(cardAnswerWithTol, userAnswerWithTol);
     }
