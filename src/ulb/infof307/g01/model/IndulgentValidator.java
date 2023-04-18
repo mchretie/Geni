@@ -17,25 +17,25 @@ public class IndulgentValidator {
         this.userAnswer = userAnswer;
     }
 
-    String removeAccents(String text) {
+    public String removeAccents(String text) {
         return StringUtils.stripAccents(text);
     }
 
-    String removeDeterminers(String text) {
+    public String removeDeterminers(String text) {
         for (String determiner : this.DETERMINERS) {
             text = StringUtils.remove(text, determiner);
         }
         return text;
     }
 
-    String addTolerance(String text) {
+    public String addTolerance(String text) {
         text = text.toLowerCase();
         text = this.removeAccents(text);
         text = this.removeDeterminers(text);
         return text;
     }
 
-    boolean isAnswerValid() {
+    public boolean isAnswerValid() {
         String cardAnswerWithTol = this.addTolerance(this.answer);
         String userAnswerWithTol = this.addTolerance(this.userAnswer);
 
