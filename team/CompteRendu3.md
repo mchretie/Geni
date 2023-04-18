@@ -3,7 +3,6 @@
 ## 1. Histoires choisies par le client
 - histoire 11
 - histoire 12
-- histoire 4
 
 ## 2. Attentes du client
 
