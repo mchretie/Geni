@@ -6,15 +6,14 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class AnswerValidator {
+public class IndulgentValidator {
 
-    private final String cardAnswer;
+    private final String answer;
     private final String userAnswer;
     public final List<String> DETERMINERS = List.of("le", "la", "l'", "les", "de", "du", "des");
 
-
-    AnswerValidator(String cardAnswer, String userAnswer) {
-        this.cardAnswer = cardAnswer;
+    IndulgentValidator(String answer, String userAnswer) {
+        this.answer = answer;
         this.userAnswer = userAnswer;
     }
 
@@ -22,7 +21,7 @@ public class AnswerValidator {
         return StringUtils.stripAccents(text);
     }
 
-    String removeDeterminer(String text) {
+    String removeDeterminers(String text) {
         for (String determiner : this.DETERMINERS) {
             text = StringUtils.remove(text, determiner);
         }
@@ -32,12 +31,12 @@ public class AnswerValidator {
     String addTolerance(String text) {
         text = text.toLowerCase();
         text = this.removeAccents(text);
-        text = this.removeDeterminer(text);
+        text = this.removeDeterminers(text);
         return text;
     }
 
     boolean isAnswerValid() {
-        String cardAnswerWithTol = this.addTolerance(this.cardAnswer);
+        String cardAnswerWithTol = this.addTolerance(this.answer);
         String userAnswerWithTol = this.addTolerance(this.userAnswer);
 
         return Objects.equals(cardAnswerWithTol, userAnswerWithTol);
