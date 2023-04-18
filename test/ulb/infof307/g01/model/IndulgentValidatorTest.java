@@ -13,7 +13,7 @@ class IndulgentValidatorTest {
 
     @BeforeEach
     void init() {
-        indulgentValidator = new IndulgentValidator(this.cardAnswer, this.userAnswer);
+        indulgentValidator = new IndulgentValidator();
     }
 
     @Test
@@ -33,6 +33,6 @@ class IndulgentValidatorTest {
 
     @Test
     void isAnswerValid() {
-        assertTrue(this.indulgentValidator.isAnswerValid());
+        assertTrue(this.indulgentValidator.isEquals(this.cardAnswer, this.userAnswer));
     }
 }
