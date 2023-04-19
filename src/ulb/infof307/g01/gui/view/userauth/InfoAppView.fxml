@@ -16,6 +16,6 @@
       </Text>
    </children>
    <alignment>
-      <javafx.geometry.Pos fx:constant="TOP_CENTER" />
+      <javafx.geometry.Pos fx:constant="CENTER" />
    </alignment>
 </StackPane>
