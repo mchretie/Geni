@@ -60,7 +60,7 @@ public class ErrorHandler {
         communicateError(e, message);
     }
 
-    public void failedDeckImportError(JsonSyntaxException e) {
+    public void failedDeckImportError(Exception e) {
         String message = "L'importation du deck a échoué, " +
                 "veuillez vérifier que le fichier est bien un fichier " +
                 ".json.";

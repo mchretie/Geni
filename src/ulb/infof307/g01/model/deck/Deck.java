@@ -202,4 +202,9 @@ public class Deck implements Iterable<Card> {
             }
         }
     }
+
+    public void setCards(List<Card> cards) {
+        this.cards.clear();
+        this.cards.addAll(cards);
+    }
 }
