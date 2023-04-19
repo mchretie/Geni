@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.httpdao.dao;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import ulb.infof307.g01.gui.util.DeckCache;
+import ulb.infof307.g01.model.IndulgentValidator;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.shared.constants.ServerPaths;
@@ -104,9 +105,11 @@ public class DeckDAO extends HttpDAO {
         if (deckName.isEmpty())
             return getAllDecksMetadata();
 
-        final Pattern pattern = Pattern.compile("%s.*".formatted(deckName));
+        IndulgentValidator validator = new IndulgentValidator();
+        final Pattern pattern = Pattern.compile("%s.*".formatted(validator.addTolerance(deckName)));
+
         return getAllDecksMetadata().stream()
-                .filter(deck -> pattern.matcher(deck.name()).matches())
+                .filter(deck -> pattern.matcher(validator.addTolerance(deck.name())).matches())
                 .collect(toList());
     }
 
@@ -115,10 +118,12 @@ public class DeckDAO extends HttpDAO {
         if (tagName.isEmpty())
             return getAllDecksMetadata();
 
-        final Pattern pattern = Pattern.compile("%s.*".formatted(tagName));
+        IndulgentValidator validator = new IndulgentValidator();
+        final Pattern pattern = Pattern.compile("%s.*".formatted(validator.addTolerance(tagName)));
+
         return getAllDecksMetadata().stream()
                 .filter(deck -> deck.tags().stream()
-                        .anyMatch(tag -> pattern.matcher(tag.getName()).matches()))
+                        .anyMatch(tag -> pattern.matcher(validator.addTolerance(tag.getName())).matches()))
                 .collect(toList());
     }
 
