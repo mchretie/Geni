@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.UUID;
 
-public abstract class Card {
+public class Card {
     private UUID deckId;
     private UUID id;
 

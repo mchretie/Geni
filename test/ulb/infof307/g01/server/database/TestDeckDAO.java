@@ -3,6 +3,7 @@ package ulb.infof307.g01.server.database;
 import com.google.gson.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ulb.infof307.g01.gui.util.DeckDeserializer;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
@@ -13,6 +14,7 @@ import ulb.infof307.g01.server.database.dao.DeckDAO;
 import ulb.infof307.g01.server.database.dao.TagDAO;
 import ulb.infof307.g01.server.database.dao.UserDAO;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
+import ulb.infof307.g01.gui.util.DeckDeserializer;
 
 import java.util.*;
 
@@ -266,7 +268,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
         deck1.addCard(card3);
 
         String deck1Gson = new Gson().toJson(deck1);
-        Deck deck2 = new Deck(new GsonBuilder().registerTypeAdapter().fromJson(deck1Gson, JsonObject.class));
+        Deck deck2 = new Deck(new Gson().fromJson(deck1Gson, JsonObject.class));
         String deck2Gson = new Gson().toJson(deck2);
 
         assertEquals(deck1Gson, deck2Gson);

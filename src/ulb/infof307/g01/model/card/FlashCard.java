@@ -13,6 +13,7 @@ public class FlashCard extends Card {
     public FlashCard() {
         super();
         this.back = "Arrière";
+        this.cardType = "FlashCard";
     }
 
     public FlashCard(UUID uuid, UUID deckId, String front, String back) {

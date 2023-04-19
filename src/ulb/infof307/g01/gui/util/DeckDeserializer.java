@@ -22,6 +22,8 @@ public class DeckDeserializer implements JsonDeserializer<Deck> {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         JsonArray cardsArray = jsonObject.getAsJsonArray("cards");
 
+        jsonObject.remove("cards");
+
         Deck deck = new Deck(jsonObject);
         List<Card> cards = new ArrayList<>();
 
