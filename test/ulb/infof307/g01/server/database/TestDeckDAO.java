@@ -3,7 +3,6 @@ package ulb.infof307.g01.server.database;
 import com.google.gson.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ulb.infof307.g01.gui.util.DeckDeserializer;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
@@ -14,7 +13,6 @@ import ulb.infof307.g01.server.database.dao.DeckDAO;
 import ulb.infof307.g01.server.database.dao.TagDAO;
 import ulb.infof307.g01.server.database.dao.UserDAO;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
-import ulb.infof307.g01.gui.util.DeckDeserializer;
 
 import java.util.*;
 
