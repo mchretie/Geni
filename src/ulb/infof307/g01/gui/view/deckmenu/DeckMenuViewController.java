@@ -277,6 +277,9 @@ public class DeckMenuViewController {
     @FXML
     private void handleImportDeck() {
         final FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Fichiers flashcards", "*.flashcards")
+        );
         File file = fileChooser.showOpenDialog(borderPane.getScene().getWindow());
 
         listener.deckImported(file);

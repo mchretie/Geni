@@ -9,6 +9,7 @@ import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
+import ulb.infof307.g01.gui.util.DeckIO;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
@@ -45,6 +46,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     private final LeaderboardDAO leaderboardDAO;
     private final UserSessionDAO userSessionDAO;
     private final ImageLoader imageLoader = new ImageLoader();
+    private final DeckIO deckIO = new DeckIO();
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -235,23 +237,16 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     @Override
     public void deckImported(File file) {
-        if (file == null)
-            return;
-
         try {
-            JsonReader reader = new JsonReader(new FileReader(file));
-
-            JsonObject object = new Gson().fromJson(reader, JsonObject.class);
-            Deck deck = Deck.fromJson(object);
-
-            deck.generateNewId();
-            for (Card card : deck.getCards())
-                card.setNewId();
+            Deck deck = deckIO.importFrom(file.toPath());
 
             assignNameIfExists(deck);
             deckDAO.saveDeck(deck);
 
             showDecks();
+
+        } catch (IllegalArgumentException e) {
+            return;
 
         } catch (JsonSyntaxException | IllegalStateException e) {
             errorHandler.failedDeckImportError(e);
@@ -290,34 +285,15 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     @Override
     public void shareDeckClicked(DeckMetadata deckMetadata, File file) {
-        if (file == null || !file.isDirectory())
-            return;
-
         try {
-
             Deck deck = deckDAO.getDeck(deckMetadata).orElse(null);
             assert deck != null;
-
-            String fileName
-                    = deck.getName()
-                          .replace(" ", "_")
-                          .toLowerCase();
-
-            String filePath
-                    = file.getAbsoluteFile() + "/" + fileName + ".json";
-
-            FileWriter fileWriter = new FileWriter(filePath);
-
-            new GsonBuilder()
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .setPrettyPrinting()
-                    .create()
-                    .toJson(deck, Deck.class, fileWriter);
-
-            fileWriter.flush();
+            deckIO.export(deck, file.toPath());
 
         } catch (IOException | InterruptedException e) {
             errorHandler.failedDeckExportError(e);
+        } catch (IllegalArgumentException e) {
+            return;
         }
     }
 

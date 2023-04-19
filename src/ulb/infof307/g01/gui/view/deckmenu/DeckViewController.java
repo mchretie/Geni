@@ -12,6 +12,7 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.gui.util.ImageLoader;
@@ -193,14 +194,16 @@ public class DeckViewController {
 
     @FXML
     private void handleShareDeckClicked() {
-        final DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Choisissez un dossier dans lequel sauvegarder votre paquet.");
-        File file = directoryChooser.showDialog(
+        final var fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Fichiers flashcards", "*.flashcards")
+        );
+        File file = fileChooser.showSaveDialog(
                 stackPane.getParent()
                         .getScene()
                         .getWindow()
         );
-
+        
         listener.shareDeckClicked(deck, file);
     }
 

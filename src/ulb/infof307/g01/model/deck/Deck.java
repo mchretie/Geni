@@ -35,8 +35,8 @@ public class Deck implements Iterable<Card> {
     public Deck(String name, UUID id) {
         this(name,
              id,
-             Collections.emptyList(),
-             Collections.emptyList());
+             new ArrayList<>(),
+             new ArrayList<>());
     }
 
     public Deck(String name, UUID id, List<Card> cards, List<Tag> tags) {

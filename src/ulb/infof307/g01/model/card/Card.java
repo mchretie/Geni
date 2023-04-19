@@ -34,7 +34,7 @@ public class Card {
     public UUID getId() { return id; }
     public UUID getDeckId() { return deckId; }
 
-    public void setNewId() {
+    public void generateNewId() {
         this.id = UUID.randomUUID();
     }
     public void setFront(String front) { this.front = front; }
