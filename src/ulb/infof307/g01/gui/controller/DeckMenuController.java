@@ -9,6 +9,7 @@ import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
+import ulb.infof307.g01.gui.util.DeckDeserializer;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
@@ -240,7 +241,11 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         try {
             JsonReader reader = new JsonReader(new FileReader(file));
-            Deck deck = new Gson().fromJson(reader, Deck.class);
+
+            Deck deck = new GsonBuilder()
+                    .registerTypeAdapter(Deck.class, new DeckDeserializer())
+                    .create()
+                    .fromJson(reader, Deck.class);
 
             deck.setNewID();
             for (Card card : deck.getCards())
@@ -251,8 +256,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             showDecks();
 
-        } catch (JsonSyntaxException e) {
+        } catch (JsonSyntaxException | IllegalStateException e) {
             errorHandler.failedDeckImportError(e);
+            e.printStackTrace();
 
         } catch (IOException e) {
             errorHandler.failedLoading(e);

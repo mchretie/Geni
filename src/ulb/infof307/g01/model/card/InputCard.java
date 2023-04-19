@@ -1,11 +1,15 @@
 package ulb.infof307.g01.model.card;
 
+import com.google.gson.annotations.Expose;
+
 import ulb.infof307.g01.model.IndulgentValidator;
 
 import java.util.Objects;
 import java.util.UUID;
 
 public class InputCard extends Card {
+
+    @Expose
     private String answer;
 
     public InputCard() {
