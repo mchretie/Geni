@@ -242,9 +242,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             JsonReader reader = new JsonReader(new FileReader(file));
 
             JsonObject object = new Gson().fromJson(reader, JsonObject.class);
-            Deck deck = new Deck(object);
+            Deck deck = Deck.fromJson(object);
 
-            deck.setNewID();
+            deck.generateNewId();
             for (Card card : deck.getCards())
                 card.setNewId();
 
@@ -296,7 +296,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         try {
 
             Deck deck = deckDAO.getDeck(deckMetadata).orElse(null);
-
             assert deck != null;
 
             String fileName
