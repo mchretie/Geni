@@ -1,6 +1,5 @@
 package ulb.infof307.g01.gui.view.deckmenu;
 
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -18,9 +17,11 @@ import javafx.beans.value.ChangeListener;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 
 public class DeckMenuViewController {
+
 
     public enum SearchType {
         Name,
@@ -55,6 +56,8 @@ public class DeckMenuViewController {
     @FXML
     private ComboBox<String> comboBox;
 
+    private FileChooser fileChooser;
+
     private int colCount = 2;  // default
 
     /* ====================================================================== */
@@ -66,6 +69,7 @@ public class DeckMenuViewController {
     public void initialize() {
         initWidthListener();
         initComboBox();
+        initFileChooser();
     }
 
     private void initComboBox() {
@@ -79,14 +83,35 @@ public class DeckMenuViewController {
     }
 
     private void initWidthListener() {
-        final ChangeListener<Number> listener = new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                widthChangeHandler();
-            }
-        };
+        final ChangeListener<Number> listener =
+                (observable, oldValue, newValue) -> widthChangeHandler();
 
         gridPane.widthProperty().addListener(listener);
+    }
+
+    private void initFileChooser() {
+        fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        "Fichiers flashcards",
+                        "*.flashcards")
+        );
+    }
+
+    /* ====================================================================== */
+    /*                                Utils                                   */
+    /* ====================================================================== */
+
+    public Path pickOpenFile() {
+        File file = fileChooser
+                .showOpenDialog(borderPane.getScene().getWindow());
+        return file == null ? null : file.toPath();
+    }
+
+    public Path pickSaveFile() {
+        File file = fileChooser
+                .showSaveDialog(borderPane.getScene().getWindow());
+        return file == null ? null : file.toPath();
     }
 
     /* ====================================================================== */
@@ -276,13 +301,7 @@ public class DeckMenuViewController {
 
     @FXML
     private void handleImportDeck() {
-        final FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Fichiers flashcards", "*.flashcards")
-        );
-        File file = fileChooser.showOpenDialog(borderPane.getScene().getWindow());
-
-        listener.deckImported(file);
+        listener.deckImportClicked();
     }
 
     /* ====================================================================== */
@@ -328,6 +347,6 @@ public class DeckMenuViewController {
 
         void searchDeckClicked(String name);
 
-        void deckImported(File file);
+        void deckImportClicked();
     }
 }

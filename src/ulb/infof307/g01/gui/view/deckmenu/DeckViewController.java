@@ -11,15 +11,11 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.deck.Tag;
-
-import java.io.File;
 
 public class DeckViewController {
 
@@ -194,17 +190,7 @@ public class DeckViewController {
 
     @FXML
     private void handleShareDeckClicked() {
-        final var fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Fichiers flashcards", "*.flashcards")
-        );
-        File file = fileChooser.showSaveDialog(
-                stackPane.getParent()
-                        .getScene()
-                        .getWindow()
-        );
-        
-        listener.shareDeckClicked(deck, file);
+        listener.shareDeckClicked(deck);
     }
 
 
@@ -254,6 +240,6 @@ public class DeckViewController {
 
         void editDeckClicked(DeckMetadata deck);
 
-        void shareDeckClicked(DeckMetadata deck, File file);
+        void shareDeckClicked(DeckMetadata deck);
     }
 }

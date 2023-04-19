@@ -1,7 +1,6 @@
 package ulb.infof307.g01.gui.controller;
 
 import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
@@ -11,7 +10,6 @@ import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.util.DeckIO;
 import ulb.infof307.g01.gui.util.ImageLoader;
-import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController.SearchType;
@@ -22,6 +20,7 @@ import ulb.infof307.g01.model.deck.Score;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -236,9 +235,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void deckImported(File file) {
+    public void deckImportClicked() {
         try {
-            Deck deck = deckIO.importFrom(file.toPath());
+            Path path = deckMenuViewController.pickOpenFile();
+            Deck deck = deckIO.importFrom(path);
 
             assignNameIfExists(deck);
             deckDAO.saveDeck(deck);
@@ -284,11 +284,13 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void shareDeckClicked(DeckMetadata deckMetadata, File file) {
+    public void shareDeckClicked(DeckMetadata deckMetadata) {
         try {
             Deck deck = deckDAO.getDeck(deckMetadata).orElse(null);
             assert deck != null;
-            deckIO.export(deck, file.toPath());
+
+            Path path = deckMenuViewController.pickSaveFile();
+            deckIO.export(deck, path);
 
         } catch (IOException | InterruptedException e) {
             errorHandler.failedDeckExportError(e);

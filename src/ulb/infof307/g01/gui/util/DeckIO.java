@@ -30,8 +30,8 @@ public class DeckIO {
     }
 
     public Deck importFrom(Path path) throws IOException, IllegalArgumentException {
-        if (Files.notExists(path))
-            throw new IllegalArgumentException("Path doesn’t exist");
+        if (path == null || Files.notExists(path))
+            throw new IllegalArgumentException("Path doesn’t exist or null");
 
         String json = Files.readString(path);
         Deck deck = Deck.fromJson(json);
