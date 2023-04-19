@@ -274,7 +274,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
     @Override
     public void newFlashCard() {
-        newCard(new FlashCard("Avant", "Arrrière"));
+        newCard(new FlashCard());
         editDeckViewController.showCards();
         editDeckViewController.setSelectedCard(deck.getLastCard());
         cardPreviewClicked(deck.getLastCard());
@@ -283,27 +283,15 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
     @Override
     public void newInputCard() {
-        String frontHtml = "Avant";
-        newCard(new InputCard(frontHtml, ""));
-
+        newCard(new InputCard());
         editDeckViewController.showCards();
         editDeckViewController.setSelectedCard(deck.getLastCard());
         cardPreviewClicked(deck.getLastCard());
-
-
     }
 
     @Override
     public void newMCQCard() {
-        String frontHtml = "Avant";
-        List<String> answers = new ArrayList<>();
-
-        final int MAX_QCM_ANSWERS = 4;
-        for (int i = 0; i < MAX_QCM_ANSWERS; i++)
-            answers.add("Réponse " + i);
-
-        newCard(new MCQCard(frontHtml, answers, 0));
-
+        newCard(new MCQCard());
         editDeckViewController.showCards();
         editDeckViewController.setSelectedCard(deck.getLastCard());
         cardPreviewClicked(deck.getLastCard());
