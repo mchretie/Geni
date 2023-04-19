@@ -11,6 +11,7 @@ import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.leaderboard.PlayerScoreItemViewController;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
+import ulb.infof307.g01.model.leaderboard.GlobalLeaderboardEntry;
 
 import java.io.IOException;
 import java.net.URL;
@@ -87,7 +88,7 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
                             leaderboard.getUserScore(username),
                             deckDAO.getAllDecksMetadata().size() + "");
 
-            for (Map<String, String> leaderboardEntry : leaderboard) {
+            for (GlobalLeaderboardEntry leaderboardEntry : leaderboard) {
                 Node node = loadEntry(leaderboardEntry);
                 playersScoreItem.add(node);
             }
@@ -100,7 +101,7 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
         }
     }
 
-    private Node loadEntry(Map<String, String> leaderboardEntry) throws IOException {
+    private Node loadEntry(GlobalLeaderboardEntry leaderboardEntry) throws IOException {
         URL url = PlayerScoreItemViewController
                         .class.getResource("PlayerScoreItemView.fxml");
 
@@ -112,12 +113,11 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
 
         playerScoreItemViewController.setListener(this);
 
-        String entryUsername = leaderboardEntry.get(GlobalLeaderboard.ENTRY_USERNAME);
         playerScoreItemViewController
                 .setPlayerScoreItem(
-                        leaderboard.getUserRank(entryUsername),
-                        entryUsername,
-                        leaderboardEntry.get(GlobalLeaderboard.ENTRY_TOTAL_SCORE));
+                        leaderboardEntry.getRank(),
+                        leaderboardEntry.getUsername(),
+                        leaderboardEntry.getTotalScore());
 
         return node;
     }

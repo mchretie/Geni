@@ -1,7 +1,7 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
-import ulb.infof307.g01.model.GameHistory;
+import ulb.infof307.g01.model.gamehistory.GameHistory;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
