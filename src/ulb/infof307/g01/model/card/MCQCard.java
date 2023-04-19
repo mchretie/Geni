@@ -13,10 +13,10 @@ public class MCQCard extends Card {
     @Expose
     private int correctAnswer;
 
-    public MCQCard(String front, List<String> answers, int correctAnswer) {
-        super(front);
-        this.answers = answers;
-        this.correctAnswer = correctAnswer;
+    public MCQCard() {
+        super();
+        this.answers = List.of("Réponse 1", "Réponse 2");
+        this.correctAnswer = 0;
         this.cardType = "MCQCard";
     }
 
@@ -27,19 +27,8 @@ public class MCQCard extends Card {
         this.cardType = "MCQCard";
     }
 
-    public MCQCard(String front, List<String> answers, int correctAnswer, KnowledgeLevel knowledge) {
-        super(front, knowledge);
-        this.answers = answers;
-        this.correctAnswer = correctAnswer;
-        this.cardType = "MCQCard";
-    }
-
     public int getChoiceMax(){
         return 4;
-    }
-
-    public int getCardMin(){
-        return 2;
     }
 
     public boolean isCardMin(){
@@ -54,22 +43,18 @@ public class MCQCard extends Card {
         return answers.get(index);
     }
 
-    public void setAnswers(List<String> answers) {
-        this.answers = answers;
-    }
-
     public void addAnswer(String answer) {
         this.answers.add(answer);
     }
 
     public void removeAnswer(int index) {
-        // limit answer to min two
         if (this.answers.size() <= 2)
             return;
+
         this.answers.remove(index);
+
         if (this.correctAnswer == index)
             this.correctAnswer = Math.max(index - 1, 0);
-
     }
 
     public void setAnswer(int index, String answer) {

@@ -19,8 +19,8 @@ class DeckTest {
 
         assertEquals(0, deck.cardCount());
 
-        deck.addCard(new FlashCard("Front", "Back"));
-        deck.addCard(new MCQCard("Front", List.of("Answer 1", "Answer 2"), 1));
+        deck.addCard(new FlashCard());
+        deck.addCard(new MCQCard());
 
         assertEquals(2, deck.cardCount());
     }
@@ -28,8 +28,8 @@ class DeckTest {
     @Test
     void removeCard_FromInit_SizeDecrease() {
         Deck deck = new Deck("Test");
-        Card card = new FlashCard("Front", "Back");
-        Card card2 = new MCQCard("Front", List.of("Answer 1", "Answer 2"), 1);
+        Card card = new FlashCard();
+        Card card2 = new MCQCard();
 
         deck.addCard(card);
         deck.addCard(card2);
