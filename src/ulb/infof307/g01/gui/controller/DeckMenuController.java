@@ -237,12 +237,12 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void deckImportClicked() {
         try {
+            deckIO.setAllDecks(deckDAO.getAllDecksMetadata());
+
             Path path = deckMenuViewController.pickOpenFile();
             Deck deck = deckIO.importFrom(path);
 
-            assignNameIfExists(deck);
             deckDAO.saveDeck(deck);
-
             showDecks();
 
         } catch (IllegalArgumentException e) {
@@ -257,29 +257,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         } catch (InterruptedException e) {
             errorHandler.savingError(e);
-        }
-    }
-
-    /**
-     * Assigns a name to the deck if it already exists. The name will be
-     *  the same as the original name with a number in parentheses.
-     *
-     * @param deck the deck to assign a name to
-     */
-    private void assignNameIfExists(Deck deck) throws IOException, InterruptedException {
-        int i = 1;
-
-        if (deckDAO.deckExists(deck.getName())
-                && !deck.getName().contains("(" + i + ")"))
-
-            deck.setName(deck.getName() + " (" + i + ")");
-
-        while (deckDAO.deckExists(deck.getName())) {
-            String current = "(" + i + ")";
-            String next = "(" + (i + 1) + ")";
-            deck.setName(deck.getName().replace(current, next));
-
-            i++;
         }
     }
 
@@ -298,7 +275,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             return;
         }
     }
-
 
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */
