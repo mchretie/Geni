@@ -274,9 +274,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
     @Override
     public void newFlashCard() {
-        String frontHtml = "Avant";
-        newCard(new FlashCard(frontHtml, ""));
-
+        newCard(new FlashCard("Avant", "Arrrière"));
         editDeckViewController.showCards();
         editDeckViewController.setSelectedCard(deck.getLastCard());
         cardPreviewClicked(deck.getLastCard());

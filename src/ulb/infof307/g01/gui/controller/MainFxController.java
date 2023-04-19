@@ -343,6 +343,7 @@ public class MainFxController extends Application implements
                 score
         );
         viewStack.add(View.RESULT);
+        playDeckController = null;
         resultController.show();
     }
 

@@ -1,6 +1,6 @@
 package ulb.infof307.g01.server.database;
 
-import ulb.infof307.g01.model.GameHistory;
+import ulb.infof307.g01.model.gamehistory.GameHistory;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.Score;

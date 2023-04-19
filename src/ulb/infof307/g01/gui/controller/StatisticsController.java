@@ -10,8 +10,8 @@ import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
 import ulb.infof307.g01.gui.view.statistics.GameHistoryItemViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
-import ulb.infof307.g01.model.Game;
-import ulb.infof307.g01.model.GameHistory;
+import ulb.infof307.g01.model.gamehistory.Game;
+import ulb.infof307.g01.model.gamehistory.GameHistory;
 
 
 import java.io.IOException;
