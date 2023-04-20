@@ -7,9 +7,9 @@ import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
-import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
+import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
-import ulb.infof307.g01.gui.view.leaderboard.PlayerScoreItemViewController;
+import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardEntryViewController;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboardEntry;
 
@@ -17,18 +17,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class GlobalLeaderboardController implements LeaderboardViewController.Listener, PlayerScoreItemViewController.Listener{
+public class GlobalLeaderboardController {
     private final Stage stage;
     private final MainWindowViewController mainWindowViewController;
     private final UserSessionDAO userSessionDAO;
     private final DeckDAO deckDAO;
     private final LeaderboardDAO leaderboardDAO;
-    private final LeaderboardViewController leaderboardViewController;
+    private final GlobalLeaderboardViewController leaderboardViewController;
     private final ErrorHandler errorHandler;
-
-    private GlobalLeaderboard leaderboard;
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -49,8 +46,6 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
         this.leaderboardDAO = leaderboardDAO;
 
         this.leaderboardViewController = mainWindowViewController.getLeaderboardViewController();
-        leaderboardViewController.setListener(this);
-
     }
 
 
@@ -77,7 +72,7 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
         try {
             List<Node> playersScoreItem = new ArrayList<>();
 
-            leaderboard = leaderboardDAO.getGlobalLeaderboard();
+            GlobalLeaderboard leaderboard = leaderboardDAO.getGlobalLeaderboard();
 
             String username = userSessionDAO.getUsername();
 
@@ -102,16 +97,14 @@ public class GlobalLeaderboardController implements LeaderboardViewController.Li
     }
 
     private Node loadEntry(GlobalLeaderboardEntry leaderboardEntry) throws IOException {
-        URL url = PlayerScoreItemViewController
-                        .class.getResource("PlayerScoreItemView.fxml");
+        URL url = GlobalLeaderboardEntryViewController
+                        .class.getResource("GlobalLeaderboardEntryView.fxml");
 
         FXMLLoader loader = new FXMLLoader(url);
         Node node = loader.load();
 
-        PlayerScoreItemViewController playerScoreItemViewController
+        GlobalLeaderboardEntryViewController playerScoreItemViewController
                 = loader.getController();
-
-        playerScoreItemViewController.setListener(this);
 
         playerScoreItemViewController
                 .setPlayerScoreItem(
