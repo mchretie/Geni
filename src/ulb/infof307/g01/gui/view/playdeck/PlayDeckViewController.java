@@ -1,13 +1,10 @@
 package ulb.infof307.g01.gui.view.playdeck;
 
-import javafx.animation.RotateTransition;
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
@@ -60,6 +57,9 @@ public class PlayDeckViewController {
     @FXML
     private Label cardNumberIndexLabel;
 
+    @FXML
+    private ProgressBar countdown;
+
 
     /* ====================================================================== */
     /*                              Model Attributes                          */
@@ -95,6 +95,18 @@ public class PlayDeckViewController {
         this.currentCard = currentCard;
         this.currentCardIndexLabel.setText(String.valueOf(index + 1));
         showFrontOfCard();
+    }
+
+    public void setTimer(int seconds) {
+        //countdown.setProgress(1);
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(countdown.progressProperty(), 0)),
+                new KeyFrame(Duration.seconds(seconds), e-> {
+                    // do anything you need here on completion...
+                    System.out.println("Minute over");
+                }, new KeyValue(countdown.progressProperty(), 1))
+        );
+        timeline.play();
     }
 
 
