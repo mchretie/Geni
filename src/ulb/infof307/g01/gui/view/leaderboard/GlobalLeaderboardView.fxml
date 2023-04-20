@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController">
+<BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardViewController">
    <center>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
@@ -19,12 +19,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="140.0" spacing="8.0" VBox.vgrow="ALWAYS">
                <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="296.0" style="-fx-background-color: #E2E2E2;" HBox.hgrow="ALWAYS">
-                  <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Rang">
+                  <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Classement">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </Text>
-                  <Label fx:id="rangLabel" contentDisplay="CENTER" text="N/A" textFill="#83bcff">
+                  <Label fx:id="rankLabel" contentDisplay="CENTER" text="N/A" textFill="#83bcff">
                      <font>
                         <Font size="25.0" />
                      </font>

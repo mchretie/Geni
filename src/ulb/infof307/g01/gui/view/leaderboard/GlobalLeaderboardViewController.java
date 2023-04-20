@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.util.List;
 
-public class LeaderboardViewController {
+public class GlobalLeaderboardViewController {
     public BorderPane borderPane;
     /* ====================================================================== */
     /*                              FXML Attributes                           */
@@ -18,28 +18,13 @@ public class LeaderboardViewController {
     @FXML
     private Label usernameLabel;
     @FXML
-    private Label rangLabel;
+    private Label rankLabel;
     @FXML
     private Label scoreLabel;
     @FXML
     private Label numberDecksLabel;
     @FXML
     private ListView<Node> boardContainer;
-
-
-    /* ====================================================================== */
-    /*                                Listener                                */
-    /* ====================================================================== */
-    private Listener listener;
-
-
-    /* ====================================================================== */
-    /*                                Setters                                 */
-    /* ====================================================================== */
-
-    public void setListener(Listener listener) {
-        this.listener = listener;
-    }
 
 
     /* ====================================================================== */
@@ -54,16 +39,8 @@ public class LeaderboardViewController {
 
     public void setPersonalInformation(String username, String rang, String score, String numberDecks) {
         usernameLabel.setText(username);
-        rangLabel.setText(rang);
+        rankLabel.setText(rang);
         scoreLabel.setText(score);
         numberDecksLabel.setText(numberDecks);
-    }
-
-    /* ====================================================================== */
-    /*                           Listener Interface                           */
-    /* ====================================================================== */
-
-    public interface Listener {
-
     }
 }
