@@ -1,16 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
 
-<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController"
-            prefHeight="400.0" prefWidth="600.0">
+<BorderPane fx:id="borderPane" minHeight="200.0" minWidth="300.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController">
 
+    <top>
+        <HBox alignment="CENTER" style="-fx-background-color: #449a6c">
+            <Label fx:id="deckNameLabel" text="Deck name">
+            <font>
+               <Font size="21.0" />
+            </font></Label>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding>
+        </HBox>
+    </top>
 
+    <center>
+        <HBox>
+            <VBox>
+                <Label fx:id="cardCountLabel" text="Card count: " />
+                <Label fx:id="highestScoreLabel" text="Highscore: " />
+            <padding>
+               <Insets left="15.0" top="15.0" />
+            </padding>
 
-</StackPane>
+            </VBox>
+
+        </HBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #449a6c;">
+            <Button onMouseClicked="#handlePlayDeckClicked" style="-fx-background-color: transparent;" text="Play">
+                <graphic>
+                    <FontIcon iconLiteral="mdi2p-play-circle-outline" />
+                </graphic>
+            </Button>
+
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+
+         <padding>
+            <Insets bottom="10.0" right="10.0" top="10.0" />
+         </padding>
+        </HBox>
+    </bottom>
+
+</BorderPane>
