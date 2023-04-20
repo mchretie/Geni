@@ -105,18 +105,23 @@ public class PlayDeckViewController {
                 new KeyFrame(Duration.ZERO, new KeyValue(countdown.progressProperty(), 1)),
 
                 // 1/3 time
-                new KeyFrame(Duration.seconds((double) seconds/3), e-> {
+                new KeyFrame(Duration.seconds((double) seconds/3), e -> {
                     countdown.setStyle("-fx-accent: ORANGE");
                 }, new KeyValue(countdown.progressProperty(), 0.66)),
 
                 // 2/3 time
-                new KeyFrame(Duration.seconds((double) 2*seconds/3), ee-> {
+                new KeyFrame(Duration.seconds((double) 2*seconds/3), e -> {
                     countdown.setStyle("-fx-accent: RED");
                 }, new KeyValue(countdown.progressProperty(), 0.33)),
 
                 // end time
-                new KeyFrame(Duration.seconds(seconds), eee-> {
+                new KeyFrame(Duration.seconds(seconds), e -> {
                     System.out.println("Time over");
+                    if (this.currentCard instanceof MCQCard) {
+                        showCorrectAnswers();
+                    } else if (this.currentCard instanceof InputCard) {
+                        handleInputText();
+                    }
                 }, new KeyValue(countdown.progressProperty(), 0))
         );
         timeline.play();
