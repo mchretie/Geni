@@ -89,12 +89,13 @@ public class DeckMenuViewController {
         gridPane.widthProperty().addListener(listener);
     }
 
+    // TODO: find way to take extension from DeckIO
     private void initFileChooser() {
         fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter(
-                        "Fichiers flashcards",
-                        "*.flashcards")
+                        "Fichiers deck",
+                        "*.deck")
         );
     }
 
