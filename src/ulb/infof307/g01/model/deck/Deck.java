@@ -23,29 +23,29 @@ public class Deck implements Iterable<Card> {
     @Expose
     private final List<Tag> tags;
     @Expose
-    private String color = "0x00000000";
-  @Expose
-  private String image = "/backgrounds/default_background.jpg";
+    private String color;
+    @Expose
+    private String image;
 
     public Deck(String name) {
-        this.name = name;
-        this.id = UUID.randomUUID();
-        this.cards = new ArrayList<>();
-        this.tags = new ArrayList<>();
+        this(name,
+             UUID.randomUUID());
     }
 
     public Deck(String name, UUID id) {
-        this.name = name;
-        this.id = id;
-        this.cards = new ArrayList<>();
-        this.tags = new ArrayList<>();
+        this(name,
+             id,
+             new ArrayList<>(),
+             new ArrayList<>());
     }
 
     public Deck(String name, UUID id, List<Card> cards, List<Tag> tags) {
-        this.name = name;
-        this.id = id;
-        this.cards = cards;
-        this.tags = tags;
+        this(name,
+             id,
+             cards,
+             tags,
+             "0x00000000",
+             "/backgrounds/default_background.jpg");
     }
 
     public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image) {
@@ -57,26 +57,38 @@ public class Deck implements Iterable<Card> {
         this.image = image;
     }
 
-    public Deck(JsonObject deckGson){
-        Deck deck = new Gson().fromJson(deckGson.toString(), Deck.class);
-        JsonArray cardsJson = deckGson.getAsJsonArray("cards");
+    public static Deck fromJson(String json) {
+        Deck deck = new Gson().fromJson(json, Deck.class);
+
+        JsonObject jsonObject = new Gson().fromJson(json, JsonObject.class);
+        JsonArray cardsJson = jsonObject.getAsJsonArray("cards");
         deck.setCardsFromJson(cardsJson);
-        this.name = deck.getName();
-        this.id = deck.getId();
-        this.cards = deck.getCards();
-        this.tags = deck.getTags();
-        this.color = deck.getColor();
-        this.image = deck.getImage();
+
+        return deck;
     }
 
-    public void setNewID() {
-        this.id = UUID.randomUUID();
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
 
-        getCards().forEach(card -> card.setDeckId(this.id));
+
+    /**
+     * Generate a new id for the deck and its cards
+     * <p>
+     * A new id is also generated for the cards because not doing so
+     * can only lead to a broken database.
+     * </p>
+     */
+    public void generateNewId() {
+        this.id = UUID.randomUUID();
+        for (Card card : cards) {
+            card.setDeckId(this.id);
+            card.generateNewId();
+        }
     }
 
     public List<Tag> getTags() {
-        return tags;
+        return Collections.unmodifiableList(tags);
     }
 
     public Card getCard(int index) throws IndexOutOfBoundsException {
@@ -93,7 +105,7 @@ public class Deck implements Iterable<Card> {
     }
 
     public List<Card> getCards() {
-        return cards;
+        return Collections.unmodifiableList(cards);
     }
 
     public UUID getId() {
@@ -129,14 +141,9 @@ public class Deck implements Iterable<Card> {
         cards.remove(card);
     }
 
-    public boolean tagExists(String newTagName) {
-
-        for (Tag tag : tags) {
-            if (tag.getName().equals(newTagName))
-                return true;
-        }
-
-        return false;
+    public boolean tagExists(final String newTagName) {
+        return tags.stream()
+                .anyMatch(tag -> newTagName.equals(tag.getName()));
     }
 
     public void setColor(String color) {
@@ -196,15 +203,13 @@ public class Deck implements Iterable<Card> {
             JsonObject cardObject = card.getAsJsonObject();
             String cardType = cardObject.get("cardType").getAsString();
             switch (cardType) {
-                case "FlashCard" -> this.cards.add(new Gson().fromJson(card, FlashCard.class));
-                case "MCQCard" -> this.cards.add(new Gson().fromJson(card, MCQCard.class));
-                case "InputCard" -> this.cards.add(new Gson().fromJson(card, InputCard.class));
+                case "FlashCard" ->
+                        this.cards.add(new Gson().fromJson(card, FlashCard.class));
+                case "MCQCard" ->
+                        this.cards.add(new Gson().fromJson(card, MCQCard.class));
+                case "InputCard" ->
+                        this.cards.add(new Gson().fromJson(card, InputCard.class));
             }
         }
-    }
-
-    public void setCards(List<Card> cards) {
-        this.cards.clear();
-        this.cards.addAll(cards);
     }
 }

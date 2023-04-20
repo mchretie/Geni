@@ -1,7 +1,6 @@
 package ulb.infof307.g01.gui.controller;
 
 import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
@@ -9,8 +8,8 @@ import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
+import ulb.infof307.g01.gui.util.DeckIO;
 import ulb.infof307.g01.gui.util.ImageLoader;
-import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController.SearchType;
@@ -21,6 +20,7 @@ import ulb.infof307.g01.model.deck.Score;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -45,6 +45,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     private final LeaderboardDAO leaderboardDAO;
     private final UserSessionDAO userSessionDAO;
     private final ImageLoader imageLoader = new ImageLoader();
+    private final DeckIO deckIO = new DeckIO();
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -234,24 +235,18 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void deckImported(File file) {
-        if (file == null)
-            return;
-
+    public void deckImportClicked() {
         try {
-            JsonReader reader = new JsonReader(new FileReader(file));
+            deckIO.setAllDecks(deckDAO.getAllDecksMetadata());
 
-            JsonObject object = new Gson().fromJson(reader, JsonObject.class);
-            Deck deck = new Deck(object);
+            Path path = deckMenuViewController.pickOpenFile();
+            Deck deck = deckIO.importFrom(path);
 
-            deck.setNewID();
-            for (Card card : deck.getCards())
-                card.setNewId();
-
-            assignNameIfExists(deck);
             deckDAO.saveDeck(deck);
-
             showDecks();
+
+        } catch (IllegalArgumentException e) {
+            return;
 
         } catch (JsonSyntaxException | IllegalStateException e) {
             errorHandler.failedDeckImportError(e);
@@ -265,63 +260,21 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         }
     }
 
-    /**
-     * Assigns a name to the deck if it already exists. The name will be
-     *  the same as the original name with a number in parentheses.
-     *
-     * @param deck the deck to assign a name to
-     */
-    private void assignNameIfExists(Deck deck) throws IOException, InterruptedException {
-        int i = 1;
-
-        if (deckDAO.deckExists(deck.getName())
-                && !deck.getName().contains("(" + i + ")"))
-
-            deck.setName(deck.getName() + " (" + i + ")");
-
-        while (deckDAO.deckExists(deck.getName())) {
-            String current = "(" + i + ")";
-            String next = "(" + (i + 1) + ")";
-            deck.setName(deck.getName().replace(current, next));
-
-            i++;
-        }
-    }
-
     @Override
-    public void shareDeckClicked(DeckMetadata deckMetadata, File file) {
-        if (file == null || !file.isDirectory())
-            return;
-
+    public void shareDeckClicked(DeckMetadata deckMetadata) {
         try {
-
             Deck deck = deckDAO.getDeck(deckMetadata).orElse(null);
-
             assert deck != null;
 
-            String fileName
-                    = deck.getName()
-                          .replace(" ", "_")
-                          .toLowerCase();
-
-            String filePath
-                    = file.getAbsoluteFile() + "/" + fileName + ".json";
-
-            FileWriter fileWriter = new FileWriter(filePath);
-
-            new GsonBuilder()
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .setPrettyPrinting()
-                    .create()
-                    .toJson(deck, Deck.class, fileWriter);
-
-            fileWriter.flush();
+            Path path = deckMenuViewController.pickSaveFile();
+            deckIO.export(deck, path);
 
         } catch (IOException | InterruptedException e) {
             errorHandler.failedDeckExportError(e);
+        } catch (IllegalArgumentException e) {
+            return;
         }
     }
-
 
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */
