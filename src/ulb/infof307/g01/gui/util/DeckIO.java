@@ -13,7 +13,9 @@ import java.util.List;
 /**
  * Import and export decks to files
  * <p>
- *     
+ * The decks imported from here should be considered
+ * unique in their ids and their name different from
+ * the decks set in {@link DeckIO#setAllDecks(List)}.
  * </p>
  */
 public class DeckIO {
@@ -22,6 +24,18 @@ public class DeckIO {
 
     private List<DeckMetadata> allDecksMetadata = Collections.emptyList();
 
+    /**
+     * Export to deck to given path
+     * <p>
+     * The path extension is determined by {@link DeckIO#EXT}.
+     * If not in the path provided, it is appended to it.
+     * </p>
+     *
+     * @param deck       Deck to be exported
+     * @param exportPath File to which the deck is exported
+     * @throws IOException              Error with writing to the path
+     * @throws IllegalArgumentException Incorrect path or deck given (or null)
+     */
     public void export(Deck deck, Path exportPath) throws IOException, IllegalArgumentException {
         if (deck == null
                 || exportPath == null
@@ -37,14 +51,14 @@ public class DeckIO {
     /**
      * Import deck from given path
      * <p>
-     *     The imported deck may have it’s original name changed in order
-     *     to not conflict with the other decks names.
+     * The imported deck may have it’s original name changed in order
+     * to not conflict with the other decks names.
      * </p>
+     *
      * @param path Path from which the deck is imported
      * @return The imported deck with brand-new ids and potentially a new name.
-     * @throws IOException Issue with reading from the path
+     * @throws IOException              Issue with reading from the path
      * @throws IllegalArgumentException Incorrect or null path given
-     *
      * @see ulb.infof307.g01.gui.util.DeckIO#setAllDecks(List);
      */
     public Deck importFrom(Path path) throws IOException, IllegalArgumentException {
@@ -53,7 +67,7 @@ public class DeckIO {
 
         String json = Files.readString(path);
         Deck deck = Deck.fromJson(json);
-        
+
         deck.generateNewId();
         for (Card card : deck.getCards())
             card.generateNewId();
@@ -65,6 +79,7 @@ public class DeckIO {
 
     /**
      * Set the decks against which the imported deck’s name will be compared to
+     *
      * @param decksMetadata The decks to check for conflicts
      */
     public void setAllDecks(List<DeckMetadata> decksMetadata) {
@@ -74,8 +89,8 @@ public class DeckIO {
     /**
      * Create a unique name from a base one if not unique
      * <p>
-     *      The name will be the same as the original name
-     *      with a number in parentheses.
+     * The name will be the same as the original name
+     * with a number in parentheses.
      * </p>
      *
      * @param baseName the deck to assign a name to
