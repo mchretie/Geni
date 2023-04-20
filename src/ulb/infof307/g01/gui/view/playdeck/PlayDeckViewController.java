@@ -98,11 +98,24 @@ public class PlayDeckViewController {
     }
 
     public void setTimer(int seconds) {
-        //countdown.setProgress(1);
+        countdown.setStyle("-fx-accent: GREEN");
+
         Timeline timeline = new Timeline(
+                // begin
                 new KeyFrame(Duration.ZERO, new KeyValue(countdown.progressProperty(), 1)),
-                new KeyFrame(Duration.seconds(seconds), e-> {
-                    // do anything you need here on completion...
+
+                // 1/3 time
+                new KeyFrame(Duration.seconds((double) seconds/3), e-> {
+                    countdown.setStyle("-fx-accent: ORANGE");
+                }, new KeyValue(countdown.progressProperty(), 0.66)),
+
+                // 2/3 time
+                new KeyFrame(Duration.seconds((double) 2*seconds/3), ee-> {
+                    countdown.setStyle("-fx-accent: RED");
+                }, new KeyValue(countdown.progressProperty(), 0.33)),
+
+                // end time
+                new KeyFrame(Duration.seconds(seconds), eee-> {
                     System.out.println("Time over");
                 }, new KeyValue(countdown.progressProperty(), 0))
         );
