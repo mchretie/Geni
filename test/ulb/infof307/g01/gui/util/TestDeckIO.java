@@ -1,6 +1,5 @@
 package ulb.infof307.g01.gui.util;
 
-import org.eclipse.jetty.util.IO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,9 +34,9 @@ class TestDeckIO {
     @BeforeEach
     void setUp() throws IOException {
         tmpDir = Files.createTempDirectory(null);
-        path1 = Path.of(tmpDir.toString(), f1);
-        path2 = Path.of(tmpDir.toString(), f2);
-        path3 = Path.of(tmpDir.toString(), f3);
+        path1 = tmpDir.resolve(f1);
+        path2 = tmpDir.resolve(f2);
+        path3 = tmpDir.resolve(f3);
     }
 
     @AfterEach
@@ -106,6 +105,26 @@ class TestDeckIO {
     }
 
     @Test
+    void importFrom_NoDecksSet_SameName() throws IOException {
+        Deck deck1 = new Deck("name");
+        deckIO.export(deck1, path2);
+        Deck deck2 = deckIO.importFrom(path2);
+
+        assertEquals(deck1.getName(), deck2.getName());
+    }
+
+    @Test
+    void importFrom_DecksSet_DifferentName() throws IOException {
+        Deck deck1 = new Deck("name");
+        deckIO.setAllDecks(List.of(deck1.getMetadata()));
+        deckIO.export(deck1, path2);
+        Deck deck2 = deckIO.importFrom(path2);
+
+        assertNotEquals(deck1.getName(), deck2.getName());
+    }
+
+    // TODO: better test the equality of cards
+    @Test
     void importFrom_WithCards_SameCards() throws IOException {
         Deck deck1 = new Deck("name");
 
@@ -116,7 +135,7 @@ class TestDeckIO {
         deckIO.export(deck1, path2);
         Deck deck2 = deckIO.importFrom(path2);
 
-        assertNotEquals(deck1, deck2);
+        assertEquals(deck1.cardCount(), deck2.cardCount());
     }
 
     @Test
