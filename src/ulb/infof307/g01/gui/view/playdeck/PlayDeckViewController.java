@@ -100,11 +100,11 @@ public class PlayDeckViewController {
     public void setTimer(int seconds) {
         //countdown.setProgress(1);
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.ZERO, new KeyValue(countdown.progressProperty(), 0)),
+                new KeyFrame(Duration.ZERO, new KeyValue(countdown.progressProperty(), 1)),
                 new KeyFrame(Duration.seconds(seconds), e-> {
                     // do anything you need here on completion...
-                    System.out.println("Minute over");
-                }, new KeyValue(countdown.progressProperty(), 1))
+                    System.out.println("Time over");
+                }, new KeyValue(countdown.progressProperty(), 0))
         );
         timeline.play();
     }
