@@ -71,9 +71,20 @@ public class Deck implements Iterable<Card> {
         return new Gson().toJson(this);
     }
 
+
+    /**
+     * Generate a new id for the deck and its cards
+     * <p>
+     * A new id is also generated for the cards because not doing so
+     * can only lead to a broken database.
+     * </p>
+     */
     public void generateNewId() {
         this.id = UUID.randomUUID();
-        getCards().forEach(card -> card.setDeckId(this.id));
+        for (Card card : cards) {
+            card.setDeckId(this.id);
+            card.generateNewId();
+        }
     }
 
     public List<Tag> getTags() {

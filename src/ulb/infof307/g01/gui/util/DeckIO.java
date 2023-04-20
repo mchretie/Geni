@@ -69,8 +69,6 @@ public class DeckIO {
         Deck deck = Deck.fromJson(json);
 
         deck.generateNewId();
-        for (Card card : deck.getCards())
-            card.generateNewId();
 
         deck.setName(getUniqueNameFrom(deck.getName()));
 
