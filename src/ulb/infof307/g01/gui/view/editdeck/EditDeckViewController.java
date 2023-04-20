@@ -86,7 +86,10 @@ public class EditDeckViewController {
     private FontIcon backCardEditIcon;
 
     @FXML
-    private ColorPicker colorPicker;
+    private ColorPicker colorPickerBackground;
+
+    @FXML
+    private ColorPicker colorPickerTitle;
 
     @FXML
     private TextField answerOfInputCard;
@@ -142,7 +145,7 @@ public class EditDeckViewController {
     public void setDeck(Deck deck) {
         this.deck = deck;
         deckNameText.setText(deck.getName());
-        colorPicker.setValue(Color.web(deck.getColor()));
+        colorPickerBackground.setValue(Color.web(deck.getColor()));
     }
 
     public void setListener(Listener listener) {
@@ -531,10 +534,14 @@ public class EditDeckViewController {
     }
 
     @FXML
-    public void handleColorButtonClicked() {
-        listener.deckColorModified(deck, colorPicker.getValue());
+    public void handleColorButtonClickedBackground() {
+        listener.deckColorModified(deck, colorPickerBackground.getValue());
     }
 
+    @FXML
+    public void handleColorButtonClickedTitle() {
+        listener.deckTitleColorModified(deck, colorPickerTitle.getValue());
+    }
 
     @FXML
     private void handleUploadImageClicked() {
@@ -581,13 +588,13 @@ public class EditDeckViewController {
     }
 
     @FXML
-    private void handleColorPickerHover() {
-        colorPicker.setStyle("-fx-background-color: #aad0b3");
+    private void handleColorPickerHoverBackground() {
+        colorPickerBackground.setStyle("-fx-background-color: #aad0b3");
     }
 
     @FXML
     private void handleColorPickerExit() {
-        colorPicker.setStyle("-fx-background-color: #5ab970");
+        colorPickerBackground.setStyle("-fx-background-color: #5ab970");
     }
 
     @FXML
@@ -600,6 +607,11 @@ public class EditDeckViewController {
         imageUploader.setStyle("-fx-background-color: #5ab970");
     }
 
+    @FXML
+    private void handleColorPickerHoverTitle() { colorPickerTitle.setStyle("-fx-background-color: #aad0b3"); }
+
+    @FXML
+    private void handleColorPickerExitTitle() { colorPickerTitle.setStyle("-fx-background-color: #5ab970"); }
     @FXML
     private void handleFrontCardEditHover() {
         frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
@@ -703,6 +715,8 @@ public class EditDeckViewController {
         void tagAddedToDeck(Deck deck, String tagName, String color);
 
         void deckColorModified(Deck deck, Color color);
+
+        void deckTitleColorModified(Deck deck, Color color);
 
         void deckImageModified(Deck deck, File image, String filename);
 
