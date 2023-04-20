@@ -69,6 +69,10 @@ public class Deck implements Iterable<Card> {
         this.image = deck.getImage();
     }
 
+    public Deck(Deck deck) {
+        this(deck.name, deck.id, deck.cards, deck.tags, deck.color, deck.image);
+    }
+
     public void setNewID() {
         this.id = UUID.randomUUID();
 
