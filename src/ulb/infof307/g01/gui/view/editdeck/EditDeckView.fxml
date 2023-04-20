@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
 <?import org.kordamp.ikonli.javafx.*?>
@@ -25,6 +26,11 @@
                     <FontIcon iconLiteral="mdi2p-pencil" iconSize="25" />
                 </graphic>
             </Button>
+         <ColorPicker HBox.hgrow="ALWAYS">
+            <value>
+               <Color red="0.1315789520740509" green="0.12914229929447174" blue="0.12914229929447174" />
+            </value>
+         </ColorPicker>
         </HBox>
 
         <!-- Tags -->
