@@ -92,10 +92,6 @@ public class Deck implements Iterable<Card> {
 
     }
 
-    public Card getFirstCard() throws IndexOutOfBoundsException {
-        return getCard(0);
-    }
-
     public List<Card> getCards() {
         return cards;
     }
@@ -205,10 +201,5 @@ public class Deck implements Iterable<Card> {
                 case "InputCard" -> this.cards.add(new Gson().fromJson(card, InputCard.class));
             }
         }
-    }
-
-    public void setCards(List<Card> cards) {
-        this.cards.clear();
-        this.cards.addAll(cards);
     }
 }
