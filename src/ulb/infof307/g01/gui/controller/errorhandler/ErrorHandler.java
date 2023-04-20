@@ -107,7 +107,7 @@ public class ErrorHandler {
         communicateError(e, message);
     }
     public void failedLogin(Exception e) {
-         String message = "L'authentification a échoué, veuillez réessayer";
+        String message = "L'authentification a échoué, veuillez réessayer";
 
         communicateError(e, message);
     }

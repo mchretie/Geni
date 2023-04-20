@@ -4,8 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.StageStyle;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
@@ -179,18 +181,22 @@ public class MainWindowViewController {
     /*                              Alerts                                    */
     /* ====================================================================== */
 
+    private void alert(String title, String description, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.initStyle(StageStyle.UNDECORATED);
+        alert.setHeaderText(title);
+        alert.setContentText(description);
+        centerStackPane.setEffect(new BoxBlur(20,20,3));
+        alert.showAndWait();
+        centerStackPane.setEffect(null);
+    }
+
     public void alertError(String errorTitle, String errorDescription) {
-        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setHeaderText(errorTitle);
-        errorAlert.setContentText(errorDescription);
-        errorAlert.showAndWait();
+        alert(errorTitle, errorDescription, Alert.AlertType.ERROR);
     }
 
     public void alertInformation(String infoTitle, String infoDescription) {
-        Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
-        infoAlert.setHeaderText(infoTitle);
-        infoAlert.setContentText(infoDescription);
-        infoAlert.showAndWait();
+        alert(infoTitle, infoDescription, Alert.AlertType.INFORMATION);
     }
 
 
