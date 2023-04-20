@@ -9,69 +9,85 @@ import java.util.UUID;
 public class MCQCard extends Card {
 
     @Expose
-    private List<String> answers;
+    private final List<String> choices;
     @Expose
-    private int correctAnswer;
+    private int correctChoice;
+
+    public final int MIN_CHOICES = 2;
+    public final int MAX_CHOICES = 4;
 
     public MCQCard() {
         super();
-        this.answers = List.of("Réponse 1", "Réponse 2");
-        this.correctAnswer = 0;
+        this.choices = List.of("Réponse 1", "Réponse 2");
+        this.correctChoice = 0;
         this.cardType = "MCQCard";
     }
 
-    public MCQCard(UUID uuid, UUID deckId, String front, List<String> answers, int correctAnswer) {
+    public MCQCard(UUID uuid, UUID deckId, String front, List<String> choices, int correctChoice) {
         super(uuid, deckId, front);
-        this.answers = answers;
-        this.correctAnswer = correctAnswer;
+        this.choices = choices;
+        this.correctChoice = correctChoice;
         this.cardType = "MCQCard";
     }
 
-    public int getChoiceMax(){
-        return 4;
+    public boolean hasMinChoices() {
+        return this.choices.size() == MIN_CHOICES;
     }
 
-    public boolean isCardMin(){
-        return this.answers.size() == 2;
+    public boolean hasMaxChoices() {
+        return this.choices.size() == MAX_CHOICES;
     }
 
-    public List<String> getAnswers() {
-        return answers;
+    public int getChoicesCount() {
+        return choices.size();
     }
 
     public String getChoice(int index) {
-        return answers.get(index);
+        return choices.get(index);
     }
 
-    public void addAnswer(String answer) {
-        this.answers.add(answer);
+    public void addChoice(String choice) {
+        if (choices.size() + 1 > MAX_CHOICES)
+            throw new IllegalStateException(
+                    "Cannot add more choices than %d".formatted(MAX_CHOICES));
+        this.choices.add(choice);
     }
 
-    public void removeAnswer(int index) {
-        if (this.answers.size() <= 2)
-            return;
+    public void removeChoice(int index) {
+        if (this.choices.size() <= 2)
+            throw new IllegalStateException(
+                    "Cannot have less choices than %d".formatted(MIN_CHOICES));
 
-        this.answers.remove(index);
-
-        if (this.correctAnswer == index)
-            this.correctAnswer = Math.max(index - 1, 0);
+        this.choices.remove(index);
+        if (this.correctChoice == index)
+            this.correctChoice = Math.max(index - 1, 0);
     }
 
-    public void setAnswer(int index, String answer) {
-        this.answers.set(index, answer);
+    public void setChoice(int index, String choice) throws IllegalArgumentException {
+        if (index >= getChoicesCount())
+            throw new IllegalArgumentException(
+                    "The choice index must be among the choices");
+        this.choices.set(index, choice);
+    }
+
+    public void setCorrectChoice(int correctChoice) throws IllegalArgumentException {
+        if (correctChoice >= getChoicesCount())
+            throw new IllegalArgumentException(
+                    "The correct answer must be among the choices");
+        this.correctChoice = correctChoice;
     }
 
     public int getCorrectChoiceIndex() {
-        return correctAnswer;
-    }
-
-    public void setCorrectAnswer(int correctAnswer) {
-        this.correctAnswer = correctAnswer;
+        return correctChoice;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.getId(), this.getDeckId(), this.getFront(), answers, correctAnswer);
+        return Objects.hash(this.getId(),
+                            this.getDeckId(),
+                            this.getFront(),
+                            choices,
+                            correctChoice);
     }
 
     @Override
@@ -89,11 +105,7 @@ public class MCQCard extends Card {
         return id.equals(other.getId())
                 && (deckId == other.getDeckId() || deckId.equals(other.getDeckId()))
                 && front.equals(other.getFront())
-                && answers.equals(other.getAnswers())
-                && correctAnswer == other.getCorrectChoiceIndex();
-    }
-
-    public int getNbOfChoices() {
-        return answers.size();
+                && choices.equals(other.choices)
+                && correctChoice == other.getCorrectChoiceIndex();
     }
 }

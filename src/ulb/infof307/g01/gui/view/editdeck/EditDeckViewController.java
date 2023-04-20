@@ -231,8 +231,8 @@ public class EditDeckViewController {
         currentRow = 0;
 
         int correctChoiceIndex = mcqCard.getCorrectChoiceIndex();
-        for (int i = 0; i < mcqCard.getChoiceMax(); i++) {
-            if (i >= mcqCard.getNbOfChoices()) {
+        for (int i = 0; i < mcqCard.MAX_CHOICES; i++) {
+            if (i >= mcqCard.getChoicesCount()) {
                 addChoiceFieldButton();
                 break;
             }
@@ -326,7 +326,7 @@ public class EditDeckViewController {
      */
     private boolean choiceFieldEmpty(TextField textField, int index) {
         if (textField.getText().isEmpty()
-                && ((MCQCard) selectedCard).getNbOfChoices() < 3)
+                && ((MCQCard) selectedCard).getChoicesCount() < 3)
 
             return true;
 
@@ -373,7 +373,7 @@ public class EditDeckViewController {
      */
     private void focusNextNode(int index, boolean createNextNode, boolean cycle) {
         int nextIndex = index + 1;
-        if (nextIndex < ((MCQCard) selectedCard).getNbOfChoices()) {
+        if (nextIndex < ((MCQCard) selectedCard).getChoicesCount()) {
             focusNextChoiceField(nextIndex);
 
         } else if (nextIndex < 4 && createNextNode) {
@@ -404,7 +404,7 @@ public class EditDeckViewController {
 
         // When the text field loses focus, the choice is updated
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue && index < ((MCQCard) selectedCard).getNbOfChoices()) {
+            if (!newValue && index < ((MCQCard) selectedCard).getChoicesCount()) {
                 listener.choiceModified((MCQCard) selectedCard, textField.getText(), index);
                 loadSelectedCardEditor();
             }
@@ -453,7 +453,7 @@ public class EditDeckViewController {
         trashIcon.setIconColor(Color.WHITE);
         removeChoiceButton.setGraphic(trashIcon);
 
-        if (((MCQCard) selectedCard).isCardMin())
+        if (((MCQCard) selectedCard).hasMinChoices())
             removeChoiceButton.setDisable(true);
 
         removeChoiceButton.setOnAction(event -> {
