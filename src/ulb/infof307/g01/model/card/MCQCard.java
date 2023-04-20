@@ -1,14 +1,11 @@
 package ulb.infof307.g01.model.card;
 
 import com.google.gson.annotations.Expose;
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
-import static org.eclipse.jetty.util.TypeUtil.asList;
 
 public class MCQCard extends Card {
 
@@ -22,11 +19,11 @@ public class MCQCard extends Card {
 
     public MCQCard() {
         super();
-        this.answers = new ArrayList<>();
-        this.answers.add("Réponse 1");
-        this.answers.add("Réponse 2");
+        this.choices = new ArrayList<>();
+        this.choices.add("Réponse 1");
+        this.choices.add("Réponse 2");
 
-        this.correctAnswer = 0;
+        this.correctChoice = 0;
         this.cardType = "MCQCard";
     }
 
