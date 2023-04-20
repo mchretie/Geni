@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class DeckIO {
 
-    public final String EXT = "flashcards";
+    public final String EXT = "deck";
 
     private List<DeckMetadata> allDecksMetadata = Collections.emptyList();
 
