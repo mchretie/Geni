@@ -33,8 +33,7 @@ import java.util.List;
  * DeckMenuViewController
  */
 public class DeckMenuController implements DeckMenuViewController.Listener,
-        DeckViewController.Listener
-        {
+        DeckViewController.Listener {
 
     private final Stage stage;
 
@@ -42,13 +41,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     private final DeckMenuViewController deckMenuViewController;
     private final MainWindowViewController mainWindowViewController;
-
-
-
-
-
-
-
 
     private final ErrorHandler errorHandler;
 

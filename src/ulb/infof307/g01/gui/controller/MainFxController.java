@@ -146,7 +146,7 @@ public class MainFxController extends Application implements
     /* ====================================================================== */
 
     private void configureStage(Stage stage) {
-        stage.setWidth(1300);
+        stage.setWidth(1000);
         stage.setHeight(800);
         stage.setMinHeight(500);
         stage.setMinWidth(600);
