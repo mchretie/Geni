@@ -26,7 +26,7 @@ public class GlobalLeaderboard implements Iterable< GlobalLeaderboardEntry >  {
     }
 
     public String getUserScore(String username) {
-        return getEntry(username) == null ? "0" : getEntry(username).getTotalScore() + "";
+        return getEntry(username) == null ? "0" : getEntry(username).getTotalScore();
     }
 
     public String getUserRank(String username) {
