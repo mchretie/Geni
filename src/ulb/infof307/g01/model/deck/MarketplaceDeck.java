@@ -8,8 +8,9 @@ import java.util.UUID;
 
 public class MarketplaceDeck extends Deck {
 
+    private final String owner;
     private final int rating;
-    private final int download;
+    private final int downloads;
 
     public MarketplaceDeck(String name,
                            UUID id,
@@ -17,11 +18,13 @@ public class MarketplaceDeck extends Deck {
                            List<Tag> tags,
                            String color,
                            String image,
+                           String owner,
                            int rating,
-                           int download) {
+                           int downloads) {
         super(name, id, cards, tags, color, image);
+        this.owner = owner;
         this.rating = rating;
-        this.download = download;
+        this.downloads = downloads;
     }
 
     public MarketplaceDeckMetadata getMarketplaceMetadata() {
@@ -32,7 +35,7 @@ public class MarketplaceDeck extends Deck {
                 cards.size(),
                 tags,
                 rating,
-                download,
+                downloads,
                 hashCode());
     }
 
@@ -50,12 +53,13 @@ public class MarketplaceDeck extends Deck {
                 && this.tags.equals(other.tags)
                 && this.color.equals(other.color)
                 && this.image.equals(other.image)
+                && this.owner.equals(other.owner)
                 && this.rating == other.rating
-                && this.download == other.download;
+                && this.downloads == other.downloads;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, cards, tags, color, image, rating, download);
+        return Objects.hash(name, id, cards, tags, color, image, owner, rating, downloads);
     }
 }
