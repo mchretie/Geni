@@ -24,7 +24,7 @@ import static java.util.stream.Collectors.toList;
 
 public class DeckRequestHandler extends Handler {
 
-  public DeckRequestHandler(JWTService jwtService, Database database) {
+  public DeckRequestHandler(Database database, JWTService jwtService) {
     super(database, jwtService);
   }
 

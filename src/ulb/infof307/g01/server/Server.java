@@ -59,8 +59,8 @@ public class Server {
     }
 
     private void launchHandlers() {
-        new DeckRequestHandler(jwtService,db).init();
-        new UserAccountHandler(jwtService, db).init();
+        new DeckRequestHandler(db, jwtService).init();
+        new UserAccountHandler(db, jwtService).init();
         new LeaderboardRequestHandler(db, jwtService).init();
         new GameHistoryRequestHandler(db, jwtService).init();
     }
