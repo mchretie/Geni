@@ -1,10 +1,7 @@
 package ulb.infof307.g01.server.database;
 
+import ulb.infof307.g01.model.deck.*;
 import ulb.infof307.g01.model.gamehistory.GameHistory;
-import ulb.infof307.g01.model.deck.Deck;
-import ulb.infof307.g01.model.deck.DeckMetadata;
-import ulb.infof307.g01.model.deck.Score;
-import ulb.infof307.g01.model.deck.Tag;
 import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.server.database.dao.*;
@@ -172,5 +169,14 @@ public class Database {
 
     public GameHistory getGameHistory(UUID userId) {
         return new GameHistory(scoreDao.getGameHistory(userId));
+    }
+
+
+    /* ====================================================================== */
+    /*                              Marketplace                                     */
+    /* ====================================================================== */
+
+    public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {
+        return deckDao.getMarketplaceDecksMetadata();
     }
 }
