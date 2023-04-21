@@ -49,4 +49,5 @@ public final class ServerPaths {
   // Used by MarketplaceHandler
   public static final String MARKETPLACE_BASE_PATH = BASE + "/marketplace";
   public static final String GET_MARKETPLACE_PATH = MARKETPLACE_BASE_PATH + "/get";
+  public static final String ADD_DECK_TO_MARKETPLACE_PATH = MARKETPLACE_BASE_PATH + "/add";
 }

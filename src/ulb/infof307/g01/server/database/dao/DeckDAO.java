@@ -539,6 +539,7 @@ public class DeckDAO extends DAO {
     /* ====================================================================== */
     /*                            Marketplace requests                        */
     /* ====================================================================== */
+    // TODO maybe create a marketplaceDAO ?
 
     private List<MarketplaceDeckMetadata> extractMarketplaceDeckMetadata(List<MarketplaceDeck> decks) {
         List<MarketplaceDeckMetadata> decksMetadata = new ArrayList<>();

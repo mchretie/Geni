@@ -179,4 +179,8 @@ public class Database {
     public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {
         return deckDao.getMarketplaceDecksMetadata();
     }
+
+    public void addDeckToMarketplace(UUID deckId) throws DatabaseException {
+        deckDao.addDeckToMarketplace(deckId);
+    }
 }

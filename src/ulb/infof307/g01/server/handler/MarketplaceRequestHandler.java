@@ -8,9 +8,11 @@ import ulb.infof307.g01.server.service.JWTService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
-import static spark.Spark.get;
-import static spark.Spark.halt;
+import static spark.Spark.*;
+import static ulb.infof307.g01.shared.constants.ServerPaths.ADD_DECK_TO_MARKETPLACE_PATH;
 import static ulb.infof307.g01.shared.constants.ServerPaths.GET_MARKETPLACE_PATH;
 
 public class MarketplaceRequestHandler extends Handler {
@@ -22,6 +24,7 @@ public class MarketplaceRequestHandler extends Handler {
     @Override
     public void init() {
         get(GET_MARKETPLACE_PATH, this::getAllMarketplaceDecks, toJson());
+        post(ADD_DECK_TO_MARKETPLACE_PATH, this::addDeck, toJson());
     }
 
     private List<MarketplaceDeckMetadata> getAllMarketplaceDecks(Request req, Response res) {
@@ -35,6 +38,21 @@ public class MarketplaceRequestHandler extends Handler {
             halt(500, message);
 
             return new ArrayList<>();
+        }
+    }
+
+    private Map<String, Boolean> addDeck(Request req, Response res) {
+        try {
+            UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+            database.addDeckToMarketplace(deckId);
+
+            return successfulResponse;
+        } catch (Exception e) {
+            String message = "Failed to add deck to the marketplace : " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
+            return failedResponse;
         }
     }
 }
