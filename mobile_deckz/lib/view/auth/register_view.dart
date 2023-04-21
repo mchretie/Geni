@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+
+import '../../http_dao/auth_dao.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -8,10 +11,10 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  late String _username;
-  late String _email;
-  late String _password;
-  late String _repeatPassword;
+  String _username = '';
+  String _password = '';
+  String _repeatPassword = '';
+  String _errorMsg = '';
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +50,7 @@ class _RegisterViewState extends State<RegisterView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               child: TextFormField(
+                onChanged: (value) => setState(() => _username = value),
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   labelText: 'Username',
@@ -64,6 +68,7 @@ class _RegisterViewState extends State<RegisterView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               child: TextFormField(
+                onChanged: (value) => setState(() => _password = value),
                 obscureText: true,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
@@ -82,6 +87,7 @@ class _RegisterViewState extends State<RegisterView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               child: TextFormField(
+                onChanged: (value) => setState(() => _repeatPassword = value),
                 obscureText: true,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
@@ -97,10 +103,57 @@ class _RegisterViewState extends State<RegisterView> {
               ),
             ),
             const SizedBox(height: 32.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Already have an account?',
+                  style: TextStyle(color: Colors.white),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'Sign In',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            Text(_errorMsg,
+                style: const TextStyle(color: Colors.deepOrange),
+                textAlign: TextAlign.center),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (_username.isEmpty) {
+                    setState(() => _errorMsg = 'Username is required');
+                    return;
+                  }
+                  if (_password.isEmpty || _repeatPassword.isEmpty) {
+                    setState(() => _errorMsg = 'Password is required');
+                    return;
+                  }
+
+                  if (_password != _repeatPassword) {
+                    setState(() => _errorMsg = 'Password does not match');
+                    return;
+                  }
+
+                  AuthDao.register(_username, _password).then((value) {
+                    Map<String, dynamic> result = json.decode(value.body);
+                    if (result.containsKey("success") &&
+                        result['success'] == true) {
+                      Navigator.pop(context, true);
+                    } else {
+                      setState(() => _errorMsg = "Register failed");
+                    }
+                  }).catchError((error) {
+                    setState(() => _errorMsg = error.toString());
+                  });
+                },
                 child: const Text('Register now'),
               ),
             ),
