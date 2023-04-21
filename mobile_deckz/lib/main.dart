@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: const HomeView(title: 'Mobile Deckz 3000'),
+      home: const HomePage(),
     );
   }
 }
