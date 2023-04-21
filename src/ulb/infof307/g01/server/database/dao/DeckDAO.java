@@ -4,9 +4,7 @@ import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
-import ulb.infof307.g01.model.deck.Deck;
-import ulb.infof307.g01.model.deck.DeckMetadata;
-import ulb.infof307.g01.model.deck.Tag;
+import ulb.infof307.g01.model.deck.*;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
@@ -536,5 +534,51 @@ public class DeckDAO extends DAO {
                 """;
 
         return checkedNext(database.executeQuery(sql, deckId.toString()));
+    }
+
+    /* ====================================================================== */
+    /*                            Marketplace requests                        */
+    /* ====================================================================== */
+
+    private List<MarketplaceDeckMetadata> extractMarketplaceDeckMetadata(List<MarketplaceDeck> decks) {
+        List<MarketplaceDeckMetadata> decksMetadata = new ArrayList<>();
+        decks.forEach((d) -> decksMetadata.add(d.getMarketplaceMetadata()));
+        return decksMetadata;
+    }
+
+    private MarketplaceDeck extractMarketplaceDeck(ResultSet res) throws DatabaseException {
+        try {
+            Deck deck = extractDeckFrom(res);
+            String username = res.getString("username");
+            int rating = res.getInt("rating");
+            int download = res.getInt("download");
+
+            return new MarketplaceDeck(deck, username, rating, download);
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public List<MarketplaceDeck> getAllMarketplaceDecks() throws DatabaseException {
+        String sql = """
+                SELECT D.deck_id, U.username, D.name, D.color, D.image, M.rating, M.download
+                FROM marketplace M
+                INNER JOIN deck D ON M.deck_id = D.deck_id
+                INNER JOIN user U ON U.user_id = D.user_id
+                WHERE M.deck_id = ?;
+                """;
+
+        ResultSet res = database.executeQuery(sql);
+        List<MarketplaceDeck> decks = new ArrayList<>();
+        while (checkedNext(res))
+            decks.add(extractMarketplaceDeck(res));
+
+        return decks;
+    }
+
+    public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {
+        List<MarketplaceDeck> decks = getAllMarketplaceDecks();
+
+        return extractMarketplaceDeckMetadata(decks);
     }
 }

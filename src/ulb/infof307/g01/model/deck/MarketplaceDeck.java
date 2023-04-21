@@ -27,6 +27,13 @@ public class MarketplaceDeck extends Deck {
         this.downloads = downloads;
     }
 
+    public MarketplaceDeck(Deck deck, String owner, int rating, int downloads) {
+        super(deck);
+        this.owner = owner;
+        this.rating = rating;
+        this.downloads = downloads;
+    }
+
     public MarketplaceDeckMetadata getMarketplaceMetadata() {
         return new MarketplaceDeckMetadata(id,
                 name,
@@ -34,6 +41,7 @@ public class MarketplaceDeck extends Deck {
                 image,
                 cards.size(),
                 tags,
+                owner,
                 rating,
                 downloads,
                 hashCode());
