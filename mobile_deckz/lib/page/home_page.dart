@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_deckz/view/profile_view.dart';
+import 'package:mobile_deckz/view/leaderboard_view.dart';
+import 'package:mobile_deckz/page/profile_page.dart';
+import 'package:mobile_deckz/view/store_view.dart';
+import 'package:mobile_deckz/view/user_deck_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key, required this.title});
@@ -33,16 +36,14 @@ class _HomeViewState extends State<HomeView> {
           ],
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'ui',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ],
-          ),
-        ),
+            child: IndexedStack(
+          index: _selectedIndex,
+          children: const [
+            UserDeckView(),
+            StoreView(),
+            LeaderboardView(),
+          ],
+        )),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(

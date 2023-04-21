@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_deckz/view/home_view.dart';
+import 'package:mobile_deckz/page/home_page.dart';
 
 void main() {
   runApp(const MyApp());
