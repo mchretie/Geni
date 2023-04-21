@@ -4,10 +4,14 @@ import static spark.Spark.*;
 import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 
 import java.util.Map;
+
+import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
+import ulb.infof307.g01.model.UserAuth;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
+
 
 @SuppressWarnings("FieldCanBeLocal")
 public class UserAccountHandler extends Handler {
@@ -26,17 +30,16 @@ public class UserAccountHandler extends Handler {
 
     private Map<String, Boolean> loginUser(Request request, Response response) {
         try {
-            String username = request.queryParams("username");
-            String password = request.queryParams("password");
+            UserAuth userAuth = new Gson().fromJson(request.body(), UserAuth.class);
+            String username = userAuth.getUsername();
+            String password = userAuth.getPassword();
 
             boolean isValidLogin = database.loginUser(username, password);
 
             if (isValidLogin) {
                 String token = jwtService.generateToken(username);
                 response.header(AUTH_HEADER, token);
-            }
-
-            else {
+            } else {
                 logger.info("Invalid login");
             }
 
@@ -49,8 +52,9 @@ public class UserAccountHandler extends Handler {
     }
 
     private Map<String, Boolean> registerUser(Request request, Response response) {
-        String username = request.queryParams("username");
-        String password = request.queryParams("password");
+        UserAuth userAuth = new Gson().fromJson(request.body(), UserAuth.class);
+        String username = userAuth.getUsername();
+        String password = userAuth.getPassword();
 
         boolean isRegistered = database.registerUser(username, password);
         return isRegistered ? successfulResponse : failedResponse;

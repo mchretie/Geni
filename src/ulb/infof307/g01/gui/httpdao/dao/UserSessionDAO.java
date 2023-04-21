@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.httpdao.dao;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
+import ulb.infof307.g01.model.UserAuth;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
@@ -34,9 +35,8 @@ public class UserSessionDAO extends HttpDAO {
     public void login(String username, String password)
             throws IOException, InterruptedException {
 
-        String credentials = "?username=" + username + "&password=" + password;
-        HttpResponse<String> response
-                = get(ServerPaths.LOGIN_PATH + credentials);
+        UserAuth userAuth = new UserAuth(username, password);
+        HttpResponse<String> response = bodyRequest("GET", ServerPaths.LOGIN_PATH, new Gson().toJson(userAuth));
 
         checkResponseCode(response.statusCode());
         checkResponseBody(response.body(), "Login");
@@ -53,9 +53,9 @@ public class UserSessionDAO extends HttpDAO {
     public void register(String username, String password)
             throws IOException, InterruptedException {
 
-        String credentials = "?username=" + username + "&password=" + password;
-        HttpResponse<String> response
-                = post(ServerPaths.REGISTER_PATH + credentials, "");
+        UserAuth userAuth = new UserAuth(username, password);
+        HttpResponse<String> response = bodyRequest("POST", ServerPaths.REGISTER_PATH, new Gson().toJson(userAuth));
+
 
         checkResponseCode(response.statusCode());
         checkResponseBody(response.body(), "Registration");
@@ -64,7 +64,8 @@ public class UserSessionDAO extends HttpDAO {
     private void checkResponseBody(String response, String type) throws AuthenticationFailedException {
 
         Type stringBooleanMap
-                = new TypeToken<Map<String, Boolean>>() {}.getType();
+                = new TypeToken<Map<String, Boolean>>() {
+        }.getType();
 
         Map<String, Boolean> responseMap
                 = new Gson().fromJson(response, stringBooleanMap);
