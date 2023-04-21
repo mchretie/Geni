@@ -1,14 +1,25 @@
 package ulb.infof307.g01.model.deck;
 
+import ulb.infof307.g01.model.card.Card;
+
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class MarketplaceDeck extends Deck {
 
     private final int rating;
     private final int download;
 
-    public MarketplaceDeck(Deck deck, int rating, int download) {
-        super(deck);
+    public MarketplaceDeck(String name,
+                           UUID id,
+                           List<Card> cards,
+                           List<Tag> tags,
+                           String color,
+                           String image,
+                           int rating,
+                           int download) {
+        super(name, id, cards, tags, color, image);
         this.rating = rating;
         this.download = download;
     }
