@@ -453,7 +453,7 @@ public class EditDeckViewController {
         trashIcon.setIconColor(Color.WHITE);
         removeChoiceButton.setGraphic(trashIcon);
 
-        if (((MCQCard) selectedCard).hasMinChoices())
+        if (!((MCQCard) selectedCard).canRemoveChoice())
             removeChoiceButton.setDisable(true);
 
         removeChoiceButton.setOnAction(event -> {

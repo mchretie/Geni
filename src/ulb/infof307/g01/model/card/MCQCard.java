@@ -34,12 +34,16 @@ public class MCQCard extends Card {
         this.cardType = "MCQCard";
     }
 
-    public boolean hasMinChoices() {
-        return this.choices.size() == MIN_CHOICES;
+    public boolean canRemoveChoice() {
+        return getChoicesCount() > MIN_CHOICES;
     }
 
-    public boolean hasMaxChoices() {
-        return this.choices.size() == MAX_CHOICES;
+    public boolean canAddChoice() {
+        return getChoicesCount() < MAX_CHOICES;
+    }
+
+    public boolean isValidIndex(int index) {
+        return index < getChoicesCount();
     }
 
     public int getChoicesCount() {
@@ -50,32 +54,32 @@ public class MCQCard extends Card {
         return choices.get(index);
     }
 
-    public void addChoice(String choice) {
-        if (choices.size() + 1 > MAX_CHOICES)
+    public void addChoice(String choice) throws IllegalStateException {
+        if (!canAddChoice())
             throw new IllegalStateException(
                     "Cannot add more choices than %d".formatted(MAX_CHOICES));
         this.choices.add(choice);
     }
 
-    public void removeChoice(int index) {
-        if (this.choices.size() <= 2)
+    public void removeChoice(int index) throws IllegalStateException {
+        if (!canRemoveChoice())
             throw new IllegalStateException(
                     "Cannot have less choices than %d".formatted(MIN_CHOICES));
 
         this.choices.remove(index);
-        if (this.correctChoice == index)
-            this.correctChoice = Math.max(index - 1, 0);
+        if (this.correctChoice >= index)
+            this.correctChoice = Math.max(correctChoice - 1, 0);
     }
 
     public void setChoice(int index, String choice) throws IllegalArgumentException {
-        if (index >= getChoicesCount())
+        if (isValidIndex(index))
             throw new IllegalArgumentException(
                     "The choice index must be among the choices");
         this.choices.set(index, choice);
     }
 
     public void setCorrectChoice(int correctChoice) throws IllegalArgumentException {
-        if (correctChoice >= getChoicesCount())
+        if (isValidIndex(correctChoice))
             throw new IllegalArgumentException(
                     "The correct answer must be among the choices");
         this.correctChoice = correctChoice;
