@@ -3,9 +3,9 @@ package ulb.infof307.g01.gui.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class GridPosIterator implements Iterator<Position2D> {
+public class GridPosIterator implements Iterator<Pos2D> {
     
-    Position2D currentPosition;
+    Pos2D currentPosition;
 
     final int colCount;
     final int rowCount;
@@ -17,7 +17,7 @@ public class GridPosIterator implements Iterator<Position2D> {
         if (colCount <= 0 || rowCount <= 0)
             throw new IllegalArgumentException("Counts must be positive");
 
-        this.currentPosition = new Position2D(0, 0);
+        this.currentPosition = new Pos2D(0, 0);
         this.colCount = colCount;
         this.rowCount = rowCount;
         this.index = -1;  // to have (0, 0) as first element
@@ -30,13 +30,13 @@ public class GridPosIterator implements Iterator<Position2D> {
     }
 
     @Override
-    public Position2D next() {
+    public Pos2D next() {
         if (!hasNext())
             throw new NoSuchElementException("Reached past end of iterator");
 
         index++;
-        currentPosition.x = index % colCount;
-        currentPosition.y = rowCount == 1 ? 0 : colCount == 1 ? index : index / rowCount;
-        return new Position2D(currentPosition);
+        currentPosition.col = index % colCount;
+        currentPosition.row = rowCount == 1 ? 0 : index / colCount;
+        return new Pos2D(currentPosition);
     }
 }

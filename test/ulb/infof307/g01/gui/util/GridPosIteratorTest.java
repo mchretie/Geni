@@ -2,8 +2,6 @@ package ulb.infof307.g01.gui.util;
 
 import org.junit.jupiter.api.Test;
 
-import java.security.InvalidParameterException;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,7 +28,7 @@ class GridPosIteratorTest {
     @Test
     void iterate_OneCellGrid_NoThrow() {
         var expected = List.of(
-                new Position2D(0, 0)
+                new Pos2D(0, 0)
         ).iterator();
         var actual = new GridPosIterator(1, 1);
 
@@ -40,10 +38,10 @@ class GridPosIteratorTest {
     @Test
     void iterate_SquareGrid_NoThrow() {
         var expected = List.of(
-                new Position2D(0, 0),
-                new Position2D(1, 0),
-                new Position2D(0, 1),
-                new Position2D(1, 1)
+                new Pos2D(0, 0),
+                new Pos2D(1, 0),
+                new Pos2D(0, 1),
+                new Pos2D(1, 1)
         ).iterator();
         var actual = new GridPosIterator(2, 2);
 
@@ -53,10 +51,10 @@ class GridPosIteratorTest {
     @Test
     void iterate_RowGrid_NoThrow() {
         var expected = List.of(
-                new Position2D(0, 0),
-                new Position2D(1, 0),
-                new Position2D(2, 0),
-                new Position2D(3, 0)
+                new Pos2D(0, 0),
+                new Pos2D(1, 0),
+                new Pos2D(2, 0),
+                new Pos2D(3, 0)
         ).iterator();
         var actual = new GridPosIterator(4, 1);
 
@@ -66,12 +64,27 @@ class GridPosIteratorTest {
     @Test
     void iterate_ColGrid_NoThrow() {
         var expected = List.of(
-                new Position2D(0, 0),
-                new Position2D(0, 1),
-                new Position2D(0, 2),
-                new Position2D(0, 3)
+                new Pos2D(0, 0),
+                new Pos2D(0, 1),
+                new Pos2D(0, 2),
+                new Pos2D(0, 3)
         ).iterator();
         var actual = new GridPosIterator(1, 4);
+
+        assertIteratorsEquals(expected, actual);
+    }
+
+    @Test
+    void iterate_DiffColAndRow_NoThrow() {
+        var expected = List.of(
+                new Pos2D(0, 0),
+                new Pos2D(1, 0),
+                new Pos2D(2, 0),
+                new Pos2D(0, 1),
+                new Pos2D(1, 1),
+                new Pos2D(2, 1)
+        ).iterator();
+        var actual = new GridPosIterator(3, 2);
 
         assertIteratorsEquals(expected, actual);
     }
