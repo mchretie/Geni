@@ -34,6 +34,18 @@ public class MarketplaceDeck extends Deck {
         this.downloads = downloads;
     }
 
+    public int getRating() {
+        return rating;
+    }
+
+    public int getDownloads() {
+        return downloads;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
     public MarketplaceDeckMetadata getMarketplaceMetadata() {
         return new MarketplaceDeckMetadata(id,
                 name,

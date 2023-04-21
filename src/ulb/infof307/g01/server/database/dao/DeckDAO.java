@@ -551,7 +551,7 @@ public class DeckDAO extends DAO {
             Deck deck = extractDeckFrom(res);
             String username = res.getString("username");
             int rating = res.getInt("rating");
-            int download = res.getInt("download");
+            int download = res.getInt("downloads");
 
             return new MarketplaceDeck(deck, username, rating, download);
         } catch (SQLException e) {
@@ -559,9 +559,22 @@ public class DeckDAO extends DAO {
         }
     }
 
+    public void addDeckToMarketplace(MarketplaceDeck deck) throws DatabaseException {
+        String sql = """
+                INSERT INTO marketplace (deck_id, rating, downloads)
+                VALUES (?, ?, ?);
+                """;
+
+        database.executeUpdate(
+                sql,
+                deck.getId(),
+                deck.getRating(),
+                deck.getDownloads());
+    }
+
     public List<MarketplaceDeck> getAllMarketplaceDecks() throws DatabaseException {
         String sql = """
-                SELECT D.deck_id, U.username, D.name, D.color, D.image, M.rating, M.download
+                SELECT D.deck_id, U.username, D.name, D.color, D.image, M.rating, M.downloads
                 FROM marketplace M
                 INNER JOIN deck D ON M.deck_id = D.deck_id
                 INNER JOIN user U ON U.user_id = D.user_id
