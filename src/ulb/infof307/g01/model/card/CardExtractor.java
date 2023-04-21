@@ -9,7 +9,7 @@ import java.util.List;
 abstract public class CardExtractor implements Iterable<Card> {
 
     protected final List<Card> sortedCards;
-    private int currentCardIndex; // to know where we are in the deck during the drawing
+    private int currentCardIndex;
 
     public CardExtractor(Deck deck) {
         this.sortedCards = new ArrayList<>(deck.getCards());
@@ -23,33 +23,21 @@ abstract public class CardExtractor implements Iterable<Card> {
         return currentCardIndex;
     }
 
-    public List<Card> getSortedCards() {
-        return sortedCards;
-    }
-
     public int getNumberOfRemainingCards() {
         return currentCardIndex == -1 ? sortedCards.size() : sortedCards.size() - currentCardIndex-1;
     }
 
     public Card getNextCard() {
-        if (getNumberOfRemainingCards() == 0) {
-            return null;
-        }
-
-        return this.sortedCards.get(++currentCardIndex);
+        return getNumberOfRemainingCards() == 0 ? null : this.sortedCards.get(++currentCardIndex);
     }
 
     public Card getPreviousCard() {
-        if (currentCardIndex <= 0) {
-            return null;
-        }
-        return this.sortedCards.get(--currentCardIndex);
+        return currentCardIndex > 0 ? this.sortedCards.get(--currentCardIndex) : null;
     }
 
     @Override
     public Iterator<Card> iterator() {
         return new Iterator<>() {
-
             private int currentIndex = 0;
 
             @Override

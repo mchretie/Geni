@@ -1,8 +1,9 @@
 package ulb.infof307.g01.server.database.dao;
 
-import ulb.infof307.g01.model.Game;
+import ulb.infof307.g01.model.gamehistory.Game;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.model.leaderboard.GlobalLeaderboardEntry;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
@@ -88,7 +89,7 @@ public class ScoreDAO extends DAO {
         }
     }
 
-    public List<Map<String, String>> getAllUserDeckScore() throws DatabaseException{
+    public List<GlobalLeaderboardEntry> getAllUserDeckScore() throws DatabaseException{
         String sql = """
                 SELECT U.username, sum(score) as total_score
                 FROM user_deck_score S, user U
@@ -98,18 +99,13 @@ public class ScoreDAO extends DAO {
 
         try {
             ResultSet res = database.executeQuery(sql);
-            List<Map<String, String>> leaderboard = new ArrayList<>();
+            List<GlobalLeaderboardEntry> leaderboard = new ArrayList<>();
             while (res.next()) {
-                Map<String, String> leaderboardEntry = new HashMap<>();
-                leaderboardEntry
-                        .put(GlobalLeaderboard.ENTRY_USERNAME,
-                                res.getString("username"));
-
-                leaderboardEntry
-                        .put(GlobalLeaderboard.ENTRY_TOTAL_SCORE,
-                                res.getString("total_score"));
-
-                leaderboard.add(leaderboardEntry);
+                leaderboard.add(
+                        new GlobalLeaderboardEntry(
+                                res.getInt("total_score"),
+                                res.getString("username")
+                        ));
             }
 
             return leaderboard;

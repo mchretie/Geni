@@ -1,14 +1,20 @@
 package ulb.infof307.g01.model.card;
 
+import com.google.gson.annotations.Expose;
+
+import ulb.infof307.g01.model.IndulgentValidator;
+
 import java.util.Objects;
 import java.util.UUID;
 
 public class InputCard extends Card {
+
+    @Expose
     private String answer;
 
-    public InputCard(String front, String answer) {
-        super(front);
-        this.answer = answer;
+    public InputCard() {
+        super();
+        this.answer = "";
         this.cardType = "InputCard";
     }
 
@@ -18,30 +24,13 @@ public class InputCard extends Card {
         this.cardType = "InputCard";
     }
 
-    public InputCard(String front, String answer, KnowledgeLevel knowledge) {
-        super(front, knowledge);
-        this.answer = answer;
-        this.cardType = "InputCard";
-    }
-
     public String getAnswer() { return answer; }
 
     public void setAnswer(String answer) { this.answer = answer; }
 
     public boolean isInputCorrect(String input) {
-    	return convertAndLowercase(input).equals(convertAndLowercase(this.answer));
-    }
-
-    private String convertAndLowercase(String input) {
-        String output = input.toLowerCase();
-
-        output = output.replaceAll("[éèêë]", "e");
-        output = output.replaceAll("[àâä]", "a");
-        output = output.replaceAll("[ôö]", "o");
-        output = output.replaceAll("[ûüù]", "u");
-        output = output.replaceAll("ç", "c");
-
-        return output;
+        IndulgentValidator validator = new IndulgentValidator();
+        return validator.isEquals(this.answer, input);
     }
 
     @Override

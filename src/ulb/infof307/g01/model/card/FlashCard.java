@@ -10,21 +10,14 @@ public class FlashCard extends Card {
     @Expose
     private String back;
 
-    public FlashCard(String front, String back) {
-        super(front);
-        this.back = back;
+    public FlashCard() {
+        super();
+        this.back = "Arrière";
         this.cardType = "FlashCard";
     }
 
     public FlashCard(UUID uuid, UUID deckId, String front, String back) {
         super(uuid, deckId, front);
-        this.back = back;
-        this.cardType = "FlashCard";
-    }
-
-
-    public FlashCard(String front, String back, KnowledgeLevel knowledge) {
-        super(front, knowledge);
         this.back = back;
         this.cardType = "FlashCard";
     }

@@ -1,6 +1,6 @@
 package ulb.infof307.g01.server.handler;
 
-import ulb.infof307.g01.model.GameHistory;
+import ulb.infof307.g01.model.gamehistory.GameHistory;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 

@@ -16,7 +16,7 @@ class AuthDao {
     );
 
     if (response.statusCode == 200){
-      await storage.write(key: 'token', value: response.body)
+      await storage.write(key: 'token', value: response.body);
     }
 
     return response;

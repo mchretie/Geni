@@ -8,7 +8,7 @@
 
 <VBox alignment="CENTER" fillWidth="false" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.profile.ProfileViewController">
 
-        <Label prefHeight="31.0" prefWidth="187.0" text="Votre Profile">
+        <Label prefHeight="31.0" prefWidth="187.0" text="Votre Profil">
             <font>
                 <Font size="26.0" />
             </font>
@@ -36,16 +36,13 @@
 
 
     <!-- Statistics button -->
-    <Button onMouseClicked="#goToStatisticsClicked"
-            onMouseEntered="#handleStatisticsHover"
-            onMouseExited="#handleStatisticsExitHover"
-            style="-fx-background-color: transparent">
+    <Button onMouseClicked="#goToStatisticsClicked" onMouseEntered="#handleStatisticsHover" onMouseExited="#handleStatisticsExitHover" style="-fx-background-color: transparent">
         <graphic>
             <FontIcon fx:id="statisticsIcon" iconLiteral="mdi2c-chart-areaspline" iconSize="40" />
         </graphic>
     </Button>
 
-    <Button mnemonicParsing="false" onMouseClicked="#handleLogoutButtonClicked" text="Se déconnecter" />
+    <Button mnemonicParsing="false" onAction="#handleLogoutButtonClicked" text="Se déconnecter" />
    <padding>
       <Insets bottom="10.0" />
    </padding>

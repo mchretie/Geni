@@ -123,9 +123,9 @@ public class TestDeckDAO extends DatabaseUsingTest {
     @Test
     void saveDeck_CardAdded_DeckAddedWithCard() {
         Deck deck = new Deck("name");
-        Card card = new FlashCard("front", "back");
-        Card card2 = new MCQCard("question", Arrays.asList("answer1", "answer2"), 0);
-        Card card3 = new InputCard("front", "back");
+        Card card = new FlashCard();
+        Card card2 = new MCQCard();
+        Card card3 = new InputCard();
 
         deck.addCard(card);
         deck.addCard(card2);
@@ -138,9 +138,9 @@ public class TestDeckDAO extends DatabaseUsingTest {
     @Test
     void saveDeck_CardDeleted_DeckUpdated() {
         Deck deck = new Deck("name");
-        Card card = new FlashCard("front", "back");
-        Card card2 = new MCQCard("question", Arrays.asList("answer1", "answer2"), 0);
-        Card card3 = new InputCard("front", "back");
+        Card card = new FlashCard();
+        Card card2 = new MCQCard();
+        Card card3 = new InputCard();
 
         deck.addCard(card);
         deck.addCard(card2);
@@ -257,16 +257,16 @@ public class TestDeckDAO extends DatabaseUsingTest {
     @Test
     void gsonDeckConversion_DeckConverted_DecksEqual() {
         Deck deck1 = new Deck("name");
-        Card card1 = new FlashCard("front", "back");
-        Card card2 = new MCQCard("question", Arrays.asList("answer1", "answer2"), 0);
-        Card card3 = new InputCard("question", "answer");
+        Card card1 = new FlashCard();
+        Card card2 = new MCQCard();
+        Card card3 = new InputCard();
 
         deck1.addCard(card1);
         deck1.addCard(card2);
         deck1.addCard(card3);
 
         String deck1Gson = new Gson().toJson(deck1);
-        Deck deck2 = new Deck(new Gson().fromJson(deck1Gson, JsonObject.class));
+        Deck deck2 = Deck.fromJson(deck1Gson);
         String deck2Gson = new Gson().toJson(deck2);
 
         assertEquals(deck1Gson, deck2Gson);
