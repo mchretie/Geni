@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mobile_deckz/http_dao/server_path.dart';
@@ -16,6 +14,7 @@ class AuthDao {
 
     if (response.statusCode == 200){
       await storage.write(key: 'token', value: response.body);
+      await storage.write(key: 'username', value: username);
     }
 
     return response;
@@ -39,5 +38,9 @@ class AuthDao {
       return true;
     }
     return false;
+  }
+
+  static Future<String> getUsername() async {
+    return await storage.read(key: 'username') ?? '';
   }
 }
