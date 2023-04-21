@@ -15,6 +15,7 @@ public final class ServerPaths {
   public static final String USER_BASE_PATH = BASE + "/user";
   public static final String REGISTER_PATH = USER_BASE_PATH + "/register";
   public static final String LOGIN_PATH = USER_BASE_PATH + "/login";
+  public static final String IS_TOKEN_VALID_PATH = USER_BASE_PATH + "/is-token-valid";
 
   // Used by TagRequestHandler
   private static final String TAG_BASE_PATH = BASE + "/tag";

@@ -26,6 +26,7 @@ public class UserAccountHandler extends Handler {
     public void init() {
         post(REGISTER_PATH, this::registerUser, toJson());
         post(LOGIN_PATH, this::loginUser, toJson());
+        get(IS_TOKEN_VALID_PATH, this::isTokenValid, toJson());
     }
 
     private Map<String, Boolean> loginUser(Request request, Response response) {
@@ -58,5 +59,14 @@ public class UserAccountHandler extends Handler {
 
         boolean isRegistered = database.registerUser(username, password);
         return isRegistered ? successfulResponse : failedResponse;
+    }
+
+    private Map<String, Boolean> isTokenValid(Request request, Response response) {
+        String token = request.headers(AUTH_HEADER);
+        if (jwtService.isTokenValid(token)) {
+            return successfulResponse;
+        }
+        halt(401, "Token is " + (token == null ? "null" : "not valid"));
+        return null;
     }
 }
