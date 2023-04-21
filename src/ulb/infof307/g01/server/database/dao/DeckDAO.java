@@ -572,6 +572,15 @@ public class DeckDAO extends DAO {
                 String.valueOf(0));
     }
 
+    public void removeDeckFromMarketplace(Deck deck) {
+        String sql = """
+                DELETE FROM marketplace
+                WHERE deck_id = ?;
+                """;
+
+        database.executeUpdate(sql, deck.getId().toString());
+    }
+
     public List<MarketplaceDeck> getAllMarketplaceDecks() throws DatabaseException {
         String sql = """
                 SELECT D.deck_id, U.username, D.name, D.color, D.image, M.rating, M.downloads
