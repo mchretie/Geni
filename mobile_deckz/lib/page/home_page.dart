@@ -7,16 +7,16 @@ import 'package:mobile_deckz/view/user_deck_view.dart';
 
 import '../http_dao/auth_dao.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key, required this.title});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
-  final String title;
+  final String title = 'Mobile Deckz 3000';
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   final Future<bool> isLoggedIn = AuthDao.isLoggedIn();
