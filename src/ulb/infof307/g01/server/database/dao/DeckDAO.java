@@ -559,7 +559,7 @@ public class DeckDAO extends DAO {
         }
     }
 
-    public void addDeckToMarketplace(Deck deck) throws DatabaseException {
+    public void addDeckToMarketplace(UUID deckId) throws DatabaseException {
         String sql = """
                 INSERT INTO marketplace (deck_id, rating, downloads)
                 VALUES (?, ?, ?);
@@ -567,7 +567,7 @@ public class DeckDAO extends DAO {
 
         database.executeUpdate(
                 sql,
-                deck.getId().toString(),
+                deckId.toString(),
                 String.valueOf(0),
                 String.valueOf(0));
     }

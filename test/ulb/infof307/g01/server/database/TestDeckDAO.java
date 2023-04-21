@@ -284,8 +284,8 @@ public class TestDeckDAO extends DatabaseUsingTest {
         deckDAO.saveDeck(deck1, UUID.fromString(userDAO.getUserId("user1")));
         deckDAO.saveDeck(deck2, UUID.fromString(userDAO.getUserId("user1")));
 
-        deckDAO.addDeckToMarketplace(deck1);
-        deckDAO.addDeckToMarketplace(deck2);
+        deckDAO.addDeckToMarketplace(deck1.getId());
+        deckDAO.addDeckToMarketplace(deck2.getId());
 
         List<MarketplaceDeckMetadata> expected = new ArrayList<>();
         expected.add(new MarketplaceDeck(deck1, "user1", 0, 0).getMarketplaceMetadata());
@@ -295,7 +295,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
 
         userDAO.registerUser("user2", "pass");
         deckDAO.saveDeck(deck3, UUID.fromString(userDAO.getUserId("user2")));
-        deckDAO.addDeckToMarketplace(deck3);
+        deckDAO.addDeckToMarketplace(deck3.getId());
 
         expected.add(new MarketplaceDeck(deck3, "user2", 0, 0).getMarketplaceMetadata());
 
