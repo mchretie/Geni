@@ -35,13 +35,13 @@
             </VBox.margin>
         </PasswordField>
 
-        <Button fx:id="registerButton" mnemonicParsing="false" onMouseClicked="#handleRegisterButtonClicked" text="S'inscrire">
+        <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegisterButtonClicked" text="S'inscrire">
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin>
         </Button>
 
-        <Hyperlink onMouseClicked="#handleToLoginClicked" text="Déjà un compte ? Connectez-vous.">
+        <Hyperlink onAction="#handleToLoginClicked" text="Déjà un compte ? Connectez-vous.">
             <font>
                 <Font size="10.0" />
             </font>
@@ -71,12 +71,12 @@
             </VBox.margin>
         </PasswordField>
 
-        <Button fx:id="loginButton" mnemonicParsing="false" onMouseClicked="#handleLoginButtonClicked" text="Se connecter">
+        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLoginButtonClicked" text="Se connecter">
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin>
         </Button>
-        <Hyperlink onMouseClicked="#handleToRegisterClicked" text="Pas de compte ? Inscrivez-vous ici.">
+        <Hyperlink onAction="#handleToRegisterClicked" text="Pas de compte ? Inscrivez-vous ici.">
             <font>
                 <Font size="10.0" />
             </font>
