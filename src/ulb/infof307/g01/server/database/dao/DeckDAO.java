@@ -559,7 +559,7 @@ public class DeckDAO extends DAO {
         }
     }
 
-    public void addDeckToMarketplace(MarketplaceDeck deck) throws DatabaseException {
+    public void addDeckToMarketplace(Deck deck) throws DatabaseException {
         String sql = """
                 INSERT INTO marketplace (deck_id, rating, downloads)
                 VALUES (?, ?, ?);
@@ -567,9 +567,9 @@ public class DeckDAO extends DAO {
 
         database.executeUpdate(
                 sql,
-                deck.getId(),
-                deck.getRating(),
-                deck.getDownloads());
+                deck.getId().toString(),
+                String.valueOf(0),
+                String.valueOf(0));
     }
 
     public List<MarketplaceDeck> getAllMarketplaceDecks() throws DatabaseException {
@@ -577,8 +577,7 @@ public class DeckDAO extends DAO {
                 SELECT D.deck_id, U.username, D.name, D.color, D.image, M.rating, M.downloads
                 FROM marketplace M
                 INNER JOIN deck D ON M.deck_id = D.deck_id
-                INNER JOIN user U ON U.user_id = D.user_id
-                WHERE M.deck_id = ?;
+                INNER JOIN user U ON U.user_id = D.user_id;
                 """;
 
         ResultSet res = database.executeQuery(sql);
