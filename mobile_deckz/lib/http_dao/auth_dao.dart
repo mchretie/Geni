@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
-import 'package:mobile_deckz/http_dao/url_constant.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mobile_deckz/http_dao/server_path.dart';
 
 
 class AuthDao {
@@ -8,7 +8,7 @@ class AuthDao {
 
   static Future<http.Response> login(String email, String password) async {
     final http.Response response = await http.post(
-      UrlConstant.loginUri,
+      ServerPath.loginPath,
       body: <String, String>{
         'email': email,
         'password': password,
@@ -24,19 +24,11 @@ class AuthDao {
 
   static Future<http.Response> register(String email, String password) async {
     final http.Response response = await http.post(
-      UrlConstant.registerUri,
+      ServerPath.registerPath,
       body: <String, String>{
         'email': email,
         'password': password,
       },
-    );
-
-    return response;
-  }
-
-  static Future<http.Response> isAuth() async {
-    final http.Response response = await http.get(
-      UrlConstant.loginUri,
     );
 
     return response;
