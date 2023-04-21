@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mobile_deckz/page/home_page.dart';
 import 'package:mobile_deckz/view/auth/register_view.dart';
+
+import '../../http_dao/auth_dao.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -9,6 +14,10 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  String _username = '';
+  String _password = '';
+  String _errorMsg = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +52,7 @@ class _LoginViewState extends State<LoginView> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: TextFormField(
+              onChanged: (value) => setState(() => _username = value),
               style: const TextStyle(color: Colors.white),
               decoration: const InputDecoration(
                 labelText: 'Username',
@@ -60,6 +70,7 @@ class _LoginViewState extends State<LoginView> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: TextFormField(
+              onChanged: (value) => setState(() => _password = value),
               obscureText: true,
               style: const TextStyle(color: Colors.white),
               decoration: const InputDecoration(
@@ -97,10 +108,39 @@ class _LoginViewState extends State<LoginView> {
               ),
             ],
           ),
+          Text(_errorMsg,
+              style: const TextStyle(color: Colors.deepOrange),
+              textAlign: TextAlign.center),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                if (_username.isEmpty) {
+                  setState(() => _errorMsg = 'Username is required');
+                  return;
+                }
+                if (_password.isEmpty) {
+                  setState(() => _errorMsg = 'Password is required');
+                  return;
+                }
+
+                AuthDao.login(_username, _password).then((value) {
+                  Map<String, dynamic> result = json.decode(value.body);
+                  if (result.containsKey("success") &&
+                      result['success'] == true) {
+                    Navigator.pop(context, true);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  } else {
+                    setState(() => _errorMsg = "Login failed");
+                  }
+                }).catchError((error) {
+                  setState(() => _errorMsg = error.toString());
+                });
+              },
               child: const Text('Sign in'),
             ),
           ),
