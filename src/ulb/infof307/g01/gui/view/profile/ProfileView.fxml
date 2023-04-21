@@ -42,7 +42,7 @@
         </graphic>
     </Button>
 
-    <Button mnemonicParsing="false" onMouseClicked="#handleLogoutButtonClicked" text="Se déconnecter" />
+    <Button mnemonicParsing="false" onAction="#handleLogoutButtonClicked" text="Se déconnecter" />
    <padding>
       <Insets bottom="10.0" />
    </padding>
