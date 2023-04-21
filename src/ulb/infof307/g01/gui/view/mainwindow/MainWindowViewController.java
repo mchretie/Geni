@@ -10,7 +10,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
-import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
+import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.gui.view.result.ResultViewController;
 import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
@@ -127,7 +127,7 @@ public class MainWindowViewController {
     private ResultViewController resultViewController;
 
     @FXML
-    private LeaderboardViewController leaderboardViewController;
+    private GlobalLeaderboardViewController leaderboardViewController;
 
     @FXML
     private StatisticsViewController statisticsViewController;
@@ -168,7 +168,7 @@ public class MainWindowViewController {
         return editCardViewController; 
     }
 
-    public LeaderboardViewController getLeaderboardViewController() {
+    public GlobalLeaderboardViewController getLeaderboardViewController() {
         return leaderboardViewController;
     }
 

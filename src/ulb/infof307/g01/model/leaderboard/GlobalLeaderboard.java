@@ -12,7 +12,7 @@ public class GlobalLeaderboard implements Iterable< GlobalLeaderboardEntry >  {
         this.leaderboard = new HashMap<>();
         leaderboardEntries.forEach(entry -> leaderboard.put(entry.getUsername(), entry));
 
-        leaderboardEntries.sort(GlobalLeaderboardEntry::compareTo);
+        leaderboardEntries.sort(Comparator.reverseOrder());
 
         for (int i = 0; i < leaderboardEntries.size(); i++) {
             leaderboardEntries.get(i).setRank(String.valueOf(i + 1));
@@ -26,11 +26,11 @@ public class GlobalLeaderboard implements Iterable< GlobalLeaderboardEntry >  {
     }
 
     public String getUserScore(String username) {
-        return getEntry(username).getTotalScore() + "";
+        return getEntry(username) == null ? "0" : getEntry(username).getTotalScore() + "";
     }
 
     public String getUserRank(String username) {
-        return getEntry(username).getRank();
+        return getEntry(username) == null ? "Pas de classement" : getEntry(username).getRank();
     }
 
     @Override

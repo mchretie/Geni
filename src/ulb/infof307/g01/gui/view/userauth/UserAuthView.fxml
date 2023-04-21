@@ -51,7 +51,7 @@
             <prefHeight>40.0</prefHeight>
         </PasswordField>
 
-              <Button fx:id="registerButton" mnemonicParsing="false" onMouseClicked="#handleRegisterButtonClicked" prefHeight="34.0" prefWidth="299.0" style="-fx-background-color: #3EB942; -fx-background-radius: 5;" text="S'inscrire" textFill="WHITE">
+              <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegisterButtonClicked" prefHeight="34.0" prefWidth="299.0" style="-fx-background-color: #3EB942; -fx-background-radius: 5;" text="S'inscrire" textFill="WHITE">
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin>
@@ -63,7 +63,7 @@
          </cursor>
         </Button>
 
-              <Hyperlink onMouseClicked="#handleToLoginClicked" text="Déjà un compte ? Connectez-vous." textFill="WHITE" translateX="70.0">
+              <Hyperlink onAction="#handleToLoginClicked" text="Déjà un compte ? Connectez-vous." textFill="WHITE" translateX="70.0">
             <font>
                 <Font size="11.0" />
             </font>
@@ -97,7 +97,8 @@
             <prefHeight>40.0</prefHeight>
         </PasswordField>
 
-              <Button fx:id="loginButton" mnemonicParsing="false" onMouseClicked="#handleLoginButtonClicked" prefHeight="34.0" prefWidth="299.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: #3EB942;" text="Se connecter" textFill="WHITE">
+              <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLoginButtonClicked" prefHeight="34.0" prefWidth="299.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: #3EB942;" text="Se connecter" textFill="WHITE">
+
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin>
@@ -109,7 +110,8 @@
          </cursor>
         </Button>
 
-              <Hyperlink onMouseClicked="#handleToRegisterClicked" prefHeight="18.0" prefWidth="164.0" text="Pas de compte ? Inscrivez-vous ici" textFill="WHITE" translateX="75.0">
+              <Hyperlink onAction="#handleToRegisterClicked" prefHeight="18.0" prefWidth="164.0" text="Pas de compte ? Inscrivez-vous ici" textFill="WHITE" translateX="75.0">
+
             <font>
                 <Font size="11.0" />
             </font>

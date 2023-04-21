@@ -1,22 +1,29 @@
 package ulb.infof307.g01.model.card;
 
 import com.google.gson.annotations.Expose;
+import edu.emory.mathcs.backport.java.util.Arrays;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static org.eclipse.jetty.util.TypeUtil.asList;
+
 public class MCQCard extends Card {
 
     @Expose
-    private List<String> answers;
+    private final List<String> answers;
     @Expose
     private int correctAnswer;
 
-    public MCQCard(String front, List<String> answers, int correctAnswer) {
-        super(front);
-        this.answers = answers;
-        this.correctAnswer = correctAnswer;
+    public MCQCard() {
+        super();
+        this.answers = new ArrayList<>();
+        this.answers.add("Réponse 1");
+        this.answers.add("Réponse 2");
+
+        this.correctAnswer = 0;
         this.cardType = "MCQCard";
     }
 
@@ -27,19 +34,8 @@ public class MCQCard extends Card {
         this.cardType = "MCQCard";
     }
 
-    public MCQCard(String front, List<String> answers, int correctAnswer, KnowledgeLevel knowledge) {
-        super(front, knowledge);
-        this.answers = answers;
-        this.correctAnswer = correctAnswer;
-        this.cardType = "MCQCard";
-    }
-
     public int getChoiceMax(){
         return 4;
-    }
-
-    public int getCardMin(){
-        return 2;
     }
 
     public boolean isCardMin(){
@@ -54,22 +50,18 @@ public class MCQCard extends Card {
         return answers.get(index);
     }
 
-    public void setAnswers(List<String> answers) {
-        this.answers = answers;
-    }
-
     public void addAnswer(String answer) {
         this.answers.add(answer);
     }
 
     public void removeAnswer(int index) {
-        // limit answer to min two
         if (this.answers.size() <= 2)
             return;
+
         this.answers.remove(index);
+
         if (this.correctAnswer == index)
             this.correctAnswer = Math.max(index - 1, 0);
-
     }
 
     public void setAnswer(int index, String answer) {

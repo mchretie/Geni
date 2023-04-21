@@ -12,20 +12,14 @@ public class InputCard extends Card {
     @Expose
     private String answer;
 
-    public InputCard(String front, String answer) {
-        super(front);
-        this.answer = answer;
+    public InputCard() {
+        super();
+        this.answer = "";
         this.cardType = "InputCard";
     }
 
     public InputCard(UUID uuid, UUID deckId, String front, String answer) {
         super(uuid, deckId, front);
-        this.answer = answer;
-        this.cardType = "InputCard";
-    }
-
-    public InputCard(String front, String answer, KnowledgeLevel knowledge) {
-        super(front, knowledge);
         this.answer = answer;
         this.cardType = "InputCard";
     }
