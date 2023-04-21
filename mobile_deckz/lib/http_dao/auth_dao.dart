@@ -8,13 +8,10 @@ import 'package:mobile_deckz/http_dao/server_path.dart';
 class AuthDao {
   static const storage = FlutterSecureStorage();
 
-  static Future<http.Response> login(String email, String password) async {
+  static Future<http.Response> login(String username, String password) async {
     final http.Response response = await http.post(
       ServerPath.loginPath,
-      body: <String, String>{
-        'email': email,
-        'password': password,
-      },
+      body: '{"username":$username, "password":$password}'
     );
 
     if (response.statusCode == 200){
@@ -24,16 +21,17 @@ class AuthDao {
     return response;
   }
 
-  static Future<http.Response> register(String email, String password) async {
+  static Future<http.Response> register(String username, String password) async {
     final http.Response response = await http.post(
       ServerPath.registerPath,
-      body: <String, String>{
-        'email': email,
-        'password': password,
-      },
+      body: '{"username":$username, "password":$password}'
     );
 
     return response;
+  }
+
+  static Future<void> logout() async {
+    await storage.delete(key: 'token');
   }
 
   static Future<bool> isLoggedIn() async {
