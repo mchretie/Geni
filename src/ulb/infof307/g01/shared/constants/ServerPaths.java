@@ -43,6 +43,10 @@ public final class ServerPaths {
   public static final String GET_BEST_SCORE_USER_ID_PATH = LEADERBOARD_BASE_PATH + "/best-score-user";
 
   // Used by GameHistoryRequestHandler
-    public static final String GAME_HISTORY_BASE_PATH = BASE + "/game-history";
-    public static final String GAME_HISTORY_PATH = GAME_HISTORY_BASE_PATH + "/get";
+  public static final String GAME_HISTORY_BASE_PATH = BASE + "/game-history";
+  public static final String GAME_HISTORY_PATH = GAME_HISTORY_BASE_PATH + "/get";
+
+  // Used by MarketplaceHandler
+  public static final String MARKETPLACE_BASE_PATH = BASE + "/marketplace";
+  public static final String GET_MARKETPLACE_PATH = MARKETPLACE_BASE_PATH + "/get";
 }
