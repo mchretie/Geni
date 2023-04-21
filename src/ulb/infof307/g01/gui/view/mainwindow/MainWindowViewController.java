@@ -64,6 +64,7 @@ public class MainWindowViewController {
 
     @FXML
     private HBox editDeckView;
+
     @FXML
     private HBox bottomHBox;
 
@@ -87,9 +88,6 @@ public class MainWindowViewController {
 
     @FXML
     private BorderPane guestModeDeckMenuView;
-
-    // @FXML
-    // private StackPane infoAppView;
 
     @FXML
     private BorderPane Profileview;
@@ -212,14 +210,8 @@ public class MainWindowViewController {
     /* ====================================================================== */
 
     private void setAllInvisibleExcept(Pane pane) {
-        for (Node child : centerStackPane.getChildren()) {
+        for (Node child : centerStackPane.getChildren())
             child.setVisible(pane == child);
-        }
-        // if(pane != userAuthView){
-        //     infoAppView.setVisible(false);
-        //     infoAppView.setManaged(false);
-        // }
-
     }
 
     public void setAllInvisible() {
@@ -277,13 +269,6 @@ public class MainWindowViewController {
     public void setStatisticsViewVisible() {
         setAllInvisibleExcept(statisticsView);
     }
-
-    public void setInfoAppViewVisible(){
-        // infoAppView.setVisible(true);
-        // infoAppView.setManaged(true);
-    }
-    public void setMyBorderPaneDarkgrey(){myBorderPane.setStyle("-fx-background-color: #2C3F4E");}
-
 
     /* ====================================================================== */
     /*                          Icon Visibility                               */

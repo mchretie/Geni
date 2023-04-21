@@ -20,7 +20,6 @@ import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 
-
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
@@ -68,7 +67,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         this.controllerListener = controllerListener;
         this.mainWindowViewController = mainWindowViewController;
 
-
         this.deckDAO = deckDAO;
         this.userSessionDAO = userSessionDAO;
         this.deckDAO.setToken(userSessionDAO.getToken());
@@ -80,7 +78,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
                 = mainWindowViewController.getDeckMenuViewController();
 
         deckMenuViewController.setListener(this);
-
     }
 
 
@@ -101,19 +98,13 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             mainWindowViewController.setDeckMenuViewVisible();
             mainWindowViewController.makebottomNavigationBarVisible();
             mainWindowViewController.makeTopNavigationBarVisible();
-        }
-
-        else {
+        } else {
             mainWindowViewController.setUserAuthViewController();
             mainWindowViewController.makebottomNavigationBarInvisible();
             mainWindowViewController.makeTopNavigationBarInvisible();
-            mainWindowViewController.setInfoAppViewVisible();
-
-            //mainWindowViewController.setUserAuthViewController();
         }
 
         mainWindowViewController.makeGoBackIconInvisible();
-        //mainWindowViewController.m
         stage.show();
     }
 

@@ -15,7 +15,7 @@ import java.util.prefs.Preferences;
 
 public class UserSessionDAO extends HttpDAO {
 
-    private String username="Guest";
+    private String username = "Guest";
     private final Preferences prefs = Preferences.userNodeForPackage(UserSessionDAO.class);
 
 
@@ -56,7 +56,6 @@ public class UserSessionDAO extends HttpDAO {
         String credentials = "?username=" + username + "&password=" + password;
         HttpResponse<String> response
                 = post(ServerPaths.REGISTER_PATH + credentials, "");
-
 
         checkResponseCode(response.statusCode());
         checkResponseBody(response.body(), "Registration");
