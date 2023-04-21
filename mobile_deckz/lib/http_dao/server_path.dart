@@ -6,6 +6,7 @@ class ServerPath {
   static final Uri userBasePath = Uri.parse("$base/user");
   static final Uri registerPath = Uri.parse("$userBasePath/register");
   static final Uri loginPath = Uri.parse("$userBasePath/login");
+  static final Uri isTokenValidPath = Uri.parse("$userBasePath/is-token-valid");
 
   // Used by TagRequestHandler
   static final Uri tagBasePath = Uri.parse("$base/tag");
