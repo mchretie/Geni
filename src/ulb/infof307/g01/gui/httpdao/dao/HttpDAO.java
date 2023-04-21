@@ -44,11 +44,11 @@ public abstract class HttpDAO {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    protected HttpResponse<String> bodyRequest(String method, String path, String data) throws IOException, InterruptedException {
+    protected HttpResponse<String> bodyRequest(String path, String data) throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(java.net.URI.create(BASE_URL + path))
-                .method(method, HttpRequest.BodyPublishers.ofString(data))
+                .POST(HttpRequest.BodyPublishers.ofString(data))
                 .header(AUTH_HEADER, token)
                 .build();
 

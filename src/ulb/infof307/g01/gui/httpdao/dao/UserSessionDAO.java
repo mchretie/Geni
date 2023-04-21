@@ -36,7 +36,7 @@ public class UserSessionDAO extends HttpDAO {
             throws IOException, InterruptedException {
 
         UserAuth userAuth = new UserAuth(username, password);
-        HttpResponse<String> response = bodyRequest("GET", ServerPaths.LOGIN_PATH, new Gson().toJson(userAuth));
+        HttpResponse<String> response = bodyRequest(ServerPaths.LOGIN_PATH, new Gson().toJson(userAuth));
 
         checkResponseCode(response.statusCode());
         checkResponseBody(response.body(), "Login");
@@ -54,7 +54,7 @@ public class UserSessionDAO extends HttpDAO {
             throws IOException, InterruptedException {
 
         UserAuth userAuth = new UserAuth(username, password);
-        HttpResponse<String> response = bodyRequest("POST", ServerPaths.REGISTER_PATH, new Gson().toJson(userAuth));
+        HttpResponse<String> response = bodyRequest(ServerPaths.REGISTER_PATH, new Gson().toJson(userAuth));
 
 
         checkResponseCode(response.statusCode());
