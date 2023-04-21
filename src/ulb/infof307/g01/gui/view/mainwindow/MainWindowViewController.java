@@ -1,15 +1,18 @@
 package ulb.infof307.g01.gui.view.mainwindow;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Popup;
 import javafx.stage.StageStyle;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
+import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardViewController;
@@ -19,13 +22,13 @@ import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
 import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 
-public class MainWindowViewController {
-
-    private final String initialButtonStyle = "-fx-background-color: transparent;";
+public class MainWindowViewController implements Initializable {
 
     /* ====================================================================== */
     /*                               FXML Attributes                          */
@@ -95,6 +98,9 @@ public class MainWindowViewController {
     private BorderPane statisticsView;
 
     @FXML
+    private BorderPane deckPreviewView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
@@ -121,6 +127,10 @@ public class MainWindowViewController {
     @FXML
     private StatisticsViewController statisticsViewController;
 
+    @FXML
+    private DeckPreviewViewController deckPreviewViewController;
+
+    private final Popup popup = new Popup();
 
     /* ====================================================================== */
     /*                                 Listener                               */
@@ -128,6 +138,30 @@ public class MainWindowViewController {
 
     private NavigationListener listener;
 
+
+    /* ====================================================================== */
+    /*                               Initializer                              */
+    /* ====================================================================== */
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        popup.getContent().add(deckPreviewView);
+        popup.setWidth(600);
+        popup.setHeight(600);
+
+        popup.setOnHidden(event -> {
+            centerStackPane.setEffect(null);
+            deckPreviewView.setVisible(false);
+            centerStackPane.setDisable(false);
+        });
+
+        popup.setOnShown(event -> {
+            centerStackPane.setDisable(true);
+            centerStackPane.setEffect(new BoxBlur());
+        });
+
+        popup.setAutoHide(true);
+    }
 
     /* ====================================================================== */
     /*                                Setter                                  */
@@ -176,6 +210,9 @@ public class MainWindowViewController {
         return statisticsViewController;
     }
 
+    public DeckPreviewViewController getDeckPreviewViewController() {
+        return deckPreviewViewController;
+    }
 
     /* ====================================================================== */
     /*                              Alerts                                    */
@@ -205,6 +242,8 @@ public class MainWindowViewController {
     /* ====================================================================== */
 
     private void setAllInvisibleExcept(Pane pane) {
+        centerStackPane.setEffect(null);
+        popup.hide();
         for (Node child : centerStackPane.getChildren())
             child.setVisible(pane == child);
     }
@@ -265,6 +304,11 @@ public class MainWindowViewController {
         setAllInvisibleExcept(statisticsView);
     }
 
+    public void setDeckPreviewViewVisible() {
+        deckPreviewView.setVisible(true);
+        popup.show(centerStackPane.getScene().getWindow());
+    }
+
 
     /* ====================================================================== */
     /*                          Icon Visibility                               */
@@ -285,6 +329,7 @@ public class MainWindowViewController {
 
     private void resetButtonExcept(Button button) {
         List<Button> buttons = Arrays.asList(homeButton, profileButton, currentDeckButton, leaderboardButton);
+        String initialButtonStyle = "-fx-background-color: transparent;";
         for (Button b : buttons)
             if (b != button)
                 b.setStyle(initialButtonStyle);

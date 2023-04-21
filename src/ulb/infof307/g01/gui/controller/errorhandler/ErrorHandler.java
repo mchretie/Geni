@@ -1,6 +1,5 @@
 package ulb.infof307.g01.gui.controller.errorhandler;
 
-import com.google.gson.JsonSyntaxException;
 import javafx.application.Platform;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
@@ -77,7 +76,7 @@ public class ErrorHandler {
         communicateError(title, description);
     }
 
-    public void emptyPacketError() {
+    public void emptyDeckError() {
         String title = "Paquet vide.";
         String description = "Le paquet que vous avez ouvert est vide.";
         communicateInfo(title, description);

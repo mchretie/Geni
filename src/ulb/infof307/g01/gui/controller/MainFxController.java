@@ -36,7 +36,8 @@ public class MainFxController extends Application implements
         EditCardController.ControllerListener,
         ResultController.ControllerListener,
         UserAuthController.ControllerListener,
-        ProfileController.ControllerListener {
+        ProfileController.ControllerListener,
+        DeckPreviewController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -51,6 +52,7 @@ public class MainFxController extends Application implements
     private ProfileController profileController;
     private GlobalLeaderboardController leaderboardController;
     private StatisticsController statisticsController;
+    private DeckPreviewController deckPreviewController;
 
     private MainWindowViewController mainWindowViewController;
 
@@ -76,7 +78,8 @@ public class MainFxController extends Application implements
         LOGIN_PROFILE,
         RESULT,
         LEADERBOARD,
-        STATISTICS
+        STATISTICS,
+        PREVIEW_DECK
     }
 
     List<View> viewStack = new ArrayList<>();
@@ -191,6 +194,21 @@ public class MainFxController extends Application implements
                 deckDAO,
                 userSessionDAO,
                 leaderboardDAO);
+
+        this.playDeckController
+                = new PlayDeckController(
+                stage,
+                mainWindowViewController,
+                this,
+                errorHandler,
+                leaderboardDAO,
+                userSessionDAO);
+
+        this.deckPreviewController
+                = new DeckPreviewController(
+                stage,
+                mainWindowViewController,
+                this);
     }
 
     /* ====================================================================== */
@@ -218,6 +236,7 @@ public class MainFxController extends Application implements
                 case RESULT -> resultController.show();
                 case LEADERBOARD -> leaderboardController.show();
                 case STATISTICS -> statisticsController.show();
+                case PREVIEW_DECK -> deckPreviewController.show();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -251,22 +270,16 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void playDeckClicked(DeckMetadata deckMetadata) {
+    public void deckClicked(DeckMetadata deckMetadata) {
         try {
-            playDeckController = new PlayDeckController(
-                    stage,
-                    deckDAO.getDeck(deckMetadata).orElse(null),
-                    mainWindowViewController,
-                    this,
-                    errorHandler,
-                    leaderboardDAO,
-                    userSessionDAO);
+            deckPreviewController
+                    .setDeck(deckDAO.getDeck(deckMetadata).orElse(null));
 
-            playDeckController.show();
-            viewStack.add(View.PLAY_DECK);
+            deckPreviewController.show();
+            viewStack.add(View.PREVIEW_DECK);
 
         } catch (EmptyDeckException e) {
-            errorHandler.emptyPacketError();
+            errorHandler.emptyDeckError();
 
         } catch (InterruptedException | IOException e) {
             errorHandler.severConnectionError();
@@ -343,7 +356,8 @@ public class MainFxController extends Application implements
                 score
         );
         viewStack.add(View.RESULT);
-        playDeckController = null;
+
+        playDeckController.removeDeck();
         resultController.show();
     }
 
@@ -352,6 +366,7 @@ public class MainFxController extends Application implements
         try {
             viewStack.remove(viewStack.size() - 1);
             deckMenuController.show();
+
         } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
         }
@@ -374,6 +389,17 @@ public class MainFxController extends Application implements
 
         } catch (IOException e) {
             errorHandler.restartApplicationError(e);
+        }
+    }
+
+    @Override
+    public void onPlayDeckClicked(Deck deck) {
+        try {
+            playDeckController.setDeck(deck);
+            playDeckController.show();
+
+        } catch (EmptyDeckException | IllegalStateException e) {
+            errorHandler.emptyDeckError();
         }
     }
 

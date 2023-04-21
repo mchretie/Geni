@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane fx:id="borderPane" minHeight="200.0" minWidth="300.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController">
+<BorderPane fx:id="borderPane" minHeight="300.0" minWidth="500.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController">
 
     <top>
         <HBox alignment="CENTER" style="-fx-background-color: #449a6c">
@@ -21,7 +21,7 @@
     </top>
 
     <center>
-        <HBox>
+        <HBox style="-fx-background-color: white">
             <VBox>
                 <Label fx:id="cardCountLabel" text="Card count: " />
                 <Label fx:id="highestScoreLabel" text="Highscore: " />
@@ -36,9 +36,9 @@
 
     <bottom>
         <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #449a6c;">
-            <Button onMouseClicked="#handlePlayDeckClicked" style="-fx-background-color: transparent;" text="Play">
+            <Button fx:id="playDeck" onMouseClicked="#handlePlayDeckClicked" style="-fx-background-color: transparent;" text="Play">
                 <graphic>
-                    <FontIcon iconLiteral="mdi2p-play-circle-outline" />
+                    <FontIcon fx:id="playDeckIcon" iconLiteral="mdi2p-play-circle-outline" />
                 </graphic>
             </Button>
 
