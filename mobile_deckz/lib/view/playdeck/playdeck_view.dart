@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_deckz/http_dao/deck_dao.dart';
+import 'package:mobile_deckz/view/playdeck/card/flash_card_view.dart';
 
 import '../../model/deck/deck.dart';
 
@@ -20,9 +21,7 @@ class PlayDeckView extends StatelessWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text(
-            'PLAY CARD',
-          ),
+          const FlashcardView(frontText: 'Hello', backText: 'world!'),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
