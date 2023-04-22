@@ -282,8 +282,8 @@ public class MainWindowViewController implements Initializable {
 
     private void setAllInvisibleExcept(Pane pane) {
         popup.hide();
-        for (Node child : centerStackPane.getChildren())
-            child.setVisible(pane == child);
+        centerStackPane.getChildren()
+                        .forEach(child -> child.setVisible(child == pane));
     }
 
     public void setAllInvisible() {
@@ -394,7 +394,7 @@ public class MainWindowViewController implements Initializable {
     }
 
     private void onClick(Button button) {
-        button.setStyle("-fx-background-color: \"#50C878\";");
+        button.setStyle("-fx-background-color: \"#b09fcb\";");
         resetButtonExcept(button);
     }
 

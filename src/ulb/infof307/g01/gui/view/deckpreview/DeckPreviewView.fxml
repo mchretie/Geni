@@ -7,11 +7,10 @@
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<?import java.net.URL?>
-<BorderPane fx:id="borderPane" minHeight="300.0" minWidth="500.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController">
+<BorderPane fx:id="borderPane" minHeight="300.0" minWidth="500.0" style="-fx-border-radius: 10 10 0 0; -fx-background-radius: 10 10 0 0; -fx-border-color: lightgray;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController">
 
     <top>
-        <HBox alignment="CENTER" style="-fx-background-color: #449a6c">
+        <HBox alignment="CENTER" style="-fx-background-radius: 10 10 0 0; -fx-border-radius: 10 10 0 0; -fx-border-style: hidden hidden solid hidden; -fx-border-color: lightgrey; -fx-background-color: #C3B1E1;">
             <Label fx:id="deckNameLabel" text="Deck name" HBox.hgrow="ALWAYS">
                 <font>
                    <Font size="21.0" />
@@ -91,7 +90,7 @@
     </center>
 
     <bottom>
-        <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #449a6c;">
+        <HBox alignment="CENTER_RIGHT" style="-fx-border-radius: 0 0 10 10; -fx-background-radius: 0 0 10 10; -fx-border-style: solid hidden hidden hidden; -fx-border-color: lightgray; -fx-background-color: #C3B1E1;">
             <Button fx:id="playDeck" onMouseClicked="#handlePlayDeckClicked" style="-fx-background-color: transparent;" text="Play">
                 <graphic>
                     <FontIcon fx:id="playDeckIcon" iconLiteral="mdi2p-play-circle-outline" />
