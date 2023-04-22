@@ -592,6 +592,16 @@ public class DeckDAO extends DAO {
         return decks;
     }
 
+    private void incrementDownloads(UUID deckId) {
+        String sql = """
+                UPDATE marketplace
+                SET downloads = downloads + 1
+                WHERE deck_id = ?;
+                """;
+
+        database.executeUpdate(sql, deckId.toString());
+    }
+
     public void addDeckToUserCollection(UUID deckId, UUID userId) throws DatabaseException {
         String sql = """
                 INSERT INTO user_deck_collection (user_id, deck_id)
@@ -602,6 +612,8 @@ public class DeckDAO extends DAO {
                 sql,
                 userId.toString(),
                 deckId.toString());
+
+        incrementDownloads(deckId);
     }
 
     public void removeDeckFromUserCollection(UUID deckId, UUID userId) throws DatabaseException {
