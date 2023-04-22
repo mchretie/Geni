@@ -14,7 +14,6 @@ class DeckDao {
       List<dynamic> json = jsonDecode(response.body);
       List<Deck> decks = [];
       for (var deck in json) {
-        print(deck);
         decks.add(Deck.fromJson(deck));
       }
       return decks;
@@ -28,11 +27,10 @@ class DeckDao {
     };
     final uri = Uri.parse(ServerPath.getDeckPath)
         .replace(queryParameters: queryParameters);
-    print(uri);
     final http.Response response = await HttpDao.get(uri);
     if (response.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(response.body);
-      print(json);
+      // print(json);
     }
   }
 
