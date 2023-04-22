@@ -123,4 +123,11 @@ public class ErrorHandler {
 
         communicateError(e, message);
     }
+
+    public void noDeckBeingPlayed() {
+        String title = "Aucun paquet en cours de jeu";
+        String message = "Vous n'avez pas de paquet en cours de jeu.";
+
+        communicateInfo(title, message);
+    }
 }

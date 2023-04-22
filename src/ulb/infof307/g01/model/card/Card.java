@@ -15,13 +15,7 @@ public class Card {
     protected String cardType;
 
     protected Card() {
-        this.front = "Avant";
-        this.id = UUID.randomUUID();
-    }
-
-    protected Card (String front) {
-        this.id = UUID.randomUUID();
-        this.front = front;
+        this(UUID.randomUUID(), null, "Avant");
     }
 
     protected Card(UUID uuid, UUID deckId, String front) {
@@ -30,13 +24,27 @@ public class Card {
         this.front = front;
     }
 
-    public String getFront() { return front; }
-    public UUID getId() { return id; }
-    public UUID getDeckId() { return deckId; }
-
     public void generateNewId() {
         this.id = UUID.randomUUID();
     }
-    public void setFront(String front) { this.front = front; }
-    public void setDeckId(UUID deckId) { this.deckId = deckId; }
+
+    public String getFront() {
+        return front;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public UUID getDeckId() {
+        return deckId;
+    }
+
+    public void setFront(String front) {
+        this.front = front;
+    }
+
+    public void setDeckId(UUID deckId) {
+        this.deckId = deckId;
+    }
 }

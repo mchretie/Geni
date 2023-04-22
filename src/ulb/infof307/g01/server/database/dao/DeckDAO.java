@@ -340,10 +340,10 @@ public class DeckDAO extends DAO {
                 DO NOTHING
                 """;
 
-        for (int i = 0; i < card.getAnswers().size(); i++)
+        for (int i = 0; i < card.getChoicesCount(); i++)
             database.executeUpdate(upsertMCQCardAnswer,
                                      card.getId().toString(),
-                                     card.getAnswers().get(i),
+                                     card.getChoice(i),
                                      i);
     }
 

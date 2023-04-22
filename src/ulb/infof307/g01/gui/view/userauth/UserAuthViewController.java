@@ -104,7 +104,9 @@ public class UserAuthViewController {
     }
 
     @FXML
-    private void handleToRegisterClicked() { setRegisterPaneVisible(); }
+    private void handleToRegisterClicked() {
+        setRegisterPaneVisible();
+    }
 
     @FXML
     private void handleRegisterUsernameKeyPressed(KeyEvent keyEvent) {

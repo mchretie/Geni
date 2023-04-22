@@ -1,9 +1,7 @@
 package ulb.infof307.g01.gui.view.mainwindow;
 
-import com.google.gson.stream.JsonToken;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -34,11 +32,14 @@ import java.util.Scanner;
 
 
 public class MainWindowViewController implements Initializable {
-    public BorderPane borderPane;
+
 
     /* ====================================================================== */
     /*                               FXML Attributes                          */
     /* ====================================================================== */
+
+    @FXML
+    private BorderPane borderPane;
 
     @FXML
     private Button currentDeckButton;
@@ -75,6 +76,12 @@ public class MainWindowViewController implements Initializable {
 
     @FXML
     private HBox editDeckView;
+
+    @FXML
+    private HBox bottomHBox;
+
+    @FXML
+    private HBox topHBox;
 
     @FXML
     private BorderPane playDeckView;
@@ -274,7 +281,6 @@ public class MainWindowViewController implements Initializable {
     /* ====================================================================== */
 
     private void setAllInvisibleExcept(Pane pane) {
-        centerStackPane.setEffect(null);
         popup.hide();
         for (Node child : centerStackPane.getChildren())
             child.setVisible(pane == child);
@@ -352,6 +358,26 @@ public class MainWindowViewController implements Initializable {
 
     public void makeGoBackIconInvisible() {
         goBackIcon.setVisible(false);
+    }
+
+    public void makeTopNavigationBarVisible() {
+        topHBox.setVisible(true);
+        topHBox.setManaged(true);
+    }
+
+    public void makeTopNavigationBarInvisible() {
+        topHBox.setVisible(false);
+        topHBox.setManaged(false);
+    }
+
+    public void makebottomNavigationBarVisible() {
+        bottomHBox.setVisible(true);
+        bottomHBox.setManaged(true);
+    }
+
+    public void makebottomNavigationBarInvisible() {
+        bottomHBox.setVisible(false);
+        bottomHBox.setManaged(false);
     }
 
 
