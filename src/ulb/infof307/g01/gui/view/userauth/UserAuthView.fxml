@@ -7,7 +7,7 @@
 <?import javafx.scene.text.*?>
 
 <StackPane fx:id="root" style="-fx-background-color: #2C3F4E;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.userauth.UserAuthViewController">
-    <VBox fx:id="registerVBOX" alignment="CENTER" fillWidth="false" spacing="10.0">
+    <VBox fx:id="registerVBOX" alignment="CENTER" fillWidth="false" spacing="10.0" visible="false">
         <Label alignment="CENTER" text="Créez un compte" textAlignment="CENTER" textFill="WHITE">
             <font>
                 <Font name="Arial Black" size="20.0" />
@@ -61,7 +61,7 @@
 
           </VBox>
 
-          <VBox fx:id="loginVBOX" alignment="CENTER" fillWidth="false" spacing="10.0" visible="false">
+          <VBox fx:id="loginVBOX" alignment="CENTER" fillWidth="false" spacing="10.0">
         <Label alignment="BASELINE_CENTER" contentDisplay="TEXT_ONLY" layoutX="100.0" text="Entrez vos informations" textAlignment="CENTER" textFill="WHITE">
             <font>
                 <Font name="Arial Black" size="20.0" />
