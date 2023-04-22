@@ -160,6 +160,8 @@ public class MainWindowViewController implements Initializable {
             makeGoBackIconInvisible();
         });
 
+        popup.setAutoHide(true);
+
         popup.setOnShown(event -> {
             centerStackPane.setDisable(true);
             centerStackPane.setEffect(new BoxBlur());
@@ -181,7 +183,6 @@ public class MainWindowViewController implements Initializable {
             Scene scene = borderPane.getScene();
             Window window = scene.getWindow();
             popup.setX(window.getX() + (scene.getWidth() - popup.getWidth()) / 2);
-            System.out.println("x = " + popup.getX());
         });
 
         borderPane.heightProperty().addListener((observableValue, oldSceneHeight, newSceneHeight) -> {
@@ -192,8 +193,6 @@ public class MainWindowViewController implements Initializable {
             Window window = scene.getWindow();
             popup.setY(window.getY() + (scene.getHeight() - popup.getHeight()) / 2);
         });
-
-        popup.setAutoHide(true);
     }
 
     /* ====================================================================== */
