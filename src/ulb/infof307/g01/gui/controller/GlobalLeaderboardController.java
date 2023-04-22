@@ -5,7 +5,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
+import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -23,7 +23,7 @@ public class GlobalLeaderboardController {
     private final MainWindowViewController mainWindowViewController;
     private final UserSessionDAO userSessionDAO;
     private final DeckDAO deckDAO;
-    private final LeaderboardDAO leaderboardDAO;
+    private final ScoreDAO scoreDAO;
     private final GlobalLeaderboardViewController leaderboardViewController;
     private final ErrorHandler errorHandler;
 
@@ -36,14 +36,14 @@ public class GlobalLeaderboardController {
                                        ErrorHandler errorHandler,
                                        UserSessionDAO userSessionDAO,
                                        DeckDAO deckDAO,
-                                       LeaderboardDAO leaderboardDAO) {
+                                       ScoreDAO scoreDAO) {
 
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.errorHandler = errorHandler;
         this.userSessionDAO = userSessionDAO;
         this.deckDAO = deckDAO;
-        this.leaderboardDAO = leaderboardDAO;
+        this.scoreDAO = scoreDAO;
 
         this.leaderboardViewController = mainWindowViewController.getLeaderboardViewController();
     }
@@ -72,7 +72,7 @@ public class GlobalLeaderboardController {
         try {
             List<Node> playersScoreItem = new ArrayList<>();
 
-            GlobalLeaderboard leaderboard = leaderboardDAO.getGlobalLeaderboard();
+            GlobalLeaderboard leaderboard = scoreDAO.getGlobalLeaderboard();
 
             String username = userSessionDAO.getUsername();
 

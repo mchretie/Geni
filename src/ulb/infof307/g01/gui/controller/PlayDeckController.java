@@ -2,7 +2,7 @@ package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
-import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
+import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
@@ -21,7 +21,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     private final PlayDeckViewController playDeckViewController;
     private final ControllerListener controllerListener;
     private final ErrorHandler errorHandler;
-    private final LeaderboardDAO leaderboardDAO;
+    private final ScoreDAO scoreDAO;
     private final UserSessionDAO userDAO;
     private Score score;
     private CardExtractor cardExtractor;
@@ -39,7 +39,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         this.score = Score.createNewScore(userDAO.getUsername(), deck.getId());
         this.answeredCards = new boolean[deck.cardCount()];
         Arrays.fill(answeredCards, false);
-        this.leaderboardDAO.setToken(userDAO.getToken());
+        this.scoreDAO.setToken(userDAO.getToken());
 
         playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
         playDeckViewController.setDeckName(deck.getName());
@@ -61,11 +61,11 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
                               MainWindowViewController mainWindowViewController,
                               ControllerListener controllerListener,
                               ErrorHandler errorHandler,
-                              LeaderboardDAO leaderboardDAO, UserSessionDAO userDAO) {
+                              ScoreDAO scoreDAO, UserSessionDAO userDAO) {
 
         this.stage = stage;
         this.userDAO = userDAO;
-        this.leaderboardDAO = leaderboardDAO;
+        this.scoreDAO = scoreDAO;
         this.controllerListener = controllerListener;
         this.errorHandler = errorHandler;
         this.mainWindowViewController = mainWindowViewController;
@@ -126,9 +126,11 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         }
 
         try {
-            leaderboardDAO.addScore(score);
+            scoreDAO.addScore(score);
+
         } catch (Exception e) {
             errorHandler.failedAddScore(e);
+
         } finally {
             controllerListener.finishedPlayingDeck(score);
         }

@@ -16,14 +16,6 @@ public final class ServerPaths {
   public static final String REGISTER_PATH = USER_BASE_PATH + "/register";
   public static final String LOGIN_PATH = USER_BASE_PATH + "/login";
 
-  // Used by TagRequestHandler
-  private static final String TAG_BASE_PATH = BASE + "/tag";
-  public static final String SAVE_TAG_PATH = TAG_BASE_PATH + "/save";
-  public static final String GET_TAG_PATH = TAG_BASE_PATH + "/get";
-  public static final String DELETE_TAG_PATH = TAG_BASE_PATH + "/delete";
-  public static final String GET_ALL_TAGS_PATH = TAG_BASE_PATH + "/all";
-  public static final String SEARCH_TAG_PATH = TAG_BASE_PATH + "/search";
-
   // Used by DeckRequestHandler
   public static final String DECK_BASE_PATH = BASE + "/deck";
   public static final String SAVE_DECK_PATH = DECK_BASE_PATH +  "/save";
@@ -43,6 +35,11 @@ public final class ServerPaths {
   public static final String GET_BEST_SCORE_USER_ID_PATH = LEADERBOARD_BASE_PATH + "/best-score-user";
 
   // Used by GameHistoryRequestHandler
-    public static final String GAME_HISTORY_BASE_PATH = BASE + "/game-history";
-    public static final String GAME_HISTORY_PATH = GAME_HISTORY_BASE_PATH + "/get";
+  public static final String GAME_HISTORY_BASE_PATH = BASE + "/game-history";
+  public static final String GAME_HISTORY_PATH = GAME_HISTORY_BASE_PATH + "/get";
+
+  // Used by ScoreRequestHAndler
+  public static final String SCORE_BASE_PATH = BASE + "/score";
+  public static final String SAVE_BEST_SCORE_PATH = SCORE_BASE_PATH + "/save";
+  public static final String GET_BEST_SCORE_USER_PATH = SCORE_BASE_PATH + "/get";
 }

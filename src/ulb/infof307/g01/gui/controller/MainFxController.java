@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
+import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
 import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
@@ -56,13 +56,14 @@ public class MainFxController extends Application implements
 
     private MainWindowViewController mainWindowViewController;
 
+
     /* ====================================================================== */
     /*                              DAO Attributes                            */
     /* ====================================================================== */
 
     private final UserSessionDAO userSessionDAO = new UserSessionDAO();
     private final DeckDAO deckDAO = new DeckDAO();
-    private final LeaderboardDAO leaderboardDAO = new LeaderboardDAO();
+    private final ScoreDAO scoreDAO = new ScoreDAO();
     private final GameHistoryDAO gameHistoryDAO = new GameHistoryDAO();
 
 
@@ -193,7 +194,7 @@ public class MainFxController extends Application implements
                 mainWindowViewController,
                 deckDAO,
                 userSessionDAO,
-                leaderboardDAO);
+                scoreDAO);
 
         this.playDeckController
                 = new PlayDeckController(
@@ -201,14 +202,15 @@ public class MainFxController extends Application implements
                 mainWindowViewController,
                 this,
                 errorHandler,
-                leaderboardDAO,
+                scoreDAO,
                 userSessionDAO);
 
         this.deckPreviewController
                 = new DeckPreviewController(
                 stage,
                 mainWindowViewController,
-                this);
+                this,
+                scoreDAO);
     }
 
     /* ====================================================================== */
@@ -223,7 +225,7 @@ public class MainFxController extends Application implements
         try {
             viewStack.remove(viewStack.size() - 1);
             switch (viewStack.get(viewStack.size() - 1)) {
-                case DECK_MENU -> deckMenuController.show();
+                case DECK_MENU, PREVIEW_DECK -> deckMenuController.show();
                 case PLAY_DECK -> playDeckController.show();
                 case EDIT_DECK -> editDeckController.show();
                 case HTML_EDITOR -> editCardController.show();
@@ -236,7 +238,6 @@ public class MainFxController extends Application implements
                 case RESULT -> resultController.show();
                 case LEADERBOARD -> leaderboardController.show();
                 case STATISTICS -> statisticsController.show();
-                case PREVIEW_DECK -> deckPreviewController.show();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -443,7 +444,7 @@ public class MainFxController extends Application implements
                         errorHandler,
                         userSessionDAO,
                         deckDAO,
-                        leaderboardDAO);
+                        scoreDAO);
             }
 
             resetViewStack(View.LEADERBOARD);

@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.Score;
 
 public class DeckPreviewViewController {
 
@@ -42,23 +43,27 @@ public class DeckPreviewViewController {
         setCardCountLabel();
     }
 
-    public void setScore(int score) {
-        highestScoreLabel.setText(score + " points");
+    public void setScore(Score score) {
+        highestScoreLabel.setText("Highscore: " + score.getScore() + " points");
     }
 
     private void setCardCountLabel() {
         int cardCount = deck.cardCount();
-        cardCountLabel.setText(cardCount + " carte" + (cardCount > 1 ? "s" : ""));
+        String text = "Nombre de cartes: " + cardCount + " carte" + (cardCount > 1 ? "s" : "");
+        cardCountLabel.setText(text);
     }
 
     public void setPlayDeckButtonDisabled(boolean disabled) {
         playDeck.setDisable(disabled);
     }
 
-
-
     public void handlePlayDeckClicked() {
         listener.onPlayDeckClicked();
+    }
+
+    public void setScoreUnavailable() {
+        highestScoreLabel.setText("Score indisponible");
+        highestScoreLabel.setTextFill(Color.RED);
     }
 
 

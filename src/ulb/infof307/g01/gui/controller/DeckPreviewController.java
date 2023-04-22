@@ -1,9 +1,12 @@
 package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
+import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.deck.Deck;
+
+import java.io.IOException;
 
 public class DeckPreviewController implements DeckPreviewViewController.Listener {
 
@@ -12,17 +15,20 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
     private final MainWindowViewController mainWindowViewController;
 
     private final Stage stage;
+    private final ScoreDAO scoreDAO;
 
     private Deck deck;
 
 
     public DeckPreviewController(Stage stage,
                                  MainWindowViewController mainWindowViewController,
-                                 ControllerListener controllerListener) {
+                                 ControllerListener controllerListener,
+                                 ScoreDAO scoreDAO) {
 
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
+        this.scoreDAO = scoreDAO;
 
         this.deckPreviewViewController
                 = mainWindowViewController.getDeckPreviewViewController();
@@ -32,9 +38,15 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
 
 
     public void setDeck(Deck deck) {
-        this.deck = deck;
-        deckPreviewViewController.setDeck(deck);
-        deckPreviewViewController.setPlayDeckButtonDisabled(deck.cardCount() == 0);
+        try {
+            this.deck = deck;
+            deckPreviewViewController.setDeck(deck);
+            deckPreviewViewController.setScore(scoreDAO.getBestScoreForDeck(deck.getId()));
+            deckPreviewViewController.setPlayDeckButtonDisabled(deck.cardCount() == 0);
+
+        } catch (IOException | InterruptedException e) {
+            deckPreviewViewController.setScoreUnavailable();
+        }
     }
 
     public void show() throws IllegalStateException {

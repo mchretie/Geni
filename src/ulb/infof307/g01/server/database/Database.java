@@ -41,7 +41,7 @@ public class Database {
     }
 
     public void initServerScheme() {
-        this.databaseAccess.initTables(DatabaseScheme.SERVER);
+        this.databaseAccess.initTables(DatabaseSchema.SERVER);
     }
 
     /* ====================================================================== */

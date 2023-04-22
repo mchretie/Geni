@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
-import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
+import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.util.DeckIO;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.Deck;
@@ -42,7 +42,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     private final ErrorHandler errorHandler;
 
     private final DeckDAO deckDAO;
-    private final LeaderboardDAO leaderboardDAO;
+    private final ScoreDAO scoreDAO;
     private final UserSessionDAO userSessionDAO;
     private final ImageLoader imageLoader = new ImageLoader();
     private final DeckIO deckIO = new DeckIO();
@@ -56,7 +56,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
                               ControllerListener controllerListener,
                               MainWindowViewController mainWindowViewController,
                               DeckDAO deckDAO, UserSessionDAO userSessionDAO,
-                              LeaderboardDAO leaderboardDAO) throws IOException, InterruptedException {
+                              ScoreDAO scoreDAO) throws IOException, InterruptedException {
 
         this.stage = stage;
 
@@ -69,8 +69,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         this.userSessionDAO = userSessionDAO;
         this.deckDAO.setToken(userSessionDAO.getToken());
 
-        this.leaderboardDAO = leaderboardDAO;
-        this.leaderboardDAO.setToken(userSessionDAO.getToken());
+        this.scoreDAO = scoreDAO;
+        this.scoreDAO.setToken(userSessionDAO.getToken());
 
         this.deckMenuViewController
                 = mainWindowViewController.getDeckMenuViewController();
@@ -134,7 +134,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             DeckViewController controller = loader.getController();
             controller.setImageLoader(imageLoader);
-            Score bestScore = leaderboardDAO.getBestScoreForDeck(deck.id());
+            Score bestScore = scoreDAO.getBestScoreForDeck(deck.id());
             controller.setDeck(deck, bestScore);
             controller.setListener(this);
 
@@ -271,6 +271,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         } catch (IOException | InterruptedException e) {
             errorHandler.failedDeckExportError(e);
+
         } catch (IllegalArgumentException e) {
             return;
         }
