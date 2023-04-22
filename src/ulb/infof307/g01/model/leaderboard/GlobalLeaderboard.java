@@ -12,7 +12,7 @@ public class GlobalLeaderboard implements Iterable< GlobalLeaderboardEntry >  {
         this.leaderboard = new HashMap<>();
         leaderboardEntries.forEach(entry -> leaderboard.put(entry.getUsername(), entry));
 
-        leaderboardEntries.sort(GlobalLeaderboardEntry::compareTo);
+        leaderboardEntries.sort(Comparator.reverseOrder());
 
         for (int i = 0; i < leaderboardEntries.size(); i++) {
             leaderboardEntries.get(i).setRank(String.valueOf(i + 1));

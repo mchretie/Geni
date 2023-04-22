@@ -16,6 +16,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.gui.util.GridPosIterator;
+import ulb.infof307.g01.gui.util.Pos2D;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
@@ -23,6 +25,7 @@ import ulb.infof307.g01.model.card.MCQCard;
 import ulb.infof307.g01.model.deck.Deck;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 
 public class EditDeckViewController {
@@ -230,31 +233,25 @@ public class EditDeckViewController {
     private void loadMCQCardEditor(MCQCard mcqCard) {
         choicesGrid.getChildren().clear();
 
-        currentCol = 0;
-        currentRow = 0;
-
         int correctChoiceIndex = mcqCard.getCorrectChoiceIndex();
-        for (int i = 0; i < mcqCard.getChoiceMax(); i++) {
-            if (i >= mcqCard.getNbOfChoices()) {
+        Iterator<Pos2D> positions = new GridPosIterator(2, 2);
+
+        for (int i = 0; i < mcqCard.MAX_CHOICES; i++) {
+            Pos2D nextPos = positions.next();
+            currentCol = nextPos.col;
+            currentRow = nextPos.row;
+
+            if (i >= mcqCard.getChoicesCount()) {
                 addChoiceFieldButton();
                 break;
             }
 
             addChoiceField(mcqCard.getChoice(i), i, correctChoiceIndex == i);
-            nextPosition();
         }
 
         backCard.setVisible(false);
         answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(true);
-    }
-
-    private void nextPosition() {
-        currentCol++;
-        if (currentCol == 2) {
-            currentCol = 0;
-            currentRow++;
-        }
     }
 
 
@@ -329,7 +326,7 @@ public class EditDeckViewController {
      */
     private boolean choiceFieldEmpty(TextField textField, int index) {
         if (textField.getText().isEmpty()
-                && ((MCQCard) selectedCard).getNbOfChoices() < 3)
+                && ((MCQCard) selectedCard).getChoicesCount() < 3)
 
             return true;
 
@@ -376,7 +373,7 @@ public class EditDeckViewController {
      */
     private void focusNextNode(int index, boolean createNextNode, boolean cycle) {
         int nextIndex = index + 1;
-        if (nextIndex < ((MCQCard) selectedCard).getNbOfChoices()) {
+        if (nextIndex < ((MCQCard) selectedCard).getChoicesCount()) {
             focusNextChoiceField(nextIndex);
 
         } else if (nextIndex < 4 && createNextNode) {
@@ -407,7 +404,7 @@ public class EditDeckViewController {
 
         // When the text field loses focus, the choice is updated
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue && index < ((MCQCard) selectedCard).getNbOfChoices()) {
+            if (!newValue && index < ((MCQCard) selectedCard).getChoicesCount()) {
                 listener.choiceModified((MCQCard) selectedCard, textField.getText(), index);
                 loadSelectedCardEditor();
             }
@@ -456,7 +453,7 @@ public class EditDeckViewController {
         trashIcon.setIconColor(Color.WHITE);
         removeChoiceButton.setGraphic(trashIcon);
 
-        if (((MCQCard) selectedCard).isCardMin())
+        if (!((MCQCard) selectedCard).canRemoveChoice())
             removeChoiceButton.setDisable(true);
 
         removeChoiceButton.setOnAction(event -> {

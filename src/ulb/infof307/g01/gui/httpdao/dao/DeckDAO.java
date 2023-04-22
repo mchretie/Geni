@@ -64,7 +64,7 @@ public class DeckDAO extends HttpDAO {
         String path = ServerPaths.GET_DECK_PATH;
         String parameters = "?deck_id=%s".formatted(deckMetadata.id());
         HttpResponse<String> response = get(path + parameters);
-        return new Deck(new Gson().fromJson(response.body(), JsonObject.class));
+        return Deck.fromJson(response.body());
     }
 
     /* ====================================================================== */
@@ -177,5 +177,4 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
     }
-
 }

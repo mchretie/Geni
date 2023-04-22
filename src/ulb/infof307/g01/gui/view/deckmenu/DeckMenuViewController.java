@@ -1,6 +1,5 @@
 package ulb.infof307.g01.gui.view.deckmenu;
 
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -16,11 +15,16 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.beans.value.ChangeListener;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.gui.util.GridPosIterator;
+import ulb.infof307.g01.gui.util.Pos2D;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.util.Iterator;
 import java.util.List;
 
 public class DeckMenuViewController {
+
 
     public enum SearchType {
         Name,
@@ -55,7 +59,9 @@ public class DeckMenuViewController {
     @FXML
     private ComboBox<String> comboBox;
 
-    private int colCount = 2;  // default
+    private FileChooser fileChooser;
+
+    private int lastColCount = 2;  // default
 
     /* ====================================================================== */
     /*                                Listener                                */
@@ -66,6 +72,7 @@ public class DeckMenuViewController {
     public void initialize() {
         initWidthListener();
         initComboBox();
+        initFileChooser();
     }
 
     private void initComboBox() {
@@ -79,14 +86,36 @@ public class DeckMenuViewController {
     }
 
     private void initWidthListener() {
-        final ChangeListener<Number> listener = new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                widthChangeHandler();
-            }
-        };
+        final ChangeListener<Number> listener =
+                (observable, oldValue, newValue) -> widthChangeHandler();
 
         gridPane.widthProperty().addListener(listener);
+    }
+
+    // TODO: find way to take extension from DeckIO
+    private void initFileChooser() {
+        fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        "Fichiers deck",
+                        "*.deck")
+        );
+    }
+
+    /* ====================================================================== */
+    /*                                Utils                                   */
+    /* ====================================================================== */
+
+    public Path pickOpenFile() {
+        File file = fileChooser
+                .showOpenDialog(borderPane.getScene().getWindow());
+        return file == null ? null : file.toPath();
+    }
+
+    public Path pickSaveFile() {
+        File file = fileChooser
+                .showSaveDialog(borderPane.getScene().getWindow());
+        return file == null ? null : file.toPath();
     }
 
     /* ====================================================================== */
@@ -192,14 +221,6 @@ public class DeckMenuViewController {
         gridPane.getRowConstraints().add(rc);
     }
 
-    private int nextCol(int currentCol) {
-        return (currentCol + 1) % colCount;
-    }
-
-    private int nextRow(int currentRow, int currentCol) {
-        return currentCol == 0 ? currentRow + 1 : currentRow;
-    }
-
     private void initGrid(int rows, int columns) {
         while (gridPane.getRowCount() < rows) {
             addRow();
@@ -209,12 +230,13 @@ public class DeckMenuViewController {
         }
     }
 
-    /**
-     * Initialize the grid for a number of cells given the column count
-     */
-    private void initGridFor(int cellsCount, int columnCount) {
-        int expectedRows = cellsCount / columnCount + cellsCount % columnCount;
-        initGrid(expectedRows, columnCount);
+    private int expectedRowCountFor(int cellsCount, int columnCount) {
+        return cellsCount / columnCount + cellsCount % columnCount;
+    }
+
+    private int getColCount() {
+        int deckWidth = 400;
+        return (int) (gridPane.getWidth() / deckWidth);
     }
 
     /**
@@ -225,18 +247,18 @@ public class DeckMenuViewController {
      */
     private void arrange() {
         List<Node> nodes = gridPane.getChildren();
+        int colCount = getColCount();
+        int rowCount = expectedRowCountFor(nodes.size(), colCount);
 
         resetGrid();
-        initGridFor(nodes.size(), colCount);
+        initGrid(rowCount, colCount);
 
-        int row = 0;
-        int col = 0;
+        Iterator<Pos2D> positions = new GridPosIterator(colCount, rowCount);
 
         for (Node node : nodes) {
-            GridPane.setColumnIndex(node, col);
-            GridPane.setRowIndex(node, row);
-            col = nextCol(col);
-            row = nextRow(row, col);
+            var pos = positions.next();
+            GridPane.setColumnIndex(node, pos.col);
+            GridPane.setRowIndex(node, pos.row);
         }
     }
 
@@ -245,11 +267,10 @@ public class DeckMenuViewController {
     /* ====================================================================== */
 
     private void widthChangeHandler() {
-        double newWidth = gridPane.getWidth();
-        int newColumnCount = (int) (newWidth / 400);  // TODO: change this magic
+        int newColCount = getColCount();
 
-        if (newColumnCount != colCount) {
-            colCount = newColumnCount;
+        if (newColCount != lastColCount) {
+            lastColCount = newColCount;
             arrange();
         }
     }
@@ -276,10 +297,7 @@ public class DeckMenuViewController {
 
     @FXML
     private void handleImportDeck() {
-        final FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(borderPane.getScene().getWindow());
-
-        listener.deckImported(file);
+        listener.deckImportClicked();
     }
 
     /* ====================================================================== */
@@ -325,6 +343,6 @@ public class DeckMenuViewController {
 
         void searchDeckClicked(String name);
 
-        void deckImported(File file);
+        void deckImportClicked();
     }
 }

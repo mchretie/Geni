@@ -266,7 +266,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
         deck1.addCard(card3);
 
         String deck1Gson = new Gson().toJson(deck1);
-        Deck deck2 = new Deck(new Gson().fromJson(deck1Gson, JsonObject.class));
+        Deck deck2 = Deck.fromJson(deck1Gson);
         String deck2Gson = new Gson().toJson(deck2);
 
         assertEquals(deck1Gson, deck2Gson);
