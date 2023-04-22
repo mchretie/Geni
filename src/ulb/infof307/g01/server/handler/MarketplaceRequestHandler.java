@@ -43,10 +43,15 @@ public class MarketplaceRequestHandler extends Handler {
         }
     }
 
+    /**
+     * when adding deck from marketplace, the owner's score has to be deleted for this deck
+     */
     private Map<String, Boolean> addDeck(Request req, Response res) {
         try {
             UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+
             database.addDeckToMarketplace(deckId);
+            database.deleteScoresForDeck(deckId);
 
             return successfulResponse;
         } catch (Exception e) {
