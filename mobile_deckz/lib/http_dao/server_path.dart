@@ -25,7 +25,7 @@ class ServerPath {
   static final Uri searchDecksPath = Uri.parse("$deckBasePath/search");
   static final Uri deckExistsPath = Uri.parse("$deckBasePath/exists");
   static final Uri saveDeckImagePath = Uri.parse("$deckBasePath/upload");
-  static final Uri getDeckPath = Uri.parse("$deckBasePath/get");
+  static final String getDeckPath = "$deckBasePath/get";
 
   // Used by LeaderboardRequestHandler
   static final Uri leaderboardBasePath = Uri.parse("$base/leaderboard");
