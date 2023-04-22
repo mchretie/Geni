@@ -66,7 +66,16 @@ public class MainWindowViewController {
     private HBox editDeckView;
 
     @FXML
+    private HBox bottomHBox;
+
+    @FXML
+    private HBox topHBox;
+
+    @FXML
     private BorderPane playDeckView;
+
+    @FXML
+    private BorderPane myBorderPane;
 
     @FXML
     private VBox editCardView;
@@ -80,6 +89,8 @@ public class MainWindowViewController {
     @FXML
     private BorderPane guestModeDeckMenuView;
 
+    @FXML
+    private BorderPane Profileview;
     @FXML
     private BorderPane guestModeLeaderboardView;
 
@@ -259,7 +270,6 @@ public class MainWindowViewController {
         setAllInvisibleExcept(statisticsView);
     }
 
-
     /* ====================================================================== */
     /*                          Icon Visibility                               */
     /* ====================================================================== */
@@ -270,6 +280,26 @@ public class MainWindowViewController {
 
     public void makeGoBackIconInvisible() {
         goBackIcon.setVisible(false);
+    }
+
+    public void makeTopNavigationBarVisible() {
+        topHBox.setVisible(true);
+        topHBox.setManaged(true);
+    }
+
+    public void makeTopNavigationBarInvisible() {
+        topHBox.setVisible(false);
+        topHBox.setManaged(false);
+    }
+
+    public void makebottomNavigationBarVisible() {
+        bottomHBox.setVisible(true);
+        bottomHBox.setManaged(true);
+    }
+
+    public void makebottomNavigationBarInvisible() {
+        bottomHBox.setVisible(false);
+        bottomHBox.setManaged(false);
     }
 
 
@@ -310,7 +340,7 @@ public class MainWindowViewController {
     }
 
     @FXML
-    private void handleProfileClicked() {
+    public void handleProfileClicked() {
         listener.goToProfileClicked();
     }
 
