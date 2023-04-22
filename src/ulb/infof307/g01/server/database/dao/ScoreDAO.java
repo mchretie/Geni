@@ -116,6 +116,20 @@ public class ScoreDAO extends DAO {
 
     }
 
+    private List<Game> getGames(ResultSet res) throws SQLException {
+        List<Game> games = new ArrayList<>();
+
+        while (res.next()) {
+            String deckName = res.getString("deck_name");
+            int score = res.getInt("score");
+            Date date = new Date(res.getLong("timestamp"));
+
+            games.add(new Game(date, deckName, score + ""));
+        }
+
+        return games;
+    }
+
     public List<Game> getGameHistory(UUID userId) {
         String sql = """
                 SELECT d.name AS deck_name, s.score, s.timestamp
@@ -125,17 +139,23 @@ public class ScoreDAO extends DAO {
                 """;
 
         try (ResultSet res = database.executeQuery(sql, userId.toString())) {
-            List<Game> games = new ArrayList<>();
+            return getGames(res);
 
-            while (res.next()) {
-                String deckName = res.getString("deck_name");
-                int score = res.getInt("score");
-                Date date = new Date(res.getLong("timestamp"));
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 
-                games.add(new Game(date, deckName, score + ""));
-            }
+    public List<Game> getGameHistory(UUID userId, UUID deckId) {
+        String sql = """
+                SELECT d.name AS deck_name, s.score, s.timestamp
+                FROM deck d
+                INNER JOIN user_deck_score s ON d.deck_id = s.deck_id
+                WHERE s.user_id = ? AND s.deck_id = ?;
+                """;
 
-            return games;
+        try (ResultSet res = database.executeQuery(sql, userId.toString(), deckId.toString())) {
+            return getGames(res);
 
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
