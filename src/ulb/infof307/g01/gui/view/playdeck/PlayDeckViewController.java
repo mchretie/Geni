@@ -161,7 +161,7 @@ public class PlayDeckViewController {
         int correctChoiceIndex = card.getCorrectChoiceIndex();
         Iterator<Pos2D> positions = new GridPosIterator(2, 2);
 
-        for (int i = 0; i < card.getNbOfChoices(); i++) {
+        for (int i = 0; i < card.getChoicesCount(); i++) {
             Pos2D pos = positions.next();
             boolean isCorrectAnswer = (correctChoiceIndex == i);
             Button answer = addAnswer(card.getChoice(i), isCorrectAnswer, colors.get(i));

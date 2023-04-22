@@ -233,12 +233,12 @@ public class EditDeckViewController {
         int correctChoiceIndex = mcqCard.getCorrectChoiceIndex();
         Iterator<Pos2D> positions = new GridPosIterator(2, 2);
 
-        for (int i = 0; i < mcqCard.getChoiceMax(); i++) {
+        for (int i = 0; i < mcqCard.MAX_CHOICES; i++) {
             Pos2D nextPos = positions.next();
             currentCol = nextPos.col;
             currentRow = nextPos.row;
 
-            if (i >= mcqCard.getNbOfChoices()) {
+            if (i >= mcqCard.getChoicesCount()) {
                 addChoiceFieldButton();
                 break;
             }
@@ -323,7 +323,7 @@ public class EditDeckViewController {
      */
     private boolean choiceFieldEmpty(TextField textField, int index) {
         if (textField.getText().isEmpty()
-                && ((MCQCard) selectedCard).getNbOfChoices() < 3)
+                && ((MCQCard) selectedCard).getChoicesCount() < 3)
 
             return true;
 
@@ -370,7 +370,7 @@ public class EditDeckViewController {
      */
     private void focusNextNode(int index, boolean createNextNode, boolean cycle) {
         int nextIndex = index + 1;
-        if (nextIndex < ((MCQCard) selectedCard).getNbOfChoices()) {
+        if (nextIndex < ((MCQCard) selectedCard).getChoicesCount()) {
             focusNextChoiceField(nextIndex);
 
         } else if (nextIndex < 4 && createNextNode) {
@@ -401,7 +401,7 @@ public class EditDeckViewController {
 
         // When the text field loses focus, the choice is updated
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue && index < ((MCQCard) selectedCard).getNbOfChoices()) {
+            if (!newValue && index < ((MCQCard) selectedCard).getChoicesCount()) {
                 listener.choiceModified((MCQCard) selectedCard, textField.getText(), index);
                 loadSelectedCardEditor();
             }
@@ -450,7 +450,7 @@ public class EditDeckViewController {
         trashIcon.setIconColor(Color.WHITE);
         removeChoiceButton.setGraphic(trashIcon);
 
-        if (((MCQCard) selectedCard).isCardMin())
+        if (!((MCQCard) selectedCard).canRemoveChoice())
             removeChoiceButton.setDisable(true);
 
         removeChoiceButton.setOnAction(event -> {
