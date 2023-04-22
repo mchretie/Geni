@@ -9,8 +9,9 @@ import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
-import ulb.infof307.g01.gui.view.statistics.GameHistoryItemViewController;
+import ulb.infof307.g01.gui.view.deckpreview.GameHistoryItemViewController;
 import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.gamehistory.Game;
 import ulb.infof307.g01.model.gamehistory.GameHistory;
 
@@ -62,7 +63,11 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         try {
             this.deck = deck;
             deckPreviewViewController.setDeck(deck);
-            deckPreviewViewController.setScore(scoreDAO.getBestScoreForDeck(deck.getId()));
+
+            Score score = scoreDAO.getBestScoreForDeck(deck.getId());
+            String scoreString = score == null ? "0" : score.getScore() + "";
+            deckPreviewViewController.setScore(scoreString);
+
             deckPreviewViewController.setPlayDeckButtonDisabled(deck.cardCount() == 0);
             deckPreviewViewController.setGameHistory(loadGameHistory());
 
@@ -113,11 +118,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         GameHistoryItemViewController gameHistoryItemViewController
                 = loader.getController();
 
-        gameHistoryItemViewController
-                .setGameHistoryItem(
-                        game.getFormattedTimestamp(),
-                        game.deckName(),
-                        game.score());
+        gameHistoryItemViewController.setGame(game);
 
         return node;
     }

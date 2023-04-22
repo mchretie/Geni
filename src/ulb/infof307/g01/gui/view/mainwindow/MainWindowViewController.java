@@ -1,8 +1,11 @@
 package ulb.infof307.g01.gui.view.mainwindow;
 
+import com.google.gson.stream.JsonToken;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.BoxBlur;
@@ -10,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
@@ -26,9 +30,11 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 
 public class MainWindowViewController implements Initializable {
+    public BorderPane borderPane;
 
     /* ====================================================================== */
     /*                               FXML Attributes                          */
@@ -146,18 +152,45 @@ public class MainWindowViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         popup.getContent().add(deckPreviewView);
-        popup.setWidth(600);
-        popup.setHeight(600);
 
         popup.setOnHidden(event -> {
             centerStackPane.setEffect(null);
             deckPreviewView.setVisible(false);
             centerStackPane.setDisable(false);
+            makeGoBackIconInvisible();
         });
 
         popup.setOnShown(event -> {
             centerStackPane.setDisable(true);
             centerStackPane.setEffect(new BoxBlur());
+
+            BorderPane bp = (BorderPane) popup.getContent().get(0);
+            bp.setPrefWidth(borderPane.getWidth() * 0.7);
+            bp.setPrefHeight(borderPane.getHeight() * 0.6);
+
+            Scene scene = borderPane.getScene();
+            Window window = scene.getWindow();
+            popup.setX(window.getX() + (scene.getWidth() - bp.getWidth()) / 2);
+            popup.setY(window.getY() + (scene.getHeight() - bp.getHeight()) / 2);
+        });
+
+        borderPane.widthProperty().addListener((observableValue, oldSceneWidth, newSceneWidth) -> {
+            BorderPane bp = (BorderPane) popup.getContent().get(0);
+            bp.setPrefWidth(newSceneWidth.doubleValue() * 0.7);
+
+            Scene scene = borderPane.getScene();
+            Window window = scene.getWindow();
+            popup.setX(window.getX() + (scene.getWidth() - popup.getWidth()) / 2);
+            System.out.println("x = " + popup.getX());
+        });
+
+        borderPane.heightProperty().addListener((observableValue, oldSceneHeight, newSceneHeight) -> {
+            BorderPane bp = (BorderPane) popup.getContent().get(0);
+            bp.setPrefHeight(newSceneHeight.doubleValue() * 0.6);
+
+            Scene scene = borderPane.getScene();
+            Window window = scene.getWindow();
+            popup.setY(window.getY() + (scene.getHeight() - popup.getHeight()) / 2);
         });
 
         popup.setAutoHide(true);
@@ -330,9 +363,9 @@ public class MainWindowViewController implements Initializable {
     private void resetButtonExcept(Button button) {
         List<Button> buttons = Arrays.asList(homeButton, profileButton, currentDeckButton, leaderboardButton);
         String initialButtonStyle = "-fx-background-color: transparent;";
-        for (Button b : buttons)
-            if (b != button)
-                b.setStyle(initialButtonStyle);
+        buttons.stream()
+                .filter(b -> b != button)
+                .forEach(b -> b.setStyle(initialButtonStyle));
     }
 
     private void onClick(Button button) {

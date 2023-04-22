@@ -27,20 +27,6 @@ public class StatisticsViewController {
     @FXML
     private ListView<Node> gameHistoryContainer;
 
-    /* ====================================================================== */
-    /*                                Listener                                */
-    /* ====================================================================== */
-    private Listener listener;
-
-
-    /* ====================================================================== */
-    /*                                Setters                                 */
-    /* ====================================================================== */
-
-    public void setListener(Listener listener) {
-        this.listener = listener;
-    }
-
 
     /* ====================================================================== */
     /*                               Statistics                               */
@@ -67,17 +53,15 @@ public class StatisticsViewController {
         gameHistoryContainer.refresh();
     }
 
-    public void gameHistoryContainerClicked() {
+
+    /* ====================================================================== */
+    /*                              Click Handlers                            */
+    /* ====================================================================== */
+
+    @FXML
+    private void gameHistoryContainerClicked() {
         gameHistoryContainer.getSelectionModel().clearSelection();
         borderPane.requestFocus();
     }
 
-
-    /* ====================================================================== */
-    /*                           Listener Interface                           */
-    /* ====================================================================== */
-
-    public interface Listener {
-
-    }
 }

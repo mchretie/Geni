@@ -17,13 +17,13 @@ import ulb.infof307.g01.model.deck.Score;
 import java.util.List;
 
 public class DeckPreviewViewController {
-
+    
     @FXML
     private BorderPane borderPane;
 
     @FXML
     private ListView<Node> gameHistoryContainer;
-
+    
     @FXML
     private FontIcon playDeckIcon;
 
@@ -54,17 +54,19 @@ public class DeckPreviewViewController {
     public void setDeck(Deck deck) {
         this.deck = deck;
         deckNameLabel.setText(deck.getName());
-        setCardCountLabel();
-    }
 
-    public void setScore(Score score) {
-        highestScoreLabel.setText("Highscore: " + score.getScore() + " points");
-    }
-
-    private void setCardCountLabel() {
         int cardCount = deck.cardCount();
-        String text = "Nombre de cartes: " + cardCount + " carte" + (cardCount > 1 ? "s" : "");
+        String text = cardCount + " carte" + (cardCount > 1 ? "s" : "");
         cardCountLabel.setText(text);
+    }
+
+    public void setScore(String score) {
+        highestScoreLabel.setText(score + " points");
+    }
+
+    public void setScoreUnavailable() {
+        highestScoreLabel.setText("Score indisponible");
+        highestScoreLabel.setTextFill(Color.RED);
     }
 
     public void setGameHistory(List<Node> gameHistoryItem) {
@@ -79,16 +81,20 @@ public class DeckPreviewViewController {
         playDeck.setDisable(disabled);
     }
 
-    public void handlePlayDeckClicked() {
+
+    /* ====================================================================== */
+    /*                              Click Handlers                            */
+    /* ====================================================================== */
+
+    @FXML
+    private void handlePlayDeckClicked() {
         listener.onPlayDeckClicked();
     }
 
-    public void setScoreUnavailable() {
-        highestScoreLabel.setText("Score indisponible");
-        highestScoreLabel.setTextFill(Color.RED);
-    }
-
-    public void gameHistoryContainerClicked() {
+    @FXML
+    private void gameHistoryContainerClicked() {
+        gameHistoryContainer.getSelectionModel().clearSelection();
+        borderPane.requestFocus();
     }
 
 
