@@ -157,7 +157,7 @@ public class PlayDeckViewController {
         MCQCard card = (MCQCard) currentCard;
         int correctChoiceIndex = card.getCorrectChoiceIndex();
 
-        for (int i = 0; i < card.getNbOfChoices(); i++) {
+        for (int i = 0; i < card.getChoicesCount(); i++) {
             int row = i / 2;
             int col = i % 2;
             boolean isCorrectAnswer = (correctChoiceIndex == i);
