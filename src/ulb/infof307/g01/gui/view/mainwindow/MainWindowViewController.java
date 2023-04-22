@@ -236,10 +236,7 @@ public class MainWindowViewController {
         setAllInvisibleExcept(editDeckView);
     }
 
-    public void setPlayDeckViewVisible() {
-        setAllInvisibleExcept(playDeckView);
-        onClick(marketplaceButton); //TODO
-    }
+    public void setPlayDeckViewVisible() { setAllInvisibleExcept(playDeckView); }
 
     public void setEditCardViewVisible() {
         setAllInvisibleExcept(editCardView);
@@ -280,6 +277,7 @@ public class MainWindowViewController {
 
     public void setMarketplaceViewVisible() {
         setAllInvisibleExcept(marketplaceView);
+        onClick(marketplaceButton);
     }
 
     /* ====================================================================== */
@@ -359,9 +357,7 @@ public class MainWindowViewController {
     /* ====================================================================== */
 
     @FXML
-    private void handleHomeHover() {
-        homeIcon.setIconColor(Color.web("#FFFFFF"));
-    }
+    private void handleHomeHover() { homeIcon.setIconColor(Color.web("#FFFFFF")); }
 
     @FXML
     private void handleHomeExitHover() {
