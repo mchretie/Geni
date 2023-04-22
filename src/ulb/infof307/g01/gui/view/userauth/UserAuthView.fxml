@@ -1,86 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.userauth.UserAuthViewController">
-
-    <VBox fx:id="registerVBOX" alignment="CENTER" fillWidth="false" visible="false">
-        <Label alignment="CENTER" text="Inscription" textAlignment="CENTER">
+<StackPane fx:id="root" style="-fx-background-color: #2C3F4E;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.userauth.UserAuthViewController">
+    <VBox fx:id="registerVBOX" alignment="CENTER" fillWidth="false" spacing="10.0" visible="false">
+        <Label alignment="CENTER" text="Créez un compte" textAlignment="CENTER" textFill="WHITE">
             <font>
-                <Font size="16.0" />
+                <Font name="Arial Black" size="20.0" />
             </font>
             <VBox.margin>
-                <Insets bottom="30.0" />
+                <Insets bottom="20.0" />
             </VBox.margin>
         </Label>
 
-        <TextField fx:id="registerUsernameField" onKeyPressed="#handleRegisterUsernameKeyPressed" promptText="Identifiant">
+              <TextField fx:id="registerUsernameField" onKeyPressed="#handleRegisterUsernameKeyPressed" promptText="Identifiant" style="-fx-background-radius: 5;">
             <VBox.margin>
-                <Insets bottom="20.0" />
+                <Insets />
             </VBox.margin>
+            <prefWidth>300.0</prefWidth>
+            <prefHeight>40.0</prefHeight>
         </TextField>
 
-        <PasswordField fx:id="registerPasswordField" onKeyPressed="#handleRegisterPasswordKeyPressed" promptText="Mot de passe">
+              <PasswordField fx:id="registerPasswordField" onKeyPressed="#handleRegisterPasswordKeyPressed" promptText="Mot de passe" style="-fx-background-radius: 5;">
             <VBox.margin>
-                <Insets bottom="20.0" />
+                <Insets />
             </VBox.margin>
+            <prefWidth>300.0</prefWidth>
+            <prefHeight>40.0</prefHeight>
         </PasswordField>
 
-        <PasswordField fx:id="confirmPasswordField" onKeyPressed="#handleRegisterConfPasswordKeyPressed" onKeyTyped="#handleRegisterConfPasswordKeyTyped" promptText="Confirmez le mot de passe">
-            <VBox.margin>
-                <Insets bottom="20.0" />
-            </VBox.margin>
-        </PasswordField>
-
-        <Button fx:id="registerButton" mnemonicParsing="false" onMouseClicked="#handleRegisterButtonClicked" text="S'inscrire">
+              <PasswordField fx:id="confirmPasswordField" onKeyPressed="#handleRegisterConfPasswordKeyPressed" onKeyTyped="#handleRegisterConfPasswordKeyTyped" promptText="Confirmez le mot de passe" style="-fx-background-radius: 5;">
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin>
+            <prefWidth>300.0</prefWidth>
+            <prefHeight>40.0</prefHeight>
+        </PasswordField>
+
+              <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegisterButtonClicked" prefHeight="34.0" prefWidth="299.0" style="-fx-background-color: #3EB942; -fx-background-radius: 5;" text="S'inscrire" textFill="WHITE">
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+         <font>
+            <Font size="16.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
         </Button>
 
-        <Hyperlink onMouseClicked="#handleToLoginClicked" text="Déjà un compte ? Connectez-vous.">
+              <Hyperlink onAction="#handleToLoginClicked" text="Déjà un compte ? Connectez-vous." textFill="WHITE">
             <font>
-                <Font size="10.0" />
+                <Font size="11.0" />
             </font>
         </Hyperlink>
 
-    </VBox>
+          </VBox>
 
-    <VBox fx:id="loginVBOX" alignment="CENTER" fillWidth="false">
-        <Label alignment="CENTER" text="Connexion" textAlignment="CENTER">
+          <VBox fx:id="loginVBOX" alignment="CENTER" fillWidth="false" spacing="10.0">
+        <Label alignment="BASELINE_CENTER" contentDisplay="TEXT_ONLY" layoutX="100.0" text="Entrez vos informations" textAlignment="CENTER" textFill="WHITE">
             <font>
-                <Font size="16.0" />
+                <Font name="Arial Black" size="20.0" />
             </font>
             <VBox.margin>
-                <Insets bottom="30.0" />
+                <Insets bottom="20.0" />
             </VBox.margin>
         </Label>
 
-        <TextField fx:id="loginUsernameField" onKeyPressed="#handleLoginUsernameKeyPressed" promptText="Username">
+              <TextField fx:id="loginUsernameField" onKeyPressed="#handleLoginUsernameKeyPressed" promptText="Identifiant" style="-fx-background-radius: 5;">
             <VBox.margin>
-                <Insets bottom="20.0" />
+                <Insets />
             </VBox.margin>
+            <prefWidth>300.0</prefWidth>
+            <prefHeight>40.0</prefHeight>
         </TextField>
 
-        <PasswordField fx:id="loginPasswordField" onKeyPressed="#handleLoginPasswordKeyPressed" promptText="Mot de passe">
-            <VBox.margin>
-                <Insets bottom="20.0" />
-            </VBox.margin>
-        </PasswordField>
-
-        <Button fx:id="loginButton" mnemonicParsing="false" onMouseClicked="#handleLoginButtonClicked" text="Se connecter">
+              <PasswordField fx:id="loginPasswordField" onKeyPressed="#handleLoginPasswordKeyPressed" promptText="Mot de passe" style="-fx-background-radius: 5;">
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin>
+            <prefWidth>300.0</prefWidth>
+            <prefHeight>40.0</prefHeight>
+        </PasswordField>
+
+              <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLoginButtonClicked" prefHeight="40.0" prefWidth="300.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: #3EB942;" text="Se connecter" textAlignment="CENTER" textFill="WHITE">
+
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+         <font>
+            <Font name="System Font" size="16.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
         </Button>
-        <Hyperlink onMouseClicked="#handleToRegisterClicked" text="Pas de compte ? Inscrivez-vous ici.">
+
+              <Hyperlink alignment="CENTER" onAction="#handleToRegisterClicked" text="Pas de compte ? Inscrivez-vous ici" textAlignment="CENTER" textFill="WHITE">
+
             <font>
-                <Font size="10.0" />
+                <Font size="11.0" />
             </font>
         </Hyperlink>
     </VBox>
-
 </StackPane>

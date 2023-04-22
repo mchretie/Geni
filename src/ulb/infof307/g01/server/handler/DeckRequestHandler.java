@@ -64,7 +64,7 @@ public class DeckRequestHandler extends Handler {
             String username = usernameFromRequest(req);
             UUID userId = UUID.fromString(database.getUserId(username));
 
-            Deck deck = new Deck(new Gson().fromJson(req.body(), JsonObject.class));
+            Deck deck = Deck.fromJson(req.body());
             deck.setImage(deck.getImage().replace(BASE_URL, ""));
 
             database.saveDeck(deck, userId);
