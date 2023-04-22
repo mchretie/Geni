@@ -15,7 +15,7 @@ import java.util.prefs.Preferences;
 
 public class UserSessionDAO extends HttpDAO {
 
-    private String username;
+    private String username = "Guest";
     private final Preferences prefs = Preferences.userNodeForPackage(UserSessionDAO.class);
 
 

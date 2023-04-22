@@ -10,6 +10,8 @@ import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
 import ulb.infof307.g01.gui.util.DeckIO;
 import ulb.infof307.g01.gui.util.ImageLoader;
+import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
+import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController.SearchType;
@@ -94,10 +96,12 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             deckDAO.setToken(userSessionDAO.getToken());
             showDecks();
             mainWindowViewController.setDeckMenuViewVisible();
-        }
-
-        else {
-            mainWindowViewController.setGuestModeDeckMenuViewVisible();
+            mainWindowViewController.makebottomNavigationBarVisible();
+            mainWindowViewController.makeTopNavigationBarVisible();
+        } else {
+            mainWindowViewController.setUserAuthViewController();
+            mainWindowViewController.makebottomNavigationBarInvisible();
+            mainWindowViewController.makeTopNavigationBarInvisible();
         }
 
         mainWindowViewController.makeGoBackIconInvisible();
