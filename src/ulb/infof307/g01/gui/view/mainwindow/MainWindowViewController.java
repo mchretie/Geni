@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -30,7 +31,7 @@ public class MainWindowViewController {
     /* ====================================================================== */
 
     @FXML
-    private Button currentDeckButton;
+    private Button marketplaceButton;
 
     @FXML
     private Button leaderboardButton;
@@ -45,7 +46,7 @@ public class MainWindowViewController {
     private FontIcon homeIcon;
 
     @FXML
-    private FontIcon currentDeckIcon;
+    private FontIcon marketplaceIcon;
 
     @FXML
     private FontIcon leaderboardIcon;
@@ -230,7 +231,7 @@ public class MainWindowViewController {
 
     public void setPlayDeckViewVisible() {
         setAllInvisibleExcept(playDeckView);
-        onClick(currentDeckButton);
+        onClick(marketplaceButton); //TODO
     }
 
     public void setEditCardViewVisible() {
@@ -308,7 +309,7 @@ public class MainWindowViewController {
     /* ====================================================================== */
 
     private void resetButtonExcept(Button button) {
-        List<Button> buttons = Arrays.asList(homeButton, profileButton, currentDeckButton, leaderboardButton);
+        List<Button> buttons = Arrays.asList(homeButton, profileButton, marketplaceButton, leaderboardButton);
         for (Button b : buttons)
             if (b != button)
                 b.setStyle(initialButtonStyle);
@@ -349,6 +350,9 @@ public class MainWindowViewController {
     /* ====================================================================== */
 
     @FXML
+    public void goToMarketplaceClicked() {
+    }
+    @FXML
     private void handleHomeHover() {
         homeIcon.setIconColor(Color.web("#FFFFFF"));
     }
@@ -359,19 +363,15 @@ public class MainWindowViewController {
     }
 
     @FXML
-    private void handleCurrentDeckHover() {
-        currentDeckIcon.setIconColor(Color.web("#FFFFFF"));
+    private void handleMarketplaceHover() {marketplaceIcon.setIconColor(Color.web("#FFFFFF")); }
+
+    @FXML
+    private void handleMarketplaceExitHover() {
+        marketplaceIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
-    private void handleCurrentDeckExitHover() {
-        currentDeckIcon.setIconColor(Color.web("#000000"));
-    }
-
-    @FXML
-    private void handleLeaderboardHover() {
-        leaderboardIcon.setIconColor(Color.web("#FFFFFF"));
-    }
+    private void handleLeaderboardHover() { leaderboardIcon.setIconColor(Color.web("#FFFFFF")); }
 
     @FXML
     private void handleLeaderboardExitHover() {
@@ -397,6 +397,7 @@ public class MainWindowViewController {
     private void handleUserProfileExitHover() {
         userProfileIcon.setIconColor(Color.web("#000000"));
     }
+
 
 
     /* ====================================================================== */
