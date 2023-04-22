@@ -183,4 +183,8 @@ public class Database {
     public void addDeckToMarketplace(UUID deckId) throws DatabaseException {
         deckDao.addDeckToMarketplace(deckId);
     }
+
+    public void removeDeckFromMarketplace(UUID deckId) throws DatabaseException {
+        deckDao.removeDeckFromMarketplace(deckId);
+    }
 }

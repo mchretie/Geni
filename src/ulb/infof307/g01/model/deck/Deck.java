@@ -23,9 +23,9 @@ public class Deck implements Iterable<Card> {
     @Expose
     protected final List<Tag> tags;
     @Expose
-    private String color;
+    protected String color;
     @Expose
-    private String image;
+    protected String image;
 
     public Deck(String name) {
         this(name,
