@@ -36,7 +36,8 @@ public class MainFxController extends Application implements
         EditCardController.ControllerListener,
         ResultController.ControllerListener,
         UserAuthController.ControllerListener,
-        ProfileController.ControllerListener {
+        ProfileController.ControllerListener,
+        MarketplaceController.ControllerListener{
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -51,6 +52,7 @@ public class MainFxController extends Application implements
     private ProfileController profileController;
     private GlobalLeaderboardController leaderboardController;
     private StatisticsController statisticsController;
+    private MarketplaceController marketplaceController;
 
     private MainWindowViewController mainWindowViewController;
 
@@ -76,7 +78,8 @@ public class MainFxController extends Application implements
         LOGIN_PROFILE,
         RESULT,
         LEADERBOARD,
-        STATISTICS
+        STATISTICS,
+        MARKETPLACE
     }
 
     List<View> viewStack = new ArrayList<>();
@@ -218,6 +221,7 @@ public class MainFxController extends Application implements
                 case RESULT -> resultController.show();
                 case LEADERBOARD -> leaderboardController.show();
                 case STATISTICS -> statisticsController.show();
+                case MARKETPLACE -> marketplaceController.show();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -399,12 +403,21 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void goToCurrentPlayingDeck() {
-        if (playDeckController == null || !userSessionDAO.isLoggedIn())
-            return;
+    public void goToMarketplaceClicked() {
+        //TODO
+        try {
+            marketplaceController = new MarketplaceController(
+                    stage,
+                    mainWindowViewController,
+                    this,
+                    errorHandler);
 
-        playDeckController.show();
-        viewStack.add(View.PLAY_DECK);
+            resetViewStack(View.MARKETPLACE);
+            marketplaceController.show();
+
+        } catch (InterruptedException | IOException e) {
+            errorHandler.failedLoading(e);
+        }
     }
 
     @Override

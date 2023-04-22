@@ -12,6 +12,7 @@ import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardViewController;
+import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.gui.view.result.ResultViewController;
 import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
@@ -105,6 +106,9 @@ public class MainWindowViewController {
     private BorderPane statisticsView;
 
     @FXML
+    private BorderPane marketplaceView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
@@ -130,6 +134,9 @@ public class MainWindowViewController {
 
     @FXML
     private StatisticsViewController statisticsViewController;
+
+    @FXML
+    private MarketplaceViewController marketplaceViewController;
 
 
     /* ====================================================================== */
@@ -171,9 +178,7 @@ public class MainWindowViewController {
         return leaderboardViewController;
     }
 
-    public ProfileViewController getProfileViewController() {
-        return profileViewController;
-    }
+    public ProfileViewController getProfileViewController() { return profileViewController; }
     public UserAuthViewController getUserAuthViewController() {
         return userAuthViewController;
     }
@@ -185,6 +190,8 @@ public class MainWindowViewController {
     public StatisticsViewController getStatisticsViewController() {
         return statisticsViewController;
     }
+
+    public MarketplaceViewController getMarketplaceViewController() { return marketplaceViewController; }
 
 
     /* ====================================================================== */
@@ -271,6 +278,10 @@ public class MainWindowViewController {
         setAllInvisibleExcept(statisticsView);
     }
 
+    public void setMarketplaceViewVisible() {
+        setAllInvisibleExcept(marketplaceView);
+    }
+
     /* ====================================================================== */
     /*                          Icon Visibility                               */
     /* ====================================================================== */
@@ -331,9 +342,7 @@ public class MainWindowViewController {
     }
 
     @FXML
-    private void goToCurrentDeckClicked() {
-        listener.goToCurrentPlayingDeck();
-    }
+    private void goToMarketplaceClicked() { listener.goToMarketplaceClicked(); }
 
     @FXML
     private void goToLeaderboardClicked() {
@@ -349,9 +358,6 @@ public class MainWindowViewController {
     /*                              Hover handlers                            */
     /* ====================================================================== */
 
-    @FXML
-    public void goToMarketplaceClicked() {
-    }
     @FXML
     private void handleHomeHover() {
         homeIcon.setIconColor(Color.web("#FFFFFF"));
@@ -407,7 +413,7 @@ public class MainWindowViewController {
     public interface NavigationListener {
         void goBackClicked();
         void goToHomeClicked();
-        void goToCurrentPlayingDeck();
+        void goToMarketplaceClicked();
         void goToLeaderboardClicked();
         void goToProfileClicked();
     }
