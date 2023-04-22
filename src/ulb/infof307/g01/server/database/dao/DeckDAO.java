@@ -615,4 +615,15 @@ public class DeckDAO extends DAO {
                 userId.toString(),
                 deckId.toString());
     }
+
+    public void removeDeckFromUserCollection(UUID deckId, UUID userId) throws DatabaseException {
+        String sql = """
+                DELETE FROM user_deck_collection
+                WHERE user_id = ? AND deck_id = ?;
+                """;
+
+        database.executeUpdate(sql,
+                userId.toString(),
+                deckId.toString());
+    }
 }

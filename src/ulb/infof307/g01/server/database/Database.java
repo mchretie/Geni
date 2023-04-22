@@ -191,4 +191,8 @@ public class Database {
     public void addDeckToUserCollection(UUID deckId, UUID userId) throws DatabaseException {
         deckDao.addDeckToUserCollection(deckId, userId);
     }
+
+    public void removeDeckFromUserCollection(UUID deckId, UUID userId) throws DatabaseException {
+        deckDao.removeDeckFromUserCollection(deckId, userId);
+    }
 }

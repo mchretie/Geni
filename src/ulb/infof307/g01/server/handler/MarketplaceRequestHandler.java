@@ -26,6 +26,7 @@ public class MarketplaceRequestHandler extends Handler {
         post(ADD_DECK_TO_MARKETPLACE_PATH, this::addDeck, toJson());
         delete(REMOVE_DECK_FROM_MARKETPLACE_PATH, this::removeDeck, toJson());
         post(ADD_DECK_TO_COLLECTION_PATH, this::addDeckToCollection, toJson());
+        delete(REMOVE_DECK_FROM_COLLECTION_PATH, this::removeDeckFromCollection, toJson());
     }
 
     private List<MarketplaceDeckMetadata> getAllMarketplaceDecks(Request req, Response res) {
@@ -73,7 +74,7 @@ public class MarketplaceRequestHandler extends Handler {
         }
     }
 
-    public Map<String, Boolean> addDeckToCollection(Request req, Response res) {
+    private Map<String, Boolean> addDeckToCollection(Request req, Response res) {
         try {
             UUID deckId = UUID.fromString(req.queryParams("deck_id"));
             String username = usernameFromRequest(req);
@@ -83,11 +84,30 @@ public class MarketplaceRequestHandler extends Handler {
 
             return successfulResponse;
         } catch (Exception e) {
-            String message = "Failed to add deck to the user collection : " + e.getMessage();
+            String message = "Failed to add deck to user's collection : " + e.getMessage();
             logger.warning(message);
             halt(500, message);
 
             return failedResponse;
         }
     }
+
+    private Map<String, Boolean> removeDeckFromCollection(Request req, Response res) {
+        try {
+            UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+
+            database.removeDeckFromUserCollection(deckId, userId);
+
+            return successfulResponse;
+        } catch (Exception e) {
+            String message = "Failed to remove deck from user's collection : " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
+            return failedResponse;
+        }
+    }
+
 }
