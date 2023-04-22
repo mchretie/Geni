@@ -541,20 +541,14 @@ public class DeckDAO extends DAO {
     /* ====================================================================== */
     // TODO maybe create a marketplaceDAO ?
 
-    private List<MarketplaceDeckMetadata> extractMarketplaceDeckMetadata(List<MarketplaceDeck> decks) {
-        List<MarketplaceDeckMetadata> decksMetadata = new ArrayList<>();
-        decks.forEach((d) -> decksMetadata.add(d.getMarketplaceMetadata()));
-        return decksMetadata;
-    }
-
-    private MarketplaceDeck extractMarketplaceDeck(ResultSet res) throws DatabaseException {
+    private MarketplaceDeckMetadata extractMarketplaceDeckMetaData(ResultSet res) throws DatabaseException {
         try {
             Deck deck = extractDeckFrom(res);
-            String username = res.getString("username");
+            String owner_username = res.getString("username");
             int rating = res.getInt("rating");
-            int download = res.getInt("downloads");
+            int downloads = res.getInt("downloads");
 
-            return new MarketplaceDeck(deck, username, rating, download);
+            return new MarketplaceDeckMetadata(deck, owner_username, rating, downloads);
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -582,7 +576,7 @@ public class DeckDAO extends DAO {
         database.executeUpdate(sql, deckId.toString());
     }
 
-    public List<MarketplaceDeck> getAllMarketplaceDecks() throws DatabaseException {
+    public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {
         String sql = """
                 SELECT D.deck_id, U.username, D.name, D.color, D.image, M.rating, M.downloads
                 FROM marketplace M
@@ -591,17 +585,11 @@ public class DeckDAO extends DAO {
                 """;
 
         ResultSet res = database.executeQuery(sql);
-        List<MarketplaceDeck> decks = new ArrayList<>();
+        List<MarketplaceDeckMetadata> decks = new ArrayList<>();
         while (checkedNext(res))
-            decks.add(extractMarketplaceDeck(res));
+            decks.add(extractMarketplaceDeckMetaData(res));
 
         return decks;
-    }
-
-    public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {
-        List<MarketplaceDeck> decks = getAllMarketplaceDecks();
-
-        return extractMarketplaceDeckMetadata(decks);
     }
 
     public void addDeckToUserCollection(UUID deckId, UUID userId) throws DatabaseException {

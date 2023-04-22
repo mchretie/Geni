@@ -11,8 +11,21 @@ public record MarketplaceDeckMetadata(UUID id,
                                       List<Tag> tags,
                                       String owner,
                                       int rating,
-                                      int download,
+                                      int downloads,
                                       int deckHashCode) {
+
+    public MarketplaceDeckMetadata(Deck deck, String owner, int rating, int downloads) {
+        this(deck.getId(),
+                deck.getName(),
+                deck.getColor(),
+                deck.getImage(),
+                deck.cardCount(),
+                deck.getTags(),
+                owner,
+                rating,
+                downloads,
+                deck.hashCode());
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -28,6 +41,6 @@ public record MarketplaceDeckMetadata(UUID id,
                 && tags.equals(that.tags)
                 && owner.equals(that.owner)
                 && rating == that.rating
-                && download == that.download;
+                && downloads == that.downloads;
     }
 }

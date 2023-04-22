@@ -8,7 +8,6 @@ import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
 import ulb.infof307.g01.model.deck.Deck;
-import ulb.infof307.g01.model.deck.MarketplaceDeck;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Tag;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
@@ -288,8 +287,8 @@ public class TestDeckDAO extends DatabaseUsingTest {
         deckDAO.addDeckToMarketplace(deck2.getId());
 
         List<MarketplaceDeckMetadata> expected = new ArrayList<>();
-        expected.add(new MarketplaceDeck(deck1, "user1", 0, 0).getMarketplaceMetadata());
-        expected.add(new MarketplaceDeck(deck2, "user1", 0, 0).getMarketplaceMetadata());
+        expected.add(new MarketplaceDeckMetadata(deck1, "user1", 0, 0));
+        expected.add(new MarketplaceDeckMetadata(deck2, "user1", 0, 0));
 
         assertEquals(expected, deckDAO.getMarketplaceDecksMetadata());
 
@@ -297,7 +296,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
         deckDAO.saveDeck(deck3, UUID.fromString(userDAO.getUserId("user2")));
         deckDAO.addDeckToMarketplace(deck3.getId());
 
-        expected.add(new MarketplaceDeck(deck3, "user2", 0, 0).getMarketplaceMetadata());
+        expected.add(new MarketplaceDeckMetadata(deck3, "user2", 0, 0));
 
         assertEquals(expected, deckDAO.getMarketplaceDecksMetadata());
     }
