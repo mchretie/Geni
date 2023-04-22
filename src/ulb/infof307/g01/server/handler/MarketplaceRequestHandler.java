@@ -58,11 +58,17 @@ public class MarketplaceRequestHandler extends Handler {
         }
     }
 
+    /**
+     * when removing deck from marketplace, scores for all users have to be deleted for this deck
+     */
     private Map<String, Boolean> removeDeck(Request req, Response res) {
         try {
             // TODO to improve security, should check if req sender is the deck owner
             UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+
             database.removeDeckFromMarketplace(deckId);
+            database.deleteScoresForDeck(deckId);
+
 
             return successfulResponse;
         } catch (Exception e) {

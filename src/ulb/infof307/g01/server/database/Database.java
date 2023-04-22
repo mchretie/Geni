@@ -159,6 +159,10 @@ public class Database {
         scoreDao.addScore(score);
     }
 
+    public void deleteScoresForDeck(UUID deckId) {
+        scoreDao.deleteScoresForDeck(deckId);
+    }
+
     public DeckLeaderboard getLeaderboardFromDeckId(UUID deckId) {
         return new DeckLeaderboard(deckId, scoreDao.getScoresForDeck(deckId));
     }
