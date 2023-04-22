@@ -173,4 +173,8 @@ public class Database {
     public GameHistory getGameHistory(UUID userId) {
         return new GameHistory(scoreDao.getGameHistory(userId));
     }
+
+    public GameHistory getGameHistory(UUID userId, UUID deckId) {
+        return new GameHistory(scoreDao.getGameHistory(userId, deckId));
+    }
 }

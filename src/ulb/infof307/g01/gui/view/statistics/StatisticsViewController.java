@@ -56,6 +56,7 @@ public class StatisticsViewController {
     /* ====================================================================== */
     /*                              Game History                              */
     /* ====================================================================== */
+
     public void setGameHistory(List<Node> gameHistoryItem) {
 
         ObservableList<Node> items = FXCollections.observableArrayList(gameHistoryItem);
@@ -66,7 +67,7 @@ public class StatisticsViewController {
         gameHistoryContainer.refresh();
     }
 
-    public void gameHistoryContainerClicked(MouseEvent mouseEvent) {
+    public void gameHistoryContainerClicked() {
         gameHistoryContainer.getSelectionModel().clearSelection();
         borderPane.requestFocus();
     }

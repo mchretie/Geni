@@ -116,6 +116,5 @@ public class StatisticsController implements StatisticsViewController.Listener {
                         game.score());
 
         return node;
-
     }
 }

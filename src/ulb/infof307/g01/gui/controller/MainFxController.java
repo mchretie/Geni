@@ -210,7 +210,10 @@ public class MainFxController extends Application implements
                 stage,
                 mainWindowViewController,
                 this,
-                scoreDAO);
+                errorHandler,
+                userSessionDAO,
+                scoreDAO,
+                gameHistoryDAO);
     }
 
     /* ====================================================================== */

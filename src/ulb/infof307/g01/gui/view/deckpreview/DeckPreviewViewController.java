@@ -1,14 +1,28 @@
 package ulb.infof307.g01.gui.view.deckpreview;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Score;
 
+import java.util.List;
+
 public class DeckPreviewViewController {
+
+    @FXML
+    private BorderPane borderPane;
+
+    @FXML
+    private ListView<Node> gameHistoryContainer;
 
     @FXML
     private FontIcon playDeckIcon;
@@ -53,6 +67,14 @@ public class DeckPreviewViewController {
         cardCountLabel.setText(text);
     }
 
+    public void setGameHistory(List<Node> gameHistoryItem) {
+        ObservableList<Node> items = FXCollections.observableArrayList(gameHistoryItem);
+        gameHistoryContainer.setItems(items);
+
+        borderPane.requestFocus();
+        gameHistoryContainer.refresh();
+    }
+
     public void setPlayDeckButtonDisabled(boolean disabled) {
         playDeck.setDisable(disabled);
     }
@@ -64,6 +86,9 @@ public class DeckPreviewViewController {
     public void setScoreUnavailable() {
         highestScoreLabel.setText("Score indisponible");
         highestScoreLabel.setTextFill(Color.RED);
+    }
+
+    public void gameHistoryContainerClicked() {
     }
 
 
