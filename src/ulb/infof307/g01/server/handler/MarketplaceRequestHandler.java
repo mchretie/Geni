@@ -25,6 +25,7 @@ public class MarketplaceRequestHandler extends Handler {
         get(GET_MARKETPLACE_PATH, this::getAllMarketplaceDecks, toJson());
         post(ADD_DECK_TO_MARKETPLACE_PATH, this::addDeck, toJson());
         delete(REMOVE_DECK_FROM_MARKETPLACE_PATH, this::removeDeck, toJson());
+        post(ADD_DECK_TO_COLLECTION_PATH, this::addDeckToCollection, toJson());
     }
 
     private List<MarketplaceDeckMetadata> getAllMarketplaceDecks(Request req, Response res) {
@@ -65,6 +66,24 @@ public class MarketplaceRequestHandler extends Handler {
             return successfulResponse;
         } catch (Exception e) {
             String message = "Failed to remove deck from the marketplace : " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
+            return failedResponse;
+        }
+    }
+
+    public Map<String, Boolean> addDeckToCollection(Request req, Response res) {
+        try {
+            UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+
+            database.addDeckToUserCollection(deckId, userId);
+
+            return successfulResponse;
+        } catch (Exception e) {
+            String message = "Failed to add deck to the user collection : " + e.getMessage();
             logger.warning(message);
             halt(500, message);
 

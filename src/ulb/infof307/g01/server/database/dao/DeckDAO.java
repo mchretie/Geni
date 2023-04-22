@@ -603,4 +603,16 @@ public class DeckDAO extends DAO {
 
         return extractMarketplaceDeckMetadata(decks);
     }
+
+    public void addDeckToUserCollection(UUID deckId, UUID userId) throws DatabaseException {
+        String sql = """
+                INSERT INTO user_deck_collection (user_id, deck_id)
+                VALUES (?, ?);
+                """;
+
+        database.executeUpdate(
+                sql,
+                userId.toString(),
+                deckId.toString());
+    }
 }
