@@ -27,8 +27,8 @@ public class MCQCard extends Card {
         this.cardType = "MCQCard";
     }
 
-    public MCQCard(UUID uuid, UUID deckId, String front, List<String> choices, int correctChoice) {
-        super(uuid, deckId, front);
+    public MCQCard(UUID uuid, UUID deckId, String front, List<String> choices, int correctChoice, Integer countdownTime) {
+        super(uuid, deckId, front, countdownTime);
         this.choices = choices;
         this.correctChoice = correctChoice;
         this.cardType = "MCQCard";

@@ -17,8 +17,8 @@ public class InputCard extends Card {
         this.cardType = "InputCard";
     }
 
-    public InputCard(UUID uuid, UUID deckId, String front, String answer) {
-        super(uuid, deckId, front);
+    public InputCard(UUID uuid, UUID deckId, String front, String answer, Integer countdownTime) {
+        super(uuid, deckId, front, countdownTime);
         this.answer = answer;
         this.cardType = "InputCard";
     }

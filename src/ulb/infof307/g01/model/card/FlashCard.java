@@ -15,8 +15,8 @@ public class FlashCard extends Card {
         this.cardType = "FlashCard";
     }
 
-    public FlashCard(UUID uuid, UUID deckId, String front, String back) {
-        super(uuid, deckId, front);
+    public FlashCard(UUID uuid, UUID deckId, String front, String back, Integer countdownTime) {
+        super(uuid, deckId, front, countdownTime);
         this.back = back;
         this.cardType = "FlashCard";
     }
