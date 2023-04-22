@@ -58,7 +58,7 @@ public class EditCardController implements EditCardViewController.Listener {
                 card.setFront(doc.html());
             else
                 ((FlashCard) card).setBack(doc.html());
-
+            System.out.println("Saving card ");
             deckDAO.saveDeck(deck);
             controllerListener.savedChanges();
 

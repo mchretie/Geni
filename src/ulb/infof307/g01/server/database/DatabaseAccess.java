@@ -117,6 +117,7 @@ public class DatabaseAccess {
             throws DatabaseException {
         try {
             assertOpened();
+            System.out.println("query: " + update + " args: " + Arrays.toString(args));
             try (PreparedStatement s = createStatement(update, args)) {
                 s.executeUpdate();
             }
@@ -166,6 +167,7 @@ public class DatabaseAccess {
             else
                 throw new DatabaseException("Unsupported argument type for query");
         }
+        System.out.println("statement: " + statement);
         return statement;
     }
 }

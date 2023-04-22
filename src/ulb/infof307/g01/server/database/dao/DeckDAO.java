@@ -364,16 +364,17 @@ public class DeckDAO extends DAO {
     private void saveCard(Card card) throws DatabaseException {
         String upsertCard = """
                 INSERT INTO card (card_id, deck_id, front, countdown_time)
-                VALUES (?, ?, ?)
+                VALUES (?, ?, ?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET front = ?
-                DO UPDATE SET countdown_time = ?
+                DO UPDATE SET front = ? , countdown_time = ?
                 """;
 
+        System.out.println("before sql query");
         database.executeUpdate(upsertCard,
                 card.getId().toString(),
                 card.getDeckId().toString(),
                 card.getFront(),
+                card.getCountdownTime(),
                 card.getFront(),
                 card.getCountdownTime());
 
