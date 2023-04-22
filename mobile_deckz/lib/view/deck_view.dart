@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_deckz/view/playdeck/playdeck_view.dart';
 
-import '../http_dao/deck_dao.dart';
 import '../http_dao/server_path.dart';
+import '../model/deck/deck.dart';
 
 class DeckView extends StatelessWidget {
   final Deck deck;
@@ -12,11 +13,11 @@ class DeckView extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (context) => (),
-          //   ),
-          // );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => PlayDeckView(deck: deck),
+            ),
+          );
         },
         child: Card(
           elevation: 4,
@@ -71,12 +72,12 @@ class DeckView extends StatelessWidget {
                     ),
                     Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        const Icon(Icons.emoji_events, color: Colors.white),
-                        const SizedBox(height: 4),
+                      children: const <Widget>[
+                        Icon(Icons.emoji_events, color: Colors.white),
+                        SizedBox(height: 4),
                         Text(
                           '-1',
-                          style: const TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white),
                         ),
                       ],
                     ),

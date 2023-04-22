@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:mobile_deckz/http_dao/leaderboard_dao.dart';
 
+import '../model/leaderboard/leaderboard.dart';
+import '../model/leaderboard/score.dart';
+
 class LeaderboardView extends StatefulWidget {
   const LeaderboardView({super.key});
 

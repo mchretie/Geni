@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../http_dao/deck_dao.dart';
+import '../model/deck/deck.dart';
 import 'deck_view.dart';
 
 class UserDeckView extends StatefulWidget {
