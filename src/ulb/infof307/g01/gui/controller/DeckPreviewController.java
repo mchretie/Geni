@@ -75,6 +75,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
             deckPreviewViewController.setScore(scoreString);
 
             deckPreviewViewController.setPlayDeckButtonDisabled(deck.cardCount() == 0);
+            deckPreviewViewController.setDeckVisibility(deck.isPublic());
             deckPreviewViewController.setGameHistory(loadGameHistory());
 
         } catch (IOException | InterruptedException e) {

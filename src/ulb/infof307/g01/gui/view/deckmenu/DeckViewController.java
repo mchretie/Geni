@@ -171,8 +171,8 @@ public class DeckViewController {
         this.playDeckLabel.setText(this.deck.name());
     }
 
-    public void setDisableEdit() {
-        editDeckButton.setDisable(true);
+    public void setDisableEdit(boolean disable) {
+        editDeckButton.setDisable(disable);
     }
 
 

@@ -143,7 +143,6 @@ public class DeckDAO extends HttpDAO {
             throws IOException, InterruptedException {
 
         String path = ServerPaths.SAVE_DECK_PATH;
-        System.out.println(new Gson().toJson(deck));
         HttpResponse<String> response = post(path, new Gson().toJson(deck));
 
         checkResponseCode(response.statusCode());

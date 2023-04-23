@@ -138,10 +138,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             DeckViewController controller = loader.getController();
             controller.setImageLoader(imageLoader);
 
-            System.out.println(deck.isPublic());
-            if (deck.isPublic()) {
-                controller.setDisableEdit();
-            }
+            controller.setDisableEdit(deck.isPublic());
 
             Score bestScore = scoreDAO.getBestScoreForDeck(deck.id());
 
