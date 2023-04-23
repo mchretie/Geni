@@ -27,7 +27,7 @@ public class Deck implements Iterable<Card> {
     @Expose
     private String image;
     @Expose
-    private boolean visible = false;
+    private boolean isPublic = false;
 
 
     /* ====================================================================== */
@@ -94,11 +94,11 @@ public class Deck implements Iterable<Card> {
     /* ====================================================================== */
 
     public void switchOnlineVisibility() {
-        this.visible = !this.visible;
+        this.isPublic = !this.isPublic;
     }
 
-    public boolean isVisibleOnline() {
-        return this.visible;
+    public boolean isPublic() {
+        return this.isPublic;
     }
 
     /**
@@ -190,6 +190,7 @@ public class Deck implements Iterable<Card> {
     public DeckMetadata getMetadata() {
         return new DeckMetadata(id,
                                 name,
+                                isPublic,
                                 color,
                                 image,
                                 cards.size(),

@@ -8,7 +8,6 @@ import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
 import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
-import ulb.infof307.g01.gui.util.DeckIO;
 import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.deckpreview.GameHistoryItemViewController;
@@ -19,7 +18,6 @@ import ulb.infof307.g01.model.gamehistory.GameHistory;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
