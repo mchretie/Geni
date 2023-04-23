@@ -10,15 +10,31 @@
 <BorderPane fx:id="borderPane" minHeight="300.0" minWidth="500.0" style="-fx-border-radius: 10 10 0 0; -fx-background-radius: 10 10 0 0; -fx-border-color: lightgray;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController">
 
     <top>
-        <HBox alignment="CENTER" style="-fx-background-radius: 10 10 0 0; -fx-border-radius: 10 10 0 0; -fx-border-style: hidden hidden solid hidden; -fx-border-color: lightgrey; -fx-background-color: #C3B1E1;">
+        <HBox alignment="CENTER"
+              style="-fx-background-radius: 10 10 0 0;
+                      -fx-border-radius: 10 10 0 0;
+                      -fx-border-style: hidden hidden solid hidden;
+                      -fx-border-color: lightgrey;
+                      -fx-background-color: #C3B1E1;">
+
             <Label fx:id="deckNameLabel" text="Deck name" HBox.hgrow="ALWAYS">
                 <font>
                    <Font size="21.0" />
                 </font>
+            <HBox.margin>
+               <Insets bottom="10.0" top="10.0" />
+            </HBox.margin>
             </Label>
-         <padding>
-            <Insets bottom="10.0" top="10.0" />
-         </padding>
+
+            <Button onMouseClicked="#handleDeckVisibilityClicked"
+                    onMouseEntered="#handleDeckVisibilityEntered"
+                    onMouseExited="#handleDeckVisibilityExited"
+                    style="-fx-background-color: transparent" >
+
+                <graphic>
+                    <FontIcon fx:id="deckVisibilityIcon" iconLiteral="mdi2a-account-lock" iconSize="20" />
+                </graphic>
+            </Button>
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
@@ -91,7 +107,12 @@
 
     <bottom>
         <HBox alignment="CENTER_RIGHT" style="-fx-border-radius: 0 0 10 10; -fx-background-radius: 0 0 10 10; -fx-border-style: solid hidden hidden hidden; -fx-border-color: lightgray; -fx-background-color: #C3B1E1;">
-            <Button fx:id="playDeck" onMouseClicked="#handlePlayDeckClicked" style="-fx-background-color: transparent;" text="Play">
+            <Button fx:id="playDeck"
+                    onMouseClicked="#handlePlayDeckClicked"
+                    onMouseEntered="#handlePlayDeckEntered"
+                    onMouseExited="#handlePlayDeckExited"
+                    style="-fx-background-color: transparent;" text="Play">
+
                 <graphic>
                     <FontIcon fx:id="playDeckIcon" iconLiteral="mdi2p-play-circle-outline" />
                 </graphic>

@@ -12,12 +12,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.deck.Deck;
-import ulb.infof307.g01.model.deck.Score;
 
 import java.util.List;
 
 public class DeckPreviewViewController {
-    
+
+    @FXML
+    private FontIcon deckVisibilityIcon;
+
     @FXML
     private BorderPane borderPane;
 
@@ -81,6 +83,15 @@ public class DeckPreviewViewController {
         playDeck.setDisable(disabled);
     }
 
+    public void setDeckVisibility(boolean visibleOnline) {
+        if (visibleOnline) {
+            deckVisibilityIcon.setIconLiteral("mdi2a-account-group");
+
+        } else {
+            deckVisibilityIcon.setIconLiteral("mdi2a-account-lock");
+        }
+    }
+
 
     /* ====================================================================== */
     /*                              Click Handlers                            */
@@ -88,7 +99,7 @@ public class DeckPreviewViewController {
 
     @FXML
     private void handlePlayDeckClicked() {
-        listener.onPlayDeckClicked();
+        listener.playDeckClicked();
     }
 
     @FXML
@@ -97,12 +108,44 @@ public class DeckPreviewViewController {
         borderPane.requestFocus();
     }
 
+    @FXML
+    private void handleDeckVisibilityClicked() {
+        listener.deckVisibilityChanged();
+    }
+
+    @FXML
+    private void handleDeckVisibilityEntered() {
+        deckVisibilityIcon.setIconColor(Color.WHITE);
+    }
+
+    @FXML
+    private void handleDeckVisibilityExited() {
+        deckVisibilityIcon.setIconColor(Color.BLACK);
+    }
+
+    @FXML
+    private void handlePlayDeckEntered() {
+        String style = "-fx-background-color: transparent;";
+        playDeck.setStyle(style + "-fx-text-fill: white;");
+        playDeckIcon.setIconColor(Color.WHITE);
+    }
+
+    @FXML
+    private void handlePlayDeckExited() {
+        String style = "-fx-background-color: transparent;";
+        playDeck.setStyle(style + "-fx-text-fill: black;");
+        playDeckIcon.setIconColor(Color.BLACK);
+    }
+
+
+
 
     /* ====================================================================== */
     /*                              Listener                                  */
     /* ====================================================================== */
 
     public interface Listener {
-        void onPlayDeckClicked();
+        void playDeckClicked();
+        void deckVisibilityChanged();
     }
 }
