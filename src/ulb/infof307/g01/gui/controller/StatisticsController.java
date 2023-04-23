@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatisticsController implements StatisticsViewController.Listener {
+public class StatisticsController {
     private final Stage stage;
     private final ErrorHandler errorHandler;
     private final MainWindowViewController mainWindowViewController;
@@ -48,8 +48,6 @@ public class StatisticsController implements StatisticsViewController.Listener {
 
         this.statisticsViewController
                 = mainWindowViewController.getStatisticsViewController();
-
-        statisticsViewController.setListener(this);
     }
 
 
@@ -116,6 +114,5 @@ public class StatisticsController implements StatisticsViewController.Listener {
                         game.score());
 
         return node;
-
     }
 }

@@ -2,7 +2,7 @@ package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
-import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
+import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
@@ -21,46 +21,56 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     private final PlayDeckViewController playDeckViewController;
     private final ControllerListener controllerListener;
     private final ErrorHandler errorHandler;
-    private final LeaderboardDAO leaderboardDAO;
-    private final Score score;
-    private final CardExtractor cardExtractor;
+    private final ScoreDAO scoreDAO;
+    private final UserSessionDAO userDAO;
+    private Score score;
+    private CardExtractor cardExtractor;
+
     private Card currentCard;
     private boolean frontShown = true;
-    private boolean[] answeredCards;    // needed because user can go back to previous question
+    private boolean[] answeredCards;
 
+    public void setDeck(Deck deck) throws EmptyDeckException {
+        if (deck == null || deck.cardCount() == 0)
+            throw new EmptyDeckException("Deck does not contain any cards.");
+
+        cardExtractor = new CardExtractorRandom(deck);
+        currentCard = cardExtractor.getNextCard();
+        this.score = Score.createNewScore(userDAO.getUsername(), deck.getId());
+        this.answeredCards = new boolean[deck.cardCount()];
+        Arrays.fill(answeredCards, false);
+        this.scoreDAO.setToken(userDAO.getToken());
+
+        playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+        playDeckViewController.setDeckName(deck.getName());
+        playDeckViewController.setNumberOfCards(deck.cardCount());
+    }
+
+    public void removeDeck() {
+        cardExtractor = null;
+        currentCard = null;
+        this.score = null;
+        this.answeredCards = null;
+    }
 
     /* ====================================================================== */
     /*                              Constructor                               */
     /* ====================================================================== */
 
-    public PlayDeckController(Stage stage, Deck deck,
+    public PlayDeckController(Stage stage,
                               MainWindowViewController mainWindowViewController,
                               ControllerListener controllerListener,
                               ErrorHandler errorHandler,
-                              LeaderboardDAO leaderboardDAO, UserSessionDAO userDAO) {
+                              ScoreDAO scoreDAO, UserSessionDAO userDAO) {
 
         this.stage = stage;
-        this.cardExtractor = new CardExtractorRandom(deck);
-        this.currentCard = cardExtractor.getNextCard();
-        this.score = Score.createNewScore(userDAO.getUsername(), deck.getId());
-        this.answeredCards = new boolean[deck.cardCount()];
-        Arrays.fill(answeredCards, false);
-        this.leaderboardDAO = leaderboardDAO;
-        this.leaderboardDAO.setToken(userDAO.getToken());
-
-        if (currentCard == null)
-            throw new EmptyDeckException("Deck does not contain any cards.");
-
+        this.userDAO = userDAO;
+        this.scoreDAO = scoreDAO;
         this.controllerListener = controllerListener;
         this.errorHandler = errorHandler;
         this.mainWindowViewController = mainWindowViewController;
-        mainWindowViewController.makeGoBackIconVisible();
-
         this.playDeckViewController = mainWindowViewController.getPlayDeckViewController();
         playDeckViewController.setListener(this);
-        playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
-        playDeckViewController.setDeckName(deck.getName());
-        playDeckViewController.setNumberOfCards(deck.cardCount());
     }
 
 
@@ -68,7 +78,11 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     /*                         Stage Manipulation                             */
     /* ====================================================================== */
 
-    public void show() {
+    public void show() throws EmptyDeckException {
+
+        if (cardExtractor == null)
+            throw new EmptyDeckException("Deck has not been set.");
+
         mainWindowViewController.setPlayDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
@@ -112,9 +126,11 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         }
 
         try {
-            leaderboardDAO.addScore(score);
+            scoreDAO.addScore(score);
+
         } catch (Exception e) {
             errorHandler.failedAddScore(e);
+
         } finally {
             controllerListener.finishedPlayingDeck(score);
         }
