@@ -7,7 +7,14 @@
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<StackPane fx:id="stackPane" maxHeight="175.0" maxWidth="500.0" minHeight="150.0" minWidth="280.0" onMouseClicked="#handleDoubleDeckClicked" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
+<StackPane fx:id="stackPane"
+           maxHeight="175.0"
+           maxWidth="500.0"
+           minHeight="150.0"
+           minWidth="280.0"
+           xmlns="http://javafx.com/javafx/17.0.2-ea"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController">
 
     <!-- backgroundImage and colorRect dimensions are set dynamically in the DeckViewController  -->
     <ImageView fx:id="imageBackground" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
@@ -16,11 +23,11 @@
 
         <HBox alignment="CENTER_RIGHT">
 
-            <!-- Remove deck button -->
-            <Button onMouseClicked="#handleRemoveDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
+            <!-- add/remove deck button -->
+            <Button onMouseClicked="#handleAddRemoveDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
 
                 <graphic>
-                    <FontIcon fx:id="removeDeckIcon" iconLiteral="mdi2d-delete" iconSize="25" onMouseEntered="#handleHoverRemoveDeck" onMouseExited="#handleHoverRemoveDeckExit" />
+                    <FontIcon fx:id="removeDeckIcon" iconLiteral="mdi2d-delete" iconSize="25" onMouseEntered="#handleAddRemoveDeckHover" onMouseExited="#handleAddRemoveDeckExit" />
                 </graphic>
 
             </Button>

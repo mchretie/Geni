@@ -6,12 +6,14 @@
 <?import javafx.scene.control.Button?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController">
    <!-- Search bar-->
    <top>
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <ComboBox fx:id="comboBox" />
-         <TextField fx:id="searchBar" alignment="CENTER" onKeyReleased="#handleSearchDeckEvent" prefWidth="200.0" promptText="Rechercher des paquets / tags" />
+         <TextField fx:id="searchBar" alignment="CENTER" onKeyReleased="#handleSearchDeckEvent" prefWidth="200.0" promptText="Rechercher des paquets" />
          <!-- Search Button-->
          <Button layoutY="5" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent;">
 

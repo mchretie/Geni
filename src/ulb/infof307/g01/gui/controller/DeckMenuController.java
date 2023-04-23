@@ -10,8 +10,6 @@ import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.util.DeckIO;
 import ulb.infof307.g01.gui.util.ImageLoader;
-import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
-import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController.SearchType;
