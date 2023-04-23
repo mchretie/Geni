@@ -340,10 +340,10 @@ public class DeckDAO extends DAO {
                 DO NOTHING
                 """;
 
-        for (int i = 0; i < card.getAnswers().size(); i++)
+        for (int i = 0; i < card.getChoicesCount(); i++)
             database.executeUpdate(upsertMCQCardAnswer,
                                      card.getId().toString(),
-                                     card.getAnswers().get(i),
+                                     card.getChoice(i),
                                      i);
     }
 
@@ -363,17 +363,20 @@ public class DeckDAO extends DAO {
 
     private void saveCard(Card card) throws DatabaseException {
         String upsertCard = """
-                INSERT INTO card (card_id, deck_id, front)
-                VALUES (?, ?, ?)
+                INSERT INTO card (card_id, deck_id, front, countdown_time)
+                VALUES (?, ?, ?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET front = ?
+                DO UPDATE SET front = ? , countdown_time = ?
                 """;
 
+        System.out.println("before sql query");
         database.executeUpdate(upsertCard,
                 card.getId().toString(),
                 card.getDeckId().toString(),
                 card.getFront(),
-                card.getFront());
+                card.getCountdownTime(),
+                card.getFront(),
+                card.getCountdownTime());
 
         if (card instanceof FlashCard)
             saveCard((FlashCard) card);
@@ -398,7 +401,8 @@ public class DeckDAO extends DAO {
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             String front = res.getString("front");
             String back = res.getString("back");
-            return new FlashCard(uuid, deckId, front, back);
+            Integer countdownTime = res.getInt("countdown_time");
+            return new FlashCard(uuid, deckId, front, back, countdownTime);
         } catch (SQLException e) {
             throw new DatabaseException((e.getMessage()));
         }
@@ -406,7 +410,7 @@ public class DeckDAO extends DAO {
 
     private List<FlashCard> getFlashCardsFor(UUID deckUuid) throws DatabaseException {
         String sql = """
-                SELECT card.card_id, deck_id, front, back
+                SELECT card.card_id, deck_id, front, back, countdown_time
                 FROM card
                 INNER JOIN flash_card
                 ON card.card_id = flash_card.card_id
@@ -425,9 +429,10 @@ public class DeckDAO extends DAO {
             UUID uuid = UUID.fromString(res.getString("card_id"));
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             String front = res.getString("front");
+            Integer countdownTime = res.getInt("countdown_time");
             int correctAnswerIndex = Integer.parseInt(res.getString("correct_answer_index"));
             List<String> answers = getMCQAnswersFor(uuid);
-            return new MCQCard(uuid, deckId, front, answers, correctAnswerIndex);
+            return new MCQCard(uuid, deckId, front, answers, correctAnswerIndex, countdownTime);
         } catch (SQLException e) {
             throw new DatabaseException((e.getMessage()));
         }
@@ -450,7 +455,7 @@ public class DeckDAO extends DAO {
 
     private List<MCQCard> getMCQCardsFor(UUID deckUuid) throws DatabaseException {
         String sql = """
-                SELECT card.card_id, deck_id, front, correct_answer_index
+                SELECT card.card_id, deck_id, front, correct_answer_index, countdown_time
                 FROM card
                 INNER JOIN mcq_card
                 ON card.card_id = mcq_card.card_id
@@ -469,8 +474,9 @@ public class DeckDAO extends DAO {
             UUID uuid = UUID.fromString(res.getString("card_id"));
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             String front = res.getString("front");
+            Integer countdownTime = res.getInt("countdown_time");
             String answer = res.getString("answer");
-            return new InputCard(uuid, deckId, front, answer);
+            return new InputCard(uuid, deckId, front, answer, countdownTime);
         } catch (SQLException e) {
             throw new DatabaseException((e.getMessage()));
         }
@@ -478,7 +484,7 @@ public class DeckDAO extends DAO {
 
     private List<InputCard> getInputCardsFor(UUID deckUuid) throws DatabaseException {
         String sql = """
-                SELECT card.card_id, deck_id, front, answer
+                SELECT card.card_id, deck_id, front, answer, countdown_time
                 FROM card
                 INNER JOIN input_card
                 ON card.card_id = input_card.card_id
