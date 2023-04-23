@@ -23,8 +23,4 @@ class Game {
   int getScore() {
     return int.parse(score);
   }
-
-  int compareTo(Game o) {
-    return o.timestamp.compareTo(timestamp);
-  }
 }

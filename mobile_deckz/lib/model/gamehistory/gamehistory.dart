@@ -2,11 +2,11 @@ import 'dart:core';
 
 import 'package:mobile_deckz/model/gamehistory/game.dart';
 
-class GameHistory extends Iterable<Game> {
+class GameHistory {
   final List<Game> games;
 
   GameHistory({required this.games}) {
-    games.sort();
+    games.sort((a, b) => a.timestamp.compareTo(b.timestamp));
   }
 
   factory GameHistory.fromJson(Map<String, dynamic> json, String username) {
@@ -25,8 +25,4 @@ class GameHistory extends Iterable<Game> {
     return games.map((game) => game.getScore()).reduce((a, b) => a + b);
 
   }
-
-  @override
-  // TODO: implement iterator
-  Iterator<Game> get iterator => throw UnimplementedError();
 }
