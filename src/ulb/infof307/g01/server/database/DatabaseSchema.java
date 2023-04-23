@@ -85,7 +85,7 @@ class DatabaseSchema {
         CREATE TABLE IF NOT EXISTS marketplace (
             deck_id TEXT PRIMARY KEY,
             rating INTEGER,
-            download INTEGER NOT NULL,
+            downloads INTEGER NOT NULL,
             FOREIGN KEY (deck_id)
                 REFERENCES deck(deck_id)
                 ON DELETE CASCADE

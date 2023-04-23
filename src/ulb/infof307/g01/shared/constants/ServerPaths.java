@@ -38,4 +38,12 @@ public final class ServerPaths {
     public static final String GAME_HISTORY_BASE_PATH = BASE + "/game-history";
     public static final String GAME_HISTORY_PATH = GAME_HISTORY_BASE_PATH + "/get";
     public static final String SPECIFIC_GAME_HISTORY_PATH = GAME_HISTORY_PATH + "/deck";
+
+  // Used by MarketplaceHandler
+  public static final String MARKETPLACE_BASE_PATH = BASE + "/marketplace";
+  public static final String GET_MARKETPLACE_PATH = MARKETPLACE_BASE_PATH + "/get";
+  public static final String ADD_DECK_TO_MARKETPLACE_PATH = MARKETPLACE_BASE_PATH + "/add";
+  public static final String REMOVE_DECK_FROM_MARKETPLACE_PATH = MARKETPLACE_BASE_PATH + "/delete";
+  public static final String ADD_DECK_TO_COLLECTION_PATH = MARKETPLACE_BASE_PATH + "/add-collection";
+  public static final String REMOVE_DECK_FROM_COLLECTION_PATH = MARKETPLACE_BASE_PATH + "/delete-collection";
 }

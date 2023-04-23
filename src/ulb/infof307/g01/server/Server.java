@@ -4,6 +4,7 @@ import spark.Spark;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.server.handler.DeckRequestHandler;
+import ulb.infof307.g01.server.handler.MarketplaceRequestHandler;
 import ulb.infof307.g01.server.handler.ScoreRequestHandler;
 import ulb.infof307.g01.server.handler.UserAccountHandler;
 import ulb.infof307.g01.server.handler.GameHistoryRequestHandler;
@@ -59,9 +60,10 @@ public class Server {
     }
 
     private void launchHandlers() {
-        new DeckRequestHandler(jwtService,db).init();
-        new UserAccountHandler(jwtService, db).init();
+        new DeckRequestHandler(db, jwtService).init();
+        new UserAccountHandler(db, jwtService).init();
         new ScoreRequestHandler(db, jwtService).init();
         new GameHistoryRequestHandler(db, jwtService).init();
+        new MarketplaceRequestHandler(db, jwtService).init();
     }
 }
