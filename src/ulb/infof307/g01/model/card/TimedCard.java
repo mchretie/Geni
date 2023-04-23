@@ -18,6 +18,7 @@ public class TimedCard extends Card{
     protected TimedCard(UUID uuid, UUID deckId, String front, Integer countdownTime) {
         super(uuid, deckId, front);
         this.countdownTime = countdownTime;
+        this.countdownTime = 10; // TODO : delete this ! (just for testing)
     }
 
     public void setCountdownTime(Integer countdownTime) {

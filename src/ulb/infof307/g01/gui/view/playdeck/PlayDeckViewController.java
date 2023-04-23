@@ -16,10 +16,7 @@ import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.util.GridPosIterator;
 import ulb.infof307.g01.gui.util.Pos2D;
-import ulb.infof307.g01.model.card.Card;
-import ulb.infof307.g01.model.card.FlashCard;
-import ulb.infof307.g01.model.card.InputCard;
-import ulb.infof307.g01.model.card.MCQCard;
+import ulb.infof307.g01.model.card.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,7 +97,16 @@ public class PlayDeckViewController {
         showFrontOfCard();
     }
 
-    public void setTimer(int seconds) {
+    public void setTimer() {
+        if (currentCard instanceof FlashCard) {
+            this.countdown.setVisible(false);
+            return;
+        }
+
+        this.countdown.setVisible(true);
+        Integer seconds = ((TimedCard) currentCard).getCountdownTime();
+        System.out.println("time to go is" + seconds);
+
         countdown.setStyle("-fx-accent: GREEN");
 
         Timeline timeline = new Timeline(
