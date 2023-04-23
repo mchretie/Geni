@@ -259,6 +259,7 @@ public class MainWindowViewController implements Initializable {
 
     private void alert(String title, String description, Alert.AlertType type) {
         Alert alert = new Alert(type);
+        alert.initOwner(borderPane.getScene().getWindow());
         alert.initStyle(StageStyle.UNDECORATED);
         alert.setHeaderText(title);
         alert.setContentText(description);
