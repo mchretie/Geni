@@ -138,14 +138,17 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     }
 
     @Override
-    public void onChoiceEntered(boolean isGoodChoice) {
+    //timeLeft param : 0 if time is up, 1 if answered instantly
+    public void onChoiceEntered(boolean isGoodChoice, double timeLeft) {
         int cardIndex = cardExtractor.getCurrentCardIndex();
         if (answeredCards[cardIndex])
             return;
 
         answeredCards[cardIndex] = true;
-        if (isGoodChoice)
-            score.increment(1);
+        if (isGoodChoice) {
+            score.increment((int) (100 * timeLeft));
+            System.out.println("incremented score of " + (int) (100 * timeLeft));
+        }
     }
 
 

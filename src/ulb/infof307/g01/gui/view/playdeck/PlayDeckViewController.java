@@ -228,7 +228,7 @@ public class PlayDeckViewController {
             checkIcon.setIconColor(Color.WHITE);
             stopCountdown();
             showCorrectAnswers();
-            listener.onChoiceEntered(isCorrectChoice);
+            listener.onChoiceEntered(isCorrectChoice, countdown.getProgress());
         });
 
         return checkButton;
@@ -291,7 +291,6 @@ public class PlayDeckViewController {
     @FXML
     private void handleInputText() {
         InputCard card = (InputCard) currentCard;
-        stopCountdown();
 
         inputTextField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
         inputTextField.setDisable(true);
@@ -303,7 +302,8 @@ public class PlayDeckViewController {
 
         boolean correct = card.isInputCorrect(input);
 
-        listener.onChoiceEntered(correct);
+        stopCountdown();
+        listener.onChoiceEntered(correct, countdown.getProgress());
 
         if (!correct) showInput(input, false);
 
@@ -374,6 +374,6 @@ public class PlayDeckViewController {
 
         void previousCardClicked();
 
-        void onChoiceEntered(boolean isGoodChoice);
+        void onChoiceEntered(boolean isGoodChoice, double timeLeft);
     }
 }
