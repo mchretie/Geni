@@ -6,7 +6,7 @@ import ulb.infof307.g01.model.IndulgentValidator;
 import java.util.Objects;
 import java.util.UUID;
 
-public class InputCard extends Card {
+public class InputCard extends TimedCard {
 
     @Expose
     private String answer;
