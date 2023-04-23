@@ -440,7 +440,9 @@ public class MainFxController extends Application implements
                     stage,
                     mainWindowViewController,
                     this,
-                    errorHandler);
+                    errorHandler,
+                    deckDAO,
+                    userSessionDAO);
 
             resetViewStack(View.MARKETPLACE);
             marketplaceController.show();
