@@ -19,7 +19,7 @@ public class Card {
         this.id = UUID.randomUUID();
     }
 
-    protected Card (String front) {
+    protected Card(String front) {
         this.id = UUID.randomUUID();
         this.front = front;
     }

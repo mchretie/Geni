@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import static org.eclipse.jetty.util.TypeUtil.asList;
 
-public class MCQCard extends Card {
+public class MCQCard extends TimedCard {
 
     @Expose
     private final List<String> answers;
