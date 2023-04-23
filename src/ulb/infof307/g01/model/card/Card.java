@@ -12,6 +12,9 @@ public class Card {
     private String front;
 
     @Expose
+    private Integer countdownTime = 30;
+
+    @Expose
     protected String cardType;
 
     protected Card() {
@@ -19,24 +22,47 @@ public class Card {
         this.id = UUID.randomUUID();
     }
 
-    protected Card (String front) {
+    protected Card(String front) {
         this.id = UUID.randomUUID();
         this.front = front;
     }
 
-    protected Card(UUID uuid, UUID deckId, String front) {
+    protected Card(UUID uuid, UUID deckId, String front, Integer countdownTime) {
         this.id = uuid;
         this.deckId = deckId;
         this.front = front;
+        this.countdownTime = countdownTime;
     }
-
-    public String getFront() { return front; }
-    public UUID getId() { return id; }
-    public UUID getDeckId() { return deckId; }
 
     public void generateNewId() {
         this.id = UUID.randomUUID();
     }
-    public void setFront(String front) { this.front = front; }
-    public void setDeckId(UUID deckId) { this.deckId = deckId; }
+
+    public String getFront() {
+        return front;
+    }
+
+    public Integer getCountdownTime() {
+        return countdownTime;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public UUID getDeckId() {
+        return deckId;
+    }
+
+    public void setFront(String front) {
+        this.front = front;
+    }
+
+    public void setDeckId(UUID deckId) {
+        this.deckId = deckId;
+    }
+
+    public void setCountdownTime(Integer countdownTime) {
+        this.countdownTime = countdownTime;
+    }
 }

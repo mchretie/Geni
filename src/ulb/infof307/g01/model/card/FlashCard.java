@@ -5,7 +5,6 @@ import com.google.gson.annotations.Expose;
 import java.util.Objects;
 import java.util.UUID;
 
-
 public class FlashCard extends Card {
     @Expose
     private String back;
@@ -16,15 +15,19 @@ public class FlashCard extends Card {
         this.cardType = "FlashCard";
     }
 
-    public FlashCard(UUID uuid, UUID deckId, String front, String back) {
-        super(uuid, deckId, front);
+    public FlashCard(UUID uuid, UUID deckId, String front, String back, Integer countdownTime) {
+        super(uuid, deckId, front, countdownTime);
         this.back = back;
         this.cardType = "FlashCard";
     }
 
-    public String getBack() { return back; }
+    public String getBack() {
+        return back;
+    }
 
-    public void setBack(String back) { this.back = back; }
+    public void setBack(String back) {
+        this.back = back;
+    }
 
     @Override
     public int hashCode() {
@@ -32,8 +35,7 @@ public class FlashCard extends Card {
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         UUID id = this.getId();
         UUID deckId = this.getDeckId();
         String front = this.getFront();
@@ -46,7 +48,7 @@ public class FlashCard extends Card {
         FlashCard other = (FlashCard) o;
         return id.equals(other.getId())
                 && (deckId == other.getDeckId() || deckId.equals(other.getDeckId()))
-                && front.equals(other.getFront()) && back.equals(other.getBack());
+                && front.equals(other.getFront())
+                && back.equals(other.getBack());
     }
-
 }

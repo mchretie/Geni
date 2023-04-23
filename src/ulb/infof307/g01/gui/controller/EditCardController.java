@@ -52,11 +52,13 @@ public class EditCardController implements EditCardViewController.Listener {
             Element body = doc.body();
             body.removeAttr("contenteditable");
 
+            card.setCountdownTime(50);
+
             if (front)
                 card.setFront(doc.html());
             else
                 ((FlashCard) card).setBack(doc.html());
-
+            System.out.println("Saving card ");
             deckDAO.saveDeck(deck);
             controllerListener.savedChanges();
 

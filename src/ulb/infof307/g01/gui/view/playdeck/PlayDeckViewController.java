@@ -14,6 +14,8 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.gui.util.GridPosIterator;
+import ulb.infof307.g01.gui.util.Pos2D;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
@@ -21,6 +23,7 @@ import ulb.infof307.g01.model.card.MCQCard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class PlayDeckViewController {
 
@@ -186,13 +189,13 @@ public class PlayDeckViewController {
 
         MCQCard card = (MCQCard) currentCard;
         int correctChoiceIndex = card.getCorrectChoiceIndex();
+        Iterator<Pos2D> positions = new GridPosIterator(2, 2);
 
-        for (int i = 0; i < card.getNbOfChoices(); i++) {
-            int row = i / 2;
-            int col = i % 2;
+        for (int i = 0; i < card.getChoicesCount(); i++) {
+            Pos2D pos = positions.next();
             boolean isCorrectAnswer = (correctChoiceIndex == i);
             Button answer = addAnswer(card.getChoice(i), isCorrectAnswer, colors.get(i));
-            choicesGrid.add(answer, col, row);
+            choicesGrid.add(answer, pos.col, pos.row);
         }
     }
 

@@ -28,6 +28,7 @@ class DatabaseScheme {
             card_id TEXT PRIMARY KEY,
             deck_id TEXT NOT NULL,
             front TEXT NOT NULL,
+            countdown_time INTEGER,
             FOREIGN KEY (deck_id)
                 REFERENCES deck(deck_id)
                 ON DELETE CASCADE

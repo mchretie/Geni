@@ -1,13 +1,12 @@
 package ulb.infof307.g01.model.card;
 
 import com.google.gson.annotations.Expose;
-
 import ulb.infof307.g01.model.IndulgentValidator;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public class InputCard extends Card {
+public class InputCard extends TimedCard {
 
     @Expose
     private String answer;
@@ -18,15 +17,19 @@ public class InputCard extends Card {
         this.cardType = "InputCard";
     }
 
-    public InputCard(UUID uuid, UUID deckId, String front, String answer) {
-        super(uuid, deckId, front);
+    public InputCard(UUID uuid, UUID deckId, String front, String answer, Integer countdownTime) {
+        super(uuid, deckId, front, countdownTime);
         this.answer = answer;
         this.cardType = "InputCard";
     }
 
-    public String getAnswer() { return answer; }
+    public String getAnswer() {
+        return answer;
+    }
 
-    public void setAnswer(String answer) { this.answer = answer; }
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
 
     public boolean isInputCorrect(String input) {
         IndulgentValidator validator = new IndulgentValidator();
@@ -39,8 +42,7 @@ public class InputCard extends Card {
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         UUID id = this.getId();
         UUID deckId = this.getDeckId();
         String front = this.getFront();

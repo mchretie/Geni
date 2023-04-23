@@ -195,7 +195,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void choiceModified(MCQCard mcqCard, String text, int index) {
         try {
-            mcqCard.setAnswer(index, text);
+            mcqCard.setChoice(index, text);
             deckDAO.saveDeck(deck);
             editDeckViewController.showCards();
 
@@ -207,7 +207,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void correctChoiceChanged(MCQCard mcqCard, int index) {
         try {
-            mcqCard.setCorrectAnswer(index);
+            mcqCard.setCorrectChoice(index);
             deckDAO.saveDeck(deck);
             editDeckViewController.showCards();
 
@@ -219,7 +219,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void choiceRemoved(MCQCard mcqCard, int index) {
         try {
-            mcqCard.removeAnswer(index);
+            mcqCard.removeChoice(index);
             deckDAO.saveDeck(deck);
             editDeckViewController.showCards();
 
@@ -231,7 +231,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void choiceAdded(MCQCard mcqCard) {
         try {
-            mcqCard.addAnswer("Nouvelle réponse");
+            mcqCard.addChoice("Nouvelle réponse");
             deckDAO.saveDeck(deck);
             editDeckViewController.showCards();
 

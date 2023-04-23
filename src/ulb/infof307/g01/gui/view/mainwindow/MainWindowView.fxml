@@ -10,7 +10,8 @@
 
     <!-- Top navigation bar -->
     <top>
-        <HBox alignment="CENTER"
+        <HBox fx:id="topHBox"
+              alignment="CENTER"
               prefHeight="50.0"
               style="-fx-background-color: #449a6c;"
               xmlns="http://javafx.com/javafx"
@@ -73,10 +74,9 @@
         </StackPane>
     </center>
 
-
     <!-- Bottom navigation bar -->
     <bottom>
-        <HBox alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #449a6c;">
+        <HBox fx:id="bottomHBox" alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #449a6c;">
 
             <!-- Home button -->
             <Button fx:id="homeButton" layoutX="300.0" mnemonicParsing="false" onMouseClicked="#goToHomeClicked" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
