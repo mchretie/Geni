@@ -1,6 +1,6 @@
 import 'dart:core';
 
-import 'package:mobile_deckz/model/gamehistory/game.dart';
+import 'package:mobile_deckz/model/game_history/game.dart';
 
 class GameHistory {
   final List<Game> games;
