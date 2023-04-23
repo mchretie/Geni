@@ -14,18 +14,18 @@ import java.util.*;
 
 
 public class Deck implements Iterable<Card> {
-    protected UUID id;
+    private UUID id;
 
     @Expose
-    protected String name;
+    private String name;
     @Expose
-    protected final List<Card> cards;
+    private final List<Card> cards;
     @Expose
-    protected final List<Tag> tags;
+    private final List<Tag> tags;
     @Expose
-    protected String color;
+    private String color;
     @Expose
-    protected String image;
+    private String image;
 
     public Deck(String name) {
         this(name,
