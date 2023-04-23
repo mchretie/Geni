@@ -163,12 +163,6 @@ public class DeckDAO extends HttpDAO {
         return deckCache.getAllDecksMetadata().size();
     }
 
-    @Override
-    public void setToken(String token) {
-        deckCache = null;
-        super.setToken(token);
-    }
-
     public void uploadImage(File image, String filename)
             throws IOException, InterruptedException {
 
@@ -177,4 +171,15 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
     }
+
+    public void emptyCache() {
+        deckCache = null;
+    }
+
+    @Override
+    public void setToken(String token) {
+        deckCache = null;
+        super.setToken(token);
+    }
+
 }

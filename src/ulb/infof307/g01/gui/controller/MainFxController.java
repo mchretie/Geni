@@ -213,6 +213,7 @@ public class MainFxController extends Application implements
                 errorHandler,
                 userSessionDAO,
                 scoreDAO,
+                deckDAO,
                 gameHistoryDAO);
     }
 
@@ -477,6 +478,16 @@ public class MainFxController extends Application implements
             viewStack.add(View.LOGIN_PROFILE);
 
         } catch (IOException e) {
+            errorHandler.failedLoading(e);
+        }
+    }
+
+    @Override
+    public void deckPreviewClosed() {
+        try {
+            deckMenuController.show();
+
+        } catch (IOException | InterruptedException e) {
             errorHandler.failedLoading(e);
         }
     }

@@ -164,7 +164,7 @@ public class MainWindowViewController implements Initializable {
             centerStackPane.setEffect(null);
             deckPreviewView.setVisible(false);
             centerStackPane.setDisable(false);
-            makeGoBackIconInvisible();
+            listener.deckPreviewClosed();
         });
 
         popup.setAutoHide(true);
@@ -489,5 +489,6 @@ public class MainWindowViewController implements Initializable {
         void goToCurrentPlayingDeck();
         void goToLeaderboardClicked();
         void goToProfileClicked();
+        void deckPreviewClosed();
     }
 }

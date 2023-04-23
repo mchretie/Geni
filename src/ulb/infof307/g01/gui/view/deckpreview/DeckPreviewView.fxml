@@ -18,17 +18,6 @@
                       -fx-border-color: lightgrey;
                       -fx-background-color: #C3B1E1;">
 
-            <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" >
-                <Button onMouseClicked="#handleExportDeckClicked"
-                        onMouseEntered="#handleExportDeckEntered"
-                        onMouseExited="#handleExportDeckExited"
-                        style="-fx-background-color: transparent">
-
-                    <graphic>
-                        <FontIcon fx:id="exportIcon" iconLiteral="mdi2e-export-variant" iconSize="22"/>
-                    </graphic>
-                </Button>
-            </HBox>
 
               <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                   <Label fx:id="deckNameLabel" text="Deck name" HBox.hgrow="ALWAYS">
@@ -48,11 +37,11 @@
                   </Button>
               </HBox>
 
-            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+            <HBox fx:id="shareDeckHbox" alignment="CENTER_RIGHT" HBox.hgrow="NEVER">
                 <Button onMouseClicked="#handleShareDeckClicked"
                         onMouseEntered="#handleShareDeckEntered"
                         onMouseExited="#handleShareDeckExited"
-                        style="-fx-background-color: transparent">
+                        style="-fx-background-color: transparent" >
 
                     <graphic>
                         <FontIcon fx:id="shareDeckIcon"

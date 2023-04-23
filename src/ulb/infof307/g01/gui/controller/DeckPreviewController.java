@@ -4,9 +4,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
+import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
 import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
+import ulb.infof307.g01.gui.util.DeckIO;
 import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.deckpreview.GameHistoryItemViewController;
@@ -17,6 +19,7 @@ import ulb.infof307.g01.model.gamehistory.GameHistory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +33,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
     private final ErrorHandler errorHandler;
     private final ScoreDAO scoreDAO;
     private final GameHistoryDAO gameHistoryDAO;
+    private final DeckDAO deckDAO;
 
     private Deck deck;
 
@@ -40,6 +44,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
                                  ErrorHandler errorHandler,
                                  UserSessionDAO userSessionDAO,
                                  ScoreDAO scoreDAO,
+                                 DeckDAO deckDAO,
                                  GameHistoryDAO gameHistoryDAO) {
 
         this.stage = stage;
@@ -48,9 +53,12 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         this.errorHandler = errorHandler;
         this.scoreDAO = scoreDAO;
         this.gameHistoryDAO = gameHistoryDAO;
+        this.deckDAO = deckDAO;
 
         scoreDAO.setToken(userSessionDAO.getToken());
+        deckDAO.setToken(userSessionDAO.getToken());
         gameHistoryDAO.setToken(userSessionDAO.getToken());
+
 
         this.deckPreviewViewController
                 = mainWindowViewController.getDeckPreviewViewController();
@@ -131,6 +139,18 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
     @Override
     public void playDeckClicked() {
         controllerListener.onPlayDeckClicked(deck);
+    }
+
+    @Override
+    public void deckShared() {
+        try {
+            deck.switchOnlineVisibility();
+            deckDAO.saveDeck(deck);
+            deckDAO.emptyCache();
+
+        } catch (IOException | InterruptedException e) {
+            errorHandler.savingError(e);
+        }
     }
 
     /* ====================================================================== */
