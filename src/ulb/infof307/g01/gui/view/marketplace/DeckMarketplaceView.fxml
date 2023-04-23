@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+
+<StackPane fx:id="stackPane" maxHeight="175.0" maxWidth="500.0" minHeight="150.0" minWidth="280.0" onMouseClicked="#handleDoubleDeckClicked" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
+
+    <!-- backgroundImage and colorRect dimensions are set dynamically in the DeckViewController  -->
+    <ImageView fx:id="imageBackground" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+
+    <VBox alignment="CENTER" style="-fx-border-color: black;                   -fx-border-radius: 20;">
+
+        <HBox alignment="CENTER_RIGHT">
+
+            <!-- Remove deck button -->
+            <Button onMouseClicked="#handleRemoveDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
+
+                <graphic>
+                    <FontIcon fx:id="removeDeckIcon" iconLiteral="mdi2d-delete" iconSize="25" onMouseEntered="#handleHoverRemoveDeck" onMouseExited="#handleHoverRemoveDeckExit" />
+                </graphic>
+
+            </Button>
+        </HBox>
+
+        <!-- deck name -->
+        <HBox alignment="CENTER" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <Label fx:id="deckNameLabel" prefHeight="17.0" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="22.0" />
+                </font>
+                <HBox.margin>
+                    <Insets />
+                </HBox.margin></Label>
+            <VBox.margin>
+                <Insets left="20.0" right="20.0" />
+            </VBox.margin>
+        </HBox>
+
+        <!-- Banner -->
+        <BorderPane maxHeight="30.0" minHeight="30.0" opacity="0.7" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #939393;">
+            <left>
+                <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="70.0" spacing="10.0">
+                    <Label fx:id="amountCardsLabel" />
+                    <FontIcon iconLiteral="mdi2c-cards" iconSize="25" wrappingWidth="25.0" />
+                </HBox>
+            </left>
+            <right>
+                <HBox alignment="CENTER_RIGHT" layoutX="125.0" layoutY="10.0" prefHeight="30.0" prefWidth="77.0" spacing="10.0">
+                    <Label fx:id="scoreLabel" />
+                    <FontIcon iconLiteral="mdi2t-trophy" iconSize="25" wrappingWidth="25.0" />
+                </HBox>
+            </right>
+            <VBox.margin>
+                <Insets bottom="20.0" />
+            </VBox.margin>
+            <padding>
+                <Insets left="60.0" right="60.0" />
+            </padding>
+        </BorderPane>
+    </VBox>
+</StackPane>

@@ -27,7 +27,7 @@ public class DeckViewController {
     private StackPane stackPane;
 
     @FXML
-    private Label playDeckLabel;
+    private Label deckNameLabel;
 
     @FXML
     private FontIcon editDeckIcon;
@@ -51,7 +51,7 @@ public class DeckViewController {
     private Label amountCardsLabel;
 
     @FXML
-    private Label amountTrophiesLabel;
+    private Label scoreLabel;
 
 
     /* ====================================================================== */
@@ -143,7 +143,7 @@ public class DeckViewController {
 
     private void setStats(String bestScore) {
         amountCardsLabel.setText(String.valueOf(deck.cardCount()));
-        amountTrophiesLabel.setText(bestScore);
+        scoreLabel.setText(bestScore);
     }
 
     private LinearGradient makeGradient(Color color) {
@@ -165,7 +165,7 @@ public class DeckViewController {
     }
 
     private void updateDeckLabelName() {
-        this.playDeckLabel.setText(this.deck.name());
+        this.deckNameLabel.setText(this.deck.name());
     }
 
 
