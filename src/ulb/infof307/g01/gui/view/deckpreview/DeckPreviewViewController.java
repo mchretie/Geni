@@ -109,21 +109,6 @@ public class DeckPreviewViewController {
     }
 
     @FXML
-    private void handleDeckVisibilityClicked() {
-        listener.deckVisibilityChanged();
-    }
-
-    @FXML
-    private void handleDeckVisibilityEntered() {
-        deckVisibilityIcon.setIconColor(Color.WHITE);
-    }
-
-    @FXML
-    private void handleDeckVisibilityExited() {
-        deckVisibilityIcon.setIconColor(Color.BLACK);
-    }
-
-    @FXML
     private void handlePlayDeckEntered() {
         String style = "-fx-background-color: transparent;";
         playDeck.setStyle(style + "-fx-text-fill: white;");
@@ -137,6 +122,32 @@ public class DeckPreviewViewController {
         playDeckIcon.setIconColor(Color.BLACK);
     }
 
+    @FXML
+    private void handleExportDeckClicked() {
+        System.out.println("Export deck clicked");
+    }
+
+    @FXML
+    private void handleExportDeckEntered() {
+    }
+
+    @FXML
+    private void handleExportDeckExited() {
+    }
+
+    @FXML
+    private void handleShareDeckClicked() {
+        System.out.println("Share deck clicked");
+    }
+
+    @FXML
+    private void handleShareDeckEntered() {
+    }
+
+    @FXML
+    private void handleShareDeckExited() {
+    }
+
 
 
 
@@ -146,6 +157,5 @@ public class DeckPreviewViewController {
 
     public interface Listener {
         void playDeckClicked();
-        void deckVisibilityChanged();
     }
 }

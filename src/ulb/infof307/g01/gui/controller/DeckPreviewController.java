@@ -133,12 +133,6 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         controllerListener.onPlayDeckClicked(deck);
     }
 
-    @Override
-    public void deckVisibilityChanged() {
-        deck.switchOnlineVisibility();
-        deckPreviewViewController.setDeckVisibility(deck.isVisibleOnline());
-    }
-
     /* ====================================================================== */
     /*                        Controller Listener                             */
     /* ====================================================================== */

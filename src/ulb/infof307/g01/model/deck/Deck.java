@@ -15,7 +15,6 @@ import java.util.*;
 
 public class Deck implements Iterable<Card> {
     private UUID id;
-    private boolean visible = false;
 
     @Expose
     private String name;
@@ -27,6 +26,8 @@ public class Deck implements Iterable<Card> {
     private String color;
     @Expose
     private String image;
+    @Expose
+    private boolean visible = false;
 
 
     /* ====================================================================== */
