@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_deckz/view/game_history_view.dart';
+
 
 class GameHistoryPage extends StatefulWidget {
   const GameHistoryPage({super.key});
@@ -15,7 +17,7 @@ class _GameHistoryPageState extends State<GameHistoryPage> {
         title: const Text('Game History'),
       ),
       body: const Center(
-        child: Text('Game History'),
+        child: GameHistoryView(),
       ),
     );
   }
