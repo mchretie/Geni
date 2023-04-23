@@ -66,6 +66,7 @@ public class PlayDeckViewController {
     /* ====================================================================== */
 
     private Card currentCard;
+    private boolean hasAnswered = false;
 
 
     /* ====================================================================== */
@@ -105,7 +106,6 @@ public class PlayDeckViewController {
 
         this.countdown.setVisible(true);
         Integer seconds = ((TimedCard) currentCard).getCountdownTime();
-        System.out.println("time to go is" + seconds);
 
         countdown.setStyle("-fx-accent: GREEN");
 
@@ -125,11 +125,13 @@ public class PlayDeckViewController {
 
                 // end time
                 new KeyFrame(Duration.seconds(seconds), e -> {
-                    System.out.println("Time over");
-                    if (this.currentCard instanceof MCQCard) {
-                        showCorrectAnswers();
-                    } else if (this.currentCard instanceof InputCard) {
-                        handleInputText();
+                    if (!hasAnswered) {
+                        System.out.println("Time is up");
+                        if (this.currentCard instanceof MCQCard) {
+                            showCorrectAnswers();
+                        } else if (this.currentCard instanceof InputCard) {
+                            handleInputText();
+                        }
                     }
                 }, new KeyValue(countdown.progressProperty(), 0))
         );
@@ -144,6 +146,11 @@ public class PlayDeckViewController {
     private void showFrontOfCard() {
         String htmlContent = currentCard.getFront();
         cardWebView.getEngine().loadContent(htmlContent);
+    }
+
+    private void stopCountdown() {
+        this.countdown.setVisible(false);
+        this.hasAnswered = true;
     }
 
     /*---------------------Normal Card ---------------------- */
@@ -219,6 +226,7 @@ public class PlayDeckViewController {
 
         checkButton.setOnAction(actionEvent -> {
             checkIcon.setIconColor(Color.WHITE);
+            stopCountdown();
             showCorrectAnswers();
             listener.onChoiceEntered(isCorrectChoice);
         });
@@ -283,6 +291,7 @@ public class PlayDeckViewController {
     @FXML
     private void handleInputText() {
         InputCard card = (InputCard) currentCard;
+        stopCountdown();
 
         inputTextField.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
         inputTextField.setDisable(true);
