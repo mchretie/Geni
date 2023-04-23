@@ -15,8 +15,8 @@ public class TimedCard extends Card{
         super( front);
     }
 
-    protected TimedCard(UUID uuid, UUID deckId, String front) {
-        super(uuid, deckId, front);
+    protected TimedCard(UUID uuid, UUID deckId, String front, Integer countdownTime) {
+        super(uuid, deckId, front, countdownTime);
     }
 
     public void setCountdownTime(Integer countdownTime) {
