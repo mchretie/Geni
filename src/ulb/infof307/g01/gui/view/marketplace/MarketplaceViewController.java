@@ -4,17 +4,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
-import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
+
+import java.util.List;
 
 public class MarketplaceViewController {
     public enum SearchType {
         Name,
-        Username
+        Creator
     }
 
     /* ====================================================================== */
@@ -29,6 +33,9 @@ public class MarketplaceViewController {
 
     @FXML
     private ComboBox<String> comboBox;
+
+    @FXML
+    private FlowPane decksContainer;
 
 
     /* ====================================================================== */
@@ -71,11 +78,28 @@ public class MarketplaceViewController {
         if (searchTypeText.equals("Nom")) {
             searchType = MarketplaceViewController.SearchType.Name;
         } else if (searchTypeText.equals("Username")) {
-            searchType =  MarketplaceViewController.SearchType.Username;
+            searchType =  MarketplaceViewController.SearchType.Creator;
         }
 
         return searchType;
     }
+
+
+    /* ====================================================================== */
+    /*                           Deck Displaying                              */
+    /* ====================================================================== */
+
+    public void setDecks(List<Node> decks) {
+        clearDecksFromGrid();
+
+        for (Node deck : decks) {
+            decksContainer.getChildren().add(deck);
+        }
+
+        // arrange();  //TODO
+    }
+
+    private void clearDecksFromGrid() { decksContainer.getChildren().clear(); }
 
     /* ====================================================================== */
     /*                             Click handlers                             */
