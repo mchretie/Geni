@@ -6,7 +6,6 @@ import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.io.File;
 import java.sql.*;
-import java.util.Arrays;
 
 /**
  * Provide access to database
@@ -71,7 +70,7 @@ public class DatabaseAccess {
      *     DatabaseScheme.
      * </p>
      * @param tables set of updates to init the tables of the database
-     * @see ulb.infof307.g01.server.database.DatabaseScheme
+     * @see DatabaseSchema
      */
     public void initTables(String[] tables) throws DatabaseException {
         executeUpdates(tables);

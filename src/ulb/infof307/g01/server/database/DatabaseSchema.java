@@ -1,6 +1,6 @@
 package ulb.infof307.g01.server.database;
 
-class DatabaseScheme {
+class DatabaseSchema {
 
     public static final String[] SERVER = new String[]{
             """
