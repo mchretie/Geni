@@ -15,9 +15,9 @@ import ulb.infof307.g01.server.service.JWTService;
 import java.util.Map;
 import java.util.UUID;
 
-public class LeaderboardRequestHandler extends Handler {
+public class ScoreRequestHandler extends Handler {
 
-    public LeaderboardRequestHandler(Database database, JWTService jwtService) {
+    public ScoreRequestHandler(Database database, JWTService jwtService) {
         super(database, jwtService);
     }
 
@@ -34,7 +34,6 @@ public class LeaderboardRequestHandler extends Handler {
             String username = usernameFromRequest(req);
             Score score = new Gson().fromJson(req.body(), Score.class);
 
-            // Does this ever happen?
             if (!username.equals(score.getUsername()))
                 throw new RuntimeException("UserId from token doesn't match userId from score.");
 

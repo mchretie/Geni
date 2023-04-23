@@ -2,6 +2,7 @@ package ulb.infof307.g01.server.database;
 
 import ulb.infof307.g01.model.gamehistory.GameHistory;
 import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.deck.Tag;
@@ -41,7 +42,7 @@ public class Database {
     }
 
     public void initServerScheme() {
-        this.databaseAccess.initTables(DatabaseScheme.SERVER);
+        this.databaseAccess.initTables(DatabaseSchema.SERVER);
     }
 
     /* ====================================================================== */
@@ -162,6 +163,10 @@ public class Database {
         scoreDao.addScore(score);
     }
 
+    public void deleteScoresForDeck(UUID deckId) {
+        scoreDao.deleteScoresForDeck(deckId);
+    }
+
     public DeckLeaderboard getLeaderboardFromDeckId(UUID deckId) {
         return new DeckLeaderboard(deckId, scoreDao.getScoresForDeck(deckId));
     }
@@ -172,5 +177,34 @@ public class Database {
 
     public GameHistory getGameHistory(UUID userId) {
         return new GameHistory(scoreDao.getGameHistory(userId));
+    }
+
+    public GameHistory getGameHistory(UUID userId, UUID deckId) {
+        return new GameHistory(scoreDao.getGameHistory(userId, deckId));
+    }
+
+
+    /* ====================================================================== */
+    /*                              Marketplace                                     */
+    /* ====================================================================== */
+
+    public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {
+        return deckDao.getMarketplaceDecksMetadata();
+    }
+
+    public void addDeckToMarketplace(UUID deckId) throws DatabaseException {
+        deckDao.addDeckToMarketplace(deckId);
+    }
+
+    public void removeDeckFromMarketplace(UUID deckId) throws DatabaseException {
+        deckDao.removeDeckFromMarketplace(deckId);
+    }
+
+    public void addDeckToUserCollection(UUID deckId, UUID userId) throws DatabaseException {
+        deckDao.addDeckToUserCollection(deckId, userId);
+    }
+
+    public void removeDeckFromUserCollection(UUID deckId, UUID userId) throws DatabaseException {
+        deckDao.removeDeckFromUserCollection(deckId, userId);
     }
 }

@@ -4,32 +4,17 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController">
+<BorderPane fx:id="borderPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController">
 
     <!-- Top navigation bar -->
     <top>
-        <HBox fx:id="topHBox"
-              alignment="CENTER"
-              prefHeight="50.0"
-              style="-fx-background-color: #449a6c;"
-              xmlns="http://javafx.com/javafx"
-              xmlns:fx="http://javafx.com/fxml">
+        <HBox fx:id="topHBox" alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #C3B1E1#C3B1E1;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
 
             <!-- Go back button -->
-            <Button mnemonicParsing="false"
-                    onMouseClicked="#handleGoBackClicked"
-                    prefHeight="100.0" prefWidth="61.0"
-                    style="-fx-background-color: transparent;"
-                    BorderPane.alignment="CENTER_LEFT">
+            <Button mnemonicParsing="false" onMouseClicked="#handleGoBackClicked" prefHeight="100.0" prefWidth="61.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER_LEFT">
 
                 <graphic>
-                    <FontIcon fx:id="goBackIcon"
-                              iconLiteral="mdi2k-keyboard-backspace"
-                              iconSize="48"
-                              onMouseEntered="#handleGoBackHover"
-                              onMouseExited="#handleGoBackExitHover" />
+                    <FontIcon fx:id="goBackIcon" iconLiteral="mdi2k-keyboard-backspace" iconSize="48" onMouseEntered="#handleGoBackHover" onMouseExited="#handleGoBackExitHover" />
 
                 </graphic>
             </Button>
@@ -37,19 +22,10 @@
             <Region prefHeight="50.0" HBox.hgrow="ALWAYS" />
 
             <!-- User profile button -->
-            <Button fx:id="profileButton"
-                    onMouseClicked="#handleProfileClicked"
-                    mnemonicParsing="false"
-                    prefHeight="50.0" prefWidth="50.0"
-                    style="-fx-background-color: transparent;"
-                    BorderPane.alignment="CENTER">
+            <Button fx:id="profileButton" mnemonicParsing="false" onMouseClicked="#handleProfileClicked" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
 
                 <graphic>
-                    <FontIcon fx:id="userProfileIcon"
-                              iconLiteral="mdi2a-account"
-                              iconSize="50"
-                              onMouseEntered="#handleUserProfileHover"
-                              onMouseExited="#handleUserProfileExitHover" />
+                    <FontIcon fx:id="userProfileIcon" iconLiteral="mdi2a-account" iconSize="50" onMouseEntered="#handleUserProfileHover" onMouseExited="#handleUserProfileExitHover" />
 
                 </graphic>
             </Button>
@@ -71,13 +47,14 @@
             <fx:include fx:id="leaderboardView" source="../leaderboard/GlobalLeaderboardView.fxml" />
             <fx:include fx:id="guestModeLeaderboardView" source="../leaderboard/GuestModeLeaderboardView.fxml" />
             <fx:include fx:id="statisticsView" source="../statistics/StatisticsView.fxml" />
+            <fx:include fx:id="deckPreviewView" source="../deckpreview/DeckPreviewView.fxml" />
             <fx:include fx:id="marketplaceView" source="../marketplace/MarketplaceView.fxml" />
         </StackPane>
     </center>
 
     <!-- Bottom navigation bar -->
     <bottom>
-        <HBox fx:id="bottomHBox" alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #449a6c;">
+        <HBox fx:id="bottomHBox" alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #C3B1E1;">
 
             <!-- Marketplace button -->
             <Button fx:id="marketplaceButton" layoutX="300.0" mnemonicParsing="false" onMouseClicked="#goToMarketplaceClicked" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">

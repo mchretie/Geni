@@ -24,154 +24,154 @@ import static java.util.stream.Collectors.toList;
 
 public class DeckRequestHandler extends Handler {
 
-  public DeckRequestHandler(JWTService jwtService, Database database) {
-    super(database, jwtService);
-  }
-
-  @Override
-  public void init() {
-    post(SAVE_DECK_PATH, this::saveDeck, toJson());
-    delete(DELETE_DECK_PATH, this::deleteDeck, toJson());
-    get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
-    get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
-    get(GET_DECK_PATH, this::getDeck, toJson());
-    get(DECK_EXISTS_PATH, this::deckExists, toJson());
-    post(SAVE_DECK_IMAGE_PATH, this::saveImage);
-  }
-
-  private boolean deckExists(Request request, Response response) {
-    try {
-      String username = usernameFromRequest(request);
-      UUID userId = UUID.fromString(database.getUserId(username));
-
-      String deckName = request.queryParams("name");
-      deckName = deckName.replace("_", " ");
-
-      return database.deckNameExists(deckName, userId);
-
-    } catch (Exception e) {
-      String message = "Failed to check if deck exists: " + e.getMessage();
-      logger.warning(message);
-      halt(500, message);
-
-      return false;
+    public DeckRequestHandler(Database database, JWTService jwtService) {
+        super(database, jwtService);
     }
-  }
 
-  private Map<String, Boolean> saveDeck(Request req, Response res) {
-    // TODO maybe divide into two methods addDeck and updateDeck
-    try {
-      String username = usernameFromRequest(req);
-      UUID userId = UUID.fromString(database.getUserId(username));
-
-      Deck deck = Deck.fromJson(req.body());
-      deck.setImage(deck.getImage().replace(BASE_URL, ""));
-
-      database.saveDeck(deck, userId);
-      return successfulResponse;
-
-    } catch (Exception e) {
-      String message = "Failed to save deck: " + e.getMessage();
-      logger.warning(message);
-      halt(500, message);
-
-      return failedResponse;
+    @Override
+    public void init() {
+        post(SAVE_DECK_PATH, this::saveDeck, toJson());
+        delete(DELETE_DECK_PATH, this::deleteDeck, toJson());
+        get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
+        get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
+        get(GET_DECK_PATH, this::getDeck, toJson());
+        get(DECK_EXISTS_PATH, this::deckExists, toJson());
+        post(SAVE_DECK_IMAGE_PATH, this::saveImage);
     }
-  }
 
-  private Map<String, Boolean> deleteDeck(Request req, Response res) {
-    try {
-      String username = usernameFromRequest(req);
-      UUID userId = UUID.fromString(database.getUserId(username));
+    private boolean deckExists(Request request, Response response) {
+        try {
+            String username = usernameFromRequest(request);
+            UUID userId = UUID.fromString(database.getUserId(username));
 
-      UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+            String deckName = request.queryParams("name");
+            deckName = deckName.replace("_", " ");
 
-      database.deleteDeck(deckId, userId);
-      return successfulResponse;
+            return database.deckNameExists(deckName, userId);
 
-    } catch (Exception e) {
-      String message = "Failed to delete deck: " + e.getMessage();
-      logger.warning(message);
-      halt(500, message);
+        } catch (Exception e) {
+            String message = "Failed to check if deck exists: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
 
-      return failedResponse;
+            return false;
+        }
     }
-  }
 
-  private Deck getDeck(Request req, Response res) {
-    String username = usernameFromRequest(req);
-    UUID userId = UUID.fromString(database.getUserId(username));
-    UUID deckId = UUID.fromString(req.queryParams("deck_id"));
-    Deck deck = database.getDeck(deckId, userId);
-    deck.setImage(BASE_URL + deck.getImage());
-    return deck;
-  }
+    private Map<String, Boolean> saveDeck(Request req, Response res) {
+        // TODO maybe divide into two methods addDeck and updateDeck
+        try {
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
 
-  private DeckMetadata setupImagePath(DeckMetadata deckMetadata) {
-    return new DeckMetadata(deckMetadata.id(),
-              deckMetadata.name(),
-              deckMetadata.color(),
-              BASE_URL + deckMetadata.image(),
-              deckMetadata.cardCount(),
-              deckMetadata.tags(),
-              deckMetadata.deckHashCode());
-  }
-  private List<DeckMetadata> setupImagePath(List<DeckMetadata> deckMetadatas) {
-    return deckMetadatas.stream()
-            .map(this::setupImagePath)
-            .collect(toList());
-  }
+            Deck deck = Deck.fromJson(req.body());
+            deck.setImage(deck.getImage().replace(BASE_URL, ""));
 
-  private List<DeckMetadata> getAllDecks(Request req, Response res) {
-    try {
-      String username = usernameFromRequest(req);
-      UUID userId = UUID.fromString(database.getUserId(username));
+            database.saveDeck(deck, userId);
+            return successfulResponse;
 
-      return setupImagePath(database.getAllUserDecksMetadata(userId));
+        } catch (Exception e) {
+            String message = "Failed to save deck: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
 
-    } catch (Exception e) {
-      String message = "Failed to get all decks: " + e.getMessage();
-      logger.warning(message);
-      halt(500, message);
-
-      return new ArrayList<>();
+            return failedResponse;
+        }
     }
-  }
 
-  private List<DeckMetadata> searchDecks(Request req, Response res) {
-    try {
-      String username = usernameFromRequest(req);
-      UUID userId = UUID.fromString(database.getUserId(username));
+    private Map<String, Boolean> deleteDeck(Request req, Response res) {
+        try {
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
 
-      String userSearch = req.queryParams("name");
-      userSearch = userSearch.replace("_", " ");
+            UUID deckId = UUID.fromString(req.queryParams("deck_id"));
 
-      return setupImagePath(database.searchDecksMetadata(userSearch, userId));
+            database.deleteDeck(deckId, userId);
+            return successfulResponse;
 
-    } catch (Exception e) {
-      String message = "Failed to search decks: " + e.getMessage();
-      logger.warning(message);
-      halt(500, message);
+        } catch (Exception e) {
+            String message = "Failed to delete deck: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
 
-      return new ArrayList<>();
+            return failedResponse;
+        }
     }
-  }
 
-  private Map<String, Boolean> saveImage(Request req, Response res) {
-    try {
-      String fileName = req.headers("File-Name");
-      byte[] fileContent = req.bodyAsBytes();
-      // Save the file to disk
-      Path filePath = Paths.get("images", fileName);
-      Files.write(filePath, fileContent);
-      return successfulResponse;
-
-    } catch (Exception e) {
-      String message = "Failed to save image: " + e.getMessage();
-      logger.warning(message);
-      halt(500, message);
-
-      return failedResponse;
+    private Deck getDeck(Request req, Response res) {
+        String username = usernameFromRequest(req);
+        UUID userId = UUID.fromString(database.getUserId(username));
+        UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+        Deck deck = database.getDeck(deckId, userId);
+        deck.setImage(BASE_URL + deck.getImage());
+        return deck;
     }
-  }
+
+    private DeckMetadata setupImagePath(DeckMetadata deckMetadata) {
+        return new DeckMetadata(deckMetadata.id(),
+                deckMetadata.name(),
+                deckMetadata.color(),
+                BASE_URL + deckMetadata.image(),
+                deckMetadata.cardCount(),
+                deckMetadata.tags(),
+                deckMetadata.deckHashCode());
+    }
+    private List<DeckMetadata> setupImagePath(List<DeckMetadata> deckMetadatas) {
+        return deckMetadatas.stream()
+                .map(this::setupImagePath)
+                .collect(toList());
+    }
+
+    private List<DeckMetadata> getAllDecks(Request req, Response res) {
+        try {
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+
+            return setupImagePath(database.getAllUserDecksMetadata(userId));
+
+        } catch (Exception e) {
+            String message = "Failed to get all decks: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
+            return new ArrayList<>();
+        }
+    }
+
+    private List<DeckMetadata> searchDecks(Request req, Response res) {
+        try {
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+
+            String userSearch = req.queryParams("name");
+            userSearch = userSearch.replace("_", " ");
+
+            return setupImagePath(database.searchDecksMetadata(userSearch, userId));
+
+        } catch (Exception e) {
+            String message = "Failed to search decks: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
+            return new ArrayList<>();
+        }
+    }
+
+    private Map<String, Boolean> saveImage(Request req, Response res) {
+        try {
+            String fileName = req.headers("File-Name");
+            byte[] fileContent = req.bodyAsBytes();
+            // Save the file to disk
+            Path filePath = Paths.get("images", fileName);
+            Files.write(filePath, fileContent);
+            return successfulResponse;
+
+        } catch (Exception e) {
+            String message = "Failed to save image: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
+            return failedResponse;
+        }
+    }
 }
