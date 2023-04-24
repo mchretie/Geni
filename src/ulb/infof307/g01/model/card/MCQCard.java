@@ -24,7 +24,6 @@ public class MCQCard extends TimedCard {
         this.choices = new ArrayList<>();
         this.choices.add("Réponse 1");
         this.choices.add("Réponse 2");
-
         this.correctChoice = 0;
         this.cardType = "MCQCard";
     }

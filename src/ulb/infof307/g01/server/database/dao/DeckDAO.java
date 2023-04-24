@@ -94,9 +94,11 @@ public class DeckDAO extends DAO {
     public void saveDeck(Deck deck, UUID userId) throws DatabaseException {
         if (!isDeckValid(deck, userId))
             return;
-
+        System.out.println("calling saveDeckIdentity");
         saveDeckIdentity(deck, userId);
+        System.out.println("calling saveDeckTags");
         saveDeckTags(deck);
+        System.out.println("calling saveDeckCards");
         saveDeckCards(deck);
     }
 
@@ -290,6 +292,7 @@ public class DeckDAO extends DAO {
      */
     @SuppressWarnings("unchecked")
     private void saveDeckCards(Deck deck) throws DatabaseException {
+        System.out.println("before saving cards");
         HashSet<Card> currentCards = new HashSet<>(getCardsFor(deck.getId()));
         HashSet<Card> newCards = new HashSet<>(deck.getCards());
 
@@ -298,7 +301,7 @@ public class DeckDAO extends DAO {
 
         Set<Card> deletedCards = (Set<Card>) currentCards.clone();
         deletedCards.removeAll(newCards);
-
+        System.out.println("deleted cards: " );
         for (Card deletedCard : deletedCards)
             deleteCard(deletedCard);
 
@@ -323,16 +326,19 @@ public class DeckDAO extends DAO {
     public void saveCard(MCQCard card) throws DatabaseException {
         // TODO : add countdown
         String upsertMCQCard = """
-                INSERT INTO mcq_card (card_id, correct_answer_index)
-                VALUES (?, ?)
+                INSERT INTO mcq_card (card_id, correct_answer_index, countdown_time)
+                VALUES (?, ?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET correct_answer_index = ?
+                DO UPDATE SET correct_answer_index = ?, countdown_time = ?
                 """;
 
         database.executeUpdate(upsertMCQCard,
                                  card.getId().toString(),
                                  card.getCorrectChoiceIndex(),
-                                 card.getCorrectChoiceIndex());
+                                 card.getCountdownTime(),
+                                 card.getCorrectChoiceIndex(),
+                                 card.getCountdownTime()
+        );
 
         String upsertMCQCardAnswer = """
                 INSERT INTO mcq_answer (card_id, answer, answer_index)
@@ -351,8 +357,8 @@ public class DeckDAO extends DAO {
     public void saveCard(InputCard card) throws DatabaseException {
         // TODO : add countdown
         String upsertInputCard = """
-                INSERT INTO input_card (card_id, answer)
-                VALUES (?, ?)
+                INSERT INTO input_card (card_id, answer, countdown_time)
+                VALUES (?, ?, ?)
                 ON CONFLICT(card_id)
                 DO UPDATE SET answer = ?
                 """;
@@ -360,15 +366,18 @@ public class DeckDAO extends DAO {
         database.executeUpdate(upsertInputCard,
                                  card.getId().toString(),
                                  card.getAnswer(),
-                                 card.getAnswer());
+                                 card.getCountdownTime(),
+                                 card.getAnswer(),
+                                 card.getCountdownTime()
+        );
     }
 
     private void saveCard(Card card) throws DatabaseException {
         String upsertCard = """
-                INSERT INTO card (card_id, deck_id, front, countdown_time)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO card (card_id, deck_id, front)
+                VALUES (?, ?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET front = ? , countdown_time = ?
+                DO UPDATE SET front = ?
                 """;
 
         System.out.println("before sql query");
@@ -376,7 +385,8 @@ public class DeckDAO extends DAO {
                 card.getId().toString(),
                 card.getDeckId().toString(),
                 card.getFront(),
-                card.getFront());
+                card.getFront()
+        );
 
         if (card instanceof FlashCard)
             saveCard((FlashCard) card);

@@ -142,6 +142,8 @@ public class DeckDAO extends HttpDAO {
     public void saveDeck(Deck deck)
             throws IOException, InterruptedException {
         System.out.println("Saving deck: " + deck.getMetadata().name());
+        System.out.println("deck : " + deck);
+        System.out.println("deck metadata: " + deck.getMetadata());
         String path = ServerPaths.SAVE_DECK_PATH;
         HttpResponse<String> response = post(path, new Gson().toJson(deck));
         System.out.println("post to path: " + path);
