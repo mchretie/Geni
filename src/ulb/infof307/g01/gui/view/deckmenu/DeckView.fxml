@@ -84,7 +84,7 @@
          </left>
          <right>
             <HBox alignment="CENTER_RIGHT" layoutX="125.0" layoutY="10.0" prefHeight="30.0" prefWidth="77.0" spacing="10.0">
-               <Label fx:id="amountTrophiesLabel" />
+               <Label fx:id="scoreLabel" />
                <FontIcon iconLiteral="mdi2t-trophy" iconSize="25" wrappingWidth="25.0" />
             </HBox>
          </right>
