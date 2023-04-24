@@ -144,7 +144,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
     public void deckShared() {
         try {
             deck.switchOnlineVisibility();
-            deckDAO.saveDeck(deck);
+            deckDAO.addDeckToMarketPlace(deck);
             deckDAO.emptyCache();
 
         } catch (IOException | InterruptedException e) {

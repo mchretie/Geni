@@ -185,7 +185,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             if (!isDeckNameValid(name) || deckDAO.deckExists(name))
                 return;
 
-            deckDAO.saveDeck(new Deck(name));
+            Deck deck = new Deck(name);
+            deckDAO.saveDeck(deck);
+            deckDAO.addDeckToCollection(deck);
             showDecks();
 
         } catch (IOException e) {

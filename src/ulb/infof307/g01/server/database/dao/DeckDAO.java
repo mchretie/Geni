@@ -96,7 +96,6 @@ public class DeckDAO extends DAO {
         saveDeckIdentity(deck, userId);
         saveDeckTags(deck);
         saveDeckCards(deck);
-        saveToCollection(deck.getId(), userId);
     }
 
     /**
@@ -111,9 +110,11 @@ public class DeckDAO extends DAO {
      */
     public Deck getDeck(UUID deckId, UUID userId) throws DatabaseException {
         String sql = """
-                SELECT deck_id, name, color, image
-                FROM deck
-                WHERE deck_id = ? AND user_id = ?
+                SELECT d.*,
+                       CASE WHEN m.deck_id IS NOT NULL THEN 1 ELSE 0 END AS public
+                FROM deck d
+                         LEFT JOIN marketplace m ON d.deck_id = m.deck_id
+                WHERE d.deck_id = ? AND d.user_id = ?;
                 """;
 
         ResultSet res = database.executeQuery(sql,
@@ -126,9 +127,11 @@ public class DeckDAO extends DAO {
 
     public Deck getDeck(UUID deckId) throws DatabaseException {
         String sql = """
-                SELECT deck_id, name, color, image
-                FROM deck
-                WHERE deck_id = ?
+                SELECT d.*,
+                       CASE WHEN m.deck_id IS NOT NULL THEN 1 ELSE 0 END AS public
+                FROM deck d
+                         LEFT JOIN marketplace m ON d.deck_id = m.deck_id
+                WHERE d.deck_id = ?;
                 """;
 
         ResultSet res = database.executeQuery(sql,
@@ -524,10 +527,11 @@ public class DeckDAO extends DAO {
             String name = res.getString("name");
             String color = res.getString("color");
             String image = res.getString("image");
+            boolean isPublic = res.getBoolean("public");
             List<Card> cards = getCardsFor(uuid);
             List<Tag> tags = tagDao.getTagsFor(uuid);
 
-            return new Deck(name, uuid, cards, tags, color, image);
+            return new Deck(name, uuid, cards, tags, color, image, isPublic);
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }

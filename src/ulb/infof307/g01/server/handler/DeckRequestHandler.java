@@ -97,12 +97,21 @@ public class DeckRequestHandler extends Handler {
     }
 
     private Deck getDeck(Request req, Response res) {
-        String username = usernameFromRequest(req);
-        UUID userId = UUID.fromString(database.getUserId(username));
-        UUID deckId = UUID.fromString(req.queryParams("deck_id"));
-        Deck deck = database.getDeck(deckId, userId);
-        deck.setImage(BASE_URL + deck.getImage());
-        return deck;
+        try {
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+            UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+            Deck deck = database.getDeck(deckId, userId);
+            deck.setImage(BASE_URL + deck.getImage());
+            return deck;
+        } catch (Exception e) {
+            String message = "Failed to get deck: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
+            return null;
+        }
+
     }
 
     private DeckMetadata setupImagePath(DeckMetadata deckMetadata) {

@@ -64,6 +64,11 @@ public class Deck implements Iterable<Card> {
         this.image = image;
     }
 
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image, boolean isPublic) {
+        this(name, id, cards, tags, color,image);
+        this.isPublic = isPublic;
+    }
+
     @SuppressWarnings("CopyConstructorMissesField")
     public Deck(Deck deck) {
         this(deck.name, deck.id, deck.cards, deck.tags, deck.color, deck.image);
