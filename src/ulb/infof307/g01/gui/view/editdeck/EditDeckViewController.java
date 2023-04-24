@@ -94,6 +94,9 @@ public class EditDeckViewController {
     @FXML
     private TextField answerOfInputCard;
 
+    @FXML
+    private HBox timerChangerComponent;
+
 
     /* ====================================================================== */
     /*                           Card Editor Grid                             */
@@ -209,6 +212,7 @@ public class EditDeckViewController {
     private void loadFlashCardEditor(FlashCard flashCard) {
         backCardWebView.getEngine().loadContent(flashCard.getBack());
         backCard.setVisible(true);
+        timerChangerComponent.setVisible(false);
         answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(false);
 
@@ -217,6 +221,7 @@ public class EditDeckViewController {
     private void loadInputCardEditor(InputCard inputCard) {
         answerOfInputCard.setText(inputCard.getAnswer());
         answerOfInputCard.setVisible(true);
+        timerChangerComponent.setVisible(true);
         choicesGrid.setVisible(false);
         backCard.setVisible(false);
     }
@@ -247,6 +252,7 @@ public class EditDeckViewController {
         }
 
         backCard.setVisible(false);
+        timerChangerComponent.setVisible(true);
         answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(true);
     }
@@ -468,6 +474,7 @@ public class EditDeckViewController {
     public void hideSelectedCardEditor() {
         frontCard.setVisible(false);
         backCard.setVisible(false);
+        timerChangerComponent.setVisible(false);
         choicesGrid.setVisible(false);
     }
 
@@ -659,6 +666,7 @@ public class EditDeckViewController {
         cardTypeSelected();
 
         choicesGrid.setVisible(true);
+        timerChangerComponent.setVisible(true);
     }
 
     @FXML
@@ -668,6 +676,7 @@ public class EditDeckViewController {
         listener.newInputCard();
         cardTypeSelected();
         answerOfInputCard.setVisible(true);
+        timerChangerComponent.setVisible(true);
     }
 
     @FXML
@@ -677,6 +686,7 @@ public class EditDeckViewController {
         listener.newFlashCard();
         cardTypeSelected();
         backCard.setVisible(true);
+        timerChangerComponent.setVisible(false);
     }
 
     private void cardTypeSelected() {

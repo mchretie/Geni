@@ -141,7 +141,7 @@
 
 
             <VBox>
-                <HBox>
+                <HBox fx:id="timerChangerComponent">
                     <Label text="Timer (sec) : ">
                   <font>
                      <Font size="19.0" />
