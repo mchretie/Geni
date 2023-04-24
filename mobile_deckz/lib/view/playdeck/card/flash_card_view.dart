@@ -1,36 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_deckz/model/card/flash_card.dart';
+
+import 'front_card_view.dart';
 
 class FlashcardView extends StatefulWidget {
-  final String frontText;
-  final String backText;
+  final FlashCard card;
 
   const FlashcardView({
     super.key,
-    required this.frontText,
-    required this.backText,
+    required this.card,
   });
 
   @override
   State<FlashcardView> createState() => _FlashcardViewState();
-}
-
-class _Card extends StatelessWidget {
-  final String text;
-
-  const _Card({required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      child: SizedBox(
-          height: 200,
-          width: 500,
-          child: Center(
-            child: Text(text),
-          )),
-    );
-  }
 }
 
 class _FlashcardViewState extends State<FlashcardView> {
@@ -49,8 +31,8 @@ class _FlashcardViewState extends State<FlashcardView> {
               });
             },
             child: _showFront
-                ? _Card(text: widget.frontText)
-                : _Card(text: widget.backText),
+                ? FrontCardView(text: widget.card.front)
+                : FrontCardView(text: widget.card.back),
           )),
       transitionBuilder: (child, animation) {
         return RotationYTransition(
