@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static java.util.stream.Collectors.toList;
 import static spark.Spark.*;
 import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 
@@ -31,9 +32,29 @@ public class MarketplaceRequestHandler extends Handler {
         delete(REMOVE_DECK_FROM_COLLECTION_PATH, this::removeDeckFromCollection, toJson());
     }
 
+    private MarketplaceDeckMetadata setupImagePath(MarketplaceDeckMetadata deckMetadata) {
+        return new MarketplaceDeckMetadata(
+                deckMetadata.id(),
+                deckMetadata.name(),
+                deckMetadata.color(),
+                BASE_URL + deckMetadata.image(),
+                deckMetadata.cardCount(),
+                deckMetadata.tags(),
+                deckMetadata.owner(),
+                deckMetadata.rating(),
+                deckMetadata.downloads(),
+                deckMetadata.deckHashCode()
+        );
+    }
+    private List<MarketplaceDeckMetadata> setupImagePath(List<MarketplaceDeckMetadata> deckMetadatas) {
+        return deckMetadatas.stream()
+                .map(this::setupImagePath)
+                .collect(toList());
+    }
+
     private List<MarketplaceDeckMetadata> getAllMarketplaceDecks(Request req, Response res) {
         try {
-            return database.getMarketplaceDecksMetadata();
+            return setupImagePath(database.getMarketplaceDecksMetadata());
 
         } catch (Exception e) {
             String message = "Failed to get marketplace decks: " + e.getMessage();
