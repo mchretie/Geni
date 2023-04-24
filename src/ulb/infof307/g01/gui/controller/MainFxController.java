@@ -7,10 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
-import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
-import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
+import ulb.infof307.g01.gui.httpdao.dao.*;
 import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
@@ -66,6 +63,7 @@ public class MainFxController extends Application implements
     private final UserSessionDAO userSessionDAO = new UserSessionDAO();
     private final DeckDAO deckDAO = new DeckDAO();
     private final ScoreDAO scoreDAO = new ScoreDAO();
+    private final MarketplaceDAO marketplaceDAO = new MarketplaceDAO();
     private final GameHistoryDAO gameHistoryDAO = new GameHistoryDAO();
 
 
@@ -141,6 +139,7 @@ public class MainFxController extends Application implements
             userAuthController.show();
 
         } catch (IOException e) {
+            e.printStackTrace();
             errorHandler.restartApplicationError(e);
         }
 
@@ -152,12 +151,14 @@ public class MainFxController extends Application implements
         deckDAO.setToken(token);
         scoreDAO.setToken(token);
         gameHistoryDAO.setToken(token);
+        marketplaceDAO.setToken(token);
     }
 
     private void resetDAOs() {
         deckDAO.setToken(null);
         scoreDAO.setToken(null);
         gameHistoryDAO.setToken(null);
+        marketplaceDAO.setToken(null);
     }
 
 
@@ -229,6 +230,7 @@ public class MainFxController extends Application implements
                 errorHandler,
                 scoreDAO,
                 deckDAO,
+                marketplaceDAO,
                 gameHistoryDAO);
     }
 

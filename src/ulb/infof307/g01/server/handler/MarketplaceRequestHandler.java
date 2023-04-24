@@ -56,6 +56,7 @@ public class MarketplaceRequestHandler extends Handler {
             database.deleteScoresForDeck(deck.getId());
 
             return successfulResponse;
+
         } catch (Exception e) {
             String message = "Failed to add deck to the marketplace : " + e.getMessage();
             logger.warning(message);

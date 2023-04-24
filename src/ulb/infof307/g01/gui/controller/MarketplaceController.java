@@ -66,6 +66,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     /* ====================================================================== */
     /*                          Database Access                               */
     /* ====================================================================== */
+
     private List<Node> loadDecks() throws IOException {
         List<Node> decksLoaded = new ArrayList<>();
 

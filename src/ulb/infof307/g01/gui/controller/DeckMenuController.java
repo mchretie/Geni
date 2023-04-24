@@ -201,6 +201,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             deckMenuViewController.setDecks(loadDecks(decks));
 
         } catch (IOException e) {
+
             errorHandler.failedLoading(e);
 
         } catch (InterruptedException e) {
