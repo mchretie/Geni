@@ -67,6 +67,7 @@ public class PlayDeckViewController {
 
     private Card currentCard;
     private boolean hasAnswered = false;
+    private Timeline timeline;
 
 
     /* ====================================================================== */
@@ -109,7 +110,7 @@ public class PlayDeckViewController {
 
         countdown.setStyle("-fx-accent: GREEN");
 
-        Timeline timeline = new Timeline(
+        timeline = new Timeline(
                 // begin
                 new KeyFrame(Duration.ZERO, new KeyValue(countdown.progressProperty(), 1)),
 
@@ -352,12 +353,16 @@ public class PlayDeckViewController {
     @FXML
     private void handlePreviousCardClicked() {
         hasAnswered = false;
+        if (timeline != null)
+            timeline.stop();
         listener.previousCardClicked();
     }
 
     @FXML
     private void handleNextCardClicked() {
         hasAnswered = false;
+        if (timeline != null)
+            timeline.stop();
         listener.nextCardClicked();
     }
 
