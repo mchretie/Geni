@@ -4,7 +4,7 @@ class Game {
 
   final DateTime timestamp;
   final String deckName;
-  final String score;
+  final int score;
 
   Game({required this.timestamp, required this.deckName, required this.score});
 
@@ -12,15 +12,19 @@ class Game {
     return Game(
       timestamp: json['timestamp'],
       deckName: json['deckName'].toString(),
-      score: json['score'].toString(),
+      score: json['score'],
     );
   }
 
-  String getFormattedTimestamp() {
+  String getTimestamp() {
     return timestamp.toString();
   }
 
+  String getDeckName() {
+    return deckName;
+  }
+
   int getScore() {
-    return int.parse(score);
+    return score;
   }
 }
