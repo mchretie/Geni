@@ -17,6 +17,7 @@ import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 
 public class DeckMarketplaceViewController {
+
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
@@ -48,6 +49,13 @@ public class DeckMarketplaceViewController {
 
     private MarketplaceDeckMetadata deck;
 
+    public enum DeckAvailability {
+        OWNED,
+        MISSING
+    }
+
+    private DeckAvailability deckAvailability;
+
 
     /* ====================================================================== */
     /*                                Listener                                */
@@ -75,6 +83,7 @@ public class DeckMarketplaceViewController {
 
     public void setDeck(MarketplaceDeckMetadata deck, Score bestScore) {
         this.deck = deck;
+        this.deckAvailability = DeckAvailability.OWNED;
         this.updateDeckLabelName();
 
         this.setDeckImage();
@@ -144,7 +153,8 @@ public class DeckMarketplaceViewController {
     /*                             Click handlers                             */
     /* ====================================================================== */
 
-    public void handleAddRemoveDeckClicked() {
+    @FXML
+    private void handleAddRemoveDeckClicked() {
         //TODO
     }
 
@@ -153,12 +163,20 @@ public class DeckMarketplaceViewController {
     /*                             Hover handlers                             */
     /* ====================================================================== */
 
-    public void handleAddRemoveDeckHover() {
-        //TODO
+    @FXML
+    private void handleAddRemoveDeckHover() {
+        if (this.deckAvailability == DeckAvailability.OWNED) {
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-minus");
+        } else
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-check");
     }
 
-    public void handleAddRemoveDeckExit() {
-        //TODO
+    @FXML
+    private void handleAddRemoveDeckExit() {
+        if (this.deckAvailability == DeckAvailability.OWNED) {
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-check");
+        } else
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-plus");
     }
 
     /* ====================================================================== */
