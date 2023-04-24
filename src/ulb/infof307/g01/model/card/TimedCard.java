@@ -28,4 +28,16 @@ public class TimedCard extends Card{
     public Integer getCountdownTime() {
         return countdownTime;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Integer countdownTime = this.countdownTime;
+
+        if (o == null || o.getClass() != this.getClass())
+            return false;
+
+        TimedCard other = (TimedCard) o;
+
+        return countdownTime.equals(other.getCountdownTime());
+    }
 }

@@ -52,6 +52,8 @@ public class InputCard extends TimedCard {
         if (o == null || o.getClass() != this.getClass())
             return false;
 
+        if( !super.equals(o) ) return false;
+
         InputCard other = (InputCard) o;
         return id.equals(other.getId())
                 && (deckId == other.getDeckId() || deckId.equals(other.getDeckId()))

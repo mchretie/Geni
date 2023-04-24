@@ -194,6 +194,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         try {
             selectedCard.setCountdownTime(value);
             deckDAO.saveDeck(deck);
+            System.out.println("Timer value saved to " + value);
 
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);

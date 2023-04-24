@@ -297,12 +297,14 @@ public class DeckDAO extends DAO {
 
         Set<Card> deletedCards = (Set<Card>) currentCards.clone();
         deletedCards.removeAll(newCards);
-
         for (Card deletedCard : deletedCards)
             deleteCard(deletedCard);
 
-        for (Card addedCard : addedCards)
+        for (Card addedCard : addedCards){
+            System.out.println("updating card  "+ addedCard.toString());
             saveCard(addedCard);
+        }
+
     }
 
     public void saveCard(FlashCard card) throws DatabaseException {
@@ -358,7 +360,7 @@ public class DeckDAO extends DAO {
                 ON CONFLICT(card_id)
                 DO UPDATE SET answer = ? , countdown_time = ?
                 """;
-
+        System.out.println("server received new countdown: " + card.getCountdownTime());
         database.executeUpdate(upsertInputCard,
                                  card.getId().toString(),
                                  card.getAnswer(),
@@ -382,13 +384,20 @@ public class DeckDAO extends DAO {
                 card.getFront(),
                 card.getFront()
         );
+        System.out.println("choosing now ");
 
-        if (card instanceof FlashCard)
+        if (card instanceof FlashCard){
+            System.out.println("saving flashcard");
             saveCard((FlashCard) card);
-        else if (card instanceof MCQCard)
+        }
+        else if (card instanceof MCQCard){
+            System.out.println("saving qcmCard");
             saveCard((MCQCard) card);
-        else if (card instanceof InputCard)
+        }
+        else if (card instanceof InputCard){
+            System.out.println("saving inputCard");
             saveCard((InputCard) card);
+        }
     }
 
     private void deleteCard(Card card) throws DatabaseException {

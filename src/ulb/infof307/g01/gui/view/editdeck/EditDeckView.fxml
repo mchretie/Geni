@@ -141,6 +141,7 @@
 
 
             <VBox>
+                <!--Timer value changer-->
                 <HBox fx:id="timerChangerComponent">
                     <Label text="Timer (sec) : ">
                   <font>
@@ -149,12 +150,13 @@
                   <HBox.margin>
                      <Insets left="20.0" />
                   </HBox.margin></Label>
-               <TextField fx:id="timerValue" onKeyPressed="#handleTimerValueEdit" prefHeight="26.0" prefWidth="59.0">
+               <TextField fx:id="timerValue" onKeyPressed="#handleTimerValueEdit" onKeyReleased="#handleTimerValueSave" prefHeight="26.0" prefWidth="59.0">
                   <HBox.margin>
                      <Insets left="15.0" />
                   </HBox.margin>
                </TextField>
                 </HBox>
+
                 <!-- Back of QCM card -->
                 <GridPane fx:id="choicesGrid" alignment="BASELINE_CENTER" hgap="10" maxWidth="Infinity" style="-fx-padding: 6px 10px;                                 -fx-border-insets: 3px 5px;                                 -fx-background-insets: 3px 5px;" vgap="10" visible="false" HBox.hgrow="ALWAYS">
                     <columnConstraints>

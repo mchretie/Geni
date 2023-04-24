@@ -220,6 +220,7 @@ public class EditDeckViewController {
 
     private void loadInputCardEditor(InputCard inputCard) {
         answerOfInputCard.setText(inputCard.getAnswer());
+        System.out.println(inputCard.getCountdownTime()); // TODO : delete this
         timerValue.setText(String.valueOf(inputCard.getCountdownTime()));
         answerOfInputCard.setVisible(true);
         timerChangerComponent.setVisible(true);
@@ -654,14 +655,25 @@ public class EditDeckViewController {
     @FXML
     private void handleTimerValueEdit(KeyEvent keyEvent) {
         timerValue.addEventFilter(KeyEvent.KEY_TYPED, event -> {
-            if (!event.getCharacter().matches("[0-9]"))
+            if (!event.getCharacter().matches("[0-9]")) {
                 event.consume();
+                System.out.println("not a number"); // TODO : delete
+            }
         });
+
+        System.out.println("key pressed : " + keyEvent.getText()); // TODO : delete
 
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
             mainHbox.requestFocus();
-        } else
+        }
+    }
+
+    @FXML
+    private void handleTimerValueSave() {
+        if (!timerValue.getText().isEmpty()) {
+            System.out.println("timer value: " + Integer.parseInt(timerValue.getText())); // TODO : delete
             listener.timerValueChanged((TimedCard) selectedCard, Integer.parseInt(timerValue.getText()));
+        }
     }
 
     @FXML
