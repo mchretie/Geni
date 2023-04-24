@@ -114,6 +114,7 @@ public class MarketplaceRequestHandler extends Handler {
             database.removeDeckFromUserCollection(deckId, userId);
 
             return successfulResponse;
+
         } catch (Exception e) {
             String message = "Failed to remove deck from user's collection : " + e.getMessage();
             logger.warning(message);

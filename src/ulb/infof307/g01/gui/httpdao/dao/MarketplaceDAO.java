@@ -1,7 +1,6 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
@@ -9,7 +8,6 @@ import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MarketplaceDAO extends HttpDAO {

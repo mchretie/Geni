@@ -212,7 +212,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void deckRemoved(DeckMetadata deck) {
         try {
-            deckDAO.deleteDeck(deck);
+            deckDAO.removeDeckFromCollection(deck);
             showDecks();
 
         } catch (IOException e) {

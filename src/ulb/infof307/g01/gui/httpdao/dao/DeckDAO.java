@@ -126,15 +126,15 @@ public class DeckDAO extends HttpDAO {
                 .collect(toList());
     }
 
-    public void deleteDeck(DeckMetadata deck)
+    public void removeDeckFromCollection(DeckMetadata deck)
             throws IOException, InterruptedException {
 
         String query = "?deck_id=" + deck.id();
-        String path = ServerPaths.DELETE_DECK_PATH;
+        String path = ServerPaths.REMOVE_DECK_FROM_COLLECTION_PATH;
+
         HttpResponse<String> response = delete(path + query);
 
         checkResponseCode(response.statusCode());
-
         deckCache.removeDeck(deck);
     }
 
@@ -174,13 +174,6 @@ public class DeckDAO extends HttpDAO {
     public void addDeckToCollection(Deck deck) throws IOException, InterruptedException {
         String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH;
         HttpResponse<String> response = post(path, new Gson().toJson(deck));;
-
-        checkResponseCode(response.statusCode());
-    }
-
-    public void removeDeckFromCollection(String deckId) throws IOException, InterruptedException {
-        String path = ServerPaths.REMOVE_DECK_FROM_COLLECTION_PATH + "?deckId=" + deckId;
-        HttpResponse<String> response = delete(path);
 
         checkResponseCode(response.statusCode());
     }
