@@ -8,7 +8,7 @@
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<StackPane fx:id="stackPane" maxHeight="175.0" maxWidth="500.0" minHeight="150.0" minWidth="280.0" onMouseClicked="#handleDoubleDeckClicked" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
+<StackPane fx:id="stackPane" maxHeight="175.0" maxWidth="500.0" minHeight="150.0" minWidth="280.0" onMouseClicked="#handleDoubleDeckClicked" prefWidth="322.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
 
    <!-- backgroundImage and colorRect dimensions are set dynamically in the DeckViewController  -->
    <ImageView fx:id="imageBackground" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />

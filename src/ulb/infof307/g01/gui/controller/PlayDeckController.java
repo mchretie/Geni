@@ -59,8 +59,10 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         this.playDeckViewController = mainWindowViewController.getPlayDeckViewController();
         playDeckViewController.setListener(this);
         playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+        playDeckViewController.setTimer();
         playDeckViewController.setDeckName(deck.getName());
         playDeckViewController.setNumberOfCards(deck.cardCount());
+
     }
 
 
@@ -107,6 +109,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         if (currentCard != null) {
             playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+            playDeckViewController.setTimer();
             showCard();
             return;
         }
@@ -129,19 +132,23 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         currentCard = previousCard;
         playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+        playDeckViewController.setTimer();
 
         showCard();
     }
 
     @Override
-    public void onChoiceEntered(boolean isGoodChoice) {
+    //timeLeft param : 0 if time is up, 1 if answered instantly
+    public void onChoiceEntered(boolean isGoodChoice, double timeLeft) {
         int cardIndex = cardExtractor.getCurrentCardIndex();
         if (answeredCards[cardIndex])
             return;
 
         answeredCards[cardIndex] = true;
-        if (isGoodChoice)
-            score.increment(1);
+        if (isGoodChoice) {
+            score.increment((int) (100 * timeLeft));
+            System.out.println("incremented score of " + (int) (100 * timeLeft));
+        }
     }
 
 

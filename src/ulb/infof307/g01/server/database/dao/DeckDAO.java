@@ -321,6 +321,7 @@ public class DeckDAO extends DAO {
     }
 
     public void saveCard(MCQCard card) throws DatabaseException {
+        // TODO : add countdown
         String upsertMCQCard = """
                 INSERT INTO mcq_card (card_id, correct_answer_index)
                 VALUES (?, ?)
@@ -348,6 +349,7 @@ public class DeckDAO extends DAO {
     }
 
     public void saveCard(InputCard card) throws DatabaseException {
+        // TODO : add countdown
         String upsertInputCard = """
                 INSERT INTO input_card (card_id, answer)
                 VALUES (?, ?)
@@ -374,9 +376,7 @@ public class DeckDAO extends DAO {
                 card.getId().toString(),
                 card.getDeckId().toString(),
                 card.getFront(),
-                card.getCountdownTime(),
-                card.getFront(),
-                card.getCountdownTime());
+                card.getFront());
 
         if (card instanceof FlashCard)
             saveCard((FlashCard) card);
@@ -402,7 +402,7 @@ public class DeckDAO extends DAO {
             String front = res.getString("front");
             String back = res.getString("back");
             Integer countdownTime = res.getInt("countdown_time");
-            return new FlashCard(uuid, deckId, front, back, countdownTime);
+            return new FlashCard(uuid, deckId, front, back);
         } catch (SQLException e) {
             throw new DatabaseException((e.getMessage()));
         }

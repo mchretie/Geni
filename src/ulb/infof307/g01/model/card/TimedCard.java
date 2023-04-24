@@ -7,7 +7,7 @@ import java.util.UUID;
 public class TimedCard extends Card{
 
     @Expose
-    protected Integer countdownTime;
+    protected Integer countdownTime = 30;
 
     public TimedCard() { super(); }
 
@@ -15,8 +15,10 @@ public class TimedCard extends Card{
         super( front);
     }
 
-    protected TimedCard(UUID uuid, UUID deckId, String front) {
+    protected TimedCard(UUID uuid, UUID deckId, String front, Integer countdownTime) {
         super(uuid, deckId, front);
+        this.countdownTime = countdownTime;
+        this.countdownTime = 10; // TODO : delete this ! (just for testing)
     }
 
     public void setCountdownTime(Integer countdownTime) {
