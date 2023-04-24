@@ -42,6 +42,9 @@ public class DeckMarketplaceViewController {
     @FXML
     private Label scoreLabel;
 
+    @FXML
+    private Label creatorLabel;
+
 
     /* ====================================================================== */
     /*                              Model Attributes                          */

@@ -20,13 +20,19 @@
         <HBox alignment="CENTER_RIGHT">
 
             <!-- add/remove deck button -->
-            <Button onMouseClicked="#handleAddRemoveDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
+            <Button onMouseClicked="#handleAddRemoveDeckClicked" style="-fx-background-color: transparent;">
 
                 <graphic>
-                    <FontIcon fx:id="addRemoveDeckIcon" iconLiteral="mdi2b-bookmark-plus" iconSize="25" onMouseEntered="#handleAddRemoveDeckHover" onMouseExited="#handleAddRemoveDeckExit" />
+                    <FontIcon fx:id="addRemoveDeckIcon" iconLiteral="mdi2b-bookmark-plus" iconSize="35" onMouseEntered="#handleAddRemoveDeckHover" onMouseExited="#handleAddRemoveDeckExit" />
                 </graphic>
 
             </Button>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets right="10.0" top="-9.0" />
+         </padding>
         </HBox>
 
         <!-- deck name -->
@@ -61,8 +67,14 @@
                 <Insets bottom="20.0" />
             </VBox.margin>
             <padding>
-                <Insets left="60.0" right="60.0" />
+                <Insets left="30.0" right="30.0" />
             </padding>
+         <center>
+             <HBox alignment="CENTER">
+                 <Label fx:id="creatorLabel" text="Label" />
+                 <FontIcon iconLiteral="mdi2a-account" iconSize="25" wrappingWidth="25.0" />
+             </HBox>
+         </center>
         </BorderPane>
     </VBox>
 </StackPane>
