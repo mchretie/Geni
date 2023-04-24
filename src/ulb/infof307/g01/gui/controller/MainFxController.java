@@ -129,6 +129,7 @@ public class MainFxController extends Application implements
         try {
             initControllers(stage);
             userSessionDAO.attemptAutologin();
+            initDAOs();
 
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
@@ -141,6 +142,19 @@ public class MainFxController extends Application implements
         }
 
 
+    }
+
+    private void initDAOs() {
+        String token = userSessionDAO.getToken();
+        deckDAO.setToken(token);
+        scoreDAO.setToken(token);
+        gameHistoryDAO.setToken(token);
+    }
+
+    private void resetDAOs() {
+        deckDAO.setToken(null);
+        scoreDAO.setToken(null);
+        gameHistoryDAO.setToken(null);
     }
 
 
@@ -210,7 +224,6 @@ public class MainFxController extends Application implements
                 mainWindowViewController,
                 this,
                 errorHandler,
-                userSessionDAO,
                 scoreDAO,
                 deckDAO,
                 gameHistoryDAO);
@@ -330,10 +343,11 @@ public class MainFxController extends Application implements
     @Override
     public void userLoggedIn() {
         try {
+            initDAOs();
             mainWindowViewController.makebottomNavigationBarVisible();
             mainWindowViewController.makeTopNavigationBarVisible();
             deckMenuController.show();
-            viewStack.add(View.DECK_MENU);
+            resetViewStack(View.DECK_MENU);
 
         } catch (IOException | InterruptedException e) {
             errorHandler.failedLoading(e);
@@ -342,9 +356,8 @@ public class MainFxController extends Application implements
 
     @Override
     public void userLoggedOut() {
-            resetViewStack(View.DECK_MENU);
-            userAuthController.show();
-
+        resetDAOs();
+        userAuthController.show();
     }
 
     @Override

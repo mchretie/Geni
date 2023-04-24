@@ -67,10 +67,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         this.deckDAO = deckDAO;
         this.userSessionDAO = userSessionDAO;
-        this.deckDAO.setToken(userSessionDAO.getToken());
-
         this.scoreDAO = scoreDAO;
-        this.scoreDAO.setToken(userSessionDAO.getToken());
 
         this.deckMenuViewController
                 = mainWindowViewController.getDeckMenuViewController();
@@ -90,7 +87,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      */
     public void show() throws IOException, InterruptedException {
 
-        deckDAO.setToken(userSessionDAO.getToken());
         showDecks();
         mainWindowViewController.setDeckMenuViewVisible();
         mainWindowViewController.makebottomNavigationBarVisible();

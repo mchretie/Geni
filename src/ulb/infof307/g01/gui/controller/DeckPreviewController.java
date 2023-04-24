@@ -40,7 +40,6 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
                                  MainWindowViewController mainWindowViewController,
                                  ControllerListener controllerListener,
                                  ErrorHandler errorHandler,
-                                 UserSessionDAO userSessionDAO,
                                  ScoreDAO scoreDAO,
                                  DeckDAO deckDAO,
                                  GameHistoryDAO gameHistoryDAO) {
@@ -52,11 +51,6 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         this.scoreDAO = scoreDAO;
         this.gameHistoryDAO = gameHistoryDAO;
         this.deckDAO = deckDAO;
-
-        scoreDAO.setToken(userSessionDAO.getToken());
-        deckDAO.setToken(userSessionDAO.getToken());
-        gameHistoryDAO.setToken(userSessionDAO.getToken());
-
 
         this.deckPreviewViewController
                 = mainWindowViewController.getDeckPreviewViewController();
