@@ -59,7 +59,9 @@ public class EditCardController implements EditCardViewController.Listener {
                 card.setFront(doc.html());
             else
                 ((FlashCard) card).setBack(doc.html());
-            System.out.println("Saving card ");
+            if (card instanceof TimedCard tm) {
+                tm.setCountdownTime(30); // TODO to be linked correctly to the GUI
+            }
             deckDAO.saveDeck(deck);
             controllerListener.savedChanges();
 

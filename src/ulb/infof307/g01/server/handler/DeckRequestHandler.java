@@ -61,17 +61,14 @@ public class DeckRequestHandler extends Handler {
   private Map<String, Boolean> saveDeck(Request req, Response res) {
     // TODO maybe divide into two methods addDeck and updateDeck
     try {
-      System.out.println("Saving deck " + req.body() + " ..." + res.toString());
       String username = usernameFromRequest(req);
       UUID userId = UUID.fromString(database.getUserId(username));
 
       Deck deck = Deck.fromJson(req.body());
       deck.setImage(deck.getImage().replace(BASE_URL, ""));
 
-      System.out.println("Saving deck " + deck);
-      System.out.println("before save deck in DB" );
       database.saveDeck(deck, userId);
-      System.out.println("after save deck in DB");
+
       return successfulResponse;
 
     } catch (Exception e) {

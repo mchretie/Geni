@@ -94,7 +94,6 @@ public class DeckDAO extends DAO {
     public void saveDeck(Deck deck, UUID userId) throws DatabaseException {
         if (!isDeckValid(deck, userId))
             return;
-
         saveDeckIdentity(deck, userId);
         saveDeckTags(deck);
         saveDeckCards(deck);
@@ -323,16 +322,19 @@ public class DeckDAO extends DAO {
     public void saveCard(MCQCard card) throws DatabaseException {
         // TODO : add countdown
         String upsertMCQCard = """
-                INSERT INTO mcq_card (card_id, correct_answer_index)
-                VALUES (?, ?)
+                INSERT INTO mcq_card (card_id, correct_answer_index, countdown_time)
+                VALUES (?, ?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET correct_answer_index = ?
+                DO UPDATE SET correct_answer_index = ?, countdown_time = ?
                 """;
 
         database.executeUpdate(upsertMCQCard,
                                  card.getId().toString(),
                                  card.getCorrectChoiceIndex(),
-                                 card.getCorrectChoiceIndex());
+                                 card.getCountdownTime(),
+                                 card.getCorrectChoiceIndex(),
+                                 card.getCountdownTime()
+        );
 
         String upsertMCQCardAnswer = """
                 INSERT INTO mcq_answer (card_id, answer, answer_index)
@@ -351,32 +353,35 @@ public class DeckDAO extends DAO {
     public void saveCard(InputCard card) throws DatabaseException {
         // TODO : add countdown
         String upsertInputCard = """
-                INSERT INTO input_card (card_id, answer)
-                VALUES (?, ?)
+                INSERT INTO input_card (card_id, answer, countdown_time)
+                VALUES (?, ?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET answer = ?
+                DO UPDATE SET answer = ? , countdown_time = ?
                 """;
 
         database.executeUpdate(upsertInputCard,
                                  card.getId().toString(),
                                  card.getAnswer(),
-                                 card.getAnswer());
+                                 card.getCountdownTime(),
+                                 card.getAnswer(),
+                                 card.getCountdownTime()
+        );
     }
 
     private void saveCard(Card card) throws DatabaseException {
         String upsertCard = """
-                INSERT INTO card (card_id, deck_id, front, countdown_time)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO card (card_id, deck_id, front)
+                VALUES (?, ?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET front = ? , countdown_time = ?
+                DO UPDATE SET front = ?
                 """;
 
-        System.out.println("before sql query");
         database.executeUpdate(upsertCard,
                 card.getId().toString(),
                 card.getDeckId().toString(),
                 card.getFront(),
-                card.getFront());
+                card.getFront()
+        );
 
         if (card instanceof FlashCard)
             saveCard((FlashCard) card);
@@ -401,7 +406,7 @@ public class DeckDAO extends DAO {
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             String front = res.getString("front");
             String back = res.getString("back");
-            Integer countdownTime = res.getInt("countdown_time");
+            //Integer countdownTime = res.getInt("countdown_time");
             return new FlashCard(uuid, deckId, front, back);
         } catch (SQLException e) {
             throw new DatabaseException((e.getMessage()));
@@ -410,7 +415,7 @@ public class DeckDAO extends DAO {
 
     private List<FlashCard> getFlashCardsFor(UUID deckUuid) throws DatabaseException {
         String sql = """
-                SELECT card.card_id, deck_id, front, back, countdown_time
+                SELECT card.card_id, deck_id, front, back
                 FROM card
                 INNER JOIN flash_card
                 ON card.card_id = flash_card.card_id

@@ -167,7 +167,7 @@ public class DatabaseAccess {
             else
                 throw new DatabaseException("Unsupported argument type for query");
         }
-        System.out.println("statement: " + statement);
+        //System.out.println("statement: " + statement);
         return statement;
     }
 }

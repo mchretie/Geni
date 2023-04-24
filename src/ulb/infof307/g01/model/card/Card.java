@@ -14,6 +14,7 @@ public class Card {
     @Expose
     protected String cardType;
 
+
     protected Card() {
         this.front = "Avant";
         this.id = UUID.randomUUID();
