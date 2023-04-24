@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -14,7 +13,6 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.util.ImageLoader;
-import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 
@@ -77,11 +75,15 @@ public class DeckMarketplaceViewController {
 
     public void setDeck(MarketplaceDeckMetadata deck, Score bestScore) {
         this.deck = deck;
-        // this.updateDeckLabelName(); //TODO
+        this.updateDeckLabelName();
 
         this.setDeckImage();
         this.setDeckColor();
 
+        if (bestScore == null)
+            this.setStats("N/A");
+        else
+            this.setStats(String.valueOf(bestScore.getScore()));
     }
 
     private void setDeckColor() {
@@ -94,9 +96,9 @@ public class DeckMarketplaceViewController {
     }
 
     private void setDeckImage() {
-        /*
-        Image img = new Image(deck.image());
-        imageBackground.setImage(img);
+        System.out.println(deck.image());
+        //Image img = new Image(deck.image());
+        /*imageBackground.setImage(img);
         imageBackground.setPreserveRatio(false);
         imageBackground.fitWidthProperty().bind(stackPane.widthProperty());
         imageBackground.fitHeightProperty().bind(stackPane.heightProperty());
@@ -107,9 +109,7 @@ public class DeckMarketplaceViewController {
         clip.setArcWidth(40);
         clip.heightProperty().bind(imageBackground.fitHeightProperty());
         clip.widthProperty().bind(imageBackground.fitWidthProperty());
-        imageBackground.setClip(clip);
-        */
-
+        imageBackground.setClip(clip);*/
     }
 
     private LinearGradient makeGradient(Color color) {
@@ -128,6 +128,15 @@ public class DeckMarketplaceViewController {
                 CycleMethod.NO_CYCLE,
                 stops);
 
+    }
+
+    private void updateDeckLabelName() {
+        this.deckNameLabel.setText(this.deck.name());
+    }
+
+    private void setStats(String bestScore) {
+        amountCardsLabel.setText(String.valueOf(deck.cardCount()));
+        scoreLabel.setText(bestScore);
     }
 
 

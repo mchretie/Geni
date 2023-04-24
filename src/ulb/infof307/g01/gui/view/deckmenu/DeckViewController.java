@@ -19,12 +19,13 @@ import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.deck.Tag;
 
 public class DeckViewController {
-    @FXML
-    private Button editDeckButton;
 
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
+
+    @FXML
+    private Button editDeckButton;
 
     @FXML
     private StackPane stackPane;
