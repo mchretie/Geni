@@ -9,7 +9,7 @@ class GameHistory {
     games.sort((a, b) => a.timestamp.compareTo(b.timestamp));
   }
 
-  factory GameHistory.fromJson(Map<String, dynamic> json, String username) {
+  factory GameHistory.fromJson(Map<String, dynamic> json) {
     List<Game> games = [];
     for (var json in json['games']) {
       games.add(Game.fromJson(json));
