@@ -1,7 +1,9 @@
+import 'package:flutter/src/material/card.dart';
 import 'package:mobile_deckz/model/card/flash_card.dart';
 import 'package:mobile_deckz/model/card/input_card.dart';
 import 'package:mobile_deckz/model/deck/tag.dart';
 
+import '../card/abstract_card.dart';
 import '../card/mcq_card.dart';
 
 class Deck {
@@ -12,16 +14,16 @@ class Deck {
   final String score;
   final String cardCount;
   final List<Tag> tags;
-  List<dynamic> cards = [];
+  List<AbstractCard> cards = [];
 
   Deck(
       {required this.id,
-        required this.name,
-        required this.color,
-        required this.image,
-        required this.score,
-        required this.cardCount,
-        required this.tags});
+      required this.name,
+      required this.color,
+      required this.image,
+      required this.score,
+      required this.cardCount,
+      required this.tags});
 
   factory Deck.fromJson(Map<String, dynamic> json) {
     List<Tag> tags = [];
@@ -40,6 +42,7 @@ class Deck {
   }
 
   void loadCards(Map<String, dynamic> json) {
+    cards = [];
     for (var card in json['cards']) {
       switch (card['cardType']) {
         case 'FlashCard':
@@ -55,4 +58,9 @@ class Deck {
     }
   }
 
+  List<AbstractCard> getCardRandomOrder() {
+    List<AbstractCard> cardsCopy = List.from(cards);
+    cardsCopy.shuffle();
+    return cardsCopy;
+  }
 }

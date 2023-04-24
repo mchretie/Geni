@@ -1,6 +1,6 @@
-import 'card.dart';
+import 'abstract_card.dart';
 
-class MCQCard extends Card {
+class MCQCard extends AbstractCard {
   final List<String> choices;
   final int correctChoice;
 

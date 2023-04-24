@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_deckz/http_dao/deck_dao.dart';
+import 'package:mobile_deckz/model/card/abstract_card.dart';
 import 'package:mobile_deckz/view/playdeck/card/flash_card_view.dart';
 
 import '../../model/deck/deck.dart';
@@ -12,6 +13,9 @@ class PlayDeckView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DeckDao.loadDeck(deck);
+
+    List<AbstractCard> cards = deck.getCardRandomOrder();
+    print(cards);
 
     return Scaffold(
       appBar: AppBar(

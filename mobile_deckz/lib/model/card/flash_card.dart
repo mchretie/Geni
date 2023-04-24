@@ -1,6 +1,6 @@
-import 'card.dart';
+import 'abstract_card.dart';
 
-class FlashCard extends Card {
+class FlashCard extends AbstractCard {
   final String back;
 
   FlashCard({required this.back, required String id, required String front})

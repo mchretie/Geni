@@ -44,7 +44,6 @@ class DeckDao {
     final http.Response response = await HttpDao.get(uri);
     if (response.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(response.body);
-      // print(json);
       deck.loadCards(json);
     }
   }

@@ -1,6 +1,6 @@
-import 'card.dart';
+import 'abstract_card.dart';
 
-class InputCard extends Card {
+class InputCard extends AbstractCard {
   final String answer;
 
   InputCard({required this.answer, required String id, required String front})
