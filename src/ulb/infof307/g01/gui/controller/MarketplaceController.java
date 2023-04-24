@@ -58,7 +58,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     public void show() throws IOException, InterruptedException {
         //TODO
         mainWindowViewController.setMarketplaceViewVisible();
-        marketplaceViewController.setDecks(loadDecks(deckDAO.getMarketplaceDecksMetadata));
+        marketplaceViewController.setDecks(loadDecks());
         stage.show();
     }
 
@@ -66,7 +66,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     /* ====================================================================== */
     /*                          Database Access                               */
     /* ====================================================================== */
-    private List<Node> loadDecks(List<DeckMetadata> decks) throws IOException, InterruptedException {
+    private List<Node> loadDecks() throws IOException, InterruptedException {
         List<Node> decksLoaded = new ArrayList<>();
 
         //decks.sort(Comparator.comparing(DeckMetadata::name));

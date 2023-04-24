@@ -505,7 +505,7 @@ public class DeckDAO extends DAO {
         return cards;
     }
 
-    private Deck extractDeckFrom(ResultSet res) throws DatabaseException {
+    public Deck extractDeckFrom(ResultSet res) throws DatabaseException {
         try {
             UUID uuid = UUID.fromString(res.getString("deck_id"));
             String name = res.getString("name");
@@ -534,96 +534,5 @@ public class DeckDAO extends DAO {
                 """;
 
         return checkedNext(database.executeQuery(sql, deckId.toString()));
-    }
-
-    /* ====================================================================== */
-    /*                            Marketplace requests                        */
-    /* ====================================================================== */
-    // TODO maybe create a marketplaceDAO ?
-
-    private MarketplaceDeckMetadata extractMarketplaceDeckMetaData(ResultSet res) throws DatabaseException {
-        try {
-            Deck deck = extractDeckFrom(res);
-            String owner_username = res.getString("username");
-            int rating = res.getInt("rating");
-            int downloads = res.getInt("downloads");
-
-            return new MarketplaceDeckMetadata(deck, owner_username, rating, downloads);
-        } catch (SQLException e) {
-            throw new DatabaseException(e.getMessage());
-        }
-    }
-
-    public void addDeckToMarketplace(UUID deckId) throws DatabaseException {
-        String sql = """
-                INSERT INTO marketplace (deck_id, rating, downloads)
-                VALUES (?, ?, ?);
-                """;
-
-        database.executeUpdate(
-                sql,
-                deckId.toString(),
-                String.valueOf(0),
-                String.valueOf(0));
-    }
-
-    public void removeDeckFromMarketplace(UUID deckId) throws DatabaseException {
-        String sql = """
-                DELETE FROM marketplace
-                WHERE deck_id = ?;
-                """;
-
-        database.executeUpdate(sql, deckId.toString());
-    }
-
-    public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {
-        String sql = """
-                SELECT D.deck_id, U.username, D.name, D.color, D.image, M.rating, M.downloads
-                FROM marketplace M
-                INNER JOIN deck D ON M.deck_id = D.deck_id
-                INNER JOIN user U ON U.user_id = D.user_id;
-                """;
-
-        ResultSet res = database.executeQuery(sql);
-        List<MarketplaceDeckMetadata> decks = new ArrayList<>();
-        while (checkedNext(res))
-            decks.add(extractMarketplaceDeckMetaData(res));
-
-        return decks;
-    }
-
-    private void incrementDownloads(UUID deckId) {
-        String sql = """
-                UPDATE marketplace
-                SET downloads = downloads + 1
-                WHERE deck_id = ?;
-                """;
-
-        database.executeUpdate(sql, deckId.toString());
-    }
-
-    public void addDeckToUserCollection(UUID deckId, UUID userId) throws DatabaseException {
-        String sql = """
-                INSERT INTO user_deck_collection (user_id, deck_id)
-                VALUES (?, ?);
-                """;
-
-        database.executeUpdate(
-                sql,
-                userId.toString(),
-                deckId.toString());
-
-        incrementDownloads(deckId);
-    }
-
-    public void removeDeckFromUserCollection(UUID deckId, UUID userId) throws DatabaseException {
-        String sql = """
-                DELETE FROM user_deck_collection
-                WHERE user_id = ? AND deck_id = ?;
-                """;
-
-        database.executeUpdate(sql,
-                userId.toString(),
-                deckId.toString());
     }
 }

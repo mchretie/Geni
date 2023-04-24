@@ -1,7 +1,8 @@
-package ulb.infof307.g01.model;
+package ulb.infof307.g01.server.database;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ulb.infof307.g01.model.User;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
