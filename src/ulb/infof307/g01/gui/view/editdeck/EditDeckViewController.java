@@ -236,6 +236,7 @@ public class EditDeckViewController {
      */
     private void loadMCQCardEditor(MCQCard mcqCard) {
         choicesGrid.getChildren().clear();
+        timerValue.setText(String.valueOf(mcqCard.getCountdownTime()));
 
         int correctChoiceIndex = mcqCard.getCorrectChoiceIndex();
         Iterator<Pos2D> positions = new GridPosIterator(2, 2);

@@ -350,11 +350,13 @@ public class PlayDeckViewController {
 
     @FXML
     private void handlePreviousCardClicked() {
+        hasAnswered = false;
         listener.previousCardClicked();
     }
 
     @FXML
     private void handleNextCardClicked() {
+        hasAnswered = false;
         listener.nextCardClicked();
     }
 
