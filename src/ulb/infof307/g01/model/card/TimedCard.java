@@ -19,7 +19,6 @@ public class TimedCard extends Card{
         super(uuid, deckId, front);
         System.out.println("TimedCard constructor called");
         this.countdownTime = countdownTime;
-        this.countdownTime = 10; // TODO : delete this ! (just for testing)
     }
 
     public void setCountdownTime(Integer countdownTime) {

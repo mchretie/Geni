@@ -94,11 +94,8 @@ public class DeckDAO extends DAO {
     public void saveDeck(Deck deck, UUID userId) throws DatabaseException {
         if (!isDeckValid(deck, userId))
             return;
-        System.out.println("calling saveDeckIdentity");
         saveDeckIdentity(deck, userId);
-        System.out.println("calling saveDeckTags");
         saveDeckTags(deck);
-        System.out.println("calling saveDeckCards");
         saveDeckCards(deck);
     }
 
@@ -292,17 +289,15 @@ public class DeckDAO extends DAO {
      */
     @SuppressWarnings("unchecked")
     private void saveDeckCards(Deck deck) throws DatabaseException {
-        System.out.println("before saving cards");
         HashSet<Card> currentCards = new HashSet<>(getCardsFor(deck.getId()));
-        System.out.println("after getting current cards");
         HashSet<Card> newCards = new HashSet<>(deck.getCards());
-        System.out.println("after getting new cards");
+
         Set<Card> addedCards = (Set<Card>) newCards.clone();
         addedCards.removeAll(currentCards);
-        System.out.println("after first remove ");
+
         Set<Card> deletedCards = (Set<Card>) currentCards.clone();
         deletedCards.removeAll(newCards);
-        System.out.println("deleted cards: " );
+
         for (Card deletedCard : deletedCards)
             deleteCard(deletedCard);
 
@@ -361,7 +356,7 @@ public class DeckDAO extends DAO {
                 INSERT INTO input_card (card_id, answer, countdown_time)
                 VALUES (?, ?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET answer = ?
+                DO UPDATE SET answer = ? , countdown_time = ?
                 """;
 
         database.executeUpdate(upsertInputCard,
@@ -381,7 +376,6 @@ public class DeckDAO extends DAO {
                 DO UPDATE SET front = ?
                 """;
 
-        System.out.println("before sql query");
         database.executeUpdate(upsertCard,
                 card.getId().toString(),
                 card.getDeckId().toString(),
@@ -412,7 +406,7 @@ public class DeckDAO extends DAO {
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             String front = res.getString("front");
             String back = res.getString("back");
-            Integer countdownTime = res.getInt("countdown_time");
+            //Integer countdownTime = res.getInt("countdown_time");
             return new FlashCard(uuid, deckId, front, back);
         } catch (SQLException e) {
             throw new DatabaseException((e.getMessage()));
