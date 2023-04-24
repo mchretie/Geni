@@ -97,6 +97,9 @@ public class EditDeckViewController {
     @FXML
     private HBox timerChangerComponent;
 
+    @FXML
+    private TextField timerValue;
+
 
     /* ====================================================================== */
     /*                           Card Editor Grid                             */
@@ -220,6 +223,7 @@ public class EditDeckViewController {
 
     private void loadInputCardEditor(InputCard inputCard) {
         answerOfInputCard.setText(inputCard.getAnswer());
+        timerValue.setText(String.valueOf(inputCard.getCountdownTime()));
         answerOfInputCard.setVisible(true);
         timerChangerComponent.setVisible(true);
         choicesGrid.setVisible(false);
@@ -648,6 +652,19 @@ public class EditDeckViewController {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
         mainHbox.requestFocus();
+    }
+
+    @FXML
+    private void handleTimerValueEdit(KeyEvent keyEvent) {
+        timerValue.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            if (!event.getCharacter().matches("[0-9]"))
+                event.consume();
+        });
+
+        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            mainHbox.requestFocus();
+        }
+
     }
 
     @FXML

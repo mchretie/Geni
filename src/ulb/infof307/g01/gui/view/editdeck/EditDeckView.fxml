@@ -149,7 +149,7 @@
                   <HBox.margin>
                      <Insets left="20.0" />
                   </HBox.margin></Label>
-               <TextField prefHeight="26.0" prefWidth="59.0">
+               <TextField fx:id="timerValue" onKeyPressed="#handleTimerValueEdit" prefHeight="26.0" prefWidth="59.0">
                   <HBox.margin>
                      <Insets left="15.0" />
                   </HBox.margin>
