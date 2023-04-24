@@ -93,7 +93,6 @@ public class DeckPreviewViewController {
 
     public void setDeckVisibility(boolean visibleOnline) {
         if (visibleOnline) {
-            System.out.println("Deck is visible online");
             deckVisibilityIcon.setIconLiteral("mdi2a-account-group");
             shareDeckIcon.setVisible(false);
 

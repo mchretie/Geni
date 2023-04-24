@@ -33,7 +33,6 @@ public class MarketplaceRequestHandler extends Handler {
 
     private List<MarketplaceDeckMetadata> getAllMarketplaceDecks(Request req, Response res) {
         try {
-
             return database.getMarketplaceDecksMetadata();
 
         } catch (Exception e) {

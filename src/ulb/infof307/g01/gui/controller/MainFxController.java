@@ -454,7 +454,9 @@ public class MainFxController extends Application implements
                     this,
                     errorHandler,
                     deckDAO,
-                    userSessionDAO);
+                    userSessionDAO,
+                    marketplaceDAO,
+                    scoreDAO);
 
             resetViewStack(View.MARKETPLACE);
             marketplaceController.show();

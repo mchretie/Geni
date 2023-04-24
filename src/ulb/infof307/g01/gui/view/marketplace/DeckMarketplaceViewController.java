@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.DeckMetadata;
+import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 
 public class DeckMarketplaceViewController {
@@ -47,7 +48,7 @@ public class DeckMarketplaceViewController {
     /*                              Model Attributes                          */
     /* ====================================================================== */
 
-    private DeckMetadata deck;
+    private MarketplaceDeckMetadata deck;
 
 
     /* ====================================================================== */
@@ -74,7 +75,7 @@ public class DeckMarketplaceViewController {
     /*                           Updating Deck                                */
     /* ====================================================================== */
 
-    public void setDeck(DeckMetadata deck, Score bestScore) {
+    public void setDeck(MarketplaceDeckMetadata deck, Score bestScore) {
         this.deck = deck;
         // this.updateDeckLabelName(); //TODO
 
@@ -93,6 +94,7 @@ public class DeckMarketplaceViewController {
     }
 
     private void setDeckImage() {
+        /*
         Image img = new Image(deck.image());
         imageBackground.setImage(img);
         imageBackground.setPreserveRatio(false);
@@ -106,6 +108,8 @@ public class DeckMarketplaceViewController {
         clip.heightProperty().bind(imageBackground.fitHeightProperty());
         clip.widthProperty().bind(imageBackground.fitWidthProperty());
         imageBackground.setClip(clip);
+        */
+
     }
 
     private LinearGradient makeGradient(Color color) {

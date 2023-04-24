@@ -2,6 +2,7 @@ package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.shared.constants.ServerPaths;
@@ -22,13 +23,8 @@ public class MarketplaceDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        List<MarketplaceDeckMetadata> marketplaceDeckMetadataList = new ArrayList<>();
-        JsonArray jsonArray = new Gson().fromJson(response.body(), JsonArray.class);
-        for (int i = 0; i < jsonArray.size(); i++) {
-            marketplaceDeckMetadataList.add(new Gson().fromJson(response.body(), MarketplaceDeckMetadata.class));
-        }
-
-        return marketplaceDeckMetadataList;
+        TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {};
+        return new Gson().fromJson(response.body(), typeToken);
     }
 
     public void addDeckToMarketplace(Deck deck) throws IOException, InterruptedException {
