@@ -7,10 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
-import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
-import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
+import ulb.infof307.g01.gui.httpdao.dao.*;
 import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
@@ -67,6 +64,7 @@ public class MainFxController extends Application implements
     private final DeckDAO deckDAO = new DeckDAO();
     private final ScoreDAO scoreDAO = new ScoreDAO();
     private final GameHistoryDAO gameHistoryDAO = new GameHistoryDAO();
+    private final MarketplaceDAO marketplaceDAO = new MarketplaceDAO();
 
 
     /* ====================================================================== */
@@ -442,7 +440,9 @@ public class MainFxController extends Application implements
                     this,
                     errorHandler,
                     deckDAO,
-                    userSessionDAO);
+                    marketplaceDAO,
+                    userSessionDAO,
+                    scoreDAO);
 
             resetViewStack(View.MARKETPLACE);
             marketplaceController.show();

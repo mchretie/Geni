@@ -5,31 +5,32 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
+import ulb.infof307.g01.gui.httpdao.dao.MarketplaceDAO;
+import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.util.ImageLoader;
-import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
-import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController;
 import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
 import ulb.infof307.g01.model.deck.DeckMetadata;
-import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
+import ulb.infof307.g01.model.deck.Score;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
-public class MarketplaceController implements MarketplaceViewController.Listener {
+public class MarketplaceController implements MarketplaceViewController.Listener, DeckMarketplaceViewController.Listener {
     private final Stage stage;
     private final ControllerListener controllerListener;
     private final MarketplaceViewController marketplaceViewController;
     private final MainWindowViewController mainWindowViewController;
     private final ErrorHandler errorHandler;
     private final DeckDAO deckDAO;
+    private final ScoreDAO scoreDAO;
     private final UserSessionDAO userSessionDAO;
+    private final MarketplaceDAO marketplaceDAO;
     private final ImageLoader imageLoader = new ImageLoader();
 
     public MarketplaceController(Stage stage,
@@ -37,13 +38,17 @@ public class MarketplaceController implements MarketplaceViewController.Listener
                                  ControllerListener controllerListener,
                                  ErrorHandler errorHandler,
                                  DeckDAO deckDAO,
-                                 UserSessionDAO userSessionDAO){
+                                 MarketplaceDAO marketplaceDAO,
+                                 UserSessionDAO userSessionDAO,
+                                 ScoreDAO scoreDAO){
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
         this.errorHandler = errorHandler;
         this.deckDAO = deckDAO;
         this.userSessionDAO = userSessionDAO;
+        this.marketplaceDAO = marketplaceDAO;
+        this.scoreDAO = scoreDAO;
 
         this.marketplaceViewController = mainWindowViewController.getMarketplaceViewController();
 
@@ -58,7 +63,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     public void show() throws IOException, InterruptedException {
         //TODO
         mainWindowViewController.setMarketplaceViewVisible();
-        marketplaceViewController.setDecks(loadDecks());
+        marketplaceViewController.setDecks(loadDecks(marketplaceDAO.getAllMarketplaceDecks()));
         stage.show();
     }
 
@@ -66,11 +71,11 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     /* ====================================================================== */
     /*                          Database Access                               */
     /* ====================================================================== */
-    private List<Node> loadDecks() throws IOException, InterruptedException {
+    private List<Node> loadDecks(List<MarketplaceDeckMetadata> decks) throws IOException, InterruptedException {
         List<Node> decksLoaded = new ArrayList<>();
 
         //decks.sort(Comparator.comparing(DeckMetadata::name));
-        for (int x = 0; x < 10; x++) {
+        for (MarketplaceDeckMetadata deck : decks) {
             URL resource = MarketplaceViewController
                     .class
                     .getResource("DeckMarketplaceView.fxml");
@@ -81,10 +86,9 @@ public class MarketplaceController implements MarketplaceViewController.Listener
 
             DeckMarketplaceViewController controller = loader.getController();
             controller.setImageLoader(imageLoader);
-
-            // Score bestScore = scoreDAO.getBestScoreForDeck(deck.id()); //TODO
-            //controller.setDeck(deck, bestScore);
-            //controller.setListener(this);
+            Score bestScore = scoreDAO.getBestScoreForDeck(deck.id());
+            controller.setDeck(deck, bestScore);
+            controller.setListener(this);
 
             decksLoaded.add(node);
         }
@@ -107,6 +111,11 @@ public class MarketplaceController implements MarketplaceViewController.Listener
         assert decks != null;
         //deckMenuViewController.setDecks(loadDecks(decks)); //TODO
 
+    }
+
+    @Override
+    public void addRemoveDeckClicked(MarketplaceDeckMetadata deck){
+        //TODO
     }
 
 

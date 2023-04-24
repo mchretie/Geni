@@ -13,8 +13,10 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.gui.httpdao.dao.MarketplaceDAO;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.DeckMetadata;
+import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 
 public class DeckMarketplaceViewController {
@@ -47,7 +49,7 @@ public class DeckMarketplaceViewController {
     /*                              Model Attributes                          */
     /* ====================================================================== */
 
-    private DeckMetadata deck;
+    private MarketplaceDeckMetadata deck;
 
 
     /* ====================================================================== */
@@ -74,7 +76,7 @@ public class DeckMarketplaceViewController {
     /*                           Updating Deck                                */
     /* ====================================================================== */
 
-    public void setDeck(DeckMetadata deck, Score bestScore) {
+    public void setDeck(MarketplaceDeckMetadata deck, Score bestScore) {
         this.deck = deck;
         // this.updateDeckLabelName(); //TODO
 
@@ -131,8 +133,9 @@ public class DeckMarketplaceViewController {
     /*                             Click handlers                             */
     /* ====================================================================== */
 
-    public void handleAddRemoveDeckClicked() {
-        //TODO
+    @FXML
+    private void handleAddRemoveDeckClicked() {
+        listener.addRemoveDeckClicked(deck);
     }
 
 
@@ -140,11 +143,13 @@ public class DeckMarketplaceViewController {
     /*                             Hover handlers                             */
     /* ====================================================================== */
 
-    public void handleAddRemoveDeckHover() {
+    @FXML
+    private void handleAddRemoveDeckHover() {
         //TODO
     }
 
-    public void handleAddRemoveDeckExit() {
+    @FXML
+    private void handleAddRemoveDeckExit() {
         //TODO
     }
 
@@ -153,6 +158,6 @@ public class DeckMarketplaceViewController {
     /* ====================================================================== */
 
     public interface Listener {
-
+        void addRemoveDeckClicked(MarketplaceDeckMetadata deck);
     }
 }
