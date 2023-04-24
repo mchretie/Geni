@@ -26,6 +26,13 @@ public class Deck implements Iterable<Card> {
     private String color;
     @Expose
     private String image;
+    @Expose
+    private boolean isPublic = false;
+
+
+    /* ====================================================================== */
+    /*                             Constructors                               */
+    /* ====================================================================== */
 
     public Deck(String name) {
         this(name,
@@ -57,9 +64,20 @@ public class Deck implements Iterable<Card> {
         this.image = image;
     }
 
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image, boolean isPublic) {
+        this(name, id, cards, tags, color,image);
+        this.isPublic = isPublic;
+    }
+
+    @SuppressWarnings("CopyConstructorMissesField")
     public Deck(Deck deck) {
         this(deck.name, deck.id, deck.cards, deck.tags, deck.color, deck.image);
     }
+
+
+    /* ====================================================================== */
+    /*                                Json methods                            */
+    /* ====================================================================== */
 
     public static Deck fromJson(String json) {
         Deck deck = new Gson().fromJson(json, Deck.class);
@@ -75,6 +93,18 @@ public class Deck implements Iterable<Card> {
         return new Gson().toJson(this);
     }
 
+
+    /* ====================================================================== */
+    /*                          Getters & Setters                             */
+    /* ====================================================================== */
+
+    public void switchOnlineVisibility() {
+        this.isPublic = !this.isPublic;
+    }
+
+    public boolean isPublic() {
+        return this.isPublic;
+    }
 
     /**
      * Generate a new id for the deck and its cards
@@ -165,6 +195,7 @@ public class Deck implements Iterable<Card> {
     public DeckMetadata getMetadata() {
         return new DeckMetadata(id,
                                 name,
+                                isPublic,
                                 color,
                                 image,
                                 cards.size(),

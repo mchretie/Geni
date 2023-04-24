@@ -2,6 +2,7 @@ package ulb.infof307.g01.server.handler;
 
 import spark.Request;
 import spark.Response;
+import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
@@ -22,6 +23,7 @@ public class MarketplaceRequestHandler extends Handler {
 
     @Override
     public void init() {
+        // TODO change all DeckId instance to Deck
         get(GET_MARKETPLACE_PATH, this::getAllMarketplaceDecks, toJson());
         post(ADD_DECK_TO_MARKETPLACE_PATH, this::addDeck, toJson());
         delete(REMOVE_DECK_FROM_MARKETPLACE_PATH, this::removeDeck, toJson());
@@ -48,10 +50,10 @@ public class MarketplaceRequestHandler extends Handler {
      */
     private Map<String, Boolean> addDeck(Request req, Response res) {
         try {
-            UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+            Deck deck = Deck.fromJson(req.body());
 
-            database.addDeckToMarketplace(deckId);
-            database.deleteScoresForDeck(deckId);
+            database.addDeckToMarketplace(deck.getId());
+            database.deleteScoresForDeck(deck.getId());
 
             return successfulResponse;
         } catch (Exception e) {
@@ -87,11 +89,11 @@ public class MarketplaceRequestHandler extends Handler {
 
     private Map<String, Boolean> addDeckToCollection(Request req, Response res) {
         try {
-            UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+            Deck deck = Deck.fromJson(req.body());
             String username = usernameFromRequest(req);
             UUID userId = UUID.fromString(database.getUserId(username));
 
-            database.addDeckToUserCollection(deckId, userId);
+            database.addDeckToUserCollection(deck.getId(), userId);
 
             return successfulResponse;
         } catch (Exception e) {

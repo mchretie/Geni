@@ -57,8 +57,8 @@ public class StatisticsController {
 
     public void show() throws IOException {
         mainWindowViewController.setStatisticsViewVisible();
+
         if (userSessionDAO.isLoggedIn()) {
-            gameHistoryDAO.setToken(userSessionDAO.getToken());
             mainWindowViewController.setStatisticsViewVisible();
             mainWindowViewController.makeGoBackIconVisible();
 

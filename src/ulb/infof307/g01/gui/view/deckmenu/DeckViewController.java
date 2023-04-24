@@ -2,6 +2,7 @@ package ulb.infof307.g01.gui.view.deckmenu;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +19,8 @@ import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.deck.Tag;
 
 public class DeckViewController {
+    @FXML
+    private Button editDeckButton;
 
     /* ====================================================================== */
     /*                              FXML Attributes                           */
@@ -166,6 +169,10 @@ public class DeckViewController {
 
     private void updateDeckLabelName() {
         this.deckNameLabel.setText(this.deck.name());
+    }
+
+    public void setDisableEdit(boolean disable) {
+        editDeckButton.setDisable(disable);
     }
 
 

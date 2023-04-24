@@ -67,10 +67,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         this.deckDAO = deckDAO;
         this.userSessionDAO = userSessionDAO;
-        this.deckDAO.setToken(userSessionDAO.getToken());
-
         this.scoreDAO = scoreDAO;
-        this.scoreDAO.setToken(userSessionDAO.getToken());
 
         this.deckMenuViewController
                 = mainWindowViewController.getDeckMenuViewController();
@@ -90,17 +87,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      */
     public void show() throws IOException, InterruptedException {
 
-        if (userSessionDAO.isLoggedIn()) {
-            deckDAO.setToken(userSessionDAO.getToken());
-            showDecks();
-            mainWindowViewController.setDeckMenuViewVisible();
-            mainWindowViewController.makebottomNavigationBarVisible();
-            mainWindowViewController.makeTopNavigationBarVisible();
-        } else {
-            mainWindowViewController.setUserAuthViewController();
-            mainWindowViewController.makebottomNavigationBarInvisible();
-            mainWindowViewController.makeTopNavigationBarInvisible();
-        }
+        showDecks();
+        mainWindowViewController.setDeckMenuViewVisible();
+        mainWindowViewController.makebottomNavigationBarVisible();
+        mainWindowViewController.makeTopNavigationBarVisible();
 
         mainWindowViewController.makeGoBackIconInvisible();
         stage.show();
@@ -136,7 +126,11 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             DeckViewController controller = loader.getController();
             controller.setImageLoader(imageLoader);
+
+            controller.setDisableEdit(deck.isPublic());
+
             Score bestScore = scoreDAO.getBestScoreForDeck(deck.id());
+
             controller.setDeck(deck, bestScore);
             controller.setListener(this);
 
@@ -180,7 +174,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             if (!isDeckNameValid(name) || deckDAO.deckExists(name))
                 return;
 
-            deckDAO.saveDeck(new Deck(name));
+            Deck deck = new Deck(name);
+            deckDAO.saveDeck(deck);
+            deckDAO.addDeckToCollection(deck);
             showDecks();
 
         } catch (IOException e) {

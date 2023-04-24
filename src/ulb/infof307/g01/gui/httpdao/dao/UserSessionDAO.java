@@ -101,9 +101,12 @@ public class UserSessionDAO extends HttpDAO {
         String username = this.prefs.get("localUsername", null);
         String password = this.prefs.get("localPassword", null);
 
-        if (username != null && password != null) {
-            login(username, password);
+
+        if (username == null || password == null) {
+            throw new AuthenticationFailedException("No credentials found");
         }
+
+        login(username, password);
     }
 
     public void logout() {

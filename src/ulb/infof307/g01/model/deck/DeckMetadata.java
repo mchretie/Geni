@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public record DeckMetadata(UUID id,
                            String name,
+                           boolean isPublic,
                            String color,
                            String image,
                            int cardCount,
@@ -19,6 +20,7 @@ public record DeckMetadata(UUID id,
     public DeckMetadata(DeckMetadata deckMetadata) {
         this(deckMetadata.id,
                 deckMetadata.name,
+                deckMetadata.isPublic,
                 deckMetadata.color,
                 deckMetadata.image,
                 deckMetadata.cardCount,

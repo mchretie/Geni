@@ -67,7 +67,10 @@ public class ProfileController implements ProfileViewController.Listener {
     /* ====================================================================== */
 
     @Override
-    public void logoutButtonClicked() { controllerListener.userLoggedOut(); }
+    public void logoutButtonClicked() {
+        userSessionDAO.logout();
+        controllerListener.userLoggedOut();
+    }
 
     @Override
     public void statisticsClicked() { controllerListener.statisticsClicked();}
