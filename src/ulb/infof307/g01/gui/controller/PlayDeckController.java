@@ -11,6 +11,7 @@ import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.model.card.*;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.server.database.Database;
 
 import java.util.Arrays;
 
@@ -114,6 +115,10 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             return;
         }
 
+        int totalScore = score.getScore() / cardExtractor.getAmountCompetitiveCards();
+        System.out.println("total score : " + totalScore);
+        score.setScore(totalScore);
+
         try {
             leaderboardDAO.addScore(score);
         } catch (Exception e) {
@@ -138,16 +143,19 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     }
 
     @Override
-    //timeLeft param : 0 if time is up, 1 if answered instantly
+    // timeLeft param : 0 if time is up, 1 if answered instantly
     public void onChoiceEntered(boolean isGoodChoice, double timeLeft) {
         int cardIndex = cardExtractor.getCurrentCardIndex();
-        if (answeredCards[cardIndex])
+
+        System.out.println("card index : " + cardIndex);
+        if (answeredCards[cardIndex]) {
             return;
+        }
 
         answeredCards[cardIndex] = true;
         if (isGoodChoice) {
-            score.increment((int) (100 * timeLeft));
-            System.out.println("incremented score of " + (int) (100 * timeLeft));
+            score.increment((int) (1000 * timeLeft));
+            System.out.println("incremented score of " + (int) (1000 * timeLeft));
         }
     }
 

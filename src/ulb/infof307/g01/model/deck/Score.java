@@ -25,6 +25,10 @@ public class Score {
         this.score += value;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public String getUsername() {
         return this.username;
     }
