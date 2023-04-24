@@ -9,6 +9,7 @@ import '../model/game_history/game_history.dart';
 class GameHistoryDao {
   static Future<GameHistory> getGameHistory() async {
     http.Response response = await http.get(ServerPath.gameHistoryPath);
+    print("response : " + response.body);
     if (response.statusCode == 200) {
       List<dynamic> json = jsonDecode(response.body);
       List<Game> games = [];
