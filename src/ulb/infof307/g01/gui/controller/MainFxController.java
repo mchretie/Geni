@@ -127,21 +127,20 @@ public class MainFxController extends Application implements
         stage.show();
 
         try {
-            userSessionDAO.attemptAutologin();
-
-        } catch (AuthenticationFailedException | InterruptedException e) {
-            errorHandler.failedAutoLogin(e);
-        }
-
-        try {
             initControllers(stage);
+            userSessionDAO.attemptAutologin();
 
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
 
-        } catch (IOException | InterruptedException e) {
+        } catch (AuthenticationFailedException | InterruptedException e) {
+            userAuthController.show();
+
+        } catch (IOException e) {
             errorHandler.restartApplicationError(e);
         }
+
+
     }
 
 
@@ -331,6 +330,8 @@ public class MainFxController extends Application implements
     @Override
     public void userLoggedIn() {
         try {
+            mainWindowViewController.makebottomNavigationBarVisible();
+            mainWindowViewController.makeTopNavigationBarVisible();
             deckMenuController.show();
             viewStack.add(View.DECK_MENU);
 
@@ -341,14 +342,9 @@ public class MainFxController extends Application implements
 
     @Override
     public void userLoggedOut() {
-        try {
-            userSessionDAO.logout();
             resetViewStack(View.DECK_MENU);
-            deckMenuController.show();
+            userAuthController.show();
 
-        } catch (IOException | InterruptedException e) {
-            errorHandler.failedLoading(e);
-        }
     }
 
     @Override

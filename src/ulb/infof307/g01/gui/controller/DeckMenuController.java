@@ -90,18 +90,11 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      */
     public void show() throws IOException, InterruptedException {
 
-        if (userSessionDAO.isLoggedIn()) {
-            deckDAO.setToken(userSessionDAO.getToken());
-            showDecks();
-            mainWindowViewController.setDeckMenuViewVisible();
-            mainWindowViewController.makebottomNavigationBarVisible();
-            mainWindowViewController.makeTopNavigationBarVisible();
-
-        } else {
-            mainWindowViewController.setUserAuthViewController();
-            mainWindowViewController.makebottomNavigationBarInvisible();
-            mainWindowViewController.makeTopNavigationBarInvisible();
-        }
+        deckDAO.setToken(userSessionDAO.getToken());
+        showDecks();
+        mainWindowViewController.setDeckMenuViewVisible();
+        mainWindowViewController.makebottomNavigationBarVisible();
+        mainWindowViewController.makeTopNavigationBarVisible();
 
         mainWindowViewController.makeGoBackIconInvisible();
         stage.show();
