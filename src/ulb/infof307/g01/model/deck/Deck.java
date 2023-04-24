@@ -44,7 +44,7 @@ public class Deck implements Iterable<Card> {
              id,
              cards,
              tags,
-             "0x00000000",
+             "#00000000",
              "/backgrounds/default_background.jpg");
     }
 
