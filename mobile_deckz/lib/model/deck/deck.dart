@@ -1,4 +1,8 @@
+import 'package:mobile_deckz/model/card/flash_card.dart';
+import 'package:mobile_deckz/model/card/input_card.dart';
 import 'package:mobile_deckz/model/deck/tag.dart';
+
+import '../card/mcq_card.dart';
 
 class Deck {
   final String id;
@@ -8,6 +12,7 @@ class Deck {
   final String score;
   final String cardCount;
   final List<Tag> tags;
+  List<dynamic> cards = [];
 
   Deck(
       {required this.id,
@@ -33,4 +38,21 @@ class Deck {
       tags: tags,
     );
   }
+
+  void loadCards(Map<String, dynamic> json) {
+    for (var card in json['cards']) {
+      switch (card['cardType']) {
+        case 'FlashCard':
+          cards.add(FlashCard.fromJson(card));
+          break;
+        case 'MCQCard':
+          cards.add(MCQCard.fromJson(card));
+          break;
+        case 'InputCard':
+          cards.add(InputCard.fromJson(card));
+          break;
+      }
+    }
+  }
+
 }

@@ -11,7 +11,7 @@ class PlayDeckView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DeckDao.getDeck(deck.id);
+    DeckDao.loadDeck(deck);
 
     return Scaffold(
       appBar: AppBar(

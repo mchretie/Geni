@@ -35,15 +35,17 @@ class DeckDao {
     return 'N/A';
   }
 
-  static Future<void> getDeck(String id) async {
+  static Future<void> loadDeck(Deck deck) async {
     Map<String, String> queryParameters = {
-      'deck_id': id,
+      'deck_id': deck.id,
     };
     final uri = Uri.parse(ServerPath.getDeckPath)
         .replace(queryParameters: queryParameters);
     final http.Response response = await HttpDao.get(uri);
     if (response.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(response.body);
+      // print(json);
+      deck.loadCards(json);
     }
   }
 
