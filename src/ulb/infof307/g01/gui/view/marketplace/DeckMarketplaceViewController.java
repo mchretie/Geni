@@ -106,8 +106,8 @@ public class DeckMarketplaceViewController {
 
     private void setDeckImage() {
         System.out.println(deck.image());
-        //Image img = new Image(deck.image());
-        /*imageBackground.setImage(img);
+        Image img = new Image(deck.image());
+        imageBackground.setImage(img);
         imageBackground.setPreserveRatio(false);
         imageBackground.fitWidthProperty().bind(stackPane.widthProperty());
         imageBackground.fitHeightProperty().bind(stackPane.heightProperty());
@@ -118,7 +118,7 @@ public class DeckMarketplaceViewController {
         clip.setArcWidth(40);
         clip.heightProperty().bind(imageBackground.fitHeightProperty());
         clip.widthProperty().bind(imageBackground.fitWidthProperty());
-        imageBackground.setClip(clip);*/
+        imageBackground.setClip(clip);
     }
 
     private LinearGradient makeGradient(Color color) {
