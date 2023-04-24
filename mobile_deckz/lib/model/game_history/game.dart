@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:io';
 
 class Game {
 
@@ -10,7 +11,8 @@ class Game {
 
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game(
-      timestamp: json['timestamp'],
+      // TODO timestamp to datetime conversion
+      timestamp: DateTime.parse(json['timestamp']),
       deckName: json['deckName'].toString(),
       score: json['score'],
     );

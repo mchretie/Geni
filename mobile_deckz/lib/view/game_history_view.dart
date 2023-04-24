@@ -29,19 +29,18 @@ class _GameHistoryViewState extends State<GameHistoryView> {
           } else {
             List<Game> games = snapshot.data?.games ?? [];
             return Scaffold(
-              body: Expanded(
-                child: ListView.builder(
-                  itemCount: games.length,
-                  itemBuilder: (context, index) {
-                    final game = games[index];
-                    return ListTile(
-                        trailing:
-                            Row(mainAxisSize: MainAxisSize.min, children: [
-                          const Icon(Icons.emoji_events),
-                          Text(game.deckName),
-                        ]));
-                  },
-                ),
+              body: ListView.builder(
+                itemCount: games.length,
+                itemBuilder: (context, index) {
+                  final game = games[index];
+                  return ListTile(
+                      trailing:
+                        Row(mainAxisSize: MainAxisSize.min, children: [
+                          Text(game.getTimestamp()),
+                          Text(game.getDeckName()),
+                          Text(game.getScore().toString()),
+                      ]));
+                },
               ));
           }
         });
