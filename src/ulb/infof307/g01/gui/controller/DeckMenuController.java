@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
+import ulb.infof307.g01.gui.httpdao.dao.MarketplaceDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.util.DeckIO;
@@ -42,6 +43,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     private final ErrorHandler errorHandler;
 
     private final DeckDAO deckDAO;
+    private final MarketplaceDAO marketplaceDAO;
     private final ScoreDAO scoreDAO;
     private final UserSessionDAO userSessionDAO;
     private final ImageLoader imageLoader = new ImageLoader();
@@ -55,8 +57,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
                               ErrorHandler errorHandler,
                               ControllerListener controllerListener,
                               MainWindowViewController mainWindowViewController,
-                              DeckDAO deckDAO, UserSessionDAO userSessionDAO,
-                              ScoreDAO scoreDAO) throws IOException, InterruptedException {
+                              DeckDAO deckDAO,
+                              MarketplaceDAO marketplaceDAO,
+                              UserSessionDAO userSessionDAO,
+                              ScoreDAO scoreDAO) {
 
         this.stage = stage;
 
@@ -66,6 +70,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         this.mainWindowViewController = mainWindowViewController;
 
         this.deckDAO = deckDAO;
+        this.marketplaceDAO = marketplaceDAO;
         this.userSessionDAO = userSessionDAO;
         this.scoreDAO = scoreDAO;
 
@@ -176,7 +181,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             Deck deck = new Deck(name);
             deckDAO.saveDeck(deck);
-            deckDAO.addDeckToCollection(deck);
+            marketplaceDAO.addDeckToCollection(deck);
             showDecks();
 
         } catch (IOException e) {

@@ -207,6 +207,7 @@ public class MainFxController extends Application implements
                 this,
                 mainWindowViewController,
                 deckDAO,
+                marketplaceDAO,
                 userSessionDAO,
                 scoreDAO);
 
@@ -227,6 +228,7 @@ public class MainFxController extends Application implements
                 errorHandler,
                 scoreDAO,
                 deckDAO,
+                marketplaceDAO,
                 gameHistoryDAO);
     }
 

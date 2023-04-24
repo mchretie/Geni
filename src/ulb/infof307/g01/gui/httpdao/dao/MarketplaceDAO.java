@@ -3,6 +3,7 @@ package ulb.infof307.g01.gui.httpdao.dao;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
+import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
@@ -30,10 +31,8 @@ public class MarketplaceDAO extends HttpDAO {
         return marketplaceDeckMetadataList;
     }
 
-    public void addDeckToMarketplace(String deckId) throws IOException, InterruptedException {
-        String deckIdParam = "?deckId=" + deckId;
-
-        HttpResponse<String> response = post(ServerPaths.ADD_DECK_TO_MARKETPLACE_PATH + deckIdParam, "");
+    public void addDeckToMarketplace(Deck deck) throws IOException, InterruptedException {
+        HttpResponse<String> response = post(ServerPaths.ADD_DECK_TO_MARKETPLACE_PATH + deck, "");
 
         checkResponseCode(response.statusCode());
     }
@@ -46,10 +45,8 @@ public class MarketplaceDAO extends HttpDAO {
         checkResponseCode(response.statusCode());
     }
 
-    public void addDeckToCollection(String deckId) throws IOException, InterruptedException {
-        String deckIdParam = "?deckId=" + deckId;
-
-        HttpResponse<String> response = post(ServerPaths.ADD_DECK_TO_COLLECTION_PATH + deckIdParam, "");
+    public void addDeckToCollection(Deck deck) throws IOException, InterruptedException {
+        HttpResponse<String> response = post(ServerPaths.ADD_DECK_TO_COLLECTION_PATH + deck, "");
 
         checkResponseCode(response.statusCode());
     }

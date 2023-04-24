@@ -4,10 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
-import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
-import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
+import ulb.infof307.g01.gui.httpdao.dao.*;
 import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.deckpreview.GameHistoryItemViewController;
@@ -32,6 +29,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
     private final ScoreDAO scoreDAO;
     private final GameHistoryDAO gameHistoryDAO;
     private final DeckDAO deckDAO;
+    private final MarketplaceDAO marketplaceDAO;
 
     private Deck deck;
 
@@ -42,6 +40,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
                                  ErrorHandler errorHandler,
                                  ScoreDAO scoreDAO,
                                  DeckDAO deckDAO,
+                                 MarketplaceDAO marketplaceDAO,
                                  GameHistoryDAO gameHistoryDAO) {
 
         this.stage = stage;
@@ -51,6 +50,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         this.scoreDAO = scoreDAO;
         this.gameHistoryDAO = gameHistoryDAO;
         this.deckDAO = deckDAO;
+        this.marketplaceDAO = marketplaceDAO;
 
         this.deckPreviewViewController
                 = mainWindowViewController.getDeckPreviewViewController();
@@ -139,8 +139,8 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         try {
             deck.switchOnlineVisibility();
             deckPreviewViewController.setDeckVisibility(deck.isPublic());
-            deckDAO.addDeckToMarketPlace(deck);
-            deckDAO.emptyCache();
+            marketplaceDAO.addDeckToMarketplace(deck);
+            //deckDAO.emptyCache();
 
         } catch (IOException | InterruptedException e) {
             errorHandler.savingError(e);
