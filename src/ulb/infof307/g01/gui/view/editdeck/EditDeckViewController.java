@@ -18,10 +18,7 @@ import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.util.GridPosIterator;
 import ulb.infof307.g01.gui.util.Pos2D;
-import ulb.infof307.g01.model.card.Card;
-import ulb.infof307.g01.model.card.FlashCard;
-import ulb.infof307.g01.model.card.InputCard;
-import ulb.infof307.g01.model.card.MCQCard;
+import ulb.infof307.g01.model.card.*;
 import ulb.infof307.g01.model.deck.Deck;
 
 import java.io.File;
@@ -663,8 +660,8 @@ public class EditDeckViewController {
 
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
             mainHbox.requestFocus();
-        }
-
+        } else
+            listener.timerValueChanged((TimedCard) selectedCard, Integer.parseInt(timerValue.getText()));
     }
 
     @FXML
@@ -757,6 +754,8 @@ public class EditDeckViewController {
         void newInputCard();
 
         void inputAnswerModified(InputCard selectedCard, String answer);
+
+        void timerValueChanged(TimedCard selectedCard, int value);
 
         void setSelectedCardIndex(int cardIndex);
     }
