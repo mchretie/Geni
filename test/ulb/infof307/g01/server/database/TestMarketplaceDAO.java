@@ -6,6 +6,7 @@ import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
 import ulb.infof307.g01.server.database.dao.MarketplaceDAO;
+import ulb.infof307.g01.server.database.dao.TagDAO;
 import ulb.infof307.g01.server.database.dao.UserDAO;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestMarketplaceDAO extends DatabaseUsingTest {
     UserDAO userDAO;
     DeckDAO deckDAO;
+    TagDAO tagDAO;
     MarketplaceDAO marketplaceDAO;
     UUID user;
 
@@ -29,8 +31,16 @@ public class TestMarketplaceDAO extends DatabaseUsingTest {
         db.initTables(DatabaseSchema.SERVER);
 
         this.userDAO = new UserDAO(this.db);
+
         this.deckDAO = new DeckDAO(this.db);
+        this.tagDAO = new TagDAO(this.db);
+
+        this.deckDAO.setTagDao(this.tagDAO);
+        this.tagDAO.setDeckDao(this.deckDAO);
+
         this.marketplaceDAO = new MarketplaceDAO(this.db);
+
+        this.marketplaceDAO.setDeckDAO(deckDAO);
 
         userDAO.registerUser("user", "pass");
         this.user = UUID.fromString(userDAO.getUserId("user"));
