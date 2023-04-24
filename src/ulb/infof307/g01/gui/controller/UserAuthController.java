@@ -53,8 +53,11 @@ public class UserAuthController implements UserAuthViewController.Listener {
      *
      */
     public void show() {
-        mainWindowViewController.setUserAuthViewController();
+        mainWindowViewController.setUserAuthViewVisible();
+        mainWindowViewController.makeBottomNavigationBarInvisible();
+        mainWindowViewController.makeTopNavigationBarInvisible();
         mainWindowViewController.makeGoBackIconVisible();
+
         userAuthViewController.setLoginPaneVisible();
         stage.show();
     }

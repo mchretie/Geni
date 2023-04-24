@@ -1,7 +1,6 @@
 package ulb.infof307.g01.gui.httpdao.dao;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import ulb.infof307.g01.gui.util.DeckCache;
 import ulb.infof307.g01.model.IndulgentValidator;
 import ulb.infof307.g01.model.deck.Deck;
@@ -163,12 +162,6 @@ public class DeckDAO extends HttpDAO {
         return deckCache.getAllDecksMetadata().size();
     }
 
-    @Override
-    public void setToken(String token) {
-        deckCache = null;
-        super.setToken(token);
-    }
-
     public void uploadImage(File image, String filename)
             throws IOException, InterruptedException {
 
@@ -177,4 +170,31 @@ public class DeckDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
     }
+
+    public void addDeckToMarketPlace(Deck deck) throws IOException, InterruptedException {
+        String path = ServerPaths.ADD_DECK_TO_MARKETPLACE_PATH;
+        HttpResponse<String> response = post(path, new Gson().toJson(deck));;
+
+        checkResponseCode(response.statusCode());
+
+        deckCache.updateDeck(fetchDeck(deck.getMetadata()));
+    }
+
+    public void addDeckToCollection(Deck deck) throws IOException, InterruptedException {
+        String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH;
+        HttpResponse<String> response = post(path, new Gson().toJson(deck));;
+
+        checkResponseCode(response.statusCode());
+    }
+
+    public void emptyCache() {
+        deckCache = null;
+    }
+
+    @Override
+    public void setToken(String token) {
+        deckCache = null;
+        super.setToken(token);
+    }
+
 }

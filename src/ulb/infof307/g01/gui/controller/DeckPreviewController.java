@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
+import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
 import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
@@ -30,6 +31,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
     private final ErrorHandler errorHandler;
     private final ScoreDAO scoreDAO;
     private final GameHistoryDAO gameHistoryDAO;
+    private final DeckDAO deckDAO;
 
     private Deck deck;
 
@@ -38,8 +40,8 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
                                  MainWindowViewController mainWindowViewController,
                                  ControllerListener controllerListener,
                                  ErrorHandler errorHandler,
-                                 UserSessionDAO userSessionDAO,
                                  ScoreDAO scoreDAO,
+                                 DeckDAO deckDAO,
                                  GameHistoryDAO gameHistoryDAO) {
 
         this.stage = stage;
@@ -48,9 +50,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         this.errorHandler = errorHandler;
         this.scoreDAO = scoreDAO;
         this.gameHistoryDAO = gameHistoryDAO;
-
-        scoreDAO.setToken(userSessionDAO.getToken());
-        gameHistoryDAO.setToken(userSessionDAO.getToken());
+        this.deckDAO = deckDAO;
 
         this.deckPreviewViewController
                 = mainWindowViewController.getDeckPreviewViewController();
@@ -69,6 +69,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
             deckPreviewViewController.setScore(scoreString);
 
             deckPreviewViewController.setPlayDeckButtonDisabled(deck.cardCount() == 0);
+            deckPreviewViewController.setDeckVisibility(deck.isPublic());
             deckPreviewViewController.setGameHistory(loadGameHistory());
 
         } catch (IOException | InterruptedException e) {
@@ -129,8 +130,21 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
     /* ====================================================================== */
 
     @Override
-    public void onPlayDeckClicked() {
+    public void playDeckClicked() {
         controllerListener.onPlayDeckClicked(deck);
+    }
+
+    @Override
+    public void deckShared() {
+        try {
+            deck.switchOnlineVisibility();
+            deckPreviewViewController.setDeckVisibility(deck.isPublic());
+            deckDAO.addDeckToMarketPlace(deck);
+            deckDAO.emptyCache();
+
+        } catch (IOException | InterruptedException e) {
+            errorHandler.savingError(e);
+        }
     }
 
     /* ====================================================================== */

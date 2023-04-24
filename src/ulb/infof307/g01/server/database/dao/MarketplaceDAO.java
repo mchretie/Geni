@@ -29,6 +29,7 @@ public class MarketplaceDAO extends DAO {
             int downloads = res.getInt("downloads");
 
             return new MarketplaceDeckMetadata(deck, owner_username, rating, downloads);
+
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }

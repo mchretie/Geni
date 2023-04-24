@@ -39,7 +39,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         this.score = Score.createNewScore(userDAO.getUsername(), deck.getId());
         this.answeredCards = new boolean[deck.cardCount()];
         Arrays.fill(answeredCards, false);
-        this.scoreDAO.setToken(userDAO.getToken());
 
         playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
         playDeckViewController.setDeckName(deck.getName());

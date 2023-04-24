@@ -66,10 +66,9 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     /* ====================================================================== */
     /*                          Database Access                               */
     /* ====================================================================== */
-    private List<Node> loadDecks() throws IOException, InterruptedException {
+    private List<Node> loadDecks() throws IOException {
         List<Node> decksLoaded = new ArrayList<>();
 
-        //decks.sort(Comparator.comparing(DeckMetadata::name));
         for (int x = 0; x < 10; x++) {
             URL resource = MarketplaceViewController
                     .class
@@ -81,10 +80,6 @@ public class MarketplaceController implements MarketplaceViewController.Listener
 
             DeckMarketplaceViewController controller = loader.getController();
             controller.setImageLoader(imageLoader);
-
-            // Score bestScore = scoreDAO.getBestScoreForDeck(deck.id()); //TODO
-            //controller.setDeck(deck, bestScore);
-            //controller.setListener(this);
 
             decksLoaded.add(node);
         }

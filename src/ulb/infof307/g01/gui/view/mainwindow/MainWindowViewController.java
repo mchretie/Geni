@@ -30,7 +30,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 
 public class MainWindowViewController implements Initializable {
@@ -172,7 +171,7 @@ public class MainWindowViewController implements Initializable {
             centerStackPane.setEffect(null);
             deckPreviewView.setVisible(false);
             centerStackPane.setDisable(false);
-            makeGoBackIconInvisible();
+            listener.deckPreviewClosed();
         });
 
         popup.setAutoHide(true);
@@ -320,7 +319,7 @@ public class MainWindowViewController implements Initializable {
         onClick(profileButton);
     }
 
-    public void setUserAuthViewController() {
+    public void setUserAuthViewVisible() {
         setAllInvisibleExcept(userAuthView);
         onClick(profileButton);
     }
@@ -386,7 +385,7 @@ public class MainWindowViewController implements Initializable {
         bottomHBox.setManaged(true);
     }
 
-    public void makebottomNavigationBarInvisible() {
+    public void makeBottomNavigationBarInvisible() {
         bottomHBox.setVisible(false);
         bottomHBox.setManaged(false);
     }
@@ -492,5 +491,6 @@ public class MainWindowViewController implements Initializable {
         void goToMarketplaceClicked();
         void goToLeaderboardClicked();
         void goToProfileClicked();
+        void deckPreviewClosed();
     }
 }
