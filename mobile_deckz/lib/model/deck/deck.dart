@@ -5,6 +5,7 @@ class Deck {
   final String name;
   final String color;
   final String image;
+  final String score;
   final String cardCount;
   final List<Tag> tags;
 
@@ -13,6 +14,7 @@ class Deck {
         required this.name,
         required this.color,
         required this.image,
+        required this.score,
         required this.cardCount,
         required this.tags});
 
@@ -26,6 +28,7 @@ class Deck {
       name: json['name'],
       color: json['color'],
       image: json['image'],
+      score: json['score'],
       cardCount: json['cardCount'].toString(),
       tags: tags,
     );

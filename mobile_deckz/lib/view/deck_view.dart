@@ -72,11 +72,11 @@ class DeckView extends StatelessWidget {
                     ),
                     Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: const <Widget>[
-                        Icon(Icons.emoji_events, color: Colors.white),
-                        SizedBox(height: 4),
+                      children: <Widget>[
+                        const Icon(Icons.emoji_events, color: Colors.white),
+                        const SizedBox(height: 4),
                         Text(
-                          '-1',
+                          deck.score,
                           style: TextStyle(color: Colors.white),
                         ),
                       ],

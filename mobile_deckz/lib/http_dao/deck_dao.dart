@@ -14,11 +14,25 @@ class DeckDao {
       List<dynamic> json = jsonDecode(response.body);
       List<Deck> decks = [];
       for (var deck in json) {
+        deck['score'] = await getBestDeckScore(deck['id']);
         decks.add(Deck.fromJson(deck));
       }
       return decks;
     }
     return [];
+  }
+
+  static Future<String> getBestDeckScore(String deckId) async {
+    final http.Response response =
+        await HttpDao.get(Uri.parse('${ServerPath.getBestScorePath}?deck=$deckId'));
+    if (response.statusCode == 200) {
+      if (response.body == 'null') {
+        return 'N/A';
+      }
+      Map<String, dynamic> json = jsonDecode(response.body);
+      return json['score'].toString();
+    }
+    return 'N/A';
   }
 
   static Future<void> getDeck(String id) async {
@@ -30,7 +44,6 @@ class DeckDao {
     final http.Response response = await HttpDao.get(uri);
     if (response.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(response.body);
-      // print(json);
     }
   }
 

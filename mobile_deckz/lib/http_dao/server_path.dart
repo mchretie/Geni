@@ -31,7 +31,7 @@ class ServerPath {
   static final Uri leaderboardBasePath = Uri.parse("$base/leaderboard");
   static final Uri saveScorePath = Uri.parse("$leaderboardBasePath/save");
   static final Uri getLeaderboardPath = Uri.parse("$leaderboardBasePath/get");
-  static final Uri getBestScorePath = Uri.parse("${getLeaderboardPath.path}/best-score");
+  static final String getBestScorePath = "$getLeaderboardPath/best-score";
   static final Uri getBestScoreUserIdPath = Uri.parse("$leaderboardBasePath/best-score-user");
 
   // Used by GameHistoryRequestHandler
