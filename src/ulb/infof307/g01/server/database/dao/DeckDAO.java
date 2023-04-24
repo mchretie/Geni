@@ -294,11 +294,12 @@ public class DeckDAO extends DAO {
     private void saveDeckCards(Deck deck) throws DatabaseException {
         System.out.println("before saving cards");
         HashSet<Card> currentCards = new HashSet<>(getCardsFor(deck.getId()));
+        System.out.println("after getting current cards");
         HashSet<Card> newCards = new HashSet<>(deck.getCards());
-
+        System.out.println("after getting new cards");
         Set<Card> addedCards = (Set<Card>) newCards.clone();
         addedCards.removeAll(currentCards);
-
+        System.out.println("after first remove ");
         Set<Card> deletedCards = (Set<Card>) currentCards.clone();
         deletedCards.removeAll(newCards);
         System.out.println("deleted cards: " );
@@ -420,7 +421,7 @@ public class DeckDAO extends DAO {
 
     private List<FlashCard> getFlashCardsFor(UUID deckUuid) throws DatabaseException {
         String sql = """
-                SELECT card.card_id, deck_id, front, back, countdown_time
+                SELECT card.card_id, deck_id, front, back
                 FROM card
                 INNER JOIN flash_card
                 ON card.card_id = flash_card.card_id
