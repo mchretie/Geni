@@ -30,6 +30,7 @@ public class MarketplaceRequestHandler extends Handler {
         delete(REMOVE_DECK_FROM_MARKETPLACE_PATH, this::removeDeck, toJson());
         post(ADD_DECK_TO_COLLECTION_PATH, this::addDeckToCollection, toJson());
         delete(REMOVE_DECK_FROM_COLLECTION_PATH, this::removeDeckFromCollection, toJson());
+        get(GET_SAVED_DECKS_FROM_MARKETPLACE, this::getUsersCollection, toJson());
     }
 
     private MarketplaceDeckMetadata setupImagePath(MarketplaceDeckMetadata deckMetadata) {
@@ -145,4 +146,18 @@ public class MarketplaceRequestHandler extends Handler {
         }
     }
 
+    private List<MarketplaceDeckMetadata> getUsersCollection(Request req, Response res) {
+        try {
+            String username = usernameFromRequest(req);
+            UUID userId = UUID.fromString(database.getUserId(username));
+            return setupImagePath(database.getUsersCollectionFromMarketplace(userId));
+
+        } catch (Exception e) {
+            String message = "Failed to get the user's deck collection from the marketplace: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
+            return new ArrayList<>();
+        }
+    }
 }

@@ -210,4 +210,8 @@ public class Database {
     public void removeDeckFromUserCollection(UUID deckId, UUID userId) throws DatabaseException {
         marketplaceDao.removeDeckFromUserCollection(deckId, userId);
     }
+
+    public List<MarketplaceDeckMetadata> getUsersCollectionFromMarketplace(UUID userId) throws DatabaseException {
+        return marketplaceDao.getSavedDecks(userId);
+    }
 }

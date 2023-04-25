@@ -107,4 +107,22 @@ public class MarketplaceDAO extends DAO {
                 userId.toString(),
                 deckId.toString());
     }
+
+    public List<MarketplaceDeckMetadata> getSavedDecks(UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT D.deck_id, U.username, D.name, D.color, D.image, M.rating, M.downloads, 1 as 'public'
+                FROM marketplace M
+                INNER JOIN deck D ON M.deck_id = D.deck_id
+                INNER JOIN user U ON U.user_id = D.user_id
+                INNER JOIN user_deck_collection C ON M.deck_id = C.deck_id
+                WHERE C.user_id = ?;
+                """;
+
+        ResultSet res = database.executeQuery(sql, userId.toString());
+        List<MarketplaceDeckMetadata> decks = new ArrayList<>();
+        while (checkedNext(res))
+            decks.add(extractMarketplaceDeckMetaData(res));
+
+        return decks;
+    }
 }
