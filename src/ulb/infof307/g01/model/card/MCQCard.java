@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class MCQCard extends Card {
+import static org.eclipse.jetty.util.TypeUtil.asList;
+
+public class MCQCard extends TimedCard {
 
     @Expose
     private final List<String> choices;
@@ -22,13 +24,12 @@ public class MCQCard extends Card {
         this.choices = new ArrayList<>();
         this.choices.add("Réponse 1");
         this.choices.add("Réponse 2");
-
         this.correctChoice = 0;
         this.cardType = "MCQCard";
     }
 
-    public MCQCard(UUID uuid, UUID deckId, String front, List<String> choices, int correctChoice) {
-        super(uuid, deckId, front);
+    public MCQCard(UUID uuid, UUID deckId, String front, List<String> choices, int correctChoice, Integer countdownTime) {
+        super(uuid, deckId, front, countdownTime);
         this.choices = choices;
         this.correctChoice = correctChoice;
         this.cardType = "MCQCard";
@@ -108,6 +109,8 @@ public class MCQCard extends Card {
             return true;
         if (o == null || o.getClass() != this.getClass())
             return false;
+
+        if( !super.equals(o) ) return false;
 
         MCQCard other = (MCQCard) o;
         return id.equals(other.getId())

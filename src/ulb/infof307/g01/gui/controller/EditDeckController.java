@@ -9,10 +9,7 @@ import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
-import ulb.infof307.g01.model.card.Card;
-import ulb.infof307.g01.model.card.FlashCard;
-import ulb.infof307.g01.model.card.InputCard;
-import ulb.infof307.g01.model.card.MCQCard;
+import ulb.infof307.g01.model.card.*;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Tag;
 
@@ -185,7 +182,17 @@ public class EditDeckController implements EditDeckViewController.Listener,
         try {
             inputcard.setAnswer(answer);
             deckDAO.saveDeck(deck);
-            editDeckViewController.showCards();
+
+        } catch (InterruptedException | IOException e) {
+            errorHandler.savingError(e);
+        }
+    }
+
+    @Override
+    public void timerValueChanged(TimedCard selectedCard, int value) {
+        try {
+            selectedCard.setCountdownTime(value);
+            deckDAO.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);

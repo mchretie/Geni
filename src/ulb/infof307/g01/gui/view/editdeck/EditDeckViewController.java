@@ -18,10 +18,7 @@ import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.util.GridPosIterator;
 import ulb.infof307.g01.gui.util.Pos2D;
-import ulb.infof307.g01.model.card.Card;
-import ulb.infof307.g01.model.card.FlashCard;
-import ulb.infof307.g01.model.card.InputCard;
-import ulb.infof307.g01.model.card.MCQCard;
+import ulb.infof307.g01.model.card.*;
 import ulb.infof307.g01.model.deck.Deck;
 
 import java.io.File;
@@ -93,6 +90,12 @@ public class EditDeckViewController {
 
     @FXML
     private TextField answerOfInputCard;
+
+    @FXML
+    private HBox timerChangerComponent;
+
+    @FXML
+    private TextField timerValue;
 
 
     /* ====================================================================== */
@@ -209,6 +212,7 @@ public class EditDeckViewController {
     private void loadFlashCardEditor(FlashCard flashCard) {
         backCardWebView.getEngine().loadContent(flashCard.getBack());
         backCard.setVisible(true);
+        timerChangerComponent.setVisible(false);
         answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(false);
 
@@ -216,7 +220,9 @@ public class EditDeckViewController {
 
     private void loadInputCardEditor(InputCard inputCard) {
         answerOfInputCard.setText(inputCard.getAnswer());
+        timerValue.setText(String.valueOf(inputCard.getCountdownTime()));
         answerOfInputCard.setVisible(true);
+        timerChangerComponent.setVisible(true);
         choicesGrid.setVisible(false);
         backCard.setVisible(false);
     }
@@ -229,6 +235,7 @@ public class EditDeckViewController {
      */
     private void loadMCQCardEditor(MCQCard mcqCard) {
         choicesGrid.getChildren().clear();
+        timerValue.setText(String.valueOf(mcqCard.getCountdownTime()));
 
         int correctChoiceIndex = mcqCard.getCorrectChoiceIndex();
         Iterator<Pos2D> positions = new GridPosIterator(2, 2);
@@ -247,6 +254,7 @@ public class EditDeckViewController {
         }
 
         backCard.setVisible(false);
+        timerChangerComponent.setVisible(true);
         answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(true);
     }
@@ -468,6 +476,7 @@ public class EditDeckViewController {
     public void hideSelectedCardEditor() {
         frontCard.setVisible(false);
         backCard.setVisible(false);
+        timerChangerComponent.setVisible(false);
         choicesGrid.setVisible(false);
     }
 
@@ -644,6 +653,27 @@ public class EditDeckViewController {
     }
 
     @FXML
+    private void handleTimerValueEdit(KeyEvent keyEvent) {
+        timerValue.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            if (!event.getCharacter().matches("[0-9]")) {
+                event.consume();
+            }
+        });
+
+
+        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            mainHbox.requestFocus();
+        }
+    }
+
+    @FXML
+    private void handleTimerValueSave() {
+        if (!timerValue.getText().isEmpty()) {
+            listener.timerValueChanged((TimedCard) selectedCard, Integer.parseInt(timerValue.getText()));
+        }
+    }
+
+    @FXML
     private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
@@ -659,6 +689,7 @@ public class EditDeckViewController {
         cardTypeSelected();
 
         choicesGrid.setVisible(true);
+        timerChangerComponent.setVisible(true);
     }
 
     @FXML
@@ -668,6 +699,7 @@ public class EditDeckViewController {
         listener.newInputCard();
         cardTypeSelected();
         answerOfInputCard.setVisible(true);
+        timerChangerComponent.setVisible(true);
     }
 
     @FXML
@@ -677,6 +709,7 @@ public class EditDeckViewController {
         listener.newFlashCard();
         cardTypeSelected();
         backCard.setVisible(true);
+        timerChangerComponent.setVisible(false);
     }
 
     private void cardTypeSelected() {
@@ -730,6 +763,8 @@ public class EditDeckViewController {
         void newInputCard();
 
         void inputAnswerModified(InputCard selectedCard, String answer);
+
+        void timerValueChanged(TimedCard selectedCard, int value);
 
         void setSelectedCardIndex(int cardIndex);
     }
