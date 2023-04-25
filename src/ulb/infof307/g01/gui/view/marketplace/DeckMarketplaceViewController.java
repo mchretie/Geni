@@ -84,13 +84,18 @@ public class DeckMarketplaceViewController {
     /*                           Updating Deck                                */
     /* ====================================================================== */
 
-    public void setDeck(MarketplaceDeckMetadata deck, Score bestScore) {
+    public void setDeck(MarketplaceDeckMetadata deck, Score bestScore, DeckAvailability deckAvailability) {
         this.deck = deck;
-        this.deckAvailability = DeckAvailability.OWNED;
+        this.deckAvailability = deckAvailability;
         this.updateDeckLabelName();
 
         this.setDeckImage();
         this.setDeckColor();
+
+        if (this.deckAvailability == DeckAvailability.OWNED) {
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-check");
+        } else
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-plus");
 
         if (bestScore == null)
             this.setStats("N/A");
@@ -149,6 +154,7 @@ public class DeckMarketplaceViewController {
     private void setStats(String bestScore) {
         amountCardsLabel.setText(String.valueOf(deck.cardCount()));
         scoreLabel.setText(bestScore);
+        creatorLabel.setText(deck.owner());
     }
 
 

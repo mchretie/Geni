@@ -13,6 +13,7 @@ import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController;
+import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController.DeckAvailability;
 import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
@@ -90,7 +91,9 @@ public class MarketplaceController implements MarketplaceViewController.Listener
             Node node = loader.load();
 
             DeckMarketplaceViewController controller = loader.getController();
-            controller.setDeck(deck, scoreDAO.getBestScoreForDeck(deck.id()));
+
+            DeckAvailability owned = DeckAvailability.OWNED;
+            controller.setDeck(deck, scoreDAO.getBestScoreForDeck(deck.id()), owned);
             controller.setImageLoader(imageLoader);
 
             decksLoaded.add(node);
