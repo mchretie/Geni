@@ -182,7 +182,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
         try {
             inputcard.setAnswer(answer);
             deckDAO.saveDeck(deck);
-            editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);

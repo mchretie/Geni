@@ -356,6 +356,7 @@ public class DeckDAO extends DAO {
                 ON CONFLICT(card_id)
                 DO UPDATE SET answer = ? , countdown_time = ?
                 """;
+
         database.executeUpdate(upsertInputCard,
                 card.getId().toString(),
                 card.getAnswer(),

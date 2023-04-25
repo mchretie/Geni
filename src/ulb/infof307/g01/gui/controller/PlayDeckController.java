@@ -158,7 +158,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     }
 
     @Override
-    // timeLeft param : 0 if time is up, 1 if answered instantly
     public void onChoiceEntered(boolean isGoodChoice, double timeLeft) {
         int cardIndex = cardExtractor.getCurrentCardIndex();
 
