@@ -53,15 +53,11 @@ public class EditCardController implements EditCardViewController.Listener {
             Element body = doc.body();
             body.removeAttr("contenteditable");
 
-            // TODO set the countdown if it's a timed card
-
             if (front)
                 card.setFront(doc.html());
             else
                 ((FlashCard) card).setBack(doc.html());
-            /*if (card instanceof TimedCard tm) {
-                tm.setCountdownTime(30); // TODO to be linked correctly to the GUI
-            }*/
+
             deckDAO.saveDeck(deck);
             controllerListener.savedChanges();
 
