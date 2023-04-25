@@ -3,36 +3,102 @@ import 'package:mobile_deckz/model/card/input_card.dart';
 
 import 'front_card_view.dart';
 
-class InputCardView extends StatelessWidget {
+class InputCardView extends StatefulWidget {
   final InputCard card;
 
   const InputCardView({super.key, required this.card});
 
   @override
+  State<InputCardView> createState() => _InputCardViewState();
+}
+
+class _InputCardViewState extends State<InputCardView> {
+  bool isAnswered = false;
+  String answer = '';
+
+  @override
   Widget build(BuildContext context) {
     return Column(children: [
-      FrontCardView(text: card.front),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const SizedBox(
-            width: 300,
-              child: TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Answer',
+      FrontCardView(text: widget.card.front),
+      const SizedBox(height: 10),
+      isAnswered
+          ? Column(
+              children: [
+                widget.card.isUserAnswerValid(answer)
+                    ? const Text('Correct!')
+                    : SizedBox(
+                        width: 300,
+                        height: 40,
+                        child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                answer,
+                                style: const TextStyle(fontSize: 16.0),
+                              ),
+                            )),
+                      ),
+                const SizedBox(height: 5),
+                SizedBox(
+                  width: 300,
+                  height: 40,
+                  child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 1.0,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          widget.card.answer,
+                          style: const TextStyle(fontSize: 16.0),
+                        ),
+                      )),
+                )
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                    width: 300,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Answer',
+                      ),
+                      onChanged: (text) {
+                        setState(() {
+                          answer = text;
+                        });
+                      },
+                    )),
+                SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        isAnswered = true;
+                      });
+                    },
+                    child: const Icon(Icons.check),
+                  ),
+                )
+              ],
             ),
-          )),
-          SizedBox(
-            width: 60,
-            height: 60,
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Icon(Icons.check),
-            ),
-          )
-        ],
-      ),
     ]);
   }
 }
