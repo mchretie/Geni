@@ -41,4 +41,13 @@ public class MarketplaceDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
     }
+
+    public List<MarketplaceDeckMetadata> getSavedDecks() throws IOException, InterruptedException {
+        HttpResponse<String> response = get(ServerPaths.GET_SAVED_DECKS_FROM_MARKETPLACE);
+
+        checkResponseCode(response.statusCode());
+
+        TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {};
+        return new Gson().fromJson(response.body(), typeToken);
+    }
 }
