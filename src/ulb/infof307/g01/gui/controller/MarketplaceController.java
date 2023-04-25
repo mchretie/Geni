@@ -130,6 +130,8 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     public void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability) {
         if (deckAvailability.equals(DeckAvailability.MISSING)) {
             //deckDAO.addDeckToCollection(deck.id());
+        } else {
+            //deckDAO.removeDeckFromCollection(deck.id());
         }
     }
 

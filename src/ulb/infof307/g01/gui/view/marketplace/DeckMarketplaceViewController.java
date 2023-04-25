@@ -165,6 +165,11 @@ public class DeckMarketplaceViewController {
     @FXML
     private void handleAddRemoveDeckClicked() {
         listener.addRemoveDeckClicked(deck, this.deckAvailability);
+
+        if (this.deckAvailability == DeckAvailability.OWNED) {
+            this.deckAvailability = DeckAvailability.MISSING;
+        } else
+            this.deckAvailability = DeckAvailability.OWNED;
     }
 
 
