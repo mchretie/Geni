@@ -10,6 +10,29 @@ class InputCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FrontCardView(text: card.front);
+    return Column(children: [
+      FrontCardView(text: card.front),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox(
+            width: 300,
+              child: TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Answer',
+            ),
+          )),
+          SizedBox(
+            width: 60,
+            height: 60,
+            child: ElevatedButton(
+              onPressed: () {},
+              child: const Icon(Icons.check),
+            ),
+          )
+        ],
+      ),
+    ]);
   }
 }
