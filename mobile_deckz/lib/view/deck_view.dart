@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_deckz/model/deck/hex_color.dart';
 import 'package:mobile_deckz/view/playdeck/playdeck_view.dart';
 
 import '../http_dao/server_path.dart';
@@ -36,23 +37,50 @@ class DeckView extends StatelessWidget {
                 ),
                 child: Align(
                   alignment: Alignment.bottomLeft,
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    color: Colors.black.withOpacity(0.7),
-                    child: Text(
-                      deck.name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                  child: Row(children: [
+                    Align(
+                        alignment: FractionalOffset.bottomCenter,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          color: Colors.black.withOpacity(0.7),
+                          child: Text(
+                            deck.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )),
+                    Expanded(
+                        child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: SizedBox(
+                                height: 30,
+                                child: ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    children: [
+                                      for (var tag in deck.tags)
+                                        Container(
+                                          padding: const EdgeInsets.all(8),
+                                          color: HexColor(tag.color)
+                                              .withOpacity(0.9),
+                                          child: Text(
+                                            tag.name,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        )
+                                    ])))),
+                  ]),
                 ),
               ),
               Container(
                 color: deck.color == '0x00000000'
-                    ? Colors.blue
+                    ? Colors.purple
                     : Color(int.parse(deck.color)),
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(
@@ -77,7 +105,7 @@ class DeckView extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           deck.score,
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ],
                     ),

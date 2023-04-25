@@ -23,7 +23,7 @@ class _FlashcardViewState extends State<FlashcardView> {
   bool _isFlippingFront = false;
   bool _isFlippingBack = false;
 
-  slowFlipY() async {
+  flipCard() async {
     bool previousShowFront = _showFront;
     if (!previousShowFront) {
       setState(() {
@@ -64,7 +64,7 @@ class _FlashcardViewState extends State<FlashcardView> {
         alignment: FractionalOffset.center,
         child: GestureDetector(
             onTap: () {
-              slowFlipY();
+              flipCard();
             },
             child: _showFront
                 ? Transform(
