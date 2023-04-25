@@ -22,6 +22,7 @@ import java.util.*;
  * to it before saving it with saveDeck or deleteDeck.
  * <p>
  * Do not use directly, use the Database facade instead.
+ *
  * @see ulb.infof307.g01.server.database.Database
  */
 public class DeckDAO extends DAO {
@@ -58,9 +59,9 @@ public class DeckDAO extends DAO {
                 """;
 
         return !checkedNext(database.executeQuery(sql,
-                                                  deck.getId().toString(),
-                                                  userId.toString(),
-                                                  deck.getName()));
+                deck.getId().toString(),
+                userId.toString(),
+                deck.getName()));
     }
 
     public boolean deckNameExists(String name) {
@@ -117,8 +118,8 @@ public class DeckDAO extends DAO {
                 """;
 
         ResultSet res = database.executeQuery(sql,
-                                              deckId.toString(),
-                                              userId.toString());
+                deckId.toString(),
+                userId.toString());
         if (!checkedNext(res))
             return null;
         return extractDeckFrom(res);
@@ -132,7 +133,7 @@ public class DeckDAO extends DAO {
                 """;
 
         ResultSet res = database.executeQuery(sql,
-                                              deckId.toString());
+                deckId.toString());
         if (!checkedNext(res))
             return null;
         return extractDeckFrom(res);
@@ -208,7 +209,7 @@ public class DeckDAO extends DAO {
      * Approximate search of decks with given search string
      *
      * @param userSearch query
-     * @param userId user id
+     * @param userId     user id
      * @return List of decks
      */
     public List<Deck> searchDecks(String userSearch, UUID userId) throws DatabaseException {
@@ -269,15 +270,15 @@ public class DeckDAO extends DAO {
                 """;
 
         database.executeUpdate(sql,
-                               deck.getId().toString(),
-                               userId.toString(),
-                               deck.getName(),
-                               deck.getColor(),
-                               deck.getImage(),
+                deck.getId().toString(),
+                userId.toString(),
+                deck.getName(),
+                deck.getColor(),
+                deck.getImage(),
 
-                               deck.getName(),
-                               deck.getColor(),
-                               deck.getImage());
+                deck.getName(),
+                deck.getColor(),
+                deck.getImage());
     }
 
     private void saveDeckTags(Deck deck) throws DatabaseException {
@@ -300,8 +301,7 @@ public class DeckDAO extends DAO {
         for (Card deletedCard : deletedCards)
             deleteCard(deletedCard);
 
-        for (Card addedCard : addedCards){
-            System.out.println("updating card  "+ addedCard.toString());
+        for (Card addedCard : addedCards) {
             saveCard(addedCard);
         }
 
@@ -316,9 +316,9 @@ public class DeckDAO extends DAO {
                 """;
 
         database.executeUpdate(upsertFlashCard,
-                                 card.getId().toString(),
-                                 card.getBack(),
-                                 card.getBack());
+                card.getId().toString(),
+                card.getBack(),
+                card.getBack());
     }
 
     public void saveCard(MCQCard card) throws DatabaseException {
@@ -331,11 +331,11 @@ public class DeckDAO extends DAO {
                 """;
 
         database.executeUpdate(upsertMCQCard,
-                                 card.getId().toString(),
-                                 card.getCorrectChoiceIndex(),
-                                 card.getCountdownTime(),
-                                 card.getCorrectChoiceIndex(),
-                                 card.getCountdownTime()
+                card.getId().toString(),
+                card.getCorrectChoiceIndex(),
+                card.getCountdownTime(),
+                card.getCorrectChoiceIndex(),
+                card.getCountdownTime()
         );
 
         String upsertMCQCardAnswer = """
@@ -347,9 +347,9 @@ public class DeckDAO extends DAO {
 
         for (int i = 0; i < card.getChoicesCount(); i++)
             database.executeUpdate(upsertMCQCardAnswer,
-                                     card.getId().toString(),
-                                     card.getChoice(i),
-                                     i);
+                    card.getId().toString(),
+                    card.getChoice(i),
+                    i);
     }
 
     public void saveCard(InputCard card) throws DatabaseException {
@@ -360,13 +360,12 @@ public class DeckDAO extends DAO {
                 ON CONFLICT(card_id)
                 DO UPDATE SET answer = ? , countdown_time = ?
                 """;
-        System.out.println("server received new countdown: " + card.getCountdownTime());
         database.executeUpdate(upsertInputCard,
-                                 card.getId().toString(),
-                                 card.getAnswer(),
-                                 card.getCountdownTime(),
-                                 card.getAnswer(),
-                                 card.getCountdownTime()
+                card.getId().toString(),
+                card.getAnswer(),
+                card.getCountdownTime(),
+                card.getAnswer(),
+                card.getCountdownTime()
         );
     }
 
@@ -384,18 +383,12 @@ public class DeckDAO extends DAO {
                 card.getFront(),
                 card.getFront()
         );
-        System.out.println("choosing now ");
 
-        if (card instanceof FlashCard){
-            System.out.println("saving flashcard");
+        if (card instanceof FlashCard) {
             saveCard((FlashCard) card);
-        }
-        else if (card instanceof MCQCard){
-            System.out.println("saving qcmCard");
+        } else if (card instanceof MCQCard) {
             saveCard((MCQCard) card);
-        }
-        else if (card instanceof InputCard){
-            System.out.println("saving inputCard");
+        } else if (card instanceof InputCard) {
             saveCard((InputCard) card);
         }
     }

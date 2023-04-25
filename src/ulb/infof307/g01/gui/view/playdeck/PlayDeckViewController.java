@@ -127,7 +127,6 @@ public class PlayDeckViewController {
                 // end time
                 new KeyFrame(Duration.seconds(seconds), e -> {
                     if (!hasAnswered) {
-                        System.out.println("Time is up");
                         if (this.currentCard instanceof MCQCard) {
                             stopCountdown();
                             showCorrectAnswers();

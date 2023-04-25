@@ -1,23 +1,26 @@
 package ulb.infof307.g01.model.card;
 
 import com.google.gson.annotations.Expose;
+
 import java.util.Objects;
 import java.util.UUID;
 
-public class TimedCard extends Card{
+public class TimedCard extends Card {
 
     @Expose
     protected Integer countdownTime = 0;
 
-    public TimedCard() { super(); }
-
-    protected TimedCard(String front) {
-        super( front );
+    public TimedCard() {
+        super();
     }
 
-    protected TimedCard(UUID uuid, UUID deckId, String front, Integer countdownTime) {
+    protected TimedCard(String front) {
+        super(front);
+    }
+
+    protected TimedCard(UUID uuid, UUID deckId, String front,
+                            Integer countdownTime) {
         super(uuid, deckId, front);
-        System.out.println("TimedCard constructor called");
         this.countdownTime = countdownTime;
     }
 

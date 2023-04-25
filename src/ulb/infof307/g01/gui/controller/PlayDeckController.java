@@ -79,7 +79,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         stage.show();
     }
 
-    public void showCard(){
+    public void showCard() {
         if (currentCard instanceof FlashCard)
             playDeckViewController.showNormalCard();
         else if (currentCard instanceof MCQCard)
@@ -94,7 +94,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     @Override
     public void cardClicked() {
-        if (currentCard instanceof FlashCard){
+        if (currentCard instanceof FlashCard) {
             if (frontShown)
                 playDeckViewController.flipToBackOfCard();
             else
@@ -116,7 +116,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         }
 
         int totalScore = score.getScore() / cardExtractor.getAmountCompetitiveCards();
-        System.out.println("total score : " + totalScore);
         score.setScore(totalScore);
 
         try {
@@ -147,7 +146,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     public void onChoiceEntered(boolean isGoodChoice, double timeLeft) {
         int cardIndex = cardExtractor.getCurrentCardIndex();
 
-        System.out.println("card index : " + cardIndex);
         if (answeredCards[cardIndex]) {
             return;
         }
@@ -155,7 +153,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         answeredCards[cardIndex] = true;
         if (isGoodChoice) {
             score.increment((int) (1000 * timeLeft));
-            System.out.println("incremented score of " + (int) (1000 * timeLeft));
         }
     }
 
