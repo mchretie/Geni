@@ -437,6 +437,7 @@ public class MainFxController extends Application implements
     public void goToHomeClicked() {
         try {
             resetViewStack(View.DECK_MENU);
+            // TODO refetch deck
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {

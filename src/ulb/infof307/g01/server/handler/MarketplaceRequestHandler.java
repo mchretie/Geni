@@ -111,11 +111,11 @@ public class MarketplaceRequestHandler extends Handler {
 
     private Map<String, Boolean> addDeckToCollection(Request req, Response res) {
         try {
-            Deck deck = Deck.fromJson(req.body());
+            UUID deckId = UUID.fromString(req.queryParams("deck_id"));
             String username = usernameFromRequest(req);
             UUID userId = UUID.fromString(database.getUserId(username));
 
-            database.addDeckToUserCollection(deck.getId(), userId);
+            database.addDeckToUserCollection(deckId, userId);
 
             return successfulResponse;
         } catch (Exception e) {

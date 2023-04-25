@@ -128,11 +128,11 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     }
 
     @Override
-    public void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability) {
+    public void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability) throws IOException, InterruptedException {
         if (deckAvailability.equals(DeckAvailability.MISSING)) {
-            //deckDAO.addDeckToCollection(deck.id());
+            deckDAO.addDeckToCollection(deck.id());
         } else {
-            //deckDAO.removeDeckFromCollection(deck.id());
+            deckDAO.removeDeckFromCollection(deck.id());
         }
     }
 

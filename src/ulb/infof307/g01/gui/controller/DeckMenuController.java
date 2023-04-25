@@ -176,7 +176,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             Deck deck = new Deck(name);
             deckDAO.saveDeck(deck);
-            deckDAO.addDeckToCollection(deck);
+            deckDAO.addDeckToCollection(deck.getId());
             showDecks();
 
         } catch (IOException e) {
@@ -212,7 +212,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void deckRemoved(DeckMetadata deck) {
         try {
-            deckDAO.removeDeckFromCollection(deck);
+            deckDAO.removeDeckFromCollection(deck.id());
             showDecks();
 
         } catch (IOException e) {

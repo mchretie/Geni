@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.toList;
@@ -126,16 +127,16 @@ public class DeckDAO extends HttpDAO {
                 .collect(toList());
     }
 
-    public void removeDeckFromCollection(DeckMetadata deck)
+    public void removeDeckFromCollection(UUID deckId)
             throws IOException, InterruptedException {
 
-        String query = "?deck_id=" + deck.id();
+        String query = "?deck_id=" + deckId.toString();
         String path = ServerPaths.REMOVE_DECK_FROM_COLLECTION_PATH;
 
         HttpResponse<String> response = delete(path + query);
 
         checkResponseCode(response.statusCode());
-        deckCache.removeDeck(deck);
+        deckCache.removeDeck(deckId);
     }
 
     public void saveDeck(Deck deck)
@@ -171,9 +172,9 @@ public class DeckDAO extends HttpDAO {
         checkResponseCode(response.statusCode());
     }
 
-    public void addDeckToCollection(Deck deck) throws IOException, InterruptedException {
-        String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH;
-        HttpResponse<String> response = post(path, new Gson().toJson(deck));;
+    public void addDeckToCollection(UUID deckId) throws IOException, InterruptedException {
+        String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH + "?deck_id=" + deckId.toString();
+        HttpResponse<String> response = post(path, "");
 
         checkResponseCode(response.statusCode());
     }

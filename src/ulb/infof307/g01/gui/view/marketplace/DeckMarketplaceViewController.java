@@ -16,6 +16,8 @@ import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 
+import java.io.IOException;
+
 public class DeckMarketplaceViewController {
 
     /* ====================================================================== */
@@ -165,7 +167,7 @@ public class DeckMarketplaceViewController {
     /* ====================================================================== */
 
     @FXML
-    private void handleAddRemoveDeckClicked() {
+    private void handleAddRemoveDeckClicked() throws IOException, InterruptedException {
         listener.addRemoveDeckClicked(deck, this.deckAvailability);
 
         if (this.deckAvailability == DeckAvailability.OWNED) {
@@ -202,6 +204,6 @@ public class DeckMarketplaceViewController {
     /* ====================================================================== */
 
     public interface Listener {
-        void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability);
+        void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability) throws IOException, InterruptedException;
     }
 }
