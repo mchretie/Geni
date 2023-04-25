@@ -24,7 +24,7 @@ class _MCQCardViewState extends State<MCQCardView> {
       const SizedBox(height: 10),
       isAnswered
           ? SizedBox(
-              height: 200,
+              height: 150,
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -64,7 +64,7 @@ class _MCQCardViewState extends State<MCQCardView> {
                 },
               ))
           : SizedBox(
-              height: 200,
+              height: 150,
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,

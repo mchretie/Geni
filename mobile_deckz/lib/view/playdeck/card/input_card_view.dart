@@ -99,6 +99,7 @@ class _InputCardViewState extends State<InputCardView> {
                 )
               ],
             ),
+      const SizedBox(height: 85)
     ]);
   }
 }
