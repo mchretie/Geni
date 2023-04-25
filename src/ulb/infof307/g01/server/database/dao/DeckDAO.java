@@ -320,7 +320,6 @@ public class DeckDAO extends DAO {
     }
 
     public void saveCard(MCQCard card) throws DatabaseException {
-        // TODO : add countdown
         String upsertMCQCard = """
                 INSERT INTO mcq_card (card_id, correct_answer_index, countdown_time)
                 VALUES (?, ?, ?)
@@ -351,7 +350,6 @@ public class DeckDAO extends DAO {
     }
 
     public void saveCard(InputCard card) throws DatabaseException {
-        // TODO : add countdown
         String upsertInputCard = """
                 INSERT INTO input_card (card_id, answer, countdown_time)
                 VALUES (?, ?, ?)
