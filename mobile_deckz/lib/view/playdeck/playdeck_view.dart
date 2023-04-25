@@ -65,7 +65,9 @@ class _PlayCardViewState extends State<PlayCardView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Padding(
+    padding: EdgeInsets.all(16.0),
+        child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         getCorrectCardView(widget.cards[_currentCardIndex]),
@@ -85,7 +87,6 @@ class _PlayCardViewState extends State<PlayCardView> {
             IconButton(
               icon: const Icon(Icons.arrow_forward),
               onPressed: () {
-                print(_currentCardIndex);
                 if (_currentCardIndex < widget.cards.length - 1) {
                   setState(() {
                     _currentCardIndex++;
@@ -96,6 +97,6 @@ class _PlayCardViewState extends State<PlayCardView> {
           ],
         )
       ],
-    );
+    ));
   }
 }
