@@ -59,7 +59,6 @@ class Deck {
   }
 
   List<AbstractCard> getCardRandomOrder() {
-    print("NO");
     List<AbstractCard> cardsCopy = List.from(cards);
     cardsCopy.shuffle();
     return cardsCopy;
