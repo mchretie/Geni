@@ -164,7 +164,7 @@ public class DeckMarketplaceViewController {
 
     @FXML
     private void handleAddRemoveDeckClicked() {
-        //TODO
+        listener.addRemoveDeckClicked(deck, this.deckAvailability);
     }
 
 
@@ -193,6 +193,6 @@ public class DeckMarketplaceViewController {
     /* ====================================================================== */
 
     public interface Listener {
-
+        void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability);
     }
 }

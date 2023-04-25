@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class MarketplaceController implements MarketplaceViewController.Listener {
+public class MarketplaceController implements MarketplaceViewController.Listener, DeckMarketplaceViewController.Listener {
     private final Stage stage;
     private final ControllerListener controllerListener;
     private final MarketplaceViewController marketplaceViewController;
@@ -124,6 +124,13 @@ public class MarketplaceController implements MarketplaceViewController.Listener
         assert decks != null;
         //deckMenuViewController.setDecks(loadDecks(decks)); //TODO
 
+    }
+
+    @Override
+    public void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability) {
+        if (deckAvailability.equals(DeckAvailability.MISSING)) {
+            //deckDAO.addDeckToCollection(deck.id());
+        }
     }
 
 
