@@ -87,8 +87,8 @@ public class DeckMarketplaceViewController {
     public void setDeck(MarketplaceDeckMetadata deck, Score bestScore, DeckAvailability deckAvailability) {
         this.deck = deck;
         this.deckAvailability = deckAvailability;
-        this.updateDeckLabelName();
 
+        this.updateDeckLabelName();
         this.setDeckImage();
         this.setDeckColor();
 

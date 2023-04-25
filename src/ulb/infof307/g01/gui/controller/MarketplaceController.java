@@ -67,7 +67,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     public void show() throws IOException, InterruptedException {
         mainWindowViewController.setMarketplaceViewVisible();
         marketplaceViewController
-                .setDecks(loadDecks(marketplaceDAO.getAllMarketplaceDecks()));
+                .setDecks(loadDecksDatabase());
         stage.show();
     }
 
@@ -75,10 +75,18 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     /* ====================================================================== */
     /*                          Database Access                               */
     /* ====================================================================== */
+    private List<Node> loadDecksDatabase() throws IOException, InterruptedException {
+        List<MarketplaceDeckMetadata> marketplaceDecks = marketplaceDAO.getAllMarketplaceDecks();
+        List<MarketplaceDeckMetadata> decksSaved = marketplaceDAO.getSavedDecks();
+        marketplaceDecks.removeAll(decksSaved);
 
-    private List<Node> loadDecks(List<MarketplaceDeckMetadata> decks)
-                                        throws IOException, InterruptedException {
+        List<Node> decksLoaded = new ArrayList<>();
+        decksLoaded.addAll(loadDecksView(marketplaceDecks, DeckAvailability.MISSING));
+        decksLoaded.addAll(loadDecksView(decksSaved, DeckAvailability.OWNED));
 
+        return decksLoaded;
+    }
+    private List<Node> loadDecksView(List<MarketplaceDeckMetadata> decks, DeckAvailability deckAvailability) throws IOException, InterruptedException {
         List<Node> decksLoaded = new ArrayList<>();
 
         for (MarketplaceDeckMetadata deck : decks) {
@@ -92,8 +100,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
 
             DeckMarketplaceViewController controller = loader.getController();
 
-            DeckAvailability owned = DeckAvailability.OWNED;
-            controller.setDeck(deck, scoreDAO.getBestScoreForDeck(deck.id()), owned);
+            controller.setDeck(deck, scoreDAO.getBestScoreForDeck(deck.id()), deckAvailability);
             controller.setImageLoader(imageLoader);
 
             decksLoaded.add(node);
