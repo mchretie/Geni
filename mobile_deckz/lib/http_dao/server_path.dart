@@ -3,6 +3,7 @@ class ServerPath {
   // static const String baseUrl = "http://192.168.0.191:8080";
   static const String base = "$baseUrl/api";
 
+
   // Used by UserRequestHandler
   static final Uri userBasePath = Uri.parse("$base/user");
   static final Uri registerPath = Uri.parse("$userBasePath/register");
