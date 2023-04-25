@@ -102,6 +102,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
 
             controller.setDeck(deck, scoreDAO.getBestScoreForDeck(deck.id()), deckAvailability);
             controller.setImageLoader(imageLoader);
+            controller.setListener(this);
 
             decksLoaded.add(node);
         }

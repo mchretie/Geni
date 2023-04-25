@@ -92,10 +92,7 @@ public class DeckMarketplaceViewController {
         this.setDeckImage();
         this.setDeckColor();
 
-        if (this.deckAvailability == DeckAvailability.OWNED) {
-            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-check");
-        } else
-            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-plus");
+        changeDeckAvailabilityIcon();
 
         if (bestScore == null)
             this.setStats("N/A");
@@ -113,7 +110,6 @@ public class DeckMarketplaceViewController {
     }
 
     private void setDeckImage() {
-        System.out.println(deck.image());
         Image img = new Image(deck.image());
         imageBackground.setImage(img);
         imageBackground.setPreserveRatio(false);
@@ -157,6 +153,12 @@ public class DeckMarketplaceViewController {
         creatorLabel.setText(deck.owner());
     }
 
+    private void changeDeckAvailabilityIcon(){
+        if (this.deckAvailability == DeckAvailability.OWNED) {
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-check");
+        } else
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-plus");
+    }
 
     /* ====================================================================== */
     /*                             Click handlers                             */
@@ -170,6 +172,8 @@ public class DeckMarketplaceViewController {
             this.deckAvailability = DeckAvailability.MISSING;
         } else
             this.deckAvailability = DeckAvailability.OWNED;
+
+        changeDeckAvailabilityIcon();
     }
 
 
