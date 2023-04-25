@@ -33,7 +33,7 @@ public class InputCard extends Card {
 
     public boolean isInputCorrect(String input) {
         IndulgentValidator validator = new IndulgentValidator();
-        return validator.isEquals(this.answer, input);
+        return validator.areEqual(this.answer, input);
     }
 
     @Override

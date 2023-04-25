@@ -17,22 +17,22 @@ class IndulgentValidatorTest {
     }
 
     @Test
-    void removeAccents() {
-        assertEquals("l'egypte", this.indulgentValidator.removeAccents("l'égypte"));
+    void addTolerance_WithAccents_WordsEqual() {
+        assertEquals("egypte", indulgentValidator.addTolerance("égypte"));
     }
 
     @Test
-    void removeDeterminers() {
-        assertEquals("égypte", this.indulgentValidator.removeDeterminers("l'égypte"));
+    void addTolerance_WithDeterminers_WordsEqual() {
+        assertEquals("egypte", this.indulgentValidator.addTolerance("l'egypte"));
     }
 
     @Test
-    void addTolerance() {
+    void addTolerance_WithAccentsAndDeterminers_WordsEqual() {
         assertEquals(this.userAnswer, this.indulgentValidator.addTolerance(cardAnswer));
     }
 
     @Test
-    void isAnswerValid() {
-        assertTrue(this.indulgentValidator.isEquals(this.cardAnswer, this.userAnswer));
+    void areEqual_WithAccentsAndDeterminers_WordsEqual() {
+        assertTrue(this.indulgentValidator.areEqual(this.cardAnswer, this.userAnswer));
     }
 }
