@@ -73,14 +73,14 @@ public class MCQCard extends TimedCard {
     }
 
     public void setChoice(int index, String choice) throws IllegalArgumentException {
-        if (isValidIndex(index))
+        if (!isValidIndex(index))
             throw new IllegalArgumentException(
                     "The choice index must be among the choices");
         this.choices.set(index, choice);
     }
 
     public void setCorrectChoice(int correctChoice) throws IllegalArgumentException {
-        if (isValidIndex(correctChoice))
+        if (!isValidIndex(correctChoice))
             throw new IllegalArgumentException(
                     "The correct answer must be among the choices");
         this.correctChoice = correctChoice;

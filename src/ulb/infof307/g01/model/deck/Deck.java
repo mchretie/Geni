@@ -44,7 +44,7 @@ public class Deck implements Iterable<Card> {
              id,
              cards,
              tags,
-             "0x00000000",
+             "#00000000",
              "/backgrounds/default_background.jpg");
     }
 
@@ -55,6 +55,10 @@ public class Deck implements Iterable<Card> {
         this.tags = tags;
         this.color = color;
         this.image = image;
+    }
+
+    public Deck(Deck deck) {
+        this(deck.name, deck.id, deck.cards, deck.tags, deck.color, deck.image);
     }
 
     public static Deck fromJson(String json) {
@@ -98,10 +102,6 @@ public class Deck implements Iterable<Card> {
     public Card getLastCard() throws IndexOutOfBoundsException {
         return getCard(cards.size() - 1);
 
-    }
-
-    public Card getFirstCard() throws IndexOutOfBoundsException {
-        return getCard(0);
     }
 
     public List<Card> getCards() {

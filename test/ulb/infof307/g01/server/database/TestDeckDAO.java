@@ -8,6 +8,7 @@ import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
 import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Tag;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
 import ulb.infof307.g01.server.database.dao.TagDAO;
@@ -31,7 +32,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     void init() throws DatabaseException {
         super.init();
 
-        db.initTables(DatabaseScheme.SERVER);
+        db.initTables(DatabaseSchema.SERVER);
 
         this.deckDAO = new DeckDAO(this.db);
         this.tagDAO = new TagDAO(this.db);
@@ -270,5 +271,33 @@ public class TestDeckDAO extends DatabaseUsingTest {
         String deck2Gson = new Gson().toJson(deck2);
 
         assertEquals(deck1Gson, deck2Gson);
+    }
+
+    @Test
+    void getMarketplaceDecksMetadata_EmptyDecks_AllReturned() {
+        Deck deck1 = new Deck("deck1");
+        Deck deck2 = new Deck("deck2");
+        Deck deck3 = new Deck("deck3");
+
+        userDAO.registerUser("user1", "pass");
+        deckDAO.saveDeck(deck1, UUID.fromString(userDAO.getUserId("user1")));
+        deckDAO.saveDeck(deck2, UUID.fromString(userDAO.getUserId("user1")));
+
+        deckDAO.addDeckToMarketplace(deck1.getId());
+        deckDAO.addDeckToMarketplace(deck2.getId());
+
+        List<MarketplaceDeckMetadata> expected = new ArrayList<>();
+        expected.add(new MarketplaceDeckMetadata(deck1, "user1", 0, 0));
+        expected.add(new MarketplaceDeckMetadata(deck2, "user1", 0, 0));
+
+        assertEquals(expected, deckDAO.getMarketplaceDecksMetadata());
+
+        userDAO.registerUser("user2", "pass");
+        deckDAO.saveDeck(deck3, UUID.fromString(userDAO.getUserId("user2")));
+        deckDAO.addDeckToMarketplace(deck3.getId());
+
+        expected.add(new MarketplaceDeckMetadata(deck3, "user2", 0, 0));
+
+        assertEquals(expected, deckDAO.getMarketplaceDecksMetadata());
     }
 }

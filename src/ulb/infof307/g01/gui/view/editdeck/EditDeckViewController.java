@@ -588,22 +588,22 @@ public class EditDeckViewController {
 
     @FXML
     private void handleColorPickerHover() {
-        colorPicker.setStyle("-fx-background-color: #aad0b3");
+        colorPicker.setStyle("-fx-background-color: #B1B7E1");
     }
 
     @FXML
     private void handleColorPickerExit() {
-        colorPicker.setStyle("-fx-background-color: #5ab970");
+        colorPicker.setStyle("-fx-background-color: #C3B1E1");
     }
 
     @FXML
     private void handleUploadImageHover() {
-        imageUploader.setStyle("-fx-background-color: #aad0b3");
+        imageUploader.setStyle("-fx-background-color: #B1B7E1");
     }
 
     @FXML
     private void handleUploadImageExit() {
-        imageUploader.setStyle("-fx-background-color: #5ab970");
+        imageUploader.setStyle("-fx-background-color: #C3B1E1");
     }
 
     @FXML
