@@ -1,7 +1,5 @@
 package ulb.infof307.g01.server.handler;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.deck.Deck;
