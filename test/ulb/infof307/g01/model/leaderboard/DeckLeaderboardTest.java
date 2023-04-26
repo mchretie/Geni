@@ -1,10 +1,10 @@
-package ulb.infof307.g01.model;
+package ulb.infof307.g01.model.leaderboard;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ulb.infof307.g01.model.User;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Score;
-import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestDeckLeaderboard {
+public class DeckLeaderboardTest {
     private Deck deck;
     private DeckLeaderboard leaderboard;
 
