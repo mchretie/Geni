@@ -3,7 +3,7 @@ package ulb.infof307.g01.gui.controller;
 import java.io.IOException;
 
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
+import ulb.infof307.g01.gui.httpdao.ServerCommunicator;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 
@@ -14,7 +14,7 @@ public class ProfileController implements ProfileViewController.Listener {
     private final MainWindowViewController mainWindowViewController;
     private final ProfileViewController profileViewController;
     private final ControllerListener controllerListener;
-    private final UserSessionDAO userSessionDAO;
+    private final ServerCommunicator serverCommunicator;
 
 
     /* ====================================================================== */
@@ -24,13 +24,13 @@ public class ProfileController implements ProfileViewController.Listener {
     public ProfileController(Stage stage,
                              MainWindowViewController mainWindowViewController,
                              ControllerListener controllerListener,
-                             UserSessionDAO userSessionDAO) {
+                             ServerCommunicator serverCommunicator) {
 
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
 
-        this.userSessionDAO = userSessionDAO;
+        this.serverCommunicator = serverCommunicator;
 
         this.profileViewController =
                 mainWindowViewController.getProfileViewController();
@@ -56,7 +56,7 @@ public class ProfileController implements ProfileViewController.Listener {
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws IOException {
-        setUserNameInProfile(userSessionDAO.getUsername());
+        setUserNameInProfile(serverCommunicator.getSessionUsername());
         mainWindowViewController.setProfileViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
         stage.show();
@@ -68,7 +68,7 @@ public class ProfileController implements ProfileViewController.Listener {
 
     @Override
     public void logoutButtonClicked() {
-        userSessionDAO.logout();
+        serverCommunicator.userLogout();
         controllerListener.userLoggedOut();
     }
 

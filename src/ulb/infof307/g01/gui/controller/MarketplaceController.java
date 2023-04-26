@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
+import ulb.infof307.g01.gui.httpdao.ServerCommunicator;
 import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
 import ulb.infof307.g01.gui.httpdao.dao.MarketplaceDAO;
 import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
@@ -31,28 +32,20 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     private final MarketplaceViewController marketplaceViewController;
     private final MainWindowViewController mainWindowViewController;
     private final ErrorHandler errorHandler;
-    private final DeckDAO deckDAO;
-    private final UserSessionDAO userSessionDAO;
     private final ImageLoader imageLoader = new ImageLoader();
-    private final MarketplaceDAO marketplaceDAO;
-    private final ScoreDAO scoreDAO;
+
+    private final ServerCommunicator serverCommunicator;
 
     public MarketplaceController(Stage stage,
                                  MainWindowViewController mainWindowViewController,
                                  ControllerListener controllerListener,
                                  ErrorHandler errorHandler,
-                                 DeckDAO deckDAO,
-                                 UserSessionDAO userSessionDAO,
-                                 MarketplaceDAO marketplaceDAO,
-                                 ScoreDAO scoreDAO) throws IOException, InterruptedException {
+                                 ServerCommunicator serverCommunicator) throws IOException, InterruptedException {
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
         this.errorHandler = errorHandler;
-        this.deckDAO = deckDAO;
-        this.userSessionDAO = userSessionDAO;
-        this.marketplaceDAO = marketplaceDAO;
-        this.scoreDAO = scoreDAO;
+        this.serverCommunicator = serverCommunicator;
 
         this.marketplaceViewController = mainWindowViewController.getMarketplaceViewController();
 
@@ -76,8 +69,8 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     /*                          Database Access                               */
     /* ====================================================================== */
     private List<Node> loadDecksDatabase() throws IOException, InterruptedException {
-        List<MarketplaceDeckMetadata> marketplaceDecks = marketplaceDAO.getAllMarketplaceDecks();
-        List<MarketplaceDeckMetadata> decksSaved = marketplaceDAO.getSavedDecks();
+        List<MarketplaceDeckMetadata> marketplaceDecks = serverCommunicator.getAllMarketplaceDecks();
+        List<MarketplaceDeckMetadata> decksSaved = serverCommunicator.getSavedDecks();
         marketplaceDecks.removeAll(decksSaved);
 
         List<Node> decksLoaded = new ArrayList<>();
@@ -100,7 +93,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
 
             DeckMarketplaceViewController controller = loader.getController();
 
-            controller.setDeck(deck, scoreDAO.getBestScoreForDeck(deck.id()), deckAvailability);
+            controller.setDeck(deck, serverCommunicator.getBestScoreForDeck(deck.id()), deckAvailability);
             controller.setImageLoader(imageLoader);
             controller.setListener(this);
 
@@ -130,9 +123,9 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     @Override
     public void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability) throws IOException, InterruptedException {
         if (deckAvailability.equals(DeckAvailability.MISSING)) {
-            deckDAO.addDeckToCollection(deck.id());
+            serverCommunicator.addDeckToCollection(deck.id());
         } else {
-            deckDAO.removeDeckFromCollection(deck.id());
+            serverCommunicator.removeDeckFromCollection(deck.id());
         }
     }
 

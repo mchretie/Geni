@@ -2,6 +2,7 @@ package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
+import ulb.infof307.g01.gui.httpdao.ServerCommunicator;
 import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -21,8 +22,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     private final PlayDeckViewController playDeckViewController;
     private final ControllerListener controllerListener;
     private final ErrorHandler errorHandler;
-    private final ScoreDAO scoreDAO;
-    private final UserSessionDAO userDAO;
+    private final ServerCommunicator serverCommunicator;
     private Score score;
     private CardExtractor cardExtractor;
 
@@ -36,7 +36,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         cardExtractor = new CardExtractorRandom(deck);
         currentCard = cardExtractor.getNextCard();
-        this.score = Score.createNewScore(userDAO.getUsername(), deck.getId());
+        this.score = Score.createNewScore(serverCommunicator.getSessionUsername(), deck.getId());
         this.answeredCards = new boolean[deck.cardCount()];
         Arrays.fill(answeredCards, false);
 
@@ -60,11 +60,10 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
                               MainWindowViewController mainWindowViewController,
                               ControllerListener controllerListener,
                               ErrorHandler errorHandler,
-                              ScoreDAO scoreDAO, UserSessionDAO userDAO) {
+                              ServerCommunicator serverCommunicator) {
 
         this.stage = stage;
-        this.userDAO = userDAO;
-        this.scoreDAO = scoreDAO;
+        this.serverCommunicator = serverCommunicator;
         this.controllerListener = controllerListener;
         this.errorHandler = errorHandler;
         this.mainWindowViewController = mainWindowViewController;
@@ -125,7 +124,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         }
 
         try {
-            scoreDAO.addScore(score);
+            serverCommunicator.addScore(score);
 
         } catch (Exception e) {
             errorHandler.failedAddScore(e);

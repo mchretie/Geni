@@ -2,6 +2,7 @@ package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
+import ulb.infof307.g01.gui.httpdao.ServerCommunicator;
 import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
@@ -17,7 +18,7 @@ public class UserAuthController implements UserAuthViewController.Listener {
     private final UserAuthViewController userAuthViewController;
     private final ControllerListener controllerListener;
 
-    private final UserSessionDAO userSessionDAO;
+    private final ServerCommunicator serverCommunicator;
 
 
     /* ====================================================================== */
@@ -28,7 +29,7 @@ public class UserAuthController implements UserAuthViewController.Listener {
                                 ErrorHandler errorHandler,
                                 MainWindowViewController mainWindowViewController,
                                 ControllerListener controllerListener,
-                                UserSessionDAO userSessionDAO) {
+                                ServerCommunicator serverCommunicator) {
 
         this.stage = stage;
 
@@ -36,7 +37,7 @@ public class UserAuthController implements UserAuthViewController.Listener {
 
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
-        this.userSessionDAO = userSessionDAO;
+        this.serverCommunicator = serverCommunicator;
 
         this.userAuthViewController =
                 mainWindowViewController.getUserAuthViewController();
@@ -68,7 +69,7 @@ public class UserAuthController implements UserAuthViewController.Listener {
             return;
 
         try {
-            userSessionDAO.login(username, password);
+            serverCommunicator.userLogin(username, password);
             controllerListener.userLoggedIn();
 
         } catch (IOException | InterruptedException e) {
@@ -83,7 +84,7 @@ public class UserAuthController implements UserAuthViewController.Listener {
         }
 
         try {
-            userSessionDAO.register(username, password);
+            serverCommunicator.userRegister(username, password);
             loginClicked(username, password);
 
         } catch (IOException | InterruptedException e) {

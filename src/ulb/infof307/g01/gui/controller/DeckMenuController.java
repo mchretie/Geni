@@ -5,9 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
-import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
-import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
+import ulb.infof307.g01.gui.httpdao.ServerCommunicator;
 import ulb.infof307.g01.gui.util.DeckIO;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.Deck;
@@ -41,9 +39,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     private final ErrorHandler errorHandler;
 
-    private final DeckDAO deckDAO;
-    private final ScoreDAO scoreDAO;
-    private final UserSessionDAO userSessionDAO;
+    private final ServerCommunicator serverCommunicator;
+
     private final ImageLoader imageLoader = new ImageLoader();
     private final DeckIO deckIO = new DeckIO();
 
@@ -55,8 +52,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
                               ErrorHandler errorHandler,
                               ControllerListener controllerListener,
                               MainWindowViewController mainWindowViewController,
-                              DeckDAO deckDAO, UserSessionDAO userSessionDAO,
-                              ScoreDAO scoreDAO) throws IOException, InterruptedException {
+                              ServerCommunicator serverCommunicator) throws IOException, InterruptedException {
 
         this.stage = stage;
 
@@ -65,9 +61,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         this.controllerListener = controllerListener;
         this.mainWindowViewController = mainWindowViewController;
 
-        this.deckDAO = deckDAO;
-        this.userSessionDAO = userSessionDAO;
-        this.scoreDAO = scoreDAO;
+        this.serverCommunicator = serverCommunicator;
 
         this.deckMenuViewController
                 = mainWindowViewController.getDeckMenuViewController();
@@ -97,7 +91,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     private void showDecks() throws IOException, InterruptedException {
-        deckMenuViewController.setDecks(loadDecks(deckDAO.getAllDecksMetadata()));
+        deckMenuViewController.setDecks(loadDecks(serverCommunicator.getAllDecksMetadata()));
     }
 
 
@@ -129,7 +123,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             controller.setDisableEdit(deck.isPublic());
 
-            Score bestScore = scoreDAO.getBestScoreForDeck(deck.id());
+            Score bestScore = serverCommunicator.getBestScoreForDeck(deck.id());
 
             controller.setDeck(deck, bestScore);
             controller.setListener(this);
@@ -171,12 +165,12 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void createDeckClicked(String name) {
         try {
-            if (!isDeckNameValid(name) || deckDAO.deckExists(name))
+            if (!isDeckNameValid(name) || serverCommunicator.deckNameExists(name))
                 return;
 
             Deck deck = new Deck(name);
-            deckDAO.saveDeck(deck);
-            deckDAO.addDeckToCollection(deck.getId());
+            serverCommunicator.saveDeck(deck);
+            serverCommunicator.addDeckToCollection(deck.getId());
             showDecks();
 
         } catch (IOException e) {
@@ -193,9 +187,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         try {
             List<DeckMetadata> decks = null;
             if (deckMenuViewController.getSearchType().equals(SearchType.Name)) {
-                decks = deckDAO.searchDecks(name);
+                decks = serverCommunicator.searchDecks(name);
+
             } else if (deckMenuViewController.getSearchType().equals(SearchType.Tag)) {
-                decks = deckDAO.searchDecksByTags(name);
+                decks = serverCommunicator.searchDecksByTags(name);
             }
             assert decks != null;
             deckMenuViewController.setDecks(loadDecks(decks));
@@ -212,7 +207,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void deckRemoved(DeckMetadata deck) {
         try {
-            deckDAO.removeDeckFromCollection(deck.id());
+            serverCommunicator.removeDeckFromCollection(deck.id());
             showDecks();
 
         } catch (IOException e) {
@@ -236,12 +231,12 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void deckImportClicked() {
         try {
-            deckIO.setAllDecks(deckDAO.getAllDecksMetadata());
+            deckIO.setAllDecks(serverCommunicator.getAllDecksMetadata());
 
             Path path = deckMenuViewController.pickOpenFile();
             Deck deck = deckIO.importFrom(path);
 
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
             showDecks();
 
         } catch (IllegalArgumentException e) {
@@ -262,7 +257,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void shareDeckClicked(DeckMetadata deckMetadata) {
         try {
-            Deck deck = deckDAO.getDeck(deckMetadata).orElse(null);
+            Deck deck = serverCommunicator.getDeck(deckMetadata).orElse(null);
             assert deck != null;
 
             Path path = deckMenuViewController.pickSaveFile();

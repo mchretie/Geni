@@ -81,10 +81,6 @@ public class UserSessionDAO extends HttpDAO {
         return !getToken().isEmpty();
     }
 
-    private void removeToken() {
-        setToken("");
-    }
-
     public void removeCredentials() {
         this.username = "";
         this.prefs.remove("localUsername");
@@ -96,7 +92,7 @@ public class UserSessionDAO extends HttpDAO {
         this.prefs.put("localPassword", password);
     }
 
-    public void attemptAutologin() throws IOException, InterruptedException {
+    public void attemptAutoLogin() throws IOException, InterruptedException {
 
         String username = this.prefs.get("localUsername", null);
         String password = this.prefs.get("localPassword", null);

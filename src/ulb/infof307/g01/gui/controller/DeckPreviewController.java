@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
+import ulb.infof307.g01.gui.httpdao.ServerCommunicator;
 import ulb.infof307.g01.gui.httpdao.dao.*;
 import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -26,10 +27,8 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
 
     private final Stage stage;
     private final ErrorHandler errorHandler;
-    private final ScoreDAO scoreDAO;
-    private final GameHistoryDAO gameHistoryDAO;
-    private final DeckDAO deckDAO;
-    private final MarketplaceDAO marketplaceDAO;
+
+    private final ServerCommunicator serverCommunicator;
 
     private Deck deck;
 
@@ -38,19 +37,14 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
                                  MainWindowViewController mainWindowViewController,
                                  ControllerListener controllerListener,
                                  ErrorHandler errorHandler,
-                                 ScoreDAO scoreDAO,
-                                 DeckDAO deckDAO,
-                                 MarketplaceDAO marketplaceDAO,
-                                 GameHistoryDAO gameHistoryDAO) {
+                                 ServerCommunicator serverCommunicator) {
 
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
         this.errorHandler = errorHandler;
-        this.scoreDAO = scoreDAO;
-        this.gameHistoryDAO = gameHistoryDAO;
-        this.marketplaceDAO = marketplaceDAO;
-        this.deckDAO = deckDAO;
+
+        this.serverCommunicator = serverCommunicator;
 
         this.deckPreviewViewController
                 = mainWindowViewController.getDeckPreviewViewController();
@@ -64,7 +58,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
             this.deck = deck;
             deckPreviewViewController.setDeck(deck);
 
-            Score score = scoreDAO.getBestScoreForDeck(deck.getId());
+            Score score = serverCommunicator.getBestScoreForDeck(deck.getId());
             String scoreString = score == null ? "0" : score.getScore() + "";
             deckPreviewViewController.setScore(scoreString);
 
@@ -94,7 +88,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         try {
             List<Node> playersScoreItem = new ArrayList<>();
 
-            GameHistory gameHistory = gameHistoryDAO.getGameHistory(deck.getId());
+            GameHistory gameHistory = serverCommunicator.getGameHistory(deck.getId());
 
             for (Game game : gameHistory) {
                 Node node = loadGameHistoryItem(game);
@@ -139,8 +133,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         try {
             deck.switchOnlineVisibility();
             deckPreviewViewController.setDeckVisibility(deck.isPublic());
-            marketplaceDAO.addDeckToMarketplace(deck);
-            deckDAO.emptyCache();
+            serverCommunicator.addDeckToMarketplace(deck);
 
         } catch (IOException | InterruptedException e) {
             errorHandler.savingError(e);

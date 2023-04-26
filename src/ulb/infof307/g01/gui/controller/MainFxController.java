@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
+import ulb.infof307.g01.gui.httpdao.ServerCommunicator;
 import ulb.infof307.g01.gui.httpdao.dao.*;
 import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.model.card.Card;
@@ -60,11 +61,7 @@ public class MainFxController extends Application implements
     /*                              DAO Attributes                            */
     /* ====================================================================== */
 
-    private final UserSessionDAO userSessionDAO = new UserSessionDAO();
-    private final DeckDAO deckDAO = new DeckDAO();
-    private final ScoreDAO scoreDAO = new ScoreDAO();
-    private final MarketplaceDAO marketplaceDAO = new MarketplaceDAO();
-    private final GameHistoryDAO gameHistoryDAO = new GameHistoryDAO();
+    private final ServerCommunicator serverCommunicator = new ServerCommunicator();
 
 
     /* ====================================================================== */
@@ -129,8 +126,7 @@ public class MainFxController extends Application implements
 
         try {
             initControllers(stage);
-            userSessionDAO.attemptAutologin();
-            initDAOs();
+            serverCommunicator.attemptAutoLogin();
 
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
@@ -144,21 +140,6 @@ public class MainFxController extends Application implements
         }
 
 
-    }
-
-    private void initDAOs() {
-        String token = userSessionDAO.getToken();
-        deckDAO.setToken(token);
-        scoreDAO.setToken(token);
-        gameHistoryDAO.setToken(token);
-        marketplaceDAO.setToken(token);
-    }
-
-    private void resetDAOs() {
-        deckDAO.setToken(null);
-        scoreDAO.setToken(null);
-        gameHistoryDAO.setToken(null);
-        marketplaceDAO.setToken(null);
     }
 
 
@@ -195,13 +176,13 @@ public class MainFxController extends Application implements
                 errorHandler,
                 mainWindowViewController,
                 this,
-                userSessionDAO);
+                serverCommunicator);
 
         this.profileController
                 = new ProfileController(stage,
                 mainWindowViewController,
                 this,
-                userSessionDAO);
+                serverCommunicator);
 
         this.deckMenuController
                 = new DeckMenuController(
@@ -209,9 +190,7 @@ public class MainFxController extends Application implements
                 errorHandler,
                 this,
                 mainWindowViewController,
-                deckDAO,
-                userSessionDAO,
-                scoreDAO);
+                serverCommunicator);
 
         this.playDeckController
                 = new PlayDeckController(
@@ -219,8 +198,7 @@ public class MainFxController extends Application implements
                 mainWindowViewController,
                 this,
                 errorHandler,
-                scoreDAO,
-                userSessionDAO);
+                serverCommunicator);
 
         this.deckPreviewController
                 = new DeckPreviewController(
@@ -228,10 +206,7 @@ public class MainFxController extends Application implements
                 mainWindowViewController,
                 this,
                 errorHandler,
-                scoreDAO,
-                deckDAO,
-                marketplaceDAO,
-                gameHistoryDAO);
+                serverCommunicator);
     }
 
     /* ====================================================================== */
@@ -251,7 +226,7 @@ public class MainFxController extends Application implements
                 case EDIT_DECK -> editDeckController.show();
                 case HTML_EDITOR -> editCardController.show();
                 case LOGIN_PROFILE -> {
-                    if (userSessionDAO.isLoggedIn())
+                    if (serverCommunicator.isUserLoggedIn())
                         profileController.show();
                     else
                         userAuthController.show();
@@ -278,11 +253,11 @@ public class MainFxController extends Application implements
         try {
             editDeckController
                     = new EditDeckController(stage,
-                    deckDAO.getDeck(deckMetadata).orElse(null),
+                    serverCommunicator.getDeck(deckMetadata).orElse(null),
                     errorHandler,
                     mainWindowViewController,
                     this,
-                    deckDAO);
+                    serverCommunicator);
 
             editDeckController.show();
             viewStack.add(View.EDIT_DECK);
@@ -296,7 +271,7 @@ public class MainFxController extends Application implements
     public void deckClicked(DeckMetadata deckMetadata) {
         try {
             deckPreviewController
-                    .setDeck(deckDAO.getDeck(deckMetadata).orElse(null));
+                    .setDeck(serverCommunicator.getDeck(deckMetadata).orElse(null));
 
             deckPreviewController.show();
             viewStack.add(View.PREVIEW_DECK);
@@ -316,7 +291,7 @@ public class MainFxController extends Application implements
                 deck,
                 selectedCard,
                 true,
-                deckDAO,
+                serverCommunicator,
                 errorHandler,
                 mainWindowViewController,
                 this);
@@ -332,7 +307,7 @@ public class MainFxController extends Application implements
                 deck,
                 selectedCard,
                 false,
-                deckDAO,
+                serverCommunicator,
                 errorHandler,
                 mainWindowViewController,
                 this);
@@ -349,7 +324,6 @@ public class MainFxController extends Application implements
     @Override
     public void userLoggedIn() {
         try {
-            initDAOs();
             mainWindowViewController.makebottomNavigationBarVisible();
             mainWindowViewController.makeTopNavigationBarVisible();
             deckMenuController.show();
@@ -362,7 +336,6 @@ public class MainFxController extends Application implements
 
     @Override
     public void userLoggedOut() {
-        resetDAOs();
         userAuthController.show();
     }
 
@@ -399,9 +372,7 @@ public class MainFxController extends Application implements
                     stage,
                     errorHandler,
                     mainWindowViewController,
-                    userSessionDAO,
-                    deckDAO,
-                    gameHistoryDAO
+                    serverCommunicator
             );
 
             viewStack.add(View.STATISTICS);
@@ -447,17 +418,13 @@ public class MainFxController extends Application implements
 
     @Override
     public void goToMarketplaceClicked() {
-        //TODO
         try {
             marketplaceController = new MarketplaceController(
                     stage,
                     mainWindowViewController,
                     this,
                     errorHandler,
-                    deckDAO,
-                    userSessionDAO,
-                    marketplaceDAO,
-                    scoreDAO);
+                    serverCommunicator);
 
             resetViewStack(View.MARKETPLACE);
             marketplaceController.show();
@@ -475,9 +442,7 @@ public class MainFxController extends Application implements
                         stage,
                         mainWindowViewController,
                         errorHandler,
-                        userSessionDAO,
-                        deckDAO,
-                        scoreDAO);
+                        serverCommunicator);
             }
 
             resetViewStack(View.LEADERBOARD);
@@ -497,7 +462,6 @@ public class MainFxController extends Application implements
     @Override
     public void goToProfileClicked() {
         try {
-            userSessionDAO.isLoggedIn();
             profileController.show();
             viewStack.add(View.LOGIN_PROFILE);
 

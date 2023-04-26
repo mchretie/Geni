@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Access to decks from a HTTP server
+ * Access to decks from an HTTP server
  * <p>
  * The methods returning multiple decks return all metadata since
  * most of the time, at most one deck will be open at a given moment.
@@ -188,5 +188,4 @@ public class DeckDAO extends HttpDAO {
         deckCache = null;
         super.setToken(token);
     }
-
 }
