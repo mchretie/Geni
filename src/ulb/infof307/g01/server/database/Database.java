@@ -24,6 +24,7 @@ public class Database {
     TagDAO tagDao;
     UserDAO userDao;
     ScoreDAO scoreDao;
+    MarketplaceDAO marketplaceDao;
 
     public Database() {
         this.databaseAccess = new DatabaseAccess();
@@ -31,10 +32,12 @@ public class Database {
         this.tagDao = new TagDAO(this.databaseAccess);
         this.userDao = new UserDAO(this.databaseAccess);
         this.scoreDao = new ScoreDAO(this.databaseAccess);
+        this.marketplaceDao = new MarketplaceDAO(this.databaseAccess);
 
         this.deckDao.setTagDao(this.tagDao);
         this.tagDao.setDeckDao(this.deckDao);
         this.scoreDao.setUserDAO(this.userDao);
+        this.marketplaceDao.setDeckDAO(this.deckDao);
     }
 
     public void open(File dbname) {
@@ -189,22 +192,26 @@ public class Database {
     /* ====================================================================== */
 
     public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {
-        return deckDao.getMarketplaceDecksMetadata();
+        return marketplaceDao.getMarketplaceDecksMetadata();
     }
 
     public void addDeckToMarketplace(UUID deckId) throws DatabaseException {
-        deckDao.addDeckToMarketplace(deckId);
+        marketplaceDao.addDeckToMarketplace(deckId);
     }
 
     public void removeDeckFromMarketplace(UUID deckId) throws DatabaseException {
-        deckDao.removeDeckFromMarketplace(deckId);
+        marketplaceDao.removeDeckFromMarketplace(deckId);
     }
 
     public void addDeckToUserCollection(UUID deckId, UUID userId) throws DatabaseException {
-        deckDao.addDeckToUserCollection(deckId, userId);
+        marketplaceDao.addDeckToUserCollection(deckId, userId);
     }
 
     public void removeDeckFromUserCollection(UUID deckId, UUID userId) throws DatabaseException {
-        deckDao.removeDeckFromUserCollection(deckId, userId);
+        marketplaceDao.removeDeckFromUserCollection(deckId, userId);
+    }
+
+    public List<MarketplaceDeckMetadata> getUsersCollectionFromMarketplace(UUID userId) throws DatabaseException {
+        return marketplaceDao.getSavedDecks(userId);
     }
 }

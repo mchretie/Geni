@@ -1,7 +1,6 @@
-package ulb.infof307.g01.gui.httpdao.dao;
+package ulb.infof307.g01.gui.http.dao;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import ulb.infof307.g01.gui.util.DeckCache;
 import ulb.infof307.g01.model.IndulgentValidator;
 import ulb.infof307.g01.model.deck.Deck;
@@ -13,12 +12,13 @@ import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.toList;
 
 /**
- * Access to decks from a HTTP server
+ * Access to decks from an HTTP server
  * <p>
  * The methods returning multiple decks return all metadata since
  * most of the time, at most one deck will be open at a given moment.
@@ -127,16 +127,16 @@ public class DeckDAO extends HttpDAO {
                 .collect(toList());
     }
 
-    public void deleteDeck(DeckMetadata deck)
+    public void removeDeckFromCollection(UUID deckId)
             throws IOException, InterruptedException {
 
-        String query = "?deck_id=" + deck.id();
-        String path = ServerPaths.DELETE_DECK_PATH;
+        String query = "?deck_id=" + deckId.toString();
+        String path = ServerPaths.REMOVE_DECK_FROM_COLLECTION_PATH;
+
         HttpResponse<String> response = delete(path + query);
 
         checkResponseCode(response.statusCode());
-
-        deckCache.removeDeck(deck);
+        deckCache.removeDeck(deckId);
     }
 
     public void saveDeck(Deck deck)
@@ -162,12 +162,6 @@ public class DeckDAO extends HttpDAO {
         return deckCache.getAllDecksMetadata().size();
     }
 
-    @Override
-    public void setToken(String token) {
-        deckCache = null;
-        super.setToken(token);
-    }
-
     public void uploadImage(File image, String filename)
             throws IOException, InterruptedException {
 
@@ -175,5 +169,22 @@ public class DeckDAO extends HttpDAO {
                 = upload(ServerPaths.SAVE_DECK_IMAGE_PATH, image, filename);
 
         checkResponseCode(response.statusCode());
+    }
+
+    public void addDeckToCollection(UUID deckId) throws IOException, InterruptedException {
+        String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH + "?deck_id=" + deckId;
+        HttpResponse<String> response = post(path, "");
+
+        checkResponseCode(response.statusCode());
+    }
+
+    public void emptyCache() {
+        deckCache = null;
+    }
+
+    @Override
+    public void setJWT(String token) {
+        deckCache = null;
+        super.setJWT(token);
     }
 }

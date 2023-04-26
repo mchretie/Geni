@@ -5,7 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
-import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
+import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -50,7 +50,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     /*                             Dao Attributes                             */
     /* ====================================================================== */
 
-    private final DeckDAO deckDAO;
+    private final ServerCommunicator serverCommunicator;
 
 
     /* ====================================================================== */
@@ -68,12 +68,12 @@ public class EditDeckController implements EditDeckViewController.Listener,
                               ErrorHandler errorHandler,
                               MainWindowViewController mainWindowViewController,
                               ControllerListener controllerListener,
-                              DeckDAO deckDAO) {
+                              ServerCommunicator serverCommunicator) {
 
         this.stage = stage;
         this.errorHandler = errorHandler;
         this.deck = deck;
-        this.deckDAO = deckDAO;
+        this.serverCommunicator = serverCommunicator;
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
 
@@ -149,7 +149,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void deckNameModified(String newName) {
         try {
             deck.setName(newName.trim());
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);
@@ -170,7 +170,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deck.addTag(new Tag(tagName, color));
             editDeckViewController.setTags(loadTags());
 
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);
@@ -181,7 +181,9 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void inputAnswerModified(InputCard inputcard, String answer) {
         try {
             inputcard.setAnswer(answer);
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
+            editDeckViewController.showCards();
+            serverCommunicator.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);
@@ -192,7 +194,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void timerValueChanged(TimedCard selectedCard, int value) {
         try {
             selectedCard.setCountdownTime(value);
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);
@@ -203,7 +205,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void choiceModified(MCQCard mcqCard, String text, int index) {
         try {
             mcqCard.setChoice(index, text);
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
@@ -215,7 +217,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void correctChoiceChanged(MCQCard mcqCard, int index) {
         try {
             mcqCard.setCorrectChoice(index);
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
@@ -227,7 +229,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void choiceRemoved(MCQCard mcqCard, int index) {
         try {
             mcqCard.removeChoice(index);
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
@@ -239,7 +241,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void choiceAdded(MCQCard mcqCard) {
         try {
             mcqCard.addChoice("Nouvelle réponse");
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
             editDeckViewController.showCards();
 
         } catch (InterruptedException | IOException e) {
@@ -251,7 +253,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void deckColorModified(Deck deck, Color color) {
         try {
             deck.setColor(color.toString());
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);
@@ -262,8 +264,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void deckImageModified(Deck deck, File image, String filename) {
         try {
             deck.setImage(filename);
-            deckDAO.uploadImage(image, filename);
-            deckDAO.saveDeck(deck);
+            serverCommunicator.uploadImage(image, filename);
+            serverCommunicator.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);
@@ -273,7 +275,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     private void newCard(Card card) {
         try {
             deck.addCard(card);
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);
         }
@@ -309,7 +311,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void removeCard(Card selectedCard) {
         try {
             deck.removeCard(selectedCard);
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
             editDeckViewController.showCards();
             editDeckViewController.hideSelectedCardEditor();
 
@@ -342,7 +344,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void tagNameChanged(Tag tag, String name) {
         try {
             tag.setName(name);
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
             editDeckViewController.setTags(loadTags());
 
         } catch (InterruptedException | IOException e) {
@@ -354,7 +356,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void tagDeleted(Tag tag) {
         try {
             deck.removeTag(tag);
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
             editDeckViewController.setTags(loadTags());
 
         } catch (InterruptedException | IOException e) {

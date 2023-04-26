@@ -8,7 +8,7 @@
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<StackPane fx:id="stackPane" maxHeight="175.0" maxWidth="500.0" minHeight="150.0" minWidth="280.0" onMouseClicked="#handleDoubleDeckClicked" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
+<StackPane fx:id="stackPane" maxHeight="175.0" maxWidth="350.0" minHeight="175.0" minWidth="350.0" onMouseClicked="#handleDoubleDeckClicked" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckmenu.DeckViewController">
 
    <!-- backgroundImage and colorRect dimensions are set dynamically in the DeckViewController  -->
    <ImageView fx:id="imageBackground" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
@@ -19,7 +19,7 @@
 
       <HBox alignment="CENTER_RIGHT">
          <!-- Edit deck button -->
-         <Button onMouseClicked="#handleEditDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
+         <Button fx:id="editDeckButton" onMouseClicked="#handleEditDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
 
             <graphic>
                <FontIcon fx:id="editDeckIcon" iconLiteral="mdi2p-pencil" iconSize="25" onMouseEntered="#handleHoverEditDeck" onMouseExited="#handleHoverEditDeckExit" />
@@ -38,13 +38,14 @@
 
          <!-- Share deck button -->
          <Button onMouseClicked="#handleShareDeckClicked" prefHeight="25" prefWidth="25" style="-fx-background-color: transparent;">
+
             <graphic>
-               <FontIcon fx:id="shareDeckIcon" iconLiteral="mdi2s-share" iconSize="25" onMouseEntered="#handleHoverShareDeck" onMouseExited="#handleHoverShareDeckExit" />
+               <FontIcon fx:id="shareDeckIcon" iconLiteral="mdi2e-export-variant" iconSize="25" onMouseEntered="#handleHoverShareDeck" onMouseExited="#handleHoverShareDeckExit" />
             </graphic>
          </Button>
       </HBox>
       <HBox alignment="CENTER" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-         <Label fx:id="playDeckLabel" prefHeight="17.0" textAlignment="CENTER">
+         <Label fx:id="deckNameLabel" prefHeight="17.0" textAlignment="CENTER">
             <font>
                <Font name="System Bold" size="22.0" />
             </font>
@@ -63,18 +64,18 @@
       <BorderPane maxHeight="30.0" minHeight="30.0" opacity="0.7" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #939393;">
          <left>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="70.0" spacing="10.0">
-               <children>
-                  <Label fx:id="amountCardsLabel" />
-                  <FontIcon iconLiteral="mdi2c-cards" iconSize="25" wrappingWidth="25.0" />
-               </children>
+               <Label fx:id="amountCardsLabel" />
+               <FontIcon iconLiteral="mdi2c-cards" iconSize="25" wrappingWidth="25.0" />
             </HBox>
          </left>
          <right>
             <HBox alignment="CENTER_RIGHT" layoutX="125.0" layoutY="10.0" prefHeight="30.0" prefWidth="77.0" spacing="10.0">
-               <children>
-                  <Label fx:id="amountTrophiesLabel" />
-                  <FontIcon iconLiteral="mdi2t-trophy" iconSize="25" wrappingWidth="25.0" />
-               </children>
+               <Label fx:id="amountTrophiesLabel" />
+               <FontIcon iconLiteral="mdi2t-trophy" iconSize="25" wrappingWidth="25.0" />
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" layoutX="125.0" layoutY="10.0" prefHeight="30.0" prefWidth="77.0" spacing="10.0">
+               <Label fx:id="scoreLabel" />
+               <FontIcon iconLiteral="mdi2t-trophy" iconSize="25" wrappingWidth="25.0" />
             </HBox>
          </right>
          <VBox.margin>

@@ -46,4 +46,5 @@ public final class ServerPaths {
   public static final String REMOVE_DECK_FROM_MARKETPLACE_PATH = MARKETPLACE_BASE_PATH + "/delete";
   public static final String ADD_DECK_TO_COLLECTION_PATH = MARKETPLACE_BASE_PATH + "/add-collection";
   public static final String REMOVE_DECK_FROM_COLLECTION_PATH = MARKETPLACE_BASE_PATH + "/delete-collection";
+  public static final String GET_SAVED_DECKS_FROM_MARKETPLACE = MARKETPLACE_BASE_PATH + "/get-collection";
 }

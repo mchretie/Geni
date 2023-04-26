@@ -1,4 +1,4 @@
-package ulb.infof307.g01.gui.httpdao.exceptions;
+package ulb.infof307.g01.gui.http.exceptions;
 
 import java.io.IOException;
 

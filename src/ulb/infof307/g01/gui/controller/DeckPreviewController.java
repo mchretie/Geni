@@ -4,9 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
-import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
-import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
+import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.deckpreview.GameHistoryItemViewController;
@@ -28,8 +26,8 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
 
     private final Stage stage;
     private final ErrorHandler errorHandler;
-    private final ScoreDAO scoreDAO;
-    private final GameHistoryDAO gameHistoryDAO;
+
+    private final ServerCommunicator serverCommunicator;
 
     private Deck deck;
 
@@ -38,19 +36,14 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
                                  MainWindowViewController mainWindowViewController,
                                  ControllerListener controllerListener,
                                  ErrorHandler errorHandler,
-                                 UserSessionDAO userSessionDAO,
-                                 ScoreDAO scoreDAO,
-                                 GameHistoryDAO gameHistoryDAO) {
+                                 ServerCommunicator serverCommunicator) {
 
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
         this.errorHandler = errorHandler;
-        this.scoreDAO = scoreDAO;
-        this.gameHistoryDAO = gameHistoryDAO;
 
-        scoreDAO.setToken(userSessionDAO.getToken());
-        gameHistoryDAO.setToken(userSessionDAO.getToken());
+        this.serverCommunicator = serverCommunicator;
 
         this.deckPreviewViewController
                 = mainWindowViewController.getDeckPreviewViewController();
@@ -64,11 +57,12 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
             this.deck = deck;
             deckPreviewViewController.setDeck(deck);
 
-            Score score = scoreDAO.getBestScoreForDeck(deck.getId());
+            Score score = serverCommunicator.getBestScoreForDeck(deck.getId());
             String scoreString = score == null ? "0" : score.getScore() + "";
             deckPreviewViewController.setScore(scoreString);
 
             deckPreviewViewController.setPlayDeckButtonDisabled(deck.cardCount() == 0);
+            deckPreviewViewController.setDeckVisibility(deck.isPublic());
             deckPreviewViewController.setGameHistory(loadGameHistory());
 
         } catch (IOException | InterruptedException e) {
@@ -93,7 +87,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         try {
             List<Node> playersScoreItem = new ArrayList<>();
 
-            GameHistory gameHistory = gameHistoryDAO.getGameHistory(deck.getId());
+            GameHistory gameHistory = serverCommunicator.getGameHistory(deck.getId());
 
             for (Game game : gameHistory) {
                 Node node = loadGameHistoryItem(game);
@@ -129,8 +123,20 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
     /* ====================================================================== */
 
     @Override
-    public void onPlayDeckClicked() {
+    public void playDeckClicked() {
         controllerListener.onPlayDeckClicked(deck);
+    }
+
+    @Override
+    public void deckShared() {
+        try {
+            deck.switchOnlineVisibility();
+            deckPreviewViewController.setDeckVisibility(deck.isPublic());
+            serverCommunicator.addDeckToMarketplace(deck);
+
+        } catch (IOException | InterruptedException e) {
+            errorHandler.savingError(e);
+        }
     }
 
     /* ====================================================================== */

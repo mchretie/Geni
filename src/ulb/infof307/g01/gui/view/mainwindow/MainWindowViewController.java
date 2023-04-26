@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.BoxBlur;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
@@ -18,6 +19,7 @@ import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardViewController;
+import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.gui.view.result.ResultViewController;
 import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
@@ -28,7 +30,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 
 public class MainWindowViewController implements Initializable {
@@ -42,7 +43,7 @@ public class MainWindowViewController implements Initializable {
     private BorderPane borderPane;
 
     @FXML
-    private Button currentDeckButton;
+    private Button marketplaceButton;
 
     @FXML
     private Button leaderboardButton;
@@ -57,7 +58,7 @@ public class MainWindowViewController implements Initializable {
     private FontIcon homeIcon;
 
     @FXML
-    private FontIcon currentDeckIcon;
+    private FontIcon marketplaceIcon;
 
     @FXML
     private FontIcon leaderboardIcon;
@@ -114,6 +115,9 @@ public class MainWindowViewController implements Initializable {
     private BorderPane deckPreviewView;
 
     @FXML
+    private BorderPane marketplaceView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
@@ -144,6 +148,9 @@ public class MainWindowViewController implements Initializable {
     private DeckPreviewViewController deckPreviewViewController;
 
     private final Popup popup = new Popup();
+    @FXML
+    private MarketplaceViewController marketplaceViewController;
+
 
     /* ====================================================================== */
     /*                                 Listener                               */
@@ -164,7 +171,7 @@ public class MainWindowViewController implements Initializable {
             centerStackPane.setEffect(null);
             deckPreviewView.setVisible(false);
             centerStackPane.setDisable(false);
-            makeGoBackIconInvisible();
+            listener.deckPreviewClosed();
         });
 
         popup.setAutoHide(true);
@@ -234,9 +241,7 @@ public class MainWindowViewController implements Initializable {
         return leaderboardViewController;
     }
 
-    public ProfileViewController getProfileViewController() {
-        return profileViewController;
-    }
+    public ProfileViewController getProfileViewController() { return profileViewController; }
     public UserAuthViewController getUserAuthViewController() {
         return userAuthViewController;
     }
@@ -252,6 +257,8 @@ public class MainWindowViewController implements Initializable {
     public DeckPreviewViewController getDeckPreviewViewController() {
         return deckPreviewViewController;
     }
+    public MarketplaceViewController getMarketplaceViewController() { return marketplaceViewController; }
+
 
     /* ====================================================================== */
     /*                              Alerts                                    */
@@ -301,10 +308,7 @@ public class MainWindowViewController implements Initializable {
         setAllInvisibleExcept(editDeckView);
     }
 
-    public void setPlayDeckViewVisible() {
-        setAllInvisibleExcept(playDeckView);
-        onClick(currentDeckButton);
-    }
+    public void setPlayDeckViewVisible() { setAllInvisibleExcept(playDeckView); }
 
     public void setEditCardViewVisible() {
         setAllInvisibleExcept(editCardView);
@@ -315,7 +319,7 @@ public class MainWindowViewController implements Initializable {
         onClick(profileButton);
     }
 
-    public void setUserAuthViewController() {
+    public void setUserAuthViewVisible() {
         setAllInvisibleExcept(userAuthView);
         onClick(profileButton);
     }
@@ -349,6 +353,11 @@ public class MainWindowViewController implements Initializable {
     }
 
 
+    public void setMarketplaceViewVisible() {
+        setAllInvisibleExcept(marketplaceView);
+        onClick(marketplaceButton);
+    }
+
     /* ====================================================================== */
     /*                          Icon Visibility                               */
     /* ====================================================================== */
@@ -376,7 +385,7 @@ public class MainWindowViewController implements Initializable {
         bottomHBox.setManaged(true);
     }
 
-    public void makebottomNavigationBarInvisible() {
+    public void makeBottomNavigationBarInvisible() {
         bottomHBox.setVisible(false);
         bottomHBox.setManaged(false);
     }
@@ -387,7 +396,7 @@ public class MainWindowViewController implements Initializable {
     /* ====================================================================== */
 
     private void resetButtonExcept(Button button) {
-        List<Button> buttons = Arrays.asList(homeButton, profileButton, currentDeckButton, leaderboardButton);
+        List<Button> buttons = Arrays.asList(homeButton, profileButton, marketplaceButton, leaderboardButton);
         String initialButtonStyle = "-fx-background-color: transparent;";
         buttons.stream()
                 .filter(b -> b != button)
@@ -410,9 +419,7 @@ public class MainWindowViewController implements Initializable {
     }
 
     @FXML
-    private void goToCurrentDeckClicked() {
-        listener.goToCurrentPlayingDeck();
-    }
+    private void goToMarketplaceClicked() { listener.goToMarketplaceClicked(); }
 
     @FXML
     private void goToLeaderboardClicked() {
@@ -429,9 +436,7 @@ public class MainWindowViewController implements Initializable {
     /* ====================================================================== */
 
     @FXML
-    private void handleHomeHover() {
-        homeIcon.setIconColor(Color.web("#FFFFFF"));
-    }
+    private void handleHomeHover() { homeIcon.setIconColor(Color.web("#FFFFFF")); }
 
     @FXML
     private void handleHomeExitHover() {
@@ -439,19 +444,15 @@ public class MainWindowViewController implements Initializable {
     }
 
     @FXML
-    private void handleCurrentDeckHover() {
-        currentDeckIcon.setIconColor(Color.web("#FFFFFF"));
+    private void handleMarketplaceHover() {marketplaceIcon.setIconColor(Color.web("#FFFFFF")); }
+
+    @FXML
+    private void handleMarketplaceExitHover() {
+        marketplaceIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
-    private void handleCurrentDeckExitHover() {
-        currentDeckIcon.setIconColor(Color.web("#000000"));
-    }
-
-    @FXML
-    private void handleLeaderboardHover() {
-        leaderboardIcon.setIconColor(Color.web("#FFFFFF"));
-    }
+    private void handleLeaderboardHover() { leaderboardIcon.setIconColor(Color.web("#FFFFFF")); }
 
     @FXML
     private void handleLeaderboardExitHover() {
@@ -479,6 +480,7 @@ public class MainWindowViewController implements Initializable {
     }
 
 
+
     /* ====================================================================== */
     /*                        Listener interface                              */
     /* ====================================================================== */
@@ -486,8 +488,9 @@ public class MainWindowViewController implements Initializable {
     public interface NavigationListener {
         void goBackClicked();
         void goToHomeClicked();
-        void goToCurrentPlayingDeck();
+        void goToMarketplaceClicked();
         void goToLeaderboardClicked();
         void goToProfileClicked();
+        void deckPreviewClosed();
     }
 }

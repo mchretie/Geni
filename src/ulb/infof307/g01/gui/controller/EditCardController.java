@@ -5,7 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
-import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
+import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.card.Card;
@@ -19,7 +19,7 @@ public class EditCardController implements EditCardViewController.Listener {
     private final EditCardViewController editCardViewController;
     private final ControllerListener controllerListener;
     private final Stage stage;
-    private final DeckDAO deckDAO;
+    private final ServerCommunicator serverCommunicator;
     private final Deck deck;
     private final Card card;
     private final boolean front;
@@ -29,7 +29,7 @@ public class EditCardController implements EditCardViewController.Listener {
                               Deck deck,
                               Card card,
                               boolean front,
-                              DeckDAO deckDAO,
+                              ServerCommunicator serverCommunicator,
                               ErrorHandler errorHandler,
                               MainWindowViewController mainWindowViewController,
                               MainFxController mainFxController) {
@@ -42,7 +42,7 @@ public class EditCardController implements EditCardViewController.Listener {
         this.deck = deck;
         this.card = card;
         this.front = front;
-        this.deckDAO = deckDAO;
+        this.serverCommunicator = serverCommunicator;
         editCardViewController.setListener(this);
     }
 
@@ -58,7 +58,7 @@ public class EditCardController implements EditCardViewController.Listener {
             else
                 ((FlashCard) card).setBack(doc.html());
 
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
             controllerListener.savedChanges();
 
         } catch (Exception e) {
