@@ -20,23 +20,18 @@ import java.util.List;
 
 public class MarketplaceController implements MarketplaceViewController.Listener, DeckMarketplaceViewController.Listener {
     private final Stage stage;
-    private final ControllerListener controllerListener;
     private final MarketplaceViewController marketplaceViewController;
     private final MainWindowViewController mainWindowViewController;
-    private final ErrorHandler errorHandler;
     private final ImageLoader imageLoader = new ImageLoader();
 
     private final ServerCommunicator serverCommunicator;
 
     public MarketplaceController(Stage stage,
                                  MainWindowViewController mainWindowViewController,
-                                 ControllerListener controllerListener,
-                                 ErrorHandler errorHandler,
                                  ServerCommunicator serverCommunicator) throws IOException, InterruptedException {
+
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
-        this.controllerListener = controllerListener;
-        this.errorHandler = errorHandler;
         this.serverCommunicator = serverCommunicator;
 
         this.marketplaceViewController = mainWindowViewController.getMarketplaceViewController();
@@ -101,14 +96,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
 
     @Override
     public void searchDeckClicked(String name) {
-        List<DeckMetadata> decks = null;
-        if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.Name)) {
-            //decks = //TODO
-        } else if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.Creator)) {
-            //decks = //TODO
-        }
-        assert decks != null;
-        //deckMenuViewController.setDecks(loadDecks(decks)); //TODO
+        // TODO: Implement search
     }
 
     @Override
@@ -119,14 +107,5 @@ public class MarketplaceController implements MarketplaceViewController.Listener
         } else {
             serverCommunicator.removeDeckFromCollection(deck.id());
         }
-    }
-
-
-    /* ====================================================================== */
-    /*                   Controller Listener Interface                        */
-    /* ====================================================================== */
-
-    public interface ControllerListener {
-
     }
 }

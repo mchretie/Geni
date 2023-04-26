@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:test/ulb/infof307/g01/server/database/TestDeckLeaderboard.java
-        package ulb.infof307.g01.server.database;
-        ========
-        package ulb.infof307.g01.model.leaderboard;
-        >>>>>>>> main:test/ulb/infof307/g01/model/leaderboard/DeckLeaderboardTest.java
+package ulb.infof307.g01.model.leaderboard;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

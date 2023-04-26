@@ -34,8 +34,7 @@ public class MainFxController extends Application implements
         ResultController.ControllerListener,
         UserAuthController.ControllerListener,
         ProfileController.ControllerListener,
-        DeckPreviewController.ControllerListener,
-        MarketplaceController.ControllerListener{
+        DeckPreviewController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -421,8 +420,6 @@ public class MainFxController extends Application implements
             marketplaceController = new MarketplaceController(
                     stage,
                     mainWindowViewController,
-                    this,
-                    errorHandler,
                     serverCommunicator);
 
             resetViewStack(View.MARKETPLACE);
