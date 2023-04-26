@@ -1,4 +1,4 @@
-package ulb.infof307.g01.gui.httpdao.dao;
+package ulb.infof307.g01.gui.http.dao;
 
 import com.google.gson.Gson;
 import ulb.infof307.g01.gui.util.DeckCache;
@@ -184,8 +184,8 @@ public class DeckDAO extends HttpDAO {
     }
 
     @Override
-    public void setToken(String token) {
+    public void setJWT(String token) {
         deckCache = null;
-        super.setToken(token);
+        super.setJWT(token);
     }
 }

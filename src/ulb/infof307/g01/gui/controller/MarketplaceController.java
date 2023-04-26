@@ -4,26 +4,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
-import ulb.infof307.g01.gui.httpdao.ServerCommunicator;
-import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.MarketplaceDAO;
-import ulb.infof307.g01.gui.httpdao.dao.ScoreDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
+import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.util.ImageLoader;
-import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
-import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController.DeckAvailability;
 import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
 import ulb.infof307.g01.model.deck.DeckMetadata;
-import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class MarketplaceController implements MarketplaceViewController.Listener, DeckMarketplaceViewController.Listener {

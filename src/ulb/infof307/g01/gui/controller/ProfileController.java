@@ -3,7 +3,7 @@ package ulb.infof307.g01.gui.controller;
 import java.io.IOException;
 
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.httpdao.ServerCommunicator;
+import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 

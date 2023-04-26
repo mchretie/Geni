@@ -1,4 +1,4 @@
-package ulb.infof307.g01.gui.httpdao.dao;
+package ulb.infof307.g01.gui.http.dao;
 
 import com.google.gson.Gson;
 import ulb.infof307.g01.model.gamehistory.GameHistory;

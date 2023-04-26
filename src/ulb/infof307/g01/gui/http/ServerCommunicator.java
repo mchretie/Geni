@@ -1,6 +1,6 @@
-package ulb.infof307.g01.gui.httpdao;
+package ulb.infof307.g01.gui.http;
 
-import ulb.infof307.g01.gui.httpdao.dao.*;
+import ulb.infof307.g01.gui.http.dao.*;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * A facade for all communication between client and server
+ */
 public class ServerCommunicator {
 
     private final DeckDAO deckDAO = new DeckDAO();
@@ -22,35 +25,35 @@ public class ServerCommunicator {
     private final ScoreDAO scoreDAO = new ScoreDAO();
     private final MarketplaceDAO marketplaceDAO = new MarketplaceDAO();
 
-    private void setToken() {
-        String token = userSessionDAO.getToken();
-        deckDAO.setToken(token);
-        gameHistoryDAO.setToken(token);
-        scoreDAO.setToken(token);
-        marketplaceDAO.setToken(token);
-    }
-
-    private void removeToken() {
-        deckDAO.removeToken();
-        gameHistoryDAO.removeToken();
-        scoreDAO.removeToken();
-        marketplaceDAO.removeToken();
-    }
-
     /* ====================================================================== */
     /*                             User Session                               */
     /* ====================================================================== */
+
+    private void setJWT() {
+        String token = userSessionDAO.getJWT();
+        deckDAO.setJWT(token);
+        gameHistoryDAO.setJWT(token);
+        scoreDAO.setJWT(token);
+        marketplaceDAO.setJWT(token);
+    }
+
+    private void removeJWT() {
+        deckDAO.removeJWT();
+        gameHistoryDAO.removeJWT();
+        scoreDAO.removeJWT();
+        marketplaceDAO.removeJWT();
+    }
 
     public void userLogin(String username, String password)
             throws IOException, InterruptedException {
 
         userSessionDAO.login(username, password);
-        setToken();
+        setJWT();
     }
 
     public void userLogout() {
         userSessionDAO.logout();
-        removeToken();
+        removeJWT();
     }
 
     public void userRegister(String username, String password)
@@ -69,7 +72,7 @@ public class ServerCommunicator {
 
     public void attemptAutoLogin() throws IOException, InterruptedException {
         userSessionDAO.attemptAutoLogin();
-        setToken();
+        setJWT();
     }
 
     /* ====================================================================== */

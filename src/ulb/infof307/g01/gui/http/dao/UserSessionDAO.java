@@ -1,8 +1,8 @@
-package ulb.infof307.g01.gui.httpdao.dao;
+package ulb.infof307.g01.gui.http.dao;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
+import ulb.infof307.g01.gui.http.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class UserSessionDAO extends HttpDAO {
         Optional<String> authorization
                 = response.headers().firstValue("Authorization");
 
-        authorization.ifPresent(this::setToken);
+        authorization.ifPresent(this::setJWT);
     }
 
     public void register(String username, String password)
@@ -78,7 +78,7 @@ public class UserSessionDAO extends HttpDAO {
     /* ====================================================================== */
 
     public boolean isLoggedIn() {
-        return !getToken().isEmpty();
+        return !getJWT().isEmpty();
     }
 
     public void removeCredentials() {
@@ -107,6 +107,6 @@ public class UserSessionDAO extends HttpDAO {
 
     public void logout() {
         removeCredentials();
-        removeToken();
+        removeJWT();
     }
 }
