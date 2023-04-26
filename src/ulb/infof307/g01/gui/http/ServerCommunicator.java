@@ -182,6 +182,11 @@ public class ServerCommunicator {
         deckDAO.emptyCache();
     }
 
+    public void addMarketplaceDeckToCollection(UUID deck) throws IOException, InterruptedException {
+        deckDAO.addDeckToCollection(deck);
+        deckDAO.emptyCache();
+    }
+
     public void removeDeckFromMarketplace(String deckId)
             throws IOException, InterruptedException {
 

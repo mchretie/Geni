@@ -173,7 +173,7 @@ public class DeckDAO extends HttpDAO {
     }
 
     public void addDeckToCollection(UUID deckId) throws IOException, InterruptedException {
-        String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH + "?deck_id=" + deckId.toString();
+        String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH + "?deck_id=" + deckId;
         HttpResponse<String> response = post(path, "");
 
         checkResponseCode(response.statusCode());

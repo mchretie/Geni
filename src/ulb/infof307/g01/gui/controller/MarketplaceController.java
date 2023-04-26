@@ -109,13 +109,13 @@ public class MarketplaceController implements MarketplaceViewController.Listener
         }
         assert decks != null;
         //deckMenuViewController.setDecks(loadDecks(decks)); //TODO
-
     }
 
     @Override
     public void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability) throws IOException, InterruptedException {
         if (deckAvailability.equals(DeckAvailability.MISSING)) {
-            serverCommunicator.addDeckToCollection(deck.id());
+            serverCommunicator.addMarketplaceDeckToCollection(deck.id());
+
         } else {
             serverCommunicator.removeDeckFromCollection(deck.id());
         }
