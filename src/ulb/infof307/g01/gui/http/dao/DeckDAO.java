@@ -144,7 +144,6 @@ public class DeckDAO extends HttpDAO {
 
         String path = ServerPaths.SAVE_DECK_PATH;
         HttpResponse<String> response = post(path, new Gson().toJson(deck));
-
         checkResponseCode(response.statusCode());
 
         deckCache.updateDeck(fetchDeck(deck.getMetadata()));

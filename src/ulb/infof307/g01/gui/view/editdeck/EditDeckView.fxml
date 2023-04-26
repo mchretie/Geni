@@ -139,12 +139,42 @@
             </StackPane.margin>
             </BorderPane>
 
-            <!-- Back of QCM card -->
-            <GridPane fx:id="choicesGrid" alignment="BASELINE_CENTER" hgap="10" maxWidth="Infinity" style="-fx-padding: 6px 10px;                                 -fx-border-insets: 3px 5px;                                 -fx-background-insets: 3px 5px;" vgap="10" visible="false" HBox.hgrow="ALWAYS">
-            </GridPane>
 
-            <!--Back Of input Card-->
-            <TextField fx:id="answerOfInputCard" maxWidth="200" minHeight="30" onKeyPressed="#handleInputTextFieldKeyPressed" onKeyReleased="#handleAnswerOfInputEdit" visible="false" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS" />
+            <VBox>
+                <!--Timer value changer-->
+                <HBox fx:id="timerChangerComponent">
+                    <Label text="Timer (sec) : ">
+                  <font>
+                     <Font size="19.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets left="20.0" />
+                  </HBox.margin></Label>
+               <TextField fx:id="timerValue" onKeyPressed="#handleTimerValueEdit" onKeyReleased="#handleTimerValueSave" prefHeight="26.0" prefWidth="59.0">
+                  <HBox.margin>
+                     <Insets left="15.0" />
+                  </HBox.margin>
+               </TextField>
+                </HBox>
+
+                <!-- Back of QCM card -->
+                <GridPane fx:id="choicesGrid" alignment="BASELINE_CENTER" hgap="10" maxWidth="Infinity" style="-fx-padding: 6px 10px;                                 -fx-border-insets: 3px 5px;                                 -fx-background-insets: 3px 5px;" vgap="10" visible="false" HBox.hgrow="ALWAYS">
+                    <columnConstraints>
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                    </rowConstraints>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin></GridPane>
+
+                <!--Back Of input Card-->
+                <TextField fx:id="answerOfInputCard" alignment="BASELINE_CENTER" maxWidth="200" minHeight="30" onKeyPressed="#handleInputTextFieldKeyPressed" onKeyReleased="#handleAnswerOfInputEdit" visible="false" BorderPane.alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin></TextField>
+            </VBox>
         </StackPane>
 
 

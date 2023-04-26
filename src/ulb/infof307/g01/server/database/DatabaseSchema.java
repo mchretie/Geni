@@ -44,6 +44,7 @@ class DatabaseSchema {
         CREATE TABLE IF NOT EXISTS mcq_card (
             card_id TEXT PRIMARY KEY,
             correct_answer_index INTEGER NOT NULL,
+            countdown_time INTEGER,
             FOREIGN KEY (card_id) REFERENCES card(card_id) ON DELETE CASCADE
         );
             """,
@@ -60,6 +61,7 @@ class DatabaseSchema {
         CREATE TABLE IF NOT EXISTS input_card (
             card_id TEXT PRIMARY KEY,
             answer TEXT NOT NULL,
+            countdown_time INTEGER,
             FOREIGN KEY (card_id) REFERENCES card(card_id) ON DELETE CASCADE
         );
             """,

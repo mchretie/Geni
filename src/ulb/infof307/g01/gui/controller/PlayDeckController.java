@@ -41,6 +41,8 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
         playDeckViewController.setDeckName(deck.getName());
         playDeckViewController.setNumberOfCards(deck.cardCount());
+
+        playDeckViewController.setTimer();
     }
 
     public void removeDeck() {
@@ -67,6 +69,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         this.mainWindowViewController = mainWindowViewController;
         this.playDeckViewController = mainWindowViewController.getPlayDeckViewController();
         playDeckViewController.setListener(this);
+
     }
 
 
@@ -117,9 +120,13 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         if (currentCard != null) {
             playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+            playDeckViewController.setTimer();
             showCard();
             return;
         }
+
+        int totalScore = score.getScore() / cardExtractor.getAmountCompetitiveCards();
+        score.setScore(totalScore);
 
         try {
             serverCommunicator.addScore(score);
@@ -141,19 +148,23 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         currentCard = previousCard;
         playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+        playDeckViewController.setTimer();
 
         showCard();
     }
 
     @Override
-    public void onChoiceEntered(boolean isGoodChoice) {
+    public void onChoiceEntered(boolean isGoodChoice, double timeLeft) {
         int cardIndex = cardExtractor.getCurrentCardIndex();
-        if (answeredCards[cardIndex])
+
+        if (answeredCards[cardIndex]) {
             return;
+        }
 
         answeredCards[cardIndex] = true;
-        if (isGoodChoice)
-            score.increment(1);
+        if (isGoodChoice) {
+            score.increment((int) (1000 * timeLeft));
+        }
     }
 
 
