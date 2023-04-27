@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'dart:io';
+import 'package:mobile_deckz/utils/timestampToDateTimeConvertor.dart';
 
 class Game {
 
@@ -11,11 +11,11 @@ class Game {
 
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game(
-      // TODO timestamp to datetime conversion
-      timestamp: DateTime.parse(json['timestamp']),
+      timestamp : timestampToDateTime(json['timestamp']),
       deckName: json['deckName'].toString(),
       score: json['score'],
     );
+
   }
 
   String getTimestamp() {
