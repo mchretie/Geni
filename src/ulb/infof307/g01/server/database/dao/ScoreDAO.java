@@ -32,7 +32,7 @@ public class ScoreDAO extends DAO {
         String userId = userDAO.getUserId(score.getUsername());
         database.executeUpdate(sql,
                 userId,
-                Long.toString(score.getTimestamp().getTime()),
+                score.getTimestamp(),
                 score.getDeckId().toString(),
                 score.getScore());
     }
@@ -42,9 +42,9 @@ public class ScoreDAO extends DAO {
             UUID userId = UUID.fromString(res.getString("user_id"));
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             int score = res.getInt("score");
-            Date date = new Date(res.getLong("timestamp"));
+            long timestamp = res.getLong("timestamp");
             String username = userDAO.getUsername(userId);
-            return new Score(username, deckId, score, date);
+            return new Score(username, deckId, score, timestamp);
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -130,9 +130,9 @@ public class ScoreDAO extends DAO {
             while (res.next()) {
                 String deckName = res.getString("deck_name");
                 int score = res.getInt("score");
-                Date date = new Date(res.getLong("timestamp"));
+                long timestamp = res.getLong("timestamp");
 
-                games.add(new Game(date, deckName, score + ""));
+                games.add(new Game(timestamp, deckName, String.valueOf(score)));
             }
 
             return games;

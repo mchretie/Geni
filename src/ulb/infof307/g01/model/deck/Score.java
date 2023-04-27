@@ -8,9 +8,9 @@ public class Score {
     private final String username;
     private final UUID deckId;
     private int score;
-    private final Date timestamp;
+    private final long timestamp;
 
-    public Score(String username, UUID deckId, int score, Date timestamp) {
+    public Score(String username, UUID deckId, int score, long timestamp) {
         this.username = username;
         this.deckId = deckId;
         this.score = score;
@@ -18,7 +18,7 @@ public class Score {
     }
 
     static public Score createNewScore(String username, UUID deckId) {
-        return new Score(username, deckId, 0, new Date());
+        return new Score(username, deckId, 0, 0);
     }
 
     public void increment(int value) {
@@ -37,7 +37,7 @@ public class Score {
         return score;
     }
 
-    public Date getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
@@ -51,7 +51,7 @@ public class Score {
         return username.equals(other.username) &&
                 deckId.equals(other.deckId) &&
                 score == other.score &&
-                timestamp.equals(other.timestamp);
+                timestamp == other.timestamp;
     }
 
     @Override
