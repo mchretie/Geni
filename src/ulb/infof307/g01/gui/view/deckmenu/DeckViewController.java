@@ -170,7 +170,6 @@ public class DeckViewController {
 
     private void updateDeckLabelName() {
         this.deckNameLabel.setText(this.deck.name());
-        System.out.println(this.deck.colorName());
         this.deckNameLabel.setTextFill(Color.web(this.deck.colorName()));
     }
 
