@@ -15,8 +15,7 @@ class GameHistoryView extends StatefulWidget {
 class _GameHistoryViewState extends State<GameHistoryView> {
   @override
   Widget build(BuildContext context) {
-    final Future<GameHistory> gameHistory =
-        GameHistoryDao.getGameHistory();
+    final Future<GameHistory> gameHistory = GameHistoryDao.getGameHistory();
 
     return FutureBuilder<GameHistory>(
         future: gameHistory,
@@ -30,49 +29,47 @@ class _GameHistoryViewState extends State<GameHistoryView> {
           } else {
             List<Game> games = snapshot.data?.games ?? [];
             return Scaffold(
-                body: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: DataTable(
-                    columns: const <DataColumn>[
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Date',
-                          ),
-                        ),
+                body: Align(
+                  alignment: Alignment.topCenter,
+                    child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: DataTable(
+                columns: const <DataColumn>[
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Date',
                       ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Paquet',
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        numeric: true,
-                        label: Expanded(
-                          child: Text(
-                            'Score',
-                          ),
-                        ),
-                      ),
-                    ],
-                    rows: games
-                        .map(
-                          (game) =>
-                          DataRow(cells: [
-                            DataCell(Text(game.getFormattedTimestamp())),
-                            DataCell(Text(game.getDeckName())),
-                            DataCell(Text(game.getScore().toString())),
-
-                          ]),
-                    )
-                        .toList(),
+                    ),
                   ),
-                )
-            );
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Paquet',
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    numeric: true,
+                    label: Expanded(
+                      child: Text(
+                        'Score',
+                      ),
+                    ),
+                  ),
+                ],
+                rows: games
+                    .map(
+                      (game) => DataRow(cells: [
+                        DataCell(Text(game.getFormattedTimestamp())),
+                        DataCell(Text(game.getDeckName())),
+                        DataCell(Text(game.getScore().toString())),
+                      ]),
+                    )
+                    .toList(),
+              ),
+            )));
           }
-        }
-    );
+        });
   }
 }
