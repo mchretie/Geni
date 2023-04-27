@@ -174,7 +174,7 @@ public class Database {
         return new DeckLeaderboard(deckId, scoreDao.getScoresForDeck(deckId));
     }
 
-    public GlobalLeaderboard getLeaderboardFromUserID() {
+    public GlobalLeaderboard getGlobalLeaderboard() {
         return new GlobalLeaderboard(scoreDao.getAllUserDeckScore());
     }
 

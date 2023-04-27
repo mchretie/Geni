@@ -32,7 +32,7 @@ public final class ServerPaths {
     public static final String SAVE_SCORE_PATH = LEADERBOARD_BASE_PATH + "/save";
     public static final String GET_LEADERBOARD_PATH = LEADERBOARD_BASE_PATH + "/get";
     public static final String GET_BEST_SCORE_PATH = GET_LEADERBOARD_PATH + "/best-score";
-    public static final String GET_BEST_SCORE_USER_ID_PATH = LEADERBOARD_BASE_PATH + "/best-score-user";
+    public static final String GET_GLOBAL_LEADERBOARD = LEADERBOARD_BASE_PATH + "/global";
 
     // Used by GameHistoryRequestHandler
     public static final String GAME_HISTORY_BASE_PATH = BASE + "/game-history";
