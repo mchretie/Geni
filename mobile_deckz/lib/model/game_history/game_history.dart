@@ -12,7 +12,8 @@ class GameHistory {
   factory GameHistory.fromJson(Map<String, dynamic> json) {
     List<Game> games = [];
     for (var game in json['games']) {
-      games.add(Game.fromJson(game));
+      Game gameTest = Game.fromJson(game);
+      games.add(gameTest);
     }
     return GameHistory(games: games);
   }
