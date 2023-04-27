@@ -1,25 +1,25 @@
 import 'dart:core';
-import 'dart:io';
+import 'package:mobile_deckz/utils/timestamp_to_datetime_convertor.dart';
 
 class Game {
 
-  final DateTime timestamp;
-  final String deckName;
-  final int score;
+  DateTime timestamp;
+  String deckName;
+  int score;
 
   Game({required this.timestamp, required this.deckName, required this.score});
 
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game(
-      // TODO timestamp to datetime conversion
-      timestamp: DateTime.parse(json['timestamp']),
+      timestamp : timestampToDateTime(json['timestamp']),
       deckName: json['deckName'].toString(),
-      score: json['score'],
+      score: int.parse(json['score']),
     );
+
   }
 
-  String getTimestamp() {
-    return timestamp.toString();
+  String getFormattedTimestamp() {
+    return timestamp.toString().replaceAll(".000", "");
   }
 
   String getDeckName() {
