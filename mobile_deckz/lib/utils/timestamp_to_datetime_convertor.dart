@@ -25,19 +25,19 @@ String getDay(List<String> date) {
   return date[1];
 }
 
-int? getMonth(List<String> date) {
-  Map<String, int> months = {"Jan" : 01,
-    "Feb" : 02,
-    "Mar" : 03,
-    "Apr" : 04,
-    "May" : 05,
-    "Jun" : 06,
-    "Jul" : 07,
-    "Aug" : 08,
-    "Sep" : 09,
-    "Oct" : 10,
-    "Nov" : 11,
-    "Dec" : 12,
+String? getMonth(List<String> date) {
+  Map<String, String> months = {"Jan" : "01",
+    "Feb" : "02",
+    "Mar" : "03",
+    "Apr" : "04",
+    "May" : "05",
+    "Jun" : "06",
+    "Jul" : "07",
+    "Aug" : "08",
+    "Sep" : "09",
+    "Oct" : "10",
+    "Nov" : "11",
+    "Dec" : "12",
   };
 
   return months[date[0]];
@@ -57,7 +57,6 @@ String getYear(List<String> timeInfos) {
 
 DateTime timestampToDateTime(String timestamp) {
   //  timestamp : Apr 23, 2023, 5:33:06 PM
-  print("timestamp : $timestamp");
 
   List<String> timeInfos = timestamp.split(', ');
   List<String> date = getDate(timeInfos[0]);
@@ -65,7 +64,7 @@ DateTime timestampToDateTime(String timestamp) {
 
   String year = getYear(timeInfos);
 
-  int? month = getMonth(date);
+  String? month = getMonth(date);
   String day = getDay(date);
   int hours = getHours(time);
   String minutes = getMinutes(time);
@@ -74,7 +73,5 @@ DateTime timestampToDateTime(String timestamp) {
   // DateTime : 2023-04-23 17:33:06
 
   String formattedString = "$year-$month-$day $hours:$minutes:$seconds";
-  print("datetime : $formattedString");
-
   return DateTime.parse(formattedString);
 }
