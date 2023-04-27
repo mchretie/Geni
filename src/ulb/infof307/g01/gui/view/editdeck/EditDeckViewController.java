@@ -152,6 +152,7 @@ public class EditDeckViewController {
         this.deck = deck;
         deckNameText.setText(deck.getName());
         colorPickerBackground.setValue(Color.web(deck.getColor()));
+        colorPickerTitle.setValue(Color.web(deck.getColorName()));
     }
 
     public void setListener(Listener listener) {
@@ -546,7 +547,9 @@ public class EditDeckViewController {
 
     @FXML
     public void handleColorButtonClickedTitle() {
-        listener.deckTitleColorModified(deck, colorPickerTitle.getValue());
+        Color color = colorPickerTitle.getValue();
+        deckNameText.setStyle("-fx-background-color: color;");
+        listener.deckTitleColorModified(deck, color);
     }
 
     @FXML

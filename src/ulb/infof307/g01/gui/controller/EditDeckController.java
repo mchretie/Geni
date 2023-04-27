@@ -263,7 +263,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void deckTitleColorModified(Deck deck, Color color) {
         try {
-            //deck.setTitleColor(color.toString()); //TODO
+            deck.setColorName(color.toString());
             serverCommunicator.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {

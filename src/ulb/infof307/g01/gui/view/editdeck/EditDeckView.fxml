@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
 <?import org.kordamp.ikonli.javafx.*?>
@@ -25,7 +26,10 @@
                     <FontIcon iconLiteral="mdi2p-pencil" iconSize="25" />
                 </graphic>
             </Button>
-            <ColorPicker fx:id="colorPickerTitle" onAction="#handleColorButtonClickedTitle" onMouseEntered="#handleColorPickerHoverTitle" onMouseExited="#handleColorPickerExitTitle" style="-fx-background-color: #5ab970;" />
+            <ColorPicker fx:id="colorPickerTitle" onAction="#handleColorButtonClickedTitle" onMouseEntered="#handleColorPickerHoverTitle" onMouseExited="#handleColorPickerExitTitle" style="-fx-background-color: #5ab970;">
+            <value>
+               <Color />
+            </value></ColorPicker>
         </HBox>
 
         <!-- Tags -->
