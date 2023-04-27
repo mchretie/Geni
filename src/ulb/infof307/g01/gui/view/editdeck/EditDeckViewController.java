@@ -16,7 +16,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
-import org.w3c.dom.css.RGBColor;
 import ulb.infof307.g01.gui.util.GridPosIterator;
 import ulb.infof307.g01.gui.util.Pos2D;
 import ulb.infof307.g01.model.card.*;
