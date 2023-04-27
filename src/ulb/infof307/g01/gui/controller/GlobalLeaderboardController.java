@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
+import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardEntryViewController;
@@ -83,8 +84,12 @@ public class GlobalLeaderboardController {
 
             return playersScoreItem;
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             errorHandler.failedLoading(e);
+            return new ArrayList<>();
+
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
             return new ArrayList<>();
         }
     }

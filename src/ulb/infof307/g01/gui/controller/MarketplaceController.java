@@ -3,14 +3,13 @@ package ulb.infof307.g01.gui.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
+import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController.DeckAvailability;
 import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
-import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 
 import java.io.IOException;
@@ -44,7 +43,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     /*                         Stage Manipulation                             */
     /* ====================================================================== */
 
-    public void show() throws IOException, InterruptedException {
+    public void show() throws ServerCommunicationFailedException, IOException, InterruptedException {
         mainWindowViewController.setMarketplaceViewVisible();
         marketplaceViewController
                 .setDecks(loadDecksDatabase());
@@ -55,7 +54,9 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     /* ====================================================================== */
     /*                          Database Access                               */
     /* ====================================================================== */
-    private List<Node> loadDecksDatabase() throws IOException, InterruptedException {
+    private List<Node> loadDecksDatabase()
+            throws ServerCommunicationFailedException, IOException {
+
         List<MarketplaceDeckMetadata> marketplaceDecks = serverCommunicator.getAllMarketplaceDecks();
         List<MarketplaceDeckMetadata> decksSaved = serverCommunicator.getSavedDecks();
         marketplaceDecks.removeAll(decksSaved);
@@ -66,7 +67,8 @@ public class MarketplaceController implements MarketplaceViewController.Listener
 
         return decksLoaded;
     }
-    private List<Node> loadDecksView(List<MarketplaceDeckMetadata> decks, DeckAvailability deckAvailability) throws IOException, InterruptedException {
+    private List<Node> loadDecksView(List<MarketplaceDeckMetadata> decks, DeckAvailability deckAvailability)
+            throws IOException, ServerCommunicationFailedException {
         List<Node> decksLoaded = new ArrayList<>();
 
         for (MarketplaceDeckMetadata deck : decks) {
@@ -100,7 +102,9 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     }
 
     @Override
-    public void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability) throws IOException, InterruptedException {
+    public void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability)
+            throws ServerCommunicationFailedException {
+
         if (deckAvailability.equals(DeckAvailability.MISSING)) {
             serverCommunicator.addMarketplaceDeckToCollection(deck.id());
 
