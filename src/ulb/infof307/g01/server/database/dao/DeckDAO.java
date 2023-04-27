@@ -20,6 +20,7 @@ import java.util.*;
  * to it before saving it with saveDeck or deleteDeck.
  * <p>
  * Do not use directly, use the Database facade instead.
+ *
  * @see ulb.infof307.g01.server.database.Database
  */
 public class DeckDAO extends DAO {
@@ -56,9 +57,9 @@ public class DeckDAO extends DAO {
                 """;
 
         return !checkedNext(database.executeQuery(sql,
-                                                  deck.getId().toString(),
-                                                  userId.toString(),
-                                                  deck.getName()));
+                deck.getId().toString(),
+                userId.toString(),
+                deck.getName()));
     }
 
     public boolean deckNameExists(String name) {
@@ -92,7 +93,6 @@ public class DeckDAO extends DAO {
     public void saveDeck(Deck deck, UUID userId) throws DatabaseException {
         if (!isDeckValid(deck, userId))
             return;
-
         saveDeckIdentity(deck, userId);
         saveDeckTags(deck);
         saveDeckCards(deck);
@@ -110,14 +110,16 @@ public class DeckDAO extends DAO {
      */
     public Deck getDeck(UUID deckId, UUID userId) throws DatabaseException {
         String sql = """
-                SELECT deck_id, name, color, image
-                FROM deck
-                WHERE deck_id = ? AND user_id = ?
+                SELECT d.*,
+                       CASE WHEN m.deck_id IS NOT NULL THEN 1 ELSE 0 END AS public
+                FROM deck d
+                         LEFT JOIN marketplace m ON d.deck_id = m.deck_id
+                WHERE d.deck_id = ? AND d.user_id = ?;
                 """;
 
         ResultSet res = database.executeQuery(sql,
-                                              deckId.toString(),
-                                              userId.toString());
+                deckId.toString(),
+                userId.toString());
         if (!checkedNext(res))
             return null;
         return extractDeckFrom(res);
@@ -125,13 +127,15 @@ public class DeckDAO extends DAO {
 
     public Deck getDeck(UUID deckId) throws DatabaseException {
         String sql = """
-                SELECT deck_id, name, color, image
-                FROM deck
-                WHERE deck_id = ?
+                SELECT d.*,
+                       CASE WHEN m.deck_id IS NOT NULL THEN 1 ELSE 0 END AS public
+                FROM deck d
+                         LEFT JOIN marketplace m ON d.deck_id = m.deck_id
+                WHERE d.deck_id = ?;
                 """;
 
         ResultSet res = database.executeQuery(sql,
-                                              deckId.toString());
+                deckId.toString());
         if (!checkedNext(res))
             return null;
         return extractDeckFrom(res);
@@ -193,8 +197,8 @@ public class DeckDAO extends DAO {
     public List<DeckMetadata> getAllUserDecksMetadata(UUID userId) throws DatabaseException {
         String sql = """
                 SELECT deck_id
-                FROM deck
-                WHERE deck.user_id = ?
+                FROM user_deck_collection
+                WHERE user_id = ?
                 """;
 
 
@@ -207,7 +211,7 @@ public class DeckDAO extends DAO {
      * Approximate search of decks with given search string
      *
      * @param userSearch query
-     * @param userId user id
+     * @param userId     user id
      * @return List of decks
      */
     public List<Deck> searchDecks(String userSearch, UUID userId) throws DatabaseException {
@@ -268,15 +272,27 @@ public class DeckDAO extends DAO {
                 """;
 
         database.executeUpdate(sql,
-                               deck.getId().toString(),
-                               userId.toString(),
-                               deck.getName(),
-                               deck.getColor(),
-                               deck.getImage(),
+                deck.getId().toString(),
+                userId.toString(),
+                deck.getName(),
+                deck.getColor(),
+                deck.getImage(),
 
-                               deck.getName(),
-                               deck.getColor(),
-                               deck.getImage());
+                deck.getName(),
+                deck.getColor(),
+                deck.getImage());
+    }
+
+    private void saveToCollection(UUID deckId, UUID userId) throws DatabaseException {
+        String sql = """
+                INSERT INTO user_deck_collection (deck_id, user_id)
+                VALUES (?, ?);
+                """;
+
+        database.executeUpdate(
+                sql,
+                deckId.toString(),
+                userId.toString());
     }
 
     private void saveDeckTags(Deck deck) throws DatabaseException {
@@ -296,12 +312,13 @@ public class DeckDAO extends DAO {
 
         Set<Card> deletedCards = (Set<Card>) currentCards.clone();
         deletedCards.removeAll(newCards);
-
         for (Card deletedCard : deletedCards)
             deleteCard(deletedCard);
 
-        for (Card addedCard : addedCards)
+        for (Card addedCard : addedCards) {
             saveCard(addedCard);
+        }
+
     }
 
     public void saveCard(FlashCard card) throws DatabaseException {
@@ -313,23 +330,26 @@ public class DeckDAO extends DAO {
                 """;
 
         database.executeUpdate(upsertFlashCard,
-                                 card.getId().toString(),
-                                 card.getBack(),
-                                 card.getBack());
+                card.getId().toString(),
+                card.getBack(),
+                card.getBack());
     }
 
     public void saveCard(MCQCard card) throws DatabaseException {
         String upsertMCQCard = """
-                INSERT INTO mcq_card (card_id, correct_answer_index)
-                VALUES (?, ?)
+                INSERT INTO mcq_card (card_id, correct_answer_index, countdown_time)
+                VALUES (?, ?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET correct_answer_index = ?
+                DO UPDATE SET correct_answer_index = ?, countdown_time = ?
                 """;
 
         database.executeUpdate(upsertMCQCard,
-                                 card.getId().toString(),
-                                 card.getCorrectChoiceIndex(),
-                                 card.getCorrectChoiceIndex());
+                card.getId().toString(),
+                card.getCorrectChoiceIndex(),
+                card.getCountdownTime(),
+                card.getCorrectChoiceIndex(),
+                card.getCountdownTime()
+        );
 
         String upsertMCQCardAnswer = """
                 INSERT INTO mcq_answer (card_id, answer, answer_index)
@@ -340,23 +360,26 @@ public class DeckDAO extends DAO {
 
         for (int i = 0; i < card.getChoicesCount(); i++)
             database.executeUpdate(upsertMCQCardAnswer,
-                                     card.getId().toString(),
-                                     card.getChoice(i),
-                                     i);
+                    card.getId().toString(),
+                    card.getChoice(i),
+                    i);
     }
 
     public void saveCard(InputCard card) throws DatabaseException {
         String upsertInputCard = """
-                INSERT INTO input_card (card_id, answer)
-                VALUES (?, ?)
+                INSERT INTO input_card (card_id, answer, countdown_time)
+                VALUES (?, ?, ?)
                 ON CONFLICT(card_id)
-                DO UPDATE SET answer = ?
+                DO UPDATE SET answer = ? , countdown_time = ?
                 """;
 
         database.executeUpdate(upsertInputCard,
-                                 card.getId().toString(),
-                                 card.getAnswer(),
-                                 card.getAnswer());
+                card.getId().toString(),
+                card.getAnswer(),
+                card.getCountdownTime(),
+                card.getAnswer(),
+                card.getCountdownTime()
+        );
     }
 
     private void saveCard(Card card) throws DatabaseException {
@@ -371,14 +394,16 @@ public class DeckDAO extends DAO {
                 card.getId().toString(),
                 card.getDeckId().toString(),
                 card.getFront(),
-                card.getFront());
+                card.getFront()
+        );
 
-        if (card instanceof FlashCard)
+        if (card instanceof FlashCard) {
             saveCard((FlashCard) card);
-        else if (card instanceof MCQCard)
+        } else if (card instanceof MCQCard) {
             saveCard((MCQCard) card);
-        else if (card instanceof InputCard)
+        } else if (card instanceof InputCard) {
             saveCard((InputCard) card);
+        }
     }
 
     private void deleteCard(Card card) throws DatabaseException {
@@ -396,6 +421,7 @@ public class DeckDAO extends DAO {
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             String front = res.getString("front");
             String back = res.getString("back");
+            //Integer countdownTime = res.getInt("countdown_time");
             return new FlashCard(uuid, deckId, front, back);
         } catch (SQLException e) {
             throw new DatabaseException((e.getMessage()));
@@ -423,9 +449,10 @@ public class DeckDAO extends DAO {
             UUID uuid = UUID.fromString(res.getString("card_id"));
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             String front = res.getString("front");
+            Integer countdownTime = res.getInt("countdown_time");
             int correctAnswerIndex = Integer.parseInt(res.getString("correct_answer_index"));
             List<String> answers = getMCQAnswersFor(uuid);
-            return new MCQCard(uuid, deckId, front, answers, correctAnswerIndex);
+            return new MCQCard(uuid, deckId, front, answers, correctAnswerIndex, countdownTime);
         } catch (SQLException e) {
             throw new DatabaseException((e.getMessage()));
         }
@@ -448,7 +475,7 @@ public class DeckDAO extends DAO {
 
     private List<MCQCard> getMCQCardsFor(UUID deckUuid) throws DatabaseException {
         String sql = """
-                SELECT card.card_id, deck_id, front, correct_answer_index
+                SELECT card.card_id, deck_id, front, correct_answer_index, countdown_time
                 FROM card
                 INNER JOIN mcq_card
                 ON card.card_id = mcq_card.card_id
@@ -467,8 +494,9 @@ public class DeckDAO extends DAO {
             UUID uuid = UUID.fromString(res.getString("card_id"));
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             String front = res.getString("front");
+            Integer countdownTime = res.getInt("countdown_time");
             String answer = res.getString("answer");
-            return new InputCard(uuid, deckId, front, answer);
+            return new InputCard(uuid, deckId, front, answer, countdownTime);
         } catch (SQLException e) {
             throw new DatabaseException((e.getMessage()));
         }
@@ -476,7 +504,7 @@ public class DeckDAO extends DAO {
 
     private List<InputCard> getInputCardsFor(UUID deckUuid) throws DatabaseException {
         String sql = """
-                SELECT card.card_id, deck_id, front, answer
+                SELECT card.card_id, deck_id, front, answer, countdown_time
                 FROM card
                 INNER JOIN input_card
                 ON card.card_id = input_card.card_id
@@ -505,16 +533,17 @@ public class DeckDAO extends DAO {
         return cards;
     }
 
-    private Deck extractDeckFrom(ResultSet res) throws DatabaseException {
+    public Deck extractDeckFrom(ResultSet res) throws DatabaseException {
         try {
             UUID uuid = UUID.fromString(res.getString("deck_id"));
             String name = res.getString("name");
             String color = res.getString("color");
             String image = res.getString("image");
+            boolean isPublic = res.getBoolean("public");
             List<Card> cards = getCardsFor(uuid);
             List<Tag> tags = tagDao.getTagsFor(uuid);
 
-            return new Deck(name, uuid, cards, tags, color, image);
+            return new Deck(name, uuid, cards, tags, color, image, isPublic);
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -578,7 +607,7 @@ public class DeckDAO extends DAO {
 
     public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {
         String sql = """
-                SELECT D.deck_id, U.username, D.name, D.color, D.image, M.rating, M.downloads
+                SELECT D.deck_id, U.username, D.name, D.color, D.image, M.rating, M.downloads, 1 as 'public'
                 FROM marketplace M
                 INNER JOIN deck D ON M.deck_id = D.deck_id
                 INNER JOIN user U ON U.user_id = D.user_id;

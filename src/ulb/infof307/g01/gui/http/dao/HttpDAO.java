@@ -1,8 +1,8 @@
-package ulb.infof307.g01.gui.httpdao.dao;
+package ulb.infof307.g01.gui.http.dao;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import ulb.infof307.g01.gui.httpdao.exceptions.ServerRequestFailedException;
+import ulb.infof307.g01.gui.http.exceptions.ServerRequestFailedException;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 
 import java.io.File;
@@ -111,15 +111,19 @@ public abstract class HttpDAO {
     /*                                  Setter                                */
     /* ====================================================================== */
 
-    public void setToken(String token) {
+    public void setJWT(String token) {
         this.token = token;
+    }
+
+    public void removeJWT() {
+        setJWT("");
     }
 
     /* ====================================================================== */
     /*                                  Getter                                */
     /* ====================================================================== */
 
-    public String getToken() {
+    public String getJWT() {
         return token;
     }
 }

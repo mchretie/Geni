@@ -4,9 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
-import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
-import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
+import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.statistics.GameHistoryItemViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
@@ -23,11 +21,10 @@ public class StatisticsController {
     private final Stage stage;
     private final ErrorHandler errorHandler;
     private final MainWindowViewController mainWindowViewController;
-    private final UserSessionDAO userSessionDAO;
-    private final GameHistoryDAO gameHistoryDAO;
 
     private final StatisticsViewController statisticsViewController;
-    private final DeckDAO deckDAO;
+
+    private final ServerCommunicator serverCommunicator;
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -36,15 +33,11 @@ public class StatisticsController {
     public StatisticsController(Stage stage,
                                 ErrorHandler errorHandler,
                                 MainWindowViewController mainWindowViewController,
-                                UserSessionDAO userSessionDAO,
-                                DeckDAO deckDAO,
-                                GameHistoryDAO gameHistoryDAO) {
+                                ServerCommunicator serverCommunicator) {
         this.stage = stage;
         this.errorHandler = errorHandler;
         this.mainWindowViewController = mainWindowViewController;
-        this.userSessionDAO = userSessionDAO;
-        this.deckDAO = deckDAO;
-        this.gameHistoryDAO = gameHistoryDAO;
+        this.serverCommunicator = serverCommunicator;
 
         this.statisticsViewController
                 = mainWindowViewController.getStatisticsViewController();
@@ -57,8 +50,8 @@ public class StatisticsController {
 
     public void show() throws IOException {
         mainWindowViewController.setStatisticsViewVisible();
-        if (userSessionDAO.isLoggedIn()) {
-            gameHistoryDAO.setToken(userSessionDAO.getToken());
+
+        if (serverCommunicator.isUserLoggedIn()) {
             mainWindowViewController.setStatisticsViewVisible();
             mainWindowViewController.makeGoBackIconVisible();
 
@@ -76,7 +69,7 @@ public class StatisticsController {
         try {
             List<Node> playersScoreItem = new ArrayList<>();
 
-            GameHistory gameHistory = gameHistoryDAO.getGameHistory();
+            GameHistory gameHistory = serverCommunicator.getGameHistory();
 
             for (Game game : gameHistory) {
                 Node node = loadGameHistoryItem(game);
@@ -86,7 +79,7 @@ public class StatisticsController {
             statisticsViewController
                     .setMainStatistics(
                             gameHistory.getNumberOfGames() + "",
-                            deckDAO.getDeckCount() + "",
+                            serverCommunicator.getDeckCount() + "",
                             gameHistory.totalScore() + "");
 
             return playersScoreItem;

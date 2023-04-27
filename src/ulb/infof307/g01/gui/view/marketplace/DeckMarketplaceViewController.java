@@ -1,32 +1,28 @@
-package ulb.infof307.g01.gui.view.deckmenu;
+package ulb.infof307.g01.gui.view.marketplace;
+
 
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
-import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.gui.util.ImageLoader;
+import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
-import ulb.infof307.g01.model.deck.Tag;
 
-public class DeckViewController {
+import java.io.IOException;
+
+public class DeckMarketplaceViewController {
 
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
-
-    @FXML
-    private Button editDeckButton;
-
     @FXML
     private StackPane stackPane;
 
@@ -34,13 +30,7 @@ public class DeckViewController {
     private Label deckNameLabel;
 
     @FXML
-    private FontIcon editDeckIcon;
-
-    @FXML
-    private FontIcon removeDeckIcon;
-
-    @FXML
-    private FontIcon shareDeckIcon;
+    private FontIcon addRemoveDeckIcon;
 
     @FXML
     private ImageView imageBackground;
@@ -49,20 +39,27 @@ public class DeckViewController {
     private Rectangle colorBackground;
 
     @FXML
-    private FlowPane tagsContainer;
-
-    @FXML
     private Label amountCardsLabel;
 
     @FXML
     private Label scoreLabel;
+
+    @FXML
+    private Label creatorLabel;
 
 
     /* ====================================================================== */
     /*                              Model Attributes                          */
     /* ====================================================================== */
 
-    private DeckMetadata deck;
+    private MarketplaceDeckMetadata deck;
+
+    public enum DeckAvailability {
+        OWNED,
+        MISSING
+    }
+
+    private DeckAvailability deckAvailability;
 
 
     /* ====================================================================== */
@@ -84,18 +81,21 @@ public class DeckViewController {
         this.imageLoader = loader;
     }
 
+
     /* ====================================================================== */
     /*                           Updating Deck                                */
     /* ====================================================================== */
 
-    public void setDeck(DeckMetadata deck, Score bestScore) {
+    public void setDeck(MarketplaceDeckMetadata deck, Score bestScore, DeckAvailability deckAvailability) {
         this.deck = deck;
-        this.updateDeckLabelName();
+        this.deckAvailability = deckAvailability;
 
+        this.updateDeckLabelName();
         this.setDeckImage();
         this.setDeckColor();
 
-        this.setTags();
+        changeDeckAvailabilityIcon();
+
         if (bestScore == null)
             this.setStats("N/A");
         else
@@ -127,29 +127,6 @@ public class DeckViewController {
         imageBackground.setClip(clip);
     }
 
-    private void setTags() {
-        tagsContainer.setHgap(30);
-        tagsContainer.setVgap(10);
-
-        for (Tag tag : deck.tags()) {
-            Label tagLabel = new Label(tag.getName());
-
-            tagLabel.setBackground(new Background(new BackgroundFill(
-                    Color.web(tag.getColor()),
-                    new CornerRadii(10, false),
-                    new Insets(-2, -10, -2, -10))));
-
-            tagLabel.setTextFill(tag.isBackgroundDark() ? Color.WHITE : Color.BLACK);
-
-            tagsContainer.getChildren().add(tagLabel);
-        }
-    }
-
-    private void setStats(String bestScore) {
-        amountCardsLabel.setText(String.valueOf(deck.cardCount()));
-        scoreLabel.setText(bestScore);
-    }
-
     private LinearGradient makeGradient(Color color) {
         float gradientHeight = 0.6f;
         float gradientStrengthInverted = 1.2f;
@@ -172,33 +149,33 @@ public class DeckViewController {
         this.deckNameLabel.setText(this.deck.name());
     }
 
-    public void setDisableEdit(boolean disable) {
-        editDeckButton.setDisable(disable);
+    private void setStats(String bestScore) {
+        amountCardsLabel.setText(String.valueOf(deck.cardCount()));
+        scoreLabel.setText(bestScore);
+        creatorLabel.setText(deck.owner());
     }
 
+    private void changeDeckAvailabilityIcon(){
+        if (this.deckAvailability == DeckAvailability.OWNED) {
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-check");
+        } else
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-plus");
+    }
 
     /* ====================================================================== */
     /*                             Click handlers                             */
     /* ====================================================================== */
 
     @FXML
-    private void handleEditDeckClicked() {
-        listener.editDeckClicked(deck);
-    }
+    private void handleAddRemoveDeckClicked() throws IOException, InterruptedException {
+        listener.addRemoveDeckClicked(deck, this.deckAvailability);
 
-    @FXML
-    private void handleDoubleDeckClicked() {
-        listener.deckDoubleClicked(deck);
-    }
+        if (this.deckAvailability == DeckAvailability.OWNED) {
+            this.deckAvailability = DeckAvailability.MISSING;
+        } else
+            this.deckAvailability = DeckAvailability.OWNED;
 
-    @FXML
-    private void handleRemoveDeckClicked() {
-        listener.deckRemoved(deck);
-    }
-
-    @FXML
-    private void handleShareDeckClicked() {
-        listener.shareDeckClicked(deck);
+        changeDeckAvailabilityIcon();
     }
 
 
@@ -207,47 +184,26 @@ public class DeckViewController {
     /* ====================================================================== */
 
     @FXML
-    private void handleHoverEditDeck() {
-        editDeckIcon.setIconColor(Color.web("#FFFFFF"));
+    private void handleAddRemoveDeckHover() {
+        if (this.deckAvailability == DeckAvailability.OWNED) {
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-minus");
+        } else
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-check");
     }
 
     @FXML
-    private void handleHoverEditDeckExit() {
-        editDeckIcon.setIconColor(Color.web("#000000"));
+    private void handleAddRemoveDeckExit() {
+        if (this.deckAvailability == DeckAvailability.OWNED) {
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-check");
+        } else
+            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-plus");
     }
-
-    @FXML
-    private void handleHoverRemoveDeck() {
-        removeDeckIcon.setIconColor(Color.web("#FFFFFF"));
-    }
-
-    @FXML
-    private void handleHoverRemoveDeckExit() {
-        removeDeckIcon.setIconColor(Color.web("#000000"));
-    }
-
-    @FXML
-    private void handleHoverShareDeck() {
-        shareDeckIcon.setIconColor(Color.web("#FFFFFF"));
-    }
-
-    @FXML
-    private void handleHoverShareDeckExit() {
-        shareDeckIcon.setIconColor(Color.web("#000000"));
-    }
-
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
     /* ====================================================================== */
 
     public interface Listener {
-        void deckRemoved(DeckMetadata deck);
-
-        void deckDoubleClicked(DeckMetadata deck);
-
-        void editDeckClicked(DeckMetadata deck);
-
-        void shareDeckClicked(DeckMetadata deck);
+        void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability) throws IOException, InterruptedException;
     }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController">
+   <!-- Search bar-->
+   <top>
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <ComboBox fx:id="comboBox" />
+         <TextField fx:id="searchBar" alignment="CENTER" onKeyReleased="#handleSearchDeckEvent" prefWidth="200.0" promptText="Rechercher des paquets" />
+         <!-- Search Button-->
+         <Button layoutY="5" prefHeight="30" prefWidth="30" style="-fx-background-color: transparent;">
+
+            <graphic>
+               <FontIcon fx:id="searchIcon" iconLiteral="mdi2m-magnify" iconSize="30" onMouseClicked="#handleSearchDeckEvent" onMouseEntered="#handleSearchHover" onMouseExited="#handleSearchExit" />
+            </graphic>
+
+         </Button>
+      </HBox>
+   </top>
+   <center>
+      <ScrollPane fitToHeight="true" fitToWidth="true">
+         <FlowPane fx:id="decksContainer" alignment="TOP_CENTER" hgap="40.0" vgap="40.0" BorderPane.alignment="CENTER">
+            <padding>
+               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding></FlowPane>
+      </ScrollPane>
+   </center>
+</BorderPane>

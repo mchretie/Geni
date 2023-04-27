@@ -48,6 +48,7 @@
             <fx:include fx:id="guestModeLeaderboardView" source="../leaderboard/GuestModeLeaderboardView.fxml" />
             <fx:include fx:id="statisticsView" source="../statistics/StatisticsView.fxml" />
             <fx:include fx:id="deckPreviewView" source="../deckpreview/DeckPreviewView.fxml" />
+            <fx:include fx:id="marketplaceView" source="../marketplace/MarketplaceView.fxml" />
         </StackPane>
     </center>
 
@@ -55,17 +56,17 @@
     <bottom>
         <HBox fx:id="bottomHBox" alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #C3B1E1;">
 
-            <!-- Home button -->
-            <Button fx:id="homeButton" layoutX="300.0" mnemonicParsing="false" onMouseClicked="#goToHomeClicked" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
+            <!-- Marketplace button -->
+            <Button fx:id="marketplaceButton" layoutX="300.0" mnemonicParsing="false" onMouseClicked="#goToMarketplaceClicked" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
                 <graphic>
-                    <FontIcon fx:id="homeIcon" iconLiteral="mdi2h-home" iconSize="48" onMouseEntered="#handleHomeHover" onMouseExited="#handleHomeExitHover" />
+                    <FontIcon fx:id="marketplaceIcon" iconLiteral="mdi2c-cart" iconSize="50" onMouseEntered="#handleMarketplaceHover" onMouseExited="#handleMarketplaceExitHover" />
                 </graphic>
             </Button>
 
-            <!-- Current deck button -->
-            <Button fx:id="currentDeckButton" layoutX="400.0" mnemonicParsing="false" onMouseClicked="#goToCurrentDeckClicked" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
+            <!-- Home button -->
+            <Button fx:id="homeButton" layoutX="400.0" mnemonicParsing="false" onMouseClicked="#goToHomeClicked" prefHeight="55.0" prefWidth="55.0" style="-fx-background-color: transparent;">
                 <graphic>
-                    <FontIcon fx:id="currentDeckIcon" iconLiteral="mdi2c-cards" iconSize="50" onMouseEntered="#handleCurrentDeckHover" onMouseExited="#handleCurrentDeckExitHover" />
+                    <FontIcon fx:id="homeIcon" iconLiteral="mdi2h-home" iconSize="50" onMouseEntered="#handleHomeHover" onMouseExited="#handleHomeExitHover" />
                 </graphic>
             </Button>
 

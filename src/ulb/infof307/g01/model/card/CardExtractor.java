@@ -10,11 +10,20 @@ abstract public class CardExtractor implements Iterable<Card> {
 
     protected final List<Card> sortedCards;
     private int currentCardIndex;
+    private int amountCompetitiveCards;
 
     public CardExtractor(Deck deck) {
         this.sortedCards = new ArrayList<>(deck.getCards());
         this.currentCardIndex = -1;
+        fetchAmountCompetitiveCards(deck);
         this.sortDeck();
+    }
+
+    private void fetchAmountCompetitiveCards(Deck deck) {
+        for (Card card : deck.getCards()) {
+            if (card instanceof TimedCard)
+                this.amountCompetitiveCards++;
+        }
     }
 
     abstract void sortDeck();
@@ -33,6 +42,10 @@ abstract public class CardExtractor implements Iterable<Card> {
 
     public Card getPreviousCard() {
         return currentCardIndex > 0 ? this.sortedCards.get(--currentCardIndex) : null;
+    }
+
+    public int getAmountCompetitiveCards() {
+        return amountCompetitiveCards;
     }
 
     @Override
