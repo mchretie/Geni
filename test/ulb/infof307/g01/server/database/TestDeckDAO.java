@@ -10,6 +10,7 @@ import ulb.infof307.g01.model.card.MCQCard;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Tag;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
+import ulb.infof307.g01.server.database.dao.ScoreDAO;
 import ulb.infof307.g01.server.database.dao.TagDAO;
 import ulb.infof307.g01.server.database.dao.UserDAO;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
@@ -37,7 +38,10 @@ public class TestDeckDAO extends DatabaseUsingTest {
         this.tagDAO = new TagDAO(this.db);
         this.userDAO = new UserDAO(this.db);
 
+        ScoreDAO scoreDAO = new ScoreDAO(this.db);
+        scoreDAO.setUserDAO(userDAO);
         this.deckDAO.setTagDao(this.tagDAO);
+        this.deckDAO.setScoreDAO(scoreDAO);
         this.tagDAO.setDeckDao(this.deckDAO);
 
         userDAO.registerUser("user", "pass");

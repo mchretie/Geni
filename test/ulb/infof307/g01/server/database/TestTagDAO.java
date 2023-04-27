@@ -3,6 +3,7 @@ package ulb.infof307.g01.server.database;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
+import ulb.infof307.g01.server.database.dao.ScoreDAO;
 import ulb.infof307.g01.server.database.dao.TagDAO;
 
 import ulb.infof307.g01.server.database.dao.UserDAO;
@@ -35,7 +36,10 @@ public class TestTagDAO extends DatabaseUsingTest {
         this.tagDAO = new TagDAO(this.db);
         this.userDAO = new UserDAO(this.db);
 
+        ScoreDAO scoreDAO = new ScoreDAO(this.db);
+        scoreDAO.setUserDAO(userDAO);
         this.deckDAO.setTagDao(this.tagDAO);
+        this.deckDAO.setScoreDAO(scoreDAO);
         this.tagDAO.setDeckDao(this.deckDAO);
 
         userDAO.registerUser("user", "pass");

@@ -4,10 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
-import ulb.infof307.g01.server.database.dao.DeckDAO;
-import ulb.infof307.g01.server.database.dao.MarketplaceDAO;
-import ulb.infof307.g01.server.database.dao.TagDAO;
-import ulb.infof307.g01.server.database.dao.UserDAO;
+import ulb.infof307.g01.server.database.dao.*;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.util.ArrayList;
@@ -35,7 +32,10 @@ public class TestMarketplaceDAO extends DatabaseUsingTest {
         this.deckDAO = new DeckDAO(this.db);
         this.tagDAO = new TagDAO(this.db);
 
+        ScoreDAO scoreDAO = new ScoreDAO(this.db);
+        scoreDAO.setUserDAO(userDAO);
         this.deckDAO.setTagDao(this.tagDAO);
+        this.deckDAO.setScoreDAO(scoreDAO);
         this.tagDAO.setDeckDao(this.deckDAO);
 
         this.marketplaceDAO = new MarketplaceDAO(this.db);
