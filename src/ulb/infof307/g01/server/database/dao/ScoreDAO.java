@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.Comparator;
 
 public class ScoreDAO extends DAO {
     private final DatabaseAccess database;
@@ -60,6 +61,15 @@ public class ScoreDAO extends DAO {
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
+    }
+
+    public Score getBestScore(UUID deckId) {
+        List<Score> scores = getScoresForDeck(deckId);
+        scores.sort(Comparator.comparing(Score::getScore).reversed());
+        if (scores.isEmpty())
+            return null;
+        else
+            return scores.get(0);
     }
 
     public List<Score> getScoresForDeck(UUID deckId) throws DatabaseException {
@@ -136,7 +146,7 @@ public class ScoreDAO extends DAO {
             int score = res.getInt("score");
             Date date = new Date(res.getLong("timestamp"));
 
-            games.add(new Game(date, deckName, score + ""));
+            games.add(new Game(date, deckName, String.valueOf(score)));
         }
 
         return games;

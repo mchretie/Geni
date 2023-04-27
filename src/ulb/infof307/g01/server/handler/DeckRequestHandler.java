@@ -123,6 +123,7 @@ public class DeckRequestHandler extends Handler {
                 BASE_URL + deckMetadata.image(),
                 deckMetadata.cardCount(),
                 deckMetadata.tags(),
+                deckMetadata.bestScore(),
                 deckMetadata.deckHashCode());
     }
     private List<DeckMetadata> setupImagePath(List<DeckMetadata> deckMetadatas) {

@@ -27,6 +27,7 @@ public class DeckDAO extends DAO {
 
     private final DatabaseAccess database;
     private TagDAO tagDao;
+    private ScoreDAO scoreDAO;
 
     public DeckDAO(DatabaseAccess database) {
         this.database = database;
@@ -34,6 +35,10 @@ public class DeckDAO extends DAO {
 
     public void setTagDao(TagDAO tagDao) {
         this.tagDao = tagDao;
+    }
+
+    public void setScoreDAO(ScoreDAO scoreDAO) {
+        this.scoreDAO = scoreDAO;
     }
 
     /**
@@ -542,8 +547,9 @@ public class DeckDAO extends DAO {
             boolean isPublic = res.getBoolean("public");
             List<Card> cards = getCardsFor(uuid);
             List<Tag> tags = tagDao.getTagsFor(uuid);
+            Score bestScore = scoreDAO.getBestScore(uuid);
 
-            return new Deck(name, uuid, cards, tags, color, image, isPublic);
+            return new Deck(name, uuid, cards, tags, color, image, isPublic, bestScore);
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }

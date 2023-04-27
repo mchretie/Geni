@@ -28,6 +28,8 @@ public class Deck implements Iterable<Card> {
     private String image;
     @Expose
     private boolean isPublic = false;
+    @Expose
+    private Score bestScore;
 
 
     /* ====================================================================== */
@@ -52,26 +54,29 @@ public class Deck implements Iterable<Card> {
              cards,
              tags,
              "#00000000",
-             "/backgrounds/default_background.jpg");
+             "/backgrounds/default_background.jpg",
+                null);
     }
 
-    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image) {
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image, Score bestScore) {
         this.name = name;
         this.id = id;
         this.cards = cards;
         this.tags = tags;
         this.color = color;
         this.image = image;
+        this.bestScore = bestScore;
     }
 
-    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image, boolean isPublic) {
-        this(name, id, cards, tags, color,image);
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image,
+                boolean isPublic, Score bestScore) {
+        this(name, id, cards, tags, color, image, bestScore);
         this.isPublic = isPublic;
     }
 
     @SuppressWarnings("CopyConstructorMissesField")
     public Deck(Deck deck) {
-        this(deck.name, deck.id, deck.cards, deck.tags, deck.color, deck.image);
+        this(deck.name, deck.id, deck.cards, deck.tags, deck.color, deck.image, deck.isPublic, deck.bestScore);
     }
 
 
@@ -146,6 +151,10 @@ public class Deck implements Iterable<Card> {
         return name;
     }
 
+    public Score getBestScore() {
+        return bestScore;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -200,6 +209,7 @@ public class Deck implements Iterable<Card> {
                                 image,
                                 cards.size(),
                                 tags,
+                                bestScore,
                                 hashCode());
     }
 
@@ -216,7 +226,8 @@ public class Deck implements Iterable<Card> {
                 && this.cards.equals(other.cards)
                 && this.tags.equals(other.tags)
                 && this.color.equals(other.color)
-                && this.image.equals(other.image);
+                && this.image.equals(other.image)
+                && Objects.equals(bestScore, other.bestScore);
     }
 
     @Override

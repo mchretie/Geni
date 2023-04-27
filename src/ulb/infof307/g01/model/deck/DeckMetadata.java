@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public record DeckMetadata(UUID id,
@@ -14,6 +15,7 @@ public record DeckMetadata(UUID id,
                            String image,
                            int cardCount,
                            List<Tag> tags,
+                           Score bestScore,
                            int deckHashCode) {
 
     @SuppressWarnings("CopyConstructorMissesField")
@@ -25,6 +27,7 @@ public record DeckMetadata(UUID id,
                 deckMetadata.image,
                 deckMetadata.cardCount,
                 List.copyOf(deckMetadata.tags),
+                deckMetadata.bestScore,
                 deckMetadata.deckHashCode);
     }
 
@@ -44,7 +47,8 @@ public record DeckMetadata(UUID id,
                 && name.equals(that.name)
                 && color.equals(that.color)
                 && image.equals(that.image)
-                && tags.equals(that.tags);
+                && tags.equals(that.tags)
+                && Objects.equals(bestScore, that.bestScore);
     }
 
 }

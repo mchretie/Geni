@@ -35,6 +35,7 @@ public class Database {
         this.marketplaceDao = new MarketplaceDAO(this.databaseAccess);
 
         this.deckDao.setTagDao(this.tagDao);
+        this.deckDao.setScoreDAO(scoreDao);
         this.tagDao.setDeckDao(this.deckDao);
         this.scoreDao.setUserDAO(this.userDao);
         this.marketplaceDao.setDeckDAO(this.deckDao);

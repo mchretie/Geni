@@ -45,6 +45,7 @@ public class Score {
         return timestamp;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (o == this)
             return true;
