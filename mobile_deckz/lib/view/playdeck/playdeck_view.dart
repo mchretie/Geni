@@ -4,6 +4,7 @@ import 'package:mobile_deckz/model/card/abstract_card.dart';
 import 'package:mobile_deckz/view/playdeck/card/flash_card_view.dart';
 import 'package:mobile_deckz/view/playdeck/card/input_card_view.dart';
 import 'package:mobile_deckz/view/playdeck/card/mcq_card_view.dart';
+import 'package:mobile_deckz/view/playdeck/score_result_view.dart';
 
 import '../../model/card/flash_card.dart';
 import '../../model/card/input_card.dart';
@@ -49,6 +50,7 @@ class PlayCardView extends StatefulWidget {
 
 class _PlayCardViewState extends State<PlayCardView> {
   int _currentCardIndex = 0;
+  bool _showResult = false;
 
   Widget getCorrectCardView(AbstractCard card) {
     switch (card.runtimeType) {
@@ -66,37 +68,43 @@ class _PlayCardViewState extends State<PlayCardView> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-    padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        getCorrectCardView(widget.cards[_currentCardIndex]),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                if (_currentCardIndex > 0) {
-                  setState(() {
-                    _currentCardIndex--;
-                  });
-                }
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.arrow_forward),
-              onPressed: () {
-                if (_currentCardIndex < widget.cards.length - 1) {
-                  setState(() {
-                    _currentCardIndex++;
-                  });
-                }
-              },
-            ),
-          ],
-        )
-      ],
-    ));
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: _showResult
+              ? [const ScoreResultView(finalScore: 10)]
+              : [
+                  getCorrectCardView(widget.cards[_currentCardIndex]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () {
+                          if (_currentCardIndex > 0) {
+                            setState(() {
+                              _currentCardIndex--;
+                            });
+                          }
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_forward),
+                        onPressed: () {
+                          if (_currentCardIndex < widget.cards.length - 1) {
+                            setState(() {
+                              _currentCardIndex++;
+                            });
+                          } else {
+                            setState(() {
+                              _showResult = true;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  )
+                ],
+        ));
   }
 }
