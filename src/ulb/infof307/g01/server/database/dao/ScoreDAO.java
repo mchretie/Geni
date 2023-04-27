@@ -41,7 +41,7 @@ public class ScoreDAO extends DAO {
             UUID userId = UUID.fromString(res.getString("user_id"));
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             int score = res.getInt("score");
-            long timestamp = res.getLong("timestamp");
+            int timestamp = res.getInt("timestamp");
             String username = userDAO.getUsername(userId);
             return new Score(username, deckId, score, timestamp);
         } catch (SQLException e) {

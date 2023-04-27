@@ -7,9 +7,9 @@ public class Score {
     private final String username;
     private final UUID deckId;
     private int score;
-    private final long timestamp;
+    private final int timestamp;
 
-    public Score(String username, UUID deckId, int score, long timestamp) {
+    public Score(String username, UUID deckId, int score, int timestamp) {
         this.username = username;
         this.deckId = deckId;
         this.score = score;
@@ -36,7 +36,7 @@ public class Score {
         return score;
     }
 
-    public long getTimestamp() {
+    public int getTimestamp() {
         return timestamp;
     }
 

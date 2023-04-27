@@ -45,7 +45,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                   DataColumn(
                     label: Expanded(
                       child: Text(
-                        'Paquet',
+                        'Deck',
                       ),
                     ),
                   ),
