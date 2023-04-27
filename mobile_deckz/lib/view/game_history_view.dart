@@ -24,25 +24,55 @@ class _GameHistoryViewState extends State<GameHistoryView> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return const Text('An error occurred while loading the game history',
+            return const Text(
+                'An error occurred while loading the game history',
                 style: TextStyle(color: Colors.red));
           } else {
             List<Game> games = snapshot.data?.games ?? [];
             return Scaffold(
-              body: ListView.builder(
-                itemCount: games.length,
-                itemBuilder: (context, index) {
-                  final game = games[index];
-                  return ListTile(
-                      trailing:
-                        Row(mainAxisSize: MainAxisSize.min, children: [
-                          Text(game.getTimestamp()),
-                          Text(game.getDeckName()),
-                          Text(game.getScore().toString()),
-                      ]));
-                },
-              ));
+                body: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: DataTable(
+                    columns: const <DataColumn>[
+                      DataColumn(
+                        label: Expanded(
+                          child: Text(
+                            'Date',
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Expanded(
+                          child: Text(
+                            'Paquet',
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        numeric: true,
+                        label: Expanded(
+                          child: Text(
+                            'Score',
+                          ),
+                        ),
+                      ),
+                    ],
+                    rows: games
+                        .map(
+                          (game) =>
+                          DataRow(cells: [
+                            DataCell(Text(game.getTimestamp())),
+                            DataCell(Text(game.getDeckName())),
+                            DataCell(Text(game.getScore().toString())),
+
+                          ]),
+                    )
+                        .toList(),
+                  ),
+                )
+            );
           }
-        });
+        }
+    );
   }
 }
