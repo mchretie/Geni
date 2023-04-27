@@ -151,6 +151,9 @@ public class Deck implements Iterable<Card> {
         return name;
     }
 
+    /**
+     * @return bestScore or null
+     */
     public Score getBestScore() {
         return bestScore;
     }
