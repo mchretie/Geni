@@ -262,6 +262,17 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
+    public void deckTitleColorModified(Deck deck, Color color) {
+        try {
+            deck.setColorName(color.toString());
+            serverCommunicator.saveDeck(deck);
+
+        } catch (InterruptedException | IOException e) {
+            errorHandler.savingError(e);
+        }
+    }
+
+    @Override
     public void deckImageModified(Deck deck, File image, String filename) {
         try {
             deck.setImage(filename);

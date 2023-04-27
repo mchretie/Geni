@@ -148,6 +148,7 @@ public class DeckMarketplaceViewController {
 
     private void updateDeckLabelName() {
         this.deckNameLabel.setText(this.deck.name());
+        this.deckNameLabel.setTextFill(Color.web(this.deck.colorName()));
     }
 
     private void setStats(String bestScore) {

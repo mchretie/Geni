@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import static org.eclipse.jetty.util.TypeUtil.asList;
-
 public class MCQCard extends TimedCard {
 
     @Expose
@@ -35,6 +33,11 @@ public class MCQCard extends TimedCard {
         this.cardType = "MCQCard";
     }
 
+    private void checkIndexArg(int index) throws IllegalArgumentException {
+        if (!isValidIndex(index))
+            throw new IllegalArgumentException("Invalid index given");
+    }
+
     public boolean canRemoveChoice() {
         return getChoicesCount() > MIN_CHOICES;
     }
@@ -44,14 +47,15 @@ public class MCQCard extends TimedCard {
     }
 
     public boolean isValidIndex(int index) {
-        return index < getChoicesCount();
+        return index < getChoicesCount() && index >= 0;
     }
 
     public int getChoicesCount() {
         return choices.size();
     }
 
-    public String getChoice(int index) {
+    public String getChoice(int index) throws IllegalArgumentException {
+        checkIndexArg(index);
         return choices.get(index);
     }
 
@@ -73,16 +77,12 @@ public class MCQCard extends TimedCard {
     }
 
     public void setChoice(int index, String choice) throws IllegalArgumentException {
-        if (!isValidIndex(index))
-            throw new IllegalArgumentException(
-                    "The choice index must be among the choices");
+        checkIndexArg(index);
         this.choices.set(index, choice);
     }
 
     public void setCorrectChoice(int correctChoice) throws IllegalArgumentException {
-        if (!isValidIndex(correctChoice))
-            throw new IllegalArgumentException(
-                    "The correct answer must be among the choices");
+        checkIndexArg(correctChoice);
         this.correctChoice = correctChoice;
     }
 

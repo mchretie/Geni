@@ -33,6 +33,7 @@ public class DeckDAO extends HttpDAO {
     /* ====================================================================== */
 
     DeckCache deckCache = null;
+    IndulgentValidator validator = new IndulgentValidator();
 
     /**
      * Init and set up the cache with user’s deck collection
@@ -105,7 +106,6 @@ public class DeckDAO extends HttpDAO {
         if (deckName.isEmpty())
             return getAllDecksMetadata();
 
-        IndulgentValidator validator = new IndulgentValidator();
         final Pattern pattern = Pattern.compile("%s.*".formatted(validator.addTolerance(deckName)));
 
         return getAllDecksMetadata().stream()
@@ -118,7 +118,6 @@ public class DeckDAO extends HttpDAO {
         if (tagName.isEmpty())
             return getAllDecksMetadata();
 
-        IndulgentValidator validator = new IndulgentValidator();
         final Pattern pattern = Pattern.compile("%s.*".formatted(validator.addTolerance(tagName)));
 
         return getAllDecksMetadata().stream()
