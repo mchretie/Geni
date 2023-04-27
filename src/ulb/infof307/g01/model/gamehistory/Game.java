@@ -1,7 +1,6 @@
 package ulb.infof307.g01.model.gamehistory;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public record Game(long timestamp, String deckName, String score) implements Comparable<Game> {
 

@@ -1,7 +1,6 @@
 package ulb.infof307.g01.server.database.dao;
 
 import ulb.infof307.g01.model.gamehistory.Game;
-import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboardEntry;
 import ulb.infof307.g01.server.database.DatabaseAccess;
