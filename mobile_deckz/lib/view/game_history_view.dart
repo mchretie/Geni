@@ -61,7 +61,7 @@ class _GameHistoryViewState extends State<GameHistoryView> {
                         .map(
                           (game) =>
                           DataRow(cells: [
-                            DataCell(Text(game.getTimestamp())),
+                            DataCell(Text(game.getFormattedTimestamp())),
                             DataCell(Text(game.getDeckName())),
                             DataCell(Text(game.getScore().toString())),
 

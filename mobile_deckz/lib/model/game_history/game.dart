@@ -18,8 +18,8 @@ class Game {
 
   }
 
-  String getTimestamp() {
-    return timestamp.toString();
+  String getFormattedTimestamp() {
+    return timestamp.toString().replaceAll(".000", "");
   }
 
   String getDeckName() {
