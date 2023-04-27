@@ -123,9 +123,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             controller.setDisableEdit(deck.isPublic());
 
-            Score bestScore = serverCommunicator.getBestScoreForDeck(deck.id());
-
-            controller.setDeck(deck, bestScore);
+            controller.setDeck(deck);
             controller.setListener(this);
 
             decksLoaded.add(node);

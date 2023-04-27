@@ -80,7 +80,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
 
             DeckMarketplaceViewController controller = loader.getController();
 
-            controller.setDeck(deck, serverCommunicator.getBestScoreForDeck(deck.id()), deckAvailability);
+            controller.setDeck(deck, deckAvailability);
             controller.setImageLoader(imageLoader);
             controller.setListener(this);
 

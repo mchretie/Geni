@@ -86,7 +86,7 @@ public class DeckMarketplaceViewController {
     /*                           Updating Deck                                */
     /* ====================================================================== */
 
-    public void setDeck(MarketplaceDeckMetadata deck, Score bestScore, DeckAvailability deckAvailability) {
+    public void setDeck(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability) {
         this.deck = deck;
         this.deckAvailability = deckAvailability;
 
@@ -96,6 +96,7 @@ public class DeckMarketplaceViewController {
 
         changeDeckAvailabilityIcon();
 
+        Score bestScore = deck.bestScore();
         if (bestScore == null)
             this.setStats("N/A");
         else

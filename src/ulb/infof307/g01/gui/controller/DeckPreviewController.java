@@ -53,21 +53,16 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
 
 
     public void setDeck(Deck deck) {
-        try {
-            this.deck = deck;
-            deckPreviewViewController.setDeck(deck);
+        this.deck = deck;
+        deckPreviewViewController.setDeck(deck);
 
-            Score score = serverCommunicator.getBestScoreForDeck(deck.getId());
-            String scoreString = score == null ? "0" : score.getScore() + "";
-            deckPreviewViewController.setScore(scoreString);
+        Score score = deck.getBestScore();
+        String scoreString = score == null ? "0" : String.valueOf(score.getScore());
+        deckPreviewViewController.setScore(scoreString);
 
-            deckPreviewViewController.setPlayDeckButtonDisabled(deck.cardCount() == 0);
-            deckPreviewViewController.setDeckVisibility(deck.isPublic());
-            deckPreviewViewController.setGameHistory(loadGameHistory());
-
-        } catch (IOException | InterruptedException e) {
-            deckPreviewViewController.setScoreUnavailable();
-        }
+        deckPreviewViewController.setPlayDeckButtonDisabled(deck.cardCount() == 0);
+        deckPreviewViewController.setDeckVisibility(deck.isPublic());
+        deckPreviewViewController.setGameHistory(loadGameHistory());
     }
 
     public void show() throws IllegalStateException {

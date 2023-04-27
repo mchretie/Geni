@@ -88,7 +88,7 @@ public class DeckViewController {
     /*                           Updating Deck                                */
     /* ====================================================================== */
 
-    public void setDeck(DeckMetadata deck, Score bestScore) {
+    public void setDeck(DeckMetadata deck) {
         this.deck = deck;
         this.updateDeckLabelName();
 
@@ -96,10 +96,10 @@ public class DeckViewController {
         this.setDeckColor();
 
         this.setTags();
-        if (bestScore == null)
+        if (deck.bestScore() == null)
             this.setStats("N/A");
         else
-            this.setStats(String.valueOf(bestScore.getScore()));
+            this.setStats(String.valueOf(deck.bestScore().getScore()));
     }
 
     private void setDeckColor() {
