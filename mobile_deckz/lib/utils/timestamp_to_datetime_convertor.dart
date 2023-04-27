@@ -1,17 +1,16 @@
-int getSeconds(List<String> time) {
+String getSeconds(List<String> time) {
   String seconds = time[2];
-  seconds.replaceAll("AM", "");
-  seconds.replaceAll("PM", "");
-
-  return int.parse(time[2]);
+  seconds = seconds.replaceAll(" AM", "");
+  seconds = seconds.replaceAll(" PM", "");
+  return seconds;
 }
 
-int getMinutes(List<String> time) {
-  return int.parse(time[1]);
+String getMinutes(List<String> time) {
+  return time[1];
 }
 
 bool isPM(List<String> time) {
-  return time.contains('PM');
+  return time[2].contains('PM');
 }
 
 int getHours(List<String> time) {
@@ -22,8 +21,8 @@ int getHours(List<String> time) {
   return hours;
 }
 
-int getDay(List<String> date) {
-  return int.parse(date[1]);
+String getDay(List<String> date) {
+  return date[1];
 }
 
 int? getMonth(List<String> date) {
@@ -52,27 +51,30 @@ List<String> getDate(String dateString) {
   return dateString.split(" ");
 }
 
-int getYear(List<String> timeInfos) {
-  return int.parse(timeInfos[1]);
+String getYear(List<String> timeInfos) {
+  return timeInfos[1];
 }
 
 DateTime timestampToDateTime(String timestamp) {
   //  timestamp : Apr 23, 2023, 5:33:06 PM
+  print("timestamp : $timestamp");
 
   List<String> timeInfos = timestamp.split(', ');
   List<String> date = getDate(timeInfos[0]);
   List<String> time = getTime(timeInfos[2]);
 
-  int year = getYear(timeInfos);
+  String year = getYear(timeInfos);
+
   int? month = getMonth(date);
-  int day = getDay(date);
+  String day = getDay(date);
   int hours = getHours(time);
-  int minutes = getMinutes(time);
-  int seconds = getSeconds(time);
+  String minutes = getMinutes(time);
+  String seconds = getSeconds(time);
 
   // DateTime : 2023-04-23 17:33:06
 
   String formattedString = "$year-$month-$day $hours:$minutes:$seconds";
+  print("datetime : $formattedString");
 
   return DateTime.parse(formattedString);
 }

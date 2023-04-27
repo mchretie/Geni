@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'package:mobile_deckz/utils/timestampToDateTimeConvertor.dart';
+import 'package:mobile_deckz/utils/timestamp_to_datetime_convertor.dart';
 
 class Game {
 
