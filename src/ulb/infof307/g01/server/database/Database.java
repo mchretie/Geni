@@ -214,4 +214,8 @@ public class Database {
     public List<MarketplaceDeckMetadata> getUsersCollectionFromMarketplace(UUID userId) throws DatabaseException {
         return marketplaceDao.getSavedDecks(userId);
     }
+
+    public int getNumberOfPublicPlayedDecks(UUID userId) {
+        return deckDao.getNumberOfPublicPlayedDecks(userId);
+    }
 }

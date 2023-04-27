@@ -5,6 +5,7 @@ import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
 import ulb.infof307.g01.model.deck.*;
+import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
@@ -654,5 +655,25 @@ public class DeckDAO extends DAO {
         database.executeUpdate(sql,
                 userId.toString(),
                 deckId.toString());
+    }
+
+    public int getNumberOfPublicPlayedDecks(UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT COUNT(*) as count
+                FROM marketplace
+                INNER JOIN user_deck_score uds ON marketplace.deck_id = uds.deck_id
+                WHERE user_id = ?;
+                """;
+
+        try (ResultSet res = database.executeQuery(sql, userId.toString())) {
+            if (res.next())
+                return res.getInt("count");
+
+            return 0;
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+
     }
 }

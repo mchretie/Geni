@@ -5,6 +5,8 @@ package ulb.infof307.g01.shared.constants;
  */
 public final class ServerPaths {
 
+
+
     private ServerPaths() {}
 
     public static final String BASE_URL = "http://localhost:8080";
@@ -18,14 +20,14 @@ public final class ServerPaths {
 
     // Used by DeckRequestHandler
     public static final String DECK_BASE_PATH = BASE + "/deck";
+    public static final String GET_DECK_PATH = DECK_BASE_PATH + "/get";
     public static final String SAVE_DECK_PATH = DECK_BASE_PATH +  "/save";
     public static final String DELETE_DECK_PATH = DECK_BASE_PATH + "/delete";
     public static final String GET_ALL_DECKS_PATH = DECK_BASE_PATH + "/all";
     public static final String SEARCH_DECKS_PATH = DECK_BASE_PATH + "/search";
     public static final String DECK_EXISTS_PATH = DECK_BASE_PATH + "/exists";
     public static final String SAVE_DECK_IMAGE_PATH = DECK_BASE_PATH +  "/upload";
-
-    public static final String GET_DECK_PATH = DECK_BASE_PATH + "/get";
+    public static final String NUMBER_OF_PUBLIC_PLAYED_DECKS_PATH = DECK_BASE_PATH + "/public-played";
 
     // Used by LeaderboardRequestHandler
     public static final String LEADERBOARD_BASE_PATH = BASE + "/leaderboard";
