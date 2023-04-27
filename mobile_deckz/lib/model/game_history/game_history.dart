@@ -6,7 +6,7 @@ class GameHistory {
   final List<Game> games;
 
   GameHistory({required this.games}) {
-    games.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+    games.sort((a, b) => b.dateTime.compareTo(a.dateTime));
   }
 
   factory GameHistory.fromJson(Map<String, dynamic> json) {
