@@ -19,6 +19,8 @@ public class Deck implements Iterable<Card> {
     @Expose
     private String name;
     @Expose
+    private String colorName;
+    @Expose
     private final List<Card> cards;
     @Expose
     private final List<Tag> tags;
@@ -52,26 +54,27 @@ public class Deck implements Iterable<Card> {
              cards,
              tags,
              "#00000000",
-             "/backgrounds/default_background.jpg");
+             "/backgrounds/default_background.jpg",
+                "#000000");
     }
 
-    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image) {
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image, String colorName) {
         this.name = name;
         this.id = id;
         this.cards = cards;
         this.tags = tags;
         this.color = color;
         this.image = image;
+        this.colorName = colorName;
     }
 
-    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image, boolean isPublic) {
-        this(name, id, cards, tags, color,image);
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image, String colorName, boolean isPublic) {
+        this(name, id, cards, tags, color, image, colorName);
         this.isPublic = isPublic;
     }
 
-    @SuppressWarnings("CopyConstructorMissesField")
     public Deck(Deck deck) {
-        this(deck.name, deck.id, deck.cards, deck.tags, deck.color, deck.image);
+        this(deck.name, deck.id, deck.cards, deck.tags, deck.color, deck.image, deck.colorName);
     }
 
 
@@ -150,6 +153,14 @@ public class Deck implements Iterable<Card> {
         this.name = name;
     }
 
+    public void setColorName(String colorName) {
+        this.colorName = colorName;
+    }
+
+    public String getColorName() {
+        return colorName;
+    }
+
     public int cardCount() {
         return cards.size();
     }
@@ -198,6 +209,7 @@ public class Deck implements Iterable<Card> {
                                 isPublic,
                                 color,
                                 image,
+                                colorName,
                                 cards.size(),
                                 tags,
                                 hashCode());
@@ -216,12 +228,13 @@ public class Deck implements Iterable<Card> {
                 && this.cards.equals(other.cards)
                 && this.tags.equals(other.tags)
                 && this.color.equals(other.color)
-                && this.image.equals(other.image);
+                && this.image.equals(other.image)
+                && this.colorName.equals(other.colorName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, cards, tags, color, image);
+        return Objects.hash(name, id, cards, tags, color, image, colorName);
     }
 
     public Iterator<Card> iterator() {

@@ -39,6 +39,7 @@ public class MarketplaceRequestHandler extends Handler {
                 deckMetadata.name(),
                 deckMetadata.color(),
                 BASE_URL + deckMetadata.image(),
+                deckMetadata.colorName(),
                 deckMetadata.cardCount(),
                 deckMetadata.tags(),
                 deckMetadata.owner(),

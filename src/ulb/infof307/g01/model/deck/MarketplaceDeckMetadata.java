@@ -11,6 +11,7 @@ public record MarketplaceDeckMetadata(UUID id,
                                       String name,
                                       String color,
                                       String image,
+                                      String colorName,
                                       int cardCount,
                                       List<Tag> tags,
                                       String owner,
@@ -23,6 +24,7 @@ public record MarketplaceDeckMetadata(UUID id,
                 deck.getName(),
                 deck.getColor(),
                 deck.getImage(),
+                deck.getColorName(),
                 deck.cardCount(),
                 deck.getTags(),
                 owner,
@@ -42,6 +44,7 @@ public record MarketplaceDeckMetadata(UUID id,
                 && name.equals(that.name)
                 && color.equals(that.color)
                 && image.equals(that.image)
+                && colorName.equals(that.colorName)
                 && tags.equals(that.tags)
                 && owner.equals(that.owner)
                 && rating == that.rating

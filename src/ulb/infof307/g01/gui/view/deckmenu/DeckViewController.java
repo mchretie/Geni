@@ -170,6 +170,7 @@ public class DeckViewController {
 
     private void updateDeckLabelName() {
         this.deckNameLabel.setText(this.deck.name());
+        this.deckNameLabel.setTextFill(Color.web(this.deck.colorName()));
     }
 
     public void setDisableEdit(boolean disable) {

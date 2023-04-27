@@ -86,7 +86,10 @@ public class EditDeckViewController {
     private FontIcon backCardEditIcon;
 
     @FXML
-    private ColorPicker colorPicker;
+    private ColorPicker colorPickerBackground;
+
+    @FXML
+    private ColorPicker colorPickerTitle;
 
     @FXML
     private TextField answerOfInputCard;
@@ -147,8 +150,22 @@ public class EditDeckViewController {
 
     public void setDeck(Deck deck) {
         this.deck = deck;
+
+        colorPickerBackground.setValue(Color.web(deck.getColor()));
+        colorPickerTitle.setValue(Color.web(deck.getColorName()));
+
         deckNameText.setText(deck.getName());
-        colorPicker.setValue(Color.web(deck.getColor()));
+
+        String color = hexToRgb(deck.getColorName());
+        deckNameText.setStyle("-fx-text-inner-color: " + color + ";");
+    }
+
+    private String hexToRgb(String hex) {
+        Color color = Color.web(hex);
+        int r = (int) (color.getRed() * 255);
+        int g = (int) (color.getGreen() * 255);
+        int b = (int) (color.getBlue() * 255);
+        return String.format("#%02x%02x%02x", r, g, b);
     }
 
     public void setListener(Listener listener) {
@@ -537,10 +554,18 @@ public class EditDeckViewController {
     }
 
     @FXML
-    public void handleColorButtonClicked() {
-        listener.deckColorModified(deck, colorPicker.getValue());
+    public void handleColorButtonClickedBackground() {
+        listener.deckColorModified(deck, colorPickerBackground.getValue());
     }
 
+    @FXML
+    public void handleColorButtonClickedTitle() {
+        Color color = colorPickerTitle.getValue();
+        String RGBColor = hexToRgb(color.toString());
+        deckNameText.setStyle("-fx-text-inner-color: " + RGBColor + ";");
+
+        listener.deckTitleColorModified(deck, color);
+    }
 
     @FXML
     private void handleUploadImageClicked() {
@@ -587,13 +612,13 @@ public class EditDeckViewController {
     }
 
     @FXML
-    private void handleColorPickerHover() {
-        colorPicker.setStyle("-fx-background-color: #B1B7E1");
+    private void handleColorPickerBackgroundHover() {
+        colorPickerBackground.setStyle("-fx-background-color: #B1B7E1");
     }
 
     @FXML
-    private void handleColorPickerExit() {
-        colorPicker.setStyle("-fx-background-color: #C3B1E1");
+    private void handleColorPickerBackgroundExit() {
+        colorPickerBackground.setStyle("-fx-background-color: #C3B1E1");
     }
 
     @FXML
@@ -606,6 +631,11 @@ public class EditDeckViewController {
         imageUploader.setStyle("-fx-background-color: #C3B1E1");
     }
 
+    @FXML
+    private void handleColorPickerHoverTitle() { colorPickerTitle.setStyle("-fx-background-color: #aad0b3"); }
+
+    @FXML
+    private void handleColorPickerExitTitle() { colorPickerTitle.setStyle("-fx-background-color: #5ab970"); }
     @FXML
     private void handleFrontCardEditHover() {
         frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
@@ -733,6 +763,8 @@ public class EditDeckViewController {
         void tagAddedToDeck(Deck deck, String tagName, String color);
 
         void deckColorModified(Deck deck, Color color);
+
+        void deckTitleColorModified(Deck deck, Color color);
 
         void deckImageModified(Deck deck, File image, String filename);
 

@@ -18,6 +18,7 @@ class DatabaseSchema {
             name TEXT NOT NULL,
             color TEXT NOT NULL,
             image TEXT NOT NULL,
+            color_name TEXT NOT NULL,
             FOREIGN KEY (user_id)
                 REFERENCES user(user_id)
                 ON DELETE CASCADE

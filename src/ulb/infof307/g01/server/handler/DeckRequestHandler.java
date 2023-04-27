@@ -121,6 +121,7 @@ public class DeckRequestHandler extends Handler {
                 deckMetadata.isPublic(),
                 deckMetadata.color(),
                 BASE_URL + deckMetadata.image(),
+                deckMetadata.colorName(),
                 deckMetadata.cardCount(),
                 deckMetadata.tags(),
                 deckMetadata.deckHashCode());
