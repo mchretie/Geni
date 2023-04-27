@@ -264,7 +264,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     public void deckTitleColorModified(Deck deck, Color color) {
         try {
             //deck.setTitleColor(color.toString()); //TODO
-            deckDAO.saveDeck(deck);
+            serverCommunicator.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {
             errorHandler.savingError(e);

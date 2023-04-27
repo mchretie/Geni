@@ -81,7 +81,7 @@
     <VBox fx:id="rightVbox" HBox.hgrow="ALWAYS">
 
         <HBox alignment="CENTER" spacing="50">
-            <ColorPicker fx:id="colorPickerBackground" onAction="#handleColorButtonClickedBackground" onMouseEntered="#handleColorPickerHoverBackground" onMouseExited="#handleColorPickerExit" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #5ab970;" />
+            <ColorPicker fx:id="colorPickerBackground" onAction="#handleColorButtonClickedBackground" onMouseEntered="#handleColorPickerBackgroundHover" onMouseExited="#handleColorPickerBackgroundExit" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #5ab970;" />
 
             <Button fx:id="imageUploader" mnemonicParsing="false" onAction="#handleUploadImageClicked" onMouseEntered="#handleUploadImageHover" onMouseExited="#handleUploadImageExit" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #C3B1E1;" text="Image de fond" />
         </HBox>
