@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
+import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.deckpreview.GameHistoryItemViewController;
@@ -91,10 +92,14 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
 
             return playersScoreItem;
 
-        } catch (IOException | InterruptedException e) {
-            errorHandler.failedLoading(e);
-            return new ArrayList<>();
+        } catch (IOException e) {
+            errorHandler.savingError(e);
+
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
+
+        return new ArrayList<>();
     }
 
     private Node loadGameHistoryItem(Game game) throws IOException {
@@ -129,8 +134,8 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
             deckPreviewViewController.setDeckVisibility(deck.isPublic());
             serverCommunicator.addDeckToMarketplace(deck);
 
-        } catch (IOException | InterruptedException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 

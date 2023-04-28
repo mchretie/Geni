@@ -32,7 +32,7 @@ public class UserSessionDAO extends HttpDAO {
     /* ====================================================================== */
 
     public void login(String username, String password)
-            throws IOException, InterruptedException {
+            throws IOException, InterruptedException, AuthenticationFailedException {
 
         String credentials = "?username=" + username + "&password=" + password;
         HttpResponse<String> response
@@ -51,7 +51,7 @@ public class UserSessionDAO extends HttpDAO {
     }
 
     public void register(String username, String password)
-            throws IOException, InterruptedException {
+            throws IOException, InterruptedException, AuthenticationFailedException {
 
         String credentials = "?username=" + username + "&password=" + password;
         HttpResponse<String> response
@@ -92,7 +92,8 @@ public class UserSessionDAO extends HttpDAO {
         this.prefs.put("localPassword", password);
     }
 
-    public void attemptAutoLogin() throws IOException, InterruptedException {
+    public void attemptAutoLogin()
+            throws IOException, InterruptedException, AuthenticationFailedException {
 
         String username = this.prefs.get("localUsername", null);
         String password = this.prefs.get("localPassword", null);

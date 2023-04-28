@@ -33,6 +33,7 @@ public class DeckDAO extends HttpDAO {
     /* ====================================================================== */
 
     DeckCache deckCache = null;
+    IndulgentValidator validator = new IndulgentValidator();
 
     /**
      * Init and set up the cache with user’s deck collection
@@ -74,9 +75,11 @@ public class DeckDAO extends HttpDAO {
     public boolean deckExists(String deckName)
             throws IOException, InterruptedException {
 
-        initCacheIfNot();
-        return deckCache.getAllDecksMetadata().stream()
-                .anyMatch(deck -> deck.name().equals(deckName));
+        String path = ServerPaths.DECK_EXISTS_PATH + "?name=" + deckName;
+
+        HttpResponse<String> response = get(path);
+        checkResponseCode(response.statusCode());
+        return Boolean.parseBoolean(response.body());
     }
 
 
@@ -105,7 +108,6 @@ public class DeckDAO extends HttpDAO {
         if (deckName.isEmpty())
             return getAllDecksMetadata();
 
-        IndulgentValidator validator = new IndulgentValidator();
         final Pattern pattern = Pattern.compile("%s.*".formatted(validator.addTolerance(deckName)));
 
         return getAllDecksMetadata().stream()
@@ -118,13 +120,22 @@ public class DeckDAO extends HttpDAO {
         if (tagName.isEmpty())
             return getAllDecksMetadata();
 
-        IndulgentValidator validator = new IndulgentValidator();
         final Pattern pattern = Pattern.compile("%s.*".formatted(validator.addTolerance(tagName)));
 
         return getAllDecksMetadata().stream()
                 .filter(deck -> deck.tags().stream()
                         .anyMatch(tag -> pattern.matcher(validator.addTolerance(tag.getName())).matches()))
                 .collect(toList());
+    }
+
+    public void deleteDeck(UUID deckId)
+            throws IOException, InterruptedException {
+        String path = ServerPaths.DELETE_DECK_PATH + "?deck_id=" + deckId.toString();
+
+        HttpResponse<String> response = delete(path);
+
+        checkResponseCode(response.statusCode());
+        deckCache.removeDeck(deckId);
     }
 
     public void removeDeckFromCollection(UUID deckId)
@@ -166,7 +177,7 @@ public class DeckDAO extends HttpDAO {
             throws IOException, InterruptedException {
 
         HttpResponse<String> response
-                = upload(ServerPaths.SAVE_DECK_IMAGE_PATH, image, filename);
+                = upload(image, filename);
 
         checkResponseCode(response.statusCode());
     }
@@ -176,6 +187,15 @@ public class DeckDAO extends HttpDAO {
         HttpResponse<String> response = post(path, "");
 
         checkResponseCode(response.statusCode());
+    }
+
+    public int numberOfPublicPlayedDecks() throws IOException, InterruptedException {
+        String path = ServerPaths.NUMBER_OF_PUBLIC_PLAYED_DECKS_PATH;
+        HttpResponse<String> response = get(path);
+
+        checkResponseCode(response.statusCode());
+
+        return Integer.parseInt(response.body());
     }
 
     public void emptyCache() {

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import ulb.infof307.g01.gui.http.exceptions.ServerRequestFailedException;
 import ulb.infof307.g01.model.deck.DeckMetadata;
+import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,11 +69,11 @@ public abstract class HttpDAO {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    protected HttpResponse<String> upload(String path, File file, String filename)
+    protected HttpResponse<String> upload(File file, String filename)
             throws IOException, InterruptedException {
 
         HttpRequest uploadFileRequest = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + path))
+                .uri(URI.create(BASE_URL + ServerPaths.SAVE_DECK_IMAGE_PATH))
                 .header("Content-Type", "application/octet-stream")
                 .header(AUTH_HEADER, token)
                 .header("File-Name", filename)

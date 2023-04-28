@@ -270,10 +270,10 @@ public class DeckDAO extends DAO {
      */
     private void saveDeckIdentity(Deck deck, UUID userId) throws DatabaseException {
         String sql = """
-                INSERT INTO deck (deck_id, user_id, name, color, image)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO deck (deck_id, user_id, name, color, image, color_name)
+                VALUES (?, ?, ?, ?, ?, ?)
                 ON CONFLICT(deck_id)
-                DO UPDATE SET name = ?, color = ?, image = ?
+                DO UPDATE SET name = ?, color = ?, image = ?, color_name = ?
                 """;
 
         database.executeUpdate(sql,
@@ -282,10 +282,12 @@ public class DeckDAO extends DAO {
                 deck.getName(),
                 deck.getColor(),
                 deck.getImage(),
+                deck.getColorName(),
 
                 deck.getName(),
                 deck.getColor(),
-                deck.getImage());
+                deck.getImage(),
+                deck.getColorName());
     }
 
     private void saveToCollection(UUID deckId, UUID userId) throws DatabaseException {
@@ -544,12 +546,13 @@ public class DeckDAO extends DAO {
             String name = res.getString("name");
             String color = res.getString("color");
             String image = res.getString("image");
+            String colorName = res.getString("color_name");
             boolean isPublic = res.getBoolean("public");
             List<Card> cards = getCardsFor(uuid);
             List<Tag> tags = tagDao.getTagsFor(uuid);
             Score bestScore = scoreDAO.getBestScore(uuid);
 
-            return new Deck(name, uuid, cards, tags, color, image, isPublic, bestScore);
+            return new Deck(name, uuid, cards, tags, color, image, colorName, bestScore, isPublic);
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -660,5 +663,25 @@ public class DeckDAO extends DAO {
         database.executeUpdate(sql,
                 userId.toString(),
                 deckId.toString());
+    }
+
+    public int getNumberOfPublicPlayedDecks(UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT COUNT(*) as count
+                FROM marketplace
+                INNER JOIN user_deck_score uds ON marketplace.deck_id = uds.deck_id
+                WHERE user_id = ?;
+                """;
+
+        try (ResultSet res = database.executeQuery(sql, userId.toString())) {
+            if (res.next())
+                return res.getInt("count");
+
+            return 0;
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+
     }
 }

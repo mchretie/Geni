@@ -12,6 +12,7 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
+import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
@@ -148,6 +149,7 @@ public class DeckMarketplaceViewController {
 
     private void updateDeckLabelName() {
         this.deckNameLabel.setText(this.deck.name());
+        this.deckNameLabel.setTextFill(Color.web(this.deck.colorName()));
     }
 
     private void setStats(String bestScore) {
@@ -168,7 +170,7 @@ public class DeckMarketplaceViewController {
     /* ====================================================================== */
 
     @FXML
-    private void handleAddRemoveDeckClicked() throws IOException, InterruptedException {
+    private void handleAddRemoveDeckClicked() throws ServerCommunicationFailedException {
         listener.addRemoveDeckClicked(deck, this.deckAvailability);
 
         if (this.deckAvailability == DeckAvailability.OWNED) {
@@ -205,6 +207,7 @@ public class DeckMarketplaceViewController {
     /* ====================================================================== */
 
     public interface Listener {
-        void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability) throws IOException, InterruptedException;
+        void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability)
+                throws ServerCommunicationFailedException;
     }
 }

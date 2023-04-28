@@ -13,6 +13,7 @@ public record DeckMetadata(UUID id,
                            boolean isPublic,
                            String color,
                            String image,
+                           String colorName,
                            int cardCount,
                            List<Tag> tags,
                            Score bestScore,
@@ -25,6 +26,7 @@ public record DeckMetadata(UUID id,
                 deckMetadata.isPublic,
                 deckMetadata.color,
                 deckMetadata.image,
+                deckMetadata.colorName,
                 deckMetadata.cardCount,
                 List.copyOf(deckMetadata.tags),
                 deckMetadata.bestScore,
@@ -47,6 +49,7 @@ public record DeckMetadata(UUID id,
                 && name.equals(that.name)
                 && color.equals(that.color)
                 && image.equals(that.image)
+                && colorName.equals(that.colorName)
                 && tags.equals(that.tags)
                 && Objects.equals(bestScore, that.bestScore);
     }

@@ -9,6 +9,7 @@ import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.http.exceptions.AuthenticationFailedException;
+import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -117,10 +118,10 @@ public class MainFxController extends Application implements
         configureStage(stage);
         initMainWindowView(stage);
 
-        errorHandler = new ErrorHandler(mainWindowViewController);
-
         mainWindowViewController.setAllInvisible();
         stage.show();
+
+        errorHandler = new ErrorHandler(mainWindowViewController);
 
         try {
             initControllers(stage);
@@ -129,15 +130,15 @@ public class MainFxController extends Application implements
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
 
-        } catch (AuthenticationFailedException | InterruptedException e) {
+        } catch (AuthenticationFailedException e) {
             userAuthController.show();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
+
+        } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
         }
-
-
     }
 
 
@@ -237,6 +238,9 @@ public class MainFxController extends Application implements
 
         } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
+
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -260,8 +264,11 @@ public class MainFxController extends Application implements
             editDeckController.show();
             viewStack.add(View.EDIT_DECK);
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.severConnectionError();
+        } catch (IOException e) {
+            errorHandler.failedLoading(e);
+
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -277,8 +284,8 @@ public class MainFxController extends Application implements
         } catch (EmptyDeckException e) {
             errorHandler.emptyDeckError();
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.severConnectionError();
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -330,6 +337,10 @@ public class MainFxController extends Application implements
         } catch (IOException | InterruptedException e) {
             errorHandler.failedLoading(e);
         }
+
+        catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
+        }
     }
 
     @Override
@@ -360,6 +371,10 @@ public class MainFxController extends Application implements
 
         } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
+        }
+
+        catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -406,11 +421,14 @@ public class MainFxController extends Application implements
     public void goToHomeClicked() {
         try {
             resetViewStack(View.DECK_MENU);
-            // TODO refetch deck
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
+        }
+
+        catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -427,6 +445,10 @@ public class MainFxController extends Application implements
 
         } catch (InterruptedException | IOException e) {
             errorHandler.failedLoading(e);
+        }
+
+        catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -473,6 +495,10 @@ public class MainFxController extends Application implements
 
         } catch (IOException | InterruptedException e) {
             errorHandler.failedLoading(e);
+        }
+
+        catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 }

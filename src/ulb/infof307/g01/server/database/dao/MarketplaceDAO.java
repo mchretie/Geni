@@ -59,7 +59,7 @@ public class MarketplaceDAO extends DAO {
 
     public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {
         String sql = """
-                SELECT D.deck_id, U.username, D.name, D.color, D.image, M.rating, M.downloads, 1 as 'public'
+                SELECT D.deck_id, U.username, D.name, D.color, D.image, D.color_name, M.rating, M.downloads, 1 as 'public'
                 FROM marketplace M
                 INNER JOIN deck D ON M.deck_id = D.deck_id
                 INNER JOIN user U ON U.user_id = D.user_id;
@@ -110,7 +110,7 @@ public class MarketplaceDAO extends DAO {
 
     public List<MarketplaceDeckMetadata> getSavedDecks(UUID userId) throws DatabaseException {
         String sql = """
-                SELECT D.deck_id, U.username, D.name, D.color, D.image, M.rating, M.downloads, 1 as 'public'
+                SELECT D.deck_id, U.username, D.name, D.color, D.image, D.color_name, M.rating, M.downloads, 1 as 'public'
                 FROM marketplace M
                 INNER JOIN deck D ON M.deck_id = D.deck_id
                 INNER JOIN user U ON U.user_id = D.user_id
