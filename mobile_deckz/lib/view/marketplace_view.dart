@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../http_dao/marketplace_dao.dart';
 import '../model/deck/deck.dart';
-import 'deck_view.dart';
+import 'deck_marcketplace_view.dart';
 
 class MarketPlaceView extends StatefulWidget {
   const MarketPlaceView({super.key});
@@ -68,7 +68,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                     final Deck deck = deckList[index];
                                     return Padding(
                                         padding: const EdgeInsets.all(4.0),
-                                        child: DeckView(deck: deck));
+                                        child: DeckMarketplaceView(deck: deck));
                                   }))
                         ])));
           }
