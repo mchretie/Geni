@@ -267,8 +267,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deck.setColorName(color.toString());
             serverCommunicator.saveDeck(deck);
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 

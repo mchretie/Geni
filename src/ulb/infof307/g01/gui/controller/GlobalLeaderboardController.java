@@ -75,7 +75,7 @@ public class GlobalLeaderboardController {
                             username,
                             leaderboard.getUserRank(username),
                             leaderboard.getUserScore(username),
-                            serverCommunicator.getAllDecksMetadata().size() + "");
+                            serverCommunicator.numberOfPublicPlayedDecks() + "");
 
             for (GlobalLeaderboardEntry leaderboardEntry : leaderboard) {
                 Node node = loadEntry(leaderboardEntry);

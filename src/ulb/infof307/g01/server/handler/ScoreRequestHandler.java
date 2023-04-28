@@ -26,7 +26,7 @@ public class ScoreRequestHandler extends Handler {
         post(SAVE_SCORE_PATH, this::saveScore, toJson());
         get(GET_LEADERBOARD_PATH, this::getLeaderboardByDeckId, toJson());
         get(GET_BEST_SCORE_PATH, this::getBestScoreByDeckId, toJson());
-        get(GET_BEST_SCORE_USER_ID_PATH, this::getBestScoreByUserID, toJson());
+        get(GET_GLOBAL_LEADERBOARD, this::getGlobalLeaderboard, toJson());
     }
 
     private Map<String, Boolean> saveScore(Request req, Response res) {
@@ -77,9 +77,9 @@ public class ScoreRequestHandler extends Handler {
         return leaderboard.getLeaderboard().get(0);
     }
 
-    public GlobalLeaderboard getBestScoreByUserID(Request req, Response res) {
+    public GlobalLeaderboard getGlobalLeaderboard(Request req, Response res) {
         try {
-            return database.getLeaderboardFromUserID();
+            return database.getGlobalLeaderboard();
 
         } catch (Exception e) {
             String errorMessage = "Failed to get user score: " + e.getMessage();

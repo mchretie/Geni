@@ -36,6 +36,24 @@ public class DeckRequestHandler extends Handler {
         get(GET_DECK_PATH, this::getDeck, toJson());
         get(DECK_EXISTS_PATH, this::deckExists, toJson());
         post(SAVE_DECK_IMAGE_PATH, this::saveImage);
+        get(NUMBER_OF_PUBLIC_PLAYED_DECKS_PATH, this::getNumberOfPublicPlayedDecks, toJson());
+    }
+
+    private int getNumberOfPublicPlayedDecks(Request request, Response response) {
+        try {
+            String username = usernameFromRequest(request);
+            UUID userId = UUID.fromString(database.getUserId(username));
+
+            return database.getNumberOfPublicPlayedDecks(userId);
+
+        } catch (Exception e) {
+            String message = "Failed to get number of public played decks: " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+            return 0;
+        }
+
+
     }
 
     private boolean deckExists(Request request, Response response) {

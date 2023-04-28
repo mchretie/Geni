@@ -286,6 +286,16 @@ public class ServerCommunicator {
         }
     }
 
+    public int numberOfPublicPlayedDecks() throws ServerCommunicationFailedException {
+        try {
+            return deckDAO.numberOfPublicPlayedDecks();
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get number of public played decks";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
+
     /* ====================================================================== */
     /*                              Marketplace                               */
     /* ====================================================================== */

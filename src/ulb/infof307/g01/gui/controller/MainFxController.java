@@ -118,10 +118,10 @@ public class MainFxController extends Application implements
         configureStage(stage);
         initMainWindowView(stage);
 
-        errorHandler = new ErrorHandler(mainWindowViewController);
-
         mainWindowViewController.setAllInvisible();
         stage.show();
+
+        errorHandler = new ErrorHandler(mainWindowViewController);
 
         try {
             initControllers(stage);
