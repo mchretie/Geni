@@ -64,8 +64,8 @@ public class Database {
         deckDao.saveDeck(deck, userId);
     }
 
-    public Deck getDeck(UUID deckId, UUID userId) throws DatabaseException {
-        return deckDao.getDeck(deckId, userId);
+    public Deck getDeck(UUID deckId) throws DatabaseException {
+        return deckDao.getDeck(deckId);
     }
 
     public List<Deck> getAllDecks() throws DatabaseException {
