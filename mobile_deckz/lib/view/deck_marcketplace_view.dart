@@ -4,11 +4,25 @@ import 'package:mobile_deckz/model/deck/hex_color.dart';
 import '../http_dao/server_path.dart';
 import '../model/deck/deck.dart';
 
-class DeckMarketplaceView extends StatelessWidget {
+class DeckMarketplaceView extends StatefulWidget {
   final Deck deck;
 
   const DeckMarketplaceView({super.key, required this.deck});
 
+  @override
+  State<DeckMarketplaceView> createState() => _DeckMarketplaceViewState();
+}
+
+class _DeckMarketplaceViewState extends State<DeckMarketplaceView> {
+  bool deckDownloaded = false;
+  //TODO: Add download functionality
+  // void _downloadDeck() {
+  //   // Implement your download logic here
+  //   setState(() {
+  //     deckDownloaded = true;
+  //   });
+  // }
+  
   @override
   Widget build(BuildContext context) {
     return Column (
@@ -19,7 +33,7 @@ class DeckMarketplaceView extends StatelessWidget {
                 height: 175,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(deck.image.replaceAll(
+                    image: NetworkImage(widget.deck.image.replaceAll(
                         'http://localhost:8080', ServerPath.baseUrl)),
                     fit: BoxFit.cover,
                   ),
@@ -29,13 +43,21 @@ class DeckMarketplaceView extends StatelessWidget {
                     Align(
                       alignment: Alignment.topRight,
                       child: GestureDetector(
-                      // onTap: () {
-                      //   //TODO
-                      // },
+                      onTap: () {
+                        setState(() {
+                          deckDownloaded = !deckDownloaded;
+                          //TODO
+                          // if (!_isDownloading) {
+                          //   _downloadDeck();
+                          // }
+                        });
+                      },
                         child: Container(
                           padding: const EdgeInsets.all(8),
-                          color: Colors.black.withOpacity(0.7),
-                          child: const Icon(Icons.download, color: Colors.black),
+                          color: Colors.black.withOpacity(0.3),
+                          child: deckDownloaded
+                              ? const Icon(Icons.delete, color: Colors.white)
+                              : const Icon(Icons.download, color: Colors.white),
                         ),
                       ),
                     ),
@@ -48,7 +70,7 @@ class DeckMarketplaceView extends StatelessWidget {
                               padding: const EdgeInsets.all(8),
                               color: Colors.black.withOpacity(0.7),
                               child: Text(
-                                deck.name,
+                                widget.deck.name,
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
@@ -64,7 +86,7 @@ class DeckMarketplaceView extends StatelessWidget {
                                     child: ListView(
                                         scrollDirection: Axis.horizontal,
                                         children: [
-                                          for (var tag in deck.tags)
+                                          for (var tag in widget.deck.tags)
                                             Container(
                                               padding: const EdgeInsets.all(8),
                                               color: HexColor(tag.color)
@@ -85,9 +107,9 @@ class DeckMarketplaceView extends StatelessWidget {
                 ),
               ),
               Container(
-                color: deck.color == '#00000000'
+                color: widget.deck.color == '#00000000'
                     ? Colors.purple
-                    : HexColor(deck.color),
+                    : HexColor(widget.deck.color),
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -99,7 +121,7 @@ class DeckMarketplaceView extends StatelessWidget {
                         const Icon(Icons.credit_card, color: Colors.white),
                         const SizedBox(height: 4),
                         Text(
-                          deck.cardCount,
+                          widget.deck.cardCount,
                           style: const TextStyle(color: Colors.white),
                         ),
                       ],
@@ -110,7 +132,7 @@ class DeckMarketplaceView extends StatelessWidget {
                         const Icon(Icons.account_circle_rounded, color: Colors.white),
                         const SizedBox(height: 4),
                         Text(
-                          deck.cardCount, //TODO deck.owner
+                          widget.deck.cardCount, //TODO deck.owner
                           style: const TextStyle(color: Colors.white),
                         ),
                       ],
@@ -121,7 +143,7 @@ class DeckMarketplaceView extends StatelessWidget {
                         const Icon(Icons.emoji_events, color: Colors.white),
                         const SizedBox(height: 4),
                         Text(
-                          deck.score,
+                          widget.deck.score,
                           style: const TextStyle(color: Colors.white),
                         ),
                       ],
