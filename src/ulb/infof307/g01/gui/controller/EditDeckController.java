@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
+import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -151,8 +152,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deck.setName(newName.trim());
             serverCommunicator.saveDeck(deck);
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -172,8 +173,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
             serverCommunicator.saveDeck(deck);
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -185,8 +186,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             editDeckViewController.showCards();
             serverCommunicator.saveDeck(deck);
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -196,8 +197,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             selectedCard.setCountdownTime(value);
             serverCommunicator.saveDeck(deck);
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -208,8 +209,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             serverCommunicator.saveDeck(deck);
             editDeckViewController.showCards();
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -220,8 +221,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             serverCommunicator.saveDeck(deck);
             editDeckViewController.showCards();
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -232,8 +233,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             serverCommunicator.saveDeck(deck);
             editDeckViewController.showCards();
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -244,8 +245,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             serverCommunicator.saveDeck(deck);
             editDeckViewController.showCards();
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -255,8 +256,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deck.setColor(color.toString());
             serverCommunicator.saveDeck(deck);
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -266,8 +267,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             deck.setColorName(color.toString());
             serverCommunicator.saveDeck(deck);
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -278,8 +279,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             serverCommunicator.uploadImage(image, filename);
             serverCommunicator.saveDeck(deck);
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -287,8 +288,9 @@ public class EditDeckController implements EditDeckViewController.Listener,
         try {
             deck.addCard(card);
             serverCommunicator.saveDeck(deck);
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -330,8 +332,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
                 cardPreviewClicked(deck.getLastCard());
             }
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -358,8 +360,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             serverCommunicator.saveDeck(deck);
             editDeckViewController.setTags(loadTags());
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -370,8 +372,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
             serverCommunicator.saveDeck(deck);
             editDeckViewController.setTags(loadTags());
 
-        } catch (InterruptedException | IOException e) {
-            errorHandler.savingError(e);
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 

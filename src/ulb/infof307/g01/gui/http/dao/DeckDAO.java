@@ -177,7 +177,7 @@ public class DeckDAO extends HttpDAO {
             throws IOException, InterruptedException {
 
         HttpResponse<String> response
-                = upload(ServerPaths.SAVE_DECK_IMAGE_PATH, image, filename);
+                = upload(image, filename);
 
         checkResponseCode(response.statusCode());
     }

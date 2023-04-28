@@ -1,6 +1,7 @@
 package ulb.infof307.g01.gui.controller.errorhandler;
 
 import javafx.application.Platform;
+import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
 public class ErrorHandler {
@@ -48,6 +49,11 @@ public class ErrorHandler {
      */
     public void restartApplicationError(Exception e) {
         communicateError(e, "Veuillez redémarrer l'application.");
+        Platform.exit();
+    }
+
+    public void restartApplicationError(Exception e, String message){
+        communicateError(e, message);
         Platform.exit();
     }
 
@@ -111,23 +117,16 @@ public class ErrorHandler {
         communicateError(e, message);
     }
 
-    public void failedAutoLogin(Exception e) {
-        String title = "Erreur avec le serveur";
-        String message = "L'authentification automatique a échoué, veuillez réessayer.";
-
-        communicateError(title, message);
-    }
-
     public void failedAddScore(Exception e) {
         String message = "Votre score n'a pas pu être sauvegardé.";
 
         communicateError(e, message);
     }
 
-    public void noDeckBeingPlayed() {
-        String title = "Aucun paquet en cours de jeu";
-        String message = "Vous n'avez pas de paquet en cours de jeu.";
+    public void failedServerCommunication(ServerCommunicationFailedException e) {
+        String message = "La communication avec le serveur a échoué, "
+                + "veuillez réessayer.";
 
-        communicateInfo(title, message);
+        restartApplicationError(e, message);
     }
 }

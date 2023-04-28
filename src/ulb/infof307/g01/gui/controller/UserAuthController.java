@@ -3,10 +3,10 @@ package ulb.infof307.g01.gui.controller;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
+import ulb.infof307.g01.gui.http.exceptions.AuthenticationFailedException;
+import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
-
-import java.io.IOException;
 
 public class UserAuthController implements UserAuthViewController.Listener {
     private final Stage stage;
@@ -71,8 +71,12 @@ public class UserAuthController implements UserAuthViewController.Listener {
             serverCommunicator.userLogin(username, password);
             controllerListener.userLoggedIn();
 
-        } catch (IOException | InterruptedException e) {
+        } catch (AuthenticationFailedException e) {
             errorHandler.failedLogin(e);
+        }
+
+        catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
@@ -86,8 +90,12 @@ public class UserAuthController implements UserAuthViewController.Listener {
             serverCommunicator.userRegister(username, password);
             loginClicked(username, password);
 
-        } catch (IOException | InterruptedException e) {
+        } catch (AuthenticationFailedException e) {
             errorHandler.failedRegister(e);
+        }
+
+        catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
         }
     }
 
