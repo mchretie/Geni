@@ -131,6 +131,10 @@ public class ServerCommunicator {
         return deckDAO.searchDecksByTags(tagName);
     }
 
+    public void deleteDeck(UUID deckId) throws IOException, InterruptedException {
+        deckDAO.deleteDeck(deckId);
+    }
+
     public void removeDeckFromCollection(UUID deckId)
             throws IOException, InterruptedException {
 

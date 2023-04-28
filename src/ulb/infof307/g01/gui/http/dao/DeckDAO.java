@@ -128,6 +128,16 @@ public class DeckDAO extends HttpDAO {
                 .collect(toList());
     }
 
+    public void deleteDeck(UUID deckId)
+            throws IOException, InterruptedException {
+        String path = ServerPaths.DELETE_DECK_PATH + "?deck_id=" + deckId.toString();
+
+        HttpResponse<String> response = delete(path);
+
+        checkResponseCode(response.statusCode());
+        deckCache.removeDeck(deckId);
+    }
+
     public void removeDeckFromCollection(UUID deckId)
             throws IOException, InterruptedException {
 
