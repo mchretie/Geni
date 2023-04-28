@@ -1,5 +1,5 @@
 class ServerPath {
-  static const String baseUrl = "http://10.0.2.2:8080";
+  static const String baseUrl = "http://localhost:8080";
   // static const String baseUrl = "http://192.168.0.191:8080";
   // static const String baseUrl = "http://192.168.1.46:8080";
   static const String base = "$baseUrl/api";
@@ -39,6 +39,15 @@ class ServerPath {
   // Used by GameHistoryRequestHandler
   static final Uri gameHistoryBasePath = Uri.parse("$base/game-history");
   static final Uri gameHistoryPath = Uri.parse("$gameHistoryBasePath/get");
+
+  // Used by MatchRequestHandler
+  static final Uri marketplaceBasePath = Uri.parse("$base/marketplace");
+  static final Uri getMarketplacePath = Uri.parse("$marketplaceBasePath/get");
+  static final Uri addDeckToMarketplacePath = Uri.parse("$marketplaceBasePath/add");
+  static final Uri removeDeckFromMarketplacePath = Uri.parse("$marketplaceBasePath/delete");
+  static final Uri addDeckToCollectionPath = Uri.parse("$marketplaceBasePath/add-collection");
+  static final Uri removeDeckFromCollectionPath = Uri.parse("$marketplaceBasePath/delete-collection");
+  static final Uri getSavedDecksFromMarketplacePath = Uri.parse("$marketplaceBasePath/get-collection");
 
   ServerPath._();
 }
