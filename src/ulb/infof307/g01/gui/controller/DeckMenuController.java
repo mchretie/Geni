@@ -207,7 +207,10 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     @Override
     public void deckRemoved(DeckMetadata deck) {
         try {
-            serverCommunicator.removeDeckFromCollection(deck.id());
+            if (deck.isPublic())
+                serverCommunicator.removeDeckFromCollection(deck.id());
+            else
+                serverCommunicator.deleteDeck(deck.id());
             showDecks();
 
         } catch (IOException e) {

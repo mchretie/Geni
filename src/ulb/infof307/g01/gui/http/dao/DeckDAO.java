@@ -75,9 +75,11 @@ public class DeckDAO extends HttpDAO {
     public boolean deckExists(String deckName)
             throws IOException, InterruptedException {
 
-        initCacheIfNot();
-        return deckCache.getAllDecksMetadata().stream()
-                .anyMatch(deck -> deck.name().equals(deckName));
+        String path = ServerPaths.DECK_EXISTS_PATH + "?name=" + deckName;
+
+        HttpResponse<String> response = get(path);
+        checkResponseCode(response.statusCode());
+        return Boolean.parseBoolean(response.body());
     }
 
 
@@ -124,6 +126,16 @@ public class DeckDAO extends HttpDAO {
                 .filter(deck -> deck.tags().stream()
                         .anyMatch(tag -> pattern.matcher(validator.addTolerance(tag.getName())).matches()))
                 .collect(toList());
+    }
+
+    public void deleteDeck(UUID deckId)
+            throws IOException, InterruptedException {
+        String path = ServerPaths.DELETE_DECK_PATH + "?deck_id=" + deckId.toString();
+
+        HttpResponse<String> response = delete(path);
+
+        checkResponseCode(response.statusCode());
+        deckCache.removeDeck(deckId);
     }
 
     public void removeDeckFromCollection(UUID deckId)
