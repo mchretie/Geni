@@ -189,6 +189,15 @@ public class DeckDAO extends HttpDAO {
         checkResponseCode(response.statusCode());
     }
 
+    public int numberOfPublicPlayedDecks() throws IOException, InterruptedException {
+        String path = ServerPaths.NUMBER_OF_PUBLIC_PLAYED_DECKS_PATH;
+        HttpResponse<String> response = get(path);
+
+        checkResponseCode(response.statusCode());
+
+        return Integer.parseInt(response.body());
+    }
+
     public void emptyCache() {
         deckCache = null;
     }

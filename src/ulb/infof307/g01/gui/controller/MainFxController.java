@@ -117,10 +117,10 @@ public class MainFxController extends Application implements
         configureStage(stage);
         initMainWindowView(stage);
 
-        errorHandler = new ErrorHandler(mainWindowViewController);
-
         mainWindowViewController.setAllInvisible();
         stage.show();
+
+        errorHandler = new ErrorHandler(mainWindowViewController);
 
         try {
             initControllers(stage);
@@ -133,11 +133,8 @@ public class MainFxController extends Application implements
             userAuthController.show();
 
         } catch (IOException e) {
-            e.printStackTrace();
             errorHandler.restartApplicationError(e);
         }
-
-
     }
 
 

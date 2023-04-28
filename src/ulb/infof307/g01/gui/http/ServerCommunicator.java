@@ -169,6 +169,10 @@ public class ServerCommunicator {
         deckDAO.uploadImage(image, filename);
     }
 
+    public int numberOfPublicPlayedDecks() throws IOException, InterruptedException {
+        return deckDAO.numberOfPublicPlayedDecks();
+    }
+
     /* ====================================================================== */
     /*                              Marketplace                               */
     /* ====================================================================== */
