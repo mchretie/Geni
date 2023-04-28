@@ -75,9 +75,11 @@ public class DeckDAO extends HttpDAO {
     public boolean deckExists(String deckName)
             throws IOException, InterruptedException {
 
-        initCacheIfNot();
-        return deckCache.getAllDecksMetadata().stream()
-                .anyMatch(deck -> deck.name().equals(deckName));
+        String path = ServerPaths.DECK_EXISTS_PATH + "?name=" + deckName;
+
+        HttpResponse<String> response = get(path);
+        checkResponseCode(response.statusCode());
+        return Boolean.parseBoolean(response.body());
     }
 
 
