@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mobile_deckz/page/auth_page.dart';
 import 'package:mobile_deckz/view/leaderboard_view.dart';
 import 'package:mobile_deckz/page/profile_page.dart';
-import 'package:mobile_deckz/view/store_view.dart';
 import 'package:mobile_deckz/view/user_deck_view.dart';
 
 import '../http_dao/auth_dao.dart';
+import '../view/marketplace_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                 index: _selectedIndex,
                 children: const [
                   UserDeckView(),
-                  StoreView(),
+                  MarketPlaceView(),
                   LeaderboardView(),
                 ],
               )),
