@@ -12,13 +12,17 @@ import ulb.infof307.g01.model.UserAuth;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
+import static spark.Spark.get;
+import static spark.Spark.post;
+import static ulb.infof307.g01.shared.constants.ServerPaths.LOGIN_PATH;
+import static ulb.infof307.g01.shared.constants.ServerPaths.REGISTER_PATH;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class UserAccountHandler extends Handler {
 
     private final String AUTH_HEADER = "Authorization";
 
-    public UserAccountHandler(JWTService jwtService, Database database) {
+    public UserAccountHandler(Database database, JWTService jwtService) {
         super(database, jwtService);
     }
 

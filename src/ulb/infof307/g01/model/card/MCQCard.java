@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class MCQCard extends Card {
+public class MCQCard extends TimedCard {
 
     @Expose
     private final List<String> choices;
@@ -22,16 +22,20 @@ public class MCQCard extends Card {
         this.choices = new ArrayList<>();
         this.choices.add("Réponse 1");
         this.choices.add("Réponse 2");
-
         this.correctChoice = 0;
         this.cardType = "MCQCard";
     }
 
-    public MCQCard(UUID uuid, UUID deckId, String front, List<String> choices, int correctChoice) {
-        super(uuid, deckId, front);
+    public MCQCard(UUID uuid, UUID deckId, String front, List<String> choices, int correctChoice, Integer countdownTime) {
+        super(uuid, deckId, front, countdownTime);
         this.choices = choices;
         this.correctChoice = correctChoice;
         this.cardType = "MCQCard";
+    }
+
+    private void checkIndexArg(int index) throws IllegalArgumentException {
+        if (!isValidIndex(index))
+            throw new IllegalArgumentException("Invalid index given");
     }
 
     public boolean canRemoveChoice() {
@@ -43,14 +47,15 @@ public class MCQCard extends Card {
     }
 
     public boolean isValidIndex(int index) {
-        return index < getChoicesCount();
+        return index < getChoicesCount() && index >= 0;
     }
 
     public int getChoicesCount() {
         return choices.size();
     }
 
-    public String getChoice(int index) {
+    public String getChoice(int index) throws IllegalArgumentException {
+        checkIndexArg(index);
         return choices.get(index);
     }
 
@@ -72,16 +77,12 @@ public class MCQCard extends Card {
     }
 
     public void setChoice(int index, String choice) throws IllegalArgumentException {
-        if (isValidIndex(index))
-            throw new IllegalArgumentException(
-                    "The choice index must be among the choices");
+        checkIndexArg(index);
         this.choices.set(index, choice);
     }
 
     public void setCorrectChoice(int correctChoice) throws IllegalArgumentException {
-        if (isValidIndex(correctChoice))
-            throw new IllegalArgumentException(
-                    "The correct answer must be among the choices");
+        checkIndexArg(correctChoice);
         this.correctChoice = correctChoice;
     }
 
@@ -108,6 +109,8 @@ public class MCQCard extends Card {
             return true;
         if (o == null || o.getClass() != this.getClass())
             return false;
+
+        if( !super.equals(o) ) return false;
 
         MCQCard other = (MCQCard) o;
         return id.equals(other.getId())

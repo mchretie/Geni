@@ -2,8 +2,7 @@ package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
-import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
+import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 
@@ -21,46 +20,56 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     private final PlayDeckViewController playDeckViewController;
     private final ControllerListener controllerListener;
     private final ErrorHandler errorHandler;
-    private final LeaderboardDAO leaderboardDAO;
-    private final Score score;
-    private final CardExtractor cardExtractor;
+    private final ServerCommunicator serverCommunicator;
+    private Score score;
+    private CardExtractor cardExtractor;
+
     private Card currentCard;
     private boolean frontShown = true;
-    private boolean[] answeredCards;    // needed because user can go back to previous question
+    private boolean[] answeredCards;
 
+    public void setDeck(Deck deck) throws EmptyDeckException {
+        if (deck == null || deck.cardCount() == 0)
+            throw new EmptyDeckException("Deck does not contain any cards.");
+
+        cardExtractor = new CardExtractorRandom(deck);
+        currentCard = cardExtractor.getNextCard();
+        this.score = Score.createNewScore(serverCommunicator.getSessionUsername(), deck.getId());
+        this.answeredCards = new boolean[deck.cardCount()];
+        Arrays.fill(answeredCards, false);
+
+        playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+        playDeckViewController.setDeckName(deck.getName());
+        playDeckViewController.setNumberOfCards(deck.cardCount());
+
+        playDeckViewController.setTimer();
+    }
+
+    public void removeDeck() {
+        cardExtractor = null;
+        currentCard = null;
+        this.score = null;
+        this.answeredCards = null;
+    }
 
     /* ====================================================================== */
     /*                              Constructor                               */
     /* ====================================================================== */
 
-    public PlayDeckController(Stage stage, Deck deck,
+    public PlayDeckController(Stage stage,
                               MainWindowViewController mainWindowViewController,
                               ControllerListener controllerListener,
                               ErrorHandler errorHandler,
-                              LeaderboardDAO leaderboardDAO, UserSessionDAO userDAO) {
+                              ServerCommunicator serverCommunicator) {
 
         this.stage = stage;
-        this.cardExtractor = new CardExtractorRandom(deck);
-        this.currentCard = cardExtractor.getNextCard();
-        this.score = Score.createNewScore(userDAO.getUsername(), deck.getId());
-        this.answeredCards = new boolean[deck.cardCount()];
-        Arrays.fill(answeredCards, false);
-        this.leaderboardDAO = leaderboardDAO;
-        this.leaderboardDAO.setToken(userDAO.getToken());
-
-        if (currentCard == null)
-            throw new EmptyDeckException("Deck does not contain any cards.");
-
+        this.serverCommunicator = serverCommunicator;
         this.controllerListener = controllerListener;
         this.errorHandler = errorHandler;
         this.mainWindowViewController = mainWindowViewController;
-        mainWindowViewController.makeGoBackIconVisible();
-
         this.playDeckViewController = mainWindowViewController.getPlayDeckViewController();
         playDeckViewController.setListener(this);
-        playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
-        playDeckViewController.setDeckName(deck.getName());
-        playDeckViewController.setNumberOfCards(deck.cardCount());
+
     }
 
 
@@ -68,7 +77,11 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     /*                         Stage Manipulation                             */
     /* ====================================================================== */
 
-    public void show() {
+    public void show() throws EmptyDeckException {
+
+        if (cardExtractor == null)
+            throw new EmptyDeckException("Deck has not been set.");
+
         mainWindowViewController.setPlayDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 
@@ -107,14 +120,20 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         if (currentCard != null) {
             playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+            playDeckViewController.setTimer();
             showCard();
             return;
         }
 
+        int totalScore = score.getScore() / cardExtractor.getAmountCompetitiveCards();
+        score.setScore(totalScore);
+
         try {
-            leaderboardDAO.addScore(score);
+            serverCommunicator.addScore(score);
+
         } catch (Exception e) {
             errorHandler.failedAddScore(e);
+
         } finally {
             controllerListener.finishedPlayingDeck(score);
         }
@@ -129,19 +148,23 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         currentCard = previousCard;
         playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+        playDeckViewController.setTimer();
 
         showCard();
     }
 
     @Override
-    public void onChoiceEntered(boolean isGoodChoice) {
+    public void onChoiceEntered(boolean isGoodChoice, double timeLeft) {
         int cardIndex = cardExtractor.getCurrentCardIndex();
-        if (answeredCards[cardIndex])
+
+        if (answeredCards[cardIndex]) {
             return;
+        }
 
         answeredCards[cardIndex] = true;
-        if (isGoodChoice)
-            score.increment(1);
+        if (isGoodChoice) {
+            score.increment((int) (1000 * timeLeft));
+        }
     }
 
 

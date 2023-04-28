@@ -1,6 +1,6 @@
 package ulb.infof307.g01.server.database;
 
-class DatabaseScheme {
+class DatabaseSchema {
 
     public static final String[] SERVER = new String[]{
             """
@@ -18,6 +18,7 @@ class DatabaseScheme {
             name TEXT NOT NULL,
             color TEXT NOT NULL,
             image TEXT NOT NULL,
+            color_name TEXT NOT NULL,
             FOREIGN KEY (user_id)
                 REFERENCES user(user_id)
                 ON DELETE CASCADE
@@ -44,6 +45,7 @@ class DatabaseScheme {
         CREATE TABLE IF NOT EXISTS mcq_card (
             card_id TEXT PRIMARY KEY,
             correct_answer_index INTEGER NOT NULL,
+            countdown_time INTEGER,
             FOREIGN KEY (card_id) REFERENCES card(card_id) ON DELETE CASCADE
         );
             """,
@@ -60,6 +62,7 @@ class DatabaseScheme {
         CREATE TABLE IF NOT EXISTS input_card (
             card_id TEXT PRIMARY KEY,
             answer TEXT NOT NULL,
+            countdown_time INTEGER,
             FOREIGN KEY (card_id) REFERENCES card(card_id) ON DELETE CASCADE
         );
             """,
@@ -85,7 +88,7 @@ class DatabaseScheme {
         CREATE TABLE IF NOT EXISTS marketplace (
             deck_id TEXT PRIMARY KEY,
             rating INTEGER,
-            download INTEGER NOT NULL,
+            downloads INTEGER NOT NULL,
             FOREIGN KEY (deck_id)
                 REFERENCES deck(deck_id)
                 ON DELETE CASCADE

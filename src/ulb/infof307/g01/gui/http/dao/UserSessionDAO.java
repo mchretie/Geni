@@ -1,9 +1,9 @@
-package ulb.infof307.g01.gui.httpdao.dao;
+package ulb.infof307.g01.gui.http.dao;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.model.UserAuth;
+import ulb.infof307.g01.gui.http.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class UserSessionDAO extends HttpDAO {
         Optional<String> authorization
                 = response.headers().firstValue("Authorization");
 
-        authorization.ifPresent(this::setToken);
+        authorization.ifPresent(this::setJWT);
     }
 
     public void register(String username, String password)
@@ -79,11 +79,7 @@ public class UserSessionDAO extends HttpDAO {
     /* ====================================================================== */
 
     public boolean isLoggedIn() {
-        return !getToken().isEmpty();
-    }
-
-    private void removeToken() {
-        setToken("");
+        return !getJWT().isEmpty();
     }
 
     public void removeCredentials() {
@@ -97,18 +93,21 @@ public class UserSessionDAO extends HttpDAO {
         this.prefs.put("localPassword", password);
     }
 
-    public void attemptAutologin() throws IOException, InterruptedException {
+    public void attemptAutoLogin() throws IOException, InterruptedException {
 
         String username = this.prefs.get("localUsername", null);
         String password = this.prefs.get("localPassword", null);
 
-        if (username != null && password != null) {
-            login(username, password);
+
+        if (username == null || password == null) {
+            throw new AuthenticationFailedException("No credentials found");
         }
+
+        login(username, password);
     }
 
     public void logout() {
         removeCredentials();
-        removeToken();
+        removeJWT();
     }
 }

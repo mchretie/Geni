@@ -35,6 +35,13 @@ public class DeckCache {
         allDecksIds.remove(deckId);
     }
 
+    public void removeDeck(UUID deckUUID) {
+        var deckId = deckUUID;
+        decks.remove(deckId);
+        decksMetadata.remove(deckId);
+        allDecksIds.remove(deckId);
+    }
+
     public Optional<Deck> getDeck(DeckMetadata deckMetadata) {
         return decks.containsKey(deckMetadata.id()) ?
                 Optional.of(decks.get(deckMetadata.id())) :

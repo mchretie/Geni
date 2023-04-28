@@ -305,9 +305,7 @@ public class DeckMenuViewController {
     /* ====================================================================== */
 
     @FXML
-    private void handleSearchHover() {
-        searchIcon.setIconColor(Color.web("#FFFFFF"));
-    }
+    private void handleSearchHover() { searchIcon.setIconColor(Color.web("#FFFFFF")); }
 
     @FXML
     private void handleSearchExit() {

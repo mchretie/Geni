@@ -2,6 +2,7 @@ package ulb.infof307.g01.gui.view.deckmenu;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,10 +25,13 @@ public class DeckViewController {
     /* ====================================================================== */
 
     @FXML
+    private Button editDeckButton;
+
+    @FXML
     private StackPane stackPane;
 
     @FXML
-    private Label playDeckLabel;
+    private Label deckNameLabel;
 
     @FXML
     private FontIcon editDeckIcon;
@@ -51,7 +55,7 @@ public class DeckViewController {
     private Label amountCardsLabel;
 
     @FXML
-    private Label amountTrophiesLabel;
+    private Label scoreLabel;
 
 
     /* ====================================================================== */
@@ -143,7 +147,7 @@ public class DeckViewController {
 
     private void setStats(String bestScore) {
         amountCardsLabel.setText(String.valueOf(deck.cardCount()));
-        amountTrophiesLabel.setText(bestScore);
+        scoreLabel.setText(bestScore);
     }
 
     private LinearGradient makeGradient(Color color) {
@@ -165,7 +169,12 @@ public class DeckViewController {
     }
 
     private void updateDeckLabelName() {
-        this.playDeckLabel.setText(this.deck.name());
+        this.deckNameLabel.setText(this.deck.name());
+        this.deckNameLabel.setTextFill(Color.web(this.deck.colorName()));
+    }
+
+    public void setDisableEdit(boolean disable) {
+        editDeckButton.setDisable(disable);
     }
 
 

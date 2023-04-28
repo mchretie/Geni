@@ -4,9 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
-import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
+import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardEntryViewController;
@@ -21,11 +19,10 @@ import java.util.List;
 public class GlobalLeaderboardController {
     private final Stage stage;
     private final MainWindowViewController mainWindowViewController;
-    private final UserSessionDAO userSessionDAO;
-    private final DeckDAO deckDAO;
-    private final LeaderboardDAO leaderboardDAO;
     private final GlobalLeaderboardViewController leaderboardViewController;
     private final ErrorHandler errorHandler;
+
+    private final ServerCommunicator serverCommunicator;
 
     /* ====================================================================== */
     /*                              Constructor                               */
@@ -34,16 +31,12 @@ public class GlobalLeaderboardController {
     public GlobalLeaderboardController(Stage stage,
                                        MainWindowViewController mainWindowViewController,
                                        ErrorHandler errorHandler,
-                                       UserSessionDAO userSessionDAO,
-                                       DeckDAO deckDAO,
-                                       LeaderboardDAO leaderboardDAO) {
+                                       ServerCommunicator serverCommunicator) {
 
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.errorHandler = errorHandler;
-        this.userSessionDAO = userSessionDAO;
-        this.deckDAO = deckDAO;
-        this.leaderboardDAO = leaderboardDAO;
+        this.serverCommunicator = serverCommunicator;
 
         this.leaderboardViewController = mainWindowViewController.getLeaderboardViewController();
     }
@@ -54,7 +47,7 @@ public class GlobalLeaderboardController {
     /* ====================================================================== */
 
     public void show() throws IOException, InterruptedException {
-        if (userSessionDAO.isLoggedIn()) {
+        if (serverCommunicator.isUserLoggedIn()) {
             mainWindowViewController.setLeaderboardViewVisible();
             mainWindowViewController.makeGoBackIconInvisible();
 
@@ -72,16 +65,16 @@ public class GlobalLeaderboardController {
         try {
             List<Node> playersScoreItem = new ArrayList<>();
 
-            GlobalLeaderboard leaderboard = leaderboardDAO.getGlobalLeaderboard();
+            GlobalLeaderboard leaderboard = serverCommunicator.getGlobalLeaderboard();
 
-            String username = userSessionDAO.getUsername();
+            String username = serverCommunicator.getSessionUsername();
 
             leaderboardViewController
                     .setPersonalInformation(
                             username,
                             leaderboard.getUserRank(username),
                             leaderboard.getUserScore(username),
-                            deckDAO.getAllDecksMetadata().size() + "");
+                            serverCommunicator.getAllDecksMetadata().size() + "");
 
             for (GlobalLeaderboardEntry leaderboardEntry : leaderboard) {
                 Node node = loadEntry(leaderboardEntry);

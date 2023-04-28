@@ -31,7 +31,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     void init() throws DatabaseException {
         super.init();
 
-        db.initTables(DatabaseScheme.SERVER);
+        db.initTables(DatabaseSchema.SERVER);
 
         this.deckDAO = new DeckDAO(this.db);
         this.tagDAO = new TagDAO(this.db);

@@ -27,7 +27,7 @@ public class TestScoreDAO extends DatabaseUsingTest {
     void init() throws DatabaseException {
         super.init();
 
-        db.initTables(DatabaseScheme.SERVER);
+        db.initTables(DatabaseSchema.SERVER);
 
         this.scoreDAO = new ScoreDAO(this.db);
         this.userDAO = new UserDAO(this.db);

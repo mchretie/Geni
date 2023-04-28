@@ -6,7 +6,6 @@ import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.io.File;
 import java.sql.*;
-import java.util.Arrays;
 
 /**
  * Provide access to database
@@ -67,11 +66,12 @@ public class DatabaseAccess {
     /**
      * Initialize the database scheme
      * <p>
-     *     The array of create statements should be taken from
-     *     DatabaseScheme.
+     * The array of create statements should be taken from
+     * DatabaseScheme.
      * </p>
+     *
      * @param tables set of updates to init the tables of the database
-     * @see ulb.infof307.g01.server.database.DatabaseScheme
+     * @see DatabaseSchema
      */
     public void initTables(String[] tables) throws DatabaseException {
         executeUpdates(tables);
@@ -84,7 +84,7 @@ public class DatabaseAccess {
      * the '?' occurrences in the query.
      *
      * @param query a SQL statement to be executed
-     * @param args the arguments to be replaced in the query
+     * @param args  the arguments to be replaced in the query
      * @return A java.sql.ResultSet with the resulting rows
      */
     public ResultSet executeQuery(String query, Object... args)
@@ -111,7 +111,7 @@ public class DatabaseAccess {
      * the '?' occurrences in the query.
      *
      * @param update a SQL statement to be executed
-     * @param args the arguments to be replaced in the update
+     * @param args   the arguments to be replaced in the update
      */
     public void executeUpdate(String update, Object... args)
             throws DatabaseException {

@@ -1,14 +1,17 @@
 package ulb.infof307.g01.server.database.dao;
 
-import ulb.infof307.g01.model.gamehistory.Game;
 import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.model.gamehistory.Game;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboardEntry;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class ScoreDAO extends DAO {
     private final DatabaseAccess database;
@@ -34,6 +37,16 @@ public class ScoreDAO extends DAO {
                 score.getTimestamp(),
                 score.getDeckId().toString(),
                 score.getScore());
+    }
+
+    public void deleteScoresForDeck(UUID deckId) throws DatabaseException {
+        String sql = """
+                DELETE FROM user_deck_score
+                WHERE deck_id = ?;
+                """;
+
+        database.executeUpdate(sql,
+                deckId.toString());
     }
 
     private Score extractScore(ResultSet res) throws DatabaseException {
@@ -115,6 +128,20 @@ public class ScoreDAO extends DAO {
 
     }
 
+    private List<Game> getGames(ResultSet res) throws SQLException {
+        List<Game> games = new ArrayList<>();
+
+        while (res.next()) {
+            String deckName = res.getString("deck_name");
+            int score = res.getInt("score");
+            int timestamp = res.getInt("timestamp");
+
+            games.add(new Game(timestamp, deckName, String.valueOf(score)));
+        }
+
+        return games;
+    }
+
     public List<Game> getGameHistory(UUID userId) {
         String sql = """
                 SELECT d.name AS deck_name, s.score, s.timestamp
@@ -124,17 +151,23 @@ public class ScoreDAO extends DAO {
                 """;
 
         try (ResultSet res = database.executeQuery(sql, userId.toString())) {
-            List<Game> games = new ArrayList<>();
+            return getGames(res);
 
-            while (res.next()) {
-                String deckName = res.getString("deck_name");
-                int score = res.getInt("score");
-                long timestamp = res.getLong("timestamp");
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 
-                games.add(new Game(timestamp, deckName, String.valueOf(score)));
-            }
+    public List<Game> getGameHistory(UUID userId, UUID deckId) {
+        String sql = """
+                SELECT d.name AS deck_name, s.score, s.timestamp
+                FROM deck d
+                INNER JOIN user_deck_score s ON d.deck_id = s.deck_id
+                WHERE s.user_id = ? AND s.deck_id = ?;
+                """;
 
-            return games;
+        try (ResultSet res = database.executeQuery(sql, userId.toString(), deckId.toString())) {
+            return getGames(res);
 
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());

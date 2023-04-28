@@ -9,18 +9,21 @@ import java.util.UUID;
 
 public record DeckMetadata(UUID id,
                            String name,
+                           boolean isPublic,
                            String color,
                            String image,
+                           String colorName,
                            int cardCount,
                            List<Tag> tags,
                            int deckHashCode) {
 
-    @SuppressWarnings("CopyConstructorMissesField")
     public DeckMetadata(DeckMetadata deckMetadata) {
         this(deckMetadata.id,
                 deckMetadata.name,
+                deckMetadata.isPublic,
                 deckMetadata.color,
                 deckMetadata.image,
+                deckMetadata.colorName,
                 deckMetadata.cardCount,
                 List.copyOf(deckMetadata.tags),
                 deckMetadata.deckHashCode);
@@ -42,6 +45,7 @@ public record DeckMetadata(UUID id,
                 && name.equals(that.name)
                 && color.equals(that.color)
                 && image.equals(that.image)
+                && colorName.equals(that.colorName)
                 && tags.equals(that.tags);
     }
 

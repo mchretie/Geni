@@ -18,10 +18,7 @@ import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.util.GridPosIterator;
 import ulb.infof307.g01.gui.util.Pos2D;
-import ulb.infof307.g01.model.card.Card;
-import ulb.infof307.g01.model.card.FlashCard;
-import ulb.infof307.g01.model.card.InputCard;
-import ulb.infof307.g01.model.card.MCQCard;
+import ulb.infof307.g01.model.card.*;
 import ulb.infof307.g01.model.deck.Deck;
 
 import java.io.File;
@@ -89,10 +86,19 @@ public class EditDeckViewController {
     private FontIcon backCardEditIcon;
 
     @FXML
-    private ColorPicker colorPicker;
+    private ColorPicker colorPickerBackground;
+
+    @FXML
+    private ColorPicker colorPickerTitle;
 
     @FXML
     private TextField answerOfInputCard;
+
+    @FXML
+    private HBox timerChangerComponent;
+
+    @FXML
+    private TextField timerValue;
 
 
     /* ====================================================================== */
@@ -144,8 +150,22 @@ public class EditDeckViewController {
 
     public void setDeck(Deck deck) {
         this.deck = deck;
+
+        colorPickerBackground.setValue(Color.web(deck.getColor()));
+        colorPickerTitle.setValue(Color.web(deck.getColorName()));
+
         deckNameText.setText(deck.getName());
-        colorPicker.setValue(Color.web(deck.getColor()));
+
+        String color = hexToRgb(deck.getColorName());
+        deckNameText.setStyle("-fx-text-inner-color: " + color + ";");
+    }
+
+    private String hexToRgb(String hex) {
+        Color color = Color.web(hex);
+        int r = (int) (color.getRed() * 255);
+        int g = (int) (color.getGreen() * 255);
+        int b = (int) (color.getBlue() * 255);
+        return String.format("#%02x%02x%02x", r, g, b);
     }
 
     public void setListener(Listener listener) {
@@ -209,6 +229,7 @@ public class EditDeckViewController {
     private void loadFlashCardEditor(FlashCard flashCard) {
         backCardWebView.getEngine().loadContent(flashCard.getBack());
         backCard.setVisible(true);
+        timerChangerComponent.setVisible(false);
         answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(false);
 
@@ -216,7 +237,9 @@ public class EditDeckViewController {
 
     private void loadInputCardEditor(InputCard inputCard) {
         answerOfInputCard.setText(inputCard.getAnswer());
+        timerValue.setText(String.valueOf(inputCard.getCountdownTime()));
         answerOfInputCard.setVisible(true);
+        timerChangerComponent.setVisible(true);
         choicesGrid.setVisible(false);
         backCard.setVisible(false);
     }
@@ -229,6 +252,7 @@ public class EditDeckViewController {
      */
     private void loadMCQCardEditor(MCQCard mcqCard) {
         choicesGrid.getChildren().clear();
+        timerValue.setText(String.valueOf(mcqCard.getCountdownTime()));
 
         int correctChoiceIndex = mcqCard.getCorrectChoiceIndex();
         Iterator<Pos2D> positions = new GridPosIterator(2, 2);
@@ -247,6 +271,7 @@ public class EditDeckViewController {
         }
 
         backCard.setVisible(false);
+        timerChangerComponent.setVisible(true);
         answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(true);
     }
@@ -468,6 +493,7 @@ public class EditDeckViewController {
     public void hideSelectedCardEditor() {
         frontCard.setVisible(false);
         backCard.setVisible(false);
+        timerChangerComponent.setVisible(false);
         choicesGrid.setVisible(false);
     }
 
@@ -528,10 +554,18 @@ public class EditDeckViewController {
     }
 
     @FXML
-    public void handleColorButtonClicked() {
-        listener.deckColorModified(deck, colorPicker.getValue());
+    public void handleColorButtonClickedBackground() {
+        listener.deckColorModified(deck, colorPickerBackground.getValue());
     }
 
+    @FXML
+    public void handleColorButtonClickedTitle() {
+        Color color = colorPickerTitle.getValue();
+        String RGBColor = hexToRgb(color.toString());
+        deckNameText.setStyle("-fx-text-inner-color: " + RGBColor + ";");
+
+        listener.deckTitleColorModified(deck, color);
+    }
 
     @FXML
     private void handleUploadImageClicked() {
@@ -578,25 +612,30 @@ public class EditDeckViewController {
     }
 
     @FXML
-    private void handleColorPickerHover() {
-        colorPicker.setStyle("-fx-background-color: #aad0b3");
+    private void handleColorPickerBackgroundHover() {
+        colorPickerBackground.setStyle("-fx-background-color: #B1B7E1");
     }
 
     @FXML
-    private void handleColorPickerExit() {
-        colorPicker.setStyle("-fx-background-color: #5ab970");
+    private void handleColorPickerBackgroundExit() {
+        colorPickerBackground.setStyle("-fx-background-color: #C3B1E1");
     }
 
     @FXML
     private void handleUploadImageHover() {
-        imageUploader.setStyle("-fx-background-color: #aad0b3");
+        imageUploader.setStyle("-fx-background-color: #B1B7E1");
     }
 
     @FXML
     private void handleUploadImageExit() {
-        imageUploader.setStyle("-fx-background-color: #5ab970");
+        imageUploader.setStyle("-fx-background-color: #C3B1E1");
     }
 
+    @FXML
+    private void handleColorPickerHoverTitle() { colorPickerTitle.setStyle("-fx-background-color: #aad0b3"); }
+
+    @FXML
+    private void handleColorPickerExitTitle() { colorPickerTitle.setStyle("-fx-background-color: #5ab970"); }
     @FXML
     private void handleFrontCardEditHover() {
         frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
@@ -644,6 +683,27 @@ public class EditDeckViewController {
     }
 
     @FXML
+    private void handleTimerValueEdit(KeyEvent keyEvent) {
+        timerValue.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            if (!event.getCharacter().matches("[0-9]")) {
+                event.consume();
+            }
+        });
+
+
+        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            mainHbox.requestFocus();
+        }
+    }
+
+    @FXML
+    private void handleTimerValueSave() {
+        if (!timerValue.getText().isEmpty()) {
+            listener.timerValueChanged((TimedCard) selectedCard, Integer.parseInt(timerValue.getText()));
+        }
+    }
+
+    @FXML
     private void handleTextFieldKeyPressed(KeyEvent keyEvent) {
         if (!keyEvent.getCode().equals(KeyCode.ENTER))
             return;
@@ -659,6 +719,7 @@ public class EditDeckViewController {
         cardTypeSelected();
 
         choicesGrid.setVisible(true);
+        timerChangerComponent.setVisible(true);
     }
 
     @FXML
@@ -668,6 +729,7 @@ public class EditDeckViewController {
         listener.newInputCard();
         cardTypeSelected();
         answerOfInputCard.setVisible(true);
+        timerChangerComponent.setVisible(true);
     }
 
     @FXML
@@ -677,6 +739,7 @@ public class EditDeckViewController {
         listener.newFlashCard();
         cardTypeSelected();
         backCard.setVisible(true);
+        timerChangerComponent.setVisible(false);
     }
 
     private void cardTypeSelected() {
@@ -700,6 +763,8 @@ public class EditDeckViewController {
         void tagAddedToDeck(Deck deck, String tagName, String color);
 
         void deckColorModified(Deck deck, Color color);
+
+        void deckTitleColorModified(Deck deck, Color color);
 
         void deckImageModified(Deck deck, File image, String filename);
 
@@ -730,6 +795,8 @@ public class EditDeckViewController {
         void newInputCard();
 
         void inputAnswerModified(InputCard selectedCard, String answer);
+
+        void timerValueChanged(TimedCard selectedCard, int value);
 
         void setSelectedCardIndex(int cardIndex);
     }

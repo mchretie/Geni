@@ -14,8 +14,15 @@ public class Card {
     @Expose
     protected String cardType;
 
+
     protected Card() {
-        this(UUID.randomUUID(), null, "Avant");
+        this.front = "Avant";
+        this.id = UUID.randomUUID();
+    }
+
+    protected Card(String front) {
+        this.id = UUID.randomUUID();
+        this.front = front;
     }
 
     protected Card(UUID uuid, UUID deckId, String front) {

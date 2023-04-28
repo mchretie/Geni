@@ -6,7 +6,7 @@ import ulb.infof307.g01.model.IndulgentValidator;
 import java.util.Objects;
 import java.util.UUID;
 
-public class InputCard extends Card {
+public class InputCard extends TimedCard {
 
     @Expose
     private String answer;
@@ -17,8 +17,8 @@ public class InputCard extends Card {
         this.cardType = "InputCard";
     }
 
-    public InputCard(UUID uuid, UUID deckId, String front, String answer) {
-        super(uuid, deckId, front);
+    public InputCard(UUID uuid, UUID deckId, String front, String answer, Integer countdownTime) {
+        super(uuid, deckId, front, countdownTime);
         this.answer = answer;
         this.cardType = "InputCard";
     }
@@ -33,7 +33,7 @@ public class InputCard extends Card {
 
     public boolean isInputCorrect(String input) {
         IndulgentValidator validator = new IndulgentValidator();
-        return validator.isEquals(this.answer, input);
+        return validator.areEqual(this.answer, input);
     }
 
     @Override
@@ -51,6 +51,8 @@ public class InputCard extends Card {
             return true;
         if (o == null || o.getClass() != this.getClass())
             return false;
+
+        if( !super.equals(o) ) return false;
 
         InputCard other = (InputCard) o;
         return id.equals(other.getId())

@@ -7,11 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
-import ulb.infof307.g01.gui.httpdao.dao.DeckDAO;
-import ulb.infof307.g01.gui.httpdao.dao.LeaderboardDAO;
-import ulb.infof307.g01.gui.httpdao.dao.UserSessionDAO;
-import ulb.infof307.g01.gui.httpdao.dao.GameHistoryDAO;
-import ulb.infof307.g01.gui.httpdao.exceptions.AuthenticationFailedException;
+import ulb.infof307.g01.gui.http.ServerCommunicator;
+import ulb.infof307.g01.gui.http.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -36,7 +33,8 @@ public class MainFxController extends Application implements
         EditCardController.ControllerListener,
         ResultController.ControllerListener,
         UserAuthController.ControllerListener,
-        ProfileController.ControllerListener {
+        ProfileController.ControllerListener,
+        DeckPreviewController.ControllerListener {
 
     /* ====================================================================== */
     /*                          Attribute: Controllers                        */
@@ -51,17 +49,17 @@ public class MainFxController extends Application implements
     private ProfileController profileController;
     private GlobalLeaderboardController leaderboardController;
     private StatisticsController statisticsController;
+    private DeckPreviewController deckPreviewController;
+    private MarketplaceController marketplaceController;
 
     private MainWindowViewController mainWindowViewController;
+
 
     /* ====================================================================== */
     /*                              DAO Attributes                            */
     /* ====================================================================== */
 
-    private final UserSessionDAO userSessionDAO = new UserSessionDAO();
-    private final DeckDAO deckDAO = new DeckDAO();
-    private final LeaderboardDAO leaderboardDAO = new LeaderboardDAO();
-    private final GameHistoryDAO gameHistoryDAO = new GameHistoryDAO();
+    private final ServerCommunicator serverCommunicator = new ServerCommunicator();
 
 
     /* ====================================================================== */
@@ -76,7 +74,9 @@ public class MainFxController extends Application implements
         LOGIN_PROFILE,
         RESULT,
         LEADERBOARD,
-        STATISTICS
+        STATISTICS,
+        PREVIEW_DECK,
+        MARKETPLACE
     }
 
     List<View> viewStack = new ArrayList<>();
@@ -123,21 +123,21 @@ public class MainFxController extends Application implements
         stage.show();
 
         try {
-            userSessionDAO.attemptAutologin();
-
-        } catch (AuthenticationFailedException | InterruptedException e) {
-            errorHandler.failedAutoLogin(e);
-        }
-
-        try {
             initControllers(stage);
+            serverCommunicator.attemptAutoLogin();
 
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
 
-        } catch (IOException | InterruptedException e) {
+        } catch (AuthenticationFailedException | InterruptedException e) {
+            userAuthController.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
             errorHandler.restartApplicationError(e);
         }
+
+
     }
 
 
@@ -174,13 +174,13 @@ public class MainFxController extends Application implements
                 errorHandler,
                 mainWindowViewController,
                 this,
-                userSessionDAO);
+                serverCommunicator);
 
         this.profileController
                 = new ProfileController(stage,
                 mainWindowViewController,
                 this,
-                userSessionDAO);
+                serverCommunicator);
 
         this.deckMenuController
                 = new DeckMenuController(
@@ -188,9 +188,23 @@ public class MainFxController extends Application implements
                 errorHandler,
                 this,
                 mainWindowViewController,
-                deckDAO,
-                userSessionDAO,
-                leaderboardDAO);
+                serverCommunicator);
+
+        this.playDeckController
+                = new PlayDeckController(
+                stage,
+                mainWindowViewController,
+                this,
+                errorHandler,
+                serverCommunicator);
+
+        this.deckPreviewController
+                = new DeckPreviewController(
+                stage,
+                mainWindowViewController,
+                this,
+                errorHandler,
+                serverCommunicator);
     }
 
     /* ====================================================================== */
@@ -205,12 +219,12 @@ public class MainFxController extends Application implements
         try {
             viewStack.remove(viewStack.size() - 1);
             switch (viewStack.get(viewStack.size() - 1)) {
-                case DECK_MENU -> deckMenuController.show();
+                case DECK_MENU, PREVIEW_DECK -> deckMenuController.show();
                 case PLAY_DECK -> playDeckController.show();
                 case EDIT_DECK -> editDeckController.show();
                 case HTML_EDITOR -> editCardController.show();
                 case LOGIN_PROFILE -> {
-                    if (userSessionDAO.isLoggedIn())
+                    if (serverCommunicator.isUserLoggedIn())
                         profileController.show();
                     else
                         userAuthController.show();
@@ -218,6 +232,7 @@ public class MainFxController extends Application implements
                 case RESULT -> resultController.show();
                 case LEADERBOARD -> leaderboardController.show();
                 case STATISTICS -> statisticsController.show();
+                case MARKETPLACE -> marketplaceController.show();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -236,11 +251,11 @@ public class MainFxController extends Application implements
         try {
             editDeckController
                     = new EditDeckController(stage,
-                    deckDAO.getDeck(deckMetadata).orElse(null),
+                    serverCommunicator.getDeck(deckMetadata).orElse(null),
                     errorHandler,
                     mainWindowViewController,
                     this,
-                    deckDAO);
+                    serverCommunicator);
 
             editDeckController.show();
             viewStack.add(View.EDIT_DECK);
@@ -251,22 +266,16 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void playDeckClicked(DeckMetadata deckMetadata) {
+    public void deckClicked(DeckMetadata deckMetadata) {
         try {
-            playDeckController = new PlayDeckController(
-                    stage,
-                    deckDAO.getDeck(deckMetadata).orElse(null),
-                    mainWindowViewController,
-                    this,
-                    errorHandler,
-                    leaderboardDAO,
-                    userSessionDAO);
+            deckPreviewController
+                    .setDeck(serverCommunicator.getDeck(deckMetadata).orElse(null));
 
-            playDeckController.show();
-            viewStack.add(View.PLAY_DECK);
+            deckPreviewController.show();
+            viewStack.add(View.PREVIEW_DECK);
 
         } catch (EmptyDeckException e) {
-            errorHandler.emptyPacketError();
+            errorHandler.emptyDeckError();
 
         } catch (InterruptedException | IOException e) {
             errorHandler.severConnectionError();
@@ -280,7 +289,7 @@ public class MainFxController extends Application implements
                 deck,
                 selectedCard,
                 true,
-                deckDAO,
+                serverCommunicator,
                 errorHandler,
                 mainWindowViewController,
                 this);
@@ -296,7 +305,7 @@ public class MainFxController extends Application implements
                 deck,
                 selectedCard,
                 false,
-                deckDAO,
+                serverCommunicator,
                 errorHandler,
                 mainWindowViewController,
                 this);
@@ -313,8 +322,10 @@ public class MainFxController extends Application implements
     @Override
     public void userLoggedIn() {
         try {
+            mainWindowViewController.makebottomNavigationBarVisible();
+            mainWindowViewController.makeTopNavigationBarVisible();
             deckMenuController.show();
-            viewStack.add(View.DECK_MENU);
+            resetViewStack(View.DECK_MENU);
 
         } catch (IOException | InterruptedException e) {
             errorHandler.failedLoading(e);
@@ -323,14 +334,7 @@ public class MainFxController extends Application implements
 
     @Override
     public void userLoggedOut() {
-        try {
-            userSessionDAO.logout();
-            resetViewStack(View.DECK_MENU);
-            deckMenuController.show();
-
-        } catch (IOException | InterruptedException e) {
-            errorHandler.failedLoading(e);
-        }
+        userAuthController.show();
     }
 
     @Override
@@ -343,7 +347,8 @@ public class MainFxController extends Application implements
                 score
         );
         viewStack.add(View.RESULT);
-        playDeckController = null;
+
+        playDeckController.removeDeck();
         resultController.show();
     }
 
@@ -352,6 +357,7 @@ public class MainFxController extends Application implements
         try {
             viewStack.remove(viewStack.size() - 1);
             deckMenuController.show();
+
         } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
         }
@@ -364,9 +370,7 @@ public class MainFxController extends Application implements
                     stage,
                     errorHandler,
                     mainWindowViewController,
-                    userSessionDAO,
-                    deckDAO,
-                    gameHistoryDAO
+                    serverCommunicator
             );
 
             viewStack.add(View.STATISTICS);
@@ -374,6 +378,17 @@ public class MainFxController extends Application implements
 
         } catch (IOException e) {
             errorHandler.restartApplicationError(e);
+        }
+    }
+
+    @Override
+    public void onPlayDeckClicked(Deck deck) {
+        try {
+            playDeckController.setDeck(deck);
+            playDeckController.show();
+
+        } catch (EmptyDeckException | IllegalStateException e) {
+            errorHandler.emptyDeckError();
         }
     }
 
@@ -391,6 +406,7 @@ public class MainFxController extends Application implements
     public void goToHomeClicked() {
         try {
             resetViewStack(View.DECK_MENU);
+            // TODO refetch deck
             deckMenuController.show();
 
         } catch (IOException | InterruptedException e) {
@@ -399,12 +415,19 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void goToCurrentPlayingDeck() {
-        if (playDeckController == null || !userSessionDAO.isLoggedIn())
-            return;
+    public void goToMarketplaceClicked() {
+        try {
+            marketplaceController = new MarketplaceController(
+                    stage,
+                    mainWindowViewController,
+                    serverCommunicator);
 
-        playDeckController.show();
-        viewStack.add(View.PLAY_DECK);
+            resetViewStack(View.MARKETPLACE);
+            marketplaceController.show();
+
+        } catch (InterruptedException | IOException e) {
+            errorHandler.failedLoading(e);
+        }
     }
 
     @Override
@@ -415,9 +438,7 @@ public class MainFxController extends Application implements
                         stage,
                         mainWindowViewController,
                         errorHandler,
-                        userSessionDAO,
-                        deckDAO,
-                        leaderboardDAO);
+                        serverCommunicator);
             }
 
             resetViewStack(View.LEADERBOARD);
@@ -437,11 +458,20 @@ public class MainFxController extends Application implements
     @Override
     public void goToProfileClicked() {
         try {
-            userSessionDAO.isLoggedIn();
             profileController.show();
             viewStack.add(View.LOGIN_PROFILE);
 
         } catch (IOException e) {
+            errorHandler.failedLoading(e);
+        }
+    }
+
+    @Override
+    public void deckPreviewClosed() {
+        try {
+            deckMenuController.show();
+
+        } catch (IOException | InterruptedException e) {
             errorHandler.failedLoading(e);
         }
     }

@@ -74,7 +74,8 @@
                   </VBox.margin>
                   <cursor>
                      <Cursor fx:constant="DEFAULT" />
-                  </cursor></ListView>
+                  </cursor>
+               </ListView>
             </VBox>
          </HBox>
       </VBox>
