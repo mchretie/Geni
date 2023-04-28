@@ -27,20 +27,6 @@ public class StatisticsViewController {
     @FXML
     private ListView<Node> gameHistoryContainer;
 
-    /* ====================================================================== */
-    /*                                Listener                                */
-    /* ====================================================================== */
-    private Listener listener;
-
-
-    /* ====================================================================== */
-    /*                                Setters                                 */
-    /* ====================================================================== */
-
-    public void setListener(Listener listener) {
-        this.listener = listener;
-    }
-
 
     /* ====================================================================== */
     /*                               Statistics                               */
@@ -56,6 +42,7 @@ public class StatisticsViewController {
     /* ====================================================================== */
     /*                              Game History                              */
     /* ====================================================================== */
+
     public void setGameHistory(List<Node> gameHistoryItem) {
 
         ObservableList<Node> items = FXCollections.observableArrayList(gameHistoryItem);
@@ -66,17 +53,15 @@ public class StatisticsViewController {
         gameHistoryContainer.refresh();
     }
 
-    public void gameHistoryContainerClicked(MouseEvent mouseEvent) {
+
+    /* ====================================================================== */
+    /*                              Click Handlers                            */
+    /* ====================================================================== */
+
+    @FXML
+    private void gameHistoryContainerClicked() {
         gameHistoryContainer.getSelectionModel().clearSelection();
         borderPane.requestFocus();
     }
 
-
-    /* ====================================================================== */
-    /*                           Listener Interface                           */
-    /* ====================================================================== */
-
-    public interface Listener {
-
-    }
 }

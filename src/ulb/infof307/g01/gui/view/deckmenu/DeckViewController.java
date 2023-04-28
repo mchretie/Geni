@@ -2,6 +2,7 @@ package ulb.infof307.g01.gui.view.deckmenu;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,14 +12,11 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.DirectoryChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.deck.Tag;
-
-import java.io.File;
 
 public class DeckViewController {
 
@@ -27,10 +25,13 @@ public class DeckViewController {
     /* ====================================================================== */
 
     @FXML
+    private Button editDeckButton;
+
+    @FXML
     private StackPane stackPane;
 
     @FXML
-    private Label playDeckLabel;
+    private Label deckNameLabel;
 
     @FXML
     private FontIcon editDeckIcon;
@@ -54,7 +55,7 @@ public class DeckViewController {
     private Label amountCardsLabel;
 
     @FXML
-    private Label amountTrophiesLabel;
+    private Label scoreLabel;
 
 
     /* ====================================================================== */
@@ -146,7 +147,7 @@ public class DeckViewController {
 
     private void setStats(String bestScore) {
         amountCardsLabel.setText(String.valueOf(deck.cardCount()));
-        amountTrophiesLabel.setText(bestScore);
+        scoreLabel.setText(bestScore);
     }
 
     private LinearGradient makeGradient(Color color) {
@@ -168,7 +169,12 @@ public class DeckViewController {
     }
 
     private void updateDeckLabelName() {
-        this.playDeckLabel.setText(this.deck.name());
+        this.deckNameLabel.setText(this.deck.name());
+        this.deckNameLabel.setTextFill(Color.web(this.deck.colorName()));
+    }
+
+    public void setDisableEdit(boolean disable) {
+        editDeckButton.setDisable(disable);
     }
 
 
@@ -193,15 +199,7 @@ public class DeckViewController {
 
     @FXML
     private void handleShareDeckClicked() {
-        final DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Choisissez un dossier dans lequel sauvegarder votre paquet.");
-        File file = directoryChooser.showDialog(
-                stackPane.getParent()
-                        .getScene()
-                        .getWindow()
-        );
-
-        listener.shareDeckClicked(deck, file);
+        listener.shareDeckClicked(deck);
     }
 
 
@@ -251,6 +249,6 @@ public class DeckViewController {
 
         void editDeckClicked(DeckMetadata deck);
 
-        void shareDeckClicked(DeckMetadata deck, File file);
+        void shareDeckClicked(DeckMetadata deck);
     }
 }

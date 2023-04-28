@@ -1,36 +1,49 @@
 package ulb.infof307.g01.gui.view.mainwindow;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Popup;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
+import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
-import ulb.infof307.g01.gui.view.leaderboard.LeaderboardViewController;
+import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardViewController;
+import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.gui.view.result.ResultViewController;
 import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
 import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 
-public class MainWindowViewController {
+public class MainWindowViewController implements Initializable {
 
-    private final String initialButtonStyle = "-fx-background-color: transparent;";
 
     /* ====================================================================== */
     /*                               FXML Attributes                          */
     /* ====================================================================== */
 
     @FXML
-    private Button currentDeckButton;
+    private BorderPane borderPane;
+
+    @FXML
+    private Button marketplaceButton;
 
     @FXML
     private Button leaderboardButton;
@@ -45,7 +58,7 @@ public class MainWindowViewController {
     private FontIcon homeIcon;
 
     @FXML
-    private FontIcon currentDeckIcon;
+    private FontIcon marketplaceIcon;
 
     @FXML
     private FontIcon leaderboardIcon;
@@ -64,6 +77,12 @@ public class MainWindowViewController {
 
     @FXML
     private HBox editDeckView;
+
+    @FXML
+    private HBox bottomHBox;
+
+    @FXML
+    private HBox topHBox;
 
     @FXML
     private BorderPane playDeckView;
@@ -93,6 +112,12 @@ public class MainWindowViewController {
     private BorderPane statisticsView;
 
     @FXML
+    private BorderPane deckPreviewView;
+
+    @FXML
+    private BorderPane marketplaceView;
+
+    @FXML
     private DeckMenuViewController deckMenuViewController;
 
     @FXML
@@ -114,10 +139,17 @@ public class MainWindowViewController {
     private ResultViewController resultViewController;
 
     @FXML
-    private LeaderboardViewController leaderboardViewController;
+    private GlobalLeaderboardViewController leaderboardViewController;
 
     @FXML
     private StatisticsViewController statisticsViewController;
+
+    @FXML
+    private DeckPreviewViewController deckPreviewViewController;
+
+    private final Popup popup = new Popup();
+    @FXML
+    private MarketplaceViewController marketplaceViewController;
 
 
     /* ====================================================================== */
@@ -126,6 +158,56 @@ public class MainWindowViewController {
 
     private NavigationListener listener;
 
+
+    /* ====================================================================== */
+    /*                               Initializer                              */
+    /* ====================================================================== */
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        popup.getContent().add(deckPreviewView);
+
+        popup.setOnHidden(event -> {
+            centerStackPane.setEffect(null);
+            deckPreviewView.setVisible(false);
+            centerStackPane.setDisable(false);
+            listener.deckPreviewClosed();
+        });
+
+        popup.setAutoHide(true);
+
+        popup.setOnShown(event -> {
+            centerStackPane.setDisable(true);
+            centerStackPane.setEffect(new BoxBlur());
+
+            BorderPane bp = (BorderPane) popup.getContent().get(0);
+            bp.setPrefWidth(borderPane.getWidth() * 0.7);
+            bp.setPrefHeight(borderPane.getHeight() * 0.6);
+
+            Scene scene = borderPane.getScene();
+            Window window = scene.getWindow();
+            popup.setX(window.getX() + (scene.getWidth() - bp.getWidth()) / 2);
+            popup.setY(window.getY() + (scene.getHeight() - bp.getHeight()) / 2);
+        });
+
+        borderPane.widthProperty().addListener((observableValue, oldSceneWidth, newSceneWidth) -> {
+            BorderPane bp = (BorderPane) popup.getContent().get(0);
+            bp.setPrefWidth(newSceneWidth.doubleValue() * 0.7);
+
+            Scene scene = borderPane.getScene();
+            Window window = scene.getWindow();
+            popup.setX(window.getX() + (scene.getWidth() - popup.getWidth()) / 2);
+        });
+
+        borderPane.heightProperty().addListener((observableValue, oldSceneHeight, newSceneHeight) -> {
+            BorderPane bp = (BorderPane) popup.getContent().get(0);
+            bp.setPrefHeight(newSceneHeight.doubleValue() * 0.6);
+
+            Scene scene = borderPane.getScene();
+            Window window = scene.getWindow();
+            popup.setY(window.getY() + (scene.getHeight() - popup.getHeight()) / 2);
+        });
+    }
 
     /* ====================================================================== */
     /*                                Setter                                  */
@@ -155,13 +237,11 @@ public class MainWindowViewController {
         return editCardViewController; 
     }
 
-    public LeaderboardViewController getLeaderboardViewController() {
+    public GlobalLeaderboardViewController getLeaderboardViewController() {
         return leaderboardViewController;
     }
 
-    public ProfileViewController getProfileViewController() {
-        return profileViewController;
-    }
+    public ProfileViewController getProfileViewController() { return profileViewController; }
     public UserAuthViewController getUserAuthViewController() {
         return userAuthViewController;
     }
@@ -174,23 +254,33 @@ public class MainWindowViewController {
         return statisticsViewController;
     }
 
+    public DeckPreviewViewController getDeckPreviewViewController() {
+        return deckPreviewViewController;
+    }
+    public MarketplaceViewController getMarketplaceViewController() { return marketplaceViewController; }
+
 
     /* ====================================================================== */
     /*                              Alerts                                    */
     /* ====================================================================== */
 
+    private void alert(String title, String description, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.initOwner(borderPane.getScene().getWindow());
+        alert.initStyle(StageStyle.UNDECORATED);
+        alert.setHeaderText(title);
+        alert.setContentText(description);
+        centerStackPane.setEffect(new BoxBlur(20,20,3));
+        alert.showAndWait();
+        centerStackPane.setEffect(null);
+    }
+
     public void alertError(String errorTitle, String errorDescription) {
-        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setHeaderText(errorTitle);
-        errorAlert.setContentText(errorDescription);
-        errorAlert.showAndWait();
+        alert(errorTitle, errorDescription, Alert.AlertType.ERROR);
     }
 
     public void alertInformation(String infoTitle, String infoDescription) {
-        Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
-        infoAlert.setHeaderText(infoTitle);
-        infoAlert.setContentText(infoDescription);
-        infoAlert.showAndWait();
+        alert(infoTitle, infoDescription, Alert.AlertType.INFORMATION);
     }
 
 
@@ -199,8 +289,9 @@ public class MainWindowViewController {
     /* ====================================================================== */
 
     private void setAllInvisibleExcept(Pane pane) {
-        for (Node child : centerStackPane.getChildren())
-            child.setVisible(pane == child);
+        popup.hide();
+        centerStackPane.getChildren()
+                        .forEach(child -> child.setVisible(child == pane));
     }
 
     public void setAllInvisible() {
@@ -217,10 +308,7 @@ public class MainWindowViewController {
         setAllInvisibleExcept(editDeckView);
     }
 
-    public void setPlayDeckViewVisible() {
-        setAllInvisibleExcept(playDeckView);
-        onClick(currentDeckButton);
-    }
+    public void setPlayDeckViewVisible() { setAllInvisibleExcept(playDeckView); }
 
     public void setEditCardViewVisible() {
         setAllInvisibleExcept(editCardView);
@@ -231,7 +319,7 @@ public class MainWindowViewController {
         onClick(profileButton);
     }
 
-    public void setUserAuthViewController() {
+    public void setUserAuthViewVisible() {
         setAllInvisibleExcept(userAuthView);
         onClick(profileButton);
     }
@@ -259,6 +347,16 @@ public class MainWindowViewController {
         setAllInvisibleExcept(statisticsView);
     }
 
+    public void setDeckPreviewViewVisible() {
+        deckPreviewView.setVisible(true);
+        popup.show(centerStackPane.getScene().getWindow());
+    }
+
+
+    public void setMarketplaceViewVisible() {
+        setAllInvisibleExcept(marketplaceView);
+        onClick(marketplaceButton);
+    }
 
     /* ====================================================================== */
     /*                          Icon Visibility                               */
@@ -272,20 +370,41 @@ public class MainWindowViewController {
         goBackIcon.setVisible(false);
     }
 
+    public void makeTopNavigationBarVisible() {
+        topHBox.setVisible(true);
+        topHBox.setManaged(true);
+    }
+
+    public void makeTopNavigationBarInvisible() {
+        topHBox.setVisible(false);
+        topHBox.setManaged(false);
+    }
+
+    public void makebottomNavigationBarVisible() {
+        bottomHBox.setVisible(true);
+        bottomHBox.setManaged(true);
+    }
+
+    public void makeBottomNavigationBarInvisible() {
+        bottomHBox.setVisible(false);
+        bottomHBox.setManaged(false);
+    }
+
 
     /* ====================================================================== */
     /*                               Click handlers                           */
     /* ====================================================================== */
 
     private void resetButtonExcept(Button button) {
-        List<Button> buttons = Arrays.asList(homeButton, profileButton, currentDeckButton, leaderboardButton);
-        for (Button b : buttons)
-            if (b != button)
-                b.setStyle(initialButtonStyle);
+        List<Button> buttons = Arrays.asList(homeButton, profileButton, marketplaceButton, leaderboardButton);
+        String initialButtonStyle = "-fx-background-color: transparent;";
+        buttons.stream()
+                .filter(b -> b != button)
+                .forEach(b -> b.setStyle(initialButtonStyle));
     }
 
     private void onClick(Button button) {
-        button.setStyle("-fx-background-color: \"#50C878\";");
+        button.setStyle("-fx-background-color: \"#b09fcb\";");
         resetButtonExcept(button);
     }
 
@@ -300,9 +419,7 @@ public class MainWindowViewController {
     }
 
     @FXML
-    private void goToCurrentDeckClicked() {
-        listener.goToCurrentPlayingDeck();
-    }
+    private void goToMarketplaceClicked() { listener.goToMarketplaceClicked(); }
 
     @FXML
     private void goToLeaderboardClicked() {
@@ -319,9 +436,7 @@ public class MainWindowViewController {
     /* ====================================================================== */
 
     @FXML
-    private void handleHomeHover() {
-        homeIcon.setIconColor(Color.web("#FFFFFF"));
-    }
+    private void handleHomeHover() { homeIcon.setIconColor(Color.web("#FFFFFF")); }
 
     @FXML
     private void handleHomeExitHover() {
@@ -329,19 +444,15 @@ public class MainWindowViewController {
     }
 
     @FXML
-    private void handleCurrentDeckHover() {
-        currentDeckIcon.setIconColor(Color.web("#FFFFFF"));
+    private void handleMarketplaceHover() {marketplaceIcon.setIconColor(Color.web("#FFFFFF")); }
+
+    @FXML
+    private void handleMarketplaceExitHover() {
+        marketplaceIcon.setIconColor(Color.web("#000000"));
     }
 
     @FXML
-    private void handleCurrentDeckExitHover() {
-        currentDeckIcon.setIconColor(Color.web("#000000"));
-    }
-
-    @FXML
-    private void handleLeaderboardHover() {
-        leaderboardIcon.setIconColor(Color.web("#FFFFFF"));
-    }
+    private void handleLeaderboardHover() { leaderboardIcon.setIconColor(Color.web("#FFFFFF")); }
 
     @FXML
     private void handleLeaderboardExitHover() {
@@ -369,6 +480,7 @@ public class MainWindowViewController {
     }
 
 
+
     /* ====================================================================== */
     /*                        Listener interface                              */
     /* ====================================================================== */
@@ -376,8 +488,9 @@ public class MainWindowViewController {
     public interface NavigationListener {
         void goBackClicked();
         void goToHomeClicked();
-        void goToCurrentPlayingDeck();
+        void goToMarketplaceClicked();
         void goToLeaderboardClicked();
         void goToProfileClicked();
+        void deckPreviewClosed();
     }
 }

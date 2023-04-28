@@ -2,91 +2,101 @@ package ulb.infof307.g01.model.card;
 
 import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class MCQCard extends Card {
+public class MCQCard extends TimedCard {
 
     @Expose
-    private List<String> answers;
+    private final List<String> choices;
     @Expose
-    private int correctAnswer;
+    private int correctChoice;
 
-    public MCQCard(String front, List<String> answers, int correctAnswer) {
-        super(front);
-        this.answers = answers;
-        this.correctAnswer = correctAnswer;
+    public final int MIN_CHOICES = 2;
+    public final int MAX_CHOICES = 4;
+
+    public MCQCard() {
+        super();
+        this.choices = new ArrayList<>();
+        this.choices.add("Réponse 1");
+        this.choices.add("Réponse 2");
+        this.correctChoice = 0;
         this.cardType = "MCQCard";
     }
 
-    public MCQCard(UUID uuid, UUID deckId, String front, List<String> answers, int correctAnswer) {
-        super(uuid, deckId, front);
-        this.answers = answers;
-        this.correctAnswer = correctAnswer;
+    public MCQCard(UUID uuid, UUID deckId, String front, List<String> choices, int correctChoice, Integer countdownTime) {
+        super(uuid, deckId, front, countdownTime);
+        this.choices = choices;
+        this.correctChoice = correctChoice;
         this.cardType = "MCQCard";
     }
 
-    public MCQCard(String front, List<String> answers, int correctAnswer, KnowledgeLevel knowledge) {
-        super(front, knowledge);
-        this.answers = answers;
-        this.correctAnswer = correctAnswer;
-        this.cardType = "MCQCard";
+    private void checkIndexArg(int index) throws IllegalArgumentException {
+        if (!isValidIndex(index))
+            throw new IllegalArgumentException("Invalid index given");
     }
 
-    public int getChoiceMax(){
-        return 4;
+    public boolean canRemoveChoice() {
+        return getChoicesCount() > MIN_CHOICES;
     }
 
-    public int getCardMin(){
-        return 2;
+    public boolean canAddChoice() {
+        return getChoicesCount() < MAX_CHOICES;
     }
 
-    public boolean isCardMin(){
-        return this.answers.size() == 2;
+    public boolean isValidIndex(int index) {
+        return index < getChoicesCount() && index >= 0;
     }
 
-    public List<String> getAnswers() {
-        return answers;
+    public int getChoicesCount() {
+        return choices.size();
     }
 
-    public String getChoice(int index) {
-        return answers.get(index);
+    public String getChoice(int index) throws IllegalArgumentException {
+        checkIndexArg(index);
+        return choices.get(index);
     }
 
-    public void setAnswers(List<String> answers) {
-        this.answers = answers;
+    public void addChoice(String choice) throws IllegalStateException {
+        if (!canAddChoice())
+            throw new IllegalStateException(
+                    "Cannot add more choices than %d".formatted(MAX_CHOICES));
+        this.choices.add(choice);
     }
 
-    public void addAnswer(String answer) {
-        this.answers.add(answer);
+    public void removeChoice(int index) throws IllegalStateException {
+        if (!canRemoveChoice())
+            throw new IllegalStateException(
+                    "Cannot have less choices than %d".formatted(MIN_CHOICES));
+
+        this.choices.remove(index);
+        if (this.correctChoice >= index)
+            this.correctChoice = Math.max(correctChoice - 1, 0);
     }
 
-    public void removeAnswer(int index) {
-        // limit answer to min two
-        if (this.answers.size() <= 2)
-            return;
-        this.answers.remove(index);
-        if (this.correctAnswer == index)
-            this.correctAnswer = Math.max(index - 1, 0);
-
+    public void setChoice(int index, String choice) throws IllegalArgumentException {
+        checkIndexArg(index);
+        this.choices.set(index, choice);
     }
 
-    public void setAnswer(int index, String answer) {
-        this.answers.set(index, answer);
+    public void setCorrectChoice(int correctChoice) throws IllegalArgumentException {
+        checkIndexArg(correctChoice);
+        this.correctChoice = correctChoice;
     }
 
     public int getCorrectChoiceIndex() {
-        return correctAnswer;
-    }
-
-    public void setCorrectAnswer(int correctAnswer) {
-        this.correctAnswer = correctAnswer;
+        return correctChoice;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.getId(), this.getDeckId(), this.getFront(), answers, correctAnswer);
+        return Objects.hash(this.getId(),
+                            this.getDeckId(),
+                            this.getFront(),
+                            choices,
+                            correctChoice);
     }
 
     @Override
@@ -100,15 +110,13 @@ public class MCQCard extends Card {
         if (o == null || o.getClass() != this.getClass())
             return false;
 
+        if( !super.equals(o) ) return false;
+
         MCQCard other = (MCQCard) o;
         return id.equals(other.getId())
                 && (deckId == other.getDeckId() || deckId.equals(other.getDeckId()))
                 && front.equals(other.getFront())
-                && answers.equals(other.getAnswers())
-                && correctAnswer == other.getCorrectChoiceIndex();
-    }
-
-    public int getNbOfChoices() {
-        return answers.size();
+                && choices.equals(other.choices)
+                && correctChoice == other.getCorrectChoiceIndex();
     }
 }

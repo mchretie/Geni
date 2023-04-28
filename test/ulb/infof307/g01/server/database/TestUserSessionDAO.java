@@ -16,7 +16,7 @@ public class TestUserSessionDAO extends DatabaseUsingTest {
     void init() throws DatabaseException {
         super.init();
 
-        db.initTables(DatabaseScheme.SERVER);
+        db.initTables(DatabaseSchema.SERVER);
         this.userDAO = new UserDAO(this.db);
     }
 

@@ -1,6 +1,5 @@
 package ulb.infof307.g01.gui.controller.errorhandler;
 
-import com.google.gson.JsonSyntaxException;
 import javafx.application.Platform;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 
@@ -60,7 +59,7 @@ public class ErrorHandler {
         communicateError(e, message);
     }
 
-    public void failedDeckImportError(JsonSyntaxException e) {
+    public void failedDeckImportError(Exception e) {
         String message = "L'importation du deck a échoué, " +
                 "veuillez vérifier que le fichier est bien un fichier " +
                 ".json.";
@@ -77,7 +76,7 @@ public class ErrorHandler {
         communicateError(title, description);
     }
 
-    public void emptyPacketError() {
+    public void emptyDeckError() {
         String title = "Paquet vide.";
         String description = "Le paquet que vous avez ouvert est vide.";
         communicateInfo(title, description);
@@ -107,7 +106,7 @@ public class ErrorHandler {
         communicateError(e, message);
     }
     public void failedLogin(Exception e) {
-         String message = "L'authentification a échoué, veuillez réessayer";
+        String message = "L'authentification a échoué, veuillez réessayer";
 
         communicateError(e, message);
     }
@@ -123,5 +122,12 @@ public class ErrorHandler {
         String message = "Votre score n'a pas pu être sauvegardé.";
 
         communicateError(e, message);
+    }
+
+    public void noDeckBeingPlayed() {
+        String title = "Aucun paquet en cours de jeu";
+        String message = "Vous n'avez pas de paquet en cours de jeu.";
+
+        communicateInfo(title, message);
     }
 }

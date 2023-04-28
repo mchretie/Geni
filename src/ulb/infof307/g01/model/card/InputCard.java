@@ -1,47 +1,39 @@
 package ulb.infof307.g01.model.card;
 
+import com.google.gson.annotations.Expose;
+import ulb.infof307.g01.model.IndulgentValidator;
+
 import java.util.Objects;
 import java.util.UUID;
 
-public class InputCard extends Card {
+public class InputCard extends TimedCard {
+
+    @Expose
     private String answer;
 
-    public InputCard(String front, String answer) {
-        super(front);
+    public InputCard() {
+        super();
+        this.answer = "";
+        this.cardType = "InputCard";
+    }
+
+    public InputCard(UUID uuid, UUID deckId, String front, String answer, Integer countdownTime) {
+        super(uuid, deckId, front, countdownTime);
         this.answer = answer;
         this.cardType = "InputCard";
     }
 
-    public InputCard(UUID uuid, UUID deckId, String front, String answer) {
-        super(uuid, deckId, front);
-        this.answer = answer;
-        this.cardType = "InputCard";
+    public String getAnswer() {
+        return answer;
     }
 
-    public InputCard(String front, String answer, KnowledgeLevel knowledge) {
-        super(front, knowledge);
+    public void setAnswer(String answer) {
         this.answer = answer;
-        this.cardType = "InputCard";
     }
-
-    public String getAnswer() { return answer; }
-
-    public void setAnswer(String answer) { this.answer = answer; }
 
     public boolean isInputCorrect(String input) {
-    	return convertAndLowercase(input).equals(convertAndLowercase(this.answer));
-    }
-
-    private String convertAndLowercase(String input) {
-        String output = input.toLowerCase();
-
-        output = output.replaceAll("[éèêë]", "e");
-        output = output.replaceAll("[àâä]", "a");
-        output = output.replaceAll("[ôö]", "o");
-        output = output.replaceAll("[ûüù]", "u");
-        output = output.replaceAll("ç", "c");
-
-        return output;
+        IndulgentValidator validator = new IndulgentValidator();
+        return validator.areEqual(this.answer, input);
     }
 
     @Override
@@ -50,8 +42,7 @@ public class InputCard extends Card {
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         UUID id = this.getId();
         UUID deckId = this.getDeckId();
         String front = this.getFront();
@@ -60,6 +51,8 @@ public class InputCard extends Card {
             return true;
         if (o == null || o.getClass() != this.getClass())
             return false;
+
+        if( !super.equals(o) ) return false;
 
         InputCard other = (InputCard) o;
         return id.equals(other.getId())

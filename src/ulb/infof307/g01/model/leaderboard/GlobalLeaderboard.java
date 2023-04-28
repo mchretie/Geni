@@ -1,55 +1,50 @@
 package ulb.infof307.g01.model.leaderboard;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
-public class GlobalLeaderboard implements Iterable<Map<String, String>>  {
+public class GlobalLeaderboard implements Iterable< GlobalLeaderboardEntry >  {
 
-    public static final String ENTRY_USERNAME = "username";
-    public static final String ENTRY_TOTAL_SCORE = "total_score";
+    private final Map<String, GlobalLeaderboardEntry> leaderboard;
+    private final List<GlobalLeaderboardEntry> leaderboardEntries;
 
-    private final List<Map<String, String>> leaderboard;
+    public GlobalLeaderboard(List<GlobalLeaderboardEntry> leaderboardEntries) {
+        this.leaderboard = new HashMap<>();
+        leaderboardEntries.forEach(entry -> leaderboard.put(entry.getUsername(), entry));
 
-    public GlobalLeaderboard(List<Map<String, String>> allUserDeckScore) {
-        this.leaderboard = allUserDeckScore;
-        this.leaderboard.sort((a, b) -> Integer.compare(
-                Integer.parseInt(b.get(ENTRY_TOTAL_SCORE)),
-                Integer.parseInt(a.get(ENTRY_TOTAL_SCORE))));
+        leaderboardEntries.sort(Comparator.reverseOrder());
+
+        for (int i = 0; i < leaderboardEntries.size(); i++) {
+            leaderboardEntries.get(i).setRank(String.valueOf(i + 1));
+        }
+
+        this.leaderboardEntries = leaderboardEntries;
+    }
+
+    private GlobalLeaderboardEntry getEntry(String username) {
+        return leaderboard.get(username);
     }
 
     public String getUserScore(String username) {
-        for (Map<String, String> userScore : leaderboard) {
-            if (userScore.get("username").equals(username)) {
-                return userScore.get("total_score");
-            }
-        }
-        return "0";
+        return getEntry(username) == null ? "0" : getEntry(username).getTotalScore() + "";
     }
 
     public String getUserRank(String username) {
-        for (int i = 0; i < leaderboard.size(); i++) {
-            if (leaderboard.get(i).get("username").equals(username)) {
-                return String.valueOf(i + 1);
-            }
-        }
-        return "Pas de rang";
+        return getEntry(username) == null ? "Pas de classement" : getEntry(username).getRank();
     }
 
     @Override
-    public Iterator<Map<String, String>> iterator() {
-        return leaderboard.iterator();
+    public Iterator< GlobalLeaderboardEntry > iterator() {
+        return leaderboardEntries.iterator();
     }
 
     @Override
-    public void forEach(Consumer<? super Map<String, String>> action) {
+    public void forEach(Consumer<? super GlobalLeaderboardEntry> action) {
         Iterable.super.forEach(action);
     }
 
     @Override
-    public Spliterator<Map<String, String>> spliterator() {
+    public Spliterator<GlobalLeaderboardEntry> spliterator() {
         return Iterable.super.spliterator();
     }
 }

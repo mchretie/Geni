@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox style="-fx-background-radius: 10px; -fx-border-radius: 10px;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckpreview.GameHistoryItemViewController">
+    <HBox alignment="CENTER_LEFT" spacing="20" HBox.hgrow="ALWAYS">
+        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+
+            <Label fx:id="dateLabel" text="11/09/2001" HBox.hgrow="ALWAYS">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Label>
+        </HBox>
+
+        <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+            <Label fx:id="scoreLabel" text="421" textFill="#449b6c" HBox.hgrow="ALWAYS">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <Text fill="#449b6c" strokeType="OUTSIDE" strokeWidth="0.0" text="Pts" HBox.hgrow="ALWAYS">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Text>
+        </HBox>
+    </HBox>
+</HBox>
