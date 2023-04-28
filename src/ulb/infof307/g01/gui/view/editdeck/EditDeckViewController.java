@@ -632,10 +632,11 @@ public class EditDeckViewController {
     }
 
     @FXML
-    private void handleColorPickerHoverTitle() { colorPickerTitle.setStyle("-fx-background-color: #aad0b3"); }
+    private void handleColorPickerHoverTitle() { colorPickerTitle.setStyle("-fx-background-color: #B1B7E1"); }
 
     @FXML
-    private void handleColorPickerExitTitle() { colorPickerTitle.setStyle("-fx-background-color: #5ab970"); }
+    private void handleColorPickerExitTitle() { colorPickerTitle.setStyle("-fx-background-color: #C3B1E1"); }
+
     @FXML
     private void handleFrontCardEditHover() {
         frontCardEditIcon.setIconColor(Color.web("#FFFFFF"));
