@@ -24,67 +24,66 @@ class DeckMarketplaceView extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Row(children: [
+                child: Stack(
+                  children: [
                     Align(
-                        alignment: FractionalOffset.bottomCenter,
+                      alignment: Alignment.topRight,
+                      child: GestureDetector(
+                      // onTap: () {
+                      //   //TODO
+                      // },
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           color: Colors.black.withOpacity(0.7),
-                          child: Text(
-                            deck.name,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )),
-                    Expanded(
-                        child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: SizedBox(
-                                height: 30,
-                                child: ListView(
-                                    scrollDirection: Axis.horizontal,
-                                    children: [
-                                      for (var tag in deck.tags)
-                                        Container(
-                                          padding: const EdgeInsets.all(8),
-                                          color: HexColor(tag.color)
-                                              .withOpacity(0.9),
-                                          child: Text(
-                                            tag.name,
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        )
-                                    ])))),
-                  ]),
+                          child: const Icon(Icons.download, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Row(children: [
+                        Align(
+                            alignment: FractionalOffset.bottomCenter,
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              color: Colors.black.withOpacity(0.7),
+                              child: Text(
+                                deck.name,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )),
+                        Expanded(
+                            child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: SizedBox(
+                                    height: 30,
+                                    child: ListView(
+                                        scrollDirection: Axis.horizontal,
+                                        children: [
+                                          for (var tag in deck.tags)
+                                            Container(
+                                              padding: const EdgeInsets.all(8),
+                                              color: HexColor(tag.color)
+                                                  .withOpacity(0.9),
+                                              child: Text(
+                                                tag.name,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            )
+                                        ])))),
+                      ]),
+                    ),
+                  ]
                 ),
               ),
-              Positioned(
-              top: 16,
-              right: 16,
-              child: GestureDetector(
-              // onTap: () {
-              //   //TODO
-              // },
-              child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.9),
-              borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Icon(Icons.download, color: Colors.black),
-              ),
-              ),
-              ),
-
               Container(
                 color: deck.color == '#00000000'
                     ? Colors.purple
