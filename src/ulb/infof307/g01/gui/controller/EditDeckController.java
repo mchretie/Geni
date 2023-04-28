@@ -252,7 +252,9 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void deckColorModified(Deck deck, Color color) {
         try {
-            deck.setColor(color.toString());
+            String colorString
+                = color.toString().replace("0x", "#");
+            deck.setColor(colorString);
             serverCommunicator.saveDeck(deck);
 
         } catch (InterruptedException | IOException e) {

@@ -79,9 +79,9 @@ class DeckView extends StatelessWidget {
                 ),
               ),
               Container(
-                color: deck.color == '0x00000000'
+                color: deck.color == '#00000000'
                     ? Colors.purple
-                    : Color(int.parse(deck.color)),
+                    : HexColor(deck.color),
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
