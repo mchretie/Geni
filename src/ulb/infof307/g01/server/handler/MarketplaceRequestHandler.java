@@ -48,8 +48,8 @@ public class MarketplaceRequestHandler extends Handler {
                 deckMetadata.deckHashCode()
         );
     }
-    private List<MarketplaceDeckMetadata> setupImagePath(List<MarketplaceDeckMetadata> deckMetadatas) {
-        return deckMetadatas.stream()
+    private List<MarketplaceDeckMetadata> setupImagePath(List<MarketplaceDeckMetadata> decksMetadata) {
+        return decksMetadata.stream()
                 .map(this::setupImagePath)
                 .collect(toList());
     }
