@@ -29,7 +29,6 @@ class _DeckMarketplaceViewState extends State<DeckMarketplaceView> {
 
   void _downloadDeck() {
     DeckDao.addDeckToCollection(widget.deck.id);
-    debugPrint('here');
     setState(() {
       deckDownloaded = true;
     });
