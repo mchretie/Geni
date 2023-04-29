@@ -18,13 +18,12 @@ class HttpDao {
     return http.Response('{"error": "No token"}', 401);
   }
 
-
   static Future<http.Response> post(Uri path, String body) async {
     String? token = await storage.read(key: 'token');
 
     if (token != null) {
       final http.Response response =
-      await http.post(path, headers: {authHeader: token}, body: body);
+          await http.post(path, headers: {authHeader: token}, body: body);
       return response;
     }
 
@@ -32,12 +31,11 @@ class HttpDao {
   }
 
   static Future<http.Response> delete(Uri path, String body) async {
-
     String? token = await storage.read(key: 'token');
-    if (token!=null){
-    final http.Response response =
-        await http.delete(path, headers: {authHeader: token}, body: body);
-    return response;
+    if (token != null) {
+      final http.Response response =
+          await http.delete(path, headers: {authHeader: token}, body: body);
+      return response;
     }
     return http.Response('{"error": "No token"}', 401);
   }

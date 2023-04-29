@@ -24,8 +24,8 @@ class DeckDao {
   }
 
   static Future<String> getBestDeckScore(String deckId) async {
-    final http.Response response =
-        await HttpDao.get(Uri.parse('${ServerPath.getBestScorePath}?deck=$deckId'));
+    final http.Response response = await HttpDao.get(
+        Uri.parse('${ServerPath.getBestScorePath}?deck_id=$deckId'));
     if (response.statusCode == 200) {
       if (response.body == 'null') {
         return 'N/A';
@@ -51,7 +51,7 @@ class DeckDao {
 
   static Future<bool> isDeckDownloaded(String deckID) async {
     final http.Response response =
-    await HttpDao.get(ServerPath.getAllDecksPath);
+        await HttpDao.get(ServerPath.getAllDecksPath);
     if (response.statusCode == 200) {
       List<dynamic> json = jsonDecode(response.body);
       for (var deck in json) {
@@ -64,16 +64,17 @@ class DeckDao {
   }
 
   static Future<void> addDeckToCollection(String deckID) async {
-    final http.Response response =
-    await HttpDao.post(Uri.parse('${ServerPath.addDeckToCollectionPath}?deck=$deckID'), "");
+    final http.Response response = await HttpDao.post(
+        Uri.parse('${ServerPath.addDeckToCollectionPath}?deck_id=$deckID'), "");
     if (response.statusCode == 200) {
       debugPrint('Deck removed from collection');
     }
   }
 
   static Future<void> removeDeckFromCollection(String deckID) async {
-    final http.Response response =
-        await HttpDao.delete(Uri.parse('${ServerPath.removeDeckFromCollectionPath}?deck=$deckID'), "");
+    final http.Response response = await HttpDao.delete(
+        Uri.parse('${ServerPath.removeDeckFromCollectionPath}?deck_id=$deckID'),
+        "");
     if (response.statusCode == 200) {
       debugPrint('Deck removed from collection');
     }
