@@ -48,6 +48,23 @@ class DeckDao {
     }
   }
 
+  static Future<void> removeDeckFromCollection(String deckID) async {
+    final http.Response response =
+        await HttpDao.delete(Uri.parse('${ServerPath.removeDeckFromCollectionPath}?deck=$deckID'));
+    if (response.statusCode == 200) {
+      print('Deck removed from collection');
+    }
+  }
+
+  static Future<void> addDeckToCollection(String deckID) async {
+    final http.Response response =
+    await HttpDao.post(Uri.parse('${ServerPath.removeDeckFromCollectionPath}?deck=$deckID'));
+    if (response.statusCode == 200) {
+      print('Deck removed from collection');
+    }
+  }
+
+
 // static Future<List<Deck>> searchDecks(String query) async {
 //   final http.Response response =
 //       await HttpDao.get(ServerPath.searchDecksPath + query);

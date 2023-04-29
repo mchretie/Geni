@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_deckz/model/deck/hex_color.dart';
 
-import '../http_dao/server_path.dart';
-import '../model/deck/deck.dart';
+import '../../http_dao/deck_dao.dart';
+import '../../http_dao/server_path.dart';
+import '../../model/deck/deck.dart';
 
 class DeckMarketplaceView extends StatefulWidget {
   final Deck deck;
@@ -15,13 +16,20 @@ class DeckMarketplaceView extends StatefulWidget {
 
 class _DeckMarketplaceViewState extends State<DeckMarketplaceView> {
   bool deckDownloaded = false;
-  //TODO: Add download functionality
-  // void _downloadDeck() {
-  //   // Implement your download logic here
-  //   setState(() {
-  //     deckDownloaded = true;
-  //   });
-  // }
+
+  void _downloadDeck() {
+    DeckDao.removeDeckFromCollection(widget.deck.id);
+    setState(() {
+      deckDownloaded = true;
+    });
+  }
+  void _deleteDeck() {
+    DeckDao.addDeckToCollection(widget.deck.id);
+    setState(() {
+      deckDownloaded = false;
+    });
+
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -44,13 +52,12 @@ class _DeckMarketplaceViewState extends State<DeckMarketplaceView> {
                       alignment: Alignment.topRight,
                       child: GestureDetector(
                       onTap: () {
-                        setState(() {
-                          deckDownloaded = !deckDownloaded;
-                          //TODO
-                          // if (!_isDownloading) {
-                          //   _downloadDeck();
-                          // }
-                        });
+                          if (!deckDownloaded) {
+                            _downloadDeck();
+                        }
+                          else {
+                            _deleteDeck();
+                        }
                       },
                         child: Container(
                           padding: const EdgeInsets.all(8),
@@ -155,5 +162,6 @@ class _DeckMarketplaceViewState extends State<DeckMarketplaceView> {
           );
   }
 }
+
 
 // Icons.account_circle,

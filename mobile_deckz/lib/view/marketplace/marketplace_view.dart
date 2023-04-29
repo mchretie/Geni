@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../http_dao/marketplace_dao.dart';
-import '../model/deck/deck.dart';
+import '../../http_dao/marketplace_dao.dart';
+import '../../model/deck/deck.dart';
 import 'deck_marcketplace_view.dart';
 
 class MarketPlaceView extends StatefulWidget {

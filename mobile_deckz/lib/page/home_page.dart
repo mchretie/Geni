@@ -5,7 +5,7 @@ import 'package:mobile_deckz/page/profile_page.dart';
 import 'package:mobile_deckz/view/user_deck_view.dart';
 
 import '../http_dao/auth_dao.dart';
-import '../view/marketplace_view.dart';
+import '../view/marketplace/marketplace_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
