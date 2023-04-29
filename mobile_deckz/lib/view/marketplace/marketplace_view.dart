@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_deckz/model/deck/marketplace_deck.dart';
 import '../../http_dao/marketplace_dao.dart';
-import '../../model/deck/deck.dart';
 import 'deck_marcketplace_view.dart';
 
 class MarketPlaceView extends StatefulWidget {
@@ -13,64 +13,66 @@ class MarketPlaceView extends StatefulWidget {
 class _MarketPlaceViewState extends State<MarketPlaceView> {
   String dropdownValue = 'Name';
   List<String> dropdownItems = ['Name', 'Tag'];
+
   @override
   Widget build(BuildContext context) {
-    final Future<List<Deck>> decks = MarketPlaceDao.getAllMarketplaceDecks();
+    final Future<List<MarketplaceDeck>> decks = MarketPlaceDao.getAllMarketplaceDecks();
 
-    return FutureBuilder<List<Deck>>(
+    return FutureBuilder<List<MarketplaceDeck>>(
         future: decks,
-        builder: (BuildContext context, AsyncSnapshot<List<Deck>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<MarketplaceDeck>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-            List<Deck> deckList = snapshot.data ?? [];
+            List<MarketplaceDeck> deckList = snapshot.data ?? [];
             return Scaffold(
                 body: Center(
                     child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Row(
-                                children: [
-                                  DropdownButton<String>(
-                                    value: dropdownValue,
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        dropdownValue = newValue!;
-                                      });
-                                    },
-                                    items: dropdownItems.map<DropdownMenuItem<String>>((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                  ),
-                                  const SizedBox(width: 20),
-                                  const Expanded(
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                        hintText: 'Search',
-                                        prefixIcon: Icon(Icons.search),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                          Expanded(
-                              child: ListView.builder(
-                                  itemCount: deckList.length,
-                                  itemBuilder: (context, index) {
-                                    final Deck deck = deckList[index];
-                                    return Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: DeckMarketplaceView(deck: deck));
-                                  }))
-                        ])));
+                  Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        children: [
+                          DropdownButton<String>(
+                            value: dropdownValue,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                dropdownValue = newValue!;
+                              });
+                            },
+                            items: dropdownItems
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(width: 20),
+                          const Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: 'Search',
+                                prefixIcon: Icon(Icons.search),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                  Expanded(
+                      child: ListView.builder(
+                          itemCount: deckList.length,
+                          itemBuilder: (context, index) {
+                            final MarketplaceDeck deck = deckList[index];
+                            return Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: DeckMarketplaceView(deck: deck));
+                          }))
+                ])));
           }
         });
   }
