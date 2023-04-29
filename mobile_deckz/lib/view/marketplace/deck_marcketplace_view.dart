@@ -17,14 +17,25 @@ class DeckMarketplaceView extends StatefulWidget {
 class _DeckMarketplaceViewState extends State<DeckMarketplaceView> {
   bool deckDownloaded = false;
 
+  @override
+  void initState() {
+    super.initState();
+    DeckDao.isDeckDownloaded(widget.deck.id).then((value) {
+      setState(() {
+        deckDownloaded = value;
+      });
+    });
+  }
+
   void _downloadDeck() {
-    DeckDao.removeDeckFromCollection(widget.deck.id);
+    DeckDao.addDeckToCollection(widget.deck.id);
+    debugPrint('here');
     setState(() {
       deckDownloaded = true;
     });
   }
   void _deleteDeck() {
-    DeckDao.addDeckToCollection(widget.deck.id);
+    DeckDao.removeDeckFromCollection(widget.deck.id);
     setState(() {
       deckDownloaded = false;
     });

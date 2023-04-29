@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_deckz/http_dao/http_dao.dart';
 import 'package:mobile_deckz/http_dao/server_path.dart';
@@ -48,11 +49,25 @@ class DeckDao {
     }
   }
 
+  static Future<bool> isDeckDownloaded(String deckID) async {
+    final http.Response response =
+    await HttpDao.get(ServerPath.getAllDecksPath);
+    if (response.statusCode == 200) {
+      List<dynamic> json = jsonDecode(response.body);
+      for (var deck in json) {
+        if (deck['id'] == deckID) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   static Future<void> removeDeckFromCollection(String deckID) async {
     final http.Response response =
         await HttpDao.delete(Uri.parse('${ServerPath.removeDeckFromCollectionPath}?deck=$deckID'));
     if (response.statusCode == 200) {
-      print('Deck removed from collection');
+      debugPrint('Deck removed from collection');
     }
   }
 
@@ -60,7 +75,7 @@ class DeckDao {
     final http.Response response =
     await HttpDao.post(Uri.parse('${ServerPath.removeDeckFromCollectionPath}?deck=$deckID'));
     if (response.statusCode == 200) {
-      print('Deck removed from collection');
+      debugPrint('Deck removed from collection');
     }
   }
 
