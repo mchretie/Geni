@@ -16,11 +16,13 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
 
   @override
   Widget build(BuildContext context) {
-    final Future<List<MarketplaceDeck>> decks = MarketPlaceDao.getAllMarketplaceDecks();
+    final Future<List<MarketplaceDeck>> decks =
+        MarketPlaceDao.getAllMarketplaceDecks();
 
     return FutureBuilder<List<MarketplaceDeck>>(
         future: decks,
-        builder: (BuildContext context, AsyncSnapshot<List<MarketplaceDeck>> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<List<MarketplaceDeck>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {

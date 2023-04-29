@@ -115,7 +115,11 @@ class _DeckMarketplaceViewState extends State<DeckMarketplaceView> {
                                         ),
                                       ),
                                     )
-                                ])))),
+                                ]
+                            )
+                        )
+                    )
+                ),
               ]),
             ),
           ]),
@@ -169,5 +173,3 @@ class _DeckMarketplaceViewState extends State<DeckMarketplaceView> {
     );
   }
 }
-
-// Icons.account_circle,
