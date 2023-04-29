@@ -174,7 +174,6 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             Deck deck = new Deck(name);
             serverCommunicator.saveDeck(deck);
-            serverCommunicator.addDeckToCollection(deck.getId());
             showDecks();
 
         } catch (IOException | InterruptedException e) {
@@ -210,9 +209,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     public void deckRemoved(DeckMetadata deck) {
         try {
             if (deck.isPublic())
-                serverCommunicator.removeDeckFromCollection(deck.id());
+                serverCommunicator.removeDeckFromCollection(deck);
             else
-                serverCommunicator.deleteDeck(deck.id());
+                serverCommunicator.deleteDeck(deck);
             showDecks();
 
         } catch (InterruptedException | IOException e) {

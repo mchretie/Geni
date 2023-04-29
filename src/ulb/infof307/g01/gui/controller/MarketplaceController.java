@@ -10,6 +10,7 @@ import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController.DeckAvailability;
 import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
+import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 
 import java.io.IOException;
@@ -105,11 +106,12 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     public void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability)
             throws ServerCommunicationFailedException {
 
-        if (deckAvailability.equals(DeckAvailability.MISSING)) {
-            serverCommunicator.addMarketplaceDeckToCollection(deck.id());
+        var deckMetadata = DeckMetadata.fromMarketplaceDeckMetadata(deck);
 
+        if (deckAvailability.equals(DeckAvailability.MISSING)) {
+            serverCommunicator.addMarketplaceDeckToCollection(deckMetadata);
         } else {
-            serverCommunicator.removeDeckFromCollection(deck.id());
+            serverCommunicator.removeDeckFromCollection(deckMetadata);
         }
     }
 }
