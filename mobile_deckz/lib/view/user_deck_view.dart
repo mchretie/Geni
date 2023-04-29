@@ -15,18 +15,28 @@ class _UserDeckViewState extends State<UserDeckView> {
   String dropdownValue = 'Name';
   List<String> dropdownItems = ['Name', 'Tag'];
 
-  @override
-  Widget build(BuildContext context) {
-    final Future<List<Deck>> decks = DeckDao.getAllDecks();
+  Future<List<Deck>> _decksFuture = DeckDao.getAllDecks();
 
-    return FutureBuilder<List<Deck>>(
-        future: decks,
-        builder: (BuildContext context, AsyncSnapshot<List<Deck>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
+  Future<void> _reloadDecks() async {
+    setState(() {
+      _decksFuture = DeckDao.getAllDecks();
+    });
+  }
+
+  @override
+  @override
+        Widget build(BuildContext context) {
+          return Scaffold(
+              body: RefreshIndicator(
+              onRefresh: _reloadDecks,
+              child: FutureBuilder<List<Deck>>(
+              future: _decksFuture,
+              builder: (BuildContext context, AsyncSnapshot<List<Deck>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
             List<Deck> deckList = snapshot.data ?? [];
             return Scaffold(
                 body: Center(
@@ -74,6 +84,6 @@ class _UserDeckViewState extends State<UserDeckView> {
                           }))
                 ])));
           }
-        });
+        })));
   }
 }
