@@ -64,8 +64,8 @@ public class Database {
         deckDao.saveDeck(deck, userId);
     }
 
-    public Deck getDeck(UUID deckId, UUID userId) throws DatabaseException {
-        return deckDao.getDeck(deckId, userId);
+    public Deck getDeck(UUID deckId) throws DatabaseException {
+        return deckDao.getDeck(deckId);
     }
 
     public List<Deck> getAllDecks() throws DatabaseException {
@@ -174,7 +174,7 @@ public class Database {
         return new DeckLeaderboard(deckId, scoreDao.getScoresForDeck(deckId));
     }
 
-    public GlobalLeaderboard getLeaderboardFromUserID() {
+    public GlobalLeaderboard getGlobalLeaderboard() {
         return new GlobalLeaderboard(scoreDao.getAllUserDeckScore());
     }
 
@@ -213,5 +213,9 @@ public class Database {
 
     public List<MarketplaceDeckMetadata> getUsersCollectionFromMarketplace(UUID userId) throws DatabaseException {
         return marketplaceDao.getSavedDecks(userId);
+    }
+
+    public int getNumberOfPublicPlayedDecks(UUID userId) {
+        return deckDao.getNumberOfPublicPlayedDecks(userId);
     }
 }

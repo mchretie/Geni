@@ -41,7 +41,7 @@ public class ScoreDAO extends HttpDAO {
     }
 
     public GlobalLeaderboard getGlobalLeaderboard() throws IOException, InterruptedException {
-        HttpResponse<String> response = get(ServerPaths.GET_BEST_SCORE_USER_ID_PATH);
+        HttpResponse<String> response = get(ServerPaths.GET_GLOBAL_LEADERBOARD);
 
         checkResponseCode(response.statusCode());
 

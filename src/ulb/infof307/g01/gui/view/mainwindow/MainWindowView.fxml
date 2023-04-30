@@ -8,7 +8,7 @@
 
     <!-- Top navigation bar -->
     <top>
-        <HBox fx:id="topHBox" alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #C3B1E1#C3B1E1;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+        <HBox fx:id="topHBox" alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #C3B1E1;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
 
             <!-- Go back button -->
             <Button mnemonicParsing="false" onMouseClicked="#handleGoBackClicked" prefHeight="100.0" prefWidth="61.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER_LEFT">
