@@ -111,7 +111,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
                 decks = serverCommunicator.searchDecksMarketplace(name);
 
             } else if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.Creator)) {
-                //decks = serverCommunicator.searchDecksMarketplace(name);
+                decks = serverCommunicator.searchDecksMarketplaceByCreator(name);
             }
             assert decks != null;
             marketplaceViewController.setDecks(loadDecksView(decks, DeckAvailability.MISSING));
