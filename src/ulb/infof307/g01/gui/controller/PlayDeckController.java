@@ -163,7 +163,10 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         answeredCards[cardIndex] = true;
         if (isGoodChoice) {
-            score.increment((int) (1000 * timeLeft));
+            // make x between -2 and 2 depending on time left for the sigmoid function
+            double x = (timeLeft - 0.5) * 4;
+            int scoreToAdd = (int) (1000 / (1 + Math.exp(-2 * x)));
+            score.increment(scoreToAdd);
         }
     }
 
