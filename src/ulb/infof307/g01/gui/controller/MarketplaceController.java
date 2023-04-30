@@ -53,7 +53,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     public void show() throws ServerCommunicationFailedException, IOException, InterruptedException {
         mainWindowViewController.setMarketplaceViewVisible();
         marketplaceViewController
-                .setDecks(loadDecksDatabase());
+                .setDecks(loadDecksDatabase(serverCommunicator.getAllMarketplaceDecks()));
         stage.show();
     }
 
@@ -61,11 +61,11 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     /* ====================================================================== */
     /*                          Database Access                               */
     /* ====================================================================== */
-    private List<Node> loadDecksDatabase()
+    private List<Node> loadDecksDatabase(List<MarketplaceDeckMetadata> marketplaceDecks)
             throws ServerCommunicationFailedException, IOException {
 
-        List<MarketplaceDeckMetadata> marketplaceDecks = serverCommunicator.getAllMarketplaceDecks();
         List<MarketplaceDeckMetadata> decksSaved = serverCommunicator.getSavedDecks();
+        decksSaved.retainAll(marketplaceDecks);
         marketplaceDecks.removeAll(decksSaved);
 
         List<Node> decksLoaded = new ArrayList<>();
@@ -114,7 +114,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
                 decks = serverCommunicator.searchDecksMarketplaceByCreator(name);
             }
             assert decks != null;
-            marketplaceViewController.setDecks(loadDecksView(decks, DeckAvailability.MISSING));
+            marketplaceViewController.setDecks(loadDecksDatabase(decks));
 
         } catch (IOException e) {
             errorHandler.failedLoading(e);
