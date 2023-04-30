@@ -365,4 +365,16 @@ public class ServerCommunicator {
             throw new ServerCommunicationFailedException(message);
         }
     }
+
+    public List<MarketplaceDeckMetadata> searchDecksMarketplace(String deckName)
+            throws ServerCommunicationFailedException {
+
+        try {
+            return marketplaceDAO.searchDecks(deckName);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to search decks";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
 }

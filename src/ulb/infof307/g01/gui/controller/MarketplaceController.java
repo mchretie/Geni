@@ -3,13 +3,16 @@ package ulb.infof307.g01.gui.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.util.ImageLoader;
+import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController.DeckAvailability;
 import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
+import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 
 import java.io.IOException;
@@ -19,6 +22,8 @@ import java.util.List;
 
 public class MarketplaceController implements MarketplaceViewController.Listener, DeckMarketplaceViewController.Listener {
     private final Stage stage;
+
+    private final ErrorHandler errorHandler;
     private final MarketplaceViewController marketplaceViewController;
     private final MainWindowViewController mainWindowViewController;
     private final ImageLoader imageLoader = new ImageLoader();
@@ -26,10 +31,12 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     private final ServerCommunicator serverCommunicator;
 
     public MarketplaceController(Stage stage,
+                                 ErrorHandler errorHandler,
                                  MainWindowViewController mainWindowViewController,
                                  ServerCommunicator serverCommunicator) throws IOException, InterruptedException {
 
         this.stage = stage;
+        this.errorHandler = errorHandler;
         this.mainWindowViewController = mainWindowViewController;
         this.serverCommunicator = serverCommunicator;
 
@@ -98,7 +105,23 @@ public class MarketplaceController implements MarketplaceViewController.Listener
 
     @Override
     public void searchDeckClicked(String name) {
-        // TODO: Implement search
+        try {
+            List<MarketplaceDeckMetadata> decks = null;
+            if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.Name)) {
+                decks = serverCommunicator.searchDecksMarketplace(name);
+
+            } else if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.Creator)) {
+                //decks = serverCommunicator.searchDecksMarketplace(name);
+            }
+            assert decks != null;
+            marketplaceViewController.setDecks(loadDecksView(decks, DeckAvailability.MISSING));
+
+        } catch (IOException e) {
+            errorHandler.failedLoading(e);
+
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.severConnectionError();
+        }
     }
 
     @Override

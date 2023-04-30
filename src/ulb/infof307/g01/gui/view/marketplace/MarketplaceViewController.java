@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -107,7 +108,12 @@ public class MarketplaceViewController {
 
     @FXML
     private void handleSearchDeckEvent(Event event) {
-        //TODO
+        if (event instanceof MouseEvent) {
+            searchBar.requestFocus();
+        }
+
+        String searchText = searchBar.getText();
+        listener.searchDeckClicked(searchText);
     }
     /* ====================================================================== */
     /*                             Hover handlers                             */
