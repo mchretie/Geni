@@ -215,15 +215,15 @@ public class ServerCommunicator {
         }
     }
 
-    public void deleteDeck(UUID deckId) throws IOException, InterruptedException {
-        deckDAO.deleteDeck(deckId);
+    public void deleteDeck(DeckMetadata deckMetadata) throws IOException, InterruptedException {
+        deckDAO.deleteDeck(deckMetadata);
     }
 
-    public void removeDeckFromCollection(UUID deckId)
+    public void removeDeckFromCollection(DeckMetadata deckMetadata)
             throws ServerCommunicationFailedException {
 
         try {
-            deckDAO.removeDeckFromCollection(deckId);
+            deckDAO.removeDeckFromCollection(deckMetadata);
 
         } catch (IOException | InterruptedException e) {
             String message = "Failed to remove deck from collection";
@@ -231,11 +231,11 @@ public class ServerCommunicator {
         }
     }
 
-    public void addDeckToCollection(UUID deckId)
+    public void addDeckToCollection(DeckMetadata deckMetadata)
             throws ServerCommunicationFailedException {
 
         try {
-            deckDAO.addDeckToCollection(deckId);
+            deckDAO.addDeckToCollection(deckMetadata);
 
         } catch (IOException | InterruptedException e) {
             String message = "Failed to add deck to collection";
@@ -321,7 +321,7 @@ public class ServerCommunicator {
 
         try {
             marketplaceDAO.addDeckToMarketplace(deck);
-            deckDAO.emptyCache();
+            deckDAO.updateCache(deck.getMetadata());
 
         } catch (IOException | InterruptedException e) {
             String message = "Failed to add deck to marketplace";
@@ -329,12 +329,11 @@ public class ServerCommunicator {
         }
     }
 
-    public void addMarketplaceDeckToCollection(UUID deck)
+    public void addMarketplaceDeckToCollection(DeckMetadata deck)
             throws ServerCommunicationFailedException {
 
         try {
             deckDAO.addDeckToCollection(deck);
-            deckDAO.emptyCache();
 
         } catch (IOException | InterruptedException e) {
             String message = "Failed to add marketplace deck to collection";

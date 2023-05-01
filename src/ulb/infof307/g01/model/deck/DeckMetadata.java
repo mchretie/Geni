@@ -34,6 +34,18 @@ public record DeckMetadata(UUID id,
                 DeckMetadata.class);
     }
 
+    public static DeckMetadata fromMarketplaceDeckMetadata(MarketplaceDeckMetadata deck) {
+        return new DeckMetadata(deck.id(),
+                                deck.name(),
+                                true,
+                                deck.color(),
+                                deck.image(),
+                                deck.colorName(),
+                                deck.cardCount(),
+                                deck.tags(),
+                                deck.deckHashCode());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
