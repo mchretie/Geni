@@ -437,6 +437,7 @@ public class MainFxController extends Application implements
         try {
             marketplaceController = new MarketplaceController(
                     stage,
+                    errorHandler,
                     mainWindowViewController,
                     serverCommunicator);
 
