@@ -50,10 +50,10 @@ public class MarketplaceDAO extends HttpDAO {
         checkResponseCode(response.statusCode());
     }
 
-    public void removeDeckFromMarketplace(String deckId) throws IOException, InterruptedException {
-        String deckIdParam = "?deckId=" + deckId;
+    public void removeDeckFromMarketplace(MarketplaceDeckMetadata deck) throws IOException, InterruptedException {
+        String path = ServerPaths.REMOVE_DECK_FROM_MARKETPLACE_PATH + "?deck_id=" + deck.id().toString();
 
-        HttpResponse<String> response = delete(ServerPaths.REMOVE_DECK_FROM_MARKETPLACE_PATH + deckIdParam);
+        HttpResponse<String> response = delete(path);
 
         checkResponseCode(response.statusCode());
     }

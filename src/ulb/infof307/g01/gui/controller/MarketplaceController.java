@@ -10,6 +10,7 @@ import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController.DeckAvailability;
+import ulb.infof307.g01.gui.view.marketplace.DeckUserMarketplaceViewController;
 import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
@@ -19,7 +20,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarketplaceController implements MarketplaceViewController.Listener, DeckMarketplaceViewController.Listener {
+public class MarketplaceController implements
+        MarketplaceViewController.Listener,
+        DeckMarketplaceViewController.Listener,
+        DeckUserMarketplaceViewController.Listener  {
     private final Stage stage;
 
     private final ErrorHandler errorHandler;
@@ -92,15 +96,15 @@ public class MarketplaceController implements MarketplaceViewController.Listener
         for (MarketplaceDeckMetadata deck : decksUser) {
             URL resource = MarketplaceViewController
                     .class
-                    .getResource("DeckMarketplaceView.fxml");
+                    .getResource("DeckUserMarketplaceView.fxml");
 
             FXMLLoader loader = new FXMLLoader(resource);
 
             Node node = loader.load();
 
-            DeckMarketplaceViewController controller = loader.getController();
+            DeckUserMarketplaceViewController controller = loader.getController();
 
-            controller.setDeck(deck, serverCommunicator.getBestScoreForDeck(deck.id()), DeckAvailability.OWNED);
+            controller.setDeck(deck, serverCommunicator.getBestScoreForDeck(deck.id()));
             controller.setImageLoader(imageLoader);
             controller.setListener(this);
 
@@ -170,5 +174,15 @@ public class MarketplaceController implements MarketplaceViewController.Listener
         } else {
             serverCommunicator.removeDeckFromCollection(deckMetadata);
         }
+    }
+
+    @Override
+    public void removeDeckClicked(MarketplaceDeckMetadata deck) throws ServerCommunicationFailedException, IOException {
+        serverCommunicator.removeDeckFromMarketplace(deck);
+
+        List<Node> decksMarketplace = loadDecksMarketplaceDatabase(serverCommunicator.getAllMarketplaceDecks());
+        List<Node> decksUser = getMarketplaceDecksUser();
+        marketplaceViewController.setDecksMarketplace(decksMarketplace);
+        marketplaceViewController.setDecksUser(decksUser);
     }
 }
