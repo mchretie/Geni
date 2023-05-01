@@ -7,7 +7,6 @@ import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.util.ImageLoader;
-import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController.DeckAvailability;
@@ -51,10 +50,20 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     /* ====================================================================== */
 
     public void show() throws ServerCommunicationFailedException, IOException, InterruptedException {
+        if (! serverCommunicator.isUserLoggedIn()) {
+            //TODO : GuestMode
+        }
         mainWindowViewController.setMarketplaceViewVisible();
+
+        List<Node> decksMarketplace = loadDecksDatabase(serverCommunicator.getAllMarketplaceDecks());
+        List<Node> decksUser = getMarketplaceDecksUser();
         marketplaceViewController
-                .setDecks(loadDecksDatabase(serverCommunicator.getAllMarketplaceDecks()));
+                .setDecks(decksMarketplace, decksUser);
         stage.show();
+    }
+
+    private List<Node> getMarketplaceDecksUser() throws ServerCommunicationFailedException, IOException {
+        return loadDecksDatabase(serverCommunicator.searchDecksMarketplaceByCreator(serverCommunicator.getSessionUsername()));
     }
 
 
@@ -114,7 +123,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
                 decks = serverCommunicator.searchDecksMarketplaceByCreator(name);
             }
             assert decks != null;
-            marketplaceViewController.setDecks(loadDecksDatabase(decks));
+            marketplaceViewController.setDecks(loadDecksDatabase(decks), getMarketplaceDecksUser());
 
         } catch (IOException e) {
             errorHandler.failedLoading(e);
