@@ -162,6 +162,20 @@ public class DeckDAO extends DAO {
         return extractDeckMetadata(getDecks(deckIds));
     }
 
+    public UUID getDeckOwnerId(UUID deckId) throws DatabaseException {
+        try {
+            String sql = """
+                    SELECT user_id
+                    FROM deck
+                    WHERE deck_id = ?
+                    """;
+            ResultSet res = database.executeQuery(sql, deckId.toString());
+            return UUID.fromString(res.getString("user_id"));
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
     /**
      * Approximate search of decks with given search string
      *
@@ -183,7 +197,6 @@ public class DeckDAO extends DAO {
         return getDecks(deckIds);
     }
 
-    // TODO: optimize the deck fetching
     public List<DeckMetadata> searchDecksMetadata(String userSearch, UUID userId) throws DatabaseException {
         String sql = """
                 SELECT deck_id

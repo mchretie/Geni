@@ -67,6 +67,10 @@ public class Database {
         return deckDao.getAllUserDecksMetadata(userId);
     }
 
+    public UUID getDeckOwnerId(UUID deckId) throws DatabaseException {
+        return deckDao.getDeckOwnerId(deckId);
+    }
+
     public void deleteDeck(UUID deckId, UUID userId) throws DatabaseException {
         deckDao.deleteDeck(deckId, userId);
     }
