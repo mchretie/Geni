@@ -145,6 +145,10 @@ public class Database {
         marketplaceDao.removeDeckFromMarketplace(deckId);
     }
 
+    public void removeDeckFromNonOwnerCollection(UUID deckId, UUID ownerId) throws DatabaseException {
+        marketplaceDao.removeDeckFromNonOwnerCollection(deckId, ownerId);
+    }
+
     public void addDeckToUserCollection(UUID deckId, UUID userId) throws DatabaseException {
         marketplaceDao.addDeckToUserCollection(deckId, userId);
     }
