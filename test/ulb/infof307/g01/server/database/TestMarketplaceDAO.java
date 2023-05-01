@@ -60,6 +60,8 @@ public class TestMarketplaceDAO extends DatabaseUsingTest {
         marketplaceDAO.addDeckToMarketplace(deck1.getId());
         marketplaceDAO.addDeckToMarketplace(deck2.getId());
 
+        deck1.switchOnlineVisibility();
+        deck2.switchOnlineVisibility();
         List<MarketplaceDeckMetadata> expected = new ArrayList<>();
         expected.add(new MarketplaceDeckMetadata(deck1, "user1", 0, 0));
         expected.add(new MarketplaceDeckMetadata(deck2, "user1", 0, 0));
@@ -70,6 +72,7 @@ public class TestMarketplaceDAO extends DatabaseUsingTest {
         deckDAO.saveDeck(deck3, UUID.fromString(userDAO.getUserId("user2")));
         marketplaceDAO.addDeckToMarketplace(deck3.getId());
 
+        deck3.switchOnlineVisibility();
         expected.add(new MarketplaceDeckMetadata(deck3, "user2", 0, 0));
 
         assertEquals(expected, marketplaceDAO.getMarketplaceDecksMetadata());

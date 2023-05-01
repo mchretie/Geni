@@ -5,7 +5,6 @@ import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
-import ulb.infof307.g01.model.deck.Tag;
 import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.server.database.dao.*;
@@ -52,10 +51,6 @@ public class Database {
     /*                              Deck                                      */
     /* ====================================================================== */
 
-    public boolean isDeckValid(Deck deck, UUID userId) throws DatabaseException {
-        return deckDao.isDeckValid(deck, userId);
-    }
-
     public boolean deckNameExists(String name, UUID userid) throws DatabaseException {
         return deckDao.deckNameExists(name, userid);
     }
@@ -68,76 +63,23 @@ public class Database {
         return deckDao.getDeck(deckId);
     }
 
-    public List<Deck> getAllDecks() throws DatabaseException {
-        return deckDao.getAllDecks();
-    }
-
-    public List<Deck> getAllUserDecks(UUID userId) throws DatabaseException {
-        return deckDao.getAllUserDecks(userId);
-    }
-
     public List<DeckMetadata> getAllUserDecksMetadata(UUID userId) throws DatabaseException {
         return deckDao.getAllUserDecksMetadata(userId);
+    }
+
+    public UUID getDeckOwnerId(UUID deckId) throws DatabaseException {
+        return deckDao.getDeckOwnerId(deckId);
     }
 
     public void deleteDeck(UUID deckId, UUID userId) throws DatabaseException {
         deckDao.deleteDeck(deckId, userId);
     }
-
-    public List<Deck> searchDecks(String userSearch, UUID userId) throws DatabaseException {
-        return deckDao.searchDecks(userSearch, userId);
-    }
-
     public List<DeckMetadata> searchDecksMetadata(String userSearch, UUID userId) throws DatabaseException {
         return deckDao.searchDecksMetadata(userSearch, userId);
     }
 
     public boolean deckIdExists(UUID deckId) throws DatabaseException {
         return deckDao.deckIdExists(deckId);
-    }
-
-    /* ====================================================================== */
-    /*                              Tag                                       */
-    /* ====================================================================== */
-
-    public boolean isTagValid(Tag tag) throws DatabaseException {
-        return tagDao.isTagValid(tag);
-    }
-
-    public boolean tagNameExists(String name) throws DatabaseException {
-        return tagDao.tagNameExists(name);
-    }
-
-    public void saveTag(Tag tag) throws DatabaseException {
-        tagDao.saveTag(tag);
-    }
-
-    public Tag getTag(UUID uuid) throws DatabaseException {
-        return tagDao.getTag(uuid);
-    }
-
-    public List<Tag> getAllTags() throws DatabaseException {
-        return tagDao.getAllTags();
-    }
-
-    public void deleteTag(Tag tag) throws DatabaseException {
-        tagDao.deleteTag(tag);
-    }
-
-    public void saveTagsFor(Deck deck) throws DatabaseException {
-        tagDao.saveTagsFor(deck);
-    }
-
-    public List<Tag> getTagsFor(UUID deckId) throws DatabaseException {
-        return tagDao.getTagsFor(deckId);
-    }
-
-    public List<Deck> getDecksHavingTag(Tag tag) throws DatabaseException {
-        return tagDao.getDecksHavingTag(tag);
-    }
-
-    public List<Tag> searchTags(String userSearch) throws DatabaseException {
-        return tagDao.searchTags(userSearch);
     }
 
 
@@ -216,6 +158,6 @@ public class Database {
     }
 
     public int getNumberOfPublicPlayedDecks(UUID userId) {
-        return deckDao.getNumberOfPublicPlayedDecks(userId);
+        return marketplaceDao.getNumberOfPublicPlayedDecks(userId);
     }
 }

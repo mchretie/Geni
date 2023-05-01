@@ -2,11 +2,10 @@ package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
+import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
-
-import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.model.card.*;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Score;
@@ -89,7 +88,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         stage.show();
     }
 
-    public void showCard(){
+    public void showCard() {
         if (currentCard instanceof FlashCard)
             playDeckViewController.showNormalCard();
         else if (currentCard instanceof MCQCard)
@@ -104,7 +103,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     @Override
     public void cardClicked() {
-        if (currentCard instanceof FlashCard){
+        if (currentCard instanceof FlashCard) {
             if (frontShown)
                 playDeckViewController.flipToBackOfCard();
             else
@@ -168,6 +167,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             int scoreToAdd = (int) (1000 / (1 + Math.exp(-2 * x)));
             score.increment(scoreToAdd);
         }
+        score.addTime(((TimedCard) currentCard).getCountdownTime()-timeLeft);
     }
 
 

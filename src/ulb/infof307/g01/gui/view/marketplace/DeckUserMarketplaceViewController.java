@@ -1,6 +1,5 @@
 package ulb.infof307.g01.gui.view.marketplace;
 
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -17,8 +16,9 @@ import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 
+import java.io.IOException;
 
-public class DeckMarketplaceViewController {
+public class DeckUserMarketplaceViewController {
 
     /* ====================================================================== */
     /*                              FXML Attributes                           */
@@ -30,7 +30,7 @@ public class DeckMarketplaceViewController {
     private Label deckNameLabel;
 
     @FXML
-    private FontIcon addRemoveDeckIcon;
+    private FontIcon removeDeckIcon;
 
     @FXML
     private ImageView imageBackground;
@@ -44,22 +44,12 @@ public class DeckMarketplaceViewController {
     @FXML
     private Label scoreLabel;
 
-    @FXML
-    private Label creatorLabel;
-
 
     /* ====================================================================== */
     /*                              Model Attributes                          */
     /* ====================================================================== */
 
     private MarketplaceDeckMetadata deck;
-
-    public enum DeckAvailability {
-        OWNED,
-        MISSING
-    }
-
-    private DeckAvailability deckAvailability;
 
 
     /* ====================================================================== */
@@ -86,15 +76,12 @@ public class DeckMarketplaceViewController {
     /*                           Updating Deck                                */
     /* ====================================================================== */
 
-    public void setDeck(MarketplaceDeckMetadata deck, Score bestScore, DeckAvailability deckAvailability) {
+    public void setDeck(MarketplaceDeckMetadata deck, Score bestScore) {
         this.deck = deck;
-        this.deckAvailability = deckAvailability;
 
         this.updateDeckLabelName();
         this.setDeckImage();
         this.setDeckColor();
-
-        changeDeckAvailabilityIcon();
 
         if (bestScore == null)
             this.setStats("N/A");
@@ -153,30 +140,16 @@ public class DeckMarketplaceViewController {
     private void setStats(String bestScore) {
         amountCardsLabel.setText(String.valueOf(deck.cardCount()));
         scoreLabel.setText(bestScore);
-        creatorLabel.setText(deck.owner());
     }
 
-    private void changeDeckAvailabilityIcon(){
-        if (this.deckAvailability == DeckAvailability.OWNED) {
-            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-check");
-        } else
-            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-plus");
-    }
 
     /* ====================================================================== */
     /*                             Click handlers                             */
     /* ====================================================================== */
 
     @FXML
-    private void handleAddRemoveDeckClicked() throws ServerCommunicationFailedException {
-        listener.addRemoveDeckClicked(deck, this.deckAvailability);
-
-        if (this.deckAvailability == DeckAvailability.OWNED) {
-            this.deckAvailability = DeckAvailability.MISSING;
-        } else
-            this.deckAvailability = DeckAvailability.OWNED;
-
-        changeDeckAvailabilityIcon();
+    private void handleRemoveDeckClicked() throws ServerCommunicationFailedException, IOException {
+        listener.removeDeckClicked(deck);
     }
 
 
@@ -185,19 +158,13 @@ public class DeckMarketplaceViewController {
     /* ====================================================================== */
 
     @FXML
-    private void handleAddRemoveDeckHover() {
-        if (this.deckAvailability == DeckAvailability.OWNED) {
-            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-minus");
-        } else
-            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-check");
+    private void handleRemoveDeckHover() {
+        removeDeckIcon.setIconLiteral("mdi2b-bookmark-minus");
     }
 
     @FXML
-    private void handleAddRemoveDeckExit() {
-        if (this.deckAvailability == DeckAvailability.OWNED) {
-            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-check");
-        } else
-            addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-plus");
+    private void handleRemoveDeckExit() {
+        removeDeckIcon.setIconLiteral("mdi2b-bookmark-check");
     }
 
     /* ====================================================================== */
@@ -205,7 +172,7 @@ public class DeckMarketplaceViewController {
     /* ====================================================================== */
 
     public interface Listener {
-        void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability)
-                throws ServerCommunicationFailedException;
+        void removeDeckClicked(MarketplaceDeckMetadata deck)
+                throws ServerCommunicationFailedException, IOException;
     }
 }

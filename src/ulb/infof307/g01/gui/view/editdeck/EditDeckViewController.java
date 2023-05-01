@@ -517,7 +517,6 @@ public class EditDeckViewController {
         String tagText = tagsInput.getText().trim();
         tagsInput.clear();
 
-        // TODO: Ability to choose a color
         Color color
                 = Color.color(Math.random(), Math.random(), Math.random());
 

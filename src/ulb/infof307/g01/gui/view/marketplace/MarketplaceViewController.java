@@ -4,13 +4,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -32,9 +30,12 @@ public class MarketplaceViewController {
     @FXML
     private FontIcon searchIcon;
 
+
     @FXML
     private ComboBox<String> comboBox;
 
+    @FXML
+    private FlowPane userDecksContainer;
     @FXML
     private FlowPane decksContainer;
 
@@ -79,7 +80,7 @@ public class MarketplaceViewController {
         if (searchTypeText.equals("Nom")) {
             searchType = MarketplaceViewController.SearchType.Name;
         } else if (searchTypeText.equals("Username")) {
-            searchType =  MarketplaceViewController.SearchType.Creator;
+            searchType = MarketplaceViewController.SearchType.Creator;
         }
 
         return searchType;
@@ -90,17 +91,23 @@ public class MarketplaceViewController {
     /*                           Deck Displaying                              */
     /* ====================================================================== */
 
-    public void setDecks(List<Node> decks) {
-        clearDecksFromGrid();
+    public void setDecksMarketplace(List<Node> decksMarketplace) {
+        decksContainer.getChildren().clear();
 
-        for (Node deck : decks) {
+        for (Node deck : decksMarketplace) {
             decksContainer.getChildren().add(deck);
         }
-
         // arrange();  //TODO
     }
 
-    private void clearDecksFromGrid() { decksContainer.getChildren().clear(); }
+    public void setDecksUser(List<Node> decksUser) {
+        userDecksContainer.getChildren().clear();
+
+        for (Node deck : decksUser) {
+            userDecksContainer.getChildren().add(deck);
+        }
+        // arrange();  //TODO
+    }
 
     /* ====================================================================== */
     /*                             Click handlers                             */
@@ -120,7 +127,9 @@ public class MarketplaceViewController {
     /* ====================================================================== */
 
     @FXML
-    private void handleSearchHover() { searchIcon.setIconColor(Color.web("#FFFFFF")); }
+    private void handleSearchHover() {
+        searchIcon.setIconColor(Color.web("#FFFFFF"));
+    }
 
     @FXML
     private void handleSearchExit() {
