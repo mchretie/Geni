@@ -347,6 +347,12 @@ public class ServerCommunicator {
         try {
             marketplaceDAO.removeDeckFromMarketplace(deck);
 
+            //TODO : clean this up
+            var deckMetadata = DeckMetadata.fromMarketplaceDeckMetadata(deck);
+            Deck deckToRemove = deckDAO.getDeck(deckMetadata).orElseThrow();
+            deckToRemove.switchOnlineVisibility();
+            deckDAO.updateCache(deckToRemove.getMetadata());
+
         } catch (IOException | InterruptedException e) {
             String message = "Failed to remove deck from marketplace";
             throw new ServerCommunicationFailedException(message);

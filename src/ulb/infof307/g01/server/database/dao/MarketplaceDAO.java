@@ -48,6 +48,8 @@ public class MarketplaceDAO extends DAO {
                 deckId.toString(),
                 String.valueOf(0),
                 String.valueOf(0));
+
+        setDeckPublic(deckId, true);
     }
 
     public void removeDeckFromMarketplace(UUID deckId) throws DatabaseException {
@@ -57,6 +59,17 @@ public class MarketplaceDAO extends DAO {
                 """;
 
         database.executeUpdate(sql, deckId.toString());
+        setDeckPublic(deckId, false);
+    }
+
+    public void setDeckPublic(UUID deckId, boolean isPublic) throws DatabaseException {
+        String sql = """
+                UPDATE deck
+                SET public = ?
+                WHERE deck_id = ?;
+                """;
+
+        database.executeUpdate(sql, String.valueOf(isPublic), deckId.toString());
     }
 
     public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {

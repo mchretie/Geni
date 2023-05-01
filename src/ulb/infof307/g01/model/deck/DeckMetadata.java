@@ -37,7 +37,7 @@ public record DeckMetadata(UUID id,
     public static DeckMetadata fromMarketplaceDeckMetadata(MarketplaceDeckMetadata deck) {
         return new DeckMetadata(deck.id(),
                                 deck.name(),
-                                true,
+                                deck.isPublic(),
                                 deck.color(),
                                 deck.image(),
                                 deck.colorName(),
