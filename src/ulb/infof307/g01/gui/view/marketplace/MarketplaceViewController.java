@@ -91,22 +91,22 @@ public class MarketplaceViewController {
     /*                           Deck Displaying                              */
     /* ====================================================================== */
 
-    public void setDecks(List<Node> decksMarketplace, List<Node> decksUser) {
-        clearDecksFromGrid();
+    public void setDecksMarketplace(List<Node> decksMarketplace) {
+        decksContainer.getChildren().clear();
 
         for (Node deck : decksMarketplace) {
             decksContainer.getChildren().add(deck);
         }
+        // arrange();  //TODO
+    }
+
+    public void setDecksUser(List<Node> decksUser) {
+        userDecksContainer.getChildren().clear();
 
         for (Node deck : decksUser) {
             userDecksContainer.getChildren().add(deck);
         }
         // arrange();  //TODO
-    }
-
-    private void clearDecksFromGrid() {
-        decksContainer.getChildren().clear();
-        userDecksContainer.getChildren().clear();
     }
 
     /* ====================================================================== */
