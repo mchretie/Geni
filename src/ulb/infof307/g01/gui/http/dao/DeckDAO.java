@@ -128,20 +128,20 @@ public class DeckDAO extends HttpDAO {
                 .collect(toList());
     }
 
-    public void deleteDeck(UUID deckId)
+    public void deleteDeck(DeckMetadata deckMetadata)
             throws IOException, InterruptedException {
-        String path = ServerPaths.DELETE_DECK_PATH + "?deck_id=" + deckId.toString();
+        String path = ServerPaths.DELETE_DECK_PATH + "?deck_id=" + deckMetadata.id().toString();
 
         HttpResponse<String> response = delete(path);
 
         checkResponseCode(response.statusCode());
-        deckCache.removeDeck(deckId);
+        deckCache.removeDeck(deckMetadata);
     }
 
-    public void removeDeckFromCollection(UUID deckId)
+    public void removeDeckFromCollection(DeckMetadata deckId)
             throws IOException, InterruptedException {
 
-        String query = "?deck_id=" + deckId.toString();
+        String query = "?deck_id=" + deckId.id().toString();
         String path = ServerPaths.REMOVE_DECK_FROM_COLLECTION_PATH;
 
         HttpResponse<String> response = delete(path + query);
@@ -182,11 +182,13 @@ public class DeckDAO extends HttpDAO {
         checkResponseCode(response.statusCode());
     }
 
-    public void addDeckToCollection(UUID deckId) throws IOException, InterruptedException {
-        String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH + "?deck_id=" + deckId;
+    public void addDeckToCollection(DeckMetadata deckMetadata) throws IOException, InterruptedException {
+        String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH + "?deck_id=" + deckMetadata.id();
         HttpResponse<String> response = post(path, "");
 
         checkResponseCode(response.statusCode());
+
+        deckCache.updateDeckMetadata(deckMetadata);
     }
 
     public int numberOfPublicPlayedDecks() throws IOException, InterruptedException {
@@ -198,8 +200,8 @@ public class DeckDAO extends HttpDAO {
         return Integer.parseInt(response.body());
     }
 
-    public void emptyCache() {
-        deckCache = null;
+    public void updateCache(DeckMetadata deckMetadata) {
+        deckCache.updateDeckMetadata(deckMetadata);
     }
 
     @Override
