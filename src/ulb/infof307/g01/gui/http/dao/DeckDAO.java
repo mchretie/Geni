@@ -74,10 +74,7 @@ public class DeckDAO extends HttpDAO {
 
     public boolean deckExists(String deckName)
             throws IOException, InterruptedException {
-
-        String path = ServerPaths.DECK_EXISTS_PATH + "?name=" + deckName;
-
-        HttpResponse<String> response = get(path);
+        HttpResponse<String> response = post(ServerPaths.DECK_EXISTS_PATH, deckName);
         checkResponseCode(response.statusCode());
         return Boolean.parseBoolean(response.body());
     }
