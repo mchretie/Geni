@@ -35,6 +35,8 @@ public class MarketplaceViewController {
     private ComboBox<String> comboBox;
 
     @FXML
+    private FlowPane userDecksContainer;
+    @FXML
     private FlowPane decksContainer;
 
 
@@ -89,16 +91,22 @@ public class MarketplaceViewController {
     /*                           Deck Displaying                              */
     /* ====================================================================== */
 
-    public void setDecks(List<Node> decks) {
-        clearDecksFromGrid();
+    public void setDecksMarketplace(List<Node> decksMarketplace) {
+        decksContainer.getChildren().clear();
 
-        for (Node deck : decks) {
+        for (Node deck : decksMarketplace) {
             decksContainer.getChildren().add(deck);
         }
+        // arrange();  //TODO
     }
 
-    private void clearDecksFromGrid() {
-        decksContainer.getChildren().clear();
+    public void setDecksUser(List<Node> decksUser) {
+        userDecksContainer.getChildren().clear();
+
+        for (Node deck : decksUser) {
+            userDecksContainer.getChildren().add(deck);
+        }
+        // arrange();  //TODO
     }
 
     /* ====================================================================== */

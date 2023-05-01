@@ -7,7 +7,6 @@ import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.util.ImageLoader;
-import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController;
 import ulb.infof307.g01.gui.view.marketplace.DeckMarketplaceViewController.DeckAvailability;
@@ -51,17 +50,27 @@ public class MarketplaceController implements MarketplaceViewController.Listener
     /* ====================================================================== */
 
     public void show() throws ServerCommunicationFailedException, IOException, InterruptedException {
+        if (! serverCommunicator.isUserLoggedIn()) {
+            //TODO : GuestMode
+        }
         mainWindowViewController.setMarketplaceViewVisible();
-        marketplaceViewController
-                .setDecks(loadDecksDatabase(serverCommunicator.getAllMarketplaceDecks()));
+
+        List<Node> decksMarketplace = loadDecksMarketplaceDatabase(serverCommunicator.getAllMarketplaceDecks());
+        List<Node> decksUser = getMarketplaceDecksUser();
+        marketplaceViewController.setDecksMarketplace(decksMarketplace);
+        marketplaceViewController.setDecksUser(decksUser);
         stage.show();
+    }
+
+    private List<Node> getMarketplaceDecksUser() throws ServerCommunicationFailedException, IOException {
+        return loadDecksUserView(serverCommunicator.searchDecksMarketplaceByCreator(serverCommunicator.getSessionUsername()));
     }
 
 
     /* ====================================================================== */
     /*                          Database Access                               */
     /* ====================================================================== */
-    private List<Node> loadDecksDatabase(List<MarketplaceDeckMetadata> marketplaceDecks)
+    private List<Node> loadDecksMarketplaceDatabase(List<MarketplaceDeckMetadata> marketplaceDecks)
             throws ServerCommunicationFailedException, IOException {
 
         List<MarketplaceDeckMetadata> decksSaved = serverCommunicator.getSavedDecks();
@@ -69,12 +78,38 @@ public class MarketplaceController implements MarketplaceViewController.Listener
         marketplaceDecks.removeAll(decksSaved);
 
         List<Node> decksLoaded = new ArrayList<>();
-        decksLoaded.addAll(loadDecksView(marketplaceDecks, DeckAvailability.MISSING));
-        decksLoaded.addAll(loadDecksView(decksSaved, DeckAvailability.OWNED));
+        decksLoaded.addAll(loadDecksViewMarketplace(marketplaceDecks, DeckAvailability.MISSING));
+        decksLoaded.addAll(loadDecksViewMarketplace(decksSaved, DeckAvailability.OWNED));
 
         return decksLoaded;
     }
-    private List<Node> loadDecksView(List<MarketplaceDeckMetadata> decks, DeckAvailability deckAvailability)
+
+    private List<Node> loadDecksUserView(List<MarketplaceDeckMetadata> decksUser)
+            throws ServerCommunicationFailedException, IOException {
+
+        List<Node> decksLoaded = new ArrayList<>();
+
+        for (MarketplaceDeckMetadata deck : decksUser) {
+            URL resource = MarketplaceViewController
+                    .class
+                    .getResource("DeckMarketplaceView.fxml");
+
+            FXMLLoader loader = new FXMLLoader(resource);
+
+            Node node = loader.load();
+
+            DeckMarketplaceViewController controller = loader.getController();
+
+            controller.setDeck(deck, serverCommunicator.getBestScoreForDeck(deck.id()), DeckAvailability.OWNED);
+            controller.setImageLoader(imageLoader);
+            controller.setListener(this);
+
+            decksLoaded.add(node);
+        }
+
+        return decksLoaded;
+    }
+    private List<Node> loadDecksViewMarketplace(List<MarketplaceDeckMetadata> decks, DeckAvailability deckAvailability)
             throws IOException, ServerCommunicationFailedException {
         List<Node> decksLoaded = new ArrayList<>();
 
@@ -114,7 +149,7 @@ public class MarketplaceController implements MarketplaceViewController.Listener
                 decks = serverCommunicator.searchDecksMarketplaceByCreator(name);
             }
             assert decks != null;
-            marketplaceViewController.setDecks(loadDecksDatabase(decks));
+            marketplaceViewController.setDecksMarketplace(loadDecksMarketplaceDatabase(decks));
 
         } catch (IOException e) {
             errorHandler.failedLoading(e);
