@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController">
@@ -21,12 +22,41 @@
          </Button>
       </HBox>
    </top>
-   <center>
-      <ScrollPane fitToHeight="true" fitToWidth="true">
-         <FlowPane fx:id="decksContainer" alignment="TOP_CENTER" hgap="40.0" vgap="40.0" BorderPane.alignment="CENTER">
-            <padding>
-               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-            </padding></FlowPane>
-      </ScrollPane>
-   </center>
+    <center>
+        <SplitPane dividerPositions="0.25" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" BorderPane.alignment="TOP_CENTER">
+            <VBox nodeOrientation="LEFT_TO_RIGHT">
+                <HBox alignment="CENTER">
+                    <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Mes Decks">
+                        <font>
+                            <Font size="20.0"/>
+                        </font>
+                    </Text>
+                </HBox>
+                <ScrollPane fitToHeight="true" fitToWidth="true" vbarPolicy="ALWAYS">
+                    <FlowPane alignment="TOP_CENTER" hgap="40.0" vgap="40.0" BorderPane.alignment="CENTER">
+                        <padding>
+                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                        </padding>
+                    </FlowPane>
+                </ScrollPane>
+            </VBox>
+            <VBox nodeOrientation="LEFT_TO_RIGHT">
+                <HBox alignment="CENTER">
+                    <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Marketplace">
+                        <font>
+                            <Font size="20.0"/>
+                        </font>
+                    </Text>
+                </HBox>
+                <ScrollPane fitToHeight="true" fitToWidth="true" vbarPolicy="ALWAYS">
+                    <FlowPane fx:id="decksContainer" alignment="TOP_CENTER" hgap="40.0" vgap="40.0"
+                              BorderPane.alignment="CENTER">
+                        <padding>
+                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                        </padding>
+                    </FlowPane>
+                </ScrollPane>
+            </VBox>
+        </SplitPane>
+    </center>
 </BorderPane>

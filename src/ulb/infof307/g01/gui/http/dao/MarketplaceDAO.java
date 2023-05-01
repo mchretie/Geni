@@ -2,6 +2,7 @@ package ulb.infof307.g01.gui.http.dao;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import ulb.infof307.g01.model.IndulgentValidator;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.shared.constants.ServerPaths;
@@ -9,14 +10,29 @@ import ulb.infof307.g01.shared.constants.ServerPaths;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.regex.Pattern;
+
+import static java.util.stream.Collectors.toList;
 
 public class MarketplaceDAO extends HttpDAO {
+
+    IndulgentValidator validator = new IndulgentValidator();
+
 
     /* ====================================================================== */
     /*                          Fetching methods                              */
     /* ====================================================================== */
 
     public List<MarketplaceDeckMetadata> getAllMarketplaceDecks() throws IOException, InterruptedException {
+        HttpResponse<String> response = get(ServerPaths.GET_MARKETPLACE_PATH);
+
+        checkResponseCode(response.statusCode());
+
+        TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {};
+        return new Gson().fromJson(response.body(), typeToken);
+    }
+
+    public List<MarketplaceDeckMetadata> getAllMarketplaceDecksByCreator() throws IOException, InterruptedException {
         HttpResponse<String> response = get(ServerPaths.GET_MARKETPLACE_PATH);
 
         checkResponseCode(response.statusCode());
@@ -49,5 +65,31 @@ public class MarketplaceDAO extends HttpDAO {
 
         TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {};
         return new Gson().fromJson(response.body(), typeToken);
+    }
+
+    public List<MarketplaceDeckMetadata> searchDecks(String deckName)
+            throws IOException, InterruptedException {
+
+        if (deckName.isEmpty())
+            return getAllMarketplaceDecks();
+
+        final Pattern pattern = Pattern.compile("%s.*".formatted(validator.addTolerance(deckName)));
+
+        return getAllMarketplaceDecks().stream()
+                .filter(deck -> pattern.matcher(validator.addTolerance(deck.name())).matches())
+                .collect(toList());
+    }
+
+    public List<MarketplaceDeckMetadata> searchDecksByCreator(String deckName)
+            throws IOException, InterruptedException {
+
+        if (deckName.isEmpty())
+            return getAllMarketplaceDecksByCreator();
+
+        final Pattern pattern = Pattern.compile("%s.*".formatted(validator.addTolerance(deckName)));
+
+        return getAllMarketplaceDecks().stream()
+                .filter(deck -> pattern.matcher(validator.addTolerance(deck.owner())).matches())
+                .collect(toList());
     }
 }
