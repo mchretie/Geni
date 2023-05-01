@@ -13,16 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameHistoryTest {
 
     private GameHistory gameHistory;
-    private final Date firstGameDate = new Date(100);
 
     @BeforeEach
     void setUp() {
         String deckName = "InterestingDeck";
         String score = "10";
 
-        Game game = new Game(firstGameDate, deckName, score);
-        Game game2 = new Game(new Date(1000), deckName, score);
-        Game game3 = new Game(new Date(10000), deckName, score);
+        Game game = new Game(100, deckName, score);
+        Game game2 = new Game(1000, deckName, score);
+        Game game3 = new Game(10000, deckName, score);
 
         List<Game> games = new ArrayList<>();
         games.add(game);
@@ -44,10 +43,10 @@ class GameHistoryTest {
 
     @Test
     void forEach() {
-        Date previous = new Date(1000000000);
+        int previousTimestamp = 1000000000;
         for (Game game : gameHistory) {
-            assertTrue(game.timestamp().before(previous));
-            previous = game.timestamp();
+            assertTrue(new Date(game.timestamp()).before(new Date(previousTimestamp)));
+            previousTimestamp = game.timestamp();
         }
     }
 }

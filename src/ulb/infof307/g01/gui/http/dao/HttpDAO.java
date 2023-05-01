@@ -17,8 +17,7 @@ import java.util.List;
 
 /**
  * This class is the base class for all the DAO classes. It contains the
- *  methods to send HTTP requests to the server.
- *
+ * methods to send HTTP requests to the server.
  */
 public abstract class HttpDAO {
 
@@ -26,7 +25,7 @@ public abstract class HttpDAO {
 
     private final HttpClient httpClient = HttpClient.newBuilder().build();
 
-    private final String BASE_URL    = "http://localhost:8080";
+    private final String BASE_URL = "http://localhost:8080";
     private final String AUTH_HEADER = "Authorization";
 
     /* ====================================================================== */
@@ -100,12 +99,12 @@ public abstract class HttpDAO {
     /* ====================================================================== */
 
     protected List<DeckMetadata> stringToDeckArray(String json) {
-            List<DeckMetadata> deckList = new ArrayList<>();
-            JsonArray jsonArray = new Gson().fromJson(json, JsonArray.class);
-            for (int i = 0; i < jsonArray.size(); i++) {
-                deckList.add(DeckMetadata.fromJson(jsonArray.get(i).getAsJsonObject()));
-            }
-            return deckList;
+        List<DeckMetadata> deckList = new ArrayList<>();
+        JsonArray jsonArray = new Gson().fromJson(json, JsonArray.class);
+        for (int i = 0; i < jsonArray.size(); i++) {
+            deckList.add(DeckMetadata.fromJson(jsonArray.get(i).getAsJsonObject()));
+        }
+        return deckList;
     }
 
     /* ====================================================================== */

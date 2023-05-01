@@ -48,7 +48,7 @@ public class TestScoreDAO extends DatabaseUsingTest {
         Deck deck = new Deck("pom");
         deckDAO.saveDeck(deck, userId);
 
-        Score score = new Score(username, deck.getId(), 25, new Date());
+        Score score = new Score(username, deck.getId(), 25, 1585812537);
         scoreDAO.addScore(score);
 
         Score scoreFromDAO = scoreDAO.getScoresForUser(userId).get(0);
@@ -65,9 +65,9 @@ public class TestScoreDAO extends DatabaseUsingTest {
         deckDAO.saveDeck(deck1, userId);
         Deck deck2 = new Deck("xD");
         deckDAO.saveDeck(deck2, userId);
-        Score score1 = new Score(username, deck1.getId(), 200, new Date(123456));
-        Score score2 = new Score(username, deck1.getId(), 100, new Date(123458));
-        Score score3 = new Score(username, deck2.getId(), 100, new Date(123459));
+        Score score1 = new Score(username, deck1.getId(), 200, 1585812537);
+        Score score2 = new Score(username, deck1.getId(), 100, 1585812538);
+        Score score3 = new Score(username, deck2.getId(), 100, 1585812539);
         scoreDAO.addScore(score1);
         scoreDAO.addScore(score2);
         scoreDAO.addScore(score3);
