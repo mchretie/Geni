@@ -83,6 +83,7 @@ public class DeckRequestHandler extends Handler {
             deck.setImage(deck.getImage().replace(BASE_URL, ""));
 
             database.saveDeck(deck, userId);
+            database.addDeckToUserCollection(deck.getId(), userId);
             return successfulResponse;
 
         } catch (Exception e) {
