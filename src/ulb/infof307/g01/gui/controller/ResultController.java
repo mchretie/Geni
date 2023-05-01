@@ -63,6 +63,8 @@ public class ResultController implements ResultViewController.Listener {
         mainWindowViewController.setResultViewVisible();
 
         resultViewController.setScore(score.getScore());
+        resultViewController.setTotalTime(score.getTotalTime());
+        resultViewController.setAverageTime(score.getAvgTime());
 
         stage.show();
     }

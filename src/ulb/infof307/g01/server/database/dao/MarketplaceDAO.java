@@ -19,7 +19,9 @@ public class MarketplaceDAO extends DAO {
         this.database = database;
     }
 
-    public void setDeckDAO(DeckDAO deckDAO) {this.deckDAO = deckDAO;}
+    public void setDeckDAO(DeckDAO deckDAO) {
+        this.deckDAO = deckDAO;
+    }
 
     private MarketplaceDeckMetadata extractMarketplaceDeckMetaData(ResultSet res) throws DatabaseException {
         try {
@@ -124,5 +126,25 @@ public class MarketplaceDAO extends DAO {
             decks.add(extractMarketplaceDeckMetaData(res));
 
         return decks;
+    }
+
+    public int getNumberOfPublicPlayedDecks(UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT COUNT(*) as count
+                FROM marketplace
+                INNER JOIN user_deck_score uds ON marketplace.deck_id = uds.deck_id
+                WHERE user_id = ?;
+                """;
+
+        try (ResultSet res = database.executeQuery(sql, userId.toString())) {
+            if (res.next())
+                return res.getInt("count");
+
+            return 0;
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+
     }
 }

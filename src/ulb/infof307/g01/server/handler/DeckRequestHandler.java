@@ -2,7 +2,6 @@ package ulb.infof307.g01.server.handler;
 
 import spark.Request;
 import spark.Response;
-import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.server.database.Database;
@@ -76,7 +75,6 @@ public class DeckRequestHandler extends Handler {
     }
 
     private Map<String, Boolean> saveDeck(Request req, Response res) {
-        // TODO maybe divide into two methods addDeck and updateDeck
         try {
             String username = usernameFromRequest(req);
             UUID userId = UUID.fromString(database.getUserId(username));
