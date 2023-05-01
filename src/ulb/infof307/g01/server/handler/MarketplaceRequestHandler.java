@@ -24,7 +24,6 @@ public class MarketplaceRequestHandler extends Handler {
 
     @Override
     public void init() {
-        // TODO change all DeckId instance to Deck
         get(GET_MARKETPLACE_PATH, this::getAllMarketplaceDecks, toJson());
         post(ADD_DECK_TO_MARKETPLACE_PATH, this::addDeck, toJson());
         delete(REMOVE_DECK_FROM_MARKETPLACE_PATH, this::removeDeck, toJson());
@@ -48,8 +47,9 @@ public class MarketplaceRequestHandler extends Handler {
                 deckMetadata.deckHashCode()
         );
     }
-    private List<MarketplaceDeckMetadata> setupImagePath(List<MarketplaceDeckMetadata> deckMetadatas) {
-        return deckMetadatas.stream()
+
+    private List<MarketplaceDeckMetadata> setupImagePath(List<MarketplaceDeckMetadata> decksMetadata) {
+        return decksMetadata.stream()
                 .map(this::setupImagePath)
                 .collect(toList());
     }
@@ -93,8 +93,14 @@ public class MarketplaceRequestHandler extends Handler {
      */
     private Map<String, Boolean> removeDeck(Request req, Response res) {
         try {
-            // TODO to improve security, should check if req sender is the deck owner
+            UUID userId = userIdFromRequest(req);
             UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+            UUID deckOwnerId = database.getDeckOwnerId(deckId);
+
+            if (!userId.equals(deckOwnerId)) {
+                String message = "User " + userId + " is not the owner of deck " + deckId;
+                halt(403, message);
+            }
 
             database.removeDeckFromMarketplace(deckId);
             database.deleteScoresForDeck(deckId);
@@ -113,8 +119,7 @@ public class MarketplaceRequestHandler extends Handler {
     private Map<String, Boolean> addDeckToCollection(Request req, Response res) {
         try {
             UUID deckId = UUID.fromString(req.queryParams("deck_id"));
-            String username = usernameFromRequest(req);
-            UUID userId = UUID.fromString(database.getUserId(username));
+            UUID userId = userIdFromRequest(req);
 
             database.addDeckToUserCollection(deckId, userId);
 
