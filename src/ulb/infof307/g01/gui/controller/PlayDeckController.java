@@ -167,7 +167,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             int scoreToAdd = (int) (1000 / (1 + Math.exp(-2 * x)));
             score.increment(scoreToAdd);
         }
-        score.addTime(timeLeft);
+        score.addTime(((TimedCard) currentCard).getCountdownTime()-timeLeft);
     }
 
 
