@@ -49,6 +49,10 @@ public class Score {
     }
 
     public double getTotalTime() {
+        if (times.isEmpty()) {
+            return 0;
+        }
+
         double sum = 0;
         for (double time : times) {
             sum += time;
@@ -57,6 +61,10 @@ public class Score {
     }
 
     public double getAvgTime() {
+        if (times.isEmpty()) {
+            return 0;
+        }
+
         double totalTime = getTotalTime();
         return Math.round(totalTime / times.size() * 100.0) / 100.0;
     }
