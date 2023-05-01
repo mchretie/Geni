@@ -341,11 +341,11 @@ public class ServerCommunicator {
         }
     }
 
-    public void removeDeckFromMarketplace(String deckId)
+    public void removeDeckFromMarketplace(MarketplaceDeckMetadata deck)
             throws ServerCommunicationFailedException {
 
         try {
-            marketplaceDAO.removeDeckFromMarketplace(deckId);
+            marketplaceDAO.removeDeckFromMarketplace(deck);
 
         } catch (IOException | InterruptedException e) {
             String message = "Failed to remove deck from marketplace";

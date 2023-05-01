@@ -23,7 +23,7 @@
             <Button onMouseClicked="#handleRemoveDeckClicked" style="-fx-background-color: transparent;">
 
                 <graphic>
-                    <FontIcon fx:id="removeDeckIcon" iconLiteral="mdi2b-bookmark-plus" iconSize="35" onMouseEntered="#handleRemoveDeckHover" onMouseExited="#handleRemoveDeckExit" />
+                    <FontIcon fx:id="removeDeckIcon" iconLiteral="mdi2b-bookmark-check" iconSize="35" onMouseEntered="#handleRemoveDeckHover" onMouseExited="#handleRemoveDeckExit" />
                 </graphic>
 
             </Button>

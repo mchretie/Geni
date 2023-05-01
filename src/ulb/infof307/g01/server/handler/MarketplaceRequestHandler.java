@@ -94,10 +94,10 @@ public class MarketplaceRequestHandler extends Handler {
     private Map<String, Boolean> removeDeck(Request req, Response res) {
         try {
             // TODO to improve security, should check if req sender is the deck owner
-            UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+            Deck deck = Deck.fromJson(req.body());
 
-            database.removeDeckFromMarketplace(deckId);
-            database.deleteScoresForDeck(deckId);
+            database.removeDeckFromMarketplace(deck.getId());
+            database.deleteScoresForDeck(deck.getId());
 
 
             return successfulResponse;

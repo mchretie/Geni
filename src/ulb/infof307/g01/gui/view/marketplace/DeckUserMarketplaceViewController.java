@@ -16,6 +16,8 @@ import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 
+import java.io.IOException;
+
 public class DeckUserMarketplaceViewController {
 
     /* ====================================================================== */
@@ -146,7 +148,7 @@ public class DeckUserMarketplaceViewController {
     /* ====================================================================== */
 
     @FXML
-    private void handleRemoveDeckClicked() throws ServerCommunicationFailedException {
+    private void handleRemoveDeckClicked() throws ServerCommunicationFailedException, IOException {
         listener.removeDeckClicked(deck);
 
     }
@@ -158,12 +160,12 @@ public class DeckUserMarketplaceViewController {
 
     @FXML
     private void handleRemoveDeckHover() {
-
+        removeDeckIcon.setIconLiteral("mdi2b-bookmark-minus");
     }
 
     @FXML
     private void handleRemoveDeckExit() {
-
+        removeDeckIcon.setIconLiteral("mdi2b-bookmark-check");
     }
 
     /* ====================================================================== */
@@ -172,6 +174,6 @@ public class DeckUserMarketplaceViewController {
 
     public interface Listener {
         void removeDeckClicked(MarketplaceDeckMetadata deck)
-                throws ServerCommunicationFailedException;
+                throws ServerCommunicationFailedException, IOException;
     }
 }
