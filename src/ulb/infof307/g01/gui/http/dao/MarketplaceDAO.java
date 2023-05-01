@@ -51,9 +51,9 @@ public class MarketplaceDAO extends HttpDAO {
     }
 
     public void removeDeckFromMarketplace(MarketplaceDeckMetadata deck) throws IOException, InterruptedException {
-        String deckJson =  new Gson().toJson(deck);
+        String path = ServerPaths.REMOVE_DECK_FROM_MARKETPLACE_PATH + "?deck_id=" + deck.id().toString();
 
-        HttpResponse<String> response = delete(ServerPaths.REMOVE_DECK_FROM_MARKETPLACE_PATH + deckJson);
+        HttpResponse<String> response = delete(path);
 
         checkResponseCode(response.statusCode());
     }

@@ -179,7 +179,7 @@ public class MarketplaceController implements
     @Override
     public void removeDeckClicked(MarketplaceDeckMetadata deck) throws ServerCommunicationFailedException, IOException {
         serverCommunicator.removeDeckFromMarketplace(deck);
-        System.out.println("Deck removed from marketplace");
+
         List<Node> decksMarketplace = loadDecksMarketplaceDatabase(serverCommunicator.getAllMarketplaceDecks());
         List<Node> decksUser = getMarketplaceDecksUser();
         marketplaceViewController.setDecksMarketplace(decksMarketplace);
