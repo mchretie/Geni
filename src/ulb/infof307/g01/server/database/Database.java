@@ -216,6 +216,6 @@ public class Database {
     }
 
     public int getNumberOfPublicPlayedDecks(UUID userId) {
-        return deckDao.getNumberOfPublicPlayedDecks(userId);
+        return marketplaceDao.getNumberOfPublicPlayedDecks(userId);
     }
 }
