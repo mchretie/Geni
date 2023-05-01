@@ -78,7 +78,7 @@ public class MarketplaceViewController {
         if (searchTypeText.equals("Nom")) {
             searchType = MarketplaceViewController.SearchType.Name;
         } else if (searchTypeText.equals("Username")) {
-            searchType =  MarketplaceViewController.SearchType.Creator;
+            searchType = MarketplaceViewController.SearchType.Creator;
         }
 
         return searchType;
@@ -95,11 +95,11 @@ public class MarketplaceViewController {
         for (Node deck : decks) {
             decksContainer.getChildren().add(deck);
         }
-
-        // arrange();  //TODO
     }
 
-    private void clearDecksFromGrid() { decksContainer.getChildren().clear(); }
+    private void clearDecksFromGrid() {
+        decksContainer.getChildren().clear();
+    }
 
     /* ====================================================================== */
     /*                             Click handlers                             */
@@ -114,7 +114,9 @@ public class MarketplaceViewController {
     /* ====================================================================== */
 
     @FXML
-    private void handleSearchHover() { searchIcon.setIconColor(Color.web("#FFFFFF")); }
+    private void handleSearchHover() {
+        searchIcon.setIconColor(Color.web("#FFFFFF"));
+    }
 
     @FXML
     private void handleSearchExit() {
