@@ -4,12 +4,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -24,9 +22,6 @@ public class MarketplaceViewController {
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
-
-    @FXML
-    private TextField searchBar;
 
     @FXML
     private FontIcon searchIcon;

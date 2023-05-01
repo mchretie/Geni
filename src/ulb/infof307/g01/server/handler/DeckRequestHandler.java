@@ -2,7 +2,6 @@ package ulb.infof307.g01.server.handler;
 
 import spark.Request;
 import spark.Response;
-import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.server.database.Database;
