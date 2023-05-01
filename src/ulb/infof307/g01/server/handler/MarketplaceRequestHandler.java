@@ -36,6 +36,7 @@ public class MarketplaceRequestHandler extends Handler {
         return new MarketplaceDeckMetadata(
                 deckMetadata.id(),
                 deckMetadata.name(),
+                deckMetadata.isPublic(),
                 deckMetadata.color(),
                 BASE_URL + deckMetadata.image(),
                 deckMetadata.colorName(),
