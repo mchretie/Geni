@@ -5,7 +5,6 @@ import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
-import ulb.infof307.g01.model.deck.Tag;
 import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.server.database.dao.*;

@@ -149,24 +149,6 @@ public class DeckDAO extends DAO {
      *
      * @return A list of all decks, empty if none are saved.
      */
-    public List<Deck> getAllUserDecks(UUID userId) throws DatabaseException {
-        String sql = """
-                SELECT deck_id
-                FROM deck
-                WHERE deck.user_id = ?
-                """;
-
-
-        ResultSet res = database.executeQuery(sql, userId.toString());
-        List<UUID> deckIds = extractUUIDsFrom(res, "deck_id");
-        return getDecks(deckIds);
-    }
-
-    /**
-     * Get all decks associated with given user
-     *
-     * @return A list of all decks, empty if none are saved.
-     */
     public List<DeckMetadata> getAllUserDecksMetadata(UUID userId) throws DatabaseException {
         String sql = """
                 SELECT deck_id
