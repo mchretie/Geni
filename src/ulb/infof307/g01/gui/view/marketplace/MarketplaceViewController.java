@@ -25,7 +25,11 @@ public class MarketplaceViewController {
     /* ====================================================================== */
 
     @FXML
+    private TextField searchBar;
+
+    @FXML
     private FontIcon searchIcon;
+
 
     @FXML
     private ComboBox<String> comboBox;
