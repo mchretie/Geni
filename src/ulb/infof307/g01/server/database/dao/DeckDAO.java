@@ -5,7 +5,6 @@ import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
 import ulb.infof307.g01.model.deck.*;
-import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
@@ -97,33 +96,6 @@ public class DeckDAO extends DAO {
         saveDeckIdentity(deck, userId);
         saveDeckTags(deck);
         saveDeckCards(deck);
-    }
-
-    /**
-     * Get the deck identified by the given UUID
-     * <p>
-     * This should only be used by other managers.
-     * To retrieve decks from memory, use getAllDecks
-     * or other managers returning decks.
-     * <p>
-     *
-     * @return The deck requested or null if it does not exist.
-     */
-    public Deck getDeck(UUID deckId, UUID userId) throws DatabaseException {
-        String sql = """
-                SELECT d.*,
-                       CASE WHEN m.deck_id IS NOT NULL THEN 1 ELSE 0 END AS public
-                FROM deck d
-                         LEFT JOIN marketplace m ON d.deck_id = m.deck_id
-                WHERE d.deck_id = ? AND d.user_id = ?;
-                """;
-
-        ResultSet res = database.executeQuery(sql,
-                deckId.toString(),
-                userId.toString());
-        if (!checkedNext(res))
-            return null;
-        return extractDeckFrom(res);
     }
 
     public Deck getDeck(UUID deckId) throws DatabaseException {
@@ -284,18 +256,6 @@ public class DeckDAO extends DAO {
                 deck.getColor(),
                 deck.getImage(),
                 deck.getColorName());
-    }
-
-    private void saveToCollection(UUID deckId, UUID userId) throws DatabaseException {
-        String sql = """
-                INSERT INTO user_deck_collection (deck_id, user_id)
-                VALUES (?, ?);
-                """;
-
-        database.executeUpdate(
-                sql,
-                deckId.toString(),
-                userId.toString());
     }
 
     private void saveDeckTags(Deck deck) throws DatabaseException {
