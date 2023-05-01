@@ -17,9 +17,6 @@ public class ResultViewController {
     @FXML
     public Label totalTimeLabel;
 
-    @FXML
-    private Button goToMenuButton;
-
 
     /* ====================================================================== */
     /*                                Listener                                */

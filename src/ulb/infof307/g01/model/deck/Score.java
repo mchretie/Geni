@@ -9,7 +9,7 @@ public class Score {
     private final String username;
     private final UUID deckId;
     private int score;
-    private List<Double> times;
+    private final List<Double> times;
     private final int timestamp;
 
     public Score(String username, UUID deckId, int score, int timestamp) {
