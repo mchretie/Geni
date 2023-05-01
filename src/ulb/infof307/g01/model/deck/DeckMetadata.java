@@ -46,18 +46,6 @@ public record DeckMetadata(UUID id,
                                 deck.deckHashCode());
     }
 
-    public DeckMetadata asPrivate() {
-        return new DeckMetadata(id(),
-                                name(),
-                                false,
-                                color(),
-                                image(),
-                                colorName(),
-                                cardCount(),
-                                tags(),
-                                deckHashCode());
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
