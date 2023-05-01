@@ -355,12 +355,12 @@ public class DeckDAO extends DAO {
                 card.getFront()
         );
 
-        if (card instanceof FlashCard) {
-            saveCard((FlashCard) card);
-        } else if (card instanceof MCQCard) {
-            saveCard((MCQCard) card);
-        } else if (card instanceof InputCard) {
-            saveCard((InputCard) card);
+        if (card instanceof FlashCard flashCard) {
+            saveCard(flashCard);
+        } else if (card instanceof MCQCard mcqCard) {
+            saveCard(mcqCard);
+        } else if (card instanceof InputCard inputCard) {
+            saveCard(inputCard);
         }
     }
 
@@ -379,7 +379,6 @@ public class DeckDAO extends DAO {
             UUID deckId = UUID.fromString(res.getString("deck_id"));
             String front = res.getString("front");
             String back = res.getString("back");
-            //Integer countdownTime = res.getInt("countdown_time");
             return new FlashCard(uuid, deckId, front, back);
         } catch (SQLException e) {
             throw new DatabaseException((e.getMessage()));
@@ -510,7 +509,7 @@ public class DeckDAO extends DAO {
 
     private List<DeckMetadata> extractDeckMetadata(List<Deck> decks) {
         List<DeckMetadata> decksMetadata = new ArrayList<>();
-        decks.forEach((d) -> decksMetadata.add(d.getMetadata()));
+        decks.forEach(d -> decksMetadata.add(d.getMetadata()));
         return decksMetadata;
     }
 

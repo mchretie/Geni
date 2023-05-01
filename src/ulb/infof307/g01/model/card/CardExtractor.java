@@ -5,14 +5,15 @@ import ulb.infof307.g01.model.deck.Deck;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-abstract public class CardExtractor implements Iterable<Card> {
+public abstract class CardExtractor implements Iterable<Card> {
 
     protected final List<Card> sortedCards;
     private int currentCardIndex;
     private int amountCompetitiveCards;
 
-    public CardExtractor(Deck deck) {
+    protected CardExtractor(Deck deck) {
         this.sortedCards = new ArrayList<>(deck.getCards());
         this.currentCardIndex = -1;
         fetchAmountCompetitiveCards(deck);
@@ -59,8 +60,12 @@ abstract public class CardExtractor implements Iterable<Card> {
             }
 
             @Override
-            public Card next() {
-                return sortedCards.get(currentIndex++);
+            public Card next() throws NoSuchElementException {
+                try {
+                    return sortedCards.get(currentIndex++);
+                } catch (IndexOutOfBoundsException e) {
+                    throw new NoSuchElementException();
+                }
             }
         };
     }

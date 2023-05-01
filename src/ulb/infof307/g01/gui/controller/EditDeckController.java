@@ -138,7 +138,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
 
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 

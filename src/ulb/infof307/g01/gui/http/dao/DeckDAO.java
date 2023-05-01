@@ -13,6 +13,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -33,6 +34,8 @@ public class DeckDAO extends HttpDAO {
 
     DeckCache deckCache = null;
     IndulgentValidator validator = new IndulgentValidator();
+
+    final String deckIdQuery = "?deck_id=";
 
     /**
      * Init and set up the cache with user’s deck collection
@@ -129,7 +132,7 @@ public class DeckDAO extends HttpDAO {
 
     public void deleteDeck(DeckMetadata deckMetadata)
             throws IOException, InterruptedException {
-        String path = ServerPaths.DELETE_DECK_PATH + "?deck_id=" + deckMetadata.id().toString();
+        String path = ServerPaths.DELETE_DECK_PATH + deckIdQuery + deckMetadata.id().toString();
 
         HttpResponse<String> response = delete(path);
 
@@ -140,7 +143,7 @@ public class DeckDAO extends HttpDAO {
     public void removeDeckFromCollection(DeckMetadata deckId)
             throws IOException, InterruptedException {
 
-        String query = "?deck_id=" + deckId.id().toString();
+        String query = deckIdQuery + deckId.id().toString();
         String path = ServerPaths.REMOVE_DECK_FROM_COLLECTION_PATH;
 
         HttpResponse<String> response = delete(path + query);
@@ -182,7 +185,7 @@ public class DeckDAO extends HttpDAO {
     }
 
     public void addDeckToCollection(DeckMetadata deckMetadata) throws IOException, InterruptedException {
-        String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH + "?deck_id=" + deckMetadata.id();
+        String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH + deckIdQuery + deckMetadata.id();
         HttpResponse<String> response = post(path, "");
 
         checkResponseCode(response.statusCode());
