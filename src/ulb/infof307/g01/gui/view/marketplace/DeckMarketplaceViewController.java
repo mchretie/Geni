@@ -17,7 +17,6 @@ import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 
-import java.io.IOException;
 
 public class DeckMarketplaceViewController {
 

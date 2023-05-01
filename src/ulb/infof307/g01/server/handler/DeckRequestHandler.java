@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static java.util.stream.Collectors.toList;
 import static spark.Spark.*;
 import static ulb.infof307.g01.shared.constants.ServerPaths.*;
-import static java.util.stream.Collectors.toList;
 
 
 public class DeckRequestHandler extends Handler {
@@ -83,6 +83,8 @@ public class DeckRequestHandler extends Handler {
             deck.setImage(deck.getImage().replace(BASE_URL, ""));
 
             database.saveDeck(deck, userId);
+
+            database.addDeckToUserCollection(deck.getId(), userId);
             return successfulResponse;
 
         } catch (Exception e) {
@@ -140,8 +142,9 @@ public class DeckRequestHandler extends Handler {
                 deckMetadata.tags(),
                 deckMetadata.deckHashCode());
     }
-    private List<DeckMetadata> setupImagePath(List<DeckMetadata> deckMetadatas) {
-        return deckMetadatas.stream()
+
+    private List<DeckMetadata> setupImagePath(List<DeckMetadata> decksMetadata) {
+        return decksMetadata.stream()
                 .map(this::setupImagePath)
                 .collect(toList());
     }

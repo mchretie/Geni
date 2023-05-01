@@ -2,7 +2,11 @@ package ulb.infof307.g01.server.database;
 
 class DatabaseSchema {
 
-    public static final String[] SERVER = new String[]{
+    private DatabaseSchema() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    protected static final String[] SERVER = new String[]{
             """
         CREATE TABLE IF NOT EXISTS user (
             user_id TEXT PRIMARY KEY,

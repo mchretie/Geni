@@ -253,6 +253,8 @@ public class Deck implements Iterable<Card> {
                         this.cards.add(new Gson().fromJson(card, MCQCard.class));
                 case "InputCard" ->
                         this.cards.add(new Gson().fromJson(card, InputCard.class));
+                default ->
+                        throw new IllegalStateException("Unexpected value: " + cardType);
             }
         }
     }

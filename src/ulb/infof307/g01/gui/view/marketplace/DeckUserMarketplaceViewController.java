@@ -150,7 +150,6 @@ public class DeckUserMarketplaceViewController {
     @FXML
     private void handleRemoveDeckClicked() throws ServerCommunicationFailedException, IOException {
         listener.removeDeckClicked(deck);
-
     }
 
 
