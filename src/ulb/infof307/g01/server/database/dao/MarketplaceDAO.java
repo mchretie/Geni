@@ -88,7 +88,8 @@ public class MarketplaceDAO extends DAO {
     public void addDeckToUserCollection(UUID deckId, UUID userId) throws DatabaseException {
         String sql = """
                 INSERT INTO user_deck_collection (user_id, deck_id)
-                VALUES (?, ?);
+                VALUES (?, ?)
+                ON CONFLICT DO NOTHING;
                 """;
 
         database.executeUpdate(
