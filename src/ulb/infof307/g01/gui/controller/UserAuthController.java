@@ -8,6 +8,7 @@ import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
 
+
 public class UserAuthController implements UserAuthViewController.Listener {
     private final Stage stage;
 
@@ -99,6 +100,11 @@ public class UserAuthController implements UserAuthViewController.Listener {
         }
     }
 
+    @Override
+    public void goToMarketplaceClicked() {
+        controllerListener.goToMarketplaceClicked();
+    }
+
     private boolean areCredentialsValid(String username, String password, String confirmPassword) {
         return !username.isEmpty()
                 && !password.isEmpty()
@@ -112,5 +118,6 @@ public class UserAuthController implements UserAuthViewController.Listener {
 
     public interface ControllerListener {
         void userLoggedIn();
+        void goToMarketplaceClicked();
     }
 }

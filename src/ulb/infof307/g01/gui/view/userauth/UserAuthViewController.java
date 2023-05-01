@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class UserAuthViewController {
 
@@ -33,6 +35,10 @@ public class UserAuthViewController {
 
     @FXML
     private Button registerButton;
+
+    @FXML
+    private FontIcon marketplaceIcon;
+
 
     /* ====================================================================== */
     /*                                Listener                                */
@@ -162,7 +168,24 @@ public class UserAuthViewController {
             handleLogin();
     }
 
+    @FXML
+    private void goToMarketplaceClicked() {
+        listener.goToMarketplaceClicked();
+    }
 
+    /* ====================================================================== */
+    /*                              Hover handlers                            */
+    /* ====================================================================== */
+
+    @FXML
+    private void handleMarketplaceHover() {
+        marketplaceIcon.setIconColor(Color.web("#FFFFFF"));
+    }
+
+    @FXML
+    private void handleMarketplaceExitHover() {
+        marketplaceIcon.setIconColor(Color.web("#000000"));
+    }
     /* ====================================================================== */
     /*                           Listener Interface                           */
     /* ====================================================================== */
@@ -170,5 +193,6 @@ public class UserAuthViewController {
     public interface Listener {
         void loginClicked(String username, String password);
         void registerClicked(String username, String password, String confirmPassword);
+        void goToMarketplaceClicked();
     }
 }
