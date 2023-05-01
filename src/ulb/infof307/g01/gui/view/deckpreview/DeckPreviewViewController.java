@@ -68,11 +68,6 @@ public class DeckPreviewViewController {
         highestScoreLabel.setText(score + " points");
     }
 
-    public void setScoreUnavailable() {
-        highestScoreLabel.setText("Score indisponible");
-        highestScoreLabel.setTextFill(Color.RED);
-    }
-
     public void setGameHistory(List<Node> gameHistoryItem) {
         ObservableList<Node> items = FXCollections.observableArrayList(gameHistoryItem);
         gameHistoryContainer.setItems(items);
