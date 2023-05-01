@@ -33,7 +33,7 @@ public class DeckRequestHandler extends Handler {
         get(GET_ALL_DECKS_PATH, this::getAllDecks, toJson());
         get(SEARCH_DECKS_PATH, this::searchDecks, toJson());
         get(GET_DECK_PATH, this::getDeck, toJson());
-        post(DECK_EXISTS_PATH, this::deckExists, toJson());
+        get(DECK_EXISTS_PATH, this::deckExists, toJson());
         post(SAVE_DECK_IMAGE_PATH, this::saveImage);
         get(NUMBER_OF_PUBLIC_PLAYED_DECKS_PATH, this::getNumberOfPublicPlayedDecks, toJson());
     }
@@ -60,7 +60,7 @@ public class DeckRequestHandler extends Handler {
             String username = usernameFromRequest(request);
             UUID userId = UUID.fromString(database.getUserId(username));
 
-            String deckName = request.body();
+            String deckName = request.queryParams("name");
             deckName = deckName.replace("_", " ");
 
             return database.deckNameExists(deckName, userId);

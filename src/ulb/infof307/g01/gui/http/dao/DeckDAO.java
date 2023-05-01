@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.toList;
@@ -73,7 +74,10 @@ public class DeckDAO extends HttpDAO {
 
     public boolean deckExists(String deckName)
             throws IOException, InterruptedException {
-        HttpResponse<String> response = post(ServerPaths.DECK_EXISTS_PATH, deckName);
+
+        String path = ServerPaths.DECK_EXISTS_PATH + "?name=" + deckName.replace(" ", "_");
+
+        HttpResponse<String> response = get(path);
         checkResponseCode(response.statusCode());
         return Boolean.parseBoolean(response.body());
     }
