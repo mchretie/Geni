@@ -5,12 +5,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class ResultViewController {
-
     /* ====================================================================== */
     /*                               FXML Attributes                          */
     /* ====================================================================== */
     @FXML
     private Label scoreLabel;
+
+    @FXML
+    public Label avgTimeLabel;
+
+    @FXML
+    public Label totalTimeLabel;
 
     @FXML
     private Button goToMenuButton;
@@ -35,6 +40,13 @@ public class ResultViewController {
         scoreLabel.setText(String.valueOf(score));
     }
 
+    public void setTotalTime(double totalTime) {
+        totalTimeLabel.setText(totalTime + "s");
+    }
+
+    public void setAverageTime(double averageTime) {
+        avgTimeLabel.setText(averageTime + "s");
+    }
 
     /* ====================================================================== */
     /*                              Click handlers                            */

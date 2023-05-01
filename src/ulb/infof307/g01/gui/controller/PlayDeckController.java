@@ -88,7 +88,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         stage.show();
     }
 
-    public void showCard(){
+    public void showCard() {
         if (currentCard instanceof FlashCard)
             playDeckViewController.showNormalCard();
         else if (currentCard instanceof MCQCard)
@@ -103,7 +103,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     @Override
     public void cardClicked() {
-        if (currentCard instanceof FlashCard){
+        if (currentCard instanceof FlashCard) {
             if (frontShown)
                 playDeckViewController.flipToBackOfCard();
             else
@@ -167,6 +167,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             int scoreToAdd = (int) (1000 / (1 + Math.exp(-2 * x)));
             score.increment(scoreToAdd);
         }
+        score.addTime(timeLeft);
     }
 
 
