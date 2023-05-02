@@ -32,15 +32,6 @@ public class MarketplaceDAO extends HttpDAO {
         return new Gson().fromJson(response.body(), typeToken);
     }
 
-    public List<MarketplaceDeckMetadata> getAllMarketplaceDecksByCreator() throws IOException, InterruptedException {
-        HttpResponse<String> response = get(ServerPaths.GET_MARKETPLACE_PATH);
-
-        checkResponseCode(response.statusCode());
-
-        TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {};
-        return new Gson().fromJson(response.body(), typeToken);
-    }
-
     public void addDeckToMarketplace(Deck deck) throws IOException, InterruptedException {
         String deckJson = new Gson().toJson(deck);
 
@@ -84,7 +75,7 @@ public class MarketplaceDAO extends HttpDAO {
             throws IOException, InterruptedException {
 
         if (deckName.isEmpty())
-            return getAllMarketplaceDecksByCreator();
+            return getAllMarketplaceDecks();
 
         final Pattern pattern = Pattern.compile("%s.*".formatted(validator.addTolerance(deckName)));
 

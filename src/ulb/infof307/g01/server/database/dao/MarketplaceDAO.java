@@ -62,6 +62,15 @@ public class MarketplaceDAO extends DAO {
         setDeckPublic(deckId, false);
     }
 
+    public void removeDeckFromNonOwnerCollection(UUID deckId, UUID ownerId) throws DatabaseException {
+        String sql = """
+                DELETE FROM user_deck_collection
+                WHERE deck_id = ? AND user_id != ?;
+                """;
+
+        database.executeUpdate(sql, deckId.toString(), ownerId.toString());
+    }
+
     public void setDeckPublic(UUID deckId, boolean isPublic) throws DatabaseException {
         String sql = """
                 UPDATE deck
@@ -69,7 +78,7 @@ public class MarketplaceDAO extends DAO {
                 WHERE deck_id = ?;
                 """;
 
-        database.executeUpdate(sql, String.valueOf(isPublic), deckId.toString());
+        database.executeUpdate(sql, isPublic ? 1 : 0, deckId.toString());
     }
 
     public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {

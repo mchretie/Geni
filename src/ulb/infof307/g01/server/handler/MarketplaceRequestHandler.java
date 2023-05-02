@@ -101,10 +101,12 @@ public class MarketplaceRequestHandler extends Handler {
             if (!userId.equals(deckOwnerId)) {
                 String message = "User " + userId + " is not the owner of deck " + deckId;
                 halt(403, message);
+                return failedResponse;
             }
 
             database.removeDeckFromMarketplace(deckId);
             database.deleteScoresForDeck(deckId);
+            database.removeDeckFromNonOwnerCollection(deckId, deckOwnerId);
 
 
             return successfulResponse;
