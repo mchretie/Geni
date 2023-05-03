@@ -9,6 +9,12 @@
 - bug timestamp historique de jeu
 - feedback visuel lors d’un hover sur le deck
 - histoire 13 : app android
+    - Login/Register
+    - Visualisation de decks et de marketplace.
+    - Historique de jeux
+    - Leaderboard
+    - Possibilité de jouer des decks
+    - Pas de modification de decks
 - + de stats à la fin d’une partie
     - graphique
     - comparaison aux autres joueurs
