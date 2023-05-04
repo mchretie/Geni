@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.UUID;
 
-public class TimedCard extends Card {
+public abstract class TimedCard extends Card {
 
     @Expose
     protected Integer countdownTime = 10;

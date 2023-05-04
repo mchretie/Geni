@@ -1,6 +1,7 @@
 package ulb.infof307.g01.model.card;
 
 import com.google.gson.annotations.Expose;
+import ulb.infof307.g01.model.card.visitor.CardVisitor;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -27,6 +28,11 @@ public class FlashCard extends Card {
 
     public void setBack(String back) {
         this.back = back;
+    }
+
+    @Override
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
     }
 
     @Override

@@ -7,6 +7,8 @@ import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.model.card.*;
+import ulb.infof307.g01.model.card.extractor.CardExtractor;
+import ulb.infof307.g01.model.card.extractor.CardExtractorRandom;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Score;
 

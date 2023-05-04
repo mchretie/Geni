@@ -2,6 +2,7 @@ package ulb.infof307.g01.model.card;
 
 import com.google.gson.annotations.Expose;
 import ulb.infof307.g01.model.IndulgentValidator;
+import ulb.infof307.g01.model.card.visitor.CardVisitor;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -34,6 +35,11 @@ public class InputCard extends TimedCard {
     public boolean isInputCorrect(String input) {
         IndulgentValidator validator = new IndulgentValidator();
         return validator.areEqual(this.answer, input);
+    }
+
+    @Override
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
     }
 
     @Override

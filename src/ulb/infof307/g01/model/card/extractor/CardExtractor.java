@@ -1,5 +1,7 @@
-package ulb.infof307.g01.model.card;
+package ulb.infof307.g01.model.card.extractor;
 
+import ulb.infof307.g01.model.card.Card;
+import ulb.infof307.g01.model.card.TimedCard;
 import ulb.infof307.g01.model.deck.Deck;
 
 import java.util.ArrayList;

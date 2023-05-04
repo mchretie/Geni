@@ -54,9 +54,6 @@ public class MarketplaceController implements
     /* ====================================================================== */
 
     public void show() throws ServerCommunicationFailedException, IOException, InterruptedException {
-        if (! serverCommunicator.isUserLoggedIn()) {
-            //TODO : GuestMode
-        }
         mainWindowViewController.setMarketplaceViewVisible();
 
         List<Node> decksMarketplace = loadDecksMarketplaceDatabase(serverCommunicator.getAllMarketplaceDecks());

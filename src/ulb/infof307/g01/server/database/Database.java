@@ -18,6 +18,7 @@ import java.util.UUID;
  * Facade for all actions related to the database
  */
 public class Database {
+    CardDAO cardDao;
     DatabaseAccess databaseAccess;
     DeckDAO deckDao;
     TagDAO tagDao;
@@ -27,6 +28,7 @@ public class Database {
 
     public Database() {
         this.databaseAccess = new DatabaseAccess();
+        this.cardDao = new CardDAO(this.databaseAccess);
         this.deckDao = new DeckDAO(this.databaseAccess);
         this.tagDao = new TagDAO(this.databaseAccess);
         this.userDao = new UserDAO(this.databaseAccess);
@@ -34,6 +36,7 @@ public class Database {
         this.marketplaceDao = new MarketplaceDAO(this.databaseAccess);
 
         this.deckDao.setTagDao(this.tagDao);
+        this.deckDao.setCardDao(this.cardDao);
         this.tagDao.setDeckDao(this.deckDao);
         this.scoreDao.setUserDAO(this.userDao);
         this.marketplaceDao.setDeckDAO(this.deckDao);

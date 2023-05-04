@@ -302,7 +302,6 @@ public class EditDeckController implements EditDeckViewController.Listener,
         editDeckViewController.showCards();
         editDeckViewController.setSelectedCard(deck.getLastCard());
         cardPreviewClicked(deck.getLastCard());
-
     }
 
     @Override
