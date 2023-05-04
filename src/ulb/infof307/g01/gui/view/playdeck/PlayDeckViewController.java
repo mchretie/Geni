@@ -377,6 +377,14 @@ public class PlayDeckViewController {
         listener.cardClicked();
     }
 
+    public void disableFrontCardClick() {
+        cardButton.setOnMouseClicked(null);
+    }
+
+    public void enableFrontCardClick() {
+        cardButton.setOnMouseClicked(mouseEvent -> onCardClicked());
+    }
+
     /* ====================================================================== */
     /*                          Listener interface                            */
     /* ====================================================================== */

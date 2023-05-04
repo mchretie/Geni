@@ -29,6 +29,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
 
     private Card currentCard;
     private boolean frontShown = true;
+    private boolean progressbarTimedOut = true;
     private boolean[] answeredCards;
 
     public void setDeck(Deck deck) throws EmptyDeckException {
@@ -102,30 +103,44 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
     @Override
     public void visit(FlashCard flashCard) {
         playDeckViewController.showNormalCard();
+        playDeckViewController.enableFrontCardClick();
+        playDeckViewController.hideProgressBar();
     }
 
     @Override
     public void visit(MCQCard multipleChoiceCard) {
         playDeckViewController.showMCQCard();
-        playDeckViewController.startProgressBar();
+        playDeckViewController.disableFrontCardClick();
 
-        if (playDeckViewController.timerHasRunOut()
-                && cardExtractor.getCurrentCardIndex() != 0) {
-
-            playDeckViewController.showMCQAnswer();
+        if (progressbarTimedOut) {
+            playDeckViewController.startProgressBar();
+            progressbarTimedOut = false;
         }
+
+        else if (playDeckViewController.timerHasRunOut()) {
+            playDeckViewController.showMCQAnswer();
+            progressbarTimedOut = true;
+        }
+
+        else playDeckViewController.startProgressBar();
     }
 
     @Override
     public void visit(InputCard inputCard) {
         playDeckViewController.showInputCard();
-        playDeckViewController.startProgressBar();
+        playDeckViewController.disableFrontCardClick();
 
-        if (playDeckViewController.timerHasRunOut()
-                && cardExtractor.getCurrentCardIndex() != 0) {
-
-            playDeckViewController.showInputAnswer();
+        if (progressbarTimedOut) {
+            playDeckViewController.startProgressBar();
+            progressbarTimedOut = false;
         }
+
+        else if (playDeckViewController.timerHasRunOut()) {
+            playDeckViewController.showInputAnswer();
+            progressbarTimedOut = true;
+        }
+
+        else playDeckViewController.startProgressBar();
     }
 
     /* ====================================================================== */
@@ -134,13 +149,11 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
 
     @Override
     public void cardClicked() {
-        if (currentCard instanceof FlashCard) {
-            if (frontShown)
-                playDeckViewController.flipToBackOfCard();
-            else
-                playDeckViewController.flipToFrontOfCard();
-            frontShown = !frontShown;
-        }
+        if (frontShown)
+            playDeckViewController.flipToBackOfCard();
+        else
+            playDeckViewController.flipToFrontOfCard();
+        frontShown = !frontShown;
     }
 
     @Override
@@ -206,7 +219,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
 
     @Override
     public void timerRanOut() {
-
+        showCard();
     }
 
 
