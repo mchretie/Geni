@@ -9,12 +9,13 @@ import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.model.card.*;
 import ulb.infof307.g01.model.card.extractor.CardExtractor;
 import ulb.infof307.g01.model.card.extractor.CardExtractorRandom;
+import ulb.infof307.g01.model.card.visitor.CardVisitor;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Score;
 
 import java.util.Arrays;
 
-public class PlayDeckController implements PlayDeckViewController.Listener {
+public class PlayDeckController implements PlayDeckViewController.Listener, CardVisitor {
 
     private final Stage stage;
     private final MainWindowViewController mainWindowViewController;
@@ -90,13 +91,28 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         stage.show();
     }
 
-    public void showCard() {
-        if (currentCard instanceof FlashCard)
-            playDeckViewController.showNormalCard();
-        else if (currentCard instanceof MCQCard)
-            playDeckViewController.showMCQCard();
-        else if (currentCard instanceof InputCard)
-            playDeckViewController.showInputCard();
+    private void showCard() {
+        currentCard.accept(this);
+    }
+
+
+    /* ====================================================================== */
+    /*                         Card Visitor Methods                           */
+    /* ====================================================================== */
+
+    @Override
+    public void visit(FlashCard flashCard) {
+        playDeckViewController.showNormalCard();
+    }
+
+    @Override
+    public void visit(MCQCard multipleChoiceCard) {
+        playDeckViewController.showMCQCard();
+    }
+
+    @Override
+    public void visit(InputCard inputCard) {
+        playDeckViewController.showInputCard();
     }
 
     /* ====================================================================== */
@@ -126,7 +142,11 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             return;
         }
 
-        int totalScore = score.getScore() / cardExtractor.getAmountCompetitiveCards();
+        // TODO: This is a temporary fix.
+        //  The 0 competitive cards case should be handled elsewhere.
+
+        int divider = cardExtractor.getAmountCompetitiveCards() == 0 ? 1 : cardExtractor.getAmountCompetitiveCards();
+        int totalScore = score.getScore() / divider;
         score.setScore(totalScore);
 
         try {
