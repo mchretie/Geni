@@ -10,7 +10,7 @@ import '../model/deck/deck.dart';
 class DeckDao {
   static Future<List<Deck>> getAllDecks() async {
     final http.Response response =
-        await HttpDao.get(ServerPath.getAllDecksPath);
+    await HttpDao.get(ServerPath.getAllDecksPath);
     if (response.statusCode == 200) {
       List<dynamic> json = jsonDecode(response.body);
       List<Deck> decks = [];
@@ -51,7 +51,7 @@ class DeckDao {
 
   static Future<bool> isDeckDownloaded(String deckID) async {
     final http.Response response =
-        await HttpDao.get(ServerPath.getAllDecksPath);
+    await HttpDao.get(ServerPath.getAllDecksPath);
     if (response.statusCode == 200) {
       List<dynamic> json = jsonDecode(response.body);
       for (var deck in json) {
@@ -67,7 +67,7 @@ class DeckDao {
     final http.Response response = await HttpDao.post(
         Uri.parse('${ServerPath.addDeckToCollectionPath}?deck_id=$deckID'), "");
     if (response.statusCode == 200) {
-      debugPrint('Deck removed from collection');
+      debugPrint('Deck added to collection');
     }
   }
 
@@ -80,17 +80,33 @@ class DeckDao {
     }
   }
 
-// static Future<List<Deck>> searchDecks(String query) async {
-//   final http.Response response =
-//       await HttpDao.get(ServerPath.searchDecksPath + query);
-//   if (response.statusCode == 200) {
-//     List<dynamic> json = jsonDecode(response.body);
-//     List<Deck> decks = [];
-//     for (var deck in json) {
-//       decks.add(Deck.fromJson(deck));
-//     }
-//     return decks;
-//   }
-//   return [];
-// }
+  static Future<List<Deck>> searchDecks(String query) async {
+    List<Deck> decks = await getAllDecks();
+
+    // TODO add tolerance (new IndulgentValidater)
+    // final pattern = RegExp('${validator.addTolerance(query)}.*');
+    // decks = decks.where((deck) => pattern.hasMatch(validator.addTolerance(deck.name))).toList();
+
+    if (query.isNotEmpty) {
+      for (var deck in decks) {
+        if (!deck.name.toLowerCase().contains(query.toLowerCase())) {
+          return [deck];
+        }
+      }
+    }
+    return decks;
+  }
 }
+
+// Future<List<DeckMetadata>> searchDecks(String deckName) async {
+//   if (deckName.isEmpty) {
+//     return getAllDecksMetadata();
+//   }
+//
+//   final pattern = RegExp('${validator.addTolerance(deckName)}.*');
+//
+//   final allDecks = await getAllDecksMetadata();
+//   final filteredDecks = allDecks.where((deck) => pattern.hasMatch(validator.addTolerance(deck.name)));
+//
+//   return filteredDecks.toList();
+// }

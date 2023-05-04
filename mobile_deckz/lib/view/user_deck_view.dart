@@ -17,13 +17,22 @@ class _UserDeckViewState extends State<UserDeckView> {
 
   Future<List<Deck>> _decksFuture = DeckDao.getAllDecks();
 
+  TextEditingController textEditController = TextEditingController();
+
+  // @override
+  // Future<void> _onSearchTextChanged(String text) async {
+  //   setState(() {
+  //     _decksFuture = DeckDao.searchDecks(text);
+  //   });
+  // }
+
+  @override
   Future<void> _reloadDecks() async {
     setState(() {
       _decksFuture = DeckDao.getAllDecks();
     });
   }
 
-  @override
   @override
         Widget build(BuildContext context) {
           return Scaffold(
@@ -65,6 +74,7 @@ class _UserDeckViewState extends State<UserDeckView> {
                           const SizedBox(width: 20),
                           const Expanded(
                             child: TextField(
+                              controller: textEditController,
                               decoration: InputDecoration(
                                 hintText: 'Search',
                                 prefixIcon: Icon(Icons.search),
