@@ -1,6 +1,5 @@
 package ulb.infof307.g01.gui.util;
 
-import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 

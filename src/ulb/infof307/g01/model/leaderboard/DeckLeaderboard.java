@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class DeckLeaderboard {
-    final private UUID deckId;
-    final private List<Score> scores;
+    private final UUID deckId;
+    private final List<Score> scores;
 
     public DeckLeaderboard(UUID deckId) {
         this.deckId = deckId;

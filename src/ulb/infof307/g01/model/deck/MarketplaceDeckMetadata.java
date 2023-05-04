@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
-
 import java.util.*;
 
 public record MarketplaceDeckMetadata(UUID id,
                                       String name,
+                                      boolean isPublic,
                                       String color,
                                       String image,
                                       String colorName,
@@ -23,6 +23,7 @@ public record MarketplaceDeckMetadata(UUID id,
     public MarketplaceDeckMetadata(Deck deck, String owner, int rating, int downloads) {
         this(deck.getId(),
                 deck.getName(),
+                deck.isPublic(),
                 deck.getColor(),
                 deck.getImage(),
                 deck.getColorName(),
@@ -43,6 +44,7 @@ public record MarketplaceDeckMetadata(UUID id,
                 && deckHashCode == that.deckHashCode
                 && id.equals(that.id)
                 && name.equals(that.name)
+                && isPublic == that.isPublic
                 && color.equals(that.color)
                 && image.equals(that.image)
                 && colorName.equals(that.colorName)

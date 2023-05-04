@@ -9,7 +9,6 @@ import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.editcard.EditCardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.card.Card;
-import ulb.infof307.g01.model.card.TimedCard;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.card.FlashCard;
 

@@ -29,7 +29,7 @@ public class Deck implements Iterable<Card> {
     @Expose
     private String image;
     @Expose
-    private boolean isPublic = false;
+    private boolean isPublic;
 
 
     /* ====================================================================== */
@@ -38,27 +38,28 @@ public class Deck implements Iterable<Card> {
 
     public Deck(String name) {
         this(name,
-             UUID.randomUUID());
+                UUID.randomUUID());
     }
 
     public Deck(String name, UUID id) {
         this(name,
-             id,
-             new ArrayList<>(),
-             new ArrayList<>());
+                id,
+                new ArrayList<>(),
+                new ArrayList<>());
     }
 
     public Deck(String name, UUID id, List<Card> cards, List<Tag> tags) {
         this(name,
-             id,
-             cards,
-             tags,
-             "#00000000",
-             "/backgrounds/default_background.jpg",
-                "#000000");
+                id,
+                cards,
+                tags,
+                "#00000000",
+                "/backgrounds/default_background.jpg",
+                "#000000",
+                false);
     }
 
-    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image, String colorName) {
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image, String colorName, boolean isPublic) {
         this.name = name;
         this.id = id;
         this.cards = cards;
@@ -66,15 +67,15 @@ public class Deck implements Iterable<Card> {
         this.color = color;
         this.image = image;
         this.colorName = colorName;
-    }
-
-    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image, String colorName, boolean isPublic) {
-        this(name, id, cards, tags, color, image, colorName);
         this.isPublic = isPublic;
     }
 
+    public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image, String colorName) {
+        this(name, id, cards, tags, color, image, colorName, false);
+    }
+
     public Deck(Deck deck) {
-        this(deck.name, deck.id, deck.cards, deck.tags, deck.color, deck.image, deck.colorName);
+        this(deck.name, deck.id, deck.cards, deck.tags, deck.color, deck.image, deck.colorName, deck.isPublic);
     }
 
 
@@ -205,14 +206,14 @@ public class Deck implements Iterable<Card> {
 
     public DeckMetadata getMetadata() {
         return new DeckMetadata(id,
-                                name,
-                                isPublic,
-                                color,
-                                image,
-                                colorName,
-                                cards.size(),
-                                tags,
-                                hashCode());
+                name,
+                isPublic,
+                color,
+                image,
+                colorName,
+                cards.size(),
+                tags,
+                hashCode());
     }
 
     @Override
@@ -247,12 +248,10 @@ public class Deck implements Iterable<Card> {
             JsonObject cardObject = card.getAsJsonObject();
             String cardType = cardObject.get("cardType").getAsString();
             switch (cardType) {
-                case "FlashCard" ->
-                        this.cards.add(new Gson().fromJson(card, FlashCard.class));
-                case "MCQCard" ->
-                        this.cards.add(new Gson().fromJson(card, MCQCard.class));
-                case "InputCard" ->
-                        this.cards.add(new Gson().fromJson(card, InputCard.class));
+                case "FlashCard" -> this.cards.add(new Gson().fromJson(card, FlashCard.class));
+                case "MCQCard" -> this.cards.add(new Gson().fromJson(card, MCQCard.class));
+                case "InputCard" -> this.cards.add(new Gson().fromJson(card, InputCard.class));
+                default -> throw new IllegalStateException("Unexpected value: " + cardType);
             }
         }
     }

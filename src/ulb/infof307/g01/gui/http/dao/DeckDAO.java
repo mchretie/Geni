@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -34,6 +34,8 @@ public class DeckDAO extends HttpDAO {
 
     DeckCache deckCache = null;
     IndulgentValidator validator = new IndulgentValidator();
+
+    final String deckIdQuery = "?deck_id=";
 
     /**
      * Init and set up the cache with user’s deck collection
@@ -75,9 +77,11 @@ public class DeckDAO extends HttpDAO {
     public boolean deckExists(String deckName)
             throws IOException, InterruptedException {
 
-        initCacheIfNot();
-        return deckCache.getAllDecksMetadata().stream()
-                .anyMatch(deck -> deck.name().equals(deckName));
+        String path = ServerPaths.DECK_EXISTS_PATH + "?name=" + deckName.replace(" ", "_");
+
+        HttpResponse<String> response = get(path);
+        checkResponseCode(response.statusCode());
+        return Boolean.parseBoolean(response.body());
     }
 
 
@@ -126,10 +130,20 @@ public class DeckDAO extends HttpDAO {
                 .collect(toList());
     }
 
-    public void removeDeckFromCollection(UUID deckId)
+    public void deleteDeck(DeckMetadata deckMetadata)
+            throws IOException, InterruptedException {
+        String path = ServerPaths.DELETE_DECK_PATH + deckIdQuery + deckMetadata.id().toString();
+
+        HttpResponse<String> response = delete(path);
+
+        checkResponseCode(response.statusCode());
+        deckCache.removeDeck(deckMetadata);
+    }
+
+    public void removeDeckFromCollection(DeckMetadata deckId)
             throws IOException, InterruptedException {
 
-        String query = "?deck_id=" + deckId.toString();
+        String query = deckIdQuery + deckId.id().toString();
         String path = ServerPaths.REMOVE_DECK_FROM_COLLECTION_PATH;
 
         HttpResponse<String> response = delete(path + query);
@@ -165,20 +179,31 @@ public class DeckDAO extends HttpDAO {
             throws IOException, InterruptedException {
 
         HttpResponse<String> response
-                = upload(ServerPaths.SAVE_DECK_IMAGE_PATH, image, filename);
+                = upload(image, filename);
 
         checkResponseCode(response.statusCode());
     }
 
-    public void addDeckToCollection(UUID deckId) throws IOException, InterruptedException {
-        String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH + "?deck_id=" + deckId;
+    public void addDeckToCollection(DeckMetadata deckMetadata) throws IOException, InterruptedException {
+        String path = ServerPaths.ADD_DECK_TO_COLLECTION_PATH + deckIdQuery + deckMetadata.id();
         HttpResponse<String> response = post(path, "");
 
         checkResponseCode(response.statusCode());
+
+        deckCache.updateDeckMetadata(deckMetadata);
     }
 
-    public void emptyCache() {
-        deckCache = null;
+    public int numberOfPublicPlayedDecks() throws IOException, InterruptedException {
+        String path = ServerPaths.NUMBER_OF_PUBLIC_PLAYED_DECKS_PATH;
+        HttpResponse<String> response = get(path);
+
+        checkResponseCode(response.statusCode());
+
+        return Integer.parseInt(response.body());
+    }
+
+    public void updateCache(DeckMetadata deckMetadata) {
+        deckCache.updateDeckMetadata(deckMetadata);
     }
 
     @Override

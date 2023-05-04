@@ -7,6 +7,7 @@ import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
+
 public class DeckCache {
 
     Map<UUID, Deck> decks = new HashMap<>();
@@ -21,11 +22,15 @@ public class DeckCache {
         }
     }
 
-    public void updateDeck(Deck deck) {
-        var deckId = deck.getId();
-        decks.put(deckId, deck);
-        decksMetadata.put(deckId, deck.getMetadata());
+    public void updateDeckMetadata(DeckMetadata deckMetadata) {
+        var deckId = deckMetadata.id();
+        decksMetadata.put(deckId, deckMetadata);
         allDecksIds.add(deckId);
+    }
+
+    public void updateDeck(Deck deck) {
+        decks.put(deck.getId(), deck);
+        updateDeckMetadata(deck.getMetadata());
     }
 
     public void removeDeck(DeckMetadata deckMetadata) {

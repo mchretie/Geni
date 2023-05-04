@@ -105,12 +105,12 @@ public class ScoreDAO extends DAO {
         String sql = """
                 SELECT U.username, sum(score) as total_score
                 FROM user_deck_score S, user U
+                INNER JOIN marketplace m on m.deck_id = S.deck_id
                 WHERE U.user_id = S.user_id
                 GROUP BY U.username;
                 """;
 
-        try {
-            ResultSet res = database.executeQuery(sql);
+        try(ResultSet res = database.executeQuery(sql)) {
             List<GlobalLeaderboardEntry> leaderboard = new ArrayList<>();
             while (res.next()) {
                 leaderboard.add(

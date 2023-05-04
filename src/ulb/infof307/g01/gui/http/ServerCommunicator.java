@@ -1,6 +1,8 @@
 package ulb.infof307.g01.gui.http;
 
 import ulb.infof307.g01.gui.http.dao.*;
+import ulb.infof307.g01.gui.http.exceptions.AuthenticationFailedException;
+import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
@@ -45,10 +47,15 @@ public class ServerCommunicator {
     }
 
     public void userLogin(String username, String password)
-            throws IOException, InterruptedException {
+            throws ServerCommunicationFailedException {
 
-        userSessionDAO.login(username, password);
-        setJWT();
+        try {
+            userSessionDAO.login(username, password);
+            setJWT();
+
+        } catch (IOException | InterruptedException e) {
+            throw new AuthenticationFailedException("Failed to login");
+        }
     }
 
     public void userLogout() {
@@ -57,9 +64,15 @@ public class ServerCommunicator {
     }
 
     public void userRegister(String username, String password)
-            throws IOException, InterruptedException {
+            throws ServerCommunicationFailedException {
 
-        userSessionDAO.register(username, password);
+        try {
+            userSessionDAO.register(username, password);
+            setJWT();
+
+        } catch (IOException | InterruptedException e) {
+            throw new AuthenticationFailedException("Failed to register");
+        }
     }
 
     public String getSessionUsername() {
@@ -70,37 +83,84 @@ public class ServerCommunicator {
         return userSessionDAO.isLoggedIn();
     }
 
-    public void attemptAutoLogin() throws IOException, InterruptedException {
-        userSessionDAO.attemptAutoLogin();
-        setJWT();
+    public void attemptAutoLogin()
+            throws ServerCommunicationFailedException {
+
+        try {
+            userSessionDAO.attemptAutoLogin();
+            setJWT();
+
+        } catch (IOException | InterruptedException e) {
+            throw new AuthenticationFailedException("Failed to auto-login");
+        }
     }
 
     /* ====================================================================== */
     /*                              Game history                              */
     /* ====================================================================== */
 
-    public GameHistory getGameHistory() throws IOException, InterruptedException {
-        return gameHistoryDAO.getGameHistory();
+    public GameHistory getGameHistory()
+            throws ServerCommunicationFailedException {
+
+        try {
+            return gameHistoryDAO.getGameHistory();
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get game history";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
-    public GameHistory getGameHistory(UUID deckId) throws IOException, InterruptedException {
-        return gameHistoryDAO.getGameHistory(deckId);
+    public GameHistory getGameHistory(UUID deckId)
+            throws ServerCommunicationFailedException {
+
+        try {
+            return gameHistoryDAO.getGameHistory(deckId);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get game history";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
     /* ====================================================================== */
     /*                                 Score                                  */
     /* ====================================================================== */
 
-    public void addScore(Score score) throws IOException, InterruptedException {
-        scoreDAO.addScore(score);
+    public void addScore(Score score)
+            throws ServerCommunicationFailedException {
+
+        try {
+            scoreDAO.addScore(score);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to add score";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
-    public Score getBestScoreForDeck(UUID deckId) throws IOException, InterruptedException {
-        return scoreDAO.getBestScoreForDeck(deckId);
+    public Score getBestScoreForDeck(UUID deckId)
+            throws ServerCommunicationFailedException {
+
+       try {
+           return scoreDAO.getBestScoreForDeck(deckId);
+
+       } catch (IOException | InterruptedException e) {
+           String message = "Failed to get best score for deck";
+           throw new ServerCommunicationFailedException(message);
+       }
     }
 
-    public GlobalLeaderboard getGlobalLeaderboard() throws IOException, InterruptedException {
-        return scoreDAO.getGlobalLeaderboard();
+    public GlobalLeaderboard getGlobalLeaderboard()
+            throws ServerCommunicationFailedException {
+
+        try {
+            return scoreDAO.getGlobalLeaderboard();
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get global leaderboard";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
     /* ====================================================================== */
@@ -108,61 +168,136 @@ public class ServerCommunicator {
     /* ====================================================================== */
 
     public boolean deckNameExists(String name)
-            throws IOException, InterruptedException {
+            throws ServerCommunicationFailedException {
 
-        return deckDAO.deckExists(name);
+        try {
+            return deckDAO.deckExists(name);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to check if deck name exists";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
     public List<DeckMetadata> getAllDecksMetadata()
-            throws IOException, InterruptedException {
+            throws ServerCommunicationFailedException {
 
-        return deckDAO.getAllDecksMetadata();
+        try {
+            return deckDAO.getAllDecksMetadata();
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get all decks metadata";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
     public List<DeckMetadata> searchDecks(String deckName)
-            throws IOException, InterruptedException {
+            throws ServerCommunicationFailedException {
 
-        return deckDAO.searchDecks(deckName);
+        try {
+            return deckDAO.searchDecks(deckName);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to search decks";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
     public List<DeckMetadata> searchDecksByTags(String tagName)
-            throws IOException, InterruptedException {
+            throws ServerCommunicationFailedException {
 
-        return deckDAO.searchDecksByTags(tagName);
+        try {
+            return deckDAO.searchDecksByTags(tagName);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to search decks by tags";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
-    public void removeDeckFromCollection(UUID deckId)
-            throws IOException, InterruptedException {
-
-        deckDAO.removeDeckFromCollection(deckId);
+    public void deleteDeck(DeckMetadata deckMetadata) throws IOException, InterruptedException {
+        deckDAO.deleteDeck(deckMetadata);
     }
 
-    public void addDeckToCollection(UUID deckId)
-            throws IOException, InterruptedException {
+    public void removeDeckFromCollection(DeckMetadata deckMetadata)
+            throws ServerCommunicationFailedException {
 
-        deckDAO.addDeckToCollection(deckId);
+        try {
+            deckDAO.removeDeckFromCollection(deckMetadata);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to remove deck from collection";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
+
+    public void addDeckToCollection(DeckMetadata deckMetadata)
+            throws ServerCommunicationFailedException {
+
+        try {
+            deckDAO.addDeckToCollection(deckMetadata);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to add deck to collection";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
     public void saveDeck(Deck deck)
-            throws IOException, InterruptedException {
+            throws ServerCommunicationFailedException {
 
-        deckDAO.saveDeck(deck);
+        try {
+            deckDAO.saveDeck(deck);
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to save deck";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
     public Optional<Deck> getDeck(DeckMetadata deckId)
-            throws IOException, InterruptedException {
+            throws ServerCommunicationFailedException {
 
-        return deckDAO.getDeck(deckId);
+        try {
+            return deckDAO.getDeck(deckId);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get deck";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
-    public int getDeckCount() throws IOException, InterruptedException {
-        return deckDAO.getDeckCount();
+    public int getDeckCount()
+            throws ServerCommunicationFailedException {
+
+        try {
+            return deckDAO.getDeckCount();
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get deck count";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
     public void uploadImage(File image, String filename)
-            throws IOException, InterruptedException {
+            throws ServerCommunicationFailedException {
 
-        deckDAO.uploadImage(image, filename);
+        try {
+            deckDAO.uploadImage(image, filename);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to upload image";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
+
+    public int numberOfPublicPlayedDecks() throws ServerCommunicationFailedException {
+        try {
+            return deckDAO.numberOfPublicPlayedDecks();
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get number of public played decks";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
     /* ====================================================================== */
@@ -170,32 +305,93 @@ public class ServerCommunicator {
     /* ====================================================================== */
 
     public List<MarketplaceDeckMetadata> getAllMarketplaceDecks()
-            throws IOException, InterruptedException {
+            throws ServerCommunicationFailedException {
 
-        return marketplaceDAO.getAllMarketplaceDecks();
+       try {
+           return marketplaceDAO.getAllMarketplaceDecks();
+
+       } catch (IOException | InterruptedException e) {
+           String message = "Failed to get all marketplace decks";
+           throw new ServerCommunicationFailedException(message);
+       }
     }
 
     public void addDeckToMarketplace(Deck deck)
-            throws IOException, InterruptedException {
+            throws ServerCommunicationFailedException {
 
-        marketplaceDAO.addDeckToMarketplace(deck);
-        deckDAO.emptyCache();
+        try {
+            marketplaceDAO.addDeckToMarketplace(deck);
+            deckDAO.updateCache(deck.getMetadata());
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to add deck to marketplace";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
-    public void addMarketplaceDeckToCollection(UUID deck) throws IOException, InterruptedException {
-        deckDAO.addDeckToCollection(deck);
-        deckDAO.emptyCache();
+    public void addMarketplaceDeckToCollection(DeckMetadata deck)
+            throws ServerCommunicationFailedException {
+
+        try {
+            deckDAO.addDeckToCollection(deck);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to add marketplace deck to collection";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
-    public void removeDeckFromMarketplace(String deckId)
-            throws IOException, InterruptedException {
+    public void removeDeckFromMarketplace(MarketplaceDeckMetadata deck)
+            throws ServerCommunicationFailedException {
 
-        marketplaceDAO.removeDeckFromMarketplace(deckId);
+        try {
+            marketplaceDAO.removeDeckFromMarketplace(deck);
+
+            //TODO : clean this up
+            var deckMetadata = DeckMetadata.fromMarketplaceDeckMetadata(deck);
+            Deck deckToRemove = deckDAO.getDeck(deckMetadata).orElseThrow();
+            deckToRemove.switchOnlineVisibility();
+            deckDAO.updateCache(deckToRemove.getMetadata());
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to remove deck from marketplace";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
     public List<MarketplaceDeckMetadata> getSavedDecks()
-            throws IOException, InterruptedException {
+            throws ServerCommunicationFailedException {
 
-        return marketplaceDAO.getSavedDecks();
+        try {
+            return marketplaceDAO.getSavedDecks();
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get saved decks from server";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
+
+    public List<MarketplaceDeckMetadata> searchDecksMarketplace(String deckName)
+            throws ServerCommunicationFailedException {
+
+        try {
+            return marketplaceDAO.searchDecks(deckName);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to search decks";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
+
+    public List<MarketplaceDeckMetadata> searchDecksMarketplaceByCreator(String deckName)
+            throws ServerCommunicationFailedException {
+
+        try {
+            return marketplaceDAO.searchDecksByCreator(deckName);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to search decks";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 }

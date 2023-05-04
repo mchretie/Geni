@@ -5,20 +5,41 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.result.ResultViewController">
-   <children>
-      <Label text="Votre score : ">
-         <font>
-            <Font size="16.0" />
-         </font></Label>
-      <Label fx:id="scoreLabel" text="200">
-         <font>
-            <Font name="System Bold" size="35.0" />
-         </font></Label>
-      <Button fx:id="goToMenuButton" mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Retour">
-         <VBox.margin>
-            <Insets top="10.0" />
-         </VBox.margin>
-      </Button>
-   </children>
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.result.ResultViewController">
+    <Label text="Votre score : ">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Label>
+    <Label fx:id="scoreLabel" text="200">
+        <font>
+            <Font name="System Bold" size="35.0"/>
+        </font>
+    </Label>
+    <Label text="Temps total : ">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Label>
+    <Label fx:id="totalTimeLabel" text="200">
+        <font>
+            <Font name="System Bold" size="35.0"/>
+        </font>
+    </Label>
+    <Label text="Temps moyen : ">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Label>
+    <Label fx:id="avgTimeLabel" text="200">
+        <font>
+            <Font name="System Bold" size="35.0"/>
+        </font>
+    </Label>
+    <Button fx:id="goToMenuButton" mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Retour">
+        <VBox.margin>
+            <Insets top="10.0"/>
+        </VBox.margin>
+    </Button>
 </VBox>

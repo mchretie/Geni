@@ -92,7 +92,6 @@ public class DeckMenuViewController {
         gridPane.widthProperty().addListener(listener);
     }
 
-    // TODO: find way to take extension from DeckIO
     private void initFileChooser() {
         fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
@@ -201,7 +200,7 @@ public class DeckMenuViewController {
      */
     private void addColumn() {
         ColumnConstraints cc = new ColumnConstraints();
-        cc.setMinWidth(300);  // TODO: change these values
+        cc.setMinWidth(300);
         cc.setMaxWidth(400);
 
         cc.setHalignment(HPos.CENTER);

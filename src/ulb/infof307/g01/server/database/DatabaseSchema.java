@@ -2,7 +2,11 @@ package ulb.infof307.g01.server.database;
 
 class DatabaseSchema {
 
-    public static final String[] SERVER = new String[]{
+    private DatabaseSchema() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    protected static final String[] SERVER = new String[]{
             """
         CREATE TABLE IF NOT EXISTS user (
             user_id TEXT PRIMARY KEY,
@@ -19,6 +23,7 @@ class DatabaseSchema {
             color TEXT NOT NULL,
             image TEXT NOT NULL,
             color_name TEXT NOT NULL,
+            public INTEGER NOT NULL,
             FOREIGN KEY (user_id)
                 REFERENCES user(user_id)
                 ON DELETE CASCADE
