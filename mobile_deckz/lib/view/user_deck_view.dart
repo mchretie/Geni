@@ -17,16 +17,14 @@ class _UserDeckViewState extends State<UserDeckView> {
 
   Future<List<Deck>> _decksFuture = DeckDao.getAllDecks();
 
-  TextEditingController textEditController = TextEditingController();
+  final textEditController = TextEditingController();
 
-  // @override
-  // Future<void> _onSearchTextChanged(String text) async {
-  //   setState(() {
-  //     _decksFuture = DeckDao.searchDecks(text);
-  //   });
-  // }
+  Future<void> _onSearchTextChanged(String text) async {
+    setState(() {
+      _decksFuture = DeckDao.searchDecks(text);
+    });
+  }
 
-  @override
   Future<void> _reloadDecks() async {
     setState(() {
       _decksFuture = DeckDao.getAllDecks();
@@ -34,55 +32,56 @@ class _UserDeckViewState extends State<UserDeckView> {
   }
 
   @override
-        Widget build(BuildContext context) {
-          return Scaffold(
-              body: RefreshIndicator(
-              onRefresh: _reloadDecks,
-              child: FutureBuilder<List<Deck>>(
-              future: _decksFuture,
-              builder: (BuildContext context, AsyncSnapshot<List<Deck>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-            List<Deck> deckList = snapshot.data ?? [];
-            return Scaffold(
-                body: Center(
-                    child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                  Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          DropdownButton<String>(
-                            value: dropdownValue,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                dropdownValue = newValue!;
-                              });
-                            },
-                            items: dropdownItems.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                          const SizedBox(width: 20),
-                          const Expanded(
-                            child: TextField(
-                              controller: textEditController,
-                              decoration: InputDecoration(
-                                hintText: 'Search',
-                                prefixIcon: Icon(Icons.search),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: RefreshIndicator(
+            onRefresh: _reloadDecks,
+            child: FutureBuilder<List<Deck>>(
+                future: _decksFuture,
+                builder: (BuildContext context, AsyncSnapshot<List<Deck>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    List<Deck> deckList = snapshot.data ?? [];
+                    return Scaffold(
+                        body: Center(
+                            child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: <Widget>[
+                                  Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Row(
+                                        children: [
+                                          DropdownButton<String>(
+                                            value: dropdownValue,
+                                            onChanged: (String? newValue) {
+                                              setState(() {
+                                                dropdownValue = newValue!;
+                                              });
+                                            },
+                                            items: dropdownItems.map<DropdownMenuItem<String>>((String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(value),
+                                              );
+                                            }).toList(),
+                                          ),
+                                          const SizedBox(width: 20),
+                                          Expanded(
+                                            child: TextField(
+                                              controller: textEditController,
+                                              onChanged: (text) => _onSearchTextChanged(text),
+                                              decoration: InputDecoration(
+                                                hintText: 'Search',
+                                                prefixIcon: Icon(Icons.search),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
                   Expanded(
                       child: ListView.builder(
                           itemCount: deckList.length,
