@@ -38,4 +38,5 @@ public abstract class TimedCard extends Card {
 
         return countdownTime.equals(other.getCountdownTime());
     }
+
 }

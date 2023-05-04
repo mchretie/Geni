@@ -15,7 +15,8 @@ import ulb.infof307.g01.model.deck.Score;
 
 import java.util.Arrays;
 
-public class PlayDeckController implements PlayDeckViewController.Listener, CardVisitor {
+public class PlayDeckController implements PlayDeckViewController.Listener,
+                                            CardVisitor {
 
     private final Stage stage;
     private final MainWindowViewController mainWindowViewController;
@@ -43,8 +44,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener, Card
         playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
         playDeckViewController.setDeckName(deck.getName());
         playDeckViewController.setNumberOfCards(deck.cardCount());
-
-        playDeckViewController.setTimer();
     }
 
     public void removeDeck() {
@@ -108,11 +107,25 @@ public class PlayDeckController implements PlayDeckViewController.Listener, Card
     @Override
     public void visit(MCQCard multipleChoiceCard) {
         playDeckViewController.showMCQCard();
+        playDeckViewController.startProgressBar();
+
+        if (playDeckViewController.timerHasRunOut()
+                && cardExtractor.getCurrentCardIndex() != 0) {
+
+            playDeckViewController.showMCQAnswer();
+        }
     }
 
     @Override
     public void visit(InputCard inputCard) {
         playDeckViewController.showInputCard();
+        playDeckViewController.startProgressBar();
+
+        if (playDeckViewController.timerHasRunOut()
+                && cardExtractor.getCurrentCardIndex() != 0) {
+
+            playDeckViewController.showInputAnswer();
+        }
     }
 
     /* ====================================================================== */
@@ -134,10 +147,10 @@ public class PlayDeckController implements PlayDeckViewController.Listener, Card
     public void nextCardClicked() {
         frontShown = true;
         currentCard = cardExtractor.getNextCard();
+        playDeckViewController.hideProgressBar();
 
         if (currentCard != null) {
             playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
-            playDeckViewController.setTimer();
             showCard();
             return;
         }
@@ -169,8 +182,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener, Card
 
         currentCard = previousCard;
         playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
-        playDeckViewController.setTimer();
-
         showCard();
     }
 
@@ -191,6 +202,11 @@ public class PlayDeckController implements PlayDeckViewController.Listener, Card
         }
 
         score.addTime(((TimedCard) currentCard).getCountdownTime()-timeLeft*10);
+    }
+
+    @Override
+    public void timerRanOut() {
+
     }
 
 
