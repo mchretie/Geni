@@ -108,20 +108,23 @@ public class PlayDeckViewController {
         KeyValue keyValue = new KeyValue(prog.progressProperty(), 1);
         KeyFrame start = new KeyFrame(Duration.ZERO, keyValue);
 
-        KeyFrame firstThird = new KeyFrame(Duration.seconds((double) seconds / 3), e -> {
-            prog.setStyle("-fx-accent: ORANGE");
-        }, new KeyValue(prog.progressProperty(), 0.66));
+        KeyFrame firstThird
+                = new KeyFrame(
+                        Duration.seconds((double) seconds / 3),
+                        e -> prog.setStyle("-fx-accent: ORANGE"),
+                        new KeyValue(prog.progressProperty(), 0.66)
+                );
 
         KeyFrame secondThird
-                = new KeyFrame(Duration.seconds((double) 2 * seconds / 3), e -> {
-
-            prog.setStyle("-fx-accent: RED");
-        }, new KeyValue(prog.progressProperty(), 0.33));
+                = new KeyFrame(
+                        Duration.seconds((double) 2 * seconds / 3),
+                        e -> prog.setStyle("-fx-accent: RED"),
+                        new KeyValue(prog.progressProperty(), 0.33)
+                );
 
         KeyFrame lastThird = new KeyFrame(Duration.seconds(seconds), e -> {
             if (!hasAnswered)
                 listener.timerRanOut();
-
         }, new KeyValue(prog.progressProperty(), 0));
 
         timeline = new Timeline(
