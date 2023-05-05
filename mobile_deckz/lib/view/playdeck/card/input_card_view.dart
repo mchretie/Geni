@@ -113,37 +113,41 @@ class _InputCardViewState extends State<InputCardView>
                 )
               ],
             )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          : Column(
               children: [
-                SizedBox(
-                    width: 300,
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Answer',
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                        width: 300,
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Answer',
+                          ),
+                          onChanged: (text) {
+                            setState(() {
+                              answer = text;
+                            });
+                          },
+                        )),
+                    SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: ElevatedButton(
+                        onPressed: handleAnswer,
+                        child: const Icon(Icons.check),
                       ),
-                      onChanged: (text) {
-                        setState(() {
-                          answer = text;
-                        });
-                      },
-                    )),
-                SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: ElevatedButton(
-                    onPressed: handleAnswer,
-                    child: const Icon(Icons.check),
-                  ),
-                )
+                    )
+                  ],
+                ),
+                const SizedBox(height: 10),
+                CountdownView(
+                  seconds: widget.card.countdownTime,
+                  onCountdownUpdated: _updateRemainingTime,
+                ),
               ],
-            ),
-      const SizedBox(height: 10),
-      CountdownView(
-        seconds: widget.card.countdownTime,
-        onCountdownUpdated: _updateRemainingTime,
-      ),
+            )
     ]);
   }
 
