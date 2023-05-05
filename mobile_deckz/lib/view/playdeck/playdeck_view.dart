@@ -18,42 +18,50 @@ class PlayDeckView extends StatelessWidget {
 
   const PlayDeckView({super.key, required this.deck, required this.score});
 
-  Widget getCorrectCardView(AbstractCard card) {
-    switch (card.runtimeType) {
-      case FlashCard:
-        return FlashcardView(card: card as FlashCard);
-      case MCQCard:
-        return MCQCardView(card: card as MCQCard, score: score);
-      case InputCard:
-        return InputCardView(card: card as InputCard, score: score);
-      default:
-        return const Text('Error');
-    }
-  }
-
-  List<Widget> loadCardViews(List<AbstractCard> cards) {
-    return deck
-        .getCardRandomOrder()
-        .map((card) => getCorrectCardView(card))
-        .toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
       future: DeckDao.loadDeck(deck),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(deck.name),
-            ),
-            body: Center(
-                child: deck.cards.isEmpty
-                    ? const Text('No cards in this deck loser')
-                    : PlayCardView(
-                        cardViews: loadCardViews(deck.cards), score: score)),
-          );
+          return WillPopScope(
+              onWillPop: () async {
+                if (score.isFinal) {
+                  return true;
+                }
+                return await showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Are you sure you wish to exit?'),
+                        content:
+                            const Text('Your progress and score will be lost'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(true);
+                            },
+                            child: const Text('Exit'),
+                          ),
+                        ],
+                      ),
+                    ) ??
+                    false;
+              },
+              child: Scaffold(
+                appBar: AppBar(
+                  title: Text(deck.name),
+                ),
+                body: Center(
+                    child: deck.cards.isEmpty
+                        ? const Text('No cards in this deck loser')
+                        : PlayCardView(deck: deck, score: score)),
+              ));
         } else {
           return const Center(child: CircularProgressIndicator());
         }
@@ -63,26 +71,78 @@ class PlayDeckView extends StatelessWidget {
 }
 
 class PlayCardView extends StatefulWidget {
-  // final List<AbstractCard> cards;
-  final List<Widget> cardViews;
+  final Deck deck;
   final Score score;
 
-  const PlayCardView({super.key, required this.cardViews, required this.score});
+  const PlayCardView({super.key, required this.deck, required this.score});
 
   @override
   State<PlayCardView> createState() => _PlayCardViewState();
 }
 
 class _PlayCardViewState extends State<PlayCardView> {
-  int _currentCardIndex = 0;
-  bool _showResult = false;
+  late List<Widget> cardViews;
   late PageController pageController;
+  late ScrollPhysics physics;
+  late bool switchPageAllow;
+
+  Widget getCorrectCardView(AbstractCard card) {
+    switch (card.runtimeType) {
+      case FlashCard:
+        return FlashcardView(card: card as FlashCard);
+      case MCQCard:
+        return MCQCardView(
+            card: card as MCQCard,
+            score: widget.score,
+            onCardAnswered: onCardAnswered,
+            onCardLoaded: onCardLoaded);
+      case InputCard:
+        return InputCardView(
+            card: card as InputCard,
+            score: widget.score,
+            onCardAnswered: onCardAnswered,
+            onCardLoaded: onCardLoaded);
+      default:
+        return const Text('Error');
+    }
+  }
+
+  List<Widget> loadCardViews(List<AbstractCard> cards) {
+    return widget.deck
+        .getCardRandomOrder()
+        .map((card) => getCorrectCardView(card))
+        .toList();
+  }
+
+  void setSwitchPageAllow(bool allow) {
+    if (allow) {
+      setState(() {
+        physics = const PageScrollPhysics();
+        switchPageAllow = true;
+      });
+    } else {
+      setState(() {
+        physics = const NeverScrollableScrollPhysics();
+        switchPageAllow = false;
+      });
+    }
+  }
+
+  void onCardAnswered() {
+    setSwitchPageAllow(true);
+  }
+
+  void onCardLoaded() {
+    setSwitchPageAllow(false);
+  }
 
   @override
   void initState() {
     super.initState();
-    pageController =
-        PageController(initialPage: 0, keepPage: true);
+    cardViews = loadCardViews(widget.deck.cards);
+    cardViews.add(ScoreResultView(finalScore: widget.score.score));
+    pageController = PageController(initialPage: 0, keepPage: true);
+    setSwitchPageAllow(true);
   }
 
   @override
@@ -91,26 +151,27 @@ class _PlayCardViewState extends State<PlayCardView> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: _showResult
-              ? [ScoreResultView(finalScore: widget.score.score)]
-              : [
-                  Expanded(
-                    child: PageView(
-                      controller: pageController,
-                      children: widget.cardViews,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
+          children: [
+            Expanded(
+                child: PageView.builder(
+              controller: pageController,
+              itemCount: cardViews.length,
+              physics: physics,
+              onPageChanged: (int index) {
+                if (index == cardViews.length - 1) {
+                  widget.score.setFinal();
+                }
+              },
+              itemBuilder: (BuildContext context, int index) =>
+                  cardViews[index],
+            )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: switchPageAllow
+                  ? [
                       IconButton(
                         icon: const Icon(Icons.arrow_back),
                         onPressed: () {
-                          if (_currentCardIndex > 0) {
-                            setState(() {
-                              _currentCardIndex--;
-                            });
-                          }
                           pageController.previousPage(
                               duration: const Duration(milliseconds: 200),
                               curve: Curves.easeInOut);
@@ -122,20 +183,12 @@ class _PlayCardViewState extends State<PlayCardView> {
                           pageController.nextPage(
                               duration: const Duration(milliseconds: 200),
                               curve: Curves.easeInOut);
-                          if (_currentCardIndex <  - 1) {
-                            setState(() {
-                              _currentCardIndex++;
-                            });
-                          } else {
-                            setState(() {
-                              _showResult = true;
-                            });
-                          }
                         },
                       ),
-                    ],
-                  )
-                ],
+                    ]
+                  : [],
+            )
+          ],
         ));
   }
 }
