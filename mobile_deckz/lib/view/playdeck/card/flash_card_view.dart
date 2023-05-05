@@ -17,7 +17,8 @@ class FlashcardView extends StatefulWidget {
   State<FlashcardView> createState() => _FlashcardViewState();
 }
 
-class _FlashcardViewState extends State<FlashcardView> with AutomaticKeepAliveClientMixin<FlashcardView> {
+class _FlashcardViewState extends State<FlashcardView>
+    with AutomaticKeepAliveClientMixin<FlashcardView> {
   bool _showFront = true;
   double y = 0;
   bool _isFlippingFront = false;
@@ -53,8 +54,6 @@ class _FlashcardViewState extends State<FlashcardView> with AutomaticKeepAliveCl
       _isFlippingBack = false;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
