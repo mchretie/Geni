@@ -38,7 +38,8 @@ class _UserDeckViewState extends State<UserDeckView> {
             onRefresh: _reloadDecks,
             child: FutureBuilder<List<Deck>>(
                 future: _decksFuture,
-                builder: (BuildContext context, AsyncSnapshot<List<Deck>> snapshot) {
+                builder:
+                    (BuildContext context, AsyncSnapshot<List<Deck>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
@@ -51,48 +52,51 @@ class _UserDeckViewState extends State<UserDeckView> {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
-                                  Padding(
-                                      padding: const EdgeInsets.all(16),
-                                      child: Row(
-                                        children: [
-                                          DropdownButton<String>(
-                                            value: dropdownValue,
-                                            onChanged: (String? newValue) {
-                                              setState(() {
-                                                dropdownValue = newValue!;
-                                              });
-                                            },
-                                            items: dropdownItems.map<DropdownMenuItem<String>>((String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
-                                          ),
-                                          const SizedBox(width: 20),
-                                          Expanded(
-                                            child: TextField(
-                                              controller: textEditController,
-                                              onChanged: (text) => _onSearchTextChanged(text),
-                                              decoration: InputDecoration(
-                                                hintText: 'Search',
-                                                prefixIcon: Icon(Icons.search),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )),
-                  Expanded(
-                      child: ListView.builder(
-                          itemCount: deckList.length,
-                          itemBuilder: (context, index) {
-                            final Deck deck = deckList[index];
-                            return Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: DeckView(deck: deck));
-                          }))
-                ])));
-          }
-        })));
+                          Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Row(
+                                children: [
+                                  DropdownButton<String>(
+                                    value: dropdownValue,
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        dropdownValue = newValue!;
+                                      });
+                                    },
+                                    items: dropdownItems
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: textEditController,
+                                      onChanged: (text) =>
+                                          _onSearchTextChanged(text),
+                                      decoration: InputDecoration(
+                                        hintText: 'Search',
+                                        prefixIcon: Icon(Icons.search),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                          Expanded(
+                              child: ListView.builder(
+                                  itemCount: deckList.length,
+                                  itemBuilder: (context, index) {
+                                    final Deck deck = deckList[index];
+                                    return Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: DeckView(deck: deck));
+                                  }))
+                        ])));
+                  }
+                })));
   }
 }
