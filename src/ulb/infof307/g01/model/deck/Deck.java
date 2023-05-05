@@ -112,11 +112,6 @@ public class Deck implements Iterable<Card> {
         return gson.fromJson(json, Deck.class);
     }
 
-    private void setCards(List<Card> cards) {
-        this.cards.clear();
-        this.cards.addAll(cards);
-    }
-
     public String toJson() {
         return new Gson().toJson(this);
     }
@@ -155,6 +150,10 @@ public class Deck implements Iterable<Card> {
 
     public Card getCard(int index) throws IndexOutOfBoundsException {
         return cards.get(index);
+    }
+
+    public Card getFirstCard() throws IndexOutOfBoundsException {
+        return getCard(0);
     }
 
     public Card getLastCard() throws IndexOutOfBoundsException {

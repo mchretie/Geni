@@ -11,6 +11,7 @@ import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.card.*;
+import ulb.infof307.g01.model.card.visitor.CardVisitor;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Tag;
 
@@ -21,14 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditDeckController implements EditDeckViewController.Listener,
-        TagViewController.Listener {
+                                                    TagViewController.Listener, CardVisitor {
 
     /* ====================================================================== */
     /*                             Model Attributes                           */
     /* ====================================================================== */
 
     private final Deck deck;
-
+    private Card selectedCard;
     private int selectedCardIndex = 0;
 
 
@@ -104,13 +105,11 @@ public class EditDeckController implements EditDeckViewController.Listener,
         editDeckViewController.showCards();
 
         if (deck.cardCount() > 0) {
-            List<Card> deckCards = deck.getCards();
-            if (selectedCardIndex >= deckCards.size()) {
-                selectedCardIndex = 0;
-            }
-            editDeckViewController.setSelectedCard(deckCards.get(selectedCardIndex));
-            editDeckViewController.loadSelectedCardEditor();
-        } else
+            selectedCard = deck.getFirstCard();
+            selectedCard.accept(this);
+        }
+
+        else
             editDeckViewController.hideSelectedCardEditor();
 
         stage.show();
@@ -376,6 +375,21 @@ public class EditDeckController implements EditDeckViewController.Listener,
         } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
         }
+    }
+
+    @Override
+    public void visit(FlashCard flashCard) {
+        editDeckViewController.loadFlashCardEditor(flashCard);
+    }
+
+    @Override
+    public void visit(MCQCard multipleChoiceCard) {
+        editDeckViewController.loadMCQCardEditor(multipleChoiceCard);
+    }
+
+    @Override
+    public void visit(InputCard inputCard) {
+        editDeckViewController.loadInputCardEditor(inputCard);
     }
 
     /* ====================================================================== */

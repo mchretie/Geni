@@ -226,16 +226,15 @@ public class EditDeckViewController {
      *
      * @param flashCard the card to load
      */
-    private void loadFlashCardEditor(FlashCard flashCard) {
+    public void loadFlashCardEditor(FlashCard flashCard) {
         backCardWebView.getEngine().loadContent(flashCard.getBack());
         backCard.setVisible(true);
         timerChangerComponent.setVisible(false);
         answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(false);
-
     }
 
-    private void loadInputCardEditor(InputCard inputCard) {
+    public void loadInputCardEditor(InputCard inputCard) {
         answerOfInputCard.setText(inputCard.getAnswer());
         timerValue.setText(String.valueOf(inputCard.getCountdownTime()));
         answerOfInputCard.setVisible(true);
@@ -250,7 +249,7 @@ public class EditDeckViewController {
      *
      * @param mcqCard the MCQ card to load
      */
-    private void loadMCQCardEditor(MCQCard mcqCard) {
+    public void loadMCQCardEditor(MCQCard mcqCard) {
         choicesGrid.getChildren().clear();
         timerValue.setText(String.valueOf(mcqCard.getCountdownTime()));
 
