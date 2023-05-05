@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class IndulgentValidator {
   final List<String> _determiners = [
     "le",
@@ -15,10 +17,11 @@ class IndulgentValidator {
       'AAAAAAaaaaaaOOOOOOOooooooEEEEEeeeeeeCCccDDdIIIIiiiiLlUUUUUuuuuuNNnnRrSsTtYYyyZz';
 
   String _removeAccents(String text) {
-    return text.replaceAll(RegExp('[$diacritics]'), (match) {
-      var i = diacritics.indexOf(match);
-      return nonDiacritics[i];
-    } as String);}
+    for (var i = 0; i < diacritics.length; i++) {
+      text = text.replaceAll(diacritics[i], nonDiacritics[i]);
+    }
+    return text;
+  }
 
   String _removeDeterminers(String text) {
     for (var determiner in _determiners) {
@@ -30,6 +33,7 @@ class IndulgentValidator {
     text = text.toLowerCase();
     text = _removeAccents(text);
     text = _removeDeterminers(text);
+    debugPrint(text);
     return text;
   }
 

@@ -6,8 +6,10 @@ import 'package:mobile_deckz/http_dao/http_dao.dart';
 import 'package:mobile_deckz/http_dao/server_path.dart';
 
 import '../model/deck/deck.dart';
+import '../model/indulgent_validator.dart';
 
 class DeckDao {
+
   static Future<List<Deck>> getAllDecks() async {
     final http.Response response =
     await HttpDao.get(ServerPath.getAllDecksPath);
@@ -81,32 +83,12 @@ class DeckDao {
   }
 
   static Future<List<Deck>> searchDecks(String query) async {
+    debugPrint('Searching for $query');
     List<Deck> decks = await getAllDecks();
-
-    // TODO add tolerance (new IndulgentValidater)
-    // final pattern = RegExp('${validator.addTolerance(query)}.*');
-    // decks = decks.where((deck) => pattern.hasMatch(validator.addTolerance(deck.name))).toList();
-
-    if (query.isNotEmpty) {
-      for (var deck in decks) {
-        if (!deck.name.toLowerCase().contains(query.toLowerCase())) {
-          return [deck];
-        }
-      }
+    if (query.isEmpty) {
+      return decks;
     }
-    return decks;
+    IndulgentValidator validator = IndulgentValidator();
+    return decks.where((deck) => validator.addTolerance(deck.name).contains(validator.addTolerance(query))).toList();
   }
 }
-
-// Future<List<DeckMetadata>> searchDecks(String deckName) async {
-//   if (deckName.isEmpty) {
-//     return getAllDecksMetadata();
-//   }
-//
-//   final pattern = RegExp('${validator.addTolerance(deckName)}.*');
-//
-//   final allDecks = await getAllDecksMetadata();
-//   final filteredDecks = allDecks.where((deck) => pattern.hasMatch(validator.addTolerance(deck.name)));
-//
-//   return filteredDecks.toList();
-// }
