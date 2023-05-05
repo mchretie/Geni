@@ -7,14 +7,22 @@ import 'package:mobile_deckz/view/playdeck/card/front_card_view.dart';
 class MCQCardView extends StatefulWidget {
   final MCQCard card;
   final Score score;
+  final Function onCardAnswered;
+  final Function onCardLoaded;
 
-  const MCQCardView({super.key, required this.card, required this.score});
+  const MCQCardView(
+      {super.key,
+      required this.card,
+      required this.score,
+      required this.onCardAnswered,
+      required this.onCardLoaded});
 
   @override
   State<MCQCardView> createState() => _MCQCardViewState();
 }
 
-class _MCQCardViewState extends State<MCQCardView> with AutomaticKeepAliveClientMixin<MCQCardView> {
+class _MCQCardViewState extends State<MCQCardView>
+    with AutomaticKeepAliveClientMixin<MCQCardView> {
   bool isAnswered = false;
   int answerIndex = 0;
   double remainingTimeValue = 1;
@@ -22,6 +30,20 @@ class _MCQCardViewState extends State<MCQCardView> with AutomaticKeepAliveClient
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.onCardLoaded();
+    });
+  }
+
+  void handleAnswer(int index) {
+    if (!isAnswered) {
+      setState(() {
+        isAnswered = true;
+        answerIndex = index;
+      });
+      _submitScore();
+      widget.onCardAnswered();
+    }
   }
 
   void _submitScore() {
@@ -30,22 +52,16 @@ class _MCQCardViewState extends State<MCQCardView> with AutomaticKeepAliveClient
     }
   }
 
-  void _timeUp() {
-    setState(() {
-      isAnswered = true;
-      answerIndex = -1;
-    });
-  }
-
   void _updateRemainingTime(double remainingTime) {
     remainingTimeValue = remainingTime;
     if (remainingTimeValue <= 0) {
-      _timeUp();
+      handleAnswer(-1);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Column(children: [
       FrontCardView(
         text: widget.card.front,
@@ -67,13 +83,7 @@ class _MCQCardViewState extends State<MCQCardView> with AutomaticKeepAliveClient
                 itemBuilder: (context, index) {
                   return ElevatedButton(
                     onPressed: () {
-                      if (!isAnswered) {
-                        setState(() {
-                          isAnswered = true;
-                          answerIndex = index;
-                          _submitScore();
-                        });
-                      }
+                      handleAnswer(index);
                     },
                     style: ElevatedButton.styleFrom(
                       primary: widget.card.correctChoice == index
@@ -112,11 +122,7 @@ class _MCQCardViewState extends State<MCQCardView> with AutomaticKeepAliveClient
                     itemBuilder: (context, index) {
                       return ElevatedButton(
                         onPressed: () {
-                          setState(() {
-                            isAnswered = true;
-                            answerIndex = index;
-                            _submitScore();
-                          });
+                          handleAnswer(index);
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.purple,
