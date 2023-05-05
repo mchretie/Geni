@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_deckz/model/card/input_card.dart';
 import 'package:mobile_deckz/model/deck/score.dart';
 
+import 'countdown_view.dart';
 import 'front_card_view.dart';
 
 class InputCardView extends StatefulWidget {
@@ -25,6 +26,7 @@ class _InputCardViewState extends State<InputCardView>
     with AutomaticKeepAliveClientMixin<InputCardView> {
   bool isAnswered = false;
   String answer = '';
+  double remainingTimeValue = 1;
 
   @override
   void initState() {
@@ -47,6 +49,13 @@ class _InputCardViewState extends State<InputCardView>
   void _submitScore() {
     if (widget.card.isUserAnswerValid(answer)) {
       widget.score.incrementScore(10);
+    }
+  }
+
+  void _updateRemainingTime(double remainingTime) {
+    remainingTimeValue = remainingTime;
+    if (remainingTimeValue <= 0) {
+      handleAnswer();
     }
   }
 
@@ -130,7 +139,11 @@ class _InputCardViewState extends State<InputCardView>
                 )
               ],
             ),
-      const SizedBox(height: 85)
+      const SizedBox(height: 10),
+      CountdownView(
+        seconds: widget.card.countdownTime,
+        onCountdownUpdated: _updateRemainingTime,
+      ),
     ]);
   }
 
