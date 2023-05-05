@@ -7,16 +7,42 @@ import 'front_card_view.dart';
 class InputCardView extends StatefulWidget {
   final InputCard card;
   final Score score;
+  final Function onCardAnswered;
+  final Function onCardLoaded;
 
-  const InputCardView({super.key, required this.card, required this.score});
+  const InputCardView(
+      {super.key,
+      required this.card,
+      required this.score,
+      required this.onCardAnswered,
+      required this.onCardLoaded});
 
   @override
   State<InputCardView> createState() => _InputCardViewState();
 }
 
-class _InputCardViewState extends State<InputCardView> {
+class _InputCardViewState extends State<InputCardView>
+    with AutomaticKeepAliveClientMixin<InputCardView> {
   bool isAnswered = false;
   String answer = '';
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.onCardLoaded();
+    });
+  }
+
+  void handleAnswer() {
+    if (!isAnswered) {
+      widget.onCardAnswered();
+      setState(() {
+        isAnswered = true;
+      });
+    }
+    _submitScore();
+  }
 
   void _submitScore() {
     if (widget.card.isUserAnswerValid(answer)) {
@@ -26,6 +52,7 @@ class _InputCardViewState extends State<InputCardView> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Column(children: [
       FrontCardView(text: widget.card.front),
       const SizedBox(height: 10),
@@ -97,11 +124,7 @@ class _InputCardViewState extends State<InputCardView> {
                   width: 60,
                   height: 60,
                   child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        isAnswered = true;
-                      });
-                    },
+                    onPressed: handleAnswer,
                     child: const Icon(Icons.check),
                   ),
                 )
@@ -110,4 +133,7 @@ class _InputCardViewState extends State<InputCardView> {
       const SizedBox(height: 85)
     ]);
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
