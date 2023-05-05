@@ -124,7 +124,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         mainWindowViewController.makeGoBackIconVisible();
 
         editDeckViewController.setTags(loadTags());
-        editDeckViewController.showCards();
+        editDeckViewController.showCardsFromDeck(deck);
 
         if (deck.cardCount() > 0) {
             selectedCard = deck.getFirstCard();
@@ -187,7 +187,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void tagAddedToDeck(Deck deck, String tagName, String color) {
+    public void tagAddedToDeck(String tagName, String color) {
         if (tagName.trim().isEmpty() || deck.tagExists(tagName))
             return;
 
@@ -246,7 +246,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void deckColorModified(Deck deck, Color color) {
+    public void deckColorModified(Color color) {
         String colorString
             = color.toString().replace("0x", "#");
         deck.setColor(colorString);
@@ -254,14 +254,15 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     @Override
-    public void deckTitleColorModified(Deck deck, Color color) {
+    public void deckTitleColorModified(Color color) {
         deck.setColorName(color.toString());
         saveChanges();
     }
 
     @Override
-    public void deckImageModified(Deck deck, File image, String filename) {
+    public void deckImageModified(File image) {
         try {
+            String filename = "/backgrounds/" + deck.getId().toString() + ".jpg";
             deck.setImage(filename);
             serverCommunicator.uploadImage(image, filename);
             saveChanges();
@@ -279,21 +280,21 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void newFlashCard() {
         deck.addCard(new FlashCard());
-        editDeckViewController.showCards();
+        editDeckViewController.showCardsFromDeck(deck);
         focusLastCard();
     }
 
     @Override
     public void newInputCard() {
         deck.addCard(new InputCard());
-        editDeckViewController.showCards();
+        editDeckViewController.showCardsFromDeck(deck);
         focusLastCard();
     }
 
     @Override
     public void newMCQCard() {
         deck.addCard(new MCQCard());
-        editDeckViewController.showCards();
+        editDeckViewController.showCardsFromDeck(deck);
         focusLastCard();
     }
 
@@ -302,7 +303,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         deck.removeCard(selectedCard);
         saveChanges();
 
-        editDeckViewController.showCards();
+        editDeckViewController.showCardsFromDeck(deck);
         editDeckViewController.hideSelectedCardEditor();
 
         if (deck.cardCount() != 0) {

@@ -113,7 +113,6 @@ public class EditDeckViewController {
     /*                              Model Attributes                          */
     /* ====================================================================== */
 
-    private Deck deck;
 
 
     /* ====================================================================== */
@@ -147,8 +146,6 @@ public class EditDeckViewController {
     /* ====================================================================== */
 
     public void setDeck(Deck deck) {
-        this.deck = deck;
-
         colorPickerBackground.setValue(Color.web(deck.getColor()));
         colorPickerTitle.setValue(Color.web(deck.getColorName()));
 
@@ -181,7 +178,7 @@ public class EditDeckViewController {
     /*                              Card Editor                               */
     /* ====================================================================== */
 
-    public void showCards() {
+    public void showCardsFromDeck(Deck deck) {
         ObservableList<String> list = FXCollections.observableArrayList();
         cardsContainer.setItems(list);
 
@@ -433,7 +430,7 @@ public class EditDeckViewController {
         String colorString
                 = color.toString().replace("0x", "#");
 
-        listener.tagAddedToDeck(deck, tagText, colorString);
+        listener.tagAddedToDeck(tagText, colorString);
     }
 
 
@@ -463,7 +460,7 @@ public class EditDeckViewController {
 
     @FXML
     public void handleColorButtonClickedBackground() {
-        listener.deckColorModified(deck, colorPickerBackground.getValue());
+        listener.deckColorModified(colorPickerBackground.getValue());
     }
 
     @FXML
@@ -472,7 +469,7 @@ public class EditDeckViewController {
         String RGBColor = hexToRgb(color.toString());
         deckNameText.setStyle("-fx-text-inner-color: " + RGBColor + ";");
 
-        listener.deckTitleColorModified(deck, color);
+        listener.deckTitleColorModified(color);
     }
 
     @FXML
@@ -480,7 +477,7 @@ public class EditDeckViewController {
         final FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(mainHbox.getScene().getWindow());
         if (file != null) {
-            listener.deckImageModified(deck, file, "/backgrounds/" + deck.getId().toString() + ".jpg");
+            listener.deckImageModified(file);
         }
     }
 
@@ -683,10 +680,10 @@ public class EditDeckViewController {
     public interface Listener {
         /* Deck */
         void deckNameModified(String newName);
-        void tagAddedToDeck(Deck deck, String tagName, String color);
-        void deckColorModified(Deck deck, Color color);
-        void deckTitleColorModified(Deck deck, Color color);
-        void deckImageModified(Deck deck, File image, String filename);
+        void tagAddedToDeck(String tagName, String color);
+        void deckColorModified(Color color);
+        void deckTitleColorModified(Color color);
+        void deckImageModified(File image);
 
         /* Card */
         void cardPreviewClicked(int index);
