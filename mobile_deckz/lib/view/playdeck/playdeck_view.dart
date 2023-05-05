@@ -140,7 +140,7 @@ class _PlayCardViewState extends State<PlayCardView> {
   void initState() {
     super.initState();
     cardViews = loadCardViews(widget.deck.cards);
-    cardViews.add(ScoreResultView(finalScore: widget.score.score));
+    cardViews.add(ScoreResultView(score: widget.score));
     pageController = PageController(initialPage: 0, keepPage: true);
     setSwitchPageAllow(true);
   }

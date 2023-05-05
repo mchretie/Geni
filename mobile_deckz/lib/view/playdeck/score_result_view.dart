@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ScoreResultView extends StatelessWidget {
-  final int finalScore;
+import '../../model/deck/score.dart';
 
-  const ScoreResultView({Key? key, required this.finalScore}) : super(key: key);
+class ScoreResultView extends StatelessWidget {
+  final Score score;
+
+  const ScoreResultView({Key? key, required this.score}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class ScoreResultView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text('Final Score: ', style: TextStyle(fontSize: 20)),
-          Text(finalScore.toString(),
+          Text(score.score.toString(),
               style:
                   const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
         ],
