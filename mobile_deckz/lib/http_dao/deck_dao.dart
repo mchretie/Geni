@@ -83,12 +83,24 @@ class DeckDao {
   }
 
   static Future<List<Deck>> searchDecks(String query) async {
-    debugPrint('Searching for $query');
     List<Deck> decks = await getAllDecks();
     if (query.isEmpty) {
       return decks;
     }
     IndulgentValidator validator = IndulgentValidator();
     return decks.where((deck) => validator.addTolerance(deck.name).contains(validator.addTolerance(query))).toList();
+  }
+
+  static Future<List<Deck>> searchDecksByTags(String query) async {
+    List<Deck> decks = await getAllDecks();
+    if (query.isEmpty) {
+      return decks;
+    }
+    IndulgentValidator validator = IndulgentValidator();
+    return decks.where((deck) {
+      return deck.tags.any((tag) {
+        return validator.addTolerance(tag.name).contains(validator.addTolerance(query));
+      });
+    }).toList();
   }
 }

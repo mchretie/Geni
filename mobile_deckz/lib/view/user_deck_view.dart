@@ -21,7 +21,10 @@ class _UserDeckViewState extends State<UserDeckView> {
 
   Future<void> _onSearchTextChanged(String text) async {
     setState(() {
-      _decksFuture = DeckDao.searchDecks(text);
+      if (dropdownValue == 'Name')
+        _decksFuture = DeckDao.searchDecks(text);
+      else if (dropdownValue == 'Tag')
+        _decksFuture = DeckDao.searchDecksByTags(text);
     });
   }
 

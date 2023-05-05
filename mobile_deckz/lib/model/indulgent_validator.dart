@@ -33,7 +33,6 @@ class IndulgentValidator {
     text = text.toLowerCase();
     text = _removeAccents(text);
     text = _removeDeterminers(text);
-    debugPrint(text);
     return text;
   }
 
