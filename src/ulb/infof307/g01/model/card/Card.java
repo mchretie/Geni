@@ -56,5 +56,7 @@ public abstract class Card {
         this.deckId = deckId;
     }
 
+    public abstract boolean isCompetitive();
+
     public abstract void accept(CardVisitor visitor);
 }

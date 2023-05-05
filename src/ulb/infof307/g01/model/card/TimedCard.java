@@ -28,6 +28,11 @@ public abstract class TimedCard extends Card {
     }
 
     @Override
+    public boolean isCompetitive() {
+        return true;
+    }
+
+    @Override
     public boolean equals(Object o) {
         Integer countdownTime = this.countdownTime;
 

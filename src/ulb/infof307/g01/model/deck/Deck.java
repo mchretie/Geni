@@ -265,20 +265,6 @@ public class Deck implements Iterable<Card> {
         return cards.iterator();
     }
 
-    public void setCardsFromJson(JsonArray cardsJson) {
-        this.cards.clear();
-        for (JsonElement card : cardsJson) {
-            JsonObject cardObject = card.getAsJsonObject();
-            String cardType = cardObject.get("cardType").getAsString();
-            switch (cardType) {
-                case "FlashCard" -> this.cards.add(new Gson().fromJson(card, FlashCard.class));
-                case "MCQCard" -> this.cards.add(new Gson().fromJson(card, MCQCard.class));
-                case "InputCard" -> this.cards.add(new Gson().fromJson(card, InputCard.class));
-                default -> throw new IllegalStateException("Unexpected value: " + cardType);
-            }
-        }
-    }
-
     public static List<Card> cardsFromJson(JsonArray cardsJson) {
         List<Card> cardsList = new ArrayList<>();
         for (JsonElement card : cardsJson) {
@@ -292,5 +278,11 @@ public class Deck implements Iterable<Card> {
             }
         }
         return cardsList;
+    }
+
+    public int getCompetitiveCardCount() {
+        return (int) cards.stream()
+                .filter(Card::isCompetitive)
+                .count();
     }
 }

@@ -23,10 +23,7 @@ public abstract class CardExtractor implements Iterable<Card> {
     }
 
     private void fetchAmountCompetitiveCards(Deck deck) {
-        for (Card card : deck.getCards()) {
-            if (card instanceof TimedCard)
-                this.amountCompetitiveCards++;
-        }
+        amountCompetitiveCards = deck.getCompetitiveCardCount();
     }
 
     abstract void sortDeck();

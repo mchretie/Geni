@@ -31,6 +31,11 @@ public class FlashCard extends Card {
     }
 
     @Override
+    public boolean isCompetitive() {
+        return false;
+    }
+
+    @Override
     public void accept(CardVisitor visitor) {
         visitor.visit(this);
     }
