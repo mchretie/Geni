@@ -21,17 +21,32 @@ import java.util.List;
 
 public class DeckPreviewController implements DeckPreviewViewController.Listener {
 
+    /* ====================================================================== */
+    /*                             Controllers                                */
+    /* ====================================================================== */
+
     private final DeckPreviewViewController deckPreviewViewController;
     private final ControllerListener controllerListener;
     private final MainWindowViewController mainWindowViewController;
-
-    private final Stage stage;
     private final ErrorHandler errorHandler;
+
+    /* ====================================================================== */
+    /*                            Server Comm                                 */
+    /* ====================================================================== */
 
     private final ServerCommunicator serverCommunicator;
 
-    private Deck deck;
+    /* ====================================================================== */
+    /*                             Stage                                       */
+    /* ====================================================================== */
 
+    private final Stage stage;
+
+    /* ====================================================================== */
+    /*                            Model Objects                               */
+    /* ====================================================================== */
+
+    private Deck deck;
 
     public DeckPreviewController(Stage stage,
                                  MainWindowViewController mainWindowViewController,
@@ -51,7 +66,6 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
 
         deckPreviewViewController.setListener(this);
     }
-
 
     public void setDeck(Deck deck) {
         try {
@@ -82,7 +96,6 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
 
         stage.show();
     }
-
 
     private List<Node> loadGameHistory(){
         try {

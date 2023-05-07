@@ -102,7 +102,7 @@ class DatabaseSchema {
             """
         CREATE TABLE IF NOT EXISTS user_deck_score (
             user_id TEXT,
-            timestamp INTEGER NOT NULL,
+            timestamp INTEGER(8) NOT NULL,
             deck_id TEXT NOT NULL,
             score INTEGER NOT NULL,
             PRIMARY KEY (user_id, timestamp),

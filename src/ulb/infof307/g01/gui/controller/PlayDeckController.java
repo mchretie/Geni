@@ -13,7 +13,11 @@ import ulb.infof307.g01.model.card.visitor.CardVisitor;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Score;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 
 public class PlayDeckController implements PlayDeckViewController.Listener,
                                             CardVisitor {
@@ -38,7 +42,8 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
 
         cardExtractor = new CardExtractorRandom(deck);
         currentCard = cardExtractor.getNextCard();
-        this.score = Score.createNewScore(serverCommunicator.getSessionUsername(), deck.getId());
+        this.score = new Score(serverCommunicator.getSessionUsername(), deck.getId());
+
         this.answeredCards = new boolean[deck.cardCount()];
         Arrays.fill(answeredCards, false);
 
@@ -208,7 +213,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
 
         answeredCards[cardIndex] = true;
         if (isGoodChoice) {
-            // make x between -2 and 2 depending on time left for the sigmoid function
             double x = (timeLeft - 0.5) * 4;
             int scoreToAdd = (int) (1000 / (1 + Math.exp(-2 * x)));
             score.increment(scoreToAdd);
