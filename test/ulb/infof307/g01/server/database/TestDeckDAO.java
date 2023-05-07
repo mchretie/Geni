@@ -9,6 +9,7 @@ import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Tag;
+import ulb.infof307.g01.server.database.dao.CardDAO;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
 import ulb.infof307.g01.server.database.dao.TagDAO;
 import ulb.infof307.g01.server.database.dao.UserDAO;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestDeckDAO extends DatabaseUsingTest {
 
     DeckDAO deckDAO;
+    CardDAO cardDAO;
     TagDAO tagDAO;
     UserDAO userDAO;
 
@@ -34,10 +36,12 @@ public class TestDeckDAO extends DatabaseUsingTest {
         db.initTables(DatabaseSchema.SERVER);
 
         this.deckDAO = new DeckDAO(this.db);
+        this.cardDAO = new CardDAO(this.db);
         this.tagDAO = new TagDAO(this.db);
         this.userDAO = new UserDAO(this.db);
 
         this.deckDAO.setTagDao(this.tagDAO);
+        this.deckDAO.setCardDao(this.cardDAO);
         this.tagDAO.setDeckDao(this.deckDAO);
 
         userDAO.registerUser("user", "pass");

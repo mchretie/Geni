@@ -248,6 +248,8 @@ public class ServerCommunicator {
 
         try {
             deckDAO.saveDeck(deck);
+
+
         } catch (IOException | InterruptedException e) {
             String message = "Failed to save deck";
             throw new ServerCommunicationFailedException(message);

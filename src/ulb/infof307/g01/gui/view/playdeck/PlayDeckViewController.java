@@ -58,7 +58,7 @@ public class PlayDeckViewController {
     private Label cardNumberIndexLabel;
 
     @FXML
-    private ProgressBar countdown;
+    private ProgressBar prog;
 
 
     /* ====================================================================== */
@@ -99,43 +99,41 @@ public class PlayDeckViewController {
         showFrontOfCard();
     }
 
-    public void setTimer() {
-        if (currentCard instanceof FlashCard) {
-            this.countdown.setVisible(false);
-            return;
-        }
+    public void startProgressBar() {
+        this.prog.setVisible(true);
+        prog.setStyle("-fx-accent: GREEN");
 
-        this.countdown.setVisible(true);
         Integer seconds = ((TimedCard) currentCard).getCountdownTime();
 
-        countdown.setStyle("-fx-accent: GREEN");
+        KeyValue keyValue = new KeyValue(prog.progressProperty(), 1);
+        KeyFrame start = new KeyFrame(Duration.ZERO, keyValue);
+
+        KeyFrame firstThird
+                = new KeyFrame(
+                        Duration.seconds((double) seconds / 3),
+                        e -> prog.setStyle("-fx-accent: ORANGE"),
+                        new KeyValue(prog.progressProperty(), 0.66)
+                );
+
+        KeyFrame secondThird
+                = new KeyFrame(
+                        Duration.seconds((double) 2 * seconds / 3),
+                        e -> prog.setStyle("-fx-accent: RED"),
+                        new KeyValue(prog.progressProperty(), 0.33)
+                );
+
+        KeyFrame lastThird = new KeyFrame(Duration.seconds(seconds), e -> {
+            if (!hasAnswered)
+                listener.timerRanOut();
+        }, new KeyValue(prog.progressProperty(), 0));
 
         timeline = new Timeline(
-                // begin
-                new KeyFrame(Duration.ZERO, new KeyValue(countdown.progressProperty(), 1)),
-
-                // 1/3 time
-                new KeyFrame(Duration.seconds((double) seconds/3), e -> {
-                    countdown.setStyle("-fx-accent: ORANGE");
-                }, new KeyValue(countdown.progressProperty(), 0.66)),
-
-                // 2/3 time
-                new KeyFrame(Duration.seconds((double) 2*seconds/3), e -> {
-                    countdown.setStyle("-fx-accent: RED");
-                }, new KeyValue(countdown.progressProperty(), 0.33)),
-
-                // end time
-                new KeyFrame(Duration.seconds(seconds), e -> {
-                    if (!hasAnswered) {
-                        if (this.currentCard instanceof MCQCard) {
-                            stopCountdown();
-                            showCorrectAnswers();
-                        } else if (this.currentCard instanceof InputCard) {
-                            handleInputText();
-                        }
-                    }
-                }, new KeyValue(countdown.progressProperty(), 0))
+                start,
+                firstThird,
+                secondThird,
+                lastThird
         );
+
         timeline.play();
     }
 
@@ -150,7 +148,7 @@ public class PlayDeckViewController {
     }
 
     private void stopCountdown() {
-        this.countdown.setVisible(false);
+        this.prog.setVisible(false);
         this.hasAnswered = true;
     }
 
@@ -188,6 +186,14 @@ public class PlayDeckViewController {
         });
 
         rotateTransition.play();
+    }
+
+    public void hideProgressBar() {
+        prog.setVisible(false);
+    }
+
+    public boolean timerHasRunOut() {
+        return prog.getProgress() == 0;
     }
 
     /*---------------------- MCQ Card ---------------------- */
@@ -228,14 +234,14 @@ public class PlayDeckViewController {
         checkButton.setOnAction(actionEvent -> {
             checkIcon.setIconColor(Color.WHITE);
             stopCountdown();
-            showCorrectAnswers();
-            listener.onChoiceEntered(isCorrectChoice, countdown.getProgress());
+            showMCQAnswer();
+            listener.onChoiceEntered(isCorrectChoice, prog.getProgress());
         });
 
         return checkButton;
     }
 
-    private void showCorrectAnswers() {
+    public void showMCQAnswer() {
         for (int i = 0; i < choicesGrid.getChildren().size(); i++) {
             Button answer = (Button) choicesGrid.getChildren().get(i);
             answer.setDisable(true);
@@ -247,6 +253,10 @@ public class PlayDeckViewController {
                 answer.setStyle("-fx-background-color: #c45151;");
             }
         }
+    }
+
+    public void showInputAnswer() {
+        handleInputText();
     }
 
     /*---------------------Input card ---------------------- */
@@ -304,7 +314,7 @@ public class PlayDeckViewController {
         boolean correct = card.isInputCorrect(input);
 
         stopCountdown();
-        listener.onChoiceEntered(correct, countdown.getProgress());
+        listener.onChoiceEntered(correct, prog.getProgress());
 
         if (!correct) showInput(input, false);
 
@@ -370,6 +380,14 @@ public class PlayDeckViewController {
         listener.cardClicked();
     }
 
+    public void disableFrontCardClick() {
+        cardButton.setOnMouseClicked(null);
+    }
+
+    public void enableFrontCardClick() {
+        cardButton.setOnMouseClicked(mouseEvent -> onCardClicked());
+    }
+
     /* ====================================================================== */
     /*                          Listener interface                            */
     /* ====================================================================== */
@@ -382,5 +400,7 @@ public class PlayDeckViewController {
         void previousCardClicked();
 
         void onChoiceEntered(boolean isGoodChoice, double timeLeft);
+
+        void timerRanOut();
     }
 }
