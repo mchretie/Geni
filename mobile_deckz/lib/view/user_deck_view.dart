@@ -79,7 +79,7 @@ class _UserDeckViewState extends State<UserDeckView> {
                                   Expanded(
                                     child: TextField(
                                       controller: textEditController,
-                                      onChanged: (text) =>
+                                      onSubmitted: (text) =>
                                           _onSearchTextChanged(text),
                                       decoration: InputDecoration(
                                         hintText: 'Search',

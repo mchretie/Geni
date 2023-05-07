@@ -69,7 +69,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                   Expanded(
                                     child: TextField(
                                       controller: textEditController,
-                                      onChanged: (text) =>
+                                      onSubmitted: (text) =>
                                           _onSearchTextChanged(text),
                                       decoration: InputDecoration(
                                         hintText: 'Search',
