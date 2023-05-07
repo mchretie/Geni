@@ -58,7 +58,7 @@ public class PlayDeckViewController {
     private Label cardNumberIndexLabel;
 
     @FXML
-    private ProgressBar prog;
+    private ProgressBar progressBar;
 
 
     /* ====================================================================== */
@@ -100,32 +100,32 @@ public class PlayDeckViewController {
     }
 
     public void startProgressBar() {
-        this.prog.setVisible(true);
-        prog.setStyle("-fx-accent: GREEN");
+        this.progressBar.setVisible(true);
+        progressBar.setStyle("-fx-accent: GREEN");
 
         Integer seconds = ((TimedCard) currentCard).getCountdownTime();
 
-        KeyValue keyValue = new KeyValue(prog.progressProperty(), 1);
+        KeyValue keyValue = new KeyValue(progressBar.progressProperty(), 1);
         KeyFrame start = new KeyFrame(Duration.ZERO, keyValue);
 
         KeyFrame firstThird
                 = new KeyFrame(
                         Duration.seconds((double) seconds / 3),
-                        e -> prog.setStyle("-fx-accent: ORANGE"),
-                        new KeyValue(prog.progressProperty(), 0.66)
+                        e -> progressBar.setStyle("-fx-accent: ORANGE"),
+                        new KeyValue(progressBar.progressProperty(), 0.66)
                 );
 
         KeyFrame secondThird
                 = new KeyFrame(
                         Duration.seconds((double) 2 * seconds / 3),
-                        e -> prog.setStyle("-fx-accent: RED"),
-                        new KeyValue(prog.progressProperty(), 0.33)
+                        e -> progressBar.setStyle("-fx-accent: RED"),
+                        new KeyValue(progressBar.progressProperty(), 0.33)
                 );
 
         KeyFrame lastThird = new KeyFrame(Duration.seconds(seconds), e -> {
             if (!hasAnswered)
                 listener.timerRanOut();
-        }, new KeyValue(prog.progressProperty(), 0));
+        }, new KeyValue(progressBar.progressProperty(), 0));
 
         timeline = new Timeline(
                 start,
@@ -148,7 +148,7 @@ public class PlayDeckViewController {
     }
 
     private void stopCountdown() {
-        this.prog.setVisible(false);
+        this.progressBar.setVisible(false);
         this.hasAnswered = true;
     }
 
@@ -189,11 +189,11 @@ public class PlayDeckViewController {
     }
 
     public void hideProgressBar() {
-        prog.setVisible(false);
+        progressBar.setVisible(false);
     }
 
     public boolean timerHasRunOut() {
-        return prog.getProgress() == 0;
+        return progressBar.getProgress() == 0;
     }
 
     /*---------------------- MCQ Card ---------------------- */
@@ -235,7 +235,7 @@ public class PlayDeckViewController {
             checkIcon.setIconColor(Color.WHITE);
             stopCountdown();
             showMCQAnswer();
-            listener.onChoiceEntered(isCorrectChoice, prog.getProgress());
+            listener.onChoiceEntered(isCorrectChoice, progressBar.getProgress());
         });
 
         return checkButton;
@@ -261,7 +261,6 @@ public class PlayDeckViewController {
 
     /*---------------------Input card ---------------------- */
 
-    @FXML
     public void showInputCard() {
         inputBox.setVisible(true);
         choicesGrid.setVisible(false);
@@ -282,7 +281,10 @@ public class PlayDeckViewController {
 
         inputBox.getChildren().add(inputHBox);
 
-        if (inputBox.getChildren().size() > 1) inputBox.getChildren().remove(1);
+        if (inputBox.getChildren().size() > 1)
+            inputBox.getChildren().remove(1);
+
+        inputTextField.requestFocus();
     }
 
     @FXML
@@ -314,7 +316,7 @@ public class PlayDeckViewController {
         boolean correct = card.isInputCorrect(input);
 
         stopCountdown();
-        listener.onChoiceEntered(correct, prog.getProgress());
+        listener.onChoiceEntered(correct, progressBar.getProgress());
 
         if (!correct) showInput(input, false);
 
