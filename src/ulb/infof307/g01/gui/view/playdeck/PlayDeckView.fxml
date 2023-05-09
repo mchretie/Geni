@@ -83,7 +83,7 @@
 
             <!--Input card-->
             <VBox fx:id="inputBox" maxWidth="230" />
-         <ProgressBar fx:id="countdown" prefHeight="20.0" prefWidth="400.0" progress="0.0">
+         <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="400.0" progress="0.0">
             <VBox.margin>
                <Insets top="20.0" />
             </VBox.margin>

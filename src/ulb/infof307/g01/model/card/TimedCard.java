@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.UUID;
 
-public class TimedCard extends Card {
+public abstract class TimedCard extends Card {
 
     @Expose
     protected Integer countdownTime = 10;
@@ -28,6 +28,11 @@ public class TimedCard extends Card {
     }
 
     @Override
+    public boolean isCompetitive() {
+        return true;
+    }
+
+    @Override
     public boolean equals(Object o) {
         Integer countdownTime = this.countdownTime;
 
@@ -38,4 +43,5 @@ public class TimedCard extends Card {
 
         return countdownTime.equals(other.getCountdownTime());
     }
+
 }

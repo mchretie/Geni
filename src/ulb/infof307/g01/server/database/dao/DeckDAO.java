@@ -4,6 +4,7 @@ import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
+import ulb.infof307.g01.model.card.visitor.CardVisitor;
 import ulb.infof307.g01.model.deck.*;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
@@ -27,6 +28,7 @@ public class DeckDAO extends DAO {
 
     private final DatabaseAccess database;
     private TagDAO tagDao;
+    private CardDAO cardDao;
 
     public DeckDAO(DatabaseAccess database) {
         this.database = database;
@@ -34,6 +36,10 @@ public class DeckDAO extends DAO {
 
     public void setTagDao(TagDAO tagDao) {
         this.tagDao = tagDao;
+    }
+
+    public void setCardDao(CardDAO cardDao) {
+        this.cardDao = cardDao;
     }
 
     /**
@@ -48,7 +54,6 @@ public class DeckDAO extends DAO {
      *
      * @see DeckDAO#deckNameExists
      */
-
     public boolean isDeckValid(Deck deck, UUID userId) throws DatabaseException {
         String sql = """
                 SELECT deck_id, name
@@ -279,68 +284,6 @@ public class DeckDAO extends DAO {
         for (Card addedCard : addedCards) {
             saveCard(addedCard);
         }
-
-    }
-
-    public void saveCard(FlashCard card) throws DatabaseException {
-        String upsertFlashCard = """
-                INSERT INTO flash_card (card_id, back)
-                VALUES (?, ?)
-                ON CONFLICT(card_id)
-                DO UPDATE SET back = ?
-                """;
-
-        database.executeUpdate(upsertFlashCard,
-                card.getId().toString(),
-                card.getBack(),
-                card.getBack());
-    }
-
-    public void saveCard(MCQCard card) throws DatabaseException {
-        String upsertMCQCard = """
-                INSERT INTO mcq_card (card_id, correct_answer_index, countdown_time)
-                VALUES (?, ?, ?)
-                ON CONFLICT(card_id)
-                DO UPDATE SET correct_answer_index = ?, countdown_time = ?
-                """;
-
-        database.executeUpdate(upsertMCQCard,
-                card.getId().toString(),
-                card.getCorrectChoiceIndex(),
-                card.getCountdownTime(),
-                card.getCorrectChoiceIndex(),
-                card.getCountdownTime()
-        );
-
-        String upsertMCQCardAnswer = """
-                INSERT INTO mcq_answer (card_id, answer, answer_index)
-                VALUES (?, ?, ?)
-                ON CONFLICT(card_id, answer_index)
-                DO NOTHING
-                """;
-
-        for (int i = 0; i < card.getChoicesCount(); i++)
-            database.executeUpdate(upsertMCQCardAnswer,
-                    card.getId().toString(),
-                    card.getChoice(i),
-                    i);
-    }
-
-    public void saveCard(InputCard card) throws DatabaseException {
-        String upsertInputCard = """
-                INSERT INTO input_card (card_id, answer, countdown_time)
-                VALUES (?, ?, ?)
-                ON CONFLICT(card_id)
-                DO UPDATE SET answer = ? , countdown_time = ?
-                """;
-
-        database.executeUpdate(upsertInputCard,
-                card.getId().toString(),
-                card.getAnswer(),
-                card.getCountdownTime(),
-                card.getAnswer(),
-                card.getCountdownTime()
-        );
     }
 
     private void saveCard(Card card) throws DatabaseException {
@@ -358,13 +301,7 @@ public class DeckDAO extends DAO {
                 card.getFront()
         );
 
-        if (card instanceof FlashCard flashCard) {
-            saveCard(flashCard);
-        } else if (card instanceof MCQCard mcqCard) {
-            saveCard(mcqCard);
-        } else if (card instanceof InputCard inputCard) {
-            saveCard(inputCard);
-        }
+        card.accept(cardDao);
     }
 
     private void deleteCard(Card card) throws DatabaseException {
@@ -525,4 +462,6 @@ public class DeckDAO extends DAO {
 
         return checkedNext(database.executeQuery(sql, deckId.toString()));
     }
+
+
 }

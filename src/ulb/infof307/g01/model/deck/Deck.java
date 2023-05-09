@@ -1,15 +1,14 @@
 package ulb.infof307.g01.model.deck;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 
@@ -84,13 +83,33 @@ public class Deck implements Iterable<Card> {
     /* ====================================================================== */
 
     public static Deck fromJson(String json) {
-        Deck deck = new Gson().fromJson(json, Deck.class);
+        JsonDeserializer<Deck> deserializer
+                = (jsonElement, type, jsonDeserializationContext) -> {
 
-        JsonObject jsonObject = new Gson().fromJson(json, JsonObject.class);
-        JsonArray cardsJson = jsonObject.getAsJsonArray("cards");
-        deck.setCardsFromJson(cardsJson);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            JsonArray cardsJson = jsonObject.getAsJsonArray("cards");
+            List<Card> cards = cardsFromJson(cardsJson);
 
-        return deck;
+            Type tagListType = new TypeToken<List<Tag>>(){}.getType();
+            List<Tag> tags = new Gson().fromJson(jsonObject.get("tags"), tagListType);
+
+            return new Deck(
+                    jsonObject.get("name").getAsString(),
+                    UUID.fromString(jsonObject.get("id").getAsString()),
+                    cards,
+                    tags,
+                    jsonObject.get("color").getAsString(),
+                    jsonObject.get("image").getAsString(),
+                    jsonObject.get("colorName").getAsString(),
+                    jsonObject.get("isPublic").getAsBoolean()
+            );
+        };
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Deck.class, deserializer)
+                .create();
+
+        return gson.fromJson(json, Deck.class);
     }
 
     public String toJson() {
@@ -131,6 +150,10 @@ public class Deck implements Iterable<Card> {
 
     public Card getCard(int index) throws IndexOutOfBoundsException {
         return cards.get(index);
+    }
+
+    public Card getFirstCard() throws IndexOutOfBoundsException {
+        return getCard(0);
     }
 
     public Card getLastCard() throws IndexOutOfBoundsException {
@@ -242,17 +265,24 @@ public class Deck implements Iterable<Card> {
         return cards.iterator();
     }
 
-    public void setCardsFromJson(JsonArray cardsJson) {
-        this.cards.clear();
+    public static List<Card> cardsFromJson(JsonArray cardsJson) {
+        List<Card> cardsList = new ArrayList<>();
         for (JsonElement card : cardsJson) {
             JsonObject cardObject = card.getAsJsonObject();
             String cardType = cardObject.get("cardType").getAsString();
             switch (cardType) {
-                case "FlashCard" -> this.cards.add(new Gson().fromJson(card, FlashCard.class));
-                case "MCQCard" -> this.cards.add(new Gson().fromJson(card, MCQCard.class));
-                case "InputCard" -> this.cards.add(new Gson().fromJson(card, InputCard.class));
+                case "FlashCard" -> cardsList.add(new Gson().fromJson(card, FlashCard.class));
+                case "MCQCard" -> cardsList.add(new Gson().fromJson(card, MCQCard.class));
+                case "InputCard" -> cardsList.add(new Gson().fromJson(card, InputCard.class));
                 default -> throw new IllegalStateException("Unexpected value: " + cardType);
             }
         }
+        return cardsList;
+    }
+
+    public int getCompetitiveCardCount() {
+        return (int) cards.stream()
+                .filter(Card::isCompetitive)
+                .count();
     }
 }

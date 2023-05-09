@@ -10,9 +10,9 @@ public class Score {
     private final UUID deckId;
     private int score;
     private final List<Double> times;
-    private final int timestamp;
+    private final long timestamp;
 
-    public Score(String username, UUID deckId, int score, int timestamp) {
+    public Score(String username, UUID deckId, int score, long timestamp) {
         this.username = username;
         this.deckId = deckId;
         this.score = score;
@@ -20,8 +20,8 @@ public class Score {
         this.times = new ArrayList<>();
     }
 
-    static public Score createNewScore(String username, UUID deckId) {
-        return new Score(username, deckId, 0, (int) (System.currentTimeMillis() / 1000L));
+    public Score(String username, UUID deckId) {
+        this(username, deckId, 0, System.currentTimeMillis());
     }
 
     public void increment(int value) {
@@ -69,7 +69,7 @@ public class Score {
         return Math.round(totalTime / times.size() * 100.0) / 100.0;
     }
 
-    public int getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 

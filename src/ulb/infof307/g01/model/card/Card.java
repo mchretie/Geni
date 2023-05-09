@@ -1,10 +1,11 @@
 package ulb.infof307.g01.model.card;
 
 import com.google.gson.annotations.Expose;
+import ulb.infof307.g01.model.card.visitor.CardVisitor;
 
 import java.util.UUID;
 
-public class Card {
+public abstract class Card {
     private UUID deckId;
     private UUID id;
 
@@ -54,4 +55,8 @@ public class Card {
     public void setDeckId(UUID deckId) {
         this.deckId = deckId;
     }
+
+    public abstract boolean isCompetitive();
+
+    public abstract void accept(CardVisitor visitor);
 }

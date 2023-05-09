@@ -1,6 +1,7 @@
 package ulb.infof307.g01.model.card;
 
 import com.google.gson.annotations.Expose;
+import ulb.infof307.g01.model.card.visitor.CardVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,11 @@ public class MCQCard extends TimedCard {
         this.choices = choices;
         this.correctChoice = correctChoice;
         this.cardType = "MCQCard";
+    }
+
+    @Override
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
     }
 
     private void checkIndexArg(int index) throws IllegalArgumentException {

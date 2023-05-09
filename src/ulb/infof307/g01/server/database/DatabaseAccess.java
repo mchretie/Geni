@@ -161,6 +161,8 @@ public class DatabaseAccess {
                 statement.setString(i + 1, arg);
             else if (args[i] instanceof Integer arg)
                 statement.setInt(i + 1, arg);
+            else if (args[i] instanceof Long arg)
+                statement.setLong(i + 1, arg);
             else
                 throw new DatabaseException("Unsupported argument type for query");
         }
