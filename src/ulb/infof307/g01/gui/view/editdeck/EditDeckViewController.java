@@ -24,6 +24,7 @@ import ulb.infof307.g01.model.deck.Deck;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class EditDeckViewController {
 
@@ -292,11 +293,14 @@ public class EditDeckViewController {
                 = createCorrectChoiceSelectionButton(isCorrectChoice, index);
 
         Button removeChoiceButton = createRemoveChoiceButton(index);
+        removeChoiceButton.setId("removeChoiceButton");
 
         HBox hBox = new HBox(2,
                 textField,
                 correctChoiceSelectionButton,
                 removeChoiceButton);
+
+        hBox.setId("choiceBox");
 
         HBox.setHgrow(hBox, Priority.ALWAYS);
         hBox.setAlignment(Pos.CENTER);
@@ -659,17 +663,10 @@ public class EditDeckViewController {
     }
 
     public void setRemoveChoiceButtonEnabled(boolean canRemoveChoice) {
-        for (Node node : choicesGrid.getChildren()) {
-
-            if (!(node instanceof HBox))
-                continue;
-
-            for (Node node1 : ((HBox) node).getChildren()) {
-                if (node1 instanceof Button) {
-                    node1.setDisable(!canRemoveChoice);
-                }
-            }
-        }
+        choicesGrid.lookupAll("Button")
+                    .stream()
+                    .filter(node -> Objects.equals(node.getId(), "removeChoiceButton"))
+                    .forEach(node -> node.setDisable(!canRemoveChoice));
     }
 
 
