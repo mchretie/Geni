@@ -38,6 +38,9 @@
                       </font>
                   </Label>
               </children>
+            <FlowPane.margin>
+               <Insets left="50.0" right="50.0" />
+            </FlowPane.margin>
           </AnchorPane>
          <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="200.0">
             <children>
@@ -53,7 +56,8 @@
                 </Label>
             </children>
          </AnchorPane>
-         <AreaChart prefHeight="158.0" prefWidth="265.0">
+         <AnchorPane prefHeight="20.0" prefWidth="800.0" />
+         <AreaChart prefHeight="304.0" prefWidth="339.0" title="Score evolution">
            <xAxis>
              <CategoryAxis side="BOTTOM" />
            </xAxis>
@@ -61,7 +65,7 @@
              <NumberAxis side="LEFT" />
            </yAxis>
          </AreaChart>
-         <PieChart prefHeight="240.0" prefWidth="278.0" title="pie chart" />
+         <PieChart prefHeight="240.0" prefWidth="278.0" title="Players repartition" />
       </children>
    </FlowPane>
     <Button fx:id="goToMenuButton" mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Retour">
