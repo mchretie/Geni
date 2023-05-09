@@ -151,6 +151,16 @@ public class ServerCommunicator {
        }
     }
 
+    public List<Score> getBestScoreForDecks(List<DeckMetadata> decks)
+            throws ServerCommunicationFailedException {
+        try {
+            return scoreDAO.getBestScoreForDecks(decks);
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get best score for decks";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
+
     public GlobalLeaderboard getGlobalLeaderboard()
             throws ServerCommunicationFailedException {
 

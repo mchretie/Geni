@@ -112,6 +112,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         decks.sort(Comparator.comparing(DeckMetadata::name));
 
+        List<Score> bestScores = serverCommunicator.getBestScoreForDecks(decks);
+
         for (DeckMetadata deck : decks) {
 
             URL resource = DeckMenuViewController
