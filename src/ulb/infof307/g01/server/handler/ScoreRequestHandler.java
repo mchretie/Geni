@@ -14,6 +14,8 @@ import ulb.infof307.g01.server.service.JWTService;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
 
 public class ScoreRequestHandler extends Handler {
 
@@ -26,6 +28,7 @@ public class ScoreRequestHandler extends Handler {
         post(SAVE_SCORE_PATH, this::saveScore, toJson());
         get(GET_LEADERBOARD_PATH, this::getLeaderboardByDeckId, toJson());
         get(GET_BEST_SCORE_PATH, this::getBestScoreByDeckId, toJson());
+        get(GET_BEST_SCORES_PATH, this::getBestScores, toJson());
         get(GET_GLOBAL_LEADERBOARD, this::getGlobalLeaderboard, toJson());
     }
 
@@ -53,11 +56,6 @@ public class ScoreRequestHandler extends Handler {
     private DeckLeaderboard getLeaderboardByDeckId(Request req, Response res) {
         try {
             UUID deckId = UUID.fromString(req.queryParams("deck"));
-
-            // Does this ever happen?
-            if (!database.deckIdExists(deckId))
-                return null;
-
             return database.getLeaderboardFromDeckId(deckId);
 
         } catch (Exception e) {
@@ -68,8 +66,27 @@ public class ScoreRequestHandler extends Handler {
         }
     }
 
-    private Score getBestScoreByDeckId(Request request, Response response) {
-        DeckLeaderboard leaderboard = getLeaderboardByDeckId(request, response);
+    private List<Score> getBestScores(Request req, Response res) {
+        try {
+            String[] decksIds = req.queryParamsValues("deckId[]");
+            List<Score> bestScores = new ArrayList<>();
+            for (String deckId : decksIds) {
+                Score bestScore = getBestScoreByDeckId(UUID.fromString(deckId));
+                if (bestScore != null)
+                    bestScores.add(bestScore);
+            }
+            return bestScores;
+
+        } catch (Exception e) {
+            String errorMessage = "Failed to get leaderboard: " + e.getMessage();
+            logger.warning(errorMessage);
+            halt(500, errorMessage);
+            return new ArrayList<>();
+        }
+    }
+
+    private Score getBestScoreByDeckId(UUID deckId) {
+        DeckLeaderboard leaderboard = database.getLeaderboardFromDeckId(deckId);
 
         if (leaderboard == null || leaderboard.isEmpty())
             return null;
@@ -77,7 +94,7 @@ public class ScoreRequestHandler extends Handler {
         return leaderboard.getLeaderboard().get(0);
     }
 
-    public GlobalLeaderboard getGlobalLeaderboard(Request req, Response res) {
+    private GlobalLeaderboard getGlobalLeaderboard(Request req, Response res) {
         try {
             return database.getGlobalLeaderboard();
 
