@@ -8,59 +8,60 @@
 
 <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.result.ResultViewController">
 
-   <FlowPane prefHeight="402.0" prefWidth="600.0">
+   <FlowPane alignment="CENTER" prefHeight="402.0" prefWidth="600.0">
       <children>
-         <LineChart prefHeight="150.0" prefWidth="282.0">
-           <xAxis>
-             <CategoryAxis side="BOTTOM" />
-           </xAxis>
-           <yAxis>
-             <NumberAxis side="LEFT" />
-           </yAxis>
-         </LineChart>
 
-           <AnchorPane prefHeight="200.0" prefWidth="200.0">
+           <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="200.0">
                <children>
-                  <Label text="Temps total : ">
+                  <Label layoutX="14.0" layoutY="15.0" text="Temps total : ">
                       <font>
                           <Font size="16.0" />
                       </font>
                   </Label>
-                  <Label fx:id="totalTimeLabel" text="200">
+                  <Label fx:id="totalTimeLabel" layoutX="123.0" layoutY="4.0" text="200">
                       <font>
                           <Font name="System Bold" size="35.0" />
                       </font>
                   </Label>
                 </children>
            </AnchorPane>
-          <AnchorPane prefHeight="200.0" prefWidth="200.0">
+          <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="200.0">
               <children>
-                  <Label text="Temps moyen : ">
+                  <Label layoutX="8.0" layoutY="15.0" text="Temps moyen : ">
                       <font>
                           <Font size="16.0" />
                       </font>
                   </Label>
-                  <Label fx:id="avgTimeLabel" text="200">
+                  <Label fx:id="avgTimeLabel" layoutX="129.0" layoutY="4.0" text="200">
                       <font>
                           <Font name="System Bold" size="35.0" />
                       </font>
                   </Label>
               </children>
           </AnchorPane>
-         <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="200.0">
             <children>
-                <Label text="Votre score : ">
+                <Label layoutX="14.0" layoutY="15.0" text="Votre score : ">
                     <font>
                         <Font size="16.0" />
                     </font>
                 </Label>
-                <Label fx:id="scoreLabel" layoutX="87.0" layoutY="-1.0" text="200">
+                <Label fx:id="scoreLabel" layoutX="116.0" layoutY="4.0" text="200">
                     <font>
                         <Font name="System Bold" size="35.0" />
                     </font>
                 </Label>
             </children>
          </AnchorPane>
+         <AreaChart prefHeight="158.0" prefWidth="265.0">
+           <xAxis>
+             <CategoryAxis side="BOTTOM" />
+           </xAxis>
+           <yAxis>
+             <NumberAxis side="LEFT" />
+           </yAxis>
+         </AreaChart>
+         <PieChart prefHeight="240.0" prefWidth="278.0" title="pie chart" />
       </children>
    </FlowPane>
     <Button fx:id="goToMenuButton" mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Retour">
