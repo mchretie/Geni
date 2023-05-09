@@ -1,60 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_deckz/model/deck/marketplace_deck.dart';
+import '../../http_dao/marketplace_dao.dart';
+import 'deck_marcketplace_view.dart';
 
-import '../http_dao/deck_dao.dart';
-import '../model/deck/deck.dart';
-import 'deck_view.dart';
-
-class UserDeckView extends StatefulWidget {
-  const UserDeckView({super.key});
+class MarketPlaceView extends StatefulWidget {
+  const MarketPlaceView({super.key});
 
   @override
-  State<UserDeckView> createState() => _UserDeckViewState();
+  State<MarketPlaceView> createState() => _MarketPlaceViewState();
 }
 
-class _UserDeckViewState extends State<UserDeckView> {
+class _MarketPlaceViewState extends State<MarketPlaceView> {
   String dropdownValue = 'Name';
   List<String> dropdownItems = ['Name', 'Tag'];
 
-  Future<List<Deck>> _decksFuture = DeckDao.getAllDecks();
+
+  Future<List<MarketplaceDeck>> _decksFuture =
+  MarketPlaceDao.getAllMarketplaceDecks();
 
   final textEditController = TextEditingController();
 
   Future<void> _onSearchTextChanged(String text) async {
     setState(() {
       if (dropdownValue == 'Name')
-        _decksFuture = DeckDao.searchDecks(text);
+        _decksFuture = MarketPlaceDao.searchDecks(text);
       else if (dropdownValue == 'Tag')
-        _decksFuture = DeckDao.searchDecksByTags(text);
+        _decksFuture = MarketPlaceDao.searchDecksByTags(text);
     });
   }
-
-  Future<void> _reloadDecks() async {
-    setState(() {
-      _decksFuture = DeckDao.getAllDecks();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: RefreshIndicator(
-            onRefresh: _reloadDecks,
-            child: FutureBuilder<List<Deck>>(
-                future: _decksFuture,
-                builder:
-                    (BuildContext context, AsyncSnapshot<List<Deck>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    List<Deck> deckList = snapshot.data ?? [];
-                    return Scaffold(
-                        body: Center(
-                            child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: <Widget>[
+    return FutureBuilder<List<MarketplaceDeck>>(
+        future: _decksFuture,
+        builder: (BuildContext context,
+            AsyncSnapshot<List<MarketplaceDeck>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            List<MarketplaceDeck> deckList = snapshot.data ?? [];
+            return Scaffold(
+                body: Center(
+                    child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
                           Padding(
                               padding: const EdgeInsets.all(16),
                               child: Row(
@@ -67,8 +58,7 @@ class _UserDeckViewState extends State<UserDeckView> {
                                       });
                                     },
                                     items: dropdownItems
-                                        .map<DropdownMenuItem<String>>(
-                                            (String value) {
+                                        .map<DropdownMenuItem<String>>((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
                                         child: Text(value),
@@ -93,13 +83,13 @@ class _UserDeckViewState extends State<UserDeckView> {
                               child: ListView.builder(
                                   itemCount: deckList.length,
                                   itemBuilder: (context, index) {
-                                    final Deck deck = deckList[index];
+                                    final MarketplaceDeck deck = deckList[index];
                                     return Padding(
                                         padding: const EdgeInsets.all(4.0),
-                                        child: DeckView(deck: deck));
+                                        child: DeckMarketplaceView(deck: deck));
                                   }))
                         ])));
-                  }
-                })));
+          }
+        });
   }
 }

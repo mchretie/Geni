@@ -8,7 +8,6 @@ class Score {
 
   void incrementScore(double remainingTime) {
     _score += (1000 * remainingTime).round();
-    print(_score);
   }
 
   void setFinal() {
