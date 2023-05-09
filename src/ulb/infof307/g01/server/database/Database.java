@@ -18,26 +18,24 @@ import java.util.UUID;
  * Facade for all actions related to the database
  */
 public class Database {
-    CardDAO cardDao;
-    DatabaseAccess databaseAccess;
-    DeckDAO deckDao;
-    TagDAO tagDao;
-    UserDAO userDao;
-    ScoreDAO scoreDao;
-    MarketplaceDAO marketplaceDao;
+    private final DatabaseAccess databaseAccess;
+    private final DeckDAO deckDao;
+    private final UserDAO userDao;
+    private final ScoreDAO scoreDao;
+    private final MarketplaceDAO marketplaceDao;
 
     public Database() {
         this.databaseAccess = new DatabaseAccess();
-        this.cardDao = new CardDAO(this.databaseAccess);
         this.deckDao = new DeckDAO(this.databaseAccess);
-        this.tagDao = new TagDAO(this.databaseAccess);
         this.userDao = new UserDAO(this.databaseAccess);
         this.scoreDao = new ScoreDAO(this.databaseAccess);
         this.marketplaceDao = new MarketplaceDAO(this.databaseAccess);
 
-        this.deckDao.setTagDao(this.tagDao);
-        this.deckDao.setCardDao(this.cardDao);
-        this.tagDao.setDeckDao(this.deckDao);
+        CardDAO cardDao = new CardDAO(this.databaseAccess);
+        TagDAO tagDao = new TagDAO(this.databaseAccess);
+        this.deckDao.setTagDao(tagDao);
+        this.deckDao.setCardDao(cardDao);
+        tagDao.setDeckDao(this.deckDao);
         this.scoreDao.setUserDAO(this.userDao);
         this.marketplaceDao.setDeckDAO(this.deckDao);
     }
@@ -116,7 +114,7 @@ public class Database {
     }
 
     public DeckLeaderboard getLeaderboardFromDeckId(UUID deckId) {
-        return new DeckLeaderboard(deckId, scoreDao.getScoresForDeck(deckId));
+        return new DeckLeaderboard(scoreDao.getScoresForDeck(deckId));
     }
 
     public GlobalLeaderboard getGlobalLeaderboard() {

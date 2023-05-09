@@ -117,9 +117,8 @@ public class EditDeckController implements EditDeckViewController.Listener,
     /**
      * Loads and displays the Deck Menu onto the main scene
      *
-     * @throws IOException if FXMLLoader.load() fails
      */
-    public void show() throws IOException {
+    public void show() {
         mainWindowViewController.setEditDeckViewVisible();
         mainWindowViewController.makeGoBackIconVisible();
 

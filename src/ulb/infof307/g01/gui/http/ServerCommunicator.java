@@ -231,18 +231,6 @@ public class ServerCommunicator {
         }
     }
 
-    public void addDeckToCollection(DeckMetadata deckMetadata)
-            throws ServerCommunicationFailedException {
-
-        try {
-            deckDAO.addDeckToCollection(deckMetadata);
-
-        } catch (IOException | InterruptedException e) {
-            String message = "Failed to add deck to collection";
-            throw new ServerCommunicationFailedException(message);
-        }
-    }
-
     public void saveDeck(Deck deck)
             throws ServerCommunicationFailedException {
 

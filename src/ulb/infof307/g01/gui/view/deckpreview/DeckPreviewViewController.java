@@ -43,8 +43,6 @@ public class DeckPreviewViewController {
     @FXML
     private Label highestScoreLabel;
 
-    private Deck deck;
-
     private Listener listener;
 
     /* ====================================================================== */
@@ -56,7 +54,6 @@ public class DeckPreviewViewController {
     }
 
     public void setDeck(Deck deck) {
-        this.deck = deck;
         deckNameLabel.setText(deck.getName());
 
         int cardCount = deck.cardCount();

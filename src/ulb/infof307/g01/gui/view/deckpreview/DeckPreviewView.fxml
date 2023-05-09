@@ -32,7 +32,7 @@
                   </Button>
               </HBox>
 
-            <HBox fx:id="shareDeckHbox" alignment="CENTER_RIGHT" HBox.hgrow="NEVER">
+            <HBox alignment="CENTER_RIGHT" HBox.hgrow="NEVER">
                 <Button onMouseClicked="#handleShareDeckClicked" onMouseEntered="#handleShareDeckEntered" onMouseExited="#handleShareDeckExited" style="-fx-background-color: transparent">
 
                     <graphic>

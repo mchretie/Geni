@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
-import ulb.infof307.g01.gui.http.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
@@ -80,7 +79,7 @@ public class MainFxController extends Application implements
         MARKETPLACE
     }
 
-    List<View> viewStack = new ArrayList<>();
+    final List<View> viewStack = new ArrayList<>();
 
 
     /* ====================================================================== */
@@ -130,13 +129,10 @@ public class MainFxController extends Application implements
             viewStack.add(View.DECK_MENU);
             deckMenuController.show();
 
-        } catch (AuthenticationFailedException e) {
-            userAuthController.show();
-
         } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             errorHandler.restartApplicationError(e);
         }
     }
@@ -168,7 +164,7 @@ public class MainFxController extends Application implements
         this.mainWindowViewController.setListener(this);
     }
 
-    private void initControllers(Stage stage) throws IOException, InterruptedException {
+    private void initControllers(Stage stage) {
 
         this.userAuthController
                 = new UserAuthController(stage,
@@ -236,7 +232,7 @@ public class MainFxController extends Application implements
                 case MARKETPLACE -> marketplaceController.show();
             }
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             errorHandler.restartApplicationError(e);
 
         } catch (ServerCommunicationFailedException e) {
@@ -263,9 +259,6 @@ public class MainFxController extends Application implements
 
             editDeckController.show();
             viewStack.add(View.EDIT_DECK);
-
-        } catch (IOException e) {
-            errorHandler.failedLoading(e);
 
         } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
@@ -334,7 +327,7 @@ public class MainFxController extends Application implements
             deckMenuController.show();
             resetViewStack(View.DECK_MENU);
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             errorHandler.failedLoading(e);
         }
 
@@ -369,7 +362,7 @@ public class MainFxController extends Application implements
             viewStack.remove(viewStack.size() - 1);
             deckMenuController.show();
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             errorHandler.restartApplicationError(e);
         }
 
@@ -380,20 +373,16 @@ public class MainFxController extends Application implements
 
     @Override
     public void statisticsClicked() {
-        try {
-            statisticsController = new StatisticsController(
-                    stage,
-                    errorHandler,
-                    mainWindowViewController,
-                    serverCommunicator
-            );
+        statisticsController = new StatisticsController(
+                stage,
+                errorHandler,
+                mainWindowViewController,
+                serverCommunicator
+        );
 
-            viewStack.add(View.STATISTICS);
-            statisticsController.show();
+        viewStack.add(View.STATISTICS);
+        statisticsController.show();
 
-        } catch (IOException e) {
-            errorHandler.restartApplicationError(e);
-        }
     }
 
     @Override
@@ -423,7 +412,7 @@ public class MainFxController extends Application implements
             resetViewStack(View.DECK_MENU);
             deckMenuController.show();
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             errorHandler.restartApplicationError(e);
         }
 
@@ -444,7 +433,7 @@ public class MainFxController extends Application implements
             resetViewStack(View.MARKETPLACE);
             marketplaceController.show();
 
-        } catch (InterruptedException | IOException e) {
+        } catch (IOException e) {
             errorHandler.failedLoading(e);
         }
 
@@ -455,22 +444,16 @@ public class MainFxController extends Application implements
 
     @Override
     public void goToLeaderboardClicked() {
-        try {
-            if (leaderboardController == null) {
-                leaderboardController = new GlobalLeaderboardController(
-                        stage,
-                        mainWindowViewController,
-                        errorHandler,
-                        serverCommunicator);
-            }
-
-            resetViewStack(View.LEADERBOARD);
-            leaderboardController.show();
-
-
-        } catch (InterruptedException | IOException e) {
-            errorHandler.failedLoading(e);
+        if (leaderboardController == null) {
+            leaderboardController = new GlobalLeaderboardController(
+                    stage,
+                    mainWindowViewController,
+                    errorHandler,
+                    serverCommunicator);
         }
+
+        resetViewStack(View.LEADERBOARD);
+        leaderboardController.show();
     }
 
     private void resetViewStack(View prevView) {
@@ -480,13 +463,9 @@ public class MainFxController extends Application implements
 
     @Override
     public void goToProfileClicked() {
-        try {
-            profileController.show();
-            viewStack.add(View.LOGIN_PROFILE);
+        profileController.show();
+        viewStack.add(View.LOGIN_PROFILE);
 
-        } catch (IOException e) {
-            errorHandler.failedLoading(e);
-        }
     }
 
     @Override
@@ -494,7 +473,7 @@ public class MainFxController extends Application implements
         try {
             deckMenuController.show();
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             errorHandler.failedLoading(e);
         }
 

@@ -37,7 +37,7 @@
             <Font name="System Bold" size="35.0"/>
         </font>
     </Label>
-    <Button fx:id="goToMenuButton" mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Retour">
+    <Button mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Retour">
         <VBox.margin>
             <Insets top="10.0"/>
         </VBox.margin>

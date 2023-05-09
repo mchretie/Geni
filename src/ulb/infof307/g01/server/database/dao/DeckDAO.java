@@ -4,7 +4,6 @@ import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
-import ulb.infof307.g01.model.card.visitor.CardVisitor;
 import ulb.infof307.g01.model.deck.*;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
@@ -168,14 +167,15 @@ public class DeckDAO extends DAO {
     }
 
     public UUID getDeckOwnerId(UUID deckId) throws DatabaseException {
-        try {
-            String sql = """
+        String sql = """
                     SELECT user_id
                     FROM deck
                     WHERE deck_id = ?
                     """;
-            ResultSet res = database.executeQuery(sql, deckId.toString());
+
+        try(ResultSet res = database.executeQuery(sql, deckId.toString())) {
             return UUID.fromString(res.getString("user_id"));
+
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }

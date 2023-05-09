@@ -49,7 +49,7 @@ public class StatisticsController {
     /*                         Stage Manipulation                             */
     /* ====================================================================== */
 
-    public void show() throws IOException {
+    public void show() {
         mainWindowViewController.setStatisticsViewVisible();
 
         if (serverCommunicator.isUserLoggedIn()) {

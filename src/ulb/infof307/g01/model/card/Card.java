@@ -21,11 +21,6 @@ public abstract class Card {
         this.id = UUID.randomUUID();
     }
 
-    protected Card(String front) {
-        this.id = UUID.randomUUID();
-        this.front = front;
-    }
-
     protected Card(UUID uuid, UUID deckId, String front) {
         this.id = uuid;
         this.deckId = deckId;

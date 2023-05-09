@@ -39,17 +39,16 @@
         </HBox>
     </left>
    <center>
-      <HBox alignment="CENTER" BorderPane.alignment="CENTER">
-         <children>
-               <Label fx:id="deckNameLabel" alignment="CENTER" text="Sciences" textAlignment="CENTER" textFill="#d0a2ec" HBox.hgrow="ALWAYS">
-                   <font>
-                       <Font size="18.0" />
-                   </font>
-               </Label>
-         </children>
-         <padding>
-            <Insets left="50.0" />
-         </padding>
-      </HBox>
+       <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+           <padding>
+               <Insets left="50.0"/>
+           </padding>
+           <Label fx:id="deckNameLabel" alignment="CENTER" text="Sciences"
+                  textAlignment="CENTER" textFill="#d0a2ec" HBox.hgrow="ALWAYS">
+               <font>
+                   <Font size="18.0"/>
+               </font>
+           </Label>
+       </HBox>
    </center>
 </BorderPane>

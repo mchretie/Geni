@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.toList;
 
 public class MarketplaceDAO extends HttpDAO {
 
-    IndulgentValidator validator = new IndulgentValidator();
+    final IndulgentValidator validator = new IndulgentValidator();
 
 
     /* ====================================================================== */

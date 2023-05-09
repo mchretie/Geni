@@ -12,7 +12,6 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
-import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 
@@ -57,7 +56,6 @@ public class DeckUserMarketplaceViewController {
     /* ====================================================================== */
 
     private Listener listener;
-    private ImageLoader imageLoader;
 
     /* ====================================================================== */
     /*                                Setters                                 */
@@ -65,10 +63,6 @@ public class DeckUserMarketplaceViewController {
 
     public void setListener(Listener listener) {
         this.listener = listener;
-    }
-
-    public void setImageLoader(ImageLoader loader) {
-        this.imageLoader = loader;
     }
 
 
