@@ -295,8 +295,8 @@ public class MainWindowViewController implements Initializable {
     }
 
     public void setAllInvisible() {
-        for (Node child : centerStackPane.getChildren())
-            child.setVisible(false);
+        centerStackPane.getChildren()
+                        .forEach(child -> child.setVisible(false));
     }
 
     public void setDeckMenuViewVisible() {

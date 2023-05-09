@@ -242,17 +242,19 @@ public class PlayDeckViewController {
     }
 
     public void showMCQAnswer() {
-        for (int i = 0; i < choicesGrid.getChildren().size(); i++) {
-            Button answer = (Button) choicesGrid.getChildren().get(i);
-            answer.setDisable(true);
-            answer.setTextFill(Color.WHITE);
-            if (answer == correctChoiceButton) {
-                answer.setOpacity(1);
-                answer.setStyle("-fx-background-color: #659e40;");
-            } else {
-                answer.setStyle("-fx-background-color: #c45151;");
-            }
-        }
+        choicesGrid.lookupAll("Button")
+                .forEach(answer -> {
+                    answer.setDisable(true);
+                    ((Button) answer).setTextFill(Color.WHITE);
+
+                    if (answer == correctChoiceButton) {
+                        answer.setOpacity(1);
+                        answer.setStyle("-fx-background-color: #659e40;");
+
+                    } else {
+                        answer.setStyle("-fx-background-color: #c45151;");
+                    }
+                });
     }
 
     public void showInputAnswer() {
