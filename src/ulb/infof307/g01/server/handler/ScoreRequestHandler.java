@@ -71,6 +71,9 @@ public class ScoreRequestHandler extends Handler {
         try {
             String[] decksIds = req.queryParamsValues("deckId[]");
             List<Score> bestScores = new ArrayList<>();
+            if (decksIds == null)
+                return bestScores;
+
             for (String deckId : decksIds) {
                 Score bestScore = getBestScoreByDeckId(UUID.fromString(deckId));
                 if (bestScore != null)

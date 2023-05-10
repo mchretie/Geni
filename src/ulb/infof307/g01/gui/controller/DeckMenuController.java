@@ -114,10 +114,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         decks.sort(Comparator.comparing(DeckMetadata::name));
 
-        List<Score> bestScoresList = serverCommunicator.getBestScoreForDecks(decks);
-        HashMap<UUID, Score> bestScores = new HashMap<>();
-        for (Score bestScore : bestScoresList)
-            bestScores.put(bestScore.getDeckId(), bestScore);
+        HashMap<UUID, Score> bestScores = serverCommunicator.getBestScoreForDecks(decks);
 
         for (DeckMetadata deck : decks) {
 

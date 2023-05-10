@@ -11,6 +11,7 @@ import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +40,8 @@ public class ScoreDAO extends HttpDAO {
         return bestScores.get(0);
     }
 
-    public List<Score> getBestScoreForDecks(List<DeckMetadata> decks) throws IOException, InterruptedException {
+    public HashMap<UUID, Score> getBestScoreForDecks(List<DeckMetadata> decks)
+            throws IOException, InterruptedException {
         String path = ServerPaths.GET_BEST_SCORES_PATH + "?";
         for (DeckMetadata deck : decks)
             path += "deckId[]=" + deck.id() + "&";
@@ -50,7 +52,12 @@ public class ScoreDAO extends HttpDAO {
         checkResponseCode(response.statusCode());
 
         TypeToken<List<Score>> typeToken = new TypeToken<>() {};
-        return new Gson().fromJson(response.body(), typeToken);
+        List<Score> bestScoresList = new Gson().fromJson(response.body(), typeToken);
+
+        HashMap<UUID, Score> bestScores = new HashMap<>();
+        for (Score bestScore : bestScoresList)
+            bestScores.put(bestScore.getDeckId(), bestScore);
+        return bestScores;
     }
 
     public DeckLeaderboard getLeaderboardForDeck(UUID deckId) throws IOException, InterruptedException {
