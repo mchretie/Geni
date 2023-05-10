@@ -8,6 +8,7 @@ class Answer {
   bool get correctlyAnswered => _correctlyAnswered;
   num get remainingTime => _remainingTime;
   num get totalTime => _totalTime;
+  num get responseTime => _totalTime - _remainingTime;
 
   Answer(this._correctlyAnswered, this._remainingTime, this._totalTime);
 }
@@ -26,7 +27,8 @@ class Score {
   int get score => _score;
   double get averageResponseTime => _averageResponseTime();
   double get totalResponseTime => _totalResponseTime();
-  Map<String, double> get statCorrectAnswers => _statCorrectAnswers();
+  int get correctAnswers => _correctAnswers();
+  int get incorrectAnswers => _incorrectAnswers();
 
   bool get isFinal => _final;
 
@@ -39,18 +41,22 @@ class Score {
     _final = true;
   }
 
-  Map<String, double> _statCorrectAnswers() {
-    var map = {'Correct': 0.0, 'Incorrect': 0.0};
-    for (var answer in _answers) {
-      if (answer.correctlyAnswered) {
-        var value = map['Correct'] ?? 0;
-        map['Correct'] = value + 1;
-      } else {
-        var value = map['Incorrect'] ?? 0;
-        map['Incorrect'] = value + 1;
-      }
+  Map<int, int> responseTimes() {
+    Map<int, int> timings = {};
+    for (Answer answer in _answers) {
+      int ceilResponseTime = answer.responseTime.ceil();
+      int currentValue = timings[ceilResponseTime] ?? 0;
+      timings[ceilResponseTime] = currentValue + 1;
     }
-    return map;
+    return timings;
+  }
+
+  int _correctAnswers() {
+    return _answers.where((e) => e.correctlyAnswered).length;
+  }
+
+  int _incorrectAnswers() {
+    return _answers.length - _correctAnswers();
   }
 
   double _averageResponseTime() {
@@ -58,8 +64,7 @@ class Score {
   }
 
   double _totalResponseTime() {
-    return _answers.fold(
-        0.0, (val, elem) => val + (elem.totalTime - elem.remainingTime));
+    return _answers.fold(0.0, (val, elem) => val + (elem.responseTime));
   }
 
   void _computeScore() {

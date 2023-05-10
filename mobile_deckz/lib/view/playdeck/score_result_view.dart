@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart' as pc;
 import 'package:fl_chart/fl_chart.dart';
+import 'dart:math';
 
 import '../../model/deck/score.dart';
 
@@ -11,14 +12,23 @@ class ScoreResultView extends StatelessWidget {
 
   List<BarChartGroupData> responseTimeBars() {
     List<BarChartGroupData> timings = [];
-    for (MapEntry<int, int> entry in score.responseTimes().entries) {
-      timings.add(BarChartGroupData(x: entry.key, barRods: [
-        BarChartRodData(
-          toY: entry.value.toDouble(),
-        )
-      ]));
+    Map<int, int> responseTimes = score.responseTimes();
+    int maximum = responseTimes.keys.fold(1, (a, b) => max(a, b));
+
+    for (int i = 1; i <= maximum; ++i) {
+      int value = responseTimes[i] ?? 0;
+      timings.add(
+        BarChartGroupData(
+          x: i,
+          barRods: [
+            BarChartRodData(
+              toY: value.toDouble(),
+            ),
+          ],
+        ),
+      );
     }
-    timings.sort((a, b) => a.x.compareTo(b.x));
+
     return timings;
   }
 
@@ -60,7 +70,7 @@ class ScoreResultView extends StatelessWidget {
       const SizedBox(height: 20),
       ElevatedButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Go back home')),
+          child: const Text('Revenir à la page d’acceuil')),
       const SizedBox(height: 20),
       const Divider(),
       const SizedBox(height: 10),
@@ -74,22 +84,58 @@ class ScoreResultView extends StatelessWidget {
       Expanded(
           child: Row(children: [
         Expanded(
+            flex: 8,
             child: pc.PieChart(
                 dataMap: {
-              'Correct': score.correctAnswers.toDouble(),
-              'Incorrect': score.incorrectAnswers.toDouble()
-            },
+                  'Réponses correctes': score.correctAnswers.toDouble(),
+                  'Réponses incorrectes': score.incorrectAnswers.toDouble()
+                },
                 colorList: [
-              Colors.green,
-              Colors.red
-            ],
+                  Colors.green,
+                  Colors.red
+                ],
                 legendOptions: const pc.LegendOptions(
                   legendPosition: pc.LegendPosition.bottom,
                 ))),
+        const SizedBox(width: 10),
         Expanded(
-            flex: 1,
+            flex: 8,
             child: BarChart(
-              BarChartData(barGroups: responseTimeBars()),
+              BarChartData(
+                barGroups: responseTimeBars(),
+                gridData: FlGridData(
+                  show: true,
+                  drawHorizontalLine: true,
+                  drawVerticalLine: true,
+                  horizontalInterval: 1,
+                  verticalInterval: 1,
+                ),
+                titlesData: FlTitlesData(
+                  leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        interval: 1,
+                      ),
+                      axisNameWidget: Text('Nombre de réponses')),
+                  topTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: false,
+                    ),
+                  ),
+                  rightTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: false,
+                    ),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 1,
+                    ),
+                    axisNameWidget: Text('Temps de réponse (s)'),
+                  ),
+                ),
+              ),
               swapAnimationDuration: Duration(milliseconds: 150), // Optional
               swapAnimationCurve: Curves.linear, // Optional
             )),
