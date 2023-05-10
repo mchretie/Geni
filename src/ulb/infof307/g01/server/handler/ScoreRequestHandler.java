@@ -28,7 +28,6 @@ public class ScoreRequestHandler extends Handler {
         post(SAVE_SCORE_PATH, this::saveScore, toJson());
         // TODO Delete this + delete deckLeaderboard
         get(GET_LEADERBOARD_PATH, this::getLeaderboardByDeckId, toJson());
-        get(GET_BEST_SCORE_PATH, this::getBestScoreByDeckId, toJson());
         get(GET_BEST_SCORES_PATH, this::getBestScores, toJson());
         get(GET_GLOBAL_LEADERBOARD, this::getGlobalLeaderboard, toJson());
     }
@@ -108,15 +107,5 @@ public class ScoreRequestHandler extends Handler {
             halt(500, errorMessage);
             return null;
         }
-    }
-
-    // TODO DELETE
-    private Score getBestScoreByDeckId(Request request, Response response) {
-        DeckLeaderboard leaderboard = getLeaderboardByDeckId(request, response);
-
-        if (leaderboard == null || leaderboard.isEmpty())
-            return null;
-
-        return leaderboard.getLeaderboard().get(0);
     }
 }
