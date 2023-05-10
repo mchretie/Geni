@@ -119,6 +119,8 @@ public class MarketplaceController implements
             throws IOException, ServerCommunicationFailedException {
         List<Node> decksLoaded = new ArrayList<>();
 
+        HashMap<UUID, Score> bestScores = serverCommunicator.getBestScoreForMarketplaceDecks(decks);
+
         for (MarketplaceDeckMetadata deck : decks) {
             URL resource = MarketplaceViewController
                     .class
@@ -130,7 +132,7 @@ public class MarketplaceController implements
 
             DeckMarketplaceViewController controller = loader.getController();
 
-            controller.setDeck(deck, serverCommunicator.getBestScoreForDeck(deck.id()), deckAvailability);
+            controller.setDeck(deck, bestScores.get(deck.id()), deckAvailability);
             controller.setImageLoader(imageLoader);
             controller.setListener(this);
 
