@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
-import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
 import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
@@ -26,8 +25,6 @@ public class ScoreRequestHandler extends Handler {
     @Override
     public void init() {
         post(SAVE_SCORE_PATH, this::saveScore, toJson());
-        // TODO Delete this + delete deckLeaderboard
-        get(GET_LEADERBOARD_PATH, this::getLeaderboardByDeckId, toJson());
         get(GET_BEST_SCORES_PATH, this::getBestScores, toJson());
         get(GET_GLOBAL_LEADERBOARD, this::getGlobalLeaderboard, toJson());
     }
@@ -50,19 +47,6 @@ public class ScoreRequestHandler extends Handler {
             halt(500, errorMessage);
 
             return failedResponse;
-        }
-    }
-
-    private DeckLeaderboard getLeaderboardByDeckId(Request req, Response res) {
-        try {
-            UUID deckId = UUID.fromString(req.queryParams("deck"));
-            return database.getLeaderboardFromDeckId(deckId);
-
-        } catch (Exception e) {
-            String errorMessage = "Failed to get leaderboard: " + e.getMessage();
-            logger.warning(errorMessage);
-            halt(500, errorMessage);
-            return null;
         }
     }
 
@@ -89,12 +73,7 @@ public class ScoreRequestHandler extends Handler {
     }
 
     private Score getBestScoreByDeckId(UUID deckId) {
-        DeckLeaderboard leaderboard = database.getLeaderboardFromDeckId(deckId);
-
-        if (leaderboard == null || leaderboard.isEmpty())
-            return null;
-
-        return leaderboard.getLeaderboard().get(0);
+        return database.getBestScoreForDeck(deckId);
     }
 
     private GlobalLeaderboard getGlobalLeaderboard(Request req, Response res) {
