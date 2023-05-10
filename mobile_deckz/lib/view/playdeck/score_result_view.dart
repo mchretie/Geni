@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 import '../../model/deck/score.dart';
 
@@ -45,7 +46,24 @@ class ScoreResultView extends StatelessWidget {
       const SizedBox(height: 20),
       ElevatedButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Go back home'))
+          child: const Text('Go back home')),
+      const SizedBox(height: 20),
+      const Divider(),
+      const SizedBox(height: 10),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Text('Statistiques', style: TextStyle(fontSize: 24)),
+        ],
+      ),
+      const SizedBox(height: 20),
+      Expanded(
+          flex: 1,
+          child: PieChart(
+              dataMap: score.statCorrectAnswers,
+              legendOptions: const LegendOptions(
+                legendPosition: LegendPosition.bottom,
+              ))),
     ]));
   }
 }

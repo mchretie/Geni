@@ -1,11 +1,15 @@
 import 'dart:math';
 
 class Answer {
-  final bool correctlyAnswered;
-  final num remainingTime;
-  final num totalTime;
+  final bool _correctlyAnswered;
+  final num _remainingTime;
+  final num _totalTime;
 
-  Answer(this.correctlyAnswered, this.remainingTime, this.totalTime);
+  bool get correctlyAnswered => _correctlyAnswered;
+  num get remainingTime => _remainingTime;
+  num get totalTime => _totalTime;
+
+  Answer(this._correctlyAnswered, this._remainingTime, this._totalTime);
 }
 
 class Score {
@@ -22,6 +26,7 @@ class Score {
   int get score => _score;
   double get averageResponseTime => _averageResponseTime();
   double get totalResponseTime => _totalResponseTime();
+  Map<String, double> get statCorrectAnswers => _statCorrectAnswers();
 
   bool get isFinal => _final;
 
@@ -32,6 +37,20 @@ class Score {
 
   void setFinal() {
     _final = true;
+  }
+
+  Map<String, double> _statCorrectAnswers() {
+    var map = {'Correct': 0.0, 'Incorrect': 0.0};
+    for (var answer in _answers) {
+      if (answer.correctlyAnswered) {
+        var value = map['Correct'] ?? 0;
+        map['Correct'] = value + 1;
+      } else {
+        var value = map['Incorrect'] ?? 0;
+        map['Incorrect'] = value + 1;
+      }
+    }
+    return map;
   }
 
   double _averageResponseTime() {
