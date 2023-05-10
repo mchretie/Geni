@@ -282,6 +282,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         deck.addCard(new FlashCard());
         editDeckViewController.showCardsFromDeck(deck);
         focusLastCard();
+        saveChanges();
     }
 
     @Override
@@ -289,6 +290,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         deck.addCard(new InputCard());
         editDeckViewController.showCardsFromDeck(deck);
         focusLastCard();
+        saveChanges();
     }
 
     @Override
@@ -296,6 +298,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         deck.addCard(new MCQCard());
         editDeckViewController.showCardsFromDeck(deck);
         focusLastCard();
+        saveChanges();
     }
 
     @Override
