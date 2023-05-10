@@ -112,7 +112,7 @@ public class DeckViewController {
     }
 
     private void setDeckImage() {
-        Image img = new Image(deck.image());
+        Image img = imageLoader.get(deck.image());
         imageBackground.setImage(img);
         imageBackground.setPreserveRatio(false);
         imageBackground.fitWidthProperty().bind(stackPane.widthProperty());
