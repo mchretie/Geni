@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pie_chart/pie_chart.dart';
+import 'package:pie_chart/pie_chart.dart' as pc;
+import 'package:fl_chart/fl_chart.dart';
 
 import '../../model/deck/score.dart';
 
@@ -7,6 +8,19 @@ class ScoreResultView extends StatelessWidget {
   final Score score;
 
   const ScoreResultView({Key? key, required this.score}) : super(key: key);
+
+  List<BarChartGroupData> responseTimeBars() {
+    List<BarChartGroupData> timings = [];
+    for (MapEntry<int, int> entry in score.responseTimes().entries) {
+      timings.add(BarChartGroupData(x: entry.key, barRods: [
+        BarChartRodData(
+          toY: entry.value.toDouble(),
+        )
+      ]));
+    }
+    timings.sort((a, b) => a.x.compareTo(b.x));
+    return timings;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +72,28 @@ class ScoreResultView extends StatelessWidget {
       ),
       const SizedBox(height: 20),
       Expanded(
-          flex: 1,
-          child: PieChart(
-              dataMap: score.statCorrectAnswers,
-              legendOptions: const LegendOptions(
-                legendPosition: LegendPosition.bottom,
-              ))),
+          child: Row(children: [
+        Expanded(
+            child: pc.PieChart(
+                dataMap: {
+              'Correct': score.correctAnswers.toDouble(),
+              'Incorrect': score.incorrectAnswers.toDouble()
+            },
+                colorList: [
+              Colors.green,
+              Colors.red
+            ],
+                legendOptions: const pc.LegendOptions(
+                  legendPosition: pc.LegendPosition.bottom,
+                ))),
+        Expanded(
+            flex: 1,
+            child: BarChart(
+              BarChartData(barGroups: responseTimeBars()),
+              swapAnimationDuration: Duration(milliseconds: 150), // Optional
+              swapAnimationCurve: Curves.linear, // Optional
+            )),
+      ])),
     ]));
   }
 }

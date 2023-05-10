@@ -53,10 +53,7 @@ public class Score {
             return 0;
         }
 
-        double sum = 0;
-        for (double time : times) {
-            sum += time;
-        }
+        double sum = times.stream().reduce(0D, Double::sum);
         return Math.round(sum * 100.0) / 100.0;
     }
 
