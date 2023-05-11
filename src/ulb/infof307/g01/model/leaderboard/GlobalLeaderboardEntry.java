@@ -14,7 +14,7 @@ public class GlobalLeaderboardEntry implements Comparable<GlobalLeaderboardEntry
     }
 
     public String getTotalScore() {
-        return totalScore + "";
+        return String.valueOf(totalScore);
     }
 
     public String getUsername() {

@@ -73,7 +73,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
             deckPreviewViewController.setDeck(deck);
 
             Score score = serverCommunicator.getBestScoreForDeck(deck.getId());
-            String scoreString = score == null ? "0" : score.getScoreValue() + "";
+            String scoreString = score == null ? "0" : String.valueOf(score.getScoreValue());
             deckPreviewViewController.setScore(scoreString);
 
             deckPreviewViewController.setPlayDeckButtonDisabled(deck.cardCount() == 0);

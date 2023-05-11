@@ -34,8 +34,4 @@ public class GameHistory implements Iterable<Game> {
         Iterable.super.forEach(action);
     }
 
-    @Override
-    public Spliterator<Game> spliterator() {
-        return Iterable.super.spliterator();
-    }
 }

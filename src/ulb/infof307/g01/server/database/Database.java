@@ -18,13 +18,13 @@ import java.util.UUID;
  * Facade for all actions related to the database
  */
 public class Database {
-    CardDAO cardDao;
-    DatabaseAccess databaseAccess;
-    DeckDAO deckDao;
-    TagDAO tagDao;
-    UserDAO userDao;
-    ScoreDAO scoreDao;
-    MarketplaceDAO marketplaceDao;
+    final CardDAO cardDao;
+    final DatabaseAccess databaseAccess;
+    final DeckDAO deckDao;
+    final TagDAO tagDao;
+    final UserDAO userDao;
+    final ScoreDAO scoreDao;
+    final MarketplaceDAO marketplaceDao;
 
     public Database() {
         this.databaseAccess = new DatabaseAccess();

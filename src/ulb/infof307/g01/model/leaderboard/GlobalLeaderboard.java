@@ -42,9 +42,4 @@ public class GlobalLeaderboard implements Iterable<GlobalLeaderboardEntry> {
     public void forEach(Consumer<? super GlobalLeaderboardEntry> action) {
         Iterable.super.forEach(action);
     }
-
-    @Override
-    public Spliterator<GlobalLeaderboardEntry> spliterator() {
-        return Iterable.super.spliterator();
-    }
 }

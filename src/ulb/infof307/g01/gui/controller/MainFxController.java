@@ -55,7 +55,7 @@ public class MainFxController extends Application implements
 
     private MainWindowViewController mainWindowViewController;
 
-    private ImageLoader imageLoader = new ImageLoader();
+    private final ImageLoader imageLoader = new ImageLoader();
 
     /* ====================================================================== */
     /*                              DAO Attributes                            */
@@ -81,7 +81,7 @@ public class MainFxController extends Application implements
         MARKETPLACE
     }
 
-    List<View> viewStack = new ArrayList<>();
+    final List<View> viewStack = new ArrayList<>();
 
 
     /* ====================================================================== */

@@ -76,9 +76,9 @@ public class StatisticsController {
 
             statisticsViewController
                     .setMainStatistics(
-                            gameHistory.getNumberOfGames() + "",
-                            serverCommunicator.getDeckCount() + "",
-                            gameHistory.totalScore() + "");
+                            String.valueOf(gameHistory.getNumberOfGames()),
+                            String.valueOf(serverCommunicator.getDeckCount()),
+                            String.valueOf(gameHistory.totalScore()));
 
             return playersScoreItem;
 

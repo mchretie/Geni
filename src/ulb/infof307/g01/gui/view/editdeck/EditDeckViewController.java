@@ -241,7 +241,7 @@ public class EditDeckViewController {
         int correctChoiceIndex = mcqCard.getCorrectChoiceIndex();
         Iterator<Pos2D> positions = new GridPosIterator(2, 2);
 
-        for (int i = 0; i < mcqCard.MAX_CHOICES; i++) {
+        for (int i = 0; i < MCQCard.MAX_CHOICES; i++) {
             Pos2D nextPos = positions.next();
             currentCol = nextPos.col;
             currentRow = nextPos.row;

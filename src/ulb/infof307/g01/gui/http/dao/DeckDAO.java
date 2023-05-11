@@ -30,7 +30,7 @@ public class DeckDAO extends HttpDAO {
     /* ====================================================================== */
 
     DeckCache deckCache = null;
-    IndulgentValidator validator = new IndulgentValidator();
+    final IndulgentValidator validator = new IndulgentValidator();
 
     static final String DECK_ID_QUERY = "?deck_id=";
 

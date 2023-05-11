@@ -8,9 +8,9 @@ import java.util.*;
 
 public class DeckCache {
 
-    Map<UUID, Deck> decks = new HashMap<>();
-    Map<UUID, DeckMetadata> decksMetadata = new HashMap<>();
-    Set<UUID> allDecksIds = new HashSet<>();
+    final Map<UUID, Deck> decks = new HashMap<>();
+    final Map<UUID, DeckMetadata> decksMetadata = new HashMap<>();
+    final Set<UUID> allDecksIds = new HashSet<>();
 
     public DeckCache(Collection<DeckMetadata> allDecksMetadata) {
         for (DeckMetadata deckMetadata : allDecksMetadata) {
@@ -39,10 +39,9 @@ public class DeckCache {
     }
 
     public void removeDeck(UUID deckUUID) {
-        var deckId = deckUUID;
-        decks.remove(deckId);
-        decksMetadata.remove(deckId);
-        allDecksIds.remove(deckId);
+        decks.remove(deckUUID);
+        decksMetadata.remove(deckUUID);
+        allDecksIds.remove(deckUUID);
     }
 
     public Optional<Deck> getDeck(DeckMetadata deckMetadata) {

@@ -13,7 +13,6 @@ import java.util.Map;
 import static spark.Spark.*;
 import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class UserAccountHandler extends Handler {
 
     private static final String AUTH_HEADER = "Authorization";
@@ -32,8 +31,8 @@ public class UserAccountHandler extends Handler {
     private Map<String, Boolean> loginUser(Request request, Response response) {
         try {
             UserAuth userAuth = new Gson().fromJson(request.body(), UserAuth.class);
-            String username = userAuth.getUsername();
-            String password = userAuth.getPassword();
+            String username = userAuth.username();
+            String password = userAuth.password();
 
             boolean isValidLogin = database.loginUser(username, password);
 
@@ -54,8 +53,8 @@ public class UserAccountHandler extends Handler {
 
     private Map<String, Boolean> registerUser(Request request, Response response) {
         UserAuth userAuth = new Gson().fromJson(request.body(), UserAuth.class);
-        String username = userAuth.getUsername();
-        String password = userAuth.getPassword();
+        String username = userAuth.username();
+        String password = userAuth.password();
 
         boolean isRegistered = database.registerUser(username, password);
         return isRegistered ? successfulResponse : failedResponse;

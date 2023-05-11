@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 public class MarketplaceDAO extends HttpDAO {
 
-    IndulgentValidator validator = new IndulgentValidator();
+    final IndulgentValidator validator = new IndulgentValidator();
 
 
     /* ====================================================================== */
