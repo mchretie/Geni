@@ -159,7 +159,7 @@ public class PlayDeckViewController {
         cardWebView.getEngine().loadContent(htmlContent);
     }
 
-    private void stopCountdown() {
+    public void markCardAnswered() {
         this.setNavButtonsDisable(false);
         this.progressBar.setVisible(false);
         this.hasAnswered = true;
@@ -209,6 +209,7 @@ public class PlayDeckViewController {
         return progressBar.getProgress() == 0;
     }
 
+
     /*---------------------- MCQ Card ---------------------- */
 
     public void showMCQCard() {
@@ -246,7 +247,7 @@ public class PlayDeckViewController {
 
         checkButton.setOnAction(actionEvent -> {
             checkIcon.setIconColor(Color.WHITE);
-            stopCountdown();
+            markCardAnswered();
             showMCQAnswer();
             listener.onChoiceEntered(isCorrectChoice, progressBar.getProgress());
         });
@@ -270,11 +271,12 @@ public class PlayDeckViewController {
                 });
     }
 
+
+    /*---------------------Input card ---------------------- */
+
     public void showInputAnswer() {
         handleInputText();
     }
-
-    /*---------------------Input card ---------------------- */
 
     public void showInputCard() {
         inputBox.setVisible(true);
@@ -330,7 +332,7 @@ public class PlayDeckViewController {
 
         boolean correct = card.isInputCorrect(input);
 
-        stopCountdown();
+        markCardAnswered();
         listener.onChoiceEntered(correct, progressBar.getProgress());
 
         if (!correct) showInput(input, false);

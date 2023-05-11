@@ -110,10 +110,15 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
 
     @Override
     public void visit(MCQCard multipleChoiceCard) {
+        boolean isAnswered = answeredCards[cardExtractor.getCurrentCardIndex()];
         playDeckViewController.showMCQCard();
         playDeckViewController.disableFrontCardClick();
 
-        if (progressbarTimedOut) {
+        if (isAnswered) {
+            playDeckViewController.showMCQAnswer();
+        }
+
+        else if (progressbarTimedOut) {
             playDeckViewController.startProgressBar();
             progressbarTimedOut = false;
         }
@@ -128,10 +133,15 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
 
     @Override
     public void visit(InputCard inputCard) {
+        boolean isAnswered = answeredCards[cardExtractor.getCurrentCardIndex()];
         playDeckViewController.showInputCard();
         playDeckViewController.disableFrontCardClick();
 
-        if (progressbarTimedOut) {
+        if (isAnswered) {
+            playDeckViewController.showInputAnswer();
+        }
+
+        else if (progressbarTimedOut) {
             playDeckViewController.startProgressBar();
             progressbarTimedOut = false;
         }
@@ -161,10 +171,14 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
     public void nextCardClicked() {
         frontShown = true;
         currentCard = cardExtractor.getNextCard();
+        int cardIndex = cardExtractor.getCurrentCardIndex();
         playDeckViewController.hideProgressBar();
 
         if (currentCard != null) {
             playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
+            if (answeredCards[cardIndex]) {
+                playDeckViewController.markCardAnswered();
+            }
             showCard();
             return;
         }
