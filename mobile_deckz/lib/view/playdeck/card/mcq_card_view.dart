@@ -47,9 +47,11 @@ class _MCQCardViewState extends State<MCQCardView>
   }
 
   void _submitScore() {
-    if (widget.card.correctChoice == answerIndex) {
-      widget.score.incrementScore(remainingTimeValue);
-    }
+    final correct = widget.card.correctChoice == answerIndex;
+    final remTime = remainingTimeValue;
+    final totTime = widget.card.countdownTime;
+    final answer_ = Answer(correct, remTime, totTime);
+    widget.score.recordAnswer(answer_);
   }
 
   void _updateRemainingTime(double remainingTime) {
