@@ -24,9 +24,9 @@ public class CardDAO extends DAO implements CardVisitor {
                 """;
 
         database.executeUpdate(upsertFlashCard,
-                flashCard.getId().toString(),
-                flashCard.getBack(),
-                flashCard.getBack());
+                               flashCard.getId().toString(),
+                               flashCard.getBack(),
+                               flashCard.getBack());
     }
 
     @Override
@@ -39,11 +39,11 @@ public class CardDAO extends DAO implements CardVisitor {
                 """;
 
         database.executeUpdate(upsertMCQCard,
-                multipleChoiceCard.getId().toString(),
-                multipleChoiceCard.getCorrectChoiceIndex(),
-                multipleChoiceCard.getCountdownTime(),
-                multipleChoiceCard.getCorrectChoiceIndex(),
-                multipleChoiceCard.getCountdownTime()
+                               multipleChoiceCard.getId().toString(),
+                               multipleChoiceCard.getCorrectChoiceIndex(),
+                               multipleChoiceCard.getCountdownTime(),
+                               multipleChoiceCard.getCorrectChoiceIndex(),
+                               multipleChoiceCard.getCountdownTime()
         );
 
         String upsertMCQCardAnswer = """
@@ -55,9 +55,9 @@ public class CardDAO extends DAO implements CardVisitor {
 
         for (int i = 0; i < multipleChoiceCard.getChoicesCount(); i++)
             database.executeUpdate(upsertMCQCardAnswer,
-                    multipleChoiceCard.getId().toString(),
-                    multipleChoiceCard.getChoice(i),
-                    i);
+                                   multipleChoiceCard.getId().toString(),
+                                   multipleChoiceCard.getChoice(i),
+                                   i);
     }
 
     @Override
@@ -71,11 +71,11 @@ public class CardDAO extends DAO implements CardVisitor {
                 """;
 
         database.executeUpdate(upsertInputCard,
-                inputCard.getId().toString(),
-                inputCard.getAnswer(),
-                inputCard.getCountdownTime(),
-                inputCard.getAnswer(),
-                inputCard.getCountdownTime()
+                               inputCard.getId().toString(),
+                               inputCard.getAnswer(),
+                               inputCard.getCountdownTime(),
+                               inputCard.getAnswer(),
+                               inputCard.getCountdownTime()
         );
     }
 }

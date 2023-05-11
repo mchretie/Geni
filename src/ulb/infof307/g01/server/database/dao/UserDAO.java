@@ -1,7 +1,7 @@
 package ulb.infof307.g01.server.database.dao;
 
-import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.model.User;
+import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.sql.ResultSet;
@@ -46,7 +46,7 @@ public class UserDAO extends DAO {
         if (!usernameExists(username))
             return false;
 
-        User user = new User(UUID.fromString(getUserId(username)) , username, password, getUserSaltKey(username));
+        User user = new User(UUID.fromString(getUserId(username)), username, password, getUserSaltKey(username));
 
         String sql = """
                 SELECT *

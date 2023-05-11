@@ -1,5 +1,6 @@
 package ulb.infof307.g01.gui.view.deckmenu;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -13,7 +14,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.beans.value.ChangeListener;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.util.GridPosIterator;
 import ulb.infof307.g01.gui.util.Pos2D;
@@ -124,11 +124,11 @@ public class DeckMenuViewController {
     public void setListener(Listener listener) {
         this.listener = listener;
     }
-    
+
     /* ====================================================================== */
     /*                                Getters                                 */
     /* ====================================================================== */
-    
+
     public SearchType getSearchType() {
         SearchType searchType = null;
         String searchTypeText = comboBox.getValue();
@@ -136,7 +136,7 @@ public class DeckMenuViewController {
         if (searchTypeText.equals("Nom")) {
             searchType = SearchType.NAME;
         } else if (searchTypeText.equals("Tag")) {
-            searchType =  SearchType.TAG;
+            searchType = SearchType.TAG;
         }
 
         return searchType;
@@ -241,7 +241,7 @@ public class DeckMenuViewController {
     /**
      * Redistribute the grid’s children in the grid
      * <p>
-     *     From top left through bottom right.
+     * From top left through bottom right.
      * </p>
      */
     private void arrange() {
@@ -304,7 +304,9 @@ public class DeckMenuViewController {
     /* ====================================================================== */
 
     @FXML
-    private void handleSearchHover() { searchIcon.setIconColor(Color.web("#FFFFFF")); }
+    private void handleSearchHover() {
+        searchIcon.setIconColor(Color.web("#FFFFFF"));
+    }
 
     @FXML
     private void handleSearchExit() {

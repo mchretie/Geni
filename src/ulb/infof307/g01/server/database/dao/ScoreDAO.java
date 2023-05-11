@@ -32,10 +32,10 @@ public class ScoreDAO extends DAO {
 
         String userId = userDAO.getUserId(score.getUsername());
         database.executeUpdate(sql,
-                userId,
-                score.getTimestamp(),
-                score.getDeckId().toString(),
-                score.getScoreValue());
+                               userId,
+                               score.getTimestamp(),
+                               score.getDeckId().toString(),
+                               score.getScoreValue());
     }
 
     public void deleteScoresForDeck(UUID deckId) throws DatabaseException {
@@ -45,7 +45,7 @@ public class ScoreDAO extends DAO {
                 """;
 
         database.executeUpdate(sql,
-                deckId.toString());
+                               deckId.toString());
     }
 
     private Score extractScore(ResultSet res) throws DatabaseException {
@@ -102,7 +102,7 @@ public class ScoreDAO extends DAO {
         }
     }
 
-    public List<GlobalLeaderboardEntry> getAllUserDeckScore() throws DatabaseException{
+    public List<GlobalLeaderboardEntry> getAllUserDeckScore() throws DatabaseException {
         String sql = """
                 SELECT U.username, sum(score) as total_score
                 FROM user_deck_score S, user U
@@ -111,7 +111,7 @@ public class ScoreDAO extends DAO {
                 GROUP BY U.username;
                 """;
 
-        try(ResultSet res = database.executeQuery(sql)) {
+        try (ResultSet res = database.executeQuery(sql)) {
             List<GlobalLeaderboardEntry> leaderboard = new ArrayList<>();
             while (res.next()) {
                 leaderboard.add(

@@ -16,7 +16,7 @@ import ulb.infof307.g01.model.deck.Score;
 import java.util.Arrays;
 
 public class PlayDeckController implements PlayDeckViewController.Listener,
-                                            CardVisitor {
+        CardVisitor {
 
     private final Stage stage;
     private final MainWindowViewController mainWindowViewController;
@@ -116,14 +116,10 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
         if (progressbarTimedOut) {
             playDeckViewController.startProgressBar();
             progressbarTimedOut = false;
-        }
-
-        else if (playDeckViewController.timerHasRunOut()) {
+        } else if (playDeckViewController.timerHasRunOut()) {
             playDeckViewController.showMCQAnswer();
             progressbarTimedOut = true;
-        }
-
-        else playDeckViewController.startProgressBar();
+        } else playDeckViewController.startProgressBar();
     }
 
     @Override
@@ -134,14 +130,10 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
         if (progressbarTimedOut) {
             playDeckViewController.startProgressBar();
             progressbarTimedOut = false;
-        }
-
-        else if (playDeckViewController.timerHasRunOut()) {
+        } else if (playDeckViewController.timerHasRunOut()) {
             playDeckViewController.showInputAnswer();
             progressbarTimedOut = true;
-        }
-
-        else playDeckViewController.startProgressBar();
+        } else playDeckViewController.startProgressBar();
     }
 
     /* ====================================================================== */
@@ -214,7 +206,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
             score.increment(scoreToAdd);
         }
 
-        score.addTime(((TimedCard) currentCard).getCountdownTime()-timeLeft*10);
+        score.addTime(((TimedCard) currentCard).getCountdownTime() - timeLeft * 10);
     }
 
     @Override

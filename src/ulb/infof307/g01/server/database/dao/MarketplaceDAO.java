@@ -129,8 +129,8 @@ public class MarketplaceDAO extends DAO {
                 """;
 
         database.executeUpdate(sql,
-                userId.toString(),
-                deckId.toString());
+                               userId.toString(),
+                               deckId.toString());
     }
 
     public List<MarketplaceDeckMetadata> getSavedDecks(UUID userId) throws DatabaseException {

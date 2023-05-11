@@ -1,10 +1,10 @@
 package ulb.infof307.g01.server.database;
 
-import ulb.infof307.g01.model.gamehistory.GameHistory;
 import ulb.infof307.g01.model.deck.Deck;
-import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.DeckMetadata;
+import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.model.gamehistory.GameHistory;
 import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.server.database.dao.*;
@@ -77,6 +77,7 @@ public class Database {
     public void deleteDeck(UUID deckId, UUID userId) throws DatabaseException {
         deckDao.deleteDeck(deckId, userId);
     }
+
     public List<DeckMetadata> searchDecksMetadata(String userSearch, UUID userId) throws DatabaseException {
         return deckDao.searchDecksMetadata(userSearch, userId);
     }

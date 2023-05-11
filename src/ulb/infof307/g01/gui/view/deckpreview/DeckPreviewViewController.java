@@ -27,7 +27,7 @@ public class DeckPreviewViewController {
 
     @FXML
     private ListView<Node> gameHistoryContainer;
-    
+
     @FXML
     private FontIcon playDeckIcon;
 
@@ -148,6 +148,7 @@ public class DeckPreviewViewController {
 
     public interface Listener {
         void playDeckClicked();
+
         void deckShared();
     }
 }

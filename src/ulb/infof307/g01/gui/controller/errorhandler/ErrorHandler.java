@@ -18,7 +18,7 @@ public class ErrorHandler {
 
     /**
      * Used to communicate errors that raised exceptions and require the user
-     *  to restart the application.
+     * to restart the application.
      */
     private void communicateError(Exception e, String messageToUser) {
         mainWindowViewController.alertError(e.toString(), messageToUser);
@@ -26,9 +26,9 @@ public class ErrorHandler {
 
     /**
      * Used to communicate user errors that do not require the application to
-     *  be restarted.
+     * be restarted.
      *
-     * @param title Title of the error
+     * @param title         Title of the error
      * @param messageToUser Message to display to the user
      */
     private void communicateError(String title, String messageToUser) {
@@ -52,7 +52,7 @@ public class ErrorHandler {
         Platform.exit();
     }
 
-    public void restartApplicationError(Exception e, String message){
+    public void restartApplicationError(Exception e, String message) {
         communicateError(e, message);
         Platform.exit();
     }
@@ -111,6 +111,7 @@ public class ErrorHandler {
 
         communicateError(e, message);
     }
+
     public void failedLogin(Exception e) {
         String message = "L'authentification a échoué, veuillez réessayer";
 

@@ -132,14 +132,14 @@ public class DeckRequestHandler extends Handler {
 
     private DeckMetadata setupImagePath(DeckMetadata deckMetadata) {
         return new DeckMetadata(deckMetadata.id(),
-                deckMetadata.name(),
-                deckMetadata.isPublic(),
-                deckMetadata.color(),
-                BASE_URL + deckMetadata.image(),
-                deckMetadata.colorName(),
-                deckMetadata.cardCount(),
-                deckMetadata.tags(),
-                deckMetadata.deckHashCode());
+                                deckMetadata.name(),
+                                deckMetadata.isPublic(),
+                                deckMetadata.color(),
+                                BASE_URL + deckMetadata.image(),
+                                deckMetadata.colorName(),
+                                deckMetadata.cardCount(),
+                                deckMetadata.tags(),
+                                deckMetadata.deckHashCode());
     }
 
     private List<DeckMetadata> setupImagePath(List<DeckMetadata> decksMetadata) {

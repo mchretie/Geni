@@ -5,7 +5,8 @@ package ulb.infof307.g01.shared.constants;
  */
 public final class ServerPaths {
 
-    private ServerPaths() {}
+    private ServerPaths() {
+    }
 
     public static final String BASE_URL = "http://localhost:8080";
 

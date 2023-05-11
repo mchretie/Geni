@@ -10,14 +10,13 @@ import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.http.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
-import ulb.infof307.g01.model.card.Card;
-import ulb.infof307.g01.model.deck.Deck;
-import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
-import ulb.infof307.g01.model.deck.DeckMetadata;
-import ulb.infof307.g01.model.card.FlashCard;
-import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.gui.util.ImageLoader;
-
+import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.model.card.Card;
+import ulb.infof307.g01.model.card.FlashCard;
+import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.DeckMetadata;
+import ulb.infof307.g01.model.deck.Score;
 
 import java.io.IOException;
 import java.net.URL;
@@ -174,16 +173,16 @@ public class MainFxController extends Application implements
 
         this.userAuthController
                 = new UserAuthController(stage,
-                errorHandler,
-                mainWindowViewController,
-                this,
-                serverCommunicator);
+                                         errorHandler,
+                                         mainWindowViewController,
+                                         this,
+                                         serverCommunicator);
 
         this.profileController
                 = new ProfileController(stage,
-                mainWindowViewController,
-                this,
-                serverCommunicator);
+                                        mainWindowViewController,
+                                        this,
+                                        serverCommunicator);
 
         this.deckMenuController
                 = new DeckMenuController(
@@ -259,11 +258,11 @@ public class MainFxController extends Application implements
         try {
             editDeckController
                     = new EditDeckController(stage,
-                    serverCommunicator.getDeck(deckMetadata).orElse(null),
-                    errorHandler,
-                    mainWindowViewController,
-                    this,
-                    serverCommunicator);
+                                             serverCommunicator.getDeck(deckMetadata).orElse(null),
+                                             errorHandler,
+                                             mainWindowViewController,
+                                             this,
+                                             serverCommunicator);
 
             editDeckController.show();
             viewStack.add(View.EDIT_DECK);
@@ -297,13 +296,13 @@ public class MainFxController extends Application implements
     public void editFrontOfCardClicked(Deck deck, Card selectedCard) {
         editCardController
                 = new EditCardController(stage,
-                deck,
-                selectedCard,
-                true,
-                serverCommunicator,
-                errorHandler,
-                mainWindowViewController,
-                this);
+                                         deck,
+                                         selectedCard,
+                                         true,
+                                         serverCommunicator,
+                                         errorHandler,
+                                         mainWindowViewController,
+                                         this);
 
         viewStack.add(View.HTML_EDITOR);
         editCardController.show();
@@ -313,13 +312,13 @@ public class MainFxController extends Application implements
     public void editBackOfCardClicked(Deck deck, FlashCard selectedCard) {
         editCardController
                 = new EditCardController(stage,
-                deck,
-                selectedCard,
-                false,
-                serverCommunicator,
-                errorHandler,
-                mainWindowViewController,
-                this);
+                                         deck,
+                                         selectedCard,
+                                         false,
+                                         serverCommunicator,
+                                         errorHandler,
+                                         mainWindowViewController,
+                                         this);
 
         viewStack.add(View.HTML_EDITOR);
         editCardController.show();
@@ -340,9 +339,7 @@ public class MainFxController extends Application implements
 
         } catch (IOException | InterruptedException e) {
             errorHandler.failedLoading(e);
-        }
-
-        catch (ServerCommunicationFailedException e) {
+        } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
         }
     }
@@ -375,24 +372,22 @@ public class MainFxController extends Application implements
 
         } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
-        }
-
-        catch (ServerCommunicationFailedException e) {
+        } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
         }
     }
 
     @Override
     public void statisticsClicked() {
-            statisticsController = new StatisticsController(
-                    stage,
-                    errorHandler,
-                    mainWindowViewController,
-                    serverCommunicator
-            );
+        statisticsController = new StatisticsController(
+                stage,
+                errorHandler,
+                mainWindowViewController,
+                serverCommunicator
+        );
 
-            viewStack.add(View.STATISTICS);
-            statisticsController.show();
+        viewStack.add(View.STATISTICS);
+        statisticsController.show();
     }
 
     @Override
@@ -424,9 +419,7 @@ public class MainFxController extends Application implements
 
         } catch (IOException | InterruptedException e) {
             errorHandler.restartApplicationError(e);
-        }
-
-        catch (ServerCommunicationFailedException e) {
+        } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
         }
     }
@@ -447,25 +440,23 @@ public class MainFxController extends Application implements
 
         } catch (IOException e) {
             errorHandler.failedLoading(e);
-        }
-
-        catch (ServerCommunicationFailedException e) {
+        } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
         }
     }
 
     @Override
     public void goToLeaderboardClicked() {
-            if (leaderboardController == null) {
-                leaderboardController = new GlobalLeaderboardController(
-                        stage,
-                        mainWindowViewController,
-                        errorHandler,
-                        serverCommunicator);
-            }
+        if (leaderboardController == null) {
+            leaderboardController = new GlobalLeaderboardController(
+                    stage,
+                    mainWindowViewController,
+                    errorHandler,
+                    serverCommunicator);
+        }
 
-            resetViewStack(View.LEADERBOARD);
-            leaderboardController.show();
+        resetViewStack(View.LEADERBOARD);
+        leaderboardController.show();
     }
 
     private void resetViewStack(View prevView) {
@@ -491,9 +482,7 @@ public class MainFxController extends Application implements
 
         } catch (IOException | InterruptedException e) {
             errorHandler.failedLoading(e);
-        }
-
-        catch (ServerCommunicationFailedException e) {
+        } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
         }
     }

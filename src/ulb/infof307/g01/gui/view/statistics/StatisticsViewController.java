@@ -1,10 +1,10 @@
 package ulb.infof307.g01.gui.view.statistics;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 

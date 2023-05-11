@@ -26,7 +26,8 @@ public class MarketplaceDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {};
+        TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {
+        };
         return new Gson().fromJson(response.body(), typeToken);
     }
 
@@ -52,7 +53,8 @@ public class MarketplaceDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {};
+        TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {
+        };
         return new Gson().fromJson(response.body(), typeToken);
     }
 

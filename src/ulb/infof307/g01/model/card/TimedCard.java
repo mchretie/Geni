@@ -15,7 +15,7 @@ public abstract class TimedCard extends Card {
     }
 
     protected TimedCard(UUID uuid, UUID deckId, String front,
-                            Integer countdownTime) {
+                        Integer countdownTime) {
         super(uuid, deckId, front);
         this.countdownTime = countdownTime;
     }

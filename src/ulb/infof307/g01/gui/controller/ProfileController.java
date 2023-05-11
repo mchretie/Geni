@@ -1,11 +1,11 @@
 package ulb.infof307.g01.gui.controller;
 
-import java.io.IOException;
-
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.profile.ProfileViewController;
+
+import java.io.IOException;
 
 public class ProfileController implements ProfileViewController.Listener {
 
@@ -73,10 +73,13 @@ public class ProfileController implements ProfileViewController.Listener {
     }
 
     @Override
-    public void statisticsClicked() { controllerListener.statisticsClicked();}
+    public void statisticsClicked() {
+        controllerListener.statisticsClicked();
+    }
 
     public interface ControllerListener {
         void userLoggedOut();
+
         void statisticsClicked();
     }
 }

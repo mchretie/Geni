@@ -156,7 +156,7 @@ public class DeckMarketplaceViewController {
         creatorLabel.setText(deck.owner());
     }
 
-    private void changeDeckAvailabilityIcon(){
+    private void changeDeckAvailabilityIcon() {
         if (this.deckAvailability == DeckAvailability.OWNED) {
             addRemoveDeckIcon.setIconLiteral("mdi2b-bookmark-check");
         } else

@@ -1,6 +1,6 @@
 package ulb.infof307.g01.gui.controller;
 
-import com.google.gson.*;
+import com.google.gson.JsonSyntaxException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.stage.Stage;
@@ -9,15 +9,15 @@ import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.util.DeckIO;
 import ulb.infof307.g01.gui.util.ImageLoader;
-import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController;
 import ulb.infof307.g01.gui.view.deckmenu.DeckMenuViewController.SearchType;
 import ulb.infof307.g01.gui.view.deckmenu.DeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -84,8 +84,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws ServerCommunicationFailedException,
-                                IOException,
-                                InterruptedException {
+            IOException,
+            InterruptedException {
 
         showDecks();
         mainWindowViewController.setDeckMenuViewVisible();
@@ -283,6 +283,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     public interface ControllerListener {
         void editDeckClicked(DeckMetadata deck);
+
         void deckClicked(DeckMetadata deck);
     }
 }

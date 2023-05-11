@@ -3,7 +3,7 @@ package ulb.infof307.g01.model.leaderboard;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class GlobalLeaderboard implements Iterable< GlobalLeaderboardEntry >  {
+public class GlobalLeaderboard implements Iterable<GlobalLeaderboardEntry> {
 
     private final Map<String, GlobalLeaderboardEntry> leaderboard;
     private final List<GlobalLeaderboardEntry> leaderboardEntries;
@@ -34,7 +34,7 @@ public class GlobalLeaderboard implements Iterable< GlobalLeaderboardEntry >  {
     }
 
     @Override
-    public Iterator< GlobalLeaderboardEntry > iterator() {
+    public Iterator<GlobalLeaderboardEntry> iterator() {
         return leaderboardEntries.iterator();
     }
 

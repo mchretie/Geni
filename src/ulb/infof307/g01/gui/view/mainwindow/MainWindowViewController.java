@@ -239,7 +239,10 @@ public class MainWindowViewController implements Initializable {
         return leaderboardViewController;
     }
 
-    public ProfileViewController getProfileViewController() { return profileViewController; }
+    public ProfileViewController getProfileViewController() {
+        return profileViewController;
+    }
+
     public UserAuthViewController getUserAuthViewController() {
         return userAuthViewController;
     }
@@ -255,7 +258,10 @@ public class MainWindowViewController implements Initializable {
     public DeckPreviewViewController getDeckPreviewViewController() {
         return deckPreviewViewController;
     }
-    public MarketplaceViewController getMarketplaceViewController() { return marketplaceViewController; }
+
+    public MarketplaceViewController getMarketplaceViewController() {
+        return marketplaceViewController;
+    }
 
 
     /* ====================================================================== */
@@ -268,7 +274,7 @@ public class MainWindowViewController implements Initializable {
         alert.initStyle(StageStyle.UNDECORATED);
         alert.setHeaderText(title);
         alert.setContentText(description);
-        centerStackPane.setEffect(new BoxBlur(20,20,3));
+        centerStackPane.setEffect(new BoxBlur(20, 20, 3));
         alert.showAndWait();
         centerStackPane.setEffect(null);
     }
@@ -289,12 +295,12 @@ public class MainWindowViewController implements Initializable {
     private void setAllInvisibleExcept(Pane pane) {
         popup.hide();
         centerStackPane.getChildren()
-                        .forEach(child -> child.setVisible(child == pane));
+                .forEach(child -> child.setVisible(child == pane));
     }
 
     public void setAllInvisible() {
         centerStackPane.getChildren()
-                        .forEach(child -> child.setVisible(false));
+                .forEach(child -> child.setVisible(false));
     }
 
     public void setDeckMenuViewVisible() {
@@ -306,7 +312,9 @@ public class MainWindowViewController implements Initializable {
         setAllInvisibleExcept(editDeckView);
     }
 
-    public void setPlayDeckViewVisible() { setAllInvisibleExcept(playDeckView); }
+    public void setPlayDeckViewVisible() {
+        setAllInvisibleExcept(playDeckView);
+    }
 
     public void setEditCardViewVisible() {
         setAllInvisibleExcept(editCardView);
@@ -417,7 +425,9 @@ public class MainWindowViewController implements Initializable {
     }
 
     @FXML
-    private void goToMarketplaceClicked() { listener.goToMarketplaceClicked(); }
+    private void goToMarketplaceClicked() {
+        listener.goToMarketplaceClicked();
+    }
 
     @FXML
     private void goToLeaderboardClicked() {
@@ -434,7 +444,9 @@ public class MainWindowViewController implements Initializable {
     /* ====================================================================== */
 
     @FXML
-    private void handleHomeHover() { homeIcon.setIconColor(Color.web("#FFFFFF")); }
+    private void handleHomeHover() {
+        homeIcon.setIconColor(Color.web("#FFFFFF"));
+    }
 
     @FXML
     private void handleHomeExitHover() {
@@ -442,7 +454,9 @@ public class MainWindowViewController implements Initializable {
     }
 
     @FXML
-    private void handleMarketplaceHover() {marketplaceIcon.setIconColor(Color.web("#FFFFFF")); }
+    private void handleMarketplaceHover() {
+        marketplaceIcon.setIconColor(Color.web("#FFFFFF"));
+    }
 
     @FXML
     private void handleMarketplaceExitHover() {
@@ -450,7 +464,9 @@ public class MainWindowViewController implements Initializable {
     }
 
     @FXML
-    private void handleLeaderboardHover() { leaderboardIcon.setIconColor(Color.web("#FFFFFF")); }
+    private void handleLeaderboardHover() {
+        leaderboardIcon.setIconColor(Color.web("#FFFFFF"));
+    }
 
     @FXML
     private void handleLeaderboardExitHover() {
@@ -485,10 +501,15 @@ public class MainWindowViewController implements Initializable {
 
     public interface NavigationListener {
         void goBackClicked();
+
         void goToHomeClicked();
+
         void goToMarketplaceClicked();
+
         void goToLeaderboardClicked();
+
         void goToProfileClicked();
+
         void deckPreviewClosed();
     }
 }

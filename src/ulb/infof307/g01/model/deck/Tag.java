@@ -2,8 +2,8 @@ package ulb.infof307.g01.model.deck;
 
 import com.google.gson.annotations.Expose;
 
-import java.util.UUID;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Tag {
     @Expose

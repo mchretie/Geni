@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Save and retrieve tags from long-term memory
@@ -22,6 +22,7 @@ import static java.util.stream.Collectors.*;
  * To add tags to decks, see DeckManager.
  * <p>
  * Do not use directly, use the Database facade instead.
+ *
  * @see ulb.infof307.g01.server.database.Database
  */
 public class TagDAO extends DAO {

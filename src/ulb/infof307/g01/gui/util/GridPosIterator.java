@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class GridPosIterator implements Iterator<Pos2D> {
-    
+
     Pos2D currentPosition;
 
     final int colCount;
@@ -12,7 +12,7 @@ public class GridPosIterator implements Iterator<Pos2D> {
 
     int index;
     final int maxIndex;
-    
+
     public GridPosIterator(int colCount, int rowCount) {
         if (colCount <= 0 || rowCount <= 0)
             throw new IllegalArgumentException("Counts must be positive");
@@ -23,10 +23,10 @@ public class GridPosIterator implements Iterator<Pos2D> {
         this.index = -1;  // to have (0, 0) as first element
         this.maxIndex = colCount * rowCount;
     }
-    
+
     @Override
     public boolean hasNext() {
-        return index < maxIndex-1;
+        return index < maxIndex - 1;
     }
 
     @Override

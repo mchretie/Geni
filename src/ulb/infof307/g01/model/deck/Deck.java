@@ -37,25 +37,25 @@ public class Deck implements Iterable<Card> {
 
     public Deck(String name) {
         this(name,
-                UUID.randomUUID());
+             UUID.randomUUID());
     }
 
     public Deck(String name, UUID id) {
         this(name,
-                id,
-                new ArrayList<>(),
-                new ArrayList<>());
+             id,
+             new ArrayList<>(),
+             new ArrayList<>());
     }
 
     public Deck(String name, UUID id, List<Card> cards, List<Tag> tags) {
         this(name,
-                id,
-                cards,
-                tags,
-                "#00000000",
-                "/backgrounds/default_background.jpg",
-                "#000000",
-                false);
+             id,
+             cards,
+             tags,
+             "#00000000",
+             "/backgrounds/default_background.jpg",
+             "#000000",
+             false);
     }
 
     public Deck(String name, UUID id, List<Card> cards, List<Tag> tags, String color, String image, String colorName, boolean isPublic) {
@@ -90,7 +90,8 @@ public class Deck implements Iterable<Card> {
             JsonArray cardsJson = jsonObject.getAsJsonArray("cards");
             List<Card> cards = cardsFromJson(cardsJson);
 
-            Type tagListType = new TypeToken<List<Tag>>(){}.getType();
+            Type tagListType = new TypeToken<List<Tag>>() {
+            }.getType();
             List<Tag> tags = new Gson().fromJson(jsonObject.get("tags"), tagListType);
 
             return new Deck(
@@ -229,14 +230,14 @@ public class Deck implements Iterable<Card> {
 
     public DeckMetadata getMetadata() {
         return new DeckMetadata(id,
-                name,
-                isPublic,
-                color,
-                image,
-                colorName,
-                cards.size(),
-                tags,
-                hashCode());
+                                name,
+                                isPublic,
+                                color,
+                                image,
+                                colorName,
+                                cards.size(),
+                                tags,
+                                hashCode());
     }
 
     @Override
@@ -271,10 +272,14 @@ public class Deck implements Iterable<Card> {
             JsonObject cardObject = card.getAsJsonObject();
             String cardType = cardObject.get("cardType").getAsString();
             switch (cardType) {
-                case "FlashCard" -> cardsList.add(new Gson().fromJson(card, FlashCard.class));
-                case "MCQCard" -> cardsList.add(new Gson().fromJson(card, MCQCard.class));
-                case "InputCard" -> cardsList.add(new Gson().fromJson(card, InputCard.class));
-                default -> throw new IllegalStateException("Unexpected value: " + cardType);
+                case "FlashCard" ->
+                        cardsList.add(new Gson().fromJson(card, FlashCard.class));
+                case "MCQCard" ->
+                        cardsList.add(new Gson().fromJson(card, MCQCard.class));
+                case "InputCard" ->
+                        cardsList.add(new Gson().fromJson(card, InputCard.class));
+                default ->
+                        throw new IllegalStateException("Unexpected value: " + cardType);
             }
         }
         return cardsList;

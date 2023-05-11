@@ -1,12 +1,15 @@
 package ulb.infof307.g01.gui.view.playdeck;
 
-import javafx.animation.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -110,17 +113,17 @@ public class PlayDeckViewController {
 
         KeyFrame firstThird
                 = new KeyFrame(
-                        Duration.seconds((double) seconds / 3),
-                        e -> progressBar.setStyle("-fx-accent: ORANGE"),
-                        new KeyValue(progressBar.progressProperty(), 0.66)
-                );
+                Duration.seconds((double) seconds / 3),
+                e -> progressBar.setStyle("-fx-accent: ORANGE"),
+                new KeyValue(progressBar.progressProperty(), 0.66)
+        );
 
         KeyFrame secondThird
                 = new KeyFrame(
-                        Duration.seconds((double) 2 * seconds / 3),
-                        e -> progressBar.setStyle("-fx-accent: RED"),
-                        new KeyValue(progressBar.progressProperty(), 0.33)
-                );
+                Duration.seconds((double) 2 * seconds / 3),
+                e -> progressBar.setStyle("-fx-accent: RED"),
+                new KeyValue(progressBar.progressProperty(), 0.33)
+        );
 
         KeyFrame lastThird = new KeyFrame(Duration.seconds(seconds), e -> {
             if (!hasAnswered)

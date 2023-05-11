@@ -1,42 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.*?>
-<?import org.kordamp.ikonli.javafx.*?>
-
-<BorderPane fx:id="tagPane" style="-fx-border-color: #000000; -fx-border-insets: 3px 5px; -fx-border-radius: 15px; -fx-background-radius: 15px; -fx-background-insets: 3px 5px;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.editdeck.TagViewController">
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<BorderPane fx:id="tagPane"
+            style="-fx-border-color: #000000; -fx-border-insets: 3px 5px; -fx-border-radius: 15px; -fx-background-radius: 15px; -fx-background-insets: 3px 5px;"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ulb.infof307.g01.gui.view.editdeck.TagViewController">
 
     <center>
-        <Label fx:id="tagNameLabel" alignment="CENTER" onKeyPressed="#handleKeyPressedOnTextField" style="-fx-background-color: transparent;" text="Name" BorderPane.alignment="CENTER">
+        <Label fx:id="tagNameLabel" alignment="CENTER" onKeyPressed="#handleKeyPressedOnTextField"
+               style="-fx-background-color: transparent;" text="Name" BorderPane.alignment="CENTER">
 
             <cursor>
-                <Cursor fx:constant="DEFAULT" />
+                <Cursor fx:constant="DEFAULT"/>
             </cursor>
             <effect>
-                <Blend />
+                <Blend/>
             </effect>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
+            <BorderPane.margin>
+                <Insets/>
+            </BorderPane.margin>
 
         </Label>
     </center>
 
     <right>
-        <Button onAction="#handleDeleteTagButton" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER_RIGHT">
+        <Button onAction="#handleDeleteTagButton" style="-fx-background-color: transparent;"
+                BorderPane.alignment="CENTER_RIGHT">
             <graphic>
-                <FontIcon fx:id="trashIcon" iconLiteral="mdi2t-trash-can-outline" />
+                <FontIcon fx:id="trashIcon" iconLiteral="mdi2t-trash-can-outline"/>
             </graphic>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
+            <BorderPane.margin>
+                <Insets/>
+            </BorderPane.margin>
 
         </Button>
     </right>
-   <padding>
-      <Insets left="10.0" />
-   </padding>
+    <padding>
+        <Insets left="10.0"/>
+    </padding>
 </BorderPane>

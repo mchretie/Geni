@@ -99,10 +99,10 @@ public class MCQCard extends TimedCard {
     @Override
     public int hashCode() {
         return Objects.hash(this.getId(),
-                this.getDeckId(),
-                this.getFront(),
-                choices,
-                correctChoice);
+                            this.getDeckId(),
+                            this.getFront(),
+                            choices,
+                            correctChoice);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class MCQCard extends TimedCard {
         if (o == null || o.getClass() != this.getClass())
             return false;
 
-        if( !super.equals(o) ) return false;
+        if (!super.equals(o)) return false;
 
         MCQCard other = (MCQCard) o;
         return id.equals(other.getId())

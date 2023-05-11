@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
-<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.statistics.GameHistoryItemViewController">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ulb.infof307.g01.gui.view.statistics.GameHistoryItemViewController">
     <right>
         <HBox alignment="CENTER_RIGHT" spacing="5.0" BorderPane.alignment="CENTER">
             <BorderPane.margin>
-                <Insets bottom="15.0" left="50.0" right="50.0" top="15.0" />
+                <Insets bottom="15.0" left="50.0" right="50.0" top="15.0"/>
             </BorderPane.margin>
             <Label fx:id="scoreLabel" text="421" textFill="#449b6c" HBox.hgrow="ALWAYS">
                 <font>
-                    <Font size="18.0" />
+                    <Font size="18.0"/>
                 </font>
             </Label>
-            <Text fill="#449b6c" strokeType="OUTSIDE" strokeWidth="0.0" text="Pts" HBox.hgrow="ALWAYS">
+            <Text fill="#449b6c" strokeType="OUTSIDE" strokeWidth="0.0" text="Pts"
+                  HBox.hgrow="ALWAYS">
                 <font>
-                    <Font size="18.0" />
+                    <Font size="18.0"/>
                 </font>
             </Text>
         </HBox>
@@ -26,30 +27,31 @@
     <left>
         <HBox alignment="CENTER_LEFT" spacing="50.0" BorderPane.alignment="CENTER">
             <opaqueInsets>
-                <Insets />
+                <Insets/>
             </opaqueInsets>
             <padding>
-                <Insets left="50.0" />
+                <Insets left="50.0"/>
             </padding>
             <Label fx:id="dateLabel" text="11/09/2001" HBox.hgrow="ALWAYS">
                 <font>
-                    <Font name="System Bold" size="18.0" />
+                    <Font name="System Bold" size="18.0"/>
                 </font>
             </Label>
         </HBox>
     </left>
-   <center>
-      <HBox alignment="CENTER" BorderPane.alignment="CENTER">
-         <children>
-               <Label fx:id="deckNameLabel" alignment="CENTER" text="Sciences" textAlignment="CENTER" textFill="#d0a2ec" HBox.hgrow="ALWAYS">
-                   <font>
-                       <Font size="18.0" />
-                   </font>
-               </Label>
-         </children>
-         <padding>
-            <Insets left="50.0" />
-         </padding>
-      </HBox>
-   </center>
+    <center>
+        <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="deckNameLabel" alignment="CENTER" text="Sciences"
+                       textAlignment="CENTER" textFill="#d0a2ec" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+            </children>
+            <padding>
+                <Insets left="50.0"/>
+            </padding>
+        </HBox>
+    </center>
 </BorderPane>

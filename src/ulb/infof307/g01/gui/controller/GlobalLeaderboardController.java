@@ -6,9 +6,9 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
+import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardEntryViewController;
 import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
-import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardEntryViewController;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboardEntry;
 
@@ -53,9 +53,7 @@ public class GlobalLeaderboardController {
             mainWindowViewController.makeGoBackIconInvisible();
 
             leaderboardViewController.setBoard(loadBoard());
-        }
-
-        else {
+        } else {
             mainWindowViewController.setGuestModeLeaderboardViewVisible();
         }
 
@@ -96,7 +94,7 @@ public class GlobalLeaderboardController {
 
     private Node loadEntry(GlobalLeaderboardEntry leaderboardEntry) throws IOException {
         URL url = GlobalLeaderboardEntryViewController
-                        .class.getResource("GlobalLeaderboardEntryView.fxml");
+                .class.getResource("GlobalLeaderboardEntryView.fxml");
 
         FXMLLoader loader = new FXMLLoader(url);
         Node node = loader.load();

@@ -1,22 +1,17 @@
 package ulb.infof307.g01.server.handler;
 
-import static spark.Spark.*;
-import static ulb.infof307.g01.shared.constants.ServerPaths.*;
-
-import java.util.Map;
-
 import com.google.gson.Gson;
-import java.util.Collections;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.UserAuth;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static ulb.infof307.g01.shared.constants.ServerPaths.LOGIN_PATH;
-import static ulb.infof307.g01.shared.constants.ServerPaths.REGISTER_PATH;
+import java.util.Collections;
+import java.util.Map;
+
+import static spark.Spark.*;
+import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class UserAccountHandler extends Handler {

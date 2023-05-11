@@ -1,109 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
-<StackPane fx:id="root" style="-fx-background-color: #C3B1E1;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.userauth.UserAuthViewController">
+<StackPane fx:id="root" style="-fx-background-color: #C3B1E1;"
+           xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="ulb.infof307.g01.gui.view.userauth.UserAuthViewController">
     <VBox fx:id="registerVBOX" alignment="CENTER" fillWidth="false" spacing="10.0">
         <Label alignment="CENTER" text="Créez un compte" textAlignment="CENTER">
             <font>
-                <Font name="Arial Black" size="20.0" />
+                <Font name="Arial Black" size="20.0"/>
             </font>
             <VBox.margin>
-                <Insets bottom="20.0" />
+                <Insets bottom="20.0"/>
             </VBox.margin>
         </Label>
 
-              <TextField fx:id="registerUsernameField" onKeyPressed="#handleRegisterUsernameKeyPressed" promptText="Identifiant" style="-fx-background-radius: 5;">
+        <TextField fx:id="registerUsernameField" onKeyPressed="#handleRegisterUsernameKeyPressed"
+                   promptText="Identifiant" style="-fx-background-radius: 5;">
             <VBox.margin>
-                <Insets />
+                <Insets/>
             </VBox.margin>
             <prefWidth>300.0</prefWidth>
             <prefHeight>40.0</prefHeight>
         </TextField>
 
-              <PasswordField fx:id="registerPasswordField" onKeyPressed="#handleRegisterPasswordKeyPressed" promptText="Mot de passe" style="-fx-background-radius: 5;">
+        <PasswordField fx:id="registerPasswordField"
+                       onKeyPressed="#handleRegisterPasswordKeyPressed" promptText="Mot de passe"
+                       style="-fx-background-radius: 5;">
             <VBox.margin>
-                <Insets />
+                <Insets/>
             </VBox.margin>
             <prefWidth>300.0</prefWidth>
             <prefHeight>40.0</prefHeight>
         </PasswordField>
 
-              <PasswordField fx:id="confirmPasswordField" onKeyPressed="#handleRegisterConfPasswordKeyPressed" onKeyTyped="#handleRegisterConfPasswordKeyTyped" promptText="Confirmez le mot de passe" style="-fx-background-radius: 5;">
+        <PasswordField fx:id="confirmPasswordField"
+                       onKeyPressed="#handleRegisterConfPasswordKeyPressed"
+                       onKeyTyped="#handleRegisterConfPasswordKeyTyped"
+                       promptText="Confirmez le mot de passe" style="-fx-background-radius: 5;">
             <VBox.margin>
-                <Insets bottom="10.0" />
+                <Insets bottom="10.0"/>
             </VBox.margin>
             <prefWidth>300.0</prefWidth>
             <prefHeight>40.0</prefHeight>
         </PasswordField>
 
-              <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegisterButtonClicked" prefHeight="34.0" prefWidth="299.0" style="-fx-background-color: #CFE1B1; -fx-background-radius: 5;" text="S'inscrire">
+        <Button fx:id="registerButton" mnemonicParsing="false"
+                onAction="#handleRegisterButtonClicked" prefHeight="34.0" prefWidth="299.0"
+                style="-fx-background-color: #CFE1B1; -fx-background-radius: 5;" text="S'inscrire">
             <VBox.margin>
-                <Insets />
+                <Insets/>
             </VBox.margin>
-         <font>
-            <Font size="16.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
+            <font>
+                <Font size="16.0"/>
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
         </Button>
 
-              <Hyperlink onAction="#handleToLoginClicked" text="Déjà un compte ? Connectez-vous.">
+        <Hyperlink onAction="#handleToLoginClicked" text="Déjà un compte ? Connectez-vous.">
             <font>
-                <Font size="11.0" />
+                <Font size="11.0"/>
             </font>
         </Hyperlink>
 
-          </VBox>
+    </VBox>
 
-          <VBox fx:id="loginVBOX" alignment="CENTER" fillWidth="false" spacing="10.0" visible="false">
-        <Label alignment="BASELINE_CENTER" contentDisplay="TEXT_ONLY" layoutX="100.0" text="Entrez vos informations" textAlignment="CENTER">
+    <VBox fx:id="loginVBOX" alignment="CENTER" fillWidth="false" spacing="10.0" visible="false">
+        <Label alignment="BASELINE_CENTER" contentDisplay="TEXT_ONLY" layoutX="100.0"
+               text="Entrez vos informations" textAlignment="CENTER">
             <font>
-                <Font name="Arial Black" size="20.0" />
+                <Font name="Arial Black" size="20.0"/>
             </font>
             <VBox.margin>
-                <Insets bottom="20.0" />
+                <Insets bottom="20.0"/>
             </VBox.margin>
         </Label>
 
-              <TextField fx:id="loginUsernameField" onKeyPressed="#handleLoginUsernameKeyPressed" promptText="Identifiant" style="-fx-background-radius: 5;">
+        <TextField fx:id="loginUsernameField" onKeyPressed="#handleLoginUsernameKeyPressed"
+                   promptText="Identifiant" style="-fx-background-radius: 5;">
             <VBox.margin>
-                <Insets />
+                <Insets/>
             </VBox.margin>
             <prefWidth>300.0</prefWidth>
             <prefHeight>40.0</prefHeight>
         </TextField>
 
-              <PasswordField fx:id="loginPasswordField" onKeyPressed="#handleLoginPasswordKeyPressed" promptText="Mot de passe" style="-fx-background-radius: 5;">
+        <PasswordField fx:id="loginPasswordField" onKeyPressed="#handleLoginPasswordKeyPressed"
+                       promptText="Mot de passe" style="-fx-background-radius: 5;">
             <VBox.margin>
-                <Insets bottom="10.0" />
+                <Insets bottom="10.0"/>
             </VBox.margin>
             <prefWidth>300.0</prefWidth>
             <prefHeight>40.0</prefHeight>
         </PasswordField>
 
-              <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLoginButtonClicked" prefHeight="40.0" prefWidth="300.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: #CFE1B1;" text="Se connecter" textAlignment="CENTER">
+        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLoginButtonClicked"
+                prefHeight="40.0" prefWidth="300.0"
+                style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: #CFE1B1;"
+                text="Se connecter" textAlignment="CENTER">
 
             <VBox.margin>
-                <Insets />
+                <Insets/>
             </VBox.margin>
-         <font>
-            <Font name="System Font" size="16.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
+            <font>
+                <Font name="System Font" size="16.0"/>
+            </font>
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
         </Button>
 
-              <Hyperlink alignment="CENTER" onAction="#handleToRegisterClicked" text="Pas de compte ? Inscrivez-vous ici" textAlignment="CENTER">
+        <Hyperlink alignment="CENTER" onAction="#handleToRegisterClicked"
+                   text="Pas de compte ? Inscrivez-vous ici" textAlignment="CENTER">
 
             <font>
-                <Font size="11.0" />
+                <Font size="11.0"/>
             </font>
         </Hyperlink>
     </VBox>

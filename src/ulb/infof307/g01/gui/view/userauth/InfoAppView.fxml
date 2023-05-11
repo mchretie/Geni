@@ -5,17 +5,21 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="1000" minWidth="700" prefHeight="1000.0" prefWidth="700.0" style="-fx-background-color: #3EB942;;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <FontIcon iconColor="#2c3e4d" iconLiteral="mdi2c-cards-outline" iconSize="200" text="󰘹" translateX="-100.0" wrappingWidth="1.0" StackPane.alignment="TOP_CENTER" />
-      <Text fill="#2c3f4e" strokeType="OUTSIDE" strokeWidth="0.0" text="Créez vos propres flashcards et testez vos connaissances &#10;avec notre outil convivial. &#10;&#10;         Connectez-vous maintenant pour améliorer votre apprentissage &#10;de manière ludique et efficace !" textAlignment="CENTER" translateY="250.0" StackPane.alignment="TOP_LEFT">
-         <font>
-            <Font name="Arial Black" size="18.0" />
-         </font>
-      </Text>
-   </children>
-   <alignment>
-      <javafx.geometry.Pos fx:constant="CENTER" />
-   </alignment>
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="1000" minWidth="700"
+           prefHeight="1000.0" prefWidth="700.0" style="-fx-background-color: #3EB942;;"
+           xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <FontIcon iconColor="#2c3e4d" iconLiteral="mdi2c-cards-outline" iconSize="200" text="󰘹"
+                  translateX="-100.0" wrappingWidth="1.0" StackPane.alignment="TOP_CENTER"/>
+        <Text fill="#2c3f4e" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="Créez vos propres flashcards et testez vos connaissances &#10;avec notre outil convivial. &#10;&#10;         Connectez-vous maintenant pour améliorer votre apprentissage &#10;de manière ludique et efficace !"
+              textAlignment="CENTER" translateY="250.0" StackPane.alignment="TOP_LEFT">
+            <font>
+                <Font name="Arial Black" size="18.0"/>
+            </font>
+        </Text>
+    </children>
+    <alignment>
+        <javafx.geometry.Pos fx:constant="CENTER"/>
+    </alignment>
 </StackPane>

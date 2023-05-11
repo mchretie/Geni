@@ -9,7 +9,7 @@ import java.util.Objects;
 public class IndulgentValidator {
     final Iterable<String> determiners = List.of("le",
                                                  "la",
-                                                 "l'", 
+                                                 "l'",
                                                  "les",
                                                  "de",
                                                  "du",

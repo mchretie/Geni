@@ -72,8 +72,8 @@ public class UserAuthViewController {
     }
 
     private void handleRegister() {
-        String username =  this.registerUsernameField.getText();
-        String password =  this.registerPasswordField.getText();
+        String username = this.registerUsernameField.getText();
+        String password = this.registerPasswordField.getText();
         String confirmPassword = this.confirmPasswordField.getText();
 
         this.registerUsernameField.clear();
@@ -127,9 +127,7 @@ public class UserAuthViewController {
             registerPasswordField.setStyle("-fx-border-color: red");
             confirmPasswordField.setStyle("-fx-border-color: red");
             registerButton.setDisable(true);
-        }
-
-        else {
+        } else {
             registerPasswordField.setStyle("-fx-border-color: green");
             confirmPasswordField.setStyle("-fx-border-color: green");
             registerButton.setDisable(false);
@@ -169,6 +167,7 @@ public class UserAuthViewController {
 
     public interface Listener {
         void loginClicked(String username, String password);
+
         void registerClicked(String username, String password, String confirmPassword);
     }
 }

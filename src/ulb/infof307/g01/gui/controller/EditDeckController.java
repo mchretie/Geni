@@ -7,8 +7,8 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
-import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
+import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.card.*;
 import ulb.infof307.g01.model.card.visitor.CardVisitor;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditDeckController implements EditDeckViewController.Listener,
-                                                    TagViewController.Listener, CardVisitor {
+        TagViewController.Listener, CardVisitor {
 
     /* ====================================================================== */
     /*                             Model Attributes                           */
@@ -129,9 +129,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
         if (deck.cardCount() > 0) {
             selectedCard = deck.getFirstCard();
             showSelectedCardEditor();
-        }
-
-        else
+        } else
             editDeckViewController.hideSelectedCardEditor();
 
         stage.show();
@@ -248,7 +246,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void deckColorModified(Color color) {
         String colorString
-            = color.toString().replace("0x", "#");
+                = color.toString().replace("0x", "#");
         deck.setColor(colorString);
         saveChanges();
     }

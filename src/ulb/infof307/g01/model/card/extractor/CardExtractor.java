@@ -32,7 +32,7 @@ public abstract class CardExtractor implements Iterable<Card> {
     }
 
     public int getNumberOfRemainingCards() {
-        return currentCardIndex == -1 ? sortedCards.size() : sortedCards.size() - currentCardIndex-1;
+        return currentCardIndex == -1 ? sortedCards.size() : sortedCards.size() - currentCardIndex - 1;
     }
 
     public Card getNextCard() {

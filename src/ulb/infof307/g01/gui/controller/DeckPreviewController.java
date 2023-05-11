@@ -7,8 +7,8 @@ import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
-import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.deckpreview.GameHistoryItemViewController;
+import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.gamehistory.Game;
@@ -97,7 +97,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         stage.show();
     }
 
-    private List<Node> loadGameHistory(){
+    private List<Node> loadGameHistory() {
         try {
             List<Node> playersScoreItem = new ArrayList<>();
 

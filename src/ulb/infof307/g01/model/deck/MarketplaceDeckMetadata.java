@@ -18,17 +18,17 @@ public record MarketplaceDeckMetadata(UUID id,
 
     public MarketplaceDeckMetadata(Deck deck, String owner, int rating, int downloads) {
         this(deck.getId(),
-                deck.getName(),
-                deck.isPublic(),
-                deck.getColor(),
-                deck.getImage(),
-                deck.getColorName(),
-                deck.cardCount(),
-                deck.getTags(),
-                owner,
-                rating,
-                downloads,
-                deck.hashCode());
+             deck.getName(),
+             deck.isPublic(),
+             deck.getColor(),
+             deck.getImage(),
+             deck.getColorName(),
+             deck.cardCount(),
+             deck.getTags(),
+             owner,
+             rating,
+             downloads,
+             deck.hashCode());
     }
 
     @Override

@@ -30,7 +30,7 @@ public class GlobalLeaderboardViewController {
     /* ====================================================================== */
     /*                              Leaderboard                               */
     /* ====================================================================== */
-    public void setBoard(List<Node> playersScoreItem){
+    public void setBoard(List<Node> playersScoreItem) {
         ObservableList<Node> items = FXCollections.observableArrayList(playersScoreItem);
         boardContainer.setItems(items);
         boardContainer.refresh();

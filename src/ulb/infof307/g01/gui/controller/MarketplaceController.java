@@ -23,7 +23,7 @@ import java.util.List;
 public class MarketplaceController implements
         MarketplaceViewController.Listener,
         DeckMarketplaceViewController.Listener,
-        DeckUserMarketplaceViewController.Listener  {
+        DeckUserMarketplaceViewController.Listener {
     private final Stage stage;
 
     private final ErrorHandler errorHandler;
@@ -115,6 +115,7 @@ public class MarketplaceController implements
 
         return decksLoaded;
     }
+
     private List<Node> loadDecksViewMarketplace(List<MarketplaceDeckMetadata> decks, DeckAvailability deckAvailability)
             throws IOException, ServerCommunicationFailedException {
         List<Node> decksLoaded = new ArrayList<>();

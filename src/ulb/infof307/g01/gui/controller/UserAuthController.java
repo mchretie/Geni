@@ -25,10 +25,10 @@ public class UserAuthController implements UserAuthViewController.Listener {
     /* ====================================================================== */
 
     public UserAuthController(Stage stage,
-                                ErrorHandler errorHandler,
-                                MainWindowViewController mainWindowViewController,
-                                ControllerListener controllerListener,
-                                ServerCommunicator serverCommunicator) {
+                              ErrorHandler errorHandler,
+                              MainWindowViewController mainWindowViewController,
+                              ControllerListener controllerListener,
+                              ServerCommunicator serverCommunicator) {
 
         this.stage = stage;
 
@@ -50,7 +50,6 @@ public class UserAuthController implements UserAuthViewController.Listener {
 
     /**
      * Loads and displays the Deck Menu onto the main scene
-     *
      */
     public void show() {
         mainWindowViewController.setUserAuthViewVisible();
@@ -73,9 +72,7 @@ public class UserAuthController implements UserAuthViewController.Listener {
 
         } catch (AuthenticationFailedException e) {
             errorHandler.failedLogin(e);
-        }
-
-        catch (ServerCommunicationFailedException e) {
+        } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
         }
     }
@@ -92,9 +89,7 @@ public class UserAuthController implements UserAuthViewController.Listener {
 
         } catch (AuthenticationFailedException e) {
             errorHandler.failedRegister(e);
-        }
-
-        catch (ServerCommunicationFailedException e) {
+        } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
         }
     }

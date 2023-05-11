@@ -19,19 +19,19 @@ public record DeckMetadata(UUID id,
 
     public DeckMetadata(DeckMetadata deckMetadata) {
         this(deckMetadata.id,
-                deckMetadata.name,
-                deckMetadata.isPublic,
-                deckMetadata.color,
-                deckMetadata.image,
-                deckMetadata.colorName,
-                deckMetadata.cardCount,
-                List.copyOf(deckMetadata.tags),
-                deckMetadata.deckHashCode);
+             deckMetadata.name,
+             deckMetadata.isPublic,
+             deckMetadata.color,
+             deckMetadata.image,
+             deckMetadata.colorName,
+             deckMetadata.cardCount,
+             List.copyOf(deckMetadata.tags),
+             deckMetadata.deckHashCode);
     }
 
     public static DeckMetadata fromJson(JsonObject deckMetadataJson) {
         return new Gson().fromJson(deckMetadataJson.toString(),
-                DeckMetadata.class);
+                                   DeckMetadata.class);
     }
 
     public static DeckMetadata fromMarketplaceDeckMetadata(MarketplaceDeckMetadata deck) {

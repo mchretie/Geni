@@ -1,15 +1,15 @@
 package ulb.infof307.g01.server.handler;
 
+import spark.Request;
+import spark.Response;
 import ulb.infof307.g01.model.gamehistory.GameHistory;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
-import static spark.Spark.*;
-import spark.Request;
-import spark.Response;
-
 import java.util.UUID;
 
+import static spark.Spark.get;
+import static spark.Spark.halt;
 import static ulb.infof307.g01.shared.constants.ServerPaths.GAME_HISTORY_PATH;
 import static ulb.infof307.g01.shared.constants.ServerPaths.SPECIFIC_GAME_HISTORY_PATH;
 

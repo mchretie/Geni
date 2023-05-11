@@ -1,19 +1,19 @@
 package ulb.infof307.g01.server.handler;
 
-import static spark.Spark.*;
-import static ulb.infof307.g01.shared.constants.ServerPaths.*;
-
 import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
-import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
-import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
 import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
+import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
 import java.util.Map;
 import java.util.UUID;
+
+import static spark.Spark.*;
+import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 
 public class ScoreRequestHandler extends Handler {
 

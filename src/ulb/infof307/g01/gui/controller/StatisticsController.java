@@ -6,12 +6,11 @@ import javafx.stage.Stage;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
-import ulb.infof307.g01.gui.view.statistics.GameHistoryItemViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
+import ulb.infof307.g01.gui.view.statistics.GameHistoryItemViewController;
 import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
 import ulb.infof307.g01.model.gamehistory.Game;
 import ulb.infof307.g01.model.gamehistory.GameHistory;
-
 
 import java.io.IOException;
 import java.net.URL;
@@ -57,16 +56,14 @@ public class StatisticsController {
             mainWindowViewController.makeGoBackIconVisible();
 
             statisticsViewController.setGameHistory(loadGameHistory());
-        }
-
-        else {
+        } else {
             mainWindowViewController.setGuestModeLeaderboardViewVisible();
         }
 
         stage.show();
     }
 
-    private List<Node> loadGameHistory(){
+    private List<Node> loadGameHistory() {
         try {
             List<Node> playersScoreItem = new ArrayList<>();
 
@@ -88,9 +85,7 @@ public class StatisticsController {
         } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
             return new ArrayList<>();
-        }
-
-        catch (IOException e) {
+        } catch (IOException e) {
             errorHandler.failedLoading(e);
             return new ArrayList<>();
         }

@@ -90,7 +90,7 @@ public abstract class HttpDAO {
     protected void checkResponseCode(int responseCode) throws ServerRequestFailedException {
         if (responseCode != 200)
             throw new ServerRequestFailedException("Server request failed: "
-                    + responseCode);
+                                                           + responseCode);
     }
 
 

@@ -4,7 +4,9 @@ import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
-import ulb.infof307.g01.model.deck.*;
+import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.DeckMetadata;
+import ulb.infof307.g01.model.deck.Tag;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
@@ -61,9 +63,9 @@ public class DeckDAO extends DAO {
                 """;
 
         return !checkedNext(database.executeQuery(sql,
-                deck.getId().toString(),
-                userId.toString(),
-                deck.getName()));
+                                                  deck.getId().toString(),
+                                                  userId.toString(),
+                                                  deck.getName()));
     }
 
     public boolean deckNameExists(String name) {
@@ -112,7 +114,7 @@ public class DeckDAO extends DAO {
                 """;
 
         ResultSet res = database.executeQuery(sql,
-                deckId.toString());
+                                              deckId.toString());
         if (!checkedNext(res))
             return null;
         return extractDeckFrom(res);
@@ -244,19 +246,19 @@ public class DeckDAO extends DAO {
                 """;
 
         database.executeUpdate(sql,
-                deck.getId().toString(),
-                userId.toString(),
-                deck.getName(),
-                deck.getColor(),
-                deck.getImage(),
-                deck.getColorName(),
-                deck.isPublic() ? 1 : 0,
+                               deck.getId().toString(),
+                               userId.toString(),
+                               deck.getName(),
+                               deck.getColor(),
+                               deck.getImage(),
+                               deck.getColorName(),
+                               deck.isPublic() ? 1 : 0,
 
-                deck.getName(),
-                deck.getColor(),
-                deck.getImage(),
-                deck.getColorName(),
-                deck.isPublic() ? 1 : 0
+                               deck.getName(),
+                               deck.getColor(),
+                               deck.getImage(),
+                               deck.getColorName(),
+                               deck.isPublic() ? 1 : 0
         );
     }
 
@@ -294,10 +296,10 @@ public class DeckDAO extends DAO {
                 """;
 
         database.executeUpdate(upsertCard,
-                card.getId().toString(),
-                card.getDeckId().toString(),
-                card.getFront(),
-                card.getFront()
+                               card.getId().toString(),
+                               card.getDeckId().toString(),
+                               card.getFront(),
+                               card.getFront()
         );
 
         card.accept(cardDao);

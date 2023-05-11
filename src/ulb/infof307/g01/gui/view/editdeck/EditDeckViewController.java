@@ -18,7 +18,10 @@ import org.jsoup.nodes.Element;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.gui.util.GridPosIterator;
 import ulb.infof307.g01.gui.util.Pos2D;
-import ulb.infof307.g01.model.card.*;
+import ulb.infof307.g01.model.card.Card;
+import ulb.infof307.g01.model.card.FlashCard;
+import ulb.infof307.g01.model.card.InputCard;
+import ulb.infof307.g01.model.card.MCQCard;
 import ulb.infof307.g01.model.deck.Deck;
 
 import java.io.File;
@@ -297,9 +300,9 @@ public class EditDeckViewController {
         removeChoiceButton.setId("removeChoiceButton");
 
         HBox hBox = new HBox(2,
-                textField,
-                correctChoiceSelectionButton,
-                removeChoiceButton);
+                             textField,
+                             correctChoiceSelectionButton,
+                             removeChoiceButton);
 
         hBox.setId("choiceBox");
 
@@ -542,10 +545,14 @@ public class EditDeckViewController {
     }
 
     @FXML
-    private void handleColorPickerHoverTitle() { colorPickerTitle.setStyle("-fx-background-color: #B1B7E1"); }
+    private void handleColorPickerHoverTitle() {
+        colorPickerTitle.setStyle("-fx-background-color: #B1B7E1");
+    }
 
     @FXML
-    private void handleColorPickerExitTitle() { colorPickerTitle.setStyle("-fx-background-color: #C3B1E1"); }
+    private void handleColorPickerExitTitle() {
+        colorPickerTitle.setStyle("-fx-background-color: #C3B1E1");
+    }
 
     @FXML
     private void handleFrontCardEditHover() {
@@ -665,9 +672,9 @@ public class EditDeckViewController {
 
     public void setRemoveChoiceButtonEnabled(boolean canRemoveChoice) {
         choicesGrid.lookupAll("Button")
-                    .stream()
-                    .filter(node -> Objects.equals(node.getId(), "removeChoiceButton"))
-                    .forEach(node -> node.setDisable(!canRemoveChoice));
+                .stream()
+                .filter(node -> Objects.equals(node.getId(), "removeChoiceButton"))
+                .forEach(node -> node.setDisable(!canRemoveChoice));
     }
 
 
@@ -678,30 +685,43 @@ public class EditDeckViewController {
     public interface Listener {
         /* Deck */
         void deckNameModified(String newName);
+
         void tagAddedToDeck(String tagName, String color);
+
         void deckColorModified(Color color);
+
         void deckTitleColorModified(Color color);
+
         void deckImageModified(File image);
 
         /* Card */
         void cardPreviewClicked(int index);
+
         void editFrontOfCardClicked();
+
         void selectedCardRemoved();
 
         /* MCQ Card */
         void newMCQCard();
+
         void mcqChoiceModified(String text, int index);
+
         void mcqAnswerChanged(int i);
+
         void mcqCardChoiceRemoved(int index);
+
         void mcqCardChoiceAdded();
 
         /* Flash Card */
         void newFlashCard();
+
         void editBackOfCardClicked();
 
         /* Input Card */
         void newInputCard();
+
         void inputAnswerModified(String answer);
+
         void timerValueChanged(int value);
     }
 }

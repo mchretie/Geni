@@ -2,8 +2,8 @@ package ulb.infof307.g01.gui.http.dao;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import ulb.infof307.g01.model.UserAuth;
 import ulb.infof307.g01.gui.http.exceptions.AuthenticationFailedException;
+import ulb.infof307.g01.model.UserAuth;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
 import java.io.IOException;
