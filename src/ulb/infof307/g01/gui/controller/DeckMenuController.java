@@ -96,7 +96,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         stage.show();
     }
 
-    private void showDecks() throws ServerCommunicationFailedException, IOException, InterruptedException {
+    private void showDecks() throws ServerCommunicationFailedException, IOException {
         deckMenuViewController.setDecks(loadDecks(serverCommunicator.getAllDecksMetadata()));
     }
 
@@ -179,7 +179,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             serverCommunicator.saveDeck(deck);
             showDecks();
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             errorHandler.failedLoading(e);
 
         } catch (ServerCommunicationFailedException e) {
@@ -252,7 +252,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             errorHandler.failedDeckImportError(e);
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             errorHandler.failedLoading(e);
 
         } catch (ServerCommunicationFailedException e) {
