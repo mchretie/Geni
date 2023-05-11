@@ -62,7 +62,9 @@ class _InputCardViewState extends State<InputCardView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(children: [
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
       FrontCardView(text: widget.card.front),
       const SizedBox(height: 10),
       isAnswered
