@@ -188,8 +188,8 @@ public class DeckViewController {
     }
 
     @FXML
-    private void handleDoubleDeckClicked() {
-        listener.deckDoubleClicked(deck);
+    private void handleDeckClicked() {
+        listener.deckClicked(deck);
     }
 
     @FXML
@@ -245,7 +245,7 @@ public class DeckViewController {
     public interface Listener {
         void deckRemoved(DeckMetadata deck);
 
-        void deckDoubleClicked(DeckMetadata deck);
+        void deckClicked(DeckMetadata deck);
 
         void editDeckClicked(DeckMetadata deck);
 
