@@ -40,6 +40,12 @@ public class PlayDeckViewController {
     private Label deckNameLabel;
 
     @FXML
+    public Button previousCardBtn;
+
+    @FXML
+    public Button nextCardBtn;
+
+    @FXML
     private Button cardButton;
 
     @FXML
@@ -99,8 +105,14 @@ public class PlayDeckViewController {
         showFrontOfCard();
     }
 
+    private void setNavButtonsDisable(boolean disable){
+        this.previousCardBtn.setDisable(disable);
+        this.nextCardBtn.setDisable(disable);
+    }
+
     public void startProgressBar() {
-        this.progressBar.setVisible(true);
+        setNavButtonsDisable(true);
+        progressBar.setVisible(true);
         progressBar.setStyle("-fx-accent: GREEN");
 
         Integer seconds = ((TimedCard) currentCard).getCountdownTime();
@@ -148,6 +160,7 @@ public class PlayDeckViewController {
     }
 
     private void stopCountdown() {
+        this.setNavButtonsDisable(false);
         this.progressBar.setVisible(false);
         this.hasAnswered = true;
     }
