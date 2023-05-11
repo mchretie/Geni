@@ -41,6 +41,6 @@ public class DeckLeaderboard {
     }
 
     private void sortByScore() {
-        scores.sort(Comparator.comparing(Score::getScore).reversed());
+        scores.sort(Comparator.comparing(Score::getScoreValue).reversed());
     }
 }

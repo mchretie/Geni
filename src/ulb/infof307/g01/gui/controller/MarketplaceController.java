@@ -36,7 +36,7 @@ public class MarketplaceController implements
     public MarketplaceController(Stage stage,
                                  ErrorHandler errorHandler,
                                  MainWindowViewController mainWindowViewController,
-                                 ServerCommunicator serverCommunicator) throws IOException, InterruptedException {
+                                 ServerCommunicator serverCommunicator) {
 
         this.stage = stage;
         this.errorHandler = errorHandler;
@@ -57,7 +57,7 @@ public class MarketplaceController implements
     /*                         Stage Manipulation                             */
     /* ====================================================================== */
 
-    public void show() throws ServerCommunicationFailedException, IOException, InterruptedException {
+    public void show() throws ServerCommunicationFailedException, IOException {
         mainWindowViewController.setMarketplaceViewVisible();
 
         List<Node> decksMarketplace = loadDecksMarketplaceDatabase(serverCommunicator.getAllMarketplaceDecks());
@@ -149,10 +149,10 @@ public class MarketplaceController implements
     public void searchDeckClicked(String name) {
         try {
             List<MarketplaceDeckMetadata> decks = null;
-            if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.Name)) {
+            if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.NAME)) {
                 decks = serverCommunicator.searchDecksMarketplace(name);
 
-            } else if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.Creator)) {
+            } else if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.CREATOR)) {
                 decks = serverCommunicator.searchDecksMarketplaceByCreator(name);
             }
             assert decks != null;

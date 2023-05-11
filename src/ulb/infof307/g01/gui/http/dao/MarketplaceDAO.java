@@ -12,8 +12,6 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static java.util.stream.Collectors.toList;
-
 public class MarketplaceDAO extends HttpDAO {
 
     IndulgentValidator validator = new IndulgentValidator();
@@ -68,7 +66,7 @@ public class MarketplaceDAO extends HttpDAO {
 
         return getAllMarketplaceDecks().stream()
                 .filter(deck -> pattern.matcher(validator.addTolerance(deck.name())).matches())
-                .collect(toList());
+                .toList();
     }
 
     public List<MarketplaceDeckMetadata> searchDecksByCreator(String deckName)
@@ -81,6 +79,6 @@ public class MarketplaceDAO extends HttpDAO {
 
         return getAllMarketplaceDecks().stream()
                 .filter(deck -> pattern.matcher(validator.addTolerance(deck.owner())).matches())
-                .collect(toList());
+                .toList();
     }
 }

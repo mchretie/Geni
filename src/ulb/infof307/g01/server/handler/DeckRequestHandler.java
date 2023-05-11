@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static java.util.stream.Collectors.toList;
 import static spark.Spark.*;
 import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 
@@ -146,7 +145,7 @@ public class DeckRequestHandler extends Handler {
     private List<DeckMetadata> setupImagePath(List<DeckMetadata> decksMetadata) {
         return decksMetadata.stream()
                 .map(this::setupImagePath)
-                .collect(toList());
+                .toList();
     }
 
     private List<DeckMetadata> getAllDecks(Request req, Response res) {

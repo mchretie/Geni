@@ -26,11 +26,11 @@ public class MarketplaceDAO extends DAO {
     private MarketplaceDeckMetadata extractMarketplaceDeckMetaData(ResultSet res) throws DatabaseException {
         try {
             Deck deck = deckDAO.extractDeckFrom(res);
-            String owner_username = res.getString("username");
+            String ownerUsername = res.getString("username");
             int rating = res.getInt("rating");
             int downloads = res.getInt("downloads");
 
-            return new MarketplaceDeckMetadata(deck, owner_username, rating, downloads);
+            return new MarketplaceDeckMetadata(deck, ownerUsername, rating, downloads);
 
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());

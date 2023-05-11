@@ -6,6 +6,7 @@ import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import java.util.Collections;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.UserAuth;
@@ -20,7 +21,7 @@ import static ulb.infof307.g01.shared.constants.ServerPaths.REGISTER_PATH;
 @SuppressWarnings("FieldCanBeLocal")
 public class UserAccountHandler extends Handler {
 
-    private final String AUTH_HEADER = "Authorization";
+    private static final String AUTH_HEADER = "Authorization";
 
     public UserAccountHandler(Database database, JWTService jwtService) {
         super(database, jwtService);
@@ -67,10 +68,10 @@ public class UserAccountHandler extends Handler {
 
     private Map<String, Boolean> isTokenValid(Request request, Response response) {
         String token = request.headers(AUTH_HEADER);
-        if (jwtService.isTokenValid(token)) {
+        if (Boolean.TRUE.equals(jwtService.isTokenValid(token))) {
             return successfulResponse;
         }
         halt(401, "Token is " + (token == null ? "null" : "not valid"));
-        return null;
+        return Collections.emptyMap();
     }
 }

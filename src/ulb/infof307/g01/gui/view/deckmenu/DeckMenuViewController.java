@@ -27,8 +27,8 @@ public class DeckMenuViewController {
 
 
     public enum SearchType {
-        Name,
-        Tag
+        NAME,
+        TAG
     }
 
     /* ====================================================================== */
@@ -86,10 +86,10 @@ public class DeckMenuViewController {
     }
 
     private void initWidthListener() {
-        final ChangeListener<Number> listener =
+        final ChangeListener<Number> widthListener =
                 (observable, oldValue, newValue) -> widthChangeHandler();
 
-        gridPane.widthProperty().addListener(listener);
+        gridPane.widthProperty().addListener(widthListener);
     }
 
     private void initFileChooser() {
@@ -134,9 +134,9 @@ public class DeckMenuViewController {
         String searchTypeText = comboBox.getValue();
 
         if (searchTypeText.equals("Nom")) {
-            searchType = SearchType.Name;
+            searchType = SearchType.NAME;
         } else if (searchTypeText.equals("Tag")) {
-            searchType =  SearchType.Tag;
+            searchType =  SearchType.TAG;
         }
 
         return searchType;

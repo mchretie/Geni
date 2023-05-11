@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestMarketplaceDAO extends DatabaseUsingTest {
+public class TestMarketplaceDAO extends DatabaseUser {
     UserDAO userDAO;
     DeckDAO deckDAO;
     TagDAO tagDAO;

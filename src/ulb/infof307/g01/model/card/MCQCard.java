@@ -15,8 +15,8 @@ public class MCQCard extends TimedCard {
     @Expose
     private int correctChoice;
 
-    public final int MIN_CHOICES = 2;
-    public final int MAX_CHOICES = 4;
+    public static final int MIN_CHOICES = 2;
+    public static final int MAX_CHOICES = 4;
 
     public MCQCard() {
         super();

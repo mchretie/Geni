@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static java.util.stream.Collectors.toList;
 import static spark.Spark.*;
 import static ulb.infof307.g01.shared.constants.ServerPaths.*;
 
@@ -52,7 +51,7 @@ public class MarketplaceRequestHandler extends Handler {
     private List<MarketplaceDeckMetadata> setupImagePath(List<MarketplaceDeckMetadata> decksMetadata) {
         return decksMetadata.stream()
                 .map(this::setupImagePath)
-                .collect(toList());
+                .toList();
     }
 
     private List<MarketplaceDeckMetadata> getAllMarketplaceDecks(Request req, Response res) {

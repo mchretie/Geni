@@ -133,7 +133,8 @@ public class EditDeckViewController {
      */
     public void init() {
         deckNameText.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) handleUpdateDeckName();
+            if (Boolean.FALSE.equals(newValue))
+                handleUpdateDeckName();
         });
 
         double sceneWidth = leftVbox.getParent().getLayoutBounds().getWidth();
@@ -282,10 +283,10 @@ public class EditDeckViewController {
         TextField textField = getChoiceFieldTextField(choice, index);
 
         textField.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case ENTER -> listener.mcqChoiceModified(textField.getText(), index);
-
-                case TAB -> focusNextNode(index);
+            if (Objects.requireNonNull(event.getCode()) == KeyCode.ENTER) {
+                listener.mcqChoiceModified(textField.getText(), index);
+            } else if (event.getCode() == KeyCode.TAB) {
+                focusNextNode(index);
             }
         });
 
@@ -350,7 +351,7 @@ public class EditDeckViewController {
         HBox.setHgrow(textField, Priority.ALWAYS);
 
         textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
+            if (Boolean.FALSE.equals(newValue)) {
                 listener.mcqChoiceModified(textField.getText(), index);
             }
         });
@@ -470,8 +471,8 @@ public class EditDeckViewController {
     @FXML
     public void handleColorButtonClickedTitle() {
         Color color = colorPickerTitle.getValue();
-        String RGBColor = hexToRgb(color.toString());
-        deckNameText.setStyle("-fx-text-inner-color: " + RGBColor + ";");
+        String rgbColor = hexToRgb(color.toString());
+        deckNameText.setStyle("-fx-text-inner-color: " + rgbColor + ";");
 
         listener.deckTitleColorModified(color);
     }
@@ -595,7 +596,7 @@ public class EditDeckViewController {
     @FXML
     private void handleTimerValueEdit(KeyEvent keyEvent) {
         timerValue.addEventFilter(KeyEvent.KEY_TYPED, event -> {
-            if (!event.getCharacter().matches("[0-9]")) {
+            if (!event.getCharacter().matches("\\d")) {
                 event.consume();
             }
         });

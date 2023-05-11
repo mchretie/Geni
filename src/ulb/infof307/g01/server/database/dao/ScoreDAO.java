@@ -9,7 +9,6 @@ import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,7 +35,7 @@ public class ScoreDAO extends DAO {
                 userId,
                 score.getTimestamp(),
                 score.getDeckId().toString(),
-                score.getScore());
+                score.getScoreValue());
     }
 
     public void deleteScoresForDeck(UUID deckId) throws DatabaseException {

@@ -16,7 +16,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class TestScoreDAO extends DatabaseUsingTest {
+public class TestScoreDAO extends DatabaseUser {
     private ScoreDAO scoreDAO;
     private UserDAO userDAO;
     private DeckDAO deckDAO;

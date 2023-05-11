@@ -325,7 +325,7 @@ public class PlayDeckViewController {
         showInput(card.getAnswer(), true);
     }
 
-    private void showInput(String input, Boolean correct) {
+    private void showInput(String input, boolean correct) {
         Text inputText = new Text(input);
         inputText.setStyle("-fx-background-color: transparent;");
         if (correct) inputText.setFill(Color.WHITE);

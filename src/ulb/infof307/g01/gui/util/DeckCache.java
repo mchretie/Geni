@@ -5,8 +5,6 @@ import ulb.infof307.g01.model.deck.DeckMetadata;
 
 import java.util.*;
 
-import static java.util.stream.Collectors.toList;
-
 
 public class DeckCache {
 
@@ -56,6 +54,6 @@ public class DeckCache {
     public List<DeckMetadata> getAllDecksMetadata() {
         return allDecksIds.stream()
                 .map(deckId -> new DeckMetadata(decksMetadata.get(deckId)))
-                .collect(toList());
+                .toList();
     }
 }

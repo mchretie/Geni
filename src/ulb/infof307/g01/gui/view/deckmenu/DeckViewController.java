@@ -99,7 +99,7 @@ public class DeckViewController {
         if (bestScore == null)
             this.setStats("N/A");
         else
-            this.setStats(String.valueOf(bestScore.getScore()));
+            this.setStats(String.valueOf(bestScore.getScoreValue()));
     }
 
     private void setDeckColor() {

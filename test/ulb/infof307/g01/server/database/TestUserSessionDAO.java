@@ -7,7 +7,7 @@ import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestUserSessionDAO extends DatabaseUsingTest {
+public class TestUserSessionDAO extends DatabaseUser {
 
     UserDAO userDAO;
 

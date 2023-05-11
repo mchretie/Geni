@@ -110,7 +110,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     private List<Node> loadDecks(List<DeckMetadata> decks)
-            throws ServerCommunicationFailedException, IOException, InterruptedException {
+            throws ServerCommunicationFailedException, IOException {
         List<Node> decksLoaded = new ArrayList<>();
 
         decks.sort(Comparator.comparing(DeckMetadata::name));
@@ -191,16 +191,16 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     public void searchDeckClicked(String name) {
         try {
             List<DeckMetadata> decks = null;
-            if (deckMenuViewController.getSearchType().equals(SearchType.Name)) {
+            if (deckMenuViewController.getSearchType().equals(SearchType.NAME)) {
                 decks = serverCommunicator.searchDecks(name);
 
-            } else if (deckMenuViewController.getSearchType().equals(SearchType.Tag)) {
+            } else if (deckMenuViewController.getSearchType().equals(SearchType.TAG)) {
                 decks = serverCommunicator.searchDecksByTags(name);
             }
             assert decks != null;
             deckMenuViewController.setDecks(loadDecks(decks));
 
-        } catch (InterruptedException | IOException e) {
+        } catch (IOException e) {
             errorHandler.failedLoading(e);
 
         } catch (ServerCommunicationFailedException e) {

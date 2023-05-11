@@ -1,5 +1,7 @@
 package ulb.infof307.g01.model.leaderboard;
 
+import java.util.Objects;
+
 public class GlobalLeaderboardEntry implements Comparable<GlobalLeaderboardEntry> {
 
     private final int totalScore;
@@ -30,5 +32,18 @@ public class GlobalLeaderboardEntry implements Comparable<GlobalLeaderboardEntry
     @Override
     public int compareTo(GlobalLeaderboardEntry o) {
         return this.totalScore - o.totalScore;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GlobalLeaderboardEntry that = (GlobalLeaderboardEntry) o;
+        return totalScore == that.totalScore;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(totalScore, username, rank);
     }
 }

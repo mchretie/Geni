@@ -6,22 +6,20 @@ import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
 import java.io.File;
 
-public class DatabaseUsingTest {
+public class DatabaseUser {
     protected DatabaseAccess db;
     protected File dbfile = new File("test.db");
 
     @BeforeEach
     void init() throws DatabaseException {
         db = new DatabaseAccess();
-        if (dbfile.exists()) {
-            dbfile.delete();
-        }
+        assert !dbfile.exists() || dbfile.delete();
         db.open(dbfile);
     }
 
     @AfterEach
     void teardown() {
         db.close();
-        dbfile.delete();
+        assert dbfile.delete();
     }
 }

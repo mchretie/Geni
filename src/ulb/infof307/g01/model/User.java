@@ -20,7 +20,7 @@ public class User {
         try {
             this.userId = UUID.randomUUID();
             this.username = username;
-            this.salt = getSalt();
+            this.salt = generateSalt();
             this.password = getEncryptedPassword(password);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
@@ -44,10 +44,10 @@ public class User {
     private String getEncryptedPassword(String unencryptedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
         int iterations = 10000;
         int keyLength = 256;
-        char[] password = unencryptedPassword.toCharArray();
+        char[] rawPassword = unencryptedPassword.toCharArray();
 
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        KeySpec spec = new PBEKeySpec(password, this.salt, iterations, keyLength);
+        KeySpec spec = new PBEKeySpec(rawPassword, this.salt, iterations, keyLength);
         SecretKey key = factory.generateSecret(spec);
         byte[] hashedPassword = key.getEncoded();
 
@@ -55,11 +55,11 @@ public class User {
         return encoder.encodeToString(hashedPassword);
     }
 
-    private byte[] getSalt() {
+    private byte[] generateSalt() {
         SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        return salt;
+        byte[] newSalt = new byte[16];
+        random.nextBytes(newSalt);
+        return newSalt;
     }
 
     public String getSaltString() {

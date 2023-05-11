@@ -17,7 +17,7 @@ public abstract class Handler {
     protected final JWTService jwtService;
     protected final Database database;
 
-    public Handler(Database database, JWTService jwtService) {
+    protected Handler(Database database, JWTService jwtService) {
         this.database = database;
         this.jwtService = jwtService;
     }
@@ -31,7 +31,7 @@ public abstract class Handler {
     protected final Logger logger = Logger.getLogger(getClass().getName());
 
     public ResponseTransformer toJson() {
-        return (object) -> new Gson().toJson(object);
+        return object -> new Gson().toJson(object);
     }
 
     /**

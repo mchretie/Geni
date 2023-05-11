@@ -8,14 +8,14 @@ import java.util.UUID;
 public class Score {
     private final String username;
     private final UUID deckId;
-    private int score;
+    private int scoreValue;
     private final List<Double> times;
     private final long timestamp;
 
-    public Score(String username, UUID deckId, int score, long timestamp) {
+    public Score(String username, UUID deckId, int scoreValue, long timestamp) {
         this.username = username;
         this.deckId = deckId;
-        this.score = score;
+        this.scoreValue = scoreValue;
         this.timestamp = timestamp;
         this.times = new ArrayList<>();
     }
@@ -25,15 +25,15 @@ public class Score {
     }
 
     public void increment(int value) {
-        this.score += value;
+        this.scoreValue += value;
     }
 
     public void addTime(double timeLeft) {
         this.times.add(timeLeft);
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setScoreValue(int scoreValue) {
+        this.scoreValue = scoreValue;
     }
 
     public String getUsername() {
@@ -44,27 +44,19 @@ public class Score {
         return this.deckId;
     }
 
-    public int getScore() {
-        return score;
+    public int getScoreValue() {
+        return scoreValue;
     }
 
     public double getTotalTime() {
-        if (times.isEmpty()) {
-            return 0;
-        }
+        double sum = times.stream()
+                           .mapToDouble(e -> e)
+                           .sum();
 
-        double sum = 0;
-        for (double time : times) {
-            sum += time;
-        }
         return Math.round(sum * 100.0) / 100.0;
     }
 
     public double getAvgTime() {
-        if (times.isEmpty()) {
-            return 0;
-        }
-
         double totalTime = getTotalTime();
         return Math.round(totalTime / times.size() * 100.0) / 100.0;
     }
@@ -82,12 +74,12 @@ public class Score {
         Score other = (Score) o;
         return username.equals(other.username) &&
                 deckId.equals(other.deckId) &&
-                score == other.score &&
+                scoreValue == other.scoreValue &&
                 timestamp == other.timestamp;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, deckId, score, timestamp);
+        return Objects.hash(username, deckId, scoreValue, timestamp);
     }
 }

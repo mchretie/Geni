@@ -44,7 +44,7 @@ public class Server {
         Spark.staticFiles.externalLocation("images");
         get("/", (req, res) -> "You have reached the server");
         launchHandlers();
-        logger.info("Server started on port " + port);
+        logger.info(() -> "Server started on port " + port);
     }
 
 

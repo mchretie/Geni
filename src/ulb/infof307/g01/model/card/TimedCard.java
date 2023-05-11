@@ -2,6 +2,7 @@ package ulb.infof307.g01.model.card;
 
 import com.google.gson.annotations.Expose;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class TimedCard extends Card {
@@ -9,7 +10,7 @@ public abstract class TimedCard extends Card {
     @Expose
     protected Integer countdownTime = 10;
 
-    public TimedCard() {
+    protected TimedCard() {
         super();
     }
 
@@ -34,14 +35,15 @@ public abstract class TimedCard extends Card {
 
     @Override
     public boolean equals(Object o) {
-        Integer countdownTime = this.countdownTime;
-
         if (o == null || o.getClass() != this.getClass())
             return false;
 
         TimedCard other = (TimedCard) o;
-
-        return countdownTime.equals(other.getCountdownTime());
+        return this.countdownTime.equals(other.getCountdownTime());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(countdownTime);
+    }
 }

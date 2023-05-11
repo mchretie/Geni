@@ -173,8 +173,8 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
         //  The 0 competitive cards case should be handled elsewhere.
 
         int divider = cardExtractor.getAmountCompetitiveCards() == 0 ? 1 : cardExtractor.getAmountCompetitiveCards();
-        int totalScore = score.getScore() / divider;
-        score.setScore(totalScore);
+        int totalScore = score.getScoreValue() / divider;
+        score.setScoreValue(totalScore);
 
         try {
             serverCommunicator.addScore(score);

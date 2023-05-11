@@ -9,9 +9,7 @@ public class ImageLoader {
     Map<String, Image> cachedImages = new HashMap<>();
 
     public Image get(String path) {
-        if (!cachedImages.containsKey(path)) {
-            cachedImages.put(path, new Image(path));
-        }
+        cachedImages.computeIfAbsent(path, Image::new);
         return cachedImages.get(path);
     }
 }

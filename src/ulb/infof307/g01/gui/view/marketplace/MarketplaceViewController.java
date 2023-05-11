@@ -16,8 +16,8 @@ import java.util.List;
 
 public class MarketplaceViewController {
     public enum SearchType {
-        Name,
-        Creator
+        NAME,
+        CREATOR,
     }
 
     /* ====================================================================== */
@@ -78,9 +78,9 @@ public class MarketplaceViewController {
         String searchTypeText = comboBox.getValue();
 
         if (searchTypeText.equals("Nom")) {
-            searchType = MarketplaceViewController.SearchType.Name;
+            searchType = MarketplaceViewController.SearchType.NAME;
         } else if (searchTypeText.equals("Username")) {
-            searchType = MarketplaceViewController.SearchType.Creator;
+            searchType = MarketplaceViewController.SearchType.CREATOR;
         }
 
         return searchType;

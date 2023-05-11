@@ -70,7 +70,7 @@ public class UserSessionDAO extends HttpDAO {
         Map<String, Boolean> responseMap
                 = new Gson().fromJson(response, stringBooleanMap);
 
-        if (!responseMap.get("success")) {
+        if (Boolean.FALSE.equals(responseMap.get("success"))) {
             throw new AuthenticationFailedException(type + " failed");
         }
     }
@@ -96,15 +96,15 @@ public class UserSessionDAO extends HttpDAO {
     public void attemptAutoLogin()
             throws IOException, InterruptedException, AuthenticationFailedException {
 
-        String username = this.prefs.get("localUsername", null);
-        String password = this.prefs.get("localPassword", null);
+        String localUsername = this.prefs.get("localUsername", null);
+        String localPassword = this.prefs.get("localPassword", null);
 
 
-        if (username == null || password == null) {
+        if (localUsername == null || localPassword == null) {
             throw new AuthenticationFailedException("No credentials found");
         }
 
-        login(username, password);
+        login(localUsername, localPassword);
     }
 
     public void logout() {

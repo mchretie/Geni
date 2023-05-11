@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class DeckIO {
 
-    public final String EXT = "deck";
+    public static final String EXT = "deck";
 
     private List<DeckMetadata> allDecksMetadata = Collections.emptyList();
 
@@ -97,7 +97,7 @@ public class DeckIO {
             return baseName;
 
         var idx = 1;
-        String newName = baseName;
+        String newName;
         do {
             newName = "%s (%d)".formatted(baseName, idx);
             idx++;

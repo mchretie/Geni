@@ -35,6 +35,7 @@ public class ScoreRequestHandler extends Handler {
             Score score = new Gson().fromJson(req.body(), Score.class);
 
             if (!username.equals(score.getUsername()))
+                // TODO: replace this
                 throw new RuntimeException("UserId from token doesn't match userId from score.");
 
             database.saveScore(score);
