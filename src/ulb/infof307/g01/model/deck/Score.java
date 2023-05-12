@@ -28,8 +28,7 @@ public class Score {
 
     public void increment(int value) {
         this.score += value;
-        this.scoreHistory.add(this.score);
-        System.out.println("%%%%%%%%%%%%%%%%\n%\n%\n%\n%\n%\n%%%%%%%%%%%%%%%%%");
+        this.scoreHistory.add(value);
     }
 
     public void addTime(double timeLeft) {

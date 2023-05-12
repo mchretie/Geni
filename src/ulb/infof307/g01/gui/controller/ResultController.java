@@ -112,13 +112,21 @@ public class ResultController implements ResultViewController.Listener {
         pieChart.getData().clear();
 
         int amountCorrect = score.getAmountCorrectAnswers();
-        int amountWrong = amountCompetitiveCards - amountCorrect;
+        int amountWrong = this.amountCompetitiveCards - amountCorrect;
 
         PieChart.Data correctData = new PieChart.Data("Correct", amountCorrect);
         PieChart.Data wrongData = new PieChart.Data("Wrong", amountWrong);
 
         pieChart.getData().add(correctData);
         pieChart.getData().add(wrongData);
+
+        // set the color of the pie chart
+        correctData.getNode().setStyle("-fx-pie-color: green");
+        wrongData.getNode().setStyle("-fx-pie-color: red");
+
+        // set colors of the legend of the pie chart
+        // https://stackoverflow.com/questions/61836519/javafx-piechart-legend-color-change
+
     }
 
 
