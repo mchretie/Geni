@@ -33,6 +33,7 @@ public class Score {
 
     public void addTime(double timeLeft) {
         this.times.add(timeLeft);
+        System.out.println("Time left: " + timeLeft);
     }
 
     public void setScore(int score) {
@@ -51,11 +52,11 @@ public class Score {
         return score;
     }
 
-    public List<Integer> getScoreHistory() {
-        return scoreHistory;
+    public int getAmountScores() {
+        return scoreHistory.size();
     }
 
-    public int getAmountScores() {
+    public int getAmountCorrectAnswers() {
         return scoreHistory.size();
     }
 

@@ -16,6 +16,7 @@ public class ResultController implements ResultViewController.Listener {
     /* ====================================================================== */
 
     private final Score score;
+    private final int amountCompetitiveCards;
 
 
     /* ====================================================================== */
@@ -47,13 +48,15 @@ public class ResultController implements ResultViewController.Listener {
     public ResultController(Stage stage,
                             MainWindowViewController mainWindowViewController,
                             ControllerListener controllerListener,
-                            Score score) {
+                            Score score,
+                            int amountCompetitiveCards) {
         this.stage = stage;
         this.mainWindowViewController = mainWindowViewController;
         this.controllerListener = controllerListener;
         this.resultViewController = mainWindowViewController.getResultViewController();
 
         this.score = score;
+        this.amountCompetitiveCards = amountCompetitiveCards;
         resultViewController.setListener(this);
     }
 
@@ -102,12 +105,15 @@ public class ResultController implements ResultViewController.Listener {
 
     @Override
     public void setPieChart(PieChart pieChart, Score score) {
-        // add data to pie chart
-        PieChart.Data slice1 = new PieChart.Data("Desktop", 213);
-        PieChart.Data slice2 = new PieChart.Data("Phone"  , 67);
+        // add amount of correct answers and wrong answers to the pieChart
+        int amountCorrect = score.getAmountCorrectAnswers();
+        int amountWrong = amountCompetitiveCards - amountCorrect;
 
-        pieChart.getData().add(slice1);
-        pieChart.getData().add(slice2);
+        PieChart.Data correctData = new PieChart.Data("Correct", amountCorrect);
+        PieChart.Data wrongData = new PieChart.Data("Wrong", amountWrong);
+
+        pieChart.getData().add(correctData);
+        pieChart.getData().add(wrongData);
     }
 
 
