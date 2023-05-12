@@ -97,10 +97,15 @@ public class ResultController implements ResultViewController.Listener {
 
         areaChart.getData().add(series);
     }
-    
+
     @Override
     public void setPieChart(PieChart pieChart) {
-        // TODO: Implement this method
+        // add data to pie chart
+        PieChart.Data slice1 = new PieChart.Data("Desktop", 213);
+        PieChart.Data slice2 = new PieChart.Data("Phone"  , 67);
+
+        pieChart.getData().add(slice1);
+        pieChart.getData().add(slice2);
     }
 
 
