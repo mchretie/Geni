@@ -55,20 +55,11 @@ public class ResultViewController {
     }
 
     public void setAreaChart() {
-        this.areaChart.getData().clear();
-
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.getData().add(new XYChart.Data<>(1, 23));
-        series.getData().add(new XYChart.Data<>(2, 14));
-        series.getData().add(new XYChart.Data<>(3, 15));
-        series.getData().add(new XYChart.Data<>(4, 24));
-        series.getData().add(new XYChart.Data<>(5, 34));
-
-        this.areaChart.getData().add(series);
+        listener.setAreaChart(this.areaChart);
     }
 
     public void setPieChart() {
-        // TODO
+        listener.setPieChart(this.pieChart);
     }
 
     /* ====================================================================== */
@@ -87,5 +78,7 @@ public class ResultViewController {
 
     public interface Listener {
         void goToMenuButtonClicked();
+        void setAreaChart(AreaChart<Number, Number> areaChart);
+        void setPieChart(PieChart pieChart);
     }
 }

@@ -1,5 +1,8 @@
 package ulb.infof307.g01.gui.controller;
 
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.result.ResultViewController;
@@ -79,6 +82,25 @@ public class ResultController implements ResultViewController.Listener {
     @Override
     public void goToMenuButtonClicked() {
         controllerListener.goBackToMenu();
+    }
+
+    @Override
+    public void setAreaChart(AreaChart<Number, Number> areaChart) {
+        areaChart.getData().clear();
+
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.getData().add(new XYChart.Data<>(1, 23));
+        series.getData().add(new XYChart.Data<>(2, 14));
+        series.getData().add(new XYChart.Data<>(3, 15));
+        series.getData().add(new XYChart.Data<>(4, 24));
+        series.getData().add(new XYChart.Data<>(5, 34));
+
+        areaChart.getData().add(series);
+    }
+    
+    @Override
+    public void setPieChart(PieChart pieChart) {
+        // TODO: Implement this method
     }
 
 
