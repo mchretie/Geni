@@ -9,6 +9,7 @@ public class Score {
     private final String username;
     private final UUID deckId;
     private int score;
+    private final List<Integer> scoreHistory;
     private final List<Double> times;
     private final long timestamp;
 
@@ -18,6 +19,7 @@ public class Score {
         this.score = score;
         this.timestamp = timestamp;
         this.times = new ArrayList<>();
+        this.scoreHistory = new ArrayList<>();
     }
 
     public Score(String username, UUID deckId) {
@@ -26,6 +28,7 @@ public class Score {
 
     public void increment(int value) {
         this.score += value;
+        this.scoreHistory.add(this.score);
     }
 
     public void addTime(double timeLeft) {
@@ -46,6 +49,18 @@ public class Score {
 
     public int getScore() {
         return score;
+    }
+
+    public List<Integer> getScoreHistory() {
+        return scoreHistory;
+    }
+
+    public int getAmountScores() {
+        return scoreHistory.size();
+    }
+
+    public int getScoreAt(int index) {
+        return scoreHistory.get(index);
     }
 
     public double getTotalTime() {

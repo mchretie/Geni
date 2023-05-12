@@ -68,8 +68,8 @@ public class ResultController implements ResultViewController.Listener {
         resultViewController.setScore(score.getScore());
         resultViewController.setTotalTime(score.getTotalTime());
         resultViewController.setAverageTime(score.getAvgTime());
-        resultViewController.setAreaChart();
-        resultViewController.setPieChart();
+        resultViewController.setAreaChart(score);
+        resultViewController.setPieChart(score);
 
         stage.show();
     }
@@ -85,21 +85,23 @@ public class ResultController implements ResultViewController.Listener {
     }
 
     @Override
-    public void setAreaChart(AreaChart<Number, Number> areaChart) {
+    public void setAreaChart(AreaChart<Number, Number> areaChart, Score score) {
         areaChart.getData().clear();
 
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.getData().add(new XYChart.Data<>(1, 23));
-        series.getData().add(new XYChart.Data<>(2, 14));
-        series.getData().add(new XYChart.Data<>(3, 15));
-        series.getData().add(new XYChart.Data<>(4, 24));
-        series.getData().add(new XYChart.Data<>(5, 34));
+        XYChart.Series<Number, Number> scores = new XYChart.Series<>();
 
-        areaChart.getData().add(series);
+        // begin with a score of 0
+        scores.getData().add(new XYChart.Data<>(0, 0));
+
+        for (int i = 0; i < score.getAmountScores(); i++) {
+            scores.getData().add(new XYChart.Data<>(i + 1, score.getScoreAt(i)));
+        }
+
+        areaChart.getData().add(scores);
     }
 
     @Override
-    public void setPieChart(PieChart pieChart) {
+    public void setPieChart(PieChart pieChart, Score score) {
         // add data to pie chart
         PieChart.Data slice1 = new PieChart.Data("Desktop", 213);
         PieChart.Data slice2 = new PieChart.Data("Phone"  , 67);

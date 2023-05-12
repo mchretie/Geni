@@ -6,6 +6,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import ulb.infof307.g01.model.deck.Score;
 
 public class ResultViewController {
     /* ====================================================================== */
@@ -54,12 +55,12 @@ public class ResultViewController {
         avgTimeLabel.setText(averageTime + "s");
     }
 
-    public void setAreaChart() {
-        listener.setAreaChart(this.areaChart);
+    public void setAreaChart(Score score) {
+        listener.setAreaChart(this.areaChart, score);
     }
 
-    public void setPieChart() {
-        listener.setPieChart(this.pieChart);
+    public void setPieChart(Score score) {
+        listener.setPieChart(this.pieChart, score);
     }
 
     /* ====================================================================== */
@@ -78,7 +79,7 @@ public class ResultViewController {
 
     public interface Listener {
         void goToMenuButtonClicked();
-        void setAreaChart(AreaChart<Number, Number> areaChart);
-        void setPieChart(PieChart pieChart);
+        void setAreaChart(AreaChart<Number, Number> areaChart, Score score);
+        void setPieChart(PieChart pieChart, Score score);
     }
 }
