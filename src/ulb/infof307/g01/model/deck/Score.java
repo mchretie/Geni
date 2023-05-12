@@ -29,11 +29,13 @@ public class Score {
     public void increment(int value) {
         this.score += value;
         this.scoreHistory.add(this.score);
+        System.out.println("%%%%%%%%%%%%%%%%\n%\n%\n%\n%\n%\n%%%%%%%%%%%%%%%%%");
     }
 
     public void addTime(double timeLeft) {
+        // TODO : this function isn't called when time is out, i think it should
+        //  you might wanna make the call in timerRanOut() in playDeckController
         this.times.add(timeLeft);
-        System.out.println("Time left: " + timeLeft);
     }
 
     public void setScore(int score) {
@@ -57,7 +59,14 @@ public class Score {
     }
 
     public int getAmountCorrectAnswers() {
-        return scoreHistory.size();
+        // return amount of items in scoreHistory that are > 0
+        int amountCorrectAnswers = 0;
+        for (int score : scoreHistory) {
+            if (score > 0) {
+                amountCorrectAnswers++;
+            }
+        }
+        return amountCorrectAnswers;
     }
 
     public int getScoreAt(int index) {

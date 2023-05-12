@@ -213,13 +213,14 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
             double x = (timeLeft - 0.5) * 4;
             int scoreToAdd = (int) (1000 / (1 + Math.exp(-2 * x)));
             score.increment(scoreToAdd);
-        }
+        } else { score.increment(0); }  // needed for score history
 
         score.addTime(((TimedCard) currentCard).getCountdownTime()-timeLeft*10);
     }
 
     @Override
     public void timerRanOut() {
+        score.increment(0); // needed for score history
         showCard();
     }
 
