@@ -114,8 +114,8 @@ public class ResultController implements ResultViewController.Listener {
         int amountCorrect = score.getAmountCorrectAnswers();
         int amountWrong = this.amountCompetitiveCards - amountCorrect;
 
-        PieChart.Data correctData = new PieChart.Data("Correct", amountCorrect);
-        PieChart.Data wrongData = new PieChart.Data("Wrong", amountWrong);
+        PieChart.Data correctData = new PieChart.Data("Bon", amountCorrect);
+        PieChart.Data wrongData = new PieChart.Data("Mauvais", amountWrong);
 
         pieChart.getData().add(correctData);
         pieChart.getData().add(wrongData);

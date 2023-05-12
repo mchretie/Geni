@@ -57,7 +57,7 @@
             </children>
          </AnchorPane>
          <AnchorPane prefHeight="20.0" prefWidth="800.0" />
-         <AreaChart fx:id="areaChart" legendVisible="false" prefHeight="304.0" prefWidth="339.0" title="Score evolution">
+         <AreaChart fx:id="areaChart" legendVisible="false" prefHeight="304.0" prefWidth="339.0" title="Evolution du score">
            <xAxis>
              <NumberAxis animated="false" label="question" side="BOTTOM" upperBound="20.0" />
            </xAxis>
@@ -65,7 +65,7 @@
              <NumberAxis animated="false" label="total score" side="LEFT" upperBound="20.0" />
            </yAxis>
          </AreaChart>
-         <PieChart fx:id="pieChart" legendVisible="false" opacity="0.8" prefHeight="240.0" prefWidth="278.0" title="Players repartition" />
+         <PieChart fx:id="pieChart" legendVisible="false" opacity="0.8" prefHeight="240.0" prefWidth="278.0" title="Répartition des réponses" />
       </children>
    </FlowPane>
     <Button fx:id="goToMenuButton" mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Retour">
