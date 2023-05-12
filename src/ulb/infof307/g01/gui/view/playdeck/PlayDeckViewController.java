@@ -286,6 +286,7 @@ public class PlayDeckViewController {
 
         inputTextField = new TextField();
         inputTextField.onKeyPressedProperty().set(this::handleTextFieldKeyPressed);
+        inputTextField.requestFocus();
 
         Button approveAnswer = new Button();
         FontIcon checkIcon = setIcon("mdi2c-check", Color.BLACK);
