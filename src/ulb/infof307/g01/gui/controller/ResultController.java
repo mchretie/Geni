@@ -96,8 +96,11 @@ public class ResultController implements ResultViewController.Listener {
         // begin with a score of 0
         scores.getData().add(new XYChart.Data<>(0, 0));
 
+        int previousScore = 0;
         for (int i = 0; i < score.getAmountScores(); i++) {
-            scores.getData().add(new XYChart.Data<>(i + 1, score.getScoreAt(i)));
+            int currentScore = previousScore + score.getScoreAt(i);
+            scores.getData().add(new XYChart.Data<>(i + 1, currentScore));
+            previousScore = currentScore;
         }
 
         areaChart.getData().add(scores);
@@ -105,7 +108,9 @@ public class ResultController implements ResultViewController.Listener {
 
     @Override
     public void setPieChart(PieChart pieChart, Score score) {
-        // add amount of correct answers and wrong answers to the pieChart
+        // clear chart
+        pieChart.getData().clear();
+
         int amountCorrect = score.getAmountCorrectAnswers();
         int amountWrong = amountCompetitiveCards - amountCorrect;
 
