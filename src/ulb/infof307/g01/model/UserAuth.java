@@ -1,6 +1,6 @@
 package ulb.infof307.g01.model;
 
-public class    UserAuth {
+public class UserAuth {
     private final String username;
     private final String password;
 

@@ -81,8 +81,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws ServerCommunicationFailedException,
-                                IOException,
-                                InterruptedException {
+            IOException,
+            InterruptedException {
 
         showDecks();
         mainWindowViewController.setDeckMenuViewVisible();
@@ -280,6 +280,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     public interface ControllerListener {
         void editDeckClicked(DeckMetadata deck);
+
         void deckClicked(DeckMetadata deck);
     }
 }

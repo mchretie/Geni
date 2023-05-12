@@ -42,6 +42,9 @@ public class EditDeckViewController {
     private VBox rightVbox;
 
     @FXML
+    private VBox responseCardVbox;
+
+    @FXML
     private HBox cardTypeBox;
 
     @FXML
@@ -208,6 +211,7 @@ public class EditDeckViewController {
         loadFront(flashCard);
         backCardWebView.getEngine().loadContent(flashCard.getBack());
         backCard.setVisible(true);
+        responseCardVbox.setVisible(false);
         timerChangerComponent.setVisible(false);
         answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(false);
@@ -217,6 +221,7 @@ public class EditDeckViewController {
         loadFront(inputCard);
         answerOfInputCard.setText(inputCard.getAnswer());
         timerValue.setText(String.valueOf(inputCard.getCountdownTime()));
+        responseCardVbox.setVisible(true);
         answerOfInputCard.setVisible(true);
         timerChangerComponent.setVisible(true);
         choicesGrid.setVisible(false);
@@ -251,6 +256,7 @@ public class EditDeckViewController {
         }
 
         backCard.setVisible(false);
+        responseCardVbox.setVisible(true);
         timerChangerComponent.setVisible(true);
         answerOfInputCard.setVisible(false);
         choicesGrid.setVisible(true);
