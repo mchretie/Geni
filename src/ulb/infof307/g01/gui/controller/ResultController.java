@@ -65,6 +65,8 @@ public class ResultController implements ResultViewController.Listener {
         resultViewController.setScore(score.getScore());
         resultViewController.setTotalTime(score.getTotalTime());
         resultViewController.setAverageTime(score.getAvgTime());
+        resultViewController.setAreaChart();
+        resultViewController.setPieChart();
 
         stage.show();
     }

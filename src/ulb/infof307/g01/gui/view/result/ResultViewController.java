@@ -1,6 +1,9 @@
 package ulb.infof307.g01.gui.view.result;
 
 import javafx.fxml.FXML;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -16,6 +19,12 @@ public class ResultViewController {
 
     @FXML
     public Label totalTimeLabel;
+
+    @FXML
+    private AreaChart<Number, Number> areaChart;
+
+    @FXML
+    private PieChart pieChart;
 
 
     /* ====================================================================== */
@@ -43,6 +52,23 @@ public class ResultViewController {
 
     public void setAverageTime(double averageTime) {
         avgTimeLabel.setText(averageTime + "s");
+    }
+
+    public void setAreaChart() {
+        this.areaChart.getData().clear();
+
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.getData().add(new XYChart.Data<>(1, 23));
+        series.getData().add(new XYChart.Data<>(2, 14));
+        series.getData().add(new XYChart.Data<>(3, 15));
+        series.getData().add(new XYChart.Data<>(4, 24));
+        series.getData().add(new XYChart.Data<>(5, 34));
+
+        this.areaChart.getData().add(series);
+    }
+
+    public void setPieChart() {
+        // TODO
     }
 
     /* ====================================================================== */

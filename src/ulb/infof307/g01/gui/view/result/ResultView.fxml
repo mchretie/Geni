@@ -57,15 +57,15 @@
             </children>
          </AnchorPane>
          <AnchorPane prefHeight="20.0" prefWidth="800.0" />
-         <AreaChart prefHeight="304.0" prefWidth="339.0" title="Score evolution">
+         <AreaChart fx:id="areaChart" prefHeight="304.0" prefWidth="339.0" title="Score evolution">
            <xAxis>
-             <CategoryAxis side="BOTTOM" />
+             <NumberAxis animated="false" side="BOTTOM" upperBound="20.0" />
            </xAxis>
            <yAxis>
-             <NumberAxis side="LEFT" />
+             <NumberAxis animated="false" side="LEFT" upperBound="20.0" />
            </yAxis>
          </AreaChart>
-         <PieChart prefHeight="240.0" prefWidth="278.0" title="Players repartition" />
+         <PieChart fx:id="pieChart" prefHeight="240.0" prefWidth="278.0" title="Players repartition" />
       </children>
    </FlowPane>
     <Button fx:id="goToMenuButton" mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Retour">
