@@ -19,6 +19,7 @@ import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.deck.Tag;
 
 import java.io.IOException;
+import java.util.List;
 
 public class DeckUserMarketplaceViewController {
 
@@ -125,7 +126,12 @@ public class DeckUserMarketplaceViewController {
         tagsContainer.setHgap(30);
         tagsContainer.setVgap(10);
 
-        for (Tag tag : deck.tags()) {
+        List<Tag> tags = deck.tags();
+
+        int i =0;
+
+        while (i < 10 && i < tags.size()) {
+            Tag tag = tags.get(i);
             Label tagLabel = new Label(tag.getName());
 
             tagLabel.setBackground(new Background(new BackgroundFill(
@@ -136,6 +142,7 @@ public class DeckUserMarketplaceViewController {
             tagLabel.setTextFill(tag.isBackgroundDark() ? Color.WHITE : Color.BLACK);
 
             tagsContainer.getChildren().add(tagLabel);
+            i++;
         }
     }
 
