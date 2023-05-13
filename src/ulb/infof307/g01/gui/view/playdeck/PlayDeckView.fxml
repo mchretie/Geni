@@ -8,13 +8,15 @@
 <?import javafx.scene.web.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController">
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController">
 
     <top>
         <HBox alignment="CENTER" prefHeight="50" prefWidth="600">
             <Label fx:id="deckNameLabel" alignment="CENTER" textAlignment="CENTER">
                 <font>
-                    <Font name="System Italic" size="23.0" />
+                    <Font name="System Italic" size="23.0"/>
                 </font>
             </Label>
         </HBox>
@@ -22,41 +24,43 @@
 
     <left>
         <VBox alignment="CENTER_RIGHT" prefHeight="352.0" prefWidth="60.0">
-            <Button onMouseClicked="#handlePreviousCardClicked" prefHeight="30" prefWidth="30" style="-fx-border-radius: 50%;" textAlignment="CENTER">
+            <Button fx:id="previousCardBtn" onMouseClicked="#handlePreviousCardClicked" prefHeight="30" prefWidth="30"
+                    style="-fx-border-radius: 50%;" textAlignment="CENTER">
 
                 <graphic>
-                    <FontIcon iconLiteral="mdi2c-chevron-left" iconSize="30" />
+                    <FontIcon iconLiteral="mdi2c-chevron-left" iconSize="30"/>
                 </graphic>
 
                 <VBox.margin>
-                    <Insets left="10.0" />
+                    <Insets left="10.0"/>
                 </VBox.margin>
 
             </Button>
             <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </padding>
         </VBox>
     </left>
 
     <right>
         <VBox alignment="CENTER_LEFT" prefHeight="363.0">
-            <Button alignment="CENTER" onMouseClicked="#handleNextCardClicked" prefHeight="30" prefWidth="30" style="-fx-border-radius: 50%">
+            <Button fx:id="nextCardBtn" alignment="CENTER" onMouseClicked="#handleNextCardClicked" prefHeight="30" prefWidth="30"
+                    style="-fx-border-radius: 50%">
 
                 <graphic>
-                    <FontIcon iconLiteral="mdi2c-chevron-right" iconSize="30" />
+                    <FontIcon iconLiteral="mdi2c-chevron-right" iconSize="30"/>
                 </graphic>
 
                 <VBox.margin>
-                    <Insets right="10.0" />
+                    <Insets right="10.0"/>
                 </VBox.margin>
 
             </Button>
             <BorderPane.margin>
-                <Insets />
+                <Insets/>
             </BorderPane.margin>
             <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </padding>
         </VBox>
     </right>
@@ -65,52 +69,55 @@
         <!--Card box-->
         <VBox fx:id="cardBox" alignment="CENTER">
             <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </padding>
 
             <!--Normal card-->
-            <Button fx:id="cardButton" onMouseClicked="#onCardClicked" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF;" textAlignment="CENTER">
+            <Button fx:id="cardButton" onMouseClicked="#onCardClicked" prefHeight="200.0" prefWidth="400.0"
+                    style="-fx-background-color: #FFFFFF;" textAlignment="CENTER">
                 <effect>
-                    <DropShadow color="#000000" radius="5" spread="0.5" />
+                    <DropShadow color="#000000" radius="5" spread="0.5"/>
                 </effect>
                 <graphic>
-                    <WebView fx:id="cardWebView" prefHeight="200.0" prefWidth="200.0" />
+                    <WebView fx:id="cardWebView" prefHeight="200.0" prefWidth="200.0"/>
                 </graphic>
             </Button>
 
             <!--MCQ card-->
-            <GridPane fx:id="choicesGrid" alignment="BASELINE_CENTER" hgap="10" maxWidth="Infinity" style="-fx-padding: 15px 20px;-fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;" vgap="10" HBox.hgrow="ALWAYS" />
+            <GridPane fx:id="choicesGrid" alignment="BASELINE_CENTER" hgap="10" maxWidth="Infinity"
+                      style="-fx-padding: 15px 20px;-fx-border-insets: 3px 5px;-fx-background-insets: 3px 5px;"
+                      vgap="10" HBox.hgrow="ALWAYS"/>
 
             <!--Input card-->
-            <VBox fx:id="inputBox" maxWidth="230" />
-         <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="400.0" progress="0.0">
-            <VBox.margin>
-               <Insets top="20.0" />
-            </VBox.margin>
-         </ProgressBar>
+            <VBox fx:id="inputBox" maxWidth="230"/>
+            <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="400.0" progress="0.0">
+                <VBox.margin>
+                    <Insets top="20.0"/>
+                </VBox.margin>
+            </ProgressBar>
 
         </VBox>
     </center>
 
     <bottom>
         <HBox alignment="CENTER" prefHeight="50" prefWidth="600">
-                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                        <Label fx:id="currentCardIndexLabel">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="10.0" layoutY="10.0" text="/">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
-                        </Label>
-                        <Label fx:id="cardNumberIndexLabel" layoutX="15.0" layoutY="10.0">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
-                        </Label>
-                </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                <Label fx:id="currentCardIndexLabel">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="10.0" layoutY="10.0" text="/">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="cardNumberIndexLabel" layoutX="15.0" layoutY="10.0">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+            </HBox>
         </HBox>
     </bottom>
 
