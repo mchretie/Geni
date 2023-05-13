@@ -23,6 +23,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Class responsible for display the deck menu and listening to
@@ -115,6 +117,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         decks.sort(Comparator.comparing(DeckMetadata::name));
 
+        HashMap<UUID, Score> bestScores = serverCommunicator.getBestScoreForDecks(decks);
+
         for (DeckMetadata deck : decks) {
 
             URL resource = DeckMenuViewController
@@ -130,9 +134,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             controller.setDisableEdit(deck.isPublic());
 
-            Score bestScore = serverCommunicator.getBestScoreForDeck(deck.id());
-
-            controller.setDeck(deck, bestScore);
+            controller.setDeck(deck, bestScores.get(deck.id()));
             controller.setListener(this);
 
             decksLoaded.add(node);

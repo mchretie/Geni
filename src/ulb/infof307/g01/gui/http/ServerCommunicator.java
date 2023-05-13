@@ -12,6 +12,7 @@ import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -149,6 +150,26 @@ public class ServerCommunicator {
            String message = "Failed to get best score for deck";
            throw new ServerCommunicationFailedException(message);
        }
+    }
+
+    public HashMap<UUID, Score> getBestScoreForDecks(List<DeckMetadata> decks)
+            throws ServerCommunicationFailedException {
+        try {
+            return scoreDAO.getBestScoreForDecks(decks);
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get best score for decks";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
+
+    public HashMap<UUID, Score> getBestScoreForMarketplaceDecks(List<MarketplaceDeckMetadata> decks)
+            throws ServerCommunicationFailedException {
+        List<DeckMetadata> decksMetadata =
+                decks.stream()
+                        .map(DeckMetadata::fromMarketplaceDeckMetadata)
+                        .toList();
+
+        return getBestScoreForDecks(decksMetadata);
     }
 
     public GlobalLeaderboard getGlobalLeaderboard()

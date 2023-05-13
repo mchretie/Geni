@@ -14,11 +14,14 @@ import ulb.infof307.g01.gui.view.marketplace.DeckUserMarketplaceViewController;
 import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
+import ulb.infof307.g01.model.deck.Score;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class MarketplaceController implements
         MarketplaceViewController.Listener,
@@ -94,6 +97,8 @@ public class MarketplaceController implements
 
         List<Node> decksLoaded = new ArrayList<>();
 
+        HashMap<UUID, Score> bestScores = serverCommunicator.getBestScoreForMarketplaceDecks(decksUser);
+
         for (MarketplaceDeckMetadata deck : decksUser) {
             URL resource = MarketplaceViewController
                     .class
@@ -106,7 +111,7 @@ public class MarketplaceController implements
             DeckUserMarketplaceViewController controller = loader.getController();
             controller.setImageLoader(imageLoader);
 
-            controller.setDeck(deck, serverCommunicator.getBestScoreForDeck(deck.id()));
+            controller.setDeck(deck, bestScores.get(deck.id()));
             controller.setImageLoader(imageLoader);
             controller.setListener(this);
 
@@ -118,6 +123,8 @@ public class MarketplaceController implements
     private List<Node> loadDecksViewMarketplace(List<MarketplaceDeckMetadata> decks, DeckAvailability deckAvailability)
             throws IOException, ServerCommunicationFailedException {
         List<Node> decksLoaded = new ArrayList<>();
+
+        HashMap<UUID, Score> bestScores = serverCommunicator.getBestScoreForMarketplaceDecks(decks);
 
         for (MarketplaceDeckMetadata deck : decks) {
             URL resource = MarketplaceViewController
@@ -131,7 +138,7 @@ public class MarketplaceController implements
             DeckMarketplaceViewController controller = loader.getController();
             controller.setImageLoader(imageLoader);
 
-            controller.setDeck(deck, serverCommunicator.getBestScoreForDeck(deck.id()), deckAvailability);
+            controller.setDeck(deck, bestScores.get(deck.id()), deckAvailability);
             controller.setImageLoader(imageLoader);
             controller.setListener(this);
 
