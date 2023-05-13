@@ -88,7 +88,7 @@ public class DeckUserMarketplaceViewController {
         this.setDeckImage();
         this.setDeckColor();
 
-        //this.setTags(); // TODO need checking
+        this.setTags(); // TODO need checking
 
         if (bestScore == null)
             this.setStats("N/A");

@@ -102,7 +102,6 @@ public class MarketplaceController implements
 
         for (MarketplaceDeckMetadata deck : decksUser) {
 
-            //System.out.println("Deck: " + deck);
             URL resource = MarketplaceViewController
                     .class
                     .getResource("DeckUserMarketplaceView.fxml");
