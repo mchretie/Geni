@@ -1,19 +1,27 @@
 import 'dart:math';
 
+import '../../http_dao/auth_dao.dart';
+
 class Answer {
   final bool _correctlyAnswered;
   final num _remainingTime;
   final num _totalTime;
 
   bool get correctlyAnswered => _correctlyAnswered;
+
   num get remainingTime => _remainingTime;
+
   num get totalTime => _totalTime;
+
   num get responseTime => _totalTime - _remainingTime;
 
   Answer(this._correctlyAnswered, this._remainingTime, this._totalTime);
 }
 
 class Score {
+  late String _username;
+  final String _deckId;
+
   int _score;
   final _answers = [];
 
@@ -22,15 +30,31 @@ class Score {
 
   bool _final = false;
 
-  Score(this._score);
+  Score(this._score, this._deckId) {
+    AuthDao.getUsername().then((value) {
+      _username = value;
+    });
+  }
 
   int get score => _score;
+
   double get averageResponseTime => _averageResponseTime();
+
   double get totalResponseTime => _totalResponseTime();
+
   int get correctAnswers => _correctAnswers();
+
   int get incorrectAnswers => _incorrectAnswers();
 
   bool get isFinal => _final;
+
+  String toJson() {
+    return '{"username":"$_username","deckId":"$_deckId",'
+        '"score":$_score,'
+        '"scoreHistory":${_answers.map((e) => _scoreOf(e)).toList()},'
+        '"times":${responseTimes().values.toList()},'
+        '"timestamp":${DateTime.now().millisecondsSinceEpoch}}';
+  }
 
   void recordAnswer(Answer answer) {
     _answers.add(answer);

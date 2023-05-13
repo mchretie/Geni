@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_deckz/http_dao/deck_dao.dart';
+import 'package:mobile_deckz/http_dao/score_dao.dart';
 import 'package:mobile_deckz/model/card/abstract_card.dart';
 import 'package:mobile_deckz/view/playdeck/card/flash_card_view.dart';
 import 'package:mobile_deckz/view/playdeck/card/input_card_view.dart';
@@ -160,6 +161,9 @@ class _PlayCardViewState extends State<PlayCardView> {
               onPageChanged: (int index) {
                 if (index == cardViews.length - 1) {
                   widget.score.setFinal();
+                  if ( widget.score.isFinal ){
+                    ScoreDAO.addScore(widget.score);
+                  }
                 }
               },
               itemBuilder: (BuildContext context, int index) =>
