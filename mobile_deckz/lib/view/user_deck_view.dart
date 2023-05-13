@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_deckz/view/deck_view_template.dart';
+import 'package:mobile_deckz/view/deck_view.dart';
 
 import '../http_dao/deck_dao.dart';
 import '../model/deck/deck.dart';
-import 'deck_view.dart';
 
 class UserDeckView extends StatefulWidget {
   const UserDeckView({super.key});
@@ -98,7 +97,7 @@ class _UserDeckViewState extends State<UserDeckView> {
                                     final Deck deck = deckList[index];
                                     return Padding(
                                         padding: const EdgeInsets.all(4.0),
-                                        child: DeckViewTemplate(deck: deck));
+                                        child: DeckView(deck: deck));
                                   }))
                         ])));
                   }
