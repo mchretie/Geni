@@ -34,6 +34,8 @@ class ScoreResultView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("score build called");
+
     return Center(
         child: Column(children: [
       Row(
