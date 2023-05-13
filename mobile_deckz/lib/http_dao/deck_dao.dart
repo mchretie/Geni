@@ -16,8 +16,9 @@ class DeckDao {
     if (response.statusCode == 200) {
       List<dynamic> json = jsonDecode(response.body);
       List<Deck> decks = [];
+      Map<String, dynamic> scores = await getBestDecksScore(json);
       for (var deck in json) {
-        deck['score'] = await getBestDeckScore(deck['id']);
+        deck['score'] = scores.containsKey(deck['id']) ? scores[deck['id']] : 'N/A';
         decks.add(Deck.fromJson(deck));
       }
       return decks;
@@ -25,17 +26,25 @@ class DeckDao {
     return [];
   }
 
-  static Future<String> getBestDeckScore(String deckId) async {
-    final http.Response response = await HttpDao.get(
-        Uri.parse('${ServerPath.getBestScorePath}?deck_id=$deckId'));
+  static Future<Map<String, String>> getBestDecksScore(List<dynamic> decksJson) async {
+    String path = '${ServerPath.getBestScoresPath}?';
+    for (dynamic deck in decksJson) {
+      path += "deckId[]=${deck['id']}&";
+    }
+    final http.Response response = await HttpDao.get(Uri.parse(path));
+
+    Map<String, String> scores = {};
     if (response.statusCode == 200) {
       if (response.body == 'null') {
-        return 'N/A';
+        return scores;
       }
-      Map<String, dynamic> json = jsonDecode(response.body);
-      return json['score'].toString();
+      List<dynamic> json = jsonDecode(response.body);
+      for (dynamic deckJson in json) {
+        scores[deckJson['deckId']] = deckJson['score'].toString();
+      }
+      return scores;
     }
-    return 'N/A';
+    return scores;
   }
 
   static Future<void> loadDeck(Deck deck) async {
