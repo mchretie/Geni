@@ -16,6 +16,7 @@ import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.gui.util.ImageLoader;
 
 
 import java.io.IOException;
@@ -55,6 +56,7 @@ public class MainFxController extends Application implements
 
     private MainWindowViewController mainWindowViewController;
 
+    private ImageLoader imageLoader = new ImageLoader();
 
     /* ====================================================================== */
     /*                              DAO Attributes                            */
@@ -190,6 +192,8 @@ public class MainFxController extends Application implements
                 this,
                 mainWindowViewController,
                 serverCommunicator);
+
+        this.deckMenuController.setImageLoader(imageLoader);
 
         this.playDeckController
                 = new PlayDeckController(
@@ -349,13 +353,14 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void finishedPlayingDeck(Score score) {
+    public void finishedPlayingDeck(Score score, int amountCompetitiveCards) {
         viewStack.remove(viewStack.size() - 1);
         resultController = new ResultController(
                 stage,
                 mainWindowViewController,
                 this,
-                score
+                score,
+                amountCompetitiveCards
         );
         viewStack.add(View.RESULT);
 
@@ -440,6 +445,8 @@ public class MainFxController extends Application implements
                     errorHandler,
                     mainWindowViewController,
                     serverCommunicator);
+
+            marketplaceController.setImageLoader(imageLoader);
 
             resetViewStack(View.MARKETPLACE);
             marketplaceController.show();

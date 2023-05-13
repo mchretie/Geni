@@ -40,6 +40,12 @@ public class PlayDeckViewController {
     private Label deckNameLabel;
 
     @FXML
+    public Button previousCardBtn;
+
+    @FXML
+    public Button nextCardBtn;
+
+    @FXML
     private Button cardButton;
 
     @FXML
@@ -99,8 +105,14 @@ public class PlayDeckViewController {
         showFrontOfCard();
     }
 
+    private void setNavButtonsDisable(boolean disable){
+        this.previousCardBtn.setDisable(disable);
+        this.nextCardBtn.setDisable(disable);
+    }
+
     public void startProgressBar() {
-        this.progressBar.setVisible(true);
+        setNavButtonsDisable(true);
+        progressBar.setVisible(true);
         progressBar.setStyle("-fx-accent: GREEN");
 
         Integer seconds = ((TimedCard) currentCard).getCountdownTime();
@@ -147,7 +159,8 @@ public class PlayDeckViewController {
         cardWebView.getEngine().loadContent(htmlContent);
     }
 
-    private void stopCountdown() {
+    public void markCardAnswered() {
+        this.setNavButtonsDisable(false);
         this.progressBar.setVisible(false);
         this.hasAnswered = true;
     }
@@ -196,6 +209,7 @@ public class PlayDeckViewController {
         return progressBar.getProgress() == 0;
     }
 
+
     /*---------------------- MCQ Card ---------------------- */
 
     public void showMCQCard() {
@@ -233,7 +247,7 @@ public class PlayDeckViewController {
 
         checkButton.setOnAction(actionEvent -> {
             checkIcon.setIconColor(Color.WHITE);
-            stopCountdown();
+            markCardAnswered();
             showMCQAnswer();
             listener.onChoiceEntered(isCorrectChoice, progressBar.getProgress());
         });
@@ -257,11 +271,12 @@ public class PlayDeckViewController {
                 });
     }
 
+
+    /*---------------------Input card ---------------------- */
+
     public void showInputAnswer() {
         handleInputText();
     }
-
-    /*---------------------Input card ---------------------- */
 
     public void showInputCard() {
         inputBox.setVisible(true);
@@ -271,6 +286,7 @@ public class PlayDeckViewController {
 
         inputTextField = new TextField();
         inputTextField.onKeyPressedProperty().set(this::handleTextFieldKeyPressed);
+        inputTextField.requestFocus();
 
         Button approveAnswer = new Button();
         FontIcon checkIcon = setIcon("mdi2c-check", Color.BLACK);
@@ -317,7 +333,7 @@ public class PlayDeckViewController {
 
         boolean correct = card.isInputCorrect(input);
 
-        stopCountdown();
+        markCardAnswered();
         listener.onChoiceEntered(correct, progressBar.getProgress());
 
         if (!correct) showInput(input, false);

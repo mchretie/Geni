@@ -32,7 +32,7 @@ public class MarketplaceController implements
     private final ErrorHandler errorHandler;
     private final MarketplaceViewController marketplaceViewController;
     private final MainWindowViewController mainWindowViewController;
-    private final ImageLoader imageLoader = new ImageLoader();
+    private ImageLoader imageLoader;
 
     private final ServerCommunicator serverCommunicator;
 
@@ -49,6 +49,10 @@ public class MarketplaceController implements
         this.marketplaceViewController = mainWindowViewController.getMarketplaceViewController();
 
         marketplaceViewController.setListener(this);
+    }
+
+    public void setImageLoader(ImageLoader imageLoader) {
+        this.imageLoader = imageLoader;
     }
 
 
@@ -105,6 +109,7 @@ public class MarketplaceController implements
             Node node = loader.load();
 
             DeckUserMarketplaceViewController controller = loader.getController();
+            controller.setImageLoader(imageLoader);
 
             controller.setDeck(deck, bestScores.get(deck.id()));
             controller.setImageLoader(imageLoader);
@@ -131,6 +136,7 @@ public class MarketplaceController implements
             Node node = loader.load();
 
             DeckMarketplaceViewController controller = loader.getController();
+            controller.setImageLoader(imageLoader);
 
             controller.setDeck(deck, bestScores.get(deck.id()), deckAvailability);
             controller.setImageLoader(imageLoader);

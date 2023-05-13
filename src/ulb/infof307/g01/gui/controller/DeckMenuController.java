@@ -44,7 +44,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     private final ServerCommunicator serverCommunicator;
 
-    private final ImageLoader imageLoader = new ImageLoader();
+    private ImageLoader imageLoader;
     private final DeckIO deckIO = new DeckIO();
 
     /* ====================================================================== */
@@ -72,6 +72,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         deckMenuViewController.setListener(this);
     }
 
+    public void setImageLoader(ImageLoader loader) {
+        this.imageLoader = loader;
+    }
 
     /* ====================================================================== */
     /*                         Stage Manipulation                             */
@@ -225,7 +228,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void deckDoubleClicked(DeckMetadata deck) {
+    public void deckClicked(DeckMetadata deck) {
         controllerListener.deckClicked(deck);
     }
 
