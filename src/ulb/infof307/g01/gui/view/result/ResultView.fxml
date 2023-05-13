@@ -8,7 +8,7 @@
 
 <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.result.ResultViewController">
 
-   <FlowPane alignment="CENTER" prefHeight="402.0" prefWidth="600.0">
+   <FlowPane alignment="CENTER" prefHeight="186.0" prefWidth="800.0" prefWrapLength="100.0">
       <children>
 
            <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="200.0">
@@ -56,18 +56,19 @@
                 </Label>
             </children>
          </AnchorPane>
-         <AnchorPane prefHeight="20.0" prefWidth="800.0" />
-         <AreaChart fx:id="areaChart" legendVisible="false" prefHeight="304.0" prefWidth="339.0" title="Evolution du score">
-           <xAxis>
-             <NumberAxis animated="false" label="question" side="BOTTOM" upperBound="20.0" />
-           </xAxis>
-           <yAxis>
-             <NumberAxis animated="false" label="total score" side="LEFT" upperBound="20.0" />
-           </yAxis>
-         </AreaChart>
-         <PieChart fx:id="pieChart" legendVisible="false" opacity="0.8" prefHeight="240.0" prefWidth="278.0" title="Répartition des réponses" />
       </children>
    </FlowPane>
+    <HBox alignment="TOP_CENTER">
+        <AreaChart fx:id="areaChart" legendVisible="false" prefHeight="304.0" prefWidth="339.0" title="Evolution du score">
+            <xAxis>
+                <NumberAxis animated="false" label="question" side="BOTTOM" upperBound="20.0" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis animated="false" label="total score" side="LEFT" upperBound="20.0" />
+            </yAxis>
+        </AreaChart>
+        <PieChart fx:id="pieChart" legendVisible="false" opacity="0.8" prefHeight="240.0" prefWidth="278.0" title="Répartition des réponses" />
+    </HBox>
     <Button fx:id="goToMenuButton" mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Retour">
         <VBox.margin>
             <Insets bottom="15.0" top="10.0" />
