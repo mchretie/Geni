@@ -1,45 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.result.ResultViewController">
-    <Label text="Votre score : ">
-        <font>
-            <Font size="16.0"/>
-        </font>
-    </Label>
-    <Label fx:id="scoreLabel" text="200">
-        <font>
-            <Font name="System Bold" size="35.0"/>
-        </font>
-    </Label>
-    <Label text="Temps total : ">
-        <font>
-            <Font size="16.0"/>
-        </font>
-    </Label>
-    <Label fx:id="totalTimeLabel" text="200">
-        <font>
-            <Font name="System Bold" size="35.0"/>
-        </font>
-    </Label>
-    <Label text="Temps moyen : ">
-        <font>
-            <Font size="16.0"/>
-        </font>
-    </Label>
-    <Label fx:id="avgTimeLabel" text="200">
-        <font>
-            <Font name="System Bold" size="35.0"/>
-        </font>
-    </Label>
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.result.ResultViewController">
+
+   <FlowPane alignment="CENTER" prefHeight="402.0" prefWidth="600.0">
+      <children>
+
+           <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="15.0" text="Temps total : ">
+                      <font>
+                          <Font size="16.0" />
+                      </font>
+                  </Label>
+                  <Label fx:id="totalTimeLabel" layoutX="123.0" layoutY="4.0" text="200">
+                      <font>
+                          <Font name="System Bold" size="35.0" />
+                      </font>
+                  </Label>
+                </children>
+           </AnchorPane>
+          <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="200.0">
+              <children>
+                  <Label layoutX="8.0" layoutY="15.0" text="Temps moyen : ">
+                      <font>
+                          <Font size="16.0" />
+                      </font>
+                  </Label>
+                  <Label fx:id="avgTimeLabel" layoutX="129.0" layoutY="4.0" text="200">
+                      <font>
+                          <Font name="System Bold" size="35.0" />
+                      </font>
+                  </Label>
+              </children>
+            <FlowPane.margin>
+               <Insets left="50.0" right="50.0" />
+            </FlowPane.margin>
+          </AnchorPane>
+         <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="200.0">
+            <children>
+                <Label layoutX="14.0" layoutY="15.0" text="Votre score : ">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+                <Label fx:id="scoreLabel" layoutX="116.0" layoutY="4.0" text="200">
+                    <font>
+                        <Font name="System Bold" size="35.0" />
+                    </font>
+                </Label>
+            </children>
+         </AnchorPane>
+         <AnchorPane prefHeight="20.0" prefWidth="800.0" />
+         <AreaChart fx:id="areaChart" legendVisible="false" prefHeight="304.0" prefWidth="339.0" title="Evolution du score">
+           <xAxis>
+             <NumberAxis animated="false" label="question" side="BOTTOM" upperBound="20.0" />
+           </xAxis>
+           <yAxis>
+             <NumberAxis animated="false" label="total score" side="LEFT" upperBound="20.0" />
+           </yAxis>
+         </AreaChart>
+         <PieChart fx:id="pieChart" legendVisible="false" opacity="0.8" prefHeight="240.0" prefWidth="278.0" title="Répartition des réponses" />
+      </children>
+   </FlowPane>
     <Button fx:id="goToMenuButton" mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Retour">
         <VBox.margin>
-            <Insets top="10.0"/>
+            <Insets bottom="15.0" top="10.0" />
         </VBox.margin>
     </Button>
 </VBox>

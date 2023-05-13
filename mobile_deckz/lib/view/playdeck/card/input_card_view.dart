@@ -47,9 +47,11 @@ class _InputCardViewState extends State<InputCardView>
   }
 
   void _submitScore() {
-    if (widget.card.isUserAnswerValid(answer)) {
-      widget.score.incrementScore(10);
-    }
+    final correct = widget.card.isUserAnswerValid(answer);
+    final remTime = remainingTimeValue;
+    final totTime = widget.card.countdownTime;
+    final answer_ = Answer(correct, remTime, totTime);
+    widget.score.recordAnswer(answer_);
   }
 
   void _updateRemainingTime(double remainingTime) {
