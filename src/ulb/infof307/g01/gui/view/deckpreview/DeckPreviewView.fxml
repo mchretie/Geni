@@ -9,6 +9,8 @@
 
 <BorderPane fx:id="borderPane" minHeight="300.0" minWidth="500.0" style="-fx-border-radius: 10px; -fx-background-radius: 10px; -fx-border-color: lightgray;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController">
 
+
+
     <center>
         <HBox alignment="CENTER" style="-fx-background-color: white">
             <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">

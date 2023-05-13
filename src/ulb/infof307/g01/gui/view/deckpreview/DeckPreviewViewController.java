@@ -13,7 +13,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import org.kordamp.ikonli.javafx.FontIcon;
 import ulb.infof307.g01.model.deck.Deck;
 
@@ -22,10 +24,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class DeckPreviewViewController implements Initializable {
-
-    private FontIcon shareDeckIcon;
-    private Label deckNameLabel;
-    private FontIcon deckVisibilityIcon;
 
     @FXML
     private BorderPane borderPane;
@@ -39,8 +37,6 @@ public class DeckPreviewViewController implements Initializable {
     @FXML
     private Button playDeck;
 
-
-
     @FXML
     private Label cardCountLabel;
 
@@ -48,6 +44,9 @@ public class DeckPreviewViewController implements Initializable {
     private Label highestScoreLabel;
 
     private HBox starContainer;
+    private FontIcon shareDeckIcon;
+    private Label deckNameLabel;
+    private FontIcon deckVisibilityIcon;
 
     private Deck deck;
     private Listener listener;
@@ -56,7 +55,7 @@ public class DeckPreviewViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         starHBox();
 
-        HBox topHbox = new HBox(starContainer, deckNameHbox(), deckShareHBox());
+        HBox topHbox = new HBox(starContainer, new Region(), deckNameHbox(), new Region(), deckShareHBox());
         topHbox.setStyle("-fx-background-radius: 10 10 0 0; " +
                             "-fx-border-radius: 10 10 0 0; " +
                             "-fx-border-style: hidden hidden solid hidden; " +
@@ -69,14 +68,15 @@ public class DeckPreviewViewController implements Initializable {
     private void starHBox() {
         starContainer = new HBox();
         starContainer.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(starContainer, Priority.SOMETIMES);
+        HBox.setHgrow(starContainer, Priority.ALWAYS);
 
         for (int starIndex = 0; starIndex < 5; starIndex++) {
             Button starButton = new Button();
-            starButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+            starButton.setStyle("-fx-background-color: transparent; " +
+                                    "-fx-border-color: transparent;");
 
             FontIcon starIcon = new FontIcon("lsf-starempty");
-            starIcon.setIconSize(25);
+            starIcon.setIconSize(20);
 
             int finalStarIndex = starIndex;
             starButton.setOnMouseClicked(event -> {
@@ -92,10 +92,8 @@ public class DeckPreviewViewController implements Initializable {
             });
 
             starButton.setOnMouseExited(event -> {
-                if (finalStarIndex <= deck.numberOfStars())
-                    return;
-
-                starIcon.setIconLiteral("lsf-starempty");
+                if (finalStarIndex > deck.numberOfStars())
+                    starIcon.setIconLiteral("lsf-starempty");
             });
 
             starContainer.setOnMouseExited(event -> {
@@ -125,23 +123,21 @@ public class DeckPreviewViewController implements Initializable {
         shareDeckButton.setOnMouseClicked(event -> listener.deckSharedClicked());
 
         HBox hBox = new HBox(shareDeckButton);
+        HBox.setHgrow(hBox, Priority.ALWAYS);
         hBox.setAlignment(Pos.CENTER_RIGHT);
-        HBox.setHgrow(hBox, Priority.SOMETIMES);
 
         return hBox;
     }
 
     private HBox deckNameHbox() {
         deckNameLabel = new Label();
+        deckNameLabel.setFont(Font.font(20));
 
-        HBox.setHgrow(deckNameLabel, Priority.ALWAYS);
+        deckVisibilityIcon = new FontIcon("mdi2s-share");
+        deckVisibilityIcon.setIconSize(20);
 
-        Button shareDeckButton = new Button();
-        deckVisibilityIcon = new FontIcon("mdi2a-account-lock");
-        shareDeckButton.setGraphic(shareDeckIcon);
-        shareDeckButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
-
-        HBox hBox = new HBox(deckNameLabel, shareDeckButton);
+        HBox hBox = new HBox(deckNameLabel, deckVisibilityIcon);
+        hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
         HBox.setHgrow(hBox, Priority.ALWAYS);
         HBox.setMargin(deckNameLabel, new Insets(10, 0, 10, 0));
@@ -185,18 +181,18 @@ public class DeckPreviewViewController implements Initializable {
     }
 
     public void setDeckVisibility(boolean visibleOnline) {
+        shareDeckIcon.setVisible(!visibleOnline);
+        starContainer.setVisible(visibleOnline);
+
         if (visibleOnline) {
             deckVisibilityIcon.setIconLiteral("mdi2a-account-group");
-            shareDeckIcon.setVisible(false);
 
         } else {
             deckVisibilityIcon.setIconLiteral("mdi2a-account-lock");
-            shareDeckIcon.setVisible(true);
         }
     }
 
     public void setStars(int startIndex) {
-        System.out.println("setStars: " + startIndex);
         for (int i = 0; i < 5; i++) {
             Button starButton = (Button) starContainer.getChildren().get(i);
             FontIcon starIcon = (FontIcon) starButton.getGraphic();
@@ -238,11 +234,6 @@ public class DeckPreviewViewController implements Initializable {
         String style = "-fx-background-color: transparent;";
         playDeck.setStyle(style + "-fx-text-fill: black;");
         playDeckIcon.setIconColor(Color.BLACK);
-    }
-
-    @FXML
-    private void handleShareDeckClicked() {
-        listener.deckSharedClicked();
     }
 
 
