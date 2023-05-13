@@ -223,7 +223,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void deckDoubleClicked(DeckMetadata deck) {
+    public void deckClicked(DeckMetadata deck) {
         controllerListener.deckClicked(deck);
     }
 

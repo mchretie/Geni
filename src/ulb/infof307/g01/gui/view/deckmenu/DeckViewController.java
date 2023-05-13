@@ -4,8 +4,11 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -188,8 +191,8 @@ public class DeckViewController {
     }
 
     @FXML
-    private void handleDoubleDeckClicked() {
-        listener.deckDoubleClicked(deck);
+    private void handleDeckClicked() {
+        listener.deckClicked(deck);
     }
 
     @FXML
@@ -237,6 +240,15 @@ public class DeckViewController {
         shareDeckIcon.setIconColor(Color.web("#000000"));
     }
 
+    @FXML
+    public void handleDeckMouseEnter() {
+        stackPane.setEffect(new DropShadow(BlurType.GAUSSIAN, Color.BLACK, 10, 0.5, 0, 0));
+    }
+
+    public void handleDeckMouseExit() {
+        stackPane.setEffect(null);
+    }
+
 
     /* ====================================================================== */
     /*                           Listener Interface                           */
@@ -245,7 +257,7 @@ public class DeckViewController {
     public interface Listener {
         void deckRemoved(DeckMetadata deck);
 
-        void deckDoubleClicked(DeckMetadata deck);
+        void deckClicked(DeckMetadata deck);
 
         void editDeckClicked(DeckMetadata deck);
 
