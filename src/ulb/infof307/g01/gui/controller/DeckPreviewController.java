@@ -146,7 +146,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
     }
 
     @Override
-    public void deckShared() {
+    public void deckSharedClicked() {
         try {
             deck.switchOnlineVisibility();
             deckPreviewViewController.setDeckVisibility(deck.isPublic());
@@ -155,6 +155,12 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
         }
+    }
+
+    @Override
+    public void starClicked(int startIndex) {
+        deck.setStars(startIndex);
+        deckPreviewViewController.setStars(startIndex);
     }
 
     /* ====================================================================== */
