@@ -186,7 +186,8 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
         // TODO: This is a temporary fix.
         //  The 0 competitive cards case should be handled elsewhere.
 
-        int divider = cardExtractor.getAmountCompetitiveCards() == 0 ? 1 : cardExtractor.getAmountCompetitiveCards();
+        int amountCompetitiveCards = cardExtractor.getAmountCompetitiveCards();
+        int divider = amountCompetitiveCards == 0 ? 1 : amountCompetitiveCards;
         int totalScore = score.getScore() / divider;
         score.setScore(totalScore);
 
@@ -197,7 +198,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
             errorHandler.failedAddScore(e);
 
         } finally {
-            controllerListener.finishedPlayingDeck(score);
+            controllerListener.finishedPlayingDeck(score, amountCompetitiveCards);
         }
     }
 
@@ -230,13 +231,14 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
             // int scoreToAddN = (int) (1000 / (1 + Math.exp(8*timeElapsed - 4)));
             
             score.increment(scoreToAdd);
-        }
+        } else { score.increment(0); }  // needed for score history
 
         score.addTime(((TimedCard) currentCard).getCountdownTime()-timeLeft*10);
     }
 
     @Override
     public void timerRanOut() {
+        score.increment(0); // needed for score history
         showCard();
     }
 
@@ -246,6 +248,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
     /* ====================================================================== */
 
     public interface ControllerListener {
-        void finishedPlayingDeck(Score score);
+        void finishedPlayingDeck(Score score, int amountCompetitiveCards);
     }
 }

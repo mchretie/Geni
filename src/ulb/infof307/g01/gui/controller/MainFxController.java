@@ -349,13 +349,14 @@ public class MainFxController extends Application implements
     }
 
     @Override
-    public void finishedPlayingDeck(Score score) {
+    public void finishedPlayingDeck(Score score, int amountCompetitiveCards) {
         viewStack.remove(viewStack.size() - 1);
         resultController = new ResultController(
                 stage,
                 mainWindowViewController,
                 this,
-                score
+                score,
+                amountCompetitiveCards
         );
         viewStack.add(View.RESULT);
 
