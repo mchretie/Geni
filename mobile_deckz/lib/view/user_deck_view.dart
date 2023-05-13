@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_deckz/view/deck_view_template.dart';
 
 import '../http_dao/deck_dao.dart';
 import '../model/deck/deck.dart';
@@ -21,10 +22,11 @@ class _UserDeckViewState extends State<UserDeckView> {
 
   Future<void> _onSearchTextChanged(String text) async {
     setState(() {
-      if (dropdownValue == 'Name')
+      if (dropdownValue == 'Name') {
         _decksFuture = DeckDao.searchDecks(text);
-      else if (dropdownValue == 'Tag')
+      } else if (dropdownValue == 'Tag') {
         _decksFuture = DeckDao.searchDecksByTags(text);
+      }
     });
   }
 
@@ -81,7 +83,7 @@ class _UserDeckViewState extends State<UserDeckView> {
                                       controller: textEditController,
                                       onSubmitted: (text) =>
                                           _onSearchTextChanged(text),
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Search',
                                         prefixIcon: Icon(Icons.search),
                                       ),
@@ -96,7 +98,7 @@ class _UserDeckViewState extends State<UserDeckView> {
                                     final Deck deck = deckList[index];
                                     return Padding(
                                         padding: const EdgeInsets.all(4.0),
-                                        child: DeckView(deck: deck));
+                                        child: DeckViewTemplate(deck: deck));
                                   }))
                         ])));
                   }
