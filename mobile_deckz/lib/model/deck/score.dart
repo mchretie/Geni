@@ -49,9 +49,10 @@ class Score {
   bool get isFinal => _final;
 
   String toJson() {
-    return '{"username":"$_username", "deckId":"$_deckId",'
-        '"score":$_score,"times":${responseTimes().values.toList()},'
-        '"scoreHistory":${_answers.map((e) => _scoreOf(e)).toList()}},'
+    return '{"username":"$_username","deckId":"$_deckId",'
+        '"score":$_score,'
+        '"scoreHistory":${_answers.map((e) => _scoreOf(e)).toList()},'
+        '"times":${responseTimes().values.toList()},'
         '"timestamp":${DateTime.now().millisecondsSinceEpoch}}';
   }
 

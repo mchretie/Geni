@@ -90,7 +90,7 @@ class ScoreResultView extends StatelessWidget {
                   'Réponses correctes': score.correctAnswers.toDouble(),
                   'Réponses incorrectes': score.incorrectAnswers.toDouble()
                 },
-                colorList: [
+                colorList: const [
                   Colors.green,
                   Colors.red
                 ],
@@ -116,7 +116,7 @@ class ScoreResultView extends StatelessWidget {
                         showTitles: true,
                         interval: 1,
                       ),
-                      axisNameWidget: Text('Nombre de réponses')),
+                      axisNameWidget: const Text('Nombre de réponses')),
                   topTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: false,
@@ -132,11 +132,12 @@ class ScoreResultView extends StatelessWidget {
                       showTitles: true,
                       interval: 1,
                     ),
-                    axisNameWidget: Text('Temps de réponse (s)'),
+                    axisNameWidget: const Text('Temps de réponse (s)'),
                   ),
                 ),
               ),
-              swapAnimationDuration: Duration(milliseconds: 150), // Optional
+              swapAnimationDuration: const Duration(milliseconds: 150),
+              // Optional
               swapAnimationCurve: Curves.linear, // Optional
             )),
       ])),
