@@ -61,7 +61,9 @@ class _DeckViewState extends State<DeckView> {
   void _onPlayDeckTap() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => PlayDeckView(deck: widget.deck, score: Score(0)),
+        builder: (context) => PlayDeckView(
+            deck: widget.deck,
+            score: Score(0, widget.deck.id)),
       ),
     );
   }
