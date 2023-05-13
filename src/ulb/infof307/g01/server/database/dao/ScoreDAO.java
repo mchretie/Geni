@@ -9,9 +9,9 @@ import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.Comparator;
 
 public class ScoreDAO extends DAO {
     private final DatabaseAccess database;
@@ -62,6 +62,16 @@ public class ScoreDAO extends DAO {
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
+    }
+
+    public Score getBestScoreForDeck(UUID deckId) throws DatabaseException {
+        List<Score> scores = getScoresForDeck(deckId);
+
+        if (scores.isEmpty())
+            return null;
+
+        scores.sort(Comparator.comparing(Score::getScore).reversed());
+        return scores.get(0);
     }
 
     public List<Score> getScoresForDeck(UUID deckId) throws DatabaseException {
