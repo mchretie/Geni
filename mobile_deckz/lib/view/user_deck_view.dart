@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_deckz/view/deck_view.dart';
 
 import '../http_dao/deck_dao.dart';
 import '../model/deck/deck.dart';
-import 'deck_view.dart';
 
 class UserDeckView extends StatefulWidget {
   const UserDeckView({super.key});
@@ -21,10 +21,11 @@ class _UserDeckViewState extends State<UserDeckView> {
 
   Future<void> _onSearchTextChanged(String text) async {
     setState(() {
-      if (dropdownValue == 'Name')
+      if (dropdownValue == 'Name') {
         _decksFuture = DeckDao.searchDecks(text);
-      else if (dropdownValue == 'Tag')
+      } else if (dropdownValue == 'Tag') {
         _decksFuture = DeckDao.searchDecksByTags(text);
+      }
     });
   }
 
@@ -81,7 +82,7 @@ class _UserDeckViewState extends State<UserDeckView> {
                                       controller: textEditController,
                                       onSubmitted: (text) =>
                                           _onSearchTextChanged(text),
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Search',
                                         prefixIcon: Icon(Icons.search),
                                       ),
