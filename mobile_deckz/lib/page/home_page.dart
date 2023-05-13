@@ -5,7 +5,7 @@ import 'package:mobile_deckz/page/profile_page.dart';
 import 'package:mobile_deckz/view/user_deck_view.dart';
 
 import '../http_dao/auth_dao.dart';
-import '../view/marketplace/marketplace_view.dart';
+import '../view/marketplace_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -83,62 +83,8 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               ));
-          ;
         }
       },
     );
   }
-
-// @override
-// Widget build(BuildContext context) {
-//   return Scaffold(
-//       appBar: AppBar(
-//         title: Text(widget.title),
-//         actions: [
-//           IconButton(
-//             icon: const Icon(Icons.account_circle),
-//             tooltip: 'Profile',
-//             onPressed: () {
-//               Navigator.of(context).push(
-//                 MaterialPageRoute(
-//                   builder: (context) => const ProfileView(),
-//                 ),
-//               );
-//             },
-//           ),
-//         ],
-//       ),
-//       body: Center(
-//           child: IndexedStack(
-//         index: _selectedIndex,
-//         children: const [
-//           UserDeckView(),
-//           StoreView(),
-//           LeaderboardView(),
-//         ],
-//       )),
-//       bottomNavigationBar: BottomNavigationBar(
-//         items: const <BottomNavigationBarItem>[
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.home),
-//             label: 'Home',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.store),
-//             label: 'Store',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.leaderboard),
-//             label: 'Leaderboard',
-//           ),
-//         ],
-//         currentIndex: _selectedIndex,
-//         selectedItemColor: Colors.purple[800],
-//         onTap: (int index) {
-//           setState(() {
-//             _selectedIndex = index;
-//           });
-//         },
-//       ));
-// }
 }
