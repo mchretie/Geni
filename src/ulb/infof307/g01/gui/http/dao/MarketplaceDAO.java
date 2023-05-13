@@ -28,7 +28,8 @@ public class MarketplaceDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {};
+        TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {
+        };
         return new Gson().fromJson(response.body(), typeToken);
     }
 
@@ -54,7 +55,8 @@ public class MarketplaceDAO extends HttpDAO {
 
         checkResponseCode(response.statusCode());
 
-        TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {};
+        TypeToken<List<MarketplaceDeckMetadata>> typeToken = new TypeToken<>() {
+        };
         return new Gson().fromJson(response.body(), typeToken);
     }
 
@@ -71,16 +73,16 @@ public class MarketplaceDAO extends HttpDAO {
                 .collect(toList());
     }
 
-    public List<MarketplaceDeckMetadata> searchDecksByCreator(String deckName)
+    public List<MarketplaceDeckMetadata> searchDecksByCreator(String Creator)
             throws IOException, InterruptedException {
 
-        if (deckName.isEmpty())
+        if (Creator.isEmpty())
             return getAllMarketplaceDecks();
 
-        final Pattern pattern = Pattern.compile("%s.*".formatted(validator.addTolerance(deckName)));
+        final Pattern pattern = Pattern.compile("%s".formatted(Creator));
 
         return getAllMarketplaceDecks().stream()
-                .filter(deck -> pattern.matcher(validator.addTolerance(deck.owner())).matches())
+                .filter(deck -> pattern.matcher(deck.owner()).matches())
                 .collect(toList());
     }
 }

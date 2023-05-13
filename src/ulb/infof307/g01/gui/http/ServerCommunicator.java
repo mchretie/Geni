@@ -143,13 +143,13 @@ public class ServerCommunicator {
     public Score getBestScoreForDeck(UUID deckId)
             throws ServerCommunicationFailedException {
 
-       try {
-           return scoreDAO.getBestScoreForDeck(deckId);
+        try {
+            return scoreDAO.getBestScoreForDeck(deckId);
 
-       } catch (IOException | InterruptedException e) {
-           String message = "Failed to get best score for deck";
-           throw new ServerCommunicationFailedException(message);
-       }
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get best score for deck";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
     public HashMap<UUID, Score> getBestScoreForDecks(List<DeckMetadata> decks)
@@ -330,13 +330,13 @@ public class ServerCommunicator {
     public List<MarketplaceDeckMetadata> getAllMarketplaceDecks()
             throws ServerCommunicationFailedException {
 
-       try {
-           return marketplaceDAO.getAllMarketplaceDecks();
+        try {
+            return marketplaceDAO.getAllMarketplaceDecks();
 
-       } catch (IOException | InterruptedException e) {
-           String message = "Failed to get all marketplace decks";
-           throw new ServerCommunicationFailedException(message);
-       }
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get all marketplace decks";
+            throw new ServerCommunicationFailedException(message);
+        }
     }
 
     public void addDeckToMarketplace(Deck deck)
@@ -405,7 +405,7 @@ public class ServerCommunicator {
         }
     }
 
-    public List<MarketplaceDeckMetadata> searchDecksMarketplaceByCreator(String deckName)
+    public List<MarketplaceDeckMetadata> searchDecksMarketplaceByCreator(String deckName) //TODO : rename to creator ?
             throws ServerCommunicationFailedException {
 
         try {

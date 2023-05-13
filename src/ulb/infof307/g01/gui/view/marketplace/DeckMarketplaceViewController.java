@@ -2,10 +2,11 @@ package ulb.infof307.g01.gui.view.marketplace;
 
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -16,6 +17,7 @@ import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.gui.util.ImageLoader;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.model.deck.Tag;
 
 
 public class DeckMarketplaceViewController {
@@ -46,6 +48,9 @@ public class DeckMarketplaceViewController {
 
     @FXML
     private Label creatorLabel;
+
+    @FXML
+    private FlowPane tagsContainer;
 
 
     /* ====================================================================== */
@@ -96,6 +101,9 @@ public class DeckMarketplaceViewController {
 
         changeDeckAvailabilityIcon();
 
+        //this.setTags(); // Todo verify
+
+
         if (bestScore == null)
             this.setStats("N/A");
         else
@@ -125,6 +133,24 @@ public class DeckMarketplaceViewController {
         clip.heightProperty().bind(imageBackground.fitHeightProperty());
         clip.widthProperty().bind(imageBackground.fitWidthProperty());
         imageBackground.setClip(clip);
+    }
+
+    private void setTags() {
+        tagsContainer.setHgap(30);
+        tagsContainer.setVgap(10);
+
+        for (Tag tag : deck.tags()) {
+            Label tagLabel = new Label(tag.getName());
+
+            tagLabel.setBackground(new Background(new BackgroundFill(
+                    Color.web(tag.getColor()),
+                    new CornerRadii(10, false),
+                    new Insets(-2, -10, -2, -10))));
+
+            tagLabel.setTextFill(tag.isBackgroundDark() ? Color.WHITE : Color.BLACK);
+
+            tagsContainer.getChildren().add(tagLabel);
+        }
     }
 
     private LinearGradient makeGradient(Color color) {

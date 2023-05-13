@@ -26,7 +26,7 @@ import java.util.UUID;
 public class MarketplaceController implements
         MarketplaceViewController.Listener,
         DeckMarketplaceViewController.Listener,
-        DeckUserMarketplaceViewController.Listener  {
+        DeckUserMarketplaceViewController.Listener {
     private final Stage stage;
 
     private final ErrorHandler errorHandler;
@@ -65,6 +65,7 @@ public class MarketplaceController implements
 
         List<Node> decksMarketplace = loadDecksMarketplaceDatabase(serverCommunicator.getAllMarketplaceDecks());
         List<Node> decksUser = getMarketplaceDecksUser();
+
         marketplaceViewController.setDecksMarketplace(decksMarketplace);
         marketplaceViewController.setDecksUser(decksUser);
         stage.show();
@@ -100,6 +101,8 @@ public class MarketplaceController implements
         HashMap<UUID, Score> bestScores = serverCommunicator.getBestScoreForMarketplaceDecks(decksUser);
 
         for (MarketplaceDeckMetadata deck : decksUser) {
+
+            //System.out.println("Deck: " + deck);
             URL resource = MarketplaceViewController
                     .class
                     .getResource("DeckUserMarketplaceView.fxml");
@@ -120,6 +123,7 @@ public class MarketplaceController implements
 
         return decksLoaded;
     }
+
     private List<Node> loadDecksViewMarketplace(List<MarketplaceDeckMetadata> decks, DeckAvailability deckAvailability)
             throws IOException, ServerCommunicationFailedException {
         List<Node> decksLoaded = new ArrayList<>();
