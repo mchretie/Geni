@@ -130,7 +130,8 @@ public class DeckUserMarketplaceViewController {
 
         int i =0;
 
-        while (i < 10 && i < tags.size()) {
+        // 7 is the max number of tags we display
+        while (i < 7 && i < tags.size()) {
             Tag tag = tags.get(i);
             Label tagLabel = new Label(tag.getName());
 
