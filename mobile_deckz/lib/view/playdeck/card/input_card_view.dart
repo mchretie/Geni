@@ -122,22 +122,22 @@ class _InputCardViewState extends State<InputCardView>
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                        width: 300,
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Answer',
-                          ),
-                          onChanged: (text) {
-                            setState(() {
-                              answer = text;
-                            });
-                          },
-                        )),
-                    SizedBox(
-                      width: 60,
-                      height: 60,
+                    Flexible(
+                      flex: 4,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Answer',
+                        ),
+                        onChanged: (text) {
+                          setState(() {
+                            answer = text;
+                          });
+                        },
+                      ),
+                    ),
+                    Flexible(
+                      flex: 1,
                       child: ElevatedButton(
                         onPressed: handleAnswer,
                         child: const Icon(Icons.check),
