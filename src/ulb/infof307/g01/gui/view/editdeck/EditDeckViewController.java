@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
@@ -103,6 +104,9 @@ public class EditDeckViewController {
 
     @FXML
     private TextField timerValue;
+
+    @FXML
+    private ScrollPane tagsScrollPane;
 
 
     /* ====================================================================== */
@@ -289,7 +293,8 @@ public class EditDeckViewController {
 
         textField.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case ENTER -> listener.mcqChoiceModified(textField.getText(), index);
+                case ENTER ->
+                        listener.mcqChoiceModified(textField.getText(), index);
 
                 case TAB -> focusNextNode(index);
             }
@@ -443,6 +448,10 @@ public class EditDeckViewController {
         listener.tagAddedToDeck(tagText, colorString);
     }
 
+    @FXML
+    private void handleTagsScroll(ScrollEvent event) {
+        tagsScrollPane.setHvalue(tagsScrollPane.getHvalue() - event.getDeltaY() / 1000);
+    }
 
     /* ====================================================================== */
     /*                             Click handlers                             */
@@ -501,7 +510,6 @@ public class EditDeckViewController {
         listener.editBackOfCardClicked();
     }
 
-
     /* ====================================================================== */
     /*                             Hover handlers                             */
     /* ====================================================================== */
@@ -547,10 +555,14 @@ public class EditDeckViewController {
     }
 
     @FXML
-    private void handleColorPickerHoverTitle() { colorPickerTitle.setStyle("-fx-background-color: #B1B7E1"); }
+    private void handleColorPickerHoverTitle() {
+        colorPickerTitle.setStyle("-fx-background-color: #B1B7E1");
+    }
 
     @FXML
-    private void handleColorPickerExitTitle() { colorPickerTitle.setStyle("-fx-background-color: #C3B1E1"); }
+    private void handleColorPickerExitTitle() {
+        colorPickerTitle.setStyle("-fx-background-color: #C3B1E1");
+    }
 
     @FXML
     private void handleFrontCardEditHover() {
@@ -670,9 +682,9 @@ public class EditDeckViewController {
 
     public void setRemoveChoiceButtonEnabled(boolean canRemoveChoice) {
         choicesGrid.lookupAll("Button")
-                    .stream()
-                    .filter(node -> Objects.equals(node.getId(), "removeChoiceButton"))
-                    .forEach(node -> node.setDisable(!canRemoveChoice));
+                .stream()
+                .filter(node -> Objects.equals(node.getId(), "removeChoiceButton"))
+                .forEach(node -> node.setDisable(!canRemoveChoice));
     }
 
 
@@ -683,30 +695,43 @@ public class EditDeckViewController {
     public interface Listener {
         /* Deck */
         void deckNameModified(String newName);
+
         void tagAddedToDeck(String tagName, String color);
+
         void deckColorModified(Color color);
+
         void deckTitleColorModified(Color color);
+
         void deckImageModified(File image);
 
         /* Card */
         void cardPreviewClicked(int index);
+
         void editFrontOfCardClicked();
+
         void selectedCardRemoved();
 
         /* MCQ Card */
         void newMCQCard();
+
         void mcqChoiceModified(String text, int index);
+
         void mcqAnswerChanged(int i);
+
         void mcqCardChoiceRemoved(int index);
+
         void mcqCardChoiceAdded();
 
         /* Flash Card */
         void newFlashCard();
+
         void editBackOfCardClicked();
 
         /* Input Card */
         void newInputCard();
+
         void inputAnswerModified(String answer);
+
         void timerValueChanged(int value);
     }
 }

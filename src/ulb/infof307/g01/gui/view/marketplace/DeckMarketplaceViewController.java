@@ -141,6 +141,7 @@ public class DeckMarketplaceViewController {
         tagsContainer.setVgap(10);
 
         List<Tag> tags= deck.tags();
+
         int i =0;
 
         while (i < 10 && i < tags.size()) {
