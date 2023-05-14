@@ -103,7 +103,7 @@ public class DeckMarketplaceViewController {
 
         changeDeckAvailabilityIcon();
 
-        this.setTags(); // Todo verify
+        this.setTags();
 
         if (bestScore == null)
             this.setStats("N/A");
