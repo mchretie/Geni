@@ -7,6 +7,7 @@ import '../../http_dao/deck_dao.dart';
 import '../../http_dao/server_path.dart';
 import '../model/deck/deck.dart';
 import '../model/deck/score.dart';
+import 'deck_preview_view.dart';
 
 class DeckView extends StatefulWidget {
   final Deck deck;
@@ -65,8 +66,9 @@ class _DeckViewState extends State<DeckView> {
   void _onPlayDeckTap() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) =>
-            PlayDeckView(deck: widget.deck, score: Score(0, widget.deck.id)),
+        builder: (context) => DeckPreviewView(
+          deck: widget.deck,
+        ),
       ),
     );
   }
