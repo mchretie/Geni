@@ -12,5 +12,11 @@ class HexColor extends Color {
     return int.parse(hexColor, radix: 16);
   }
 
+  static bool isDark(String hexColor) {
+    final color = _getColorFromHex(hexColor);
+    final darkness = 1 - (0.299 * Color(color).red + 0.587 * Color(color).green + 0.114 * Color(color).blue) / 255;
+    return darkness >= 0.5;
+  }
+
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
