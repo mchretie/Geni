@@ -10,6 +10,14 @@
 <?import org.kordamp.ikonli.javafx.*?>
 
 <StackPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.profile.ProfileViewController">
+    <Rectangle arcHeight="10.0" arcWidth="20.0" fill="TRANSPARENT" height="230.0" stroke="#c3b1e1" strokeType="OUTSIDE" strokeWidth="3.0" width="200.0">
+        <effect>
+            <DropShadow>
+                <color>
+                    <Color red="0.7647058963775635" green="0.6941176652908325" blue="0.8823529481887817" />
+                </color>
+            </DropShadow>
+        </effect></Rectangle>
     <VBox alignment="CENTER" fillWidth="false" spacing="10.0">
 
         <Label alignment="CENTER" contentDisplay="CENTER" text="Votre Profil">
@@ -51,12 +59,4 @@
         </padding>
 
     </VBox>
-    <Rectangle arcHeight="10.0" arcWidth="20.0" fill="TRANSPARENT" height="230.0" stroke="#c3b1e1" strokeType="OUTSIDE" strokeWidth="3.0" width="200.0">
-      <effect>
-         <DropShadow>
-            <color>
-               <Color red="0.7647058963775635" green="0.6941176652908325" blue="0.8823529481887817" />
-            </color>
-         </DropShadow>
-      </effect></Rectangle>
 </StackPane>
