@@ -9,7 +9,7 @@ import '../model/leaderboard/score.dart';
 
 class LeaderboardDao {
   static Future<Leaderboard> getGlobalLeaderboard() async {
-    http.Response response = await http.get(ServerPath.getBestScoreUserIdPath);
+    http.Response response = await http.get(ServerPath.getGlobalLeaderboard);
     String username = await AuthDao.getUsername();
     if (response.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(response.body);
