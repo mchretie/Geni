@@ -94,7 +94,7 @@ public class Database {
         return userDao.registerUser(username, password);
     }
 
-    public String getUserId(String username) {
+    public String getUserId(String username) throws DatabaseException {
         return userDao.getUserId(username);
     }
 
