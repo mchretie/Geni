@@ -238,10 +238,10 @@ public class DeckDAO extends DAO {
      */
     private void saveDeckIdentity(Deck deck, UUID userId) throws DatabaseException {
         String sql = """
-                INSERT INTO deck (deck_id, user_id, name, color, image, color_name, public)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO deck (deck_id, user_id, name, color, image, color_name)
+                VALUES (?, ?, ?, ?, ?, ?)
                 ON CONFLICT(deck_id)
-                DO UPDATE SET name = ?, color = ?, image = ?, color_name = ?, public = ?
+                DO UPDATE SET name = ?, color = ?, image = ?, color_name = ?
                 """;
 
         database.executeUpdate(sql,
@@ -251,13 +251,11 @@ public class DeckDAO extends DAO {
                 deck.getColor(),
                 deck.getImage(),
                 deck.getColorName(),
-                deck.isPublic() ? 1 : 0,
 
                 deck.getName(),
                 deck.getColor(),
                 deck.getImage(),
-                deck.getColorName(),
-                deck.isPublic() ? 1 : 0
+                deck.getColorName()
         );
     }
 
@@ -437,7 +435,7 @@ public class DeckDAO extends DAO {
             String color = res.getString("color");
             String image = res.getString("image");
             String colorName = res.getString("color_name");
-            boolean isPublic = res.getInt("public") == 1;
+            boolean isPublic = res.getBoolean("public");
             List<Card> cards = getCardsFor(uuid);
             List<Tag> tags = tagDao.getTagsFor(uuid);
 
