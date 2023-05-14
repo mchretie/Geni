@@ -6,7 +6,12 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -27,6 +32,7 @@ public class DeckMarketplaceViewController {
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
+
     @FXML
     private StackPane stackPane;
 
@@ -50,6 +56,9 @@ public class DeckMarketplaceViewController {
 
     @FXML
     private Label creatorLabel;
+
+    @FXML
+    private HBox starRating;
 
     @FXML
     private FlowPane tagsContainer;
@@ -86,6 +95,22 @@ public class DeckMarketplaceViewController {
 
     public void setImageLoader(ImageLoader loader) {
         this.imageLoader = loader;
+    }
+
+    public void setRating(int rating) {
+        for (int i = 0; i < 5; i++) {
+            FontIcon star = new FontIcon();
+            star.setIconSize(20);
+
+            if (i <= rating) {
+                star.setIconLiteral("lsf-star");
+
+            } else {
+                star.setIconLiteral("lsf-starempty");
+            }
+
+            starRating.getChildren().add(star);
+        }
     }
 
 

@@ -36,6 +36,10 @@ class _DeckViewState extends State<DeckView> {
     }
   }
 
+  Color _getTextColor(String color) {
+    return HexColor.isDark(widget.deck.color) ? Colors.white : Colors.black;
+  }
+
   void _downloadDeck() {
     DeckDao.addDeckToCollection(widget.deck.id);
     setState(() {
@@ -61,9 +65,8 @@ class _DeckViewState extends State<DeckView> {
   void _onPlayDeckTap() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => PlayDeckView(
-            deck: widget.deck,
-            score: Score(0, widget.deck.id)),
+        builder: (context) =>
+            PlayDeckView(deck: widget.deck, score: Score(0, widget.deck.id)),
       ),
     );
   }
@@ -142,8 +145,8 @@ class _DeckViewState extends State<DeckView> {
                                                 .withOpacity(0.9),
                                             child: Text(
                                               tag.name,
-                                              style: const TextStyle(
-                                                color: Colors.black,
+                                              style: TextStyle(
+                                                color: _getTextColor(tag.color),
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -166,11 +169,13 @@ class _DeckViewState extends State<DeckView> {
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        const Icon(Icons.credit_card, color: Colors.white),
+                        Icon(Icons.credit_card,
+                            color: _getTextColor(widget.deck.color)),
                         const SizedBox(height: 4),
                         Text(
                           widget.deck.cardCount,
-                          style: const TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: _getTextColor(widget.deck.color)),
                         ),
                       ],
                     ),
@@ -178,23 +183,26 @@ class _DeckViewState extends State<DeckView> {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          const Icon(Icons.account_circle_rounded,
-                              color: Colors.white),
+                          Icon(Icons.account_circle_rounded,
+                              color: _getTextColor(widget.deck.color)),
                           const SizedBox(height: 4),
                           Text(
                             _marketplaceDeck.owner,
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(
+                                color: _getTextColor(widget.deck.color)),
                           ),
                         ],
                       ),
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        const Icon(Icons.emoji_events, color: Colors.white),
+                        Icon(Icons.emoji_events,
+                            color: _getTextColor(widget.deck.color)),
                         const SizedBox(height: 4),
                         Text(
                           widget.deck.score,
-                          style: const TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: _getTextColor(widget.deck.color)),
                         ),
                       ],
                     ),

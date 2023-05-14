@@ -17,23 +17,35 @@
 
     <VBox alignment="CENTER" style="-fx-border-color: black;                   -fx-border-radius: 20;">
 
-        <HBox alignment="CENTER_RIGHT">
+        <HBox>
+            <HBox fx:id="starRating" alignment="CENTER_LEFT">
 
-            <!-- add/remove deck button -->
-            <Button onMouseClicked="#handleAddRemoveDeckClicked" style="-fx-background-color: transparent;">
+                <padding>
+                    <Insets left="10.0" />
+                </padding>
+            </HBox>
 
-                <graphic>
-                    <FontIcon fx:id="addRemoveDeckIcon" iconLiteral="mdi2b-bookmark-plus" iconSize="35" onMouseEntered="#handleAddRemoveDeckHover" onMouseExited="#handleAddRemoveDeckExit" />
-                </graphic>
 
-            </Button>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-         <padding>
-            <Insets right="10.0" top="-9.0" />
-         </padding>
+
+            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+
+                <!-- add/remove deck button -->
+                <Button onMouseClicked="#handleAddRemoveDeckClicked" style="-fx-background-color: transparent;">
+
+                    <graphic>
+                        <FontIcon fx:id="addRemoveDeckIcon" iconLiteral="mdi2b-bookmark-plus" iconSize="35" onMouseEntered="#handleAddRemoveDeckHover" onMouseExited="#handleAddRemoveDeckExit" />
+                    </graphic>
+
+                </Button>
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+                <padding>
+                    <Insets right="10.0" top="-9.0" />
+                </padding>
+            </HBox>
         </HBox>
+
 
         <!-- deck name -->
         <HBox alignment="CENTER" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
