@@ -2,49 +2,61 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<VBox alignment="CENTER" fillWidth="false" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.profile.ProfileViewController">
+<StackPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.profile.ProfileViewController">
+    <VBox alignment="CENTER" fillWidth="false" spacing="10.0">
 
-        <Label prefHeight="31.0" prefWidth="187.0" text="Votre Profil">
+        <Label alignment="CENTER" contentDisplay="CENTER" text="Votre Profil">
             <font>
                 <Font size="26.0" />
             </font>
+        </Label>
+        <HBox>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Identifiant : ">
+                <font>
+                    <Font size="18.0" />
+                </font>
+            </Label>
 
-            <VBox.margin>
-                <Insets bottom="30.0" />
-            </VBox.margin>
+            <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER">
+
+                <font>
+                    <Font size="18.0" />
+                </font>
+            </Label>
+        </HBox>
+        <Label alignment="CENTER" contentDisplay="CENTER" text="Statistiques :">
+          <font>
+              <Font size="18.0" />
+          </font>
         </Label>
 
-        <Label prefHeight="16.0" prefWidth="189.0" text="Identifiant :">
-            <VBox.margin>
-                <Insets bottom="10.0" />
-            </VBox.margin>
-        </Label>
 
-        <Label fx:id="usernameLabel" text="defaultValue">
+        <!-- Statistics button -->
+        <Button onMouseClicked="#goToStatisticsClicked" onMouseEntered="#handleStatisticsHover" onMouseExited="#handleStatisticsExitHover" style="-fx-background-color: transparent">
+            <graphic>
+                <FontIcon fx:id="statisticsIcon" iconLiteral="mdi2c-chart-areaspline" iconSize="40" />
+            </graphic>
+        </Button>
 
-            <font>
-                <Font size="18.0" />
-            </font>
-            <VBox.margin>
-                <Insets bottom="60.0" />
-            </VBox.margin>
-        </Label>
+        <Button mnemonicParsing="false" onAction="#handleLogoutButtonClicked" text="Se déconnecter" />
+        <padding>
+          <Insets bottom="10.0" />
+        </padding>
 
-
-    <!-- Statistics button -->
-    <Button onMouseClicked="#goToStatisticsClicked" onMouseEntered="#handleStatisticsHover" onMouseExited="#handleStatisticsExitHover" style="-fx-background-color: transparent">
-        <graphic>
-            <FontIcon fx:id="statisticsIcon" iconLiteral="mdi2c-chart-areaspline" iconSize="40" />
-        </graphic>
-    </Button>
-
-    <Button mnemonicParsing="false" onAction="#handleLogoutButtonClicked" text="Se déconnecter" />
-   <padding>
-      <Insets bottom="10.0" />
-   </padding>
-
-</VBox>
+    </VBox>
+    <Rectangle arcHeight="10.0" arcWidth="20.0" fill="TRANSPARENT" height="230.0" stroke="#c3b1e1" strokeType="OUTSIDE" strokeWidth="3.0" width="200.0">
+      <effect>
+         <DropShadow>
+            <color>
+               <Color red="0.7647058963775635" green="0.6941176652908325" blue="0.8823529481887817" />
+            </color>
+         </DropShadow>
+      </effect></Rectangle>
+</StackPane>

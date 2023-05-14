@@ -2,12 +2,10 @@ package ulb.infof307.g01.gui.view.mainwindow;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.BoxBlur;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
@@ -21,10 +19,10 @@ import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.leaderboard.GlobalLeaderboardViewController;
 import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
+import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 import ulb.infof307.g01.gui.view.result.ResultViewController;
 import ulb.infof307.g01.gui.view.statistics.StatisticsViewController;
 import ulb.infof307.g01.gui.view.userauth.UserAuthViewController;
-import ulb.infof307.g01.gui.view.profile.ProfileViewController;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -91,7 +89,7 @@ public class MainWindowViewController implements Initializable {
     private VBox editCardView;
 
     @FXML
-    private VBox profileView;
+    private StackPane profileView;
 
     @FXML
     private StackPane userAuthView;
