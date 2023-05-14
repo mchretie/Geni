@@ -129,7 +129,7 @@ public class MarketplaceController implements
             controller.setImageLoader(imageLoader);
             controller.setListener(this);
 
-            controller.setRating(deck.rating());
+            controller.setRating(deck.rating()-1);
 
             decksLoaded.add(node);
         }

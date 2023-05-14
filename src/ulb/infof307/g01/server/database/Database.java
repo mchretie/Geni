@@ -5,6 +5,7 @@ import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
+import ulb.infof307.g01.model.rating.UserRating;
 import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.server.database.dao.*;
@@ -166,5 +167,13 @@ public class Database {
 
     public int getNumberOfPublicPlayedDecks(UUID userId) {
         return marketplaceDao.getNumberOfPublicPlayedDecks(userId);
+    }
+
+    public void addRating(UserRating userRating) {
+        marketplaceDao.addRating(userRating);
+    }
+
+    public UserRating getUserRating(UUID deckId, UUID userId) {
+        return marketplaceDao.getUserRating(deckId, userId);
     }
 }

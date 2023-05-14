@@ -29,8 +29,6 @@ public class Deck implements Iterable<Card> {
     private String image;
     @Expose
     private boolean isPublic;
-    @Expose
-    private int stars = 3;
 
 
     /* ====================================================================== */
@@ -286,13 +284,5 @@ public class Deck implements Iterable<Card> {
         return (int) cards.stream()
                 .filter(Card::isCompetitive)
                 .count();
-    }
-
-    public int numberOfStars() {
-        return stars;
-    }
-
-    public void setStars(int stars) {
-        this.stars = stars;
     }
 }

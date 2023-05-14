@@ -84,24 +84,11 @@ public class DeckPreviewViewController implements Initializable {
             });
 
             starButton.setOnMouseEntered(event -> {
-                for (int j = 0; j <= finalStarIndex; j++) {
-                    Button previousStar = (Button) starContainer.getChildren().get(j);
-                    FontIcon previousStarGraphic = (FontIcon) previousStar.getGraphic();
-                    previousStarGraphic.setIconLiteral("lsf-star");
-                }
+                listener.starEntered(finalStarIndex);
             });
 
             starButton.setOnMouseExited(event -> {
-                if (finalStarIndex > deck.numberOfStars())
-                    starIcon.setIconLiteral("lsf-starempty");
-            });
-
-            starContainer.setOnMouseExited(event -> {
-                for (int j = 0; j < deck.numberOfStars(); ++j) {
-                    Button previousStar = (Button) starContainer.getChildren().get(j);
-                    FontIcon previousStarGraphic = (FontIcon) previousStar.getGraphic();
-                    previousStarGraphic.setIconLiteral("lsf-star");
-                }
+                listener.starExited(finalStarIndex);
             });
 
             starButton.setGraphic(starIcon);
@@ -155,7 +142,6 @@ public class DeckPreviewViewController implements Initializable {
 
     public void setDeck(Deck deck) {
         this.deck = deck;
-        setStars(deck.numberOfStars());
 
         deckNameLabel.setText(deck.getName());
 
@@ -244,6 +230,9 @@ public class DeckPreviewViewController implements Initializable {
     public interface Listener {
         void playDeckClicked();
         void deckSharedClicked();
+
         void starClicked(int startIndex);
+        void starEntered(int starIndex);
+        void starExited(int starIndex);
     }
 }

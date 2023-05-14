@@ -12,6 +12,7 @@ import ulb.infof307.g01.gui.http.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.rating.RatingValue;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.card.FlashCard;
@@ -277,6 +278,9 @@ public class MainFxController extends Application implements
         try {
             deckPreviewController
                     .setDeck(serverCommunicator.getDeck(deckMetadata).orElse(null));
+
+            RatingValue rating = serverCommunicator.getUserRating(deckMetadata).value();
+            deckPreviewController.setUserRating(rating);
 
             deckPreviewController.show();
             viewStack.add(View.PREVIEW_DECK);
