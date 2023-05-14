@@ -42,11 +42,11 @@ public class Database {
         this.marketplaceDao.setDeckDAO(this.deckDao);
     }
 
-    public void open(File dbname) {
+    public void open(File dbname) throws DatabaseException {
         this.databaseAccess.open(dbname);
     }
 
-    public void initServerScheme() {
+    public void initServerScheme() throws DatabaseException {
         this.databaseAccess.initTables(DatabaseSchema.SERVER);
     }
 
@@ -79,10 +79,6 @@ public class Database {
     }
     public List<DeckMetadata> searchDecksMetadata(String userSearch, UUID userId) throws DatabaseException {
         return deckDao.searchDecksMetadata(userSearch, userId);
-    }
-
-    public boolean deckIdExists(UUID deckId) throws DatabaseException {
-        return deckDao.deckIdExists(deckId);
     }
 
 
@@ -123,11 +119,11 @@ public class Database {
         return new GlobalLeaderboard(scoreDao.getAllUserDeckScore());
     }
 
-    public GameHistory getGameHistory(UUID userId) {
+    public GameHistory getGameHistory(UUID userId) throws DatabaseException {
         return new GameHistory(scoreDao.getGameHistory(userId));
     }
 
-    public GameHistory getGameHistory(UUID userId, UUID deckId) {
+    public GameHistory getGameHistory(UUID userId, UUID deckId) throws DatabaseException {
         return new GameHistory(scoreDao.getGameHistory(userId, deckId));
     }
 

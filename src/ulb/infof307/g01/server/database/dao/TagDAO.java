@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-import static java.util.stream.Collectors.*;
 
 /**
  * Save and retrieve tags from long-term memory
@@ -155,9 +154,11 @@ public class TagDAO extends DAO {
     @SuppressWarnings("unchecked")
     public void saveTagsFor(Deck deck) throws DatabaseException {
 
-        Set<Tag> actualTags = deck.getTags().stream()
-                .map(this::replaceIdIfAlreadyExist)
-                .collect(toSet());
+        Set<Tag> actualTags = new HashSet<>();
+        for (Tag tag : deck.getTags()) {
+            Tag newTag = replaceIdIfAlreadyExist(tag);
+            actualTags.add(newTag);
+        }
 
         for (Tag tag : actualTags) {
             saveTag(tag);
@@ -256,7 +257,7 @@ public class TagDAO extends DAO {
         return tags;
     }
 
-    private Tag extractTag(ResultSet res) {
+    private Tag extractTag(ResultSet res) throws DatabaseException {
         try {
             UUID uuid = UUID.fromString(res.getString("tag_id"));
             String name = res.getString("name");
