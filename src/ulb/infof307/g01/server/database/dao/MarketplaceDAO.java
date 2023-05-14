@@ -40,7 +40,7 @@ public class MarketplaceDAO extends DAO {
     }
 
 
-    public UserRating getUserRating(UUID deckId, UUID userId) {
+    public UserRating getUserRating(UUID deckId, UUID userId) throws DatabaseException {
         String sql = """
                     SELECT value
                     FROM user_rating
@@ -64,7 +64,7 @@ public class MarketplaceDAO extends DAO {
         }
     }
 
-    public void addRating(UserRating userRating) {
+    public void addRating(UserRating userRating) throws DatabaseException {
         String sql = """                                                                                                                                  
                 INSERT INTO user_rating (deck_id, user_id, value)
                 VALUES (?, ?, ?)
@@ -79,7 +79,7 @@ public class MarketplaceDAO extends DAO {
                                String.valueOf(userRating.value().asInt()));
     }
 
-    private int getRatingFor(UUID deckId) {
+    private int getRatingFor(UUID deckId) throws DatabaseException {
         String sql = """
                 SELECT value
                 FROM user_rating
@@ -168,7 +168,7 @@ public class MarketplaceDAO extends DAO {
         return decks;
     }
 
-    private void incrementDownloads(UUID deckId) {
+    private void incrementDownloads(UUID deckId) throws DatabaseException {
         String sql = """
                 UPDATE marketplace
                 SET downloads = downloads + 1
