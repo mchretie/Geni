@@ -7,13 +7,14 @@ import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
-import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
 import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
 
 public class ScoreRequestHandler extends Handler {
 
@@ -24,8 +25,7 @@ public class ScoreRequestHandler extends Handler {
     @Override
     public void init() {
         post(SAVE_SCORE_PATH, this::saveScore, toJson());
-        get(GET_LEADERBOARD_PATH, this::getLeaderboardByDeckId, toJson());
-        get(GET_BEST_SCORE_PATH, this::getBestScoreByDeckId, toJson());
+        get(GET_BEST_SCORES_PATH, this::getBestScores, toJson());
         get(GET_GLOBAL_LEADERBOARD, this::getGlobalLeaderboard, toJson());
     }
 
@@ -35,7 +35,7 @@ public class ScoreRequestHandler extends Handler {
             Score score = new Gson().fromJson(req.body(), Score.class);
 
             if (!username.equals(score.getUsername()))
-                throw new RuntimeException("UserId from token doesn't match userId from score.");
+                throw new Exception("UserId from token doesn't match userId from score.");
 
             database.saveScore(score);
 
@@ -50,34 +50,33 @@ public class ScoreRequestHandler extends Handler {
         }
     }
 
-    private DeckLeaderboard getLeaderboardByDeckId(Request req, Response res) {
+    private List<Score> getBestScores(Request req, Response res) {
         try {
-            UUID deckId = UUID.fromString(req.queryParams("deck"));
+            String[] decksIds = req.queryParamsValues("deckId[]");
+            List<Score> bestScores = new ArrayList<>();
+            if (decksIds == null)
+                return bestScores;
 
-            // Does this ever happen?
-            if (!database.deckIdExists(deckId))
-                return null;
-
-            return database.getLeaderboardFromDeckId(deckId);
+            for (String deckId : decksIds) {
+                Score bestScore = getBestScoreByDeckId(UUID.fromString(deckId));
+                if (bestScore != null)
+                    bestScores.add(bestScore);
+            }
+            return bestScores;
 
         } catch (Exception e) {
             String errorMessage = "Failed to get leaderboard: " + e.getMessage();
             logger.warning(errorMessage);
             halt(500, errorMessage);
-            return null;
+            return new ArrayList<>();
         }
     }
 
-    private Score getBestScoreByDeckId(Request request, Response response) {
-        DeckLeaderboard leaderboard = getLeaderboardByDeckId(request, response);
-
-        if (leaderboard == null || leaderboard.isEmpty())
-            return null;
-
-        return leaderboard.getLeaderboard().get(0);
+    private Score getBestScoreByDeckId(UUID deckId) {
+        return database.getBestScoreForDeck(deckId);
     }
 
-    public GlobalLeaderboard getGlobalLeaderboard(Request req, Response res) {
+    private GlobalLeaderboard getGlobalLeaderboard(Request req, Response res) {
         try {
             return database.getGlobalLeaderboard();
 

@@ -134,13 +134,11 @@ public class DatabaseAccess {
      * @param updates a SQL statement to be executed
      */
     public void executeUpdates(String[] updates) throws DatabaseException {
-        try {
-            assertOpened();
-            Statement stmt = connection.createStatement();
+        assertOpened();
+        try (Statement stmt = connection.createStatement()) {
             for (String sql : updates)
                 stmt.addBatch(sql);
             stmt.executeBatch();
-
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }

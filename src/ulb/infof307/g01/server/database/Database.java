@@ -6,7 +6,6 @@ import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.rating.UserRating;
-import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.server.database.dao.*;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
@@ -116,8 +115,8 @@ public class Database {
         scoreDao.deleteScoresForDeck(deckId);
     }
 
-    public DeckLeaderboard getLeaderboardFromDeckId(UUID deckId) {
-        return new DeckLeaderboard(deckId, scoreDao.getScoresForDeck(deckId));
+    public Score getBestScoreForDeck(UUID deckId) {
+        return scoreDao.getBestScoreForDeck(deckId);
     }
 
     public GlobalLeaderboard getGlobalLeaderboard() {
