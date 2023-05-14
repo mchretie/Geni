@@ -1,11 +1,7 @@
 package ulb.infof307.g01.model.deck;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-
-import static java.util.stream.Collectors.toList;
-import java.util.*;
 
 public record MarketplaceDeckMetadata(UUID id,
                                       String name,

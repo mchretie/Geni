@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
+import ulb.infof307.g01.model.rating.UserRating;
 import ulb.infof307.g01.server.database.dao.DeckDAO;
 import ulb.infof307.g01.server.database.dao.MarketplaceDAO;
 import ulb.infof307.g01.server.database.dao.TagDAO;
@@ -63,8 +64,8 @@ public class TestMarketplaceDAO extends DatabaseUsingTest {
         deck1.switchOnlineVisibility();
         deck2.switchOnlineVisibility();
         List<MarketplaceDeckMetadata> expected = new ArrayList<>();
-        expected.add(new MarketplaceDeckMetadata(deck1, "user1", 0, 0));
-        expected.add(new MarketplaceDeckMetadata(deck2, "user1", 0, 0));
+        expected.add(new MarketplaceDeckMetadata(deck1, "user1", UserRating.DEFAULT_VALUE.asInt(), 0));
+        expected.add(new MarketplaceDeckMetadata(deck2, "user1", UserRating.DEFAULT_VALUE.asInt(), 0));
 
         assertEquals(expected, marketplaceDAO.getMarketplaceDecksMetadata());
 
@@ -73,7 +74,7 @@ public class TestMarketplaceDAO extends DatabaseUsingTest {
         marketplaceDAO.addDeckToMarketplace(deck3.getId());
 
         deck3.switchOnlineVisibility();
-        expected.add(new MarketplaceDeckMetadata(deck3, "user2", 0, 0));
+        expected.add(new MarketplaceDeckMetadata(deck3, "user2", UserRating.DEFAULT_VALUE.asInt(), 0));
 
         assertEquals(expected, marketplaceDAO.getMarketplaceDecksMetadata());
     }

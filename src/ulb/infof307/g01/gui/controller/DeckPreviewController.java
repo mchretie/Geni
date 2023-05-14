@@ -10,6 +10,7 @@ import ulb.infof307.g01.gui.view.deckpreview.DeckPreviewViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.deckpreview.GameHistoryItemViewController;
 import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.rating.*;
 import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.model.gamehistory.Game;
 import ulb.infof307.g01.model.gamehistory.GameHistory;
@@ -47,6 +48,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
     /* ====================================================================== */
 
     private Deck deck;
+    private RatingValue rating;
 
     public DeckPreviewController(Stage stage,
                                  MainWindowViewController mainWindowViewController,
@@ -83,6 +85,11 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
         }
+    }
+
+    public void setUserRating(RatingValue rating) {
+        this.rating = rating;
+        deckPreviewViewController.setStars(rating.asInt()-1);
     }
 
     public void show() throws IllegalStateException {
@@ -146,7 +153,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
     }
 
     @Override
-    public void deckShared() {
+    public void deckSharedClicked() {
         try {
             deck.switchOnlineVisibility();
             deckPreviewViewController.setDeckVisibility(deck.isPublic());
@@ -155,6 +162,31 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
         } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
         }
+    }
+
+    @Override
+    public void starClicked(int startIndex) {
+        try {
+            rating = RatingValue.fromInt(startIndex + 1);
+            deckPreviewViewController.setStars(startIndex);
+
+            serverCommunicator.addRating(new UserRating(deck.getId(),
+                                                        null,
+                                                        rating));
+
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
+        }
+    }
+
+    @Override
+    public void starEntered(int starIndex) {
+        deckPreviewViewController.setStars(starIndex);
+    }
+
+    @Override
+    public void starExited(int starIndex) {
+        deckPreviewViewController.setStars(rating.asInt()-1);
     }
 
     /* ====================================================================== */

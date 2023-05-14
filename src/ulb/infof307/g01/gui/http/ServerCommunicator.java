@@ -4,6 +4,7 @@ import ulb.infof307.g01.gui.http.dao.*;
 import ulb.infof307.g01.gui.http.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.rating.UserRating;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
@@ -413,6 +414,30 @@ public class ServerCommunicator {
 
         } catch (IOException | InterruptedException e) {
             String message = "Failed to search decks";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
+
+    public void addRating(UserRating userRating)
+            throws ServerCommunicationFailedException {
+
+        try {
+            marketplaceDAO.addRating(userRating);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to add userRating to marketplace";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
+
+    public UserRating getUserRating(DeckMetadata deckMetadata)
+            throws ServerCommunicationFailedException {
+
+        try {
+            return marketplaceDAO.getUserRating(deckMetadata);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get userRating from marketplace";
             throw new ServerCommunicationFailedException(message);
         }
     }
