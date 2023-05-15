@@ -11,7 +11,6 @@ import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Tag;
 
-import java.sql.SQLException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,18 +42,18 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getTag_TagNotExists_ReturnsNull() throws SQLException {
+    void getTag_TagNotExists_ReturnsNull() throws DatabaseException {
         Tag tag = new Tag("name");
         assertNull(tagDAO.getTag(tag.getId()));
     }
 
     @Test
-    void tagNameExists_NameNotExists_ReturnsFalse() throws SQLException {
+    void tagNameExists_NameNotExists_ReturnsFalse() throws DatabaseException {
         assertFalse(tagDAO.tagNameExists("name"));
     }
 
     @Test
-    void tagNameExists_NameExists_ReturnsTrue() throws SQLException {
+    void tagNameExists_NameExists_ReturnsTrue() throws DatabaseException {
         Tag tag = new Tag("name");
         tagDAO.saveTag(tag);
 
@@ -62,7 +61,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void isTagValid_TagInvalid_ReturnsFalse() throws SQLException {
+    void isTagValid_TagInvalid_ReturnsFalse() throws DatabaseException {
         Tag tag1 = new Tag("name");
         Tag tag2 = new Tag("name");
         tagDAO.saveTag(tag1);
@@ -71,7 +70,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void isTagValid_TagValid_ReturnsTrue() throws SQLException {
+    void isTagValid_TagValid_ReturnsTrue() throws DatabaseException {
         Tag tag = new Tag("name");
         assertTrue(tagDAO.isTagValid(tag));
 
@@ -80,7 +79,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveTag_TagsWithSameNameDiffId_OnlyFirstAdded() throws SQLException {
+    void saveTag_TagsWithSameNameDiffId_OnlyFirstAdded() throws DatabaseException {
         Tag tag1 = new Tag("name");
         Tag tag2 = new Tag("name");
 
@@ -91,7 +90,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveTag_TagNotExists_TagExists() throws SQLException {
+    void saveTag_TagNotExists_TagExists() throws DatabaseException {
         Tag tag = new Tag("name");
         tagDAO.saveTag(tag);
 
@@ -99,12 +98,12 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getAllTags_NoTags_EmptyList() throws SQLException {
+    void getAllTags_NoTags_EmptyList() throws DatabaseException {
         assertTrue(tagDAO.getAllTags().isEmpty());
     }
 
     @Test
-    void getAllTags_ManyTags_AllReturned() throws SQLException {
+    void getAllTags_ManyTags_AllReturned() throws DatabaseException {
         List<Tag> tags = new ArrayList<>();
         tags.add(new Tag("name1"));
         tags.add(new Tag("name2"));
@@ -118,7 +117,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getAllTags_SameTagAddedMultipleTimes_OneReturned() throws SQLException {
+    void getAllTags_SameTagAddedMultipleTimes_OneReturned() throws DatabaseException {
         Tag tag = new Tag("name");
         tagDAO.saveTag(tag);
         tagDAO.saveTag(tag);
@@ -128,7 +127,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveTagsFor_TagsAddedToDeck_SaveTags() throws SQLException {
+    void saveTagsFor_TagsAddedToDeck_SaveTags() throws DatabaseException {
         Deck deck = new Deck("name");
         Tag tag = new Tag("name");
         deck.addTag(tag);
@@ -140,7 +139,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveTagsFor_TagsRemovedFromDeck_SaveTags() throws SQLException {
+    void saveTagsFor_TagsRemovedFromDeck_SaveTags() throws DatabaseException {
         Deck deck = new Deck("name");
         Tag tag = new Tag("name");
         deck.addTag(tag);
@@ -154,7 +153,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getTagsFor_NoTags_EmptyList() throws SQLException {
+    void getTagsFor_NoTags_EmptyList() throws DatabaseException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
         tagDAO.saveTagsFor(deck);
@@ -162,19 +161,19 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getTagsFor_DeckNotExist_EmptyList() throws SQLException {
+    void getTagsFor_DeckNotExist_EmptyList() throws DatabaseException {
         Deck deck = new Deck("name");
         assertTrue(tagDAO.getTagsFor(deck.getId()).isEmpty());
     }
 
     @Test
-    void getDecksHavingTag_NoDecks_EmptyList() throws SQLException {
+    void getDecksHavingTag_NoDecks_EmptyList() throws DatabaseException {
         Tag tag = new Tag("name");
         assertTrue(tagDAO.getDecksHavingTag(tag).isEmpty());
     }
 
     @Test
-    void getDecksHavingTag_MultipleDecks_OnlyThoseReturned() throws SQLException {
+    void getDecksHavingTag_MultipleDecks_OnlyThoseReturned() throws DatabaseException {
         Deck deck1 = new Deck("name1");
         Deck deck2 = new Deck("name2");
         Deck deck3 = new Deck("name3");
@@ -198,7 +197,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void deleteTag_TagExists_TagNotExists() throws SQLException {
+    void deleteTag_TagExists_TagNotExists() throws DatabaseException {
         Tag tag = new Tag("name");
         tagDAO.saveTag(tag);
         tagDAO.deleteTag(tag);
@@ -213,7 +212,7 @@ public class TestTagDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void searchTags() throws SQLException {
+    void searchTags() throws DatabaseException {
         List<Tag> tags = new ArrayList<>();
         tags.add(new Tag("name1"));
         tags.add(new Tag("name2"));

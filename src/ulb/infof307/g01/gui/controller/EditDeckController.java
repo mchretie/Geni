@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import ulb.infof307.g01.exception.NeverThrown;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
@@ -22,7 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditDeckController implements EditDeckViewController.Listener,
-                                                    TagViewController.Listener, CardVisitor {
+                                                    TagViewController.Listener,
+                                                    CardVisitor<NeverThrown> {
 
     /* ====================================================================== */
     /*                             Model Attributes                           */
