@@ -237,7 +237,13 @@ public class MarketplaceController implements
 
     @Override
     public void sortChoiceBoxChanged(MarketplaceViewController.SortType sortType) {
-        System.out.println("sortChoiceBoxChanged to " + sortType);
+        try {
+            this.show();
+        } catch (IOException e) {
+            errorHandler.failedLoading(e);
+        } catch (ServerCommunicationFailedException | InterruptedException e) {
+            errorHandler.severConnectionError();
+        }
     }
 
     @Override
