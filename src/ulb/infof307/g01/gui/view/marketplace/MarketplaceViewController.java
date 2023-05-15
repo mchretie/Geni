@@ -67,6 +67,7 @@ public class MarketplaceViewController {
                 );
         comboBox.setItems(options);
         comboBox.setValue("Nom");
+
     }
 
 
