@@ -60,7 +60,8 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
         _decksFuture =
             MarketPlaceDao.sortDecksByAlphabet(decks, false, _showSavedDecks);
       } else {
-        _decksFuture = MarketPlaceDao.getAllMarketplaceDecks();
+        _decksFuture =
+            MarketPlaceDao.sortDecksByNothing(decks, _showSavedDecks);
       }
     });
   }
