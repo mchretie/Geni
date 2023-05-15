@@ -105,11 +105,6 @@ class DeckPreviewView extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
-            child: const Text('Jouer'),
-            onPressed: () => playButtonPressed(context),
-          ),
-          const SizedBox(height: 20),
           const Text(
             'Historique de jeu',
             style: TextStyle(fontSize: 20),
@@ -117,6 +112,25 @@ class DeckPreviewView extends StatelessWidget {
           Expanded(
             child: buildHistory(),
           ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            child: Wrap(
+              children: [
+                const Icon(Icons.play_arrow),
+                const SizedBox(
+                  width: 10,
+                ),
+                const Text(
+                  'Jouer',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ],
+            ),
+            onPressed: () => playButtonPressed(context),
+          ),
+          const SizedBox(height: 20),
         ],
       ),
     );
