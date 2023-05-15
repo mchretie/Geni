@@ -127,11 +127,11 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                   title: Row(
                                                     children: const [
                                                       Text('Stars'),
-                                                      Icon(Icons.arrow_upward)
+                                                      Icon(Icons.arrow_downward)
                                                     ],
                                                   ),
-                                                  value:
-                                                      MarketplaceFilter.starASC,
+                                                  value: MarketplaceFilter
+                                                      .starDESC,
                                                   groupValue:
                                                       _marketplaceFilter,
                                                   onChanged: (MarketplaceFilter?
@@ -146,11 +146,30 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                   title: Row(
                                                     children: const [
                                                       Text('Stars'),
+                                                      Icon(Icons.arrow_upward)
+                                                    ],
+                                                  ),
+                                                  value:
+                                                  MarketplaceFilter.starASC,
+                                                  groupValue:
+                                                  _marketplaceFilter,
+                                                  onChanged: (MarketplaceFilter?
+                                                  filter) {
+                                                    setState(() {
+                                                      _marketplaceFilter =
+                                                          filter;
+                                                    });
+                                                  },
+                                                ),
+                                                RadioListTile(
+                                                  title: Row(
+                                                    children: const [
+                                                      Text('Alphabet'),
                                                       Icon(Icons.arrow_downward)
                                                     ],
                                                   ),
                                                   value: MarketplaceFilter
-                                                      .starDESC,
+                                                      .alphabetASC,
                                                   groupValue:
                                                       _marketplaceFilter,
                                                   onChanged: (MarketplaceFilter?
@@ -171,28 +190,9 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                   value: MarketplaceFilter
                                                       .alphabetDESC,
                                                   groupValue:
-                                                      _marketplaceFilter,
+                                                  _marketplaceFilter,
                                                   onChanged: (MarketplaceFilter?
-                                                      filter) {
-                                                    setState(() {
-                                                      _marketplaceFilter =
-                                                          filter;
-                                                    });
-                                                  },
-                                                ),
-                                                RadioListTile(
-                                                  title: Row(
-                                                    children: const [
-                                                      Text('Alphabet'),
-                                                      Icon(Icons.arrow_downward)
-                                                    ],
-                                                  ),
-                                                  value: MarketplaceFilter
-                                                      .alphabetASC,
-                                                  groupValue:
-                                                      _marketplaceFilter,
-                                                  onChanged: (MarketplaceFilter?
-                                                      filter) {
+                                                  filter) {
                                                     setState(() {
                                                       _marketplaceFilter =
                                                           filter;

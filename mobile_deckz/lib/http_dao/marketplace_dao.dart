@@ -97,7 +97,6 @@ class MarketPlaceDao {
   static Future<List<MarketplaceDeck>> sortDecksByStars(
       bool ascending, bool showUserDecks) async {
     List<MarketplaceDeck> decks = await _showSavedDecks(showUserDecks);
-    print(decks);
     decks.sort((a, b) => ascending
         ? a.rating.compareTo(b.rating)
         : b.rating.compareTo(a.rating));
