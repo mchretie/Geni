@@ -63,7 +63,11 @@ public class MarketplaceController implements
     public void show() throws ServerCommunicationFailedException, IOException, InterruptedException {
         mainWindowViewController.setMarketplaceViewVisible();
 
-        List<Node> decksMarketplace = loadDecksMarketplaceDatabase(serverCommunicator.getAllMarketplaceDecks());
+        List<MarketplaceDeckMetadata> marketplaceDecks = sortMarketplaceDecks(
+                serverCommunicator.getAllMarketplaceDecks(),
+                marketplaceViewController.getSortType());
+
+        List<Node> decksMarketplace = loadDecksMarketplaceDatabase(marketplaceDecks);
         List<Node> decksUser = getMarketplaceDecksUser();
 
         marketplaceViewController.setDecksMarketplace(decksMarketplace);
@@ -75,6 +79,34 @@ public class MarketplaceController implements
         return loadDecksUserView(serverCommunicator.searchDecksMarketplaceByCreator(serverCommunicator.getSessionUsername()));
     }
 
+    // this method will take a list of marketplaceMetadata and sort it by the sortType
+    private List<MarketplaceDeckMetadata> sortMarketplaceDecks(
+            List<MarketplaceDeckMetadata> marketplaceDecks,
+            MarketplaceViewController.SortType sortType)
+                throws ServerCommunicationFailedException {
+
+        switch (sortType) {
+            case Nom:
+                marketplaceDecks.sort((o1, o2) -> o1.name().compareToIgnoreCase(o2.name()));
+                break;
+            case Note:
+                marketplaceDecks.sort((o1, o2) -> {
+                    if (o1.rating() == o2.rating()) {
+                        return 0;
+                    }
+                    return o1.rating() > o2.rating() ? -1 : 1;
+                });
+                break;
+            case Découvrir:
+                List<MarketplaceDeckMetadata> decksSaved = serverCommunicator.getSavedDecks();
+                marketplaceDecks.removeAll(decksSaved);     // remove all the decks that are already saved
+                marketplaceDecks.addAll(decksSaved);        // add them back at the end
+                break;
+        }
+
+        return marketplaceDecks;
+    }
+
 
     /* ====================================================================== */
     /*                          Database Access                               */
@@ -84,11 +116,20 @@ public class MarketplaceController implements
 
         List<MarketplaceDeckMetadata> decksSaved = serverCommunicator.getSavedDecks();
         decksSaved.retainAll(marketplaceDecks);
-        marketplaceDecks.removeAll(decksSaved);
 
         List<Node> decksLoaded = new ArrayList<>();
-        decksLoaded.addAll(loadDecksViewMarketplace(marketplaceDecks, DeckAvailability.MISSING));
-        decksLoaded.addAll(loadDecksViewMarketplace(decksSaved, DeckAvailability.OWNED));
+
+        // use of a for loop to load the decks one by one, to avoid breaking the sorting
+        for (MarketplaceDeckMetadata deck : marketplaceDecks) {
+            List<MarketplaceDeckMetadata> singleDeckList = new ArrayList<>();
+            singleDeckList.add(deck);
+
+            if (decksSaved.contains(deck)) {
+                decksLoaded.addAll(loadDecksViewMarketplace(singleDeckList, DeckAvailability.OWNED));
+            } else {
+                decksLoaded.addAll(loadDecksViewMarketplace(singleDeckList, DeckAvailability.MISSING));
+            }
+        }
 
         return decksLoaded;
     }
@@ -166,14 +207,31 @@ public class MarketplaceController implements
 
             } else if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.Creator)) {
                 decks = serverCommunicator.searchDecksMarketplaceByCreator(name);
+            } else if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.Tag)) {
+                decks = serverCommunicator.searchDecksMarketplaceByTag(name);
             }
             assert decks != null;
-            marketplaceViewController.setDecksMarketplace(loadDecksMarketplaceDatabase(decks));
+
+            List<MarketplaceDeckMetadata> marketplaceDecks = sortMarketplaceDecks(
+                    decks, marketplaceViewController.getSortType());
+
+            marketplaceViewController.setDecksMarketplace(loadDecksMarketplaceDatabase(marketplaceDecks));
 
         } catch (IOException e) {
             errorHandler.failedLoading(e);
 
         } catch (ServerCommunicationFailedException e) {
+            errorHandler.severConnectionError();
+        }
+    }
+
+    @Override
+    public void sortChoiceBoxChanged(MarketplaceViewController.SortType sortType) {
+        try {
+            this.show();
+        } catch (IOException e) {
+            errorHandler.failedLoading(e);
+        } catch (ServerCommunicationFailedException | InterruptedException e) {
             errorHandler.severConnectionError();
         }
     }
@@ -195,7 +253,11 @@ public class MarketplaceController implements
     public void removeDeckClicked(MarketplaceDeckMetadata deck) throws ServerCommunicationFailedException, IOException {
         serverCommunicator.removeDeckFromMarketplace(deck);
 
-        List<Node> decksMarketplace = loadDecksMarketplaceDatabase(serverCommunicator.getAllMarketplaceDecks());
+        List<MarketplaceDeckMetadata> marketplaceDecks = sortMarketplaceDecks(
+                                                            serverCommunicator.getAllMarketplaceDecks(),
+                                                            marketplaceViewController.getSortType());
+
+        List<Node> decksMarketplace = loadDecksMarketplaceDatabase(marketplaceDecks);
         List<Node> decksUser = getMarketplaceDecksUser();
         marketplaceViewController.setDecksMarketplace(decksMarketplace);
         marketplaceViewController.setDecksUser(decksUser);

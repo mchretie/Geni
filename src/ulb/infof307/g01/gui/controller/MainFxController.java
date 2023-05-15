@@ -337,7 +337,7 @@ public class MainFxController extends Application implements
     @Override
     public void userLoggedIn() {
         try {
-            mainWindowViewController.makebottomNavigationBarVisible();
+            mainWindowViewController.makeBottomNavigationBarVisible();
             mainWindowViewController.makeTopNavigationBarVisible();
             deckMenuController.show();
             resetViewStack(View.DECK_MENU);

@@ -81,10 +81,24 @@ public class MarketplaceDAO extends HttpDAO {
         if (Creator.isEmpty())
             return getAllMarketplaceDecks();
 
-        final Pattern pattern = Pattern.compile("%s".formatted(Creator));
+        final Pattern pattern = Pattern.compile("%s.*".formatted(validator.addTolerance(Creator)));
 
         return getAllMarketplaceDecks().stream()
-                .filter(deck -> pattern.matcher(deck.owner()).matches())
+                .filter(deck -> pattern.matcher(validator.addTolerance(deck.owner())).matches())
+                .collect(toList());
+    }
+
+    public List<MarketplaceDeckMetadata> searchDecksByTag(String tagName)
+            throws IOException, InterruptedException {
+
+        if (tagName.isEmpty())
+            return getAllMarketplaceDecks();
+
+        final Pattern pattern = Pattern.compile("%s.*".formatted(validator.addTolerance(tagName)));
+
+        return getAllMarketplaceDecks().stream()
+                .filter(deck -> deck.tags().stream()
+                        .anyMatch(tag -> pattern.matcher(validator.addTolerance(tag.getName())).matches()))
                 .collect(toList());
     }
 
