@@ -48,4 +48,16 @@ class MarketPlaceDao {
     }).toList();
   }
 
+  static Future<List<MarketplaceDeck>> filterDecksByAlphabet(bool ascending) async {
+    List<MarketplaceDeck> decks = await getAllMarketplaceDecks();
+    decks.sort((a, b) => ascending ? a.name.compareTo(b.name) : b.name.compareTo(a.name));
+    return decks;
+  }
+
+  static Future<List<MarketplaceDeck>> filterDecksByStars(bool ascending) async {
+    List<MarketplaceDeck> decks = await getAllMarketplaceDecks();
+    decks.sort((a, b) => ascending ? a.score.compareTo(b.score) : b.score.compareTo(a.score));
+    return decks;
+  }
+
 }

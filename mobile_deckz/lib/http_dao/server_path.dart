@@ -50,8 +50,7 @@ class ServerPath {
   static final Uri addDeckToCollectionPath = Uri.parse("$marketplaceBasePath/add-collection");
   static final Uri removeDeckFromCollectionPath = Uri.parse("$marketplaceBasePath/delete-collection");
   static final Uri getSavedDecksFromMarketplacePath = Uri.parse("$marketplaceBasePath/get-collection");
-
-
+  static final Uri getUserRatingPath = Uri.parse("$marketplaceBasePath/get-rating");
 
   ServerPath._();
 }
