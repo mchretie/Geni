@@ -1,6 +1,7 @@
 package ulb.infof307.g01.gui.controller;
 
 import javafx.stage.Stage;
+import ulb.infof307.g01.exception.NeverThrown;
 import ulb.infof307.g01.gui.controller.errorhandler.ErrorHandler;
 import ulb.infof307.g01.gui.controller.exceptions.EmptyDeckException;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
@@ -16,7 +17,7 @@ import ulb.infof307.g01.model.deck.Score;
 import java.util.Arrays;
 
 public class PlayDeckController implements PlayDeckViewController.Listener,
-                                            CardVisitor {
+                                            CardVisitor<NeverThrown> {
 
     private final Stage stage;
     private final MainWindowViewController mainWindowViewController;

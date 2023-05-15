@@ -49,25 +49,20 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getDeck_DeckNotExists_ThrowsException() {
+    void getDeck_DeckNotExists_ThrowsException() throws DatabaseException {
         assertNull(deckDAO.getDeck(new Deck("name").getId()));
     }
 
     @Test
-    void deckNameExists_NameNotExists_ReturnsFalse() {
-        assertFalse(deckDAO.deckNameExists("name"));
-    }
-
-    @Test
-    void deckNameExists_NameExists_ReturnsTrue() {
+    void deckNameExists_NameExists_ReturnsTrue() throws DatabaseException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
 
-        assertTrue(deckDAO.deckNameExists("name"));
+        assertTrue(deckDAO.deckNameExists("name", user));
     }
 
     @Test
-    void isDeckValid_DeckInvalid_ReturnsFalse() {
+    void isDeckValid_DeckInvalid_ReturnsFalse() throws DatabaseException {
         Deck deck1 = new Deck("name");
         Deck deck2 = new Deck("name");
         deckDAO.saveDeck(deck1, user);
@@ -76,7 +71,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void isDeckValid_DeckValid_ReturnsTrue() {
+    void isDeckValid_DeckValid_ReturnsTrue() throws DatabaseException {
         Deck deck = new Deck("name");
         assertTrue(deckDAO.isDeckValid(deck, user));
 
@@ -85,7 +80,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_DecksWithSameNameDiffId_OnlyFirstAdded() {
+    void saveDeck_DecksWithSameNameDiffId_OnlyFirstAdded() throws DatabaseException {
         Deck deck1 = new Deck("name");
         Deck deck2 = new Deck("name");
 
@@ -96,7 +91,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_DeckNotExists_CreatesDeck() {
+    void saveDeck_DeckNotExists_CreatesDeck() throws DatabaseException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
 
@@ -104,7 +99,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_DeckNameChanged_RenameDeck() {
+    void saveDeck_DeckNameChanged_RenameDeck() throws DatabaseException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
 
@@ -115,7 +110,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_DeckNameNotUpdated_DeckNotUpdated() {
+    void saveDeck_DeckNameNotUpdated_DeckNotUpdated() throws DatabaseException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
 
@@ -125,7 +120,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_CardAdded_DeckAddedWithCard() {
+    void saveDeck_CardAdded_DeckAddedWithCard() throws DatabaseException {
         Deck deck = new Deck("name");
         Card card = new FlashCard();
         Card card2 = new MCQCard();
@@ -140,7 +135,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_CardDeleted_DeckUpdated() {
+    void saveDeck_CardDeleted_DeckUpdated() throws DatabaseException {
         Deck deck = new Deck("name");
         Card card = new FlashCard();
         Card card2 = new MCQCard();
@@ -160,7 +155,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_TagAdded_DeckUpdated() {
+    void saveDeck_TagAdded_DeckUpdated() throws DatabaseException {
         Deck deck = new Deck("name");
         Tag tag = new Tag("name");
 
@@ -171,7 +166,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDeck_TagRemoved_DeckUpdated() {
+    void saveDeck_TagRemoved_DeckUpdated() throws DatabaseException {
         Deck deck = new Deck("name");
         Tag tag = new Tag("name");
 
@@ -184,7 +179,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void saveDecks_SameNameTagsAdded_DeckUpdated() {
+    void saveDecks_SameNameTagsAdded_DeckUpdated() throws DatabaseException {
         Deck deck1 = new Deck("deck1");
         Tag tag1 = new Tag("tag");
         deck1.addTag(tag1);
@@ -202,12 +197,12 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getAllDecks_NoDecks_EmptyList() {
+    void getAllDecks_NoDecks_EmptyList() throws DatabaseException {
         assertTrue(deckDAO.getAllDecks().isEmpty());
     }
 
     @Test
-    void getAllDecks_ManyDecks_AllReturned() {
+    void getAllDecks_ManyDecks_AllReturned() throws DatabaseException {
         List<Deck> decks = new ArrayList<>();
         decks.add(new Deck("name1"));
         decks.add(new Deck("name2"));
@@ -221,7 +216,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getAllDecks_SameDeckAddedMultipleTimes_OneReturned() {
+    void getAllDecks_SameDeckAddedMultipleTimes_OneReturned() throws DatabaseException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
         deckDAO.saveDeck(deck, user);
@@ -230,7 +225,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void deleteDeck_DeckExists_DeckNotExists() {
+    void deleteDeck_DeckExists_DeckNotExists() throws DatabaseException {
         Deck deck = new Deck("name");
         deckDAO.saveDeck(deck, user);
         deckDAO.deleteDeck(deck.getId(), user);
@@ -245,7 +240,7 @@ public class TestDeckDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void searchTags() {
+    void searchTags() throws DatabaseException {
         List<Deck> decks = new ArrayList<>();
         decks.add(new Deck("name1"));
         decks.add(new Deck("name2"));

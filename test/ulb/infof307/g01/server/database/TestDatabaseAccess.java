@@ -40,7 +40,7 @@ class TestDatabaseAccess {
 
     @AfterEach
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    void teardown() {
+    void teardown() throws DatabaseException {
         db.close();
         dbname.delete();
     }

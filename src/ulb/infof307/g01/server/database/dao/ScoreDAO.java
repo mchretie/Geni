@@ -154,7 +154,7 @@ public class ScoreDAO extends DAO {
         return games;
     }
 
-    public List<Game> getGameHistory(UUID userId) {
+    public List<Game> getGameHistory(UUID userId) throws DatabaseException {
         String sql = """
                 SELECT d.name AS deck_name, s.score, s.timestamp
                 FROM deck d
@@ -170,7 +170,7 @@ public class ScoreDAO extends DAO {
         }
     }
 
-    public List<Game> getGameHistory(UUID userId, UUID deckId) {
+    public List<Game> getGameHistory(UUID userId, UUID deckId) throws DatabaseException {
         String sql = """
                 SELECT d.name AS deck_name, s.score, s.timestamp
                 FROM deck d

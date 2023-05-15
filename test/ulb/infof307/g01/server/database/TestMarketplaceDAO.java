@@ -49,7 +49,7 @@ public class TestMarketplaceDAO extends DatabaseUsingTest {
 
 
     @Test
-    void getMarketplaceDecksMetadata_EmptyDecks_AllReturned() {
+    void getMarketplaceDecksMetadata_EmptyDecks_AllReturned() throws DatabaseException {
         Deck deck1 = new Deck("deck1");
         Deck deck2 = new Deck("deck2");
         Deck deck3 = new Deck("deck3");
