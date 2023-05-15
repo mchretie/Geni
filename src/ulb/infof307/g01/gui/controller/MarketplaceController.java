@@ -85,12 +85,6 @@ public class MarketplaceController implements
             MarketplaceViewController.SortType sortType)
                 throws ServerCommunicationFailedException {
 
-        System.out.println("%%%%%%%%%%%%%%% before %%%%%%%%%%%%%%%%");
-        // print list of the names of the decks
-        for (MarketplaceDeckMetadata deck : marketplaceDecks) {
-            System.out.println(deck.name());
-        }
-
         switch (sortType) {
             case Nom:
                 marketplaceDecks.sort((o1, o2) -> o1.name().compareToIgnoreCase(o2.name()));
@@ -108,12 +102,6 @@ public class MarketplaceController implements
                 marketplaceDecks.removeAll(decksSaved);     // remove all the decks that are already saved
                 marketplaceDecks.addAll(decksSaved);        // add them back at the end
                 break;
-        }
-
-        System.out.println("%%%%%%%%%%%%%%% after %%%%%%%%%%%%%%%%");
-        // print list of the names of the decks
-        for (MarketplaceDeckMetadata deck : marketplaceDecks) {
-            System.out.println(deck.name());
         }
 
         return marketplaceDecks;
