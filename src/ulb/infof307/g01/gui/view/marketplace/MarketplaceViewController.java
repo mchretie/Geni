@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -21,6 +22,12 @@ public class MarketplaceViewController {
         Tag
     }
 
+    public enum SortType {
+        Nom,
+        Note,
+        Découvrir;
+    }
+
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
@@ -34,6 +41,8 @@ public class MarketplaceViewController {
 
     @FXML
     private ComboBox<String> comboBox;
+    @FXML
+    private ComboBox<SortType> sortChoiceBox;
 
     @FXML
     private FlowPane userDecksContainer;
@@ -58,6 +67,7 @@ public class MarketplaceViewController {
 
     public void initialize() {
         initComboBox();
+        initSortChoiceBox();
     }
 
     private void initComboBox() {
@@ -70,6 +80,11 @@ public class MarketplaceViewController {
         comboBox.setItems(options);
         comboBox.setValue("Nom");
 
+    }
+
+    private void initSortChoiceBox() {
+        this.sortChoiceBox.getItems().addAll(SortType.values());
+        this.sortChoiceBox.setValue(SortType.Nom);
     }
 
 
@@ -89,6 +104,10 @@ public class MarketplaceViewController {
         }
 
         return searchType;
+    }
+
+    public SortType getSortType() {
+        return sortChoiceBox.getValue();
     }
 
 
@@ -125,6 +144,11 @@ public class MarketplaceViewController {
         String searchText = searchBar.getText();
         listener.searchDeckClicked(searchText);
     }
+
+    @FXML
+    private void handleSortChoiceBoxChanged() {
+        listener.sortChoiceBoxChanged(this.getSortType());
+    }
     /* ====================================================================== */
     /*                             Hover handlers                             */
     /* ====================================================================== */
@@ -146,5 +170,6 @@ public class MarketplaceViewController {
 
     public interface Listener {
         void searchDeckClicked(String name);
+        void sortChoiceBoxChanged(SortType sortType);
     }
 }
