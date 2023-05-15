@@ -89,7 +89,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         showDecks();
         mainWindowViewController.setDeckMenuViewVisible();
-        mainWindowViewController.makebottomNavigationBarVisible();
+        mainWindowViewController.makeBottomNavigationBarVisible();
         mainWindowViewController.makeTopNavigationBarVisible();
 
         mainWindowViewController.makeGoBackIconInvisible();

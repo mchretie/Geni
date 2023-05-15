@@ -378,7 +378,7 @@ public class MainWindowViewController implements Initializable {
         topHBox.setManaged(false);
     }
 
-    public void makebottomNavigationBarVisible() {
+    public void makeBottomNavigationBarVisible() {
         bottomHBox.setVisible(true);
         bottomHBox.setManaged(true);
     }
