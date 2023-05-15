@@ -80,7 +80,7 @@ public class UserDAO extends DAO {
         return true;
     }
 
-    public String getUserId(String username) {
+    public String getUserId(String username) throws DatabaseException {
         String sql = """
                 SELECT user_id
                 FROM user
@@ -95,7 +95,7 @@ public class UserDAO extends DAO {
         }
     }
 
-    public String getUsername(UUID userId) {
+    public String getUsername(UUID userId) throws DatabaseException {
         String sql = """
                 SELECT username
                 FROM USER

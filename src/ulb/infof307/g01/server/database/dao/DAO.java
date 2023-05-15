@@ -20,7 +20,7 @@ public abstract class DAO {
         }
     }
 
-    protected List<UUID> extractUUIDsFrom(ResultSet res, String colName) {
+    protected List<UUID> extractUUIDsFrom(ResultSet res, String colName) throws DatabaseException {
         try {
             List<UUID> uuids = new ArrayList<>();
             while (res.next())
