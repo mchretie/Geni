@@ -16,6 +16,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
   String dropdownValue = 'Name';
   List<String> dropdownItems = ['Name', 'Tag'];
   MarketplaceFilter? _marketplaceFilter = MarketplaceFilter.none;
+  bool _showSavedDecks = true;
 
   Future<List<MarketplaceDeck>> _decksFuture =
       MarketPlaceDao.getAllMarketplaceDecks();
@@ -105,7 +106,12 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 RadioListTile(
-                                                  title: const Text('Star ASC'),
+                                                  title: Row(
+                                                    children: const [
+                                                      Text('Stars'),
+                                                      Icon(Icons.arrow_upward)
+                                                    ],
+                                                  ),
                                                   value:
                                                       MarketplaceFilter.starASC,
                                                   groupValue:
@@ -119,8 +125,12 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                   },
                                                 ),
                                                 RadioListTile(
-                                                  title:
-                                                      const Text('Star DESC'),
+                                                  title: Row(
+                                                    children: const [
+                                                      Text('Stars'),
+                                                      Icon(Icons.arrow_downward)
+                                                    ],
+                                                  ),
                                                   value: MarketplaceFilter
                                                       .starDESC,
                                                   groupValue:
@@ -134,8 +144,12 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                   },
                                                 ),
                                                 RadioListTile(
-                                                  title: const Text(
-                                                      'Alphabet ASC'),
+                                                  title: Row(
+                                                    children: const [
+                                                      Text('Alphabet'),
+                                                      Icon(Icons.arrow_upward)
+                                                    ],
+                                                  ),
                                                   value: MarketplaceFilter
                                                       .alphabetDESC,
                                                   groupValue:
@@ -149,8 +163,12 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                   },
                                                 ),
                                                 RadioListTile(
-                                                  title: const Text(
-                                                      'Alphabet DESC'),
+                                                  title: Row(
+                                                    children: const [
+                                                      Text('Alphabet'),
+                                                      Icon(Icons.arrow_downward)
+                                                    ],
+                                                  ),
                                                   value: MarketplaceFilter
                                                       .alphabetASC,
                                                   groupValue:
@@ -173,6 +191,16 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                     setState(() {
                                                       _marketplaceFilter =
                                                           filter;
+                                                    });
+                                                  },
+                                                ),
+                                                CheckboxListTile(
+                                                  value: _showSavedDecks,
+                                                  title: const Text(
+                                                      'Show saved decks'),
+                                                  onChanged: (bool? value) {
+                                                    setState(() {
+                                                      _showSavedDecks = value!;
                                                     });
                                                   },
                                                 ),
