@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +21,21 @@ public class MarketplaceViewController {
         Creator
     }
 
+    public enum SortType {
+        /*Name("Nom"),
+        Rating("Note"),
+        Discover("Découvrir");
+
+        public final String label;
+
+        SortType(String label) {
+            this.label = label;
+        }*/
+        Nom,
+        Note,
+        Découvrir;
+    }
+
     /* ====================================================================== */
     /*                              FXML Attributes                           */
     /* ====================================================================== */
@@ -33,6 +49,8 @@ public class MarketplaceViewController {
 
     @FXML
     private ComboBox<String> comboBox;
+    @FXML
+    private ChoiceBox<SortType> sortChoiceBox;
 
     @FXML
     private FlowPane userDecksContainer;
@@ -57,6 +75,7 @@ public class MarketplaceViewController {
 
     public void initialize() {
         initComboBox();
+        initSortChoiceBox();
     }
 
     private void initComboBox() {
@@ -68,6 +87,18 @@ public class MarketplaceViewController {
         comboBox.setItems(options);
         comboBox.setValue("Nom");
 
+    }
+
+    private void initSortChoiceBox() {
+        /*ObservableList<SortType> options =
+                FXCollections.observableArrayList(
+                        SortType.Name.label,
+                        SortType.Rating.label,
+                        SortType.Discover.label
+                );
+        sortChoiceBox.setItems(options);
+        sortChoiceBox.setValue(SortType.Name);*/
+        this.sortChoiceBox.getItems().addAll(SortType.values());
     }
 
 
@@ -85,6 +116,10 @@ public class MarketplaceViewController {
         }
 
         return searchType;
+    }
+
+    public SortType getSortType() {
+        return sortChoiceBox.getValue();
     }
 
 
