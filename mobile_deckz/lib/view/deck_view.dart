@@ -71,6 +71,20 @@ class _DeckViewState extends State<DeckView> {
     );
   }
 
+  Row _setRating() {
+    int rating = _marketplaceDeck.rating;
+    return Row(
+      children: [
+        for (int i = 0; i < rating; i++)
+          Container(
+            child: i <= rating
+            ? const Icon(Icons.star_rate_outlined)
+            : const Icon(Icons.star_rate)
+          )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -111,6 +125,14 @@ class _DeckViewState extends State<DeckView> {
                               ? const Icon(Icons.delete, color: Colors.white)
                               : const Icon(Icons.download, color: Colors.white),
                         ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        color: Colors.black.withOpacity(0.3),
+                        child: _setRating(),
                       ),
                     ),
                   Align(
