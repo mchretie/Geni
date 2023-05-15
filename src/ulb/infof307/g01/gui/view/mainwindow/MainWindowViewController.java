@@ -89,7 +89,7 @@ public class MainWindowViewController implements Initializable {
     private VBox editCardView;
 
     @FXML
-    private StackPane profileView;
+    private BorderPane profileView;
 
     @FXML
     private StackPane userAuthView;
