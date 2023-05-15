@@ -39,6 +39,24 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
     });
   }
 
+  void _sortDecks() {
+    setState(() {
+    if (_marketplaceFilter == MarketplaceFilter.starASC) {
+      // setState(() {
+        _decksFuture = MarketPlaceDao.sortDecksByStars(true, _showSavedDecks);
+      // });
+    } else if (_marketplaceFilter == MarketplaceFilter.starDESC) {
+      _decksFuture = MarketPlaceDao.sortDecksByStars(false, _showSavedDecks);
+    } else if (_marketplaceFilter == MarketplaceFilter.alphabetASC) {
+      _decksFuture = MarketPlaceDao.sortDecksByAlphabet(true, _showSavedDecks);
+    } else if (_marketplaceFilter == MarketplaceFilter.alphabetDESC) {
+      _decksFuture = MarketPlaceDao.sortDecksByAlphabet(false, _showSavedDecks);
+    } else {
+      _decksFuture = MarketPlaceDao.getAllMarketplaceDecks();
+    }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -214,8 +232,10 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                               child: const Text('Cancel'),
                                             ),
                                             TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context, 'OK'),
+                                              onPressed: () {
+                                                _sortDecks();
+                                                Navigator.pop(context, 'OK');
+                                              },
                                               child: const Text('OK'),
                                             ),
                                           ],
