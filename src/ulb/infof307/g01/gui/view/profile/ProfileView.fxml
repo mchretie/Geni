@@ -2,22 +2,11 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<StackPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.profile.ProfileViewController">
-    <Rectangle arcHeight="10.0" arcWidth="20.0" fill="TRANSPARENT" height="230.0" stroke="#c3b1e1" strokeType="OUTSIDE" strokeWidth="3.0" width="200.0">
-        <effect>
-            <DropShadow>
-                <color>
-                    <Color red="0.7647058963775635" green="0.6941176652908325" blue="0.8823529481887817" />
-                </color>
-            </DropShadow>
-        </effect></Rectangle>
+<StackPane prefHeight="250.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, #C3B1E1, 15, 0.75, 0, 0);" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.profile.ProfileViewController">
     <VBox alignment="CENTER" fillWidth="false" spacing="10.0">
 
         <Label alignment="CENTER" contentDisplay="CENTER" text="Votre Profil">
