@@ -406,11 +406,11 @@ public class ServerCommunicator {
         }
     }
 
-    public List<MarketplaceDeckMetadata> searchDecksMarketplaceByCreator(String deckName) //TODO : rename to creator ?
+    public List<MarketplaceDeckMetadata> searchDecksMarketplaceByCreator(String creator)
             throws ServerCommunicationFailedException {
 
         try {
-            return marketplaceDAO.searchDecksByCreator(deckName);
+            return marketplaceDAO.searchDecksByCreator(creator);
 
         } catch (IOException | InterruptedException e) {
             String message = "Failed to search decks";
@@ -418,6 +418,17 @@ public class ServerCommunicator {
         }
     }
 
+    public List<MarketplaceDeckMetadata> searchDecksMarketplaceByTag(String tagName)
+            throws ServerCommunicationFailedException {
+
+        try {
+            return marketplaceDAO.searchDecksByTag(tagName);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to search decks by tags";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
     public void addRating(UserRating userRating)
             throws ServerCommunicationFailedException {
 
