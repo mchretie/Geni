@@ -78,7 +78,9 @@ class _DeckViewState extends State<DeckView> {
           return SizedBox(
             height: 200,
             width: 200,
-            child: ListView.builder(
+            child: Card(
+              elevation: 1,
+                child: ListView.builder(
               padding: const EdgeInsets.all(8),
               itemCount: games?.length,
               itemBuilder: (BuildContext context, int index) {
@@ -90,15 +92,15 @@ class _DeckViewState extends State<DeckView> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(games![index].getFormattedTimestamp()),
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         Text(games[index].getScore().toString()),
-                        Text(' Pts'),
+                        const Text(' Pts'),
                       ],
                     ),
                   ),
                 );
               },
-            ),
+            )),
           );
         } else {
           return const CircularProgressIndicator();

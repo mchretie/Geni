@@ -47,9 +47,9 @@ class DeckPreviewView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(games![index].getFormattedTimestamp()),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Text(games[index].getScore().toString()),
-                      Text(' Pts'),
+                      const Text(' Pts'),
                     ],
                   ),
                 ),
@@ -115,12 +115,12 @@ class DeckPreviewView extends StatelessWidget {
           const SizedBox(height: 20),
           ElevatedButton(
             child: Wrap(
-              children: [
-                const Icon(Icons.play_arrow),
-                const SizedBox(
+              children: const [
+                Icon(Icons.play_arrow),
+                SizedBox(
                   width: 10,
                 ),
-                const Text(
+                Text(
                   'Jouer',
                   style: TextStyle(
                     fontSize: 20,
