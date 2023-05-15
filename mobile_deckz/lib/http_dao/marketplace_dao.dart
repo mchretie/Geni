@@ -27,8 +27,8 @@ class MarketPlaceDao {
     return [];
   }
 
-  static Future<List<MarketplaceDeck>> searchDecks(String query) async {
-    List<MarketplaceDeck> decks = await getAllMarketplaceDecks();
+  static Future<List<MarketplaceDeck>> searchDecks(
+      List<MarketplaceDeck> decks, String query) async {
     if (query.isEmpty) {
       return decks;
     }
@@ -40,8 +40,8 @@ class MarketPlaceDao {
         .toList();
   }
 
-  static Future<List<MarketplaceDeck>> searchDecksByTags(String query) async {
-    List<MarketplaceDeck> decks = await getAllMarketplaceDecks();
+  static Future<List<MarketplaceDeck>> searchDecksByTags(
+      List<MarketplaceDeck> decks, String query) async {
     if (query.isEmpty) {
       return decks;
     }
@@ -55,8 +55,8 @@ class MarketPlaceDao {
     }).toList();
   }
 
-  static Future<List<MarketplaceDeck>> searchDecksByOwner(String query) async {
-    List<MarketplaceDeck> decks = await getAllMarketplaceDecks();
+  static Future<List<MarketplaceDeck>> searchDecksByOwner(
+      List<MarketplaceDeck> decks, String query) async {
     if (query.isEmpty) {
       return decks;
     }
@@ -69,8 +69,7 @@ class MarketPlaceDao {
   }
 
   static Future<List<MarketplaceDeck>> _showSavedDecks(
-      bool showSavedDecks) async {
-    List<MarketplaceDeck> decks = await getAllMarketplaceDecks();
+      List<MarketplaceDeck> decks, bool showSavedDecks) async {
     List<Deck> savedDecks = await DeckDao.getAllDecks();
     if (showSavedDecks) {
       return decks.where((deck) {
@@ -87,19 +86,21 @@ class MarketPlaceDao {
   }
 
   static Future<List<MarketplaceDeck>> sortDecksByAlphabet(
-      bool ascending, bool showUserDecks) async {
-    List<MarketplaceDeck> decks = await _showSavedDecks(showUserDecks);
-    decks.sort((a, b) =>
+      List<MarketplaceDeck> decks, bool ascending, bool showUserDecks) async {
+    List<MarketplaceDeck> sortedDecks =
+        await _showSavedDecks(decks, showUserDecks);
+    sortedDecks.sort((a, b) =>
         ascending ? a.name.compareTo(b.name) : b.name.compareTo(a.name));
-    return decks;
+    return sortedDecks;
   }
 
   static Future<List<MarketplaceDeck>> sortDecksByStars(
-      bool ascending, bool showUserDecks) async {
-    List<MarketplaceDeck> decks = await _showSavedDecks(showUserDecks);
-    decks.sort((a, b) => ascending
+      List<MarketplaceDeck> decks, bool ascending, bool showUserDecks) async {
+    List<MarketplaceDeck> sortedDecks =
+        await _showSavedDecks(decks, showUserDecks);
+    sortedDecks.sort((a, b) => ascending
         ? a.rating.compareTo(b.rating)
         : b.rating.compareTo(a.rating));
-    return decks;
+    return sortedDecks;
   }
 }

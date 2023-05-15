@@ -14,7 +14,7 @@ enum MarketplaceFilter { starASC, starDESC, alphabetASC, alphabetDESC, none }
 
 class _MarketPlaceViewState extends State<MarketPlaceView> {
   String dropdownValue = 'Name';
-  List<String> dropdownItems = ['Name', 'Tag'];
+  List<String> dropdownItems = ['Name', 'Tag', 'Owner'];
   MarketplaceFilter? _marketplaceFilter = MarketplaceFilter.none;
   bool _showSavedDecks = true;
 
@@ -24,11 +24,16 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
   final textEditController = TextEditingController();
 
   Future<void> _onSearchTextChanged(String text) async {
+    _decksFuture = MarketPlaceDao.getAllMarketplaceDecks();
+    await _sortDecks();
+    List<MarketplaceDeck> decks = await _decksFuture;
     setState(() {
       if (dropdownValue == 'Name') {
-        _decksFuture = MarketPlaceDao.searchDecks(text);
+        _decksFuture = MarketPlaceDao.searchDecks(decks, text);
       } else if (dropdownValue == 'Tag') {
-        _decksFuture = MarketPlaceDao.searchDecksByTags(text);
+        _decksFuture = MarketPlaceDao.searchDecksByTags(decks, text);
+      } else if (dropdownValue == 'Owner') {
+        _decksFuture = MarketPlaceDao.searchDecksByOwner(decks, text);
       }
     });
   }
@@ -39,21 +44,24 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
     });
   }
 
-  void _sortDecks() {
+  Future<void> _sortDecks() async {
+    List<MarketplaceDeck> decks = await _decksFuture;
     setState(() {
-    if (_marketplaceFilter == MarketplaceFilter.starASC) {
-      // setState(() {
-        _decksFuture = MarketPlaceDao.sortDecksByStars(true, _showSavedDecks);
-      // });
-    } else if (_marketplaceFilter == MarketplaceFilter.starDESC) {
-      _decksFuture = MarketPlaceDao.sortDecksByStars(false, _showSavedDecks);
-    } else if (_marketplaceFilter == MarketplaceFilter.alphabetASC) {
-      _decksFuture = MarketPlaceDao.sortDecksByAlphabet(true, _showSavedDecks);
-    } else if (_marketplaceFilter == MarketplaceFilter.alphabetDESC) {
-      _decksFuture = MarketPlaceDao.sortDecksByAlphabet(false, _showSavedDecks);
-    } else {
-      _decksFuture = MarketPlaceDao.getAllMarketplaceDecks();
-    }
+      if (_marketplaceFilter == MarketplaceFilter.starASC) {
+        _decksFuture =
+            MarketPlaceDao.sortDecksByStars(decks, true, _showSavedDecks);
+      } else if (_marketplaceFilter == MarketplaceFilter.starDESC) {
+        _decksFuture =
+            MarketPlaceDao.sortDecksByStars(decks, false, _showSavedDecks);
+      } else if (_marketplaceFilter == MarketplaceFilter.alphabetASC) {
+        _decksFuture =
+            MarketPlaceDao.sortDecksByAlphabet(decks, true, _showSavedDecks);
+      } else if (_marketplaceFilter == MarketplaceFilter.alphabetDESC) {
+        _decksFuture =
+            MarketPlaceDao.sortDecksByAlphabet(decks, false, _showSavedDecks);
+      } else {
+        _decksFuture = MarketPlaceDao.getAllMarketplaceDecks();
+      }
     });
   }
 
@@ -150,11 +158,11 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                     ],
                                                   ),
                                                   value:
-                                                  MarketplaceFilter.starASC,
+                                                      MarketplaceFilter.starASC,
                                                   groupValue:
-                                                  _marketplaceFilter,
+                                                      _marketplaceFilter,
                                                   onChanged: (MarketplaceFilter?
-                                                  filter) {
+                                                      filter) {
                                                     setState(() {
                                                       _marketplaceFilter =
                                                           filter;
@@ -190,9 +198,9 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                   value: MarketplaceFilter
                                                       .alphabetDESC,
                                                   groupValue:
-                                                  _marketplaceFilter,
+                                                      _marketplaceFilter,
                                                   onChanged: (MarketplaceFilter?
-                                                  filter) {
+                                                      filter) {
                                                     setState(() {
                                                       _marketplaceFilter =
                                                           filter;
