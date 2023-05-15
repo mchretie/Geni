@@ -236,6 +236,11 @@ public class MarketplaceController implements
     }
 
     @Override
+    public void sortChoiceBoxChanged(MarketplaceViewController.SortType sortType) {
+        System.out.println("sortChoiceBoxChanged to " + sortType);
+    }
+
+    @Override
     public void addRemoveDeckClicked(MarketplaceDeckMetadata deck, DeckAvailability deckAvailability)
             throws ServerCommunicationFailedException {
 

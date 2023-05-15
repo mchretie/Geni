@@ -41,7 +41,7 @@ public class MarketplaceViewController {
     @FXML
     private ComboBox<String> comboBox;
     @FXML
-    private ChoiceBox<SortType> sortChoiceBox;
+    private ComboBox<SortType> sortChoiceBox;
 
     @FXML
     private FlowPane userDecksContainer;
@@ -82,7 +82,7 @@ public class MarketplaceViewController {
 
     private void initSortChoiceBox() {
         this.sortChoiceBox.getItems().addAll(SortType.values());
-        sortChoiceBox.setValue(SortType.Nom);
+        this.sortChoiceBox.setValue(SortType.Nom);
     }
 
 
@@ -142,6 +142,11 @@ public class MarketplaceViewController {
         String searchText = searchBar.getText();
         listener.searchDeckClicked(searchText);
     }
+
+    @FXML
+    private void handleSortChoiceBoxChanged() {
+        listener.sortChoiceBoxChanged(this.getSortType());
+    }
     /* ====================================================================== */
     /*                             Hover handlers                             */
     /* ====================================================================== */
@@ -163,5 +168,6 @@ public class MarketplaceViewController {
 
     public interface Listener {
         void searchDeckClicked(String name);
+        void sortChoiceBoxChanged(SortType sortType);
     }
 }

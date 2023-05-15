@@ -58,10 +58,10 @@
                             <Insets left="60.0" />
                         </HBox.margin>
                     </Text>
-               <ChoiceBox fx:id="sortChoiceBox" prefHeight="26.0" prefWidth="110.0">
+               <ComboBox fx:id="sortChoiceBox" onAction="#handleSortChoiceBoxChanged" prefHeight="26.0" prefWidth="110.0">
                   <HBox.margin>
                      <Insets left="10.0" />
-                  </HBox.margin></ChoiceBox>
+                  </HBox.margin></ComboBox>
                 </HBox>
                 <ScrollPane fitToHeight="true" fitToWidth="true" vbarPolicy="ALWAYS">
                     <FlowPane fx:id="decksContainer" alignment="TOP_CENTER" hgap="40.0" vgap="40.0" BorderPane.alignment="CENTER">
