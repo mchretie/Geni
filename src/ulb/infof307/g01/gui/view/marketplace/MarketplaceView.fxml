@@ -46,8 +46,22 @@
                         <font>
                             <Font size="20.0" />
                         </font>
+                  <HBox.margin>
+                     <Insets left="260.0" />
+                  </HBox.margin>
                     </Text>
-               <ChoiceBox fx:id="sortChoiceBox" prefWidth="150.0" />
+                    <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Trier par :">
+                        <font>
+                            <Font size="20.0" />
+                        </font>
+                        <HBox.margin>
+                            <Insets left="60.0" />
+                        </HBox.margin>
+                    </Text>
+               <ChoiceBox fx:id="sortChoiceBox" prefHeight="26.0" prefWidth="110.0">
+                  <HBox.margin>
+                     <Insets left="10.0" />
+                  </HBox.margin></ChoiceBox>
                 </HBox>
                 <ScrollPane fitToHeight="true" fitToWidth="true" vbarPolicy="ALWAYS">
                     <FlowPane fx:id="decksContainer" alignment="TOP_CENTER" hgap="40.0" vgap="40.0" BorderPane.alignment="CENTER">

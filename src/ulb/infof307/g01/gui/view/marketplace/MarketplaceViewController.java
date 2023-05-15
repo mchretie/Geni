@@ -22,15 +22,6 @@ public class MarketplaceViewController {
     }
 
     public enum SortType {
-        /*Name("Nom"),
-        Rating("Note"),
-        Discover("Découvrir");
-
-        public final String label;
-
-        SortType(String label) {
-            this.label = label;
-        }*/
         Nom,
         Note,
         Découvrir;
@@ -90,15 +81,8 @@ public class MarketplaceViewController {
     }
 
     private void initSortChoiceBox() {
-        /*ObservableList<SortType> options =
-                FXCollections.observableArrayList(
-                        SortType.Name.label,
-                        SortType.Rating.label,
-                        SortType.Discover.label
-                );
-        sortChoiceBox.setItems(options);
-        sortChoiceBox.setValue(SortType.Name);*/
         this.sortChoiceBox.getItems().addAll(SortType.values());
+        sortChoiceBox.setValue(SortType.Nom);
     }
 
 
