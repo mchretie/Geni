@@ -36,7 +36,7 @@ public class FlashCard extends Card {
     }
 
     @Override
-    public void accept(CardVisitor visitor) {
+    public <T extends Throwable> void accept(CardVisitor<T> visitor) throws T {
         visitor.visit(this);
     }
 

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import spark.Request;
 import spark.ResponseTransformer;
 import ulb.infof307.g01.server.database.Database;
+import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 import ulb.infof307.g01.server.service.JWTService;
 
 import java.util.Map;
@@ -50,7 +51,7 @@ public abstract class Handler {
         return jwtService.getUsernameFromToken(token);
     }
 
-    protected UUID userIdFromRequest(Request req) {
+    protected UUID userIdFromRequest(Request req) throws DatabaseException {
         String token = req.headers("Authorization");
         checkToken(token);
         return UUID.fromString(this.database.getUserId(jwtService.getUsernameFromToken(token)));

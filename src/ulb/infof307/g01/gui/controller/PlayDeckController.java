@@ -16,7 +16,7 @@ import ulb.infof307.g01.model.deck.Score;
 import java.util.Arrays;
 
 public class PlayDeckController implements PlayDeckViewController.Listener,
-                                            CardVisitor {
+                                            CardVisitor<RuntimeException> {
 
     private final Stage stage;
     private final MainWindowViewController mainWindowViewController;

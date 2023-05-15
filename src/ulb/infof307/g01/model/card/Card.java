@@ -58,5 +58,5 @@ public abstract class Card {
 
     public abstract boolean isCompetitive();
 
-    public abstract void accept(CardVisitor visitor);
+    public abstract <T extends Throwable> void accept(CardVisitor<T> visitor) throws T;
 }
