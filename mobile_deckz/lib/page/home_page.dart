@@ -55,20 +55,20 @@ class _HomePageState extends State<HomePage> {
                   child: IndexedStack(
                 index: _selectedIndex,
                 children: const [
-                  UserDeckView(),
                   MarketPlaceView(),
+                  UserDeckView(),
                   LeaderboardView(),
                 ],
               )),
               bottomNavigationBar: BottomNavigationBar(
                 items: const <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
                     icon: Icon(Icons.store),
                     label: 'Store',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.leaderboard),
