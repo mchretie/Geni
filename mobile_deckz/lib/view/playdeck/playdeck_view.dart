@@ -161,7 +161,7 @@ class _PlayCardViewState extends State<PlayCardView> {
               onPageChanged: (int index) {
                 if (index == cardViews.length - 1) {
                   widget.score.setFinal();
-                  if ( widget.score.isFinal ){
+                  if (widget.score.isFinal) {
                     ScoreDAO.addScore(widget.score);
                   }
                 }
