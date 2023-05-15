@@ -103,4 +103,9 @@ class MarketPlaceDao {
         : b.rating.compareTo(a.rating));
     return sortedDecks;
   }
+
+  static Future<List<MarketplaceDeck>> sortDecksByNothing(
+      List<MarketplaceDeck> decks, bool showUserDecks) async {
+    return await _showSavedDecks(decks, showUserDecks);
+  }
 }
