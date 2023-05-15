@@ -131,6 +131,18 @@ public class MarketplaceController implements
 
         List<Node> decksLoaded = new ArrayList<>();
 
+        // use of a for loop to load the decks one by one, to avoid breaking the sorting
+        for (MarketplaceDeckMetadata deck : marketplaceDecks) {
+            List<MarketplaceDeckMetadata> singleDeckList = new ArrayList<>();
+            singleDeckList.add(deck);
+
+            if (decksSaved.contains(deck)) {
+                decksLoaded.addAll(loadDecksViewMarketplace(singleDeckList, DeckAvailability.OWNED));
+            } else {
+                decksLoaded.addAll(loadDecksViewMarketplace(singleDeckList, DeckAvailability.MISSING));
+            }
+        }
+
         return decksLoaded;
     }
 
