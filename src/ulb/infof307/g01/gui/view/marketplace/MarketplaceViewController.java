@@ -17,7 +17,8 @@ import java.util.List;
 public class MarketplaceViewController {
     public enum SearchType {
         Name,
-        Creator
+        Creator,
+        Tag
     }
 
     /* ====================================================================== */
@@ -63,7 +64,8 @@ public class MarketplaceViewController {
         ObservableList<String> options =
                 FXCollections.observableArrayList(
                         "Nom",
-                        "Username"
+                        "Creator",
+                        "Tag"
                 );
         comboBox.setItems(options);
         comboBox.setValue("Nom");
@@ -82,6 +84,8 @@ public class MarketplaceViewController {
             searchType = MarketplaceViewController.SearchType.Name;
         } else if (searchTypeText.equals("Username")) {
             searchType = MarketplaceViewController.SearchType.Creator;
+        } else if (searchTypeText.equals("Tag")) {
+            searchType = MarketplaceViewController.SearchType.Tag;
         }
 
         return searchType;
@@ -98,7 +102,6 @@ public class MarketplaceViewController {
         for (Node deck : decksMarketplace) {
             decksContainer.getChildren().add(deck);
         }
-        // arrange();  //TODO
     }
 
     public void setDecksUser(List<Node> decksUser) {
@@ -107,7 +110,6 @@ public class MarketplaceViewController {
         for (Node deck : decksUser) {
             userDecksContainer.getChildren().add(deck);
         }
-        // arrange();  //TODO
     }
 
     /* ====================================================================== */

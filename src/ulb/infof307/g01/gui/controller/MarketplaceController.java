@@ -166,6 +166,8 @@ public class MarketplaceController implements
 
             } else if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.Creator)) {
                 decks = serverCommunicator.searchDecksMarketplaceByCreator(name);
+            } else if (marketplaceViewController.getSearchType().equals(MarketplaceViewController.SearchType.Tag)) {
+                decks = serverCommunicator.searchDecksMarketplaceByTag(name);
             }
             assert decks != null;
             marketplaceViewController.setDecksMarketplace(loadDecksMarketplaceDatabase(decks));
