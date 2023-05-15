@@ -9,26 +9,31 @@ public class Score {
     private final String username;
     private final UUID deckId;
     private int score;
+    private final List<Integer> scoreHistory;
     private final List<Double> times;
-    private final int timestamp;
+    private final long timestamp;
 
-    public Score(String username, UUID deckId, int score, int timestamp) {
+    public Score(String username, UUID deckId, int score, long timestamp) {
         this.username = username;
         this.deckId = deckId;
         this.score = score;
         this.timestamp = timestamp;
         this.times = new ArrayList<>();
+        this.scoreHistory = new ArrayList<>();
     }
 
-    static public Score createNewScore(String username, UUID deckId) {
-        return new Score(username, deckId, 0, (int) (System.currentTimeMillis() / 1000L));
+    public Score(String username, UUID deckId) {
+        this(username, deckId, 0, System.currentTimeMillis());
     }
 
     public void increment(int value) {
         this.score += value;
+        this.scoreHistory.add(value);
     }
 
     public void addTime(double timeLeft) {
+        // TODO : this function isn't called when time is out, i think it should
+        //  you might wanna make the call in timerRanOut() in playDeckController
         this.times.add(timeLeft);
     }
 
@@ -48,15 +53,31 @@ public class Score {
         return score;
     }
 
+    public int getAmountScores() {
+        return scoreHistory.size();
+    }
+
+    public int getAmountCorrectAnswers() {
+        // return amount of items in scoreHistory that are > 0
+        int amountCorrectAnswers = 0;
+        for (int score : scoreHistory) {
+            if (score > 0) {
+                amountCorrectAnswers++;
+            }
+        }
+        return amountCorrectAnswers;
+    }
+
+    public int getScoreAt(int index) {
+        return scoreHistory.get(index);
+    }
+
     public double getTotalTime() {
         if (times.isEmpty()) {
             return 0;
         }
 
-        double sum = 0;
-        for (double time : times) {
-            sum += time;
-        }
+        double sum = times.stream().reduce(0D, Double::sum);
         return Math.round(sum * 100.0) / 100.0;
     }
 
@@ -69,7 +90,7 @@ public class Score {
         return Math.round(totalTime / times.size() * 100.0) / 100.0;
     }
 
-    public int getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 

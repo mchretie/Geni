@@ -3,6 +3,8 @@ package ulb.infof307.g01.server.handler;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.rating.RatingValue;
+import ulb.infof307.g01.model.rating.UserRating;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.server.database.Database;
 import ulb.infof307.g01.server.service.JWTService;
@@ -30,7 +32,10 @@ public class MarketplaceRequestHandler extends Handler {
         post(ADD_DECK_TO_COLLECTION_PATH, this::addDeckToCollection, toJson());
         delete(REMOVE_DECK_FROM_COLLECTION_PATH, this::removeDeckFromCollection, toJson());
         get(GET_SAVED_DECKS_FROM_MARKETPLACE, this::getUsersCollection, toJson());
+        post(ADD_RATING, this::addRating, toJson());
+        get(GET_USER_RATING, this::getUserRating, toJson());
     }
+
 
     private MarketplaceDeckMetadata setupImagePath(MarketplaceDeckMetadata deckMetadata) {
         return new MarketplaceDeckMetadata(
@@ -167,6 +172,41 @@ public class MarketplaceRequestHandler extends Handler {
             halt(500, message);
 
             return new ArrayList<>();
+        }
+    }
+
+    private Map<String, Boolean> addRating(Request req, Response res) {
+        try {
+            UserRating userRating = UserRating.fromJson(req.body());
+            UUID userId = userIdFromRequest(req);
+
+            database.addRating(new UserRating(userRating.deckId(), userId, userRating.value()));
+
+            return successfulResponse;
+
+        } catch (Exception e) {
+            String message = "Failed to add rating to the marketplace : " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
+            return failedResponse;
+        }
+    }
+
+
+    private UserRating getUserRating(Request req, Response res) {
+
+        try {
+            UUID deckId = UUID.fromString(req.queryParams("deck_id"));
+            UUID userId = userIdFromRequest(req);
+            return database.getUserRating(deckId, userId);
+
+        } catch (Exception e) {
+            String message = "Failed to get rating from the marketplace : " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+
+            return null;
         }
     }
 }

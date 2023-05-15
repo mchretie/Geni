@@ -43,7 +43,7 @@ class GameHistoryTest {
 
     @Test
     void forEach() {
-        int previousTimestamp = 1000000000;
+        long previousTimestamp = 1000000000;
         for (Game game : gameHistory) {
             assertTrue(new Date(game.timestamp()).before(new Date(previousTimestamp)));
             previousTimestamp = game.timestamp();

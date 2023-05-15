@@ -23,6 +23,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Class responsible for display the deck menu and listening to
@@ -42,7 +44,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     private final ServerCommunicator serverCommunicator;
 
-    private final ImageLoader imageLoader = new ImageLoader();
+    private ImageLoader imageLoader;
     private final DeckIO deckIO = new DeckIO();
 
     /* ====================================================================== */
@@ -70,6 +72,9 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         deckMenuViewController.setListener(this);
     }
 
+    public void setImageLoader(ImageLoader loader) {
+        this.imageLoader = loader;
+    }
 
     /* ====================================================================== */
     /*                         Stage Manipulation                             */
@@ -81,8 +86,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     public void show() throws ServerCommunicationFailedException,
-                                IOException,
-                                InterruptedException {
+            IOException,
+            InterruptedException {
 
         showDecks();
         mainWindowViewController.setDeckMenuViewVisible();
@@ -112,6 +117,8 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
         decks.sort(Comparator.comparing(DeckMetadata::name));
 
+        HashMap<UUID, Score> bestScores = serverCommunicator.getBestScoreForDecks(decks);
+
         for (DeckMetadata deck : decks) {
 
             URL resource = DeckMenuViewController
@@ -127,9 +134,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             controller.setDisableEdit(deck.isPublic());
 
-            Score bestScore = serverCommunicator.getBestScoreForDeck(deck.id());
-
-            controller.setDeck(deck, bestScore);
+            controller.setDeck(deck, bestScores.get(deck.id()));
             controller.setListener(this);
 
             decksLoaded.add(node);
@@ -223,7 +228,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
     }
 
     @Override
-    public void deckDoubleClicked(DeckMetadata deck) {
+    public void deckClicked(DeckMetadata deck) {
         controllerListener.deckClicked(deck);
     }
 
@@ -280,6 +285,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
     public interface ControllerListener {
         void editDeckClicked(DeckMetadata deck);
+
         void deckClicked(DeckMetadata deck);
     }
 }

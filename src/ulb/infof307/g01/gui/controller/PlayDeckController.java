@@ -7,12 +7,16 @@ import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.gui.view.playdeck.PlayDeckViewController;
 import ulb.infof307.g01.model.card.*;
+import ulb.infof307.g01.model.card.extractor.CardExtractor;
+import ulb.infof307.g01.model.card.extractor.CardExtractorRandom;
+import ulb.infof307.g01.model.card.visitor.CardVisitor;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Score;
 
 import java.util.Arrays;
 
-public class PlayDeckController implements PlayDeckViewController.Listener {
+public class PlayDeckController implements PlayDeckViewController.Listener,
+                                            CardVisitor {
 
     private final Stage stage;
     private final MainWindowViewController mainWindowViewController;
@@ -25,6 +29,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     private Card currentCard;
     private boolean frontShown = true;
+    private boolean progressbarTimedOut = true;
     private boolean[] answeredCards;
 
     public void setDeck(Deck deck) throws EmptyDeckException {
@@ -33,15 +38,14 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         cardExtractor = new CardExtractorRandom(deck);
         currentCard = cardExtractor.getNextCard();
-        this.score = Score.createNewScore(serverCommunicator.getSessionUsername(), deck.getId());
+        this.score = new Score(serverCommunicator.getSessionUsername(), deck.getId());
+
         this.answeredCards = new boolean[deck.cardCount()];
         Arrays.fill(answeredCards, false);
 
         playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
         playDeckViewController.setDeckName(deck.getName());
         playDeckViewController.setNumberOfCards(deck.cardCount());
-
-        playDeckViewController.setTimer();
     }
 
     public void removeDeck() {
@@ -88,13 +92,66 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
         stage.show();
     }
 
-    public void showCard() {
-        if (currentCard instanceof FlashCard)
-            playDeckViewController.showNormalCard();
-        else if (currentCard instanceof MCQCard)
-            playDeckViewController.showMCQCard();
-        else if (currentCard instanceof InputCard)
-            playDeckViewController.showInputCard();
+    private void showCard() {
+        currentCard.accept(this);
+    }
+
+
+    /* ====================================================================== */
+    /*                         Card Visitor Methods                           */
+    /* ====================================================================== */
+
+    @Override
+    public void visit(FlashCard flashCard) {
+        playDeckViewController.showNormalCard();
+        playDeckViewController.enableFrontCardClick();
+        playDeckViewController.hideProgressBar();
+    }
+
+    @Override
+    public void visit(MCQCard multipleChoiceCard) {
+        boolean isAnswered = answeredCards[cardExtractor.getCurrentCardIndex()];
+        playDeckViewController.showMCQCard();
+        playDeckViewController.disableFrontCardClick();
+
+        if (isAnswered) {
+            playDeckViewController.showMCQAnswer();
+        }
+
+        else if (progressbarTimedOut) {
+            playDeckViewController.startProgressBar();
+            progressbarTimedOut = false;
+        }
+
+        else if (playDeckViewController.timerHasRunOut()) {
+            playDeckViewController.showMCQAnswer();
+            progressbarTimedOut = true;
+        }
+
+        else playDeckViewController.startProgressBar();
+    }
+
+    @Override
+    public void visit(InputCard inputCard) {
+        boolean isAnswered = answeredCards[cardExtractor.getCurrentCardIndex()];
+        playDeckViewController.showInputCard();
+        playDeckViewController.disableFrontCardClick();
+
+        if (isAnswered) {
+            playDeckViewController.showInputAnswer();
+        }
+
+        else if (progressbarTimedOut) {
+            playDeckViewController.startProgressBar();
+            progressbarTimedOut = false;
+        }
+
+        else if (playDeckViewController.timerHasRunOut()) {
+            playDeckViewController.showInputAnswer();
+            progressbarTimedOut = true;
+        }
+
+        else playDeckViewController.startProgressBar();
     }
 
     /* ====================================================================== */
@@ -103,28 +160,35 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
     @Override
     public void cardClicked() {
-        if (currentCard instanceof FlashCard) {
-            if (frontShown)
-                playDeckViewController.flipToBackOfCard();
-            else
-                playDeckViewController.flipToFrontOfCard();
-            frontShown = !frontShown;
-        }
+        if (frontShown)
+            playDeckViewController.flipToBackOfCard();
+        else
+            playDeckViewController.flipToFrontOfCard();
+        frontShown = !frontShown;
     }
 
     @Override
     public void nextCardClicked() {
         frontShown = true;
         currentCard = cardExtractor.getNextCard();
+        int cardIndex = cardExtractor.getCurrentCardIndex();
+        playDeckViewController.hideProgressBar();
 
         if (currentCard != null) {
             playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
-            playDeckViewController.setTimer();
+            if (answeredCards[cardIndex]) {
+                playDeckViewController.markCardAnswered();
+            }
             showCard();
             return;
         }
 
-        int totalScore = score.getScore() / cardExtractor.getAmountCompetitiveCards();
+        // TODO: This is a temporary fix.
+        //  The 0 competitive cards case should be handled elsewhere.
+
+        int amountCompetitiveCards = cardExtractor.getAmountCompetitiveCards();
+        int divider = amountCompetitiveCards == 0 ? 1 : amountCompetitiveCards;
+        int totalScore = score.getScore() / divider;
         score.setScore(totalScore);
 
         try {
@@ -134,7 +198,7 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
             errorHandler.failedAddScore(e);
 
         } finally {
-            controllerListener.finishedPlayingDeck(score);
+            controllerListener.finishedPlayingDeck(score, amountCompetitiveCards);
         }
     }
 
@@ -147,8 +211,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         currentCard = previousCard;
         playDeckViewController.setCurrentCard(currentCard, cardExtractor.getCurrentCardIndex());
-        playDeckViewController.setTimer();
-
         showCard();
     }
 
@@ -162,13 +224,22 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
 
         answeredCards[cardIndex] = true;
         if (isGoodChoice) {
-            // make x between -2 and 2 depending on time left for the sigmoid function
             double x = (timeLeft - 0.5) * 4;
             int scoreToAdd = (int) (1000 / (1 + Math.exp(-2 * x)));
+
+            // double timeElapsed = 1.0 - timeLeft;
+            // int scoreToAddN = (int) (1000 / (1 + Math.exp(8*timeElapsed - 4)));
+            
             score.increment(scoreToAdd);
-        }
+        } else { score.increment(0); }  // needed for score history
 
         score.addTime(((TimedCard) currentCard).getCountdownTime()-timeLeft*10);
+    }
+
+    @Override
+    public void timerRanOut() {
+        score.increment(0); // needed for score history
+        showCard();
     }
 
 
@@ -177,6 +248,6 @@ public class PlayDeckController implements PlayDeckViewController.Listener {
     /* ====================================================================== */
 
     public interface ControllerListener {
-        void finishedPlayingDeck(Score score);
+        void finishedPlayingDeck(Score score, int amountCompetitiveCards);
     }
 }

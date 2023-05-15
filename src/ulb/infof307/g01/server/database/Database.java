@@ -5,7 +5,7 @@ import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
-import ulb.infof307.g01.model.leaderboard.DeckLeaderboard;
+import ulb.infof307.g01.model.rating.UserRating;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.server.database.dao.*;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
@@ -18,6 +18,7 @@ import java.util.UUID;
  * Facade for all actions related to the database
  */
 public class Database {
+    CardDAO cardDao;
     DatabaseAccess databaseAccess;
     DeckDAO deckDao;
     TagDAO tagDao;
@@ -27,6 +28,7 @@ public class Database {
 
     public Database() {
         this.databaseAccess = new DatabaseAccess();
+        this.cardDao = new CardDAO(this.databaseAccess);
         this.deckDao = new DeckDAO(this.databaseAccess);
         this.tagDao = new TagDAO(this.databaseAccess);
         this.userDao = new UserDAO(this.databaseAccess);
@@ -34,6 +36,7 @@ public class Database {
         this.marketplaceDao = new MarketplaceDAO(this.databaseAccess);
 
         this.deckDao.setTagDao(this.tagDao);
+        this.deckDao.setCardDao(this.cardDao);
         this.tagDao.setDeckDao(this.deckDao);
         this.scoreDao.setUserDAO(this.userDao);
         this.marketplaceDao.setDeckDAO(this.deckDao);
@@ -112,8 +115,8 @@ public class Database {
         scoreDao.deleteScoresForDeck(deckId);
     }
 
-    public DeckLeaderboard getLeaderboardFromDeckId(UUID deckId) {
-        return new DeckLeaderboard(deckId, scoreDao.getScoresForDeck(deckId));
+    public Score getBestScoreForDeck(UUID deckId) {
+        return scoreDao.getBestScoreForDeck(deckId);
     }
 
     public GlobalLeaderboard getGlobalLeaderboard() {
@@ -163,5 +166,13 @@ public class Database {
 
     public int getNumberOfPublicPlayedDecks(UUID userId) {
         return marketplaceDao.getNumberOfPublicPlayedDecks(userId);
+    }
+
+    public void addRating(UserRating userRating) {
+        marketplaceDao.addRating(userRating);
+    }
+
+    public UserRating getUserRating(UUID deckId, UUID userId) {
+        return marketplaceDao.getUserRating(deckId, userId);
     }
 }

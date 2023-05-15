@@ -14,11 +14,14 @@ import ulb.infof307.g01.gui.view.marketplace.DeckUserMarketplaceViewController;
 import ulb.infof307.g01.gui.view.marketplace.MarketplaceViewController;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
+import ulb.infof307.g01.model.deck.Score;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class MarketplaceController implements
         MarketplaceViewController.Listener,
@@ -29,7 +32,7 @@ public class MarketplaceController implements
     private final ErrorHandler errorHandler;
     private final MarketplaceViewController marketplaceViewController;
     private final MainWindowViewController mainWindowViewController;
-    private final ImageLoader imageLoader = new ImageLoader();
+    private ImageLoader imageLoader;
 
     private final ServerCommunicator serverCommunicator;
 
@@ -48,15 +51,16 @@ public class MarketplaceController implements
         marketplaceViewController.setListener(this);
     }
 
+    public void setImageLoader(ImageLoader imageLoader) {
+        this.imageLoader = imageLoader;
+    }
+
 
     /* ====================================================================== */
     /*                         Stage Manipulation                             */
     /* ====================================================================== */
 
     public void show() throws ServerCommunicationFailedException, IOException, InterruptedException {
-        if (! serverCommunicator.isUserLoggedIn()) {
-            //TODO : GuestMode
-        }
         mainWindowViewController.setMarketplaceViewVisible();
 
         List<Node> decksMarketplace = loadDecksMarketplaceDatabase(serverCommunicator.getAllMarketplaceDecks());
@@ -93,6 +97,8 @@ public class MarketplaceController implements
 
         List<Node> decksLoaded = new ArrayList<>();
 
+        HashMap<UUID, Score> bestScores = serverCommunicator.getBestScoreForMarketplaceDecks(decksUser);
+
         for (MarketplaceDeckMetadata deck : decksUser) {
             URL resource = MarketplaceViewController
                     .class
@@ -103,8 +109,9 @@ public class MarketplaceController implements
             Node node = loader.load();
 
             DeckUserMarketplaceViewController controller = loader.getController();
+            controller.setImageLoader(imageLoader);
 
-            controller.setDeck(deck, serverCommunicator.getBestScoreForDeck(deck.id()));
+            controller.setDeck(deck, bestScores.get(deck.id()));
             controller.setImageLoader(imageLoader);
             controller.setListener(this);
 
@@ -117,6 +124,8 @@ public class MarketplaceController implements
             throws IOException, ServerCommunicationFailedException {
         List<Node> decksLoaded = new ArrayList<>();
 
+        HashMap<UUID, Score> bestScores = serverCommunicator.getBestScoreForMarketplaceDecks(decks);
+
         for (MarketplaceDeckMetadata deck : decks) {
             URL resource = MarketplaceViewController
                     .class
@@ -127,10 +136,13 @@ public class MarketplaceController implements
             Node node = loader.load();
 
             DeckMarketplaceViewController controller = loader.getController();
+            controller.setImageLoader(imageLoader);
 
-            controller.setDeck(deck, serverCommunicator.getBestScoreForDeck(deck.id()), deckAvailability);
+            controller.setDeck(deck, bestScores.get(deck.id()), deckAvailability);
             controller.setImageLoader(imageLoader);
             controller.setListener(this);
+
+            controller.setRating(deck.rating()-1);
 
             decksLoaded.add(node);
         }

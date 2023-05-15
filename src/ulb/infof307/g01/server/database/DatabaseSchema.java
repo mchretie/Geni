@@ -92,10 +92,23 @@ class DatabaseSchema {
             """
         CREATE TABLE IF NOT EXISTS marketplace (
             deck_id TEXT PRIMARY KEY,
-            rating INTEGER,
             downloads INTEGER NOT NULL,
             FOREIGN KEY (deck_id)
                 REFERENCES deck(deck_id)
+                ON DELETE CASCADE
+        );
+            """,
+            """
+        CREATE TABLE IF NOT EXISTS user_rating (
+            deck_id TEXT NOT NULL,
+            user_id TEXT NOT NULL,
+            value INTEGER NOT NULL,
+            PRIMARY KEY (deck_id, user_id),
+            FOREIGN KEY (deck_id)
+                REFERENCES deck(deck_id)
+                ON DELETE CASCADE,
+            FOREIGN KEY (user_id)
+                REFERENCES user(user_id)
                 ON DELETE CASCADE
         );
             """,

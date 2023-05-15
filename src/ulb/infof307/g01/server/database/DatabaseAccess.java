@@ -134,13 +134,11 @@ public class DatabaseAccess {
      * @param updates a SQL statement to be executed
      */
     public void executeUpdates(String[] updates) throws DatabaseException {
-        try {
-            assertOpened();
-            Statement stmt = connection.createStatement();
+        assertOpened();
+        try (Statement stmt = connection.createStatement()) {
             for (String sql : updates)
                 stmt.addBatch(sql);
             stmt.executeBatch();
-
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -163,6 +161,8 @@ public class DatabaseAccess {
                 statement.setString(i + 1, arg);
             else if (args[i] instanceof Integer arg)
                 statement.setInt(i + 1, arg);
+            else if (args[i] instanceof Long arg)
+                statement.setLong(i + 1, arg);
             else
                 throw new DatabaseException("Unsupported argument type for query");
         }

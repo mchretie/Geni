@@ -31,8 +31,7 @@ public final class ServerPaths {
     // Used by LeaderboardRequestHandler
     public static final String LEADERBOARD_BASE_PATH = BASE + "/leaderboard";
     public static final String SAVE_SCORE_PATH = LEADERBOARD_BASE_PATH + "/save";
-    public static final String GET_LEADERBOARD_PATH = LEADERBOARD_BASE_PATH + "/get";
-    public static final String GET_BEST_SCORE_PATH = GET_LEADERBOARD_PATH + "/best-score";
+    public static final String GET_BEST_SCORES_PATH = LEADERBOARD_BASE_PATH + "/best-scores";
     public static final String GET_GLOBAL_LEADERBOARD = LEADERBOARD_BASE_PATH + "/global";
 
     // Used by GameHistoryRequestHandler
@@ -48,4 +47,6 @@ public final class ServerPaths {
     public static final String ADD_DECK_TO_COLLECTION_PATH = MARKETPLACE_BASE_PATH + "/add-collection";
     public static final String REMOVE_DECK_FROM_COLLECTION_PATH = MARKETPLACE_BASE_PATH + "/delete-collection";
     public static final String GET_SAVED_DECKS_FROM_MARKETPLACE = MARKETPLACE_BASE_PATH + "/get-collection";
+    public static final String ADD_RATING = MARKETPLACE_BASE_PATH + "/add-rating";
+    public static final String GET_USER_RATING = MARKETPLACE_BASE_PATH + "/get-rating";
 }

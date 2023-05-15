@@ -4,6 +4,7 @@ import ulb.infof307.g01.gui.http.dao.*;
 import ulb.infof307.g01.gui.http.exceptions.AuthenticationFailedException;
 import ulb.infof307.g01.gui.http.exceptions.ServerCommunicationFailedException;
 import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.rating.UserRating;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.deck.Score;
@@ -12,6 +13,7 @@ import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -151,6 +153,26 @@ public class ServerCommunicator {
        }
     }
 
+    public HashMap<UUID, Score> getBestScoreForDecks(List<DeckMetadata> decks)
+            throws ServerCommunicationFailedException {
+        try {
+            return scoreDAO.getBestScoreForDecks(decks);
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get best score for decks";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
+
+    public HashMap<UUID, Score> getBestScoreForMarketplaceDecks(List<MarketplaceDeckMetadata> decks)
+            throws ServerCommunicationFailedException {
+        List<DeckMetadata> decksMetadata =
+                decks.stream()
+                        .map(DeckMetadata::fromMarketplaceDeckMetadata)
+                        .toList();
+
+        return getBestScoreForDecks(decksMetadata);
+    }
+
     public GlobalLeaderboard getGlobalLeaderboard()
             throws ServerCommunicationFailedException {
 
@@ -248,6 +270,8 @@ public class ServerCommunicator {
 
         try {
             deckDAO.saveDeck(deck);
+
+
         } catch (IOException | InterruptedException e) {
             String message = "Failed to save deck";
             throw new ServerCommunicationFailedException(message);
@@ -345,14 +369,13 @@ public class ServerCommunicator {
             throws ServerCommunicationFailedException {
 
         try {
-            marketplaceDAO.removeDeckFromMarketplace(deck);
-
             //TODO : clean this up
             var deckMetadata = DeckMetadata.fromMarketplaceDeckMetadata(deck);
             Deck deckToRemove = deckDAO.getDeck(deckMetadata).orElseThrow();
             deckToRemove.switchOnlineVisibility();
-            deckDAO.updateCache(deckToRemove.getMetadata());
 
+            marketplaceDAO.removeDeckFromMarketplace(deck);
+            deckDAO.updateCache(deckToRemove.getMetadata());
         } catch (IOException | InterruptedException e) {
             String message = "Failed to remove deck from marketplace";
             throw new ServerCommunicationFailedException(message);
@@ -391,6 +414,30 @@ public class ServerCommunicator {
 
         } catch (IOException | InterruptedException e) {
             String message = "Failed to search decks";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
+
+    public void addRating(UserRating userRating)
+            throws ServerCommunicationFailedException {
+
+        try {
+            marketplaceDAO.addRating(userRating);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to add userRating to marketplace";
+            throw new ServerCommunicationFailedException(message);
+        }
+    }
+
+    public UserRating getUserRating(DeckMetadata deckMetadata)
+            throws ServerCommunicationFailedException {
+
+        try {
+            return marketplaceDAO.getUserRating(deckMetadata);
+
+        } catch (IOException | InterruptedException e) {
+            String message = "Failed to get userRating from marketplace";
             throw new ServerCommunicationFailedException(message);
         }
     }

@@ -1,6 +1,8 @@
 package ulb.infof307.g01.server.database.dao;
 
 import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.rating.RatingValue;
+import ulb.infof307.g01.model.rating.UserRating;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
@@ -27,7 +29,7 @@ public class MarketplaceDAO extends DAO {
         try {
             Deck deck = deckDAO.extractDeckFrom(res);
             String owner_username = res.getString("username");
-            int rating = res.getInt("rating");
+            int rating = getRatingFor(deck.getId());
             int downloads = res.getInt("downloads");
 
             return new MarketplaceDeckMetadata(deck, owner_username, rating, downloads);
@@ -37,16 +39,85 @@ public class MarketplaceDAO extends DAO {
         }
     }
 
+
+    public UserRating getUserRating(UUID deckId, UUID userId) {
+        String sql = """
+                    SELECT value
+                    FROM user_rating
+                    WHERE deck_id = ? AND user_id = ?;
+                """;
+
+        try {
+            ResultSet res = database.executeQuery(sql,
+                                                  deckId.toString(),
+                                                  userId.toString());
+
+            RatingValue rating = UserRating.DEFAULT_VALUE;
+            if (checkedNext(res)) {
+                rating = RatingValue.fromInt(res.getInt("value"));
+            }
+
+            return new UserRating(deckId, userId, rating);
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public void addRating(UserRating userRating) {
+        String sql = """                                                                                                                                  
+                INSERT INTO user_rating (deck_id, user_id, value)
+                VALUES (?, ?, ?)
+                ON CONFLICT(deck_id, user_id)
+                DO UPDATE SET value = ?
+            """;
+
+        database.executeUpdate(sql,
+                               userRating.deckId().toString(),
+                               userRating.userId().toString(),
+                               String.valueOf(userRating.value().asInt()),
+                               String.valueOf(userRating.value().asInt()));
+    }
+
+    private int getRatingFor(UUID deckId) {
+        String sql = """
+                SELECT value
+                FROM user_rating
+                WHERE deck_id = ?;
+                """;
+
+        try {
+            ResultSet res = database.executeQuery(sql,
+                                                  deckId.toString());
+
+            int ratingsCount = 0;
+            int ratingsSum = 0;
+
+            while (checkedNext(res)) {
+                ratingsCount++;
+                ratingsSum += res.getInt("value");
+            }
+
+            int userRating = UserRating.DEFAULT_VALUE.asInt();
+            if (ratingsCount != 0)
+                userRating = Math.round((float) ratingsSum / ratingsCount);
+
+            return userRating;
+
+        } catch (SQLException e) {
+            throw new DatabaseException("SQLError: " + e.getMessage());
+        }
+    }
+
     public void addDeckToMarketplace(UUID deckId) throws DatabaseException {
         String sql = """
-                INSERT INTO marketplace (deck_id, rating, downloads)
-                VALUES (?, ?, ?);
+                INSERT INTO marketplace (deck_id, downloads)
+                VALUES (?, ?);
                 """;
 
         database.executeUpdate(
                 sql,
                 deckId.toString(),
-                String.valueOf(0),
                 String.valueOf(0));
 
         setDeckPublic(deckId, true);
@@ -83,7 +154,7 @@ public class MarketplaceDAO extends DAO {
 
     public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {
         String sql = """
-                SELECT D.deck_id, U.username, D.name, D.color, D.image, D.color_name, M.rating, M.downloads, 1 as 'public'
+                SELECT D.deck_id, U.username, D.name, D.color, D.image, D.color_name, M.downloads, 1 as 'public'
                 FROM marketplace M
                 INNER JOIN deck D ON M.deck_id = D.deck_id
                 INNER JOIN user U ON U.user_id = D.user_id;
@@ -135,7 +206,7 @@ public class MarketplaceDAO extends DAO {
 
     public List<MarketplaceDeckMetadata> getSavedDecks(UUID userId) throws DatabaseException {
         String sql = """
-                SELECT D.deck_id, U.username, D.name, D.color, D.image, D.color_name, M.rating, M.downloads, 1 as 'public'
+                SELECT D.deck_id, U.username, D.name, D.color, D.image, D.color_name, M.downloads, 1 as 'public'
                 FROM marketplace M
                 INNER JOIN deck D ON M.deck_id = D.deck_id
                 INNER JOIN user U ON U.user_id = D.user_id
@@ -168,6 +239,5 @@ public class MarketplaceDAO extends DAO {
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
-
     }
 }

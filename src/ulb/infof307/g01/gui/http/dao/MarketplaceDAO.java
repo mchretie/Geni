@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import ulb.infof307.g01.model.IndulgentValidator;
 import ulb.infof307.g01.model.deck.Deck;
+import ulb.infof307.g01.model.deck.DeckMetadata;
+import ulb.infof307.g01.model.rating.*;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.shared.constants.ServerPaths;
 
@@ -82,5 +84,23 @@ public class MarketplaceDAO extends HttpDAO {
         return getAllMarketplaceDecks().stream()
                 .filter(deck -> pattern.matcher(validator.addTolerance(deck.owner())).matches())
                 .collect(toList());
+    }
+
+    public void addRating(UserRating userRating) throws IOException, InterruptedException {
+        String ratingJson = userRating.toJson();
+
+        HttpResponse<String> response = post(ServerPaths.ADD_RATING, ratingJson);
+
+        checkResponseCode(response.statusCode());
+    }
+
+    public UserRating getUserRating(DeckMetadata deckMetadata) throws IOException, InterruptedException {
+        String path = ServerPaths.GET_USER_RATING;
+        path += "?deck_id=" + deckMetadata.id().toString();
+
+        HttpResponse<String> response = get(path);
+        checkResponseCode(response.statusCode());
+
+        return UserRating.fromJson(response.body());
     }
 }

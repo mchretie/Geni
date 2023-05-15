@@ -11,6 +11,7 @@ import ulb.infof307.g01.gui.view.editdeck.TagViewController;
 import ulb.infof307.g01.gui.view.editdeck.EditDeckViewController;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
 import ulb.infof307.g01.model.card.*;
+import ulb.infof307.g01.model.card.visitor.CardVisitor;
 import ulb.infof307.g01.model.deck.Deck;
 import ulb.infof307.g01.model.deck.Tag;
 
@@ -21,15 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditDeckController implements EditDeckViewController.Listener,
-        TagViewController.Listener {
+                                                    TagViewController.Listener, CardVisitor {
 
     /* ====================================================================== */
     /*                             Model Attributes                           */
     /* ====================================================================== */
 
     private final Deck deck;
-
-    private int selectedCardIndex = 0;
+    private Card selectedCard;
 
 
     /* ====================================================================== */
@@ -86,10 +86,33 @@ public class EditDeckController implements EditDeckViewController.Listener,
         editDeckViewController.setDeck(deck);
     }
 
+    /* ====================================================================== */
+    /*                   Card Editor Visitor Interface                        */
+    /* ====================================================================== */
+
+    @Override
+    public void visit(FlashCard flashCard) {
+        editDeckViewController.loadFlashCardEditor(flashCard);
+    }
+
+    @Override
+    public void visit(MCQCard multipleChoiceCard) {
+        editDeckViewController.loadMCQCardEditor(multipleChoiceCard);
+        editDeckViewController.setRemoveChoiceButtonEnabled(multipleChoiceCard.canRemoveChoice());
+    }
+
+    @Override
+    public void visit(InputCard inputCard) {
+        editDeckViewController.loadInputCardEditor(inputCard);
+    }
 
     /* ====================================================================== */
     /*                         Stage Manipulation                             */
     /* ====================================================================== */
+
+    private void showSelectedCardEditor() {
+        selectedCard.accept(this);
+    }
 
     /**
      * Loads and displays the Deck Menu onto the main scene
@@ -101,16 +124,14 @@ public class EditDeckController implements EditDeckViewController.Listener,
         mainWindowViewController.makeGoBackIconVisible();
 
         editDeckViewController.setTags(loadTags());
-        editDeckViewController.showCards();
+        editDeckViewController.showCardsFromDeck(deck);
 
         if (deck.cardCount() > 0) {
-            List<Card> deckCards = deck.getCards();
-            if (selectedCardIndex >= deckCards.size()) {
-                selectedCardIndex = 0;
-            }
-            editDeckViewController.setSelectedCard(deckCards.get(selectedCardIndex));
-            editDeckViewController.loadSelectedCardEditor();
-        } else
+            selectedCard = deck.getFirstCard();
+            showSelectedCardEditor();
+        }
+
+        else
             editDeckViewController.hideSelectedCardEditor();
 
         stage.show();
@@ -143,241 +164,186 @@ public class EditDeckController implements EditDeckViewController.Listener,
     }
 
     /* ====================================================================== */
+    /*                           Database Access                              */
+    /* ====================================================================== */
+
+    private void saveChanges() {
+        try {
+            serverCommunicator.saveDeck(deck);
+
+        } catch (ServerCommunicationFailedException e) {
+            errorHandler.failedServerCommunication(e);
+        }
+    }
+
+    /* ====================================================================== */
     /*                        View Listener Method                            */
     /* ====================================================================== */
 
     @Override
     public void deckNameModified(String newName) {
-        try {
-            deck.setName(newName.trim());
-            serverCommunicator.saveDeck(deck);
-
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
+        deck.setName(newName.trim());
+        saveChanges();
     }
 
     @Override
-    public void setSelectedCardIndex(int index) {
-        selectedCardIndex = index;
+    public void tagAddedToDeck(String tagName, String color) {
+        if (tagName.trim().isEmpty() || deck.tagExists(tagName))
+            return;
+
+        deck.addTag(new Tag(tagName, color));
+        editDeckViewController.setTags(loadTags());
+        saveChanges();
     }
 
     @Override
-    public void tagAddedToDeck(Deck deck, String tagName, String color) {
-        try {
-            if (tagName.trim().isEmpty() || deck.tagExists(tagName))
-                return;
-
-            deck.addTag(new Tag(tagName, color));
-            editDeckViewController.setTags(loadTags());
-
-            serverCommunicator.saveDeck(deck);
-
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
+    public void inputAnswerModified(String answer) {
+        ((InputCard) selectedCard).setAnswer(answer);
+        saveChanges();
     }
 
     @Override
-    public void inputAnswerModified(InputCard inputcard, String answer) {
-        try {
-            inputcard.setAnswer(answer);
-            serverCommunicator.saveDeck(deck);
-            editDeckViewController.showCards();
-            serverCommunicator.saveDeck(deck);
-
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
+    public void timerValueChanged(int value) {
+        ((TimedCard) selectedCard).setCountdownTime(value);
+        saveChanges();
     }
 
     @Override
-    public void timerValueChanged(TimedCard selectedCard, int value) {
-        try {
-            selectedCard.setCountdownTime(value);
-            serverCommunicator.saveDeck(deck);
+    public void mcqChoiceModified(String text, int index) {
+        MCQCard card = (MCQCard) selectedCard;
 
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
+        if (index >= card.getChoicesCount())
+            return;
+
+        if (text.trim().isEmpty())
+            card.removeChoice(index);
+
+        else card.setChoice(index, text);
+
+        saveChanges();
+        showSelectedCardEditor();
     }
 
     @Override
-    public void choiceModified(MCQCard mcqCard, String text, int index) {
-        try {
-            mcqCard.setChoice(index, text);
-            serverCommunicator.saveDeck(deck);
-            editDeckViewController.showCards();
-
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
+    public void mcqAnswerChanged(int index) {
+        ((MCQCard) selectedCard).setCorrectChoice(index);
+        saveChanges();
+        showSelectedCardEditor();
     }
 
     @Override
-    public void correctChoiceChanged(MCQCard mcqCard, int index) {
-        try {
-            mcqCard.setCorrectChoice(index);
-            serverCommunicator.saveDeck(deck);
-            editDeckViewController.showCards();
-
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
+    public void mcqCardChoiceRemoved(int index) {
+        ((MCQCard) selectedCard).removeChoice(index);
+        saveChanges();
+        showSelectedCardEditor();
     }
 
     @Override
-    public void choiceRemoved(MCQCard mcqCard, int index) {
-        try {
-            mcqCard.removeChoice(index);
-            serverCommunicator.saveDeck(deck);
-            editDeckViewController.showCards();
-
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
+    public void mcqCardChoiceAdded() {
+        ((MCQCard) selectedCard).addChoice("Nouvelle réponse");
+        saveChanges();
+        showSelectedCardEditor();
     }
 
     @Override
-    public void choiceAdded(MCQCard mcqCard) {
-        try {
-            mcqCard.addChoice("Nouvelle réponse");
-            serverCommunicator.saveDeck(deck);
-            editDeckViewController.showCards();
-
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
+    public void deckColorModified(Color color) {
+        String colorString
+            = color.toString().replace("0x", "#");
+        deck.setColor(colorString);
+        saveChanges();
     }
 
     @Override
-    public void deckColorModified(Deck deck, Color color) {
-        try {
-            String colorString
-                = color.toString().replace("0x", "#");
-            deck.setColor(colorString);
-            serverCommunicator.saveDeck(deck);
-
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
+    public void deckTitleColorModified(Color color) {
+        deck.setColorName(color.toString());
+        saveChanges();
     }
 
     @Override
-    public void deckTitleColorModified(Deck deck, Color color) {
+    public void deckImageModified(File image) {
         try {
-            deck.setColorName(color.toString());
-            serverCommunicator.saveDeck(deck);
-
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
-    }
-
-    @Override
-    public void deckImageModified(Deck deck, File image, String filename) {
-        try {
+            String filename = "/backgrounds/" + deck.getId().toString() + ".jpg";
             deck.setImage(filename);
             serverCommunicator.uploadImage(image, filename);
-            serverCommunicator.saveDeck(deck);
+            saveChanges();
 
         } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
         }
     }
 
-    private void newCard(Card card) {
-        try {
-            deck.addCard(card);
-            serverCommunicator.saveDeck(deck);
-
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
+    private void focusLastCard() {
+        editDeckViewController.setSelectedCard(deck.cardCount() - 1);
+        cardPreviewClicked(deck.cardCount() - 1);
     }
 
     @Override
     public void newFlashCard() {
-        newCard(new FlashCard());
-        editDeckViewController.showCards();
-        editDeckViewController.setSelectedCard(deck.getLastCard());
-        cardPreviewClicked(deck.getLastCard());
-
+        deck.addCard(new FlashCard());
+        editDeckViewController.showCardsFromDeck(deck);
+        focusLastCard();
+        saveChanges();
     }
 
     @Override
     public void newInputCard() {
-        newCard(new InputCard());
-        editDeckViewController.showCards();
-        editDeckViewController.setSelectedCard(deck.getLastCard());
-        cardPreviewClicked(deck.getLastCard());
+        deck.addCard(new InputCard());
+        editDeckViewController.showCardsFromDeck(deck);
+        focusLastCard();
+        saveChanges();
     }
 
     @Override
     public void newMCQCard() {
-        newCard(new MCQCard());
-        editDeckViewController.showCards();
-        editDeckViewController.setSelectedCard(deck.getLastCard());
-        cardPreviewClicked(deck.getLastCard());
-
+        deck.addCard(new MCQCard());
+        editDeckViewController.showCardsFromDeck(deck);
+        focusLastCard();
+        saveChanges();
     }
 
     @Override
-    public void removeCard(Card selectedCard) {
-        try {
-            deck.removeCard(selectedCard);
-            serverCommunicator.saveDeck(deck);
-            editDeckViewController.showCards();
-            editDeckViewController.hideSelectedCardEditor();
+    public void selectedCardRemoved() {
+        deck.removeCard(selectedCard);
+        saveChanges();
 
-            if (deck.cardCount() != 0) {
-                cardPreviewClicked(deck.getLastCard());
-            }
+        editDeckViewController.showCardsFromDeck(deck);
+        editDeckViewController.hideSelectedCardEditor();
 
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
+        if (deck.cardCount() != 0) {
+            cardPreviewClicked(0);
         }
     }
 
     @Override
-    public void cardPreviewClicked(Card card) {
-        editDeckViewController.setSelectedCard(card);
-        editDeckViewController.loadSelectedCardEditor();
+    public void cardPreviewClicked(int index) {
+        selectedCard = deck.getCard(index);
+        showSelectedCardEditor();
     }
 
     @Override
-    public void editBackOfCardClicked(FlashCard selectedCard) {
-        controllerListener.editBackOfCardClicked(deck, selectedCard);
+    public void editBackOfCardClicked() {
+        controllerListener.editBackOfCardClicked(deck, (FlashCard) selectedCard);
     }
 
     @Override
-    public void editFrontOfCardClicked(Card selectedCard) {
+    public void editFrontOfCardClicked() {
         controllerListener.editFrontOfCardClicked(deck, selectedCard);
     }
 
     @Override
     public void tagNameChanged(Tag tag, String name) {
-        try {
-            tag.setName(name);
-            serverCommunicator.saveDeck(deck);
-            editDeckViewController.setTags(loadTags());
-
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
+        tag.setName(name);
+        saveChanges();
+        editDeckViewController.setTags(loadTags());
     }
 
     @Override
     public void tagDeleted(Tag tag) {
-        try {
-            deck.removeTag(tag);
-            serverCommunicator.saveDeck(deck);
-            editDeckViewController.setTags(loadTags());
-
-        } catch (ServerCommunicationFailedException e) {
-            errorHandler.failedServerCommunication(e);
-        }
+        deck.removeTag(tag);
+        saveChanges();
+        editDeckViewController.setTags(loadTags());
     }
+
 
     /* ====================================================================== */
     /*                   Controller Listener Interface                        */
