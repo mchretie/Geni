@@ -72,14 +72,14 @@ class _DeckViewState extends State<DeckView> {
   }
 
   Row _setRating() {
-    int rating = _marketplaceDeck.rating;
+    int rating = _marketplaceDeck.rating - 1;
     return Row(
       children: [
-        for (int i = 0; i < rating; i++)
+        for (int i = 0; i < 5; i++)
           Container(
             child: i <= rating
-            ? const Icon(Icons.star_rate_outlined)
-            : const Icon(Icons.star_rate)
+            ? const Icon(Icons.star)
+            : const Icon(Icons.star_border)
           )
       ],
     );
@@ -127,6 +127,7 @@ class _DeckViewState extends State<DeckView> {
                         ),
                       ),
                     ),
+                    if (_isMarketplaceDeck)
                     Align(
                       alignment: Alignment.topLeft,
                       child: Container(
