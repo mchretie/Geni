@@ -12,7 +12,8 @@ class MarketplaceDeck extends Deck {
       required String image,
       required String score,
       required String cardCount,
-      required List<Tag> tags})
+      required List<Tag> tags,
+      required int rating})
       : super(
             id: id,
             name: name,
@@ -36,6 +37,7 @@ class MarketplaceDeck extends Deck {
       score: json['score'],
       cardCount: json['cardCount'].toString(),
       tags: tags,
+      rating: json['rating']
     );
   }
 }
