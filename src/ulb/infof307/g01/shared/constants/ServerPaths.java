@@ -7,7 +7,7 @@ public final class ServerPaths {
 
     private ServerPaths() {}
 
-    public static final String BASE_URL = "http://localhost:8080";
+    public static final String BASE_URL = "http://209.38.239.79:8080";
 
     private static final String BASE = "/api";
 
