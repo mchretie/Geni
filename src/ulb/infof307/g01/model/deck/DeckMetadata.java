@@ -17,6 +17,7 @@ public record DeckMetadata(UUID id,
                            List<Tag> tags,
                            int deckHashCode) {
 
+    @SuppressWarnings("CopyConstructorMissesField")
     public DeckMetadata(DeckMetadata deckMetadata) {
         this(deckMetadata.id,
                 deckMetadata.name,

@@ -3,7 +3,6 @@ package ulb.infof307.g01.server.handler;
 import spark.Request;
 import spark.Response;
 import ulb.infof307.g01.model.deck.Deck;
-import ulb.infof307.g01.model.rating.RatingValue;
 import ulb.infof307.g01.model.rating.UserRating;
 import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.server.database.Database;

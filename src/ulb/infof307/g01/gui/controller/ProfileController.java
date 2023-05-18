@@ -1,7 +1,5 @@
 package ulb.infof307.g01.gui.controller;
 
-import java.io.IOException;
-
 import javafx.stage.Stage;
 import ulb.infof307.g01.gui.http.ServerCommunicator;
 import ulb.infof307.g01.gui.view.mainwindow.MainWindowViewController;
@@ -53,9 +51,8 @@ public class ProfileController implements ProfileViewController.Listener {
     /**
      * Loads and displays the Deck Menu onto the main scene
      *
-     * @throws IOException if FXMLLoader.load() fails
      */
-    public void show() throws IOException {
+    public void show() {
         setUserNameInProfile(serverCommunicator.getSessionUsername());
         mainWindowViewController.setProfileViewVisible();
         mainWindowViewController.makeGoBackIconVisible();

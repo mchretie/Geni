@@ -39,7 +39,7 @@ public class MarketplaceController implements
     public MarketplaceController(Stage stage,
                                  ErrorHandler errorHandler,
                                  MainWindowViewController mainWindowViewController,
-                                 ServerCommunicator serverCommunicator) throws IOException, InterruptedException {
+                                 ServerCommunicator serverCommunicator) {
 
         this.stage = stage;
         this.errorHandler = errorHandler;
@@ -60,7 +60,7 @@ public class MarketplaceController implements
     /*                         Stage Manipulation                             */
     /* ====================================================================== */
 
-    public void show() throws ServerCommunicationFailedException, IOException, InterruptedException {
+    public void show() throws ServerCommunicationFailedException, IOException {
         mainWindowViewController.setMarketplaceViewVisible();
 
         List<MarketplaceDeckMetadata> marketplaceDecks = sortMarketplaceDecks(
@@ -232,9 +232,11 @@ public class MarketplaceController implements
     public void sortChoiceBoxChanged(MarketplaceViewController.SortType sortType) {
         try {
             this.show();
+
         } catch (IOException e) {
             errorHandler.failedLoading(e);
-        } catch (ServerCommunicationFailedException | InterruptedException e) {
+
+        } catch (ServerCommunicationFailedException e) {
             errorHandler.severConnectionError();
         }
     }

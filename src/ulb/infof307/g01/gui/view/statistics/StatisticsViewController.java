@@ -6,7 +6,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
 import java.util.List;

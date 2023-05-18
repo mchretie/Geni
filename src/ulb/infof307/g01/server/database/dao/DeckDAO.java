@@ -157,14 +157,15 @@ public class DeckDAO extends DAO {
     }
 
     public UUID getDeckOwnerId(UUID deckId) throws DatabaseException {
-        try {
-            String sql = """
+        String sql = """
                     SELECT user_id
                     FROM deck
                     WHERE deck_id = ?
                     """;
-            ResultSet res = database.executeQuery(sql, deckId.toString());
+
+        try(ResultSet res = database.executeQuery(sql, deckId.toString())) {
             return UUID.fromString(res.getString("user_id"));
+
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }

@@ -94,12 +94,10 @@ public class MarketplaceViewController {
         SearchType searchType = null;
         String searchTypeText = comboBox.getValue();
 
-        if (searchTypeText.equals("Nom")) {
-            searchType = MarketplaceViewController.SearchType.Name;
-        } else if (searchTypeText.equals("Username")) {
-            searchType = MarketplaceViewController.SearchType.Creator;
-        } else if (searchTypeText.equals("Tag")) {
-            searchType = MarketplaceViewController.SearchType.Tag;
+        switch (searchTypeText) {
+            case "Nom" -> searchType = SearchType.Name;
+            case "Username" -> searchType = SearchType.Creator;
+            case "Tag" -> searchType = SearchType.Tag;
         }
 
         return searchType;

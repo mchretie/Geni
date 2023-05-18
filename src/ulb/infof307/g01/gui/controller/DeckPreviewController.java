@@ -185,7 +185,7 @@ public class DeckPreviewController implements DeckPreviewViewController.Listener
     }
 
     @Override
-    public void starExited(int starIndex) {
+    public void starExited() {
         deckPreviewViewController.setStars(rating.asInt()-1);
     }
 

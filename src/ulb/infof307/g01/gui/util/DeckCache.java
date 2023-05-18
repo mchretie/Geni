@@ -10,9 +10,9 @@ import static java.util.stream.Collectors.toList;
 
 public class DeckCache {
 
-    Map<UUID, Deck> decks = new HashMap<>();
-    Map<UUID, DeckMetadata> decksMetadata = new HashMap<>();
-    Set<UUID> allDecksIds = new HashSet<>();
+    private final Map<UUID, Deck> decks = new HashMap<>();
+    private final Map<UUID, DeckMetadata> decksMetadata = new HashMap<>();
+    private final Set<UUID> allDecksIds = new HashSet<>();
 
     public DeckCache(Collection<DeckMetadata> allDecksMetadata) {
         for (DeckMetadata deckMetadata : allDecksMetadata) {

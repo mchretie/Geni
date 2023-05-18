@@ -12,18 +12,13 @@ public enum RatingValue {
     }
 
     public static RatingValue fromInt(int value) {
-        switch(value) {
-        case 1:
-            return ONE;
-        case 2:
-            return TWO;
-        case 3:
-            return THREE;
-        case 4:
-            return FOUR;
-        case 5:
-            return FIVE;
-        }
-        return null;
+        return switch (value) {
+            case 1 -> ONE;
+            case 2 -> TWO;
+            case 3 -> THREE;
+            case 4 -> FOUR;
+            case 5 -> FIVE;
+            default -> null;
+        };
     }
 }
