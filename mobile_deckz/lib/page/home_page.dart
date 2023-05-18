@@ -19,9 +19,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentWidgetIndex = 1;
 
-  late final GlobalKey<MarketPlaceViewState> _MarketPlaceViewKey ;
-  late final GlobalKey<UserDeckViewState> _UserDeckViewKey ;
-  late final GlobalKey<LeaderboardViewState> _LeaderboardViewKey ;
+  late final GlobalKey<MarketPlaceViewState> _MarketPlaceViewKey = GlobalKey();
+  late final GlobalKey<UserDeckViewState>     _UserDeckViewKey = GlobalKey();
+  late final GlobalKey<LeaderboardViewState>  _LeaderboardViewKey = GlobalKey();
 
   late final MarketPlaceView _marketPlaceView ;
   late final LeaderboardView _leaderboardView ;
@@ -36,57 +36,26 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    _MarketPlaceViewKey = GlobalKey();
-    _UserDeckViewKey = GlobalKey();
-    _LeaderboardViewKey = GlobalKey();
-
-    _marketPlaceView= MarketPlaceView();
-    _leaderboardView =  LeaderboardView();
+    _marketPlaceView= MarketPlaceView(key: _MarketPlaceViewKey);
     _userDeckView = UserDeckView(key: _UserDeckViewKey);
+    _leaderboardView =  LeaderboardView(key: _LeaderboardViewKey);
 
-    print("calling switch from init");
     _switchToCurrentWidget();
-
   }
 
-  @override
-  void didUpdateWidget(HomePage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    //_fetchDataFor_currentWidget();
-    print("did update called in home");
-  }
-
-  /*Future<void> _fetchDataFor_currentWidget() async {
-    switch (__currentWidgetIndex) {
-      case 0:
-        _marketPlaceView.createState();
-        break;
-      case 1:
-        _userDeckView.fetchData();
-        break;
-      case 2:
-        _leaderboardView.fetchData();
-        break;
-    }
-  }*/
-  
-    Future<void> _switchToCurrentWidget() async {
+  Future<void> _switchToCurrentWidget() async {
     switch (_currentWidgetIndex) {
       case 0:
         _currentWidget = _marketPlaceView;
         break;
       case 1:
         _currentWidget = _userDeckView;
-        print("switching to deckview and calling reload now");
-        print("deck view state : " );
-        print( _UserDeckViewKey.currentState==null );
-        //_UserDeckViewKey.currentState!.reloadDecks();
         break;
       case 2:
         _currentWidget = _leaderboardView;
         break;
-
-    }}
+      }
+  }
 
   @override
   Widget build(BuildContext context) {

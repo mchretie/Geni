@@ -4,7 +4,7 @@ import 'package:mobile_deckz/view/deck_view.dart';
 import '../http_dao/marketplace_dao.dart';
 
 class MarketPlaceView extends StatefulWidget {
-  const MarketPlaceView({super.key});
+  const MarketPlaceView({Key? key}) : super(key: key);
 
   @override
   State<MarketPlaceView> createState() => MarketPlaceViewState();

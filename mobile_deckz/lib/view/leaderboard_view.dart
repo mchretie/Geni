@@ -5,7 +5,7 @@ import '../model/leaderboard/leaderboard.dart';
 import '../model/leaderboard/score.dart';
 
 class LeaderboardView extends StatefulWidget {
-  const LeaderboardView({super.key});
+  const LeaderboardView({Key? key}) : super(key: key);
 
   @override
   State<LeaderboardView> createState() => LeaderboardViewState();

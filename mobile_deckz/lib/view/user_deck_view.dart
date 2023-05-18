@@ -5,10 +5,8 @@ import '../http_dao/deck_dao.dart';
 import '../model/deck/deck.dart';
 
 class UserDeckView extends StatefulWidget {
-  //const UserDeckView({super.key});
 
   //final VoidCallback function;
-
   const UserDeckView({Key? key}) : super(key: key);
   //UserDeckView({Key? key, required this.function}) : super(key: key);
 
@@ -24,13 +22,7 @@ class UserDeckViewState extends State<UserDeckView> {
 
   final textEditController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    print("init deckview");
-  }
-
-    Future<void> _onSearchTextChanged(String text) async {
+  Future<void> _onSearchTextChanged(String text) async {
     setState(() {
       if (dropdownValue == 'Name') {
         _decksFuture = DeckDao.searchDecks(text);
@@ -40,20 +32,11 @@ class UserDeckViewState extends State<UserDeckView> {
     });
   }
 
-  @override
-  void didUpdateWidget(UserDeckView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    //_fetchDataForCurrentWidget();
-    print("did update called in deckview");
-    _reloadDecks();
-  }
-
   Future<void> reloadDecks() async {
     _reloadDecks();
   }
 
   Future<void> _reloadDecks() async {
-    print("setting reload");
     setState(() {
       _decksFuture = DeckDao.getAllDecks();
     });
@@ -61,7 +44,6 @@ class UserDeckViewState extends State<UserDeckView> {
 
   @override
   Widget build(BuildContext context) {
-    print("build deckview");
     return Scaffold(
         body: RefreshIndicator(
             onRefresh: _reloadDecks,
