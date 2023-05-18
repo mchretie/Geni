@@ -13,8 +13,9 @@ import '../model/game_history/game_history.dart';
 
 class DeckView extends StatefulWidget {
   final Deck deck;
+  final VoidCallback callback;
 
-  const DeckView({super.key, required this.deck});
+  const DeckView({super.key, required this.deck, required this.callback });
 
   @override
   State<DeckView> createState() => _DeckViewState();
@@ -134,7 +135,13 @@ class _DeckViewState extends State<DeckView> {
                       score: Score(0, widget.deck.id),
                     ),
                   ),
-                );
+                ).then((value) {
+                  // This block is executed when you navigate back from the child widget
+                  print("value:");
+                  print(value);
+                  widget.callback();
+
+                });
               },
             ),
           ],

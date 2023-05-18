@@ -32,11 +32,8 @@ class UserDeckViewState extends State<UserDeckView> {
     });
   }
 
-  Future<void> reloadDecks() async {
-    _reloadDecks();
-  }
-
   Future<void> _reloadDecks() async {
+    print("reloading decks");
     setState(() {
       _decksFuture = DeckDao.getAllDecks();
     });
@@ -104,7 +101,7 @@ class UserDeckViewState extends State<UserDeckView> {
                                     final Deck deck = deckList[index];
                                     return Padding(
                                         padding: const EdgeInsets.all(4.0),
-                                        child: DeckView(deck: deck));
+                                        child: DeckView(deck: deck, callback:_reloadDecks));
                                   }))
                         ])));
                   }
