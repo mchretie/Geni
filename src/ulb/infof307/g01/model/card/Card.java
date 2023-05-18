@@ -2,6 +2,7 @@ package ulb.infof307.g01.model.card;
 
 import com.google.gson.annotations.Expose;
 import ulb.infof307.g01.model.card.visitor.CardVisitor;
+import ulb.infof307.g01.model.card.visitor.ExceptionThrowingCardVisitor;
 
 import java.util.UUID;
 
@@ -58,5 +59,6 @@ public abstract class Card {
 
     public abstract boolean isCompetitive();
 
-    public abstract <T extends Throwable> void accept(CardVisitor<T> visitor) throws T;
+    public abstract void accept(CardVisitor visitor);
+    public abstract <E extends Exception> void accept(ExceptionThrowingCardVisitor<E> visitor) throws E;
 }
