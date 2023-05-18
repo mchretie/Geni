@@ -48,7 +48,6 @@ public class DeckPreviewViewController implements Initializable {
     private Label deckNameLabel;
     private FontIcon deckVisibilityIcon;
 
-    private Deck deck;
     private Listener listener;
 
     @Override
@@ -141,10 +140,7 @@ public class DeckPreviewViewController implements Initializable {
     }
 
     public void setDeck(Deck deck) {
-        this.deck = deck;
-
         deckNameLabel.setText(deck.getName());
-
         int cardCount = deck.cardCount();
         String text = cardCount + " carte" + (cardCount > 1 ? "s" : "");
         cardCountLabel.setText(text);

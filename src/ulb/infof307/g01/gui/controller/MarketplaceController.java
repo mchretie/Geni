@@ -86,22 +86,25 @@ public class MarketplaceController implements
                 throws ServerCommunicationFailedException {
 
         switch (sortType) {
-            case Nom:
-                marketplaceDecks.sort((o1, o2) -> o1.name().compareToIgnoreCase(o2.name()));
-                break;
-            case Note:
-                marketplaceDecks.sort((o1, o2) -> {
-                    if (o1.rating() == o2.rating()) {
-                        return 0;
-                    }
-                    return o1.rating() > o2.rating() ? -1 : 1;
-                });
-                break;
-            case Découvrir:
+            case Name ->
+                    marketplaceDecks.sort((o1, o2) -> o1.name().compareToIgnoreCase(o2.name()));
+
+            case Rating -> marketplaceDecks.sort((o1, o2) -> {
+                if (o1.rating() == o2.rating()) {
+                    return 0;
+                }
+                return o1.rating() > o2.rating() ? -1 : 1;
+            });
+
+            case Discover -> {
                 List<MarketplaceDeckMetadata> decksSaved = serverCommunicator.getSavedDecks();
                 marketplaceDecks.removeAll(decksSaved);     // remove all the decks that are already saved
                 marketplaceDecks.addAll(decksSaved);        // add them back at the end
-                break;
+            }
+
+            default -> {
+
+            }
         }
 
         return marketplaceDecks;

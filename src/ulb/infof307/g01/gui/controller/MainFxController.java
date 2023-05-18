@@ -57,7 +57,7 @@ public class MainFxController extends Application implements
 
     private MainWindowViewController mainWindowViewController;
 
-    private ImageLoader imageLoader = new ImageLoader();
+    private final ImageLoader imageLoader = new ImageLoader();
 
     /* ====================================================================== */
     /*                              DAO Attributes                            */
@@ -239,6 +239,10 @@ public class MainFxController extends Application implements
                 case LEADERBOARD -> leaderboardController.show();
                 case STATISTICS -> statisticsController.show();
                 case MARKETPLACE -> marketplaceController.show();
+
+                default -> {
+
+                }
             }
 
         } catch (IOException | InterruptedException e) {
