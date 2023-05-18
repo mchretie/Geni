@@ -11,15 +11,82 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   final String title = 'Mobile Deckz 3000';
-
+  
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  int _currentWidgetIndex = 1;
+
+  late final GlobalKey<MarketPlaceViewState> _MarketPlaceViewKey ;
+  late final GlobalKey<UserDeckViewState> _UserDeckViewKey ;
+  late final GlobalKey<LeaderboardViewState> _LeaderboardViewKey ;
+
+  late final MarketPlaceView _marketPlaceView ;
+  late final LeaderboardView _leaderboardView ;
+  late final UserDeckView _userDeckView  ;
 
   final Future<bool> isLoggedIn = AuthDao.isLoggedIn();
+
+  late StatefulWidget _currentWidget;
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    _MarketPlaceViewKey = GlobalKey();
+    _UserDeckViewKey = GlobalKey();
+    _LeaderboardViewKey = GlobalKey();
+
+    _marketPlaceView= MarketPlaceView();
+    _leaderboardView =  LeaderboardView();
+    _userDeckView = UserDeckView(key: _UserDeckViewKey);
+
+    print("calling switch from init");
+    _switchToCurrentWidget();
+
+  }
+
+  @override
+  void didUpdateWidget(HomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    //_fetchDataFor_currentWidget();
+    print("did update called in home");
+  }
+
+  /*Future<void> _fetchDataFor_currentWidget() async {
+    switch (__currentWidgetIndex) {
+      case 0:
+        _marketPlaceView.createState();
+        break;
+      case 1:
+        _userDeckView.fetchData();
+        break;
+      case 2:
+        _leaderboardView.fetchData();
+        break;
+    }
+  }*/
+  
+    Future<void> _switchToCurrentWidget() async {
+    switch (_currentWidgetIndex) {
+      case 0:
+        _currentWidget = _marketPlaceView;
+        break;
+      case 1:
+        _currentWidget = _userDeckView;
+        print("switching to deckview and calling reload now");
+        print("deck view state : " );
+        print( _UserDeckViewKey.currentState==null );
+        //_UserDeckViewKey.currentState!.reloadDecks();
+        break;
+      case 2:
+        _currentWidget = _leaderboardView;
+        break;
+
+    }}
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +119,9 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               body: Center(
-                  child: IndexedStack(
-                index: _selectedIndex,
-                children: const [
-                  MarketPlaceView(),
-                  UserDeckView(),
-                  LeaderboardView(),
-                ],
-              )),
+                  child: Container(
+                    child: _currentWidget
+                  )),
               bottomNavigationBar: BottomNavigationBar(
                 items: const <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
@@ -75,11 +137,12 @@ class _HomePageState extends State<HomePage> {
                     label: 'Leaderboard',
                   ),
                 ],
-                currentIndex: _selectedIndex,
+                currentIndex: _currentWidgetIndex,
                 selectedItemColor: Colors.purple[800],
                 onTap: (int index) {
                   setState(() {
-                    _selectedIndex = index;
+                    _currentWidgetIndex = index;
+                    _switchToCurrentWidget();
                   });
                 },
               ));

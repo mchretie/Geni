@@ -5,13 +5,18 @@ import '../http_dao/deck_dao.dart';
 import '../model/deck/deck.dart';
 
 class UserDeckView extends StatefulWidget {
-  const UserDeckView({super.key});
+  //const UserDeckView({super.key});
+
+  //final VoidCallback function;
+
+  const UserDeckView({Key? key}) : super(key: key);
+  //UserDeckView({Key? key, required this.function}) : super(key: key);
 
   @override
-  State<UserDeckView> createState() => _UserDeckViewState();
+  State<UserDeckView> createState() => UserDeckViewState();
 }
 
-class _UserDeckViewState extends State<UserDeckView> {
+class UserDeckViewState extends State<UserDeckView> {
   String dropdownValue = 'Name';
   List<String> dropdownItems = ['Name', 'Tag'];
 
@@ -19,7 +24,13 @@ class _UserDeckViewState extends State<UserDeckView> {
 
   final textEditController = TextEditingController();
 
-  Future<void> _onSearchTextChanged(String text) async {
+  @override
+  void initState() {
+    super.initState();
+    print("init deckview");
+  }
+
+    Future<void> _onSearchTextChanged(String text) async {
     setState(() {
       if (dropdownValue == 'Name') {
         _decksFuture = DeckDao.searchDecks(text);
@@ -29,7 +40,20 @@ class _UserDeckViewState extends State<UserDeckView> {
     });
   }
 
+  @override
+  void didUpdateWidget(UserDeckView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    //_fetchDataForCurrentWidget();
+    print("did update called in deckview");
+    _reloadDecks();
+  }
+
+  Future<void> reloadDecks() async {
+    _reloadDecks();
+  }
+
   Future<void> _reloadDecks() async {
+    print("setting reload");
     setState(() {
       _decksFuture = DeckDao.getAllDecks();
     });
@@ -37,6 +61,7 @@ class _UserDeckViewState extends State<UserDeckView> {
 
   @override
   Widget build(BuildContext context) {
+    print("build deckview");
     return Scaffold(
         body: RefreshIndicator(
             onRefresh: _reloadDecks,

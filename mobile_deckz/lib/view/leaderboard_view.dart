@@ -8,10 +8,10 @@ class LeaderboardView extends StatefulWidget {
   const LeaderboardView({super.key});
 
   @override
-  State<LeaderboardView> createState() => _LeaderboardViewState();
+  State<LeaderboardView> createState() => LeaderboardViewState();
 }
 
-class _LeaderboardViewState extends State<LeaderboardView> {
+class LeaderboardViewState extends State<LeaderboardView> {
 
 
   Future<Leaderboard> leaderboard =

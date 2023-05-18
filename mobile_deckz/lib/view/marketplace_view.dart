@@ -7,12 +7,12 @@ class MarketPlaceView extends StatefulWidget {
   const MarketPlaceView({super.key});
 
   @override
-  State<MarketPlaceView> createState() => _MarketPlaceViewState();
+  State<MarketPlaceView> createState() => MarketPlaceViewState();
 }
 
 enum MarketplaceFilter { starASC, starDESC, alphabetASC, alphabetDESC, none }
 
-class _MarketPlaceViewState extends State<MarketPlaceView> {
+class MarketPlaceViewState extends State<MarketPlaceView> {
   String dropdownValue = 'Name';
   List<String> dropdownItems = ['Name', 'Tag', 'Owner'];
   MarketplaceFilter? _marketplaceFilter = MarketplaceFilter.none;
@@ -36,6 +36,10 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
         _decksFuture = MarketPlaceDao.searchDecksByOwner(decks, text);
       }
     });
+  }
+
+  Future<void> reloadDecks() async {
+    reloadDecks();
   }
 
   Future<void> _reloadDecks() async {
