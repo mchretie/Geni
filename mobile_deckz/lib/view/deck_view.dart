@@ -124,7 +124,7 @@ class _DeckViewState extends State<DeckView> {
           ),
           actions: <Widget>[
             ElevatedButton.icon(
-              icon: Icon(Icons.play_arrow),
+              icon: const Icon(Icons.play_arrow),
               label: const Text('Jouer'),
               onPressed: () {
                 Navigator.of(context).pushReplacement(

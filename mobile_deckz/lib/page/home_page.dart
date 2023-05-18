@@ -19,10 +19,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentWidgetIndex = 1;
 
-  late final GlobalKey<MarketPlaceViewState> _MarketPlaceViewKey = GlobalKey();
-  late final GlobalKey<UserDeckViewState>     _UserDeckViewKey = GlobalKey();
-  late final GlobalKey<LeaderboardViewState>  _LeaderboardViewKey = GlobalKey();
-
   late final MarketPlaceView _marketPlaceView ;
   late final LeaderboardView _leaderboardView ;
   late final UserDeckView _userDeckView  ;
@@ -36,9 +32,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    _marketPlaceView= MarketPlaceView(key: _MarketPlaceViewKey);
-    _userDeckView = UserDeckView(key: _UserDeckViewKey);
-    _leaderboardView =  LeaderboardView(key: _LeaderboardViewKey);
+    _marketPlaceView= const MarketPlaceView();
+    _userDeckView = const UserDeckView();
+    _leaderboardView =  const LeaderboardView();
 
     _switchToCurrentWidget();
   }
