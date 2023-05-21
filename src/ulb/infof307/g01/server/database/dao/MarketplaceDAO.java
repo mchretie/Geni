@@ -119,8 +119,6 @@ public class MarketplaceDAO extends DAO {
                 sql,
                 deckId.toString(),
                 String.valueOf(0));
-
-        setDeckPublic(deckId, true);
     }
 
     public void removeDeckFromMarketplace(UUID deckId) throws DatabaseException {
@@ -130,7 +128,6 @@ public class MarketplaceDAO extends DAO {
                 """;
 
         database.executeUpdate(sql, deckId.toString());
-        setDeckPublic(deckId, false);
     }
 
     public void removeDeckFromNonOwnerCollection(UUID deckId, UUID ownerId) throws DatabaseException {
@@ -140,16 +137,6 @@ public class MarketplaceDAO extends DAO {
                 """;
 
         database.executeUpdate(sql, deckId.toString(), ownerId.toString());
-    }
-
-    public void setDeckPublic(UUID deckId, boolean isPublic) throws DatabaseException {
-        String sql = """
-                UPDATE deck
-                SET public = ?
-                WHERE deck_id = ?;
-                """;
-
-        database.executeUpdate(sql, isPublic ? 1 : 0, deckId.toString());
     }
 
     public List<MarketplaceDeckMetadata> getMarketplaceDecksMetadata() throws DatabaseException {
@@ -176,6 +163,17 @@ public class MarketplaceDAO extends DAO {
                 """;
 
         database.executeUpdate(sql, deckId.toString());
+    }
+
+    public boolean isDeckInUserCollection(UUID deckId, UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT user_id, deck_id
+                FROM user_deck_collection
+                WHERE user_id = ? AND deck_id = ?;
+                """;
+
+        ResultSet res = database.executeQuery(sql, userId.toString(), deckId.toString());
+        return checkedNext(res);
     }
 
     public void addDeckToUserCollection(UUID deckId, UUID userId) throws DatabaseException {

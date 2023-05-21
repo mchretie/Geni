@@ -112,7 +112,9 @@ public class MarketplaceRequestHandler extends Handler {
             database.removeDeckFromMarketplace(deckId);
             database.deleteScoresForDeck(deckId);
             database.removeDeckFromNonOwnerCollection(deckId, deckOwnerId);
-
+            if (! database.isDeckInUserCollection(deckId, deckOwnerId)) {
+                database.addDeckToUserCollection(deckId, deckOwnerId);
+            }
 
             return successfulResponse;
         } catch (Exception e) {
