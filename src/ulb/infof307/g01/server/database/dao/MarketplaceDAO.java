@@ -165,6 +165,17 @@ public class MarketplaceDAO extends DAO {
         database.executeUpdate(sql, deckId.toString());
     }
 
+    public boolean isDeckInUserCollection(UUID deckId, UUID userId) throws DatabaseException {
+        String sql = """
+                SELECT user_id, deck_id
+                FROM user_deck_collection
+                WHERE user_id = ? AND deck_id = ?;
+                """;
+
+        ResultSet res = database.executeQuery(sql, userId.toString(), deckId.toString());
+        return checkedNext(res);
+    }
+
     public void addDeckToUserCollection(UUID deckId, UUID userId) throws DatabaseException {
         String sql = """
                 INSERT INTO user_deck_collection (user_id, deck_id)

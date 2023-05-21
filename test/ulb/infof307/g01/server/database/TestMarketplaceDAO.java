@@ -78,4 +78,21 @@ public class TestMarketplaceDAO extends DatabaseUsingTest {
 
         assertEquals(expected, marketplaceDAO.getMarketplaceDecksMetadata());
     }
+
+    @Test
+    void isDeckInUserCollection_EmptyCollection_False() throws DatabaseException {
+        Deck deck1 = new Deck("deck1");
+        deckDAO.saveDeck(deck1, this.user);
+
+        assertFalse(marketplaceDAO.isDeckInUserCollection(deck1.getId(), this.user));
+    }
+
+    @Test
+    void isDeckInUserCollection_DeckInCollection_True() throws DatabaseException {
+        Deck deck1 = new Deck("deck1");
+        deckDAO.saveDeck(deck1, this.user);
+        marketplaceDAO.addDeckToUserCollection(deck1.getId(), this.user);
+
+        assertTrue(marketplaceDAO.isDeckInUserCollection(deck1.getId(), this.user));
+    }
 }
