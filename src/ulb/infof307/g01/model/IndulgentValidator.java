@@ -8,12 +8,12 @@ import java.util.Objects;
 
 public class IndulgentValidator {
     final Iterable<String> determiners = List.of("le",
-                                                 "la",
-                                                 "l'", 
-                                                 "les",
-                                                 "de",
-                                                 "du",
-                                                 "des");
+            "la",
+            "l'",
+            "les",
+            "de",
+            "du",
+            "des");
 
     private String removeAccents(String text) {
         return StringUtils.stripAccents(text);

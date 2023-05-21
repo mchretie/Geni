@@ -3,6 +3,7 @@ import 'package:mobile_deckz/model/deck/tag.dart';
 
 class MarketplaceDeck extends Deck {
   String owner;
+  int rating;
 
   MarketplaceDeck(
       {required this.owner,
@@ -12,7 +13,8 @@ class MarketplaceDeck extends Deck {
       required String image,
       required String score,
       required String cardCount,
-      required List<Tag> tags})
+      required List<Tag> tags,
+      required this.rating,})
       : super(
             id: id,
             name: name,
@@ -36,6 +38,7 @@ class MarketplaceDeck extends Deck {
       score: json['score'],
       cardCount: json['cardCount'].toString(),
       tags: tags,
+      rating: json['rating']
     );
   }
 }

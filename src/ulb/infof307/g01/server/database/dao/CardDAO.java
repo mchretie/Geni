@@ -3,10 +3,11 @@ package ulb.infof307.g01.server.database.dao;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
-import ulb.infof307.g01.model.card.visitor.CardVisitor;
+import ulb.infof307.g01.model.card.visitor.ExceptionThrowingCardVisitor;
 import ulb.infof307.g01.server.database.DatabaseAccess;
+import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
-public class CardDAO extends DAO implements CardVisitor {
+public class CardDAO extends DAO implements ExceptionThrowingCardVisitor<DatabaseException> {
 
     private final DatabaseAccess database;
 
@@ -15,7 +16,7 @@ public class CardDAO extends DAO implements CardVisitor {
     }
 
     @Override
-    public void visit(FlashCard flashCard) {
+    public void visit(FlashCard flashCard) throws DatabaseException {
         String upsertFlashCard = """
                 INSERT INTO flash_card (card_id, back)
                 VALUES (?, ?)
@@ -30,7 +31,7 @@ public class CardDAO extends DAO implements CardVisitor {
     }
 
     @Override
-    public void visit(MCQCard multipleChoiceCard) {
+    public void visit(MCQCard multipleChoiceCard) throws DatabaseException {
         String upsertMCQCard = """
                 INSERT INTO mcq_card (card_id, correct_answer_index, countdown_time)
                 VALUES (?, ?, ?)
@@ -61,7 +62,7 @@ public class CardDAO extends DAO implements CardVisitor {
     }
 
     @Override
-    public void visit(InputCard inputCard) {
+    public void visit(InputCard inputCard) throws DatabaseException {
 
         String upsertInputCard = """
                 INSERT INTO input_card (card_id, answer, countdown_time)

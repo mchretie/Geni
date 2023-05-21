@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditDeckController implements EditDeckViewController.Listener,
-                                                    TagViewController.Listener, CardVisitor {
+                                                    TagViewController.Listener,
+                                                    CardVisitor {
 
     /* ====================================================================== */
     /*                             Model Attributes                           */

@@ -4,7 +4,6 @@ import ulb.infof307.g01.model.card.Card;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
-import ulb.infof307.g01.model.card.visitor.CardVisitor;
 import ulb.infof307.g01.model.deck.*;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
@@ -67,17 +66,7 @@ public class DeckDAO extends DAO {
                 deck.getName()));
     }
 
-    public boolean deckNameExists(String name) {
-        String sql = """
-                SELECT name
-                FROM deck
-                WHERE name = ?
-                """;
-
-        return checkedNext(database.executeQuery(sql, name));
-    }
-
-    public boolean deckNameExists(String name, UUID userId) {
+    public boolean deckNameExists(String name, UUID userId) throws DatabaseException {
         String sql = """
                 SELECT name
                 FROM deck
@@ -450,16 +439,4 @@ public class DeckDAO extends DAO {
         decks.forEach(d -> decksMetadata.add(d.getMetadata()));
         return decksMetadata;
     }
-
-    public boolean deckIdExists(UUID deckId) throws DatabaseException {
-        String sql = """
-                SELECT deck_id
-                FROM deck
-                WHERE deck_id = ?
-                """;
-
-        return checkedNext(database.executeQuery(sql, deckId.toString()));
-    }
-
-
 }

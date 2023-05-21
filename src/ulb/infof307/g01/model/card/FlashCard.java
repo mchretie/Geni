@@ -2,6 +2,7 @@ package ulb.infof307.g01.model.card;
 
 import com.google.gson.annotations.Expose;
 import ulb.infof307.g01.model.card.visitor.CardVisitor;
+import ulb.infof307.g01.model.card.visitor.ExceptionThrowingCardVisitor;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -37,6 +38,11 @@ public class FlashCard extends Card {
 
     @Override
     public void accept(CardVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public <E extends Exception> void accept(ExceptionThrowingCardVisitor<E> visitor) throws E {
         visitor.visit(this);
     }
 

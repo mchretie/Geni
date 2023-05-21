@@ -35,8 +35,10 @@ class ServerPath {
   // Used by LeaderboardRequestHandler
   static final Uri leaderboardBasePath = Uri.parse("$base/leaderboard");
   static final Uri saveScorePath = Uri.parse("$leaderboardBasePath/save");
-  static final Uri getGlobalLeaderboard = Uri.parse("$leaderboardBasePath/global");
-  static final Uri getBestScoresPath = Uri.parse("$leaderboardBasePath/best-scores");
+  static final Uri getGlobalLeaderboard =
+      Uri.parse("$leaderboardBasePath/global");
+  static final Uri getBestScoresPath =
+      Uri.parse("$leaderboardBasePath/best-scores");
 
   // Used by GameHistoryRequestHandler
   static final Uri gameHistoryBasePath = Uri.parse("$base/game-history");
@@ -45,13 +47,16 @@ class ServerPath {
   // Used by MatchRequestHandler
   static final Uri marketplaceBasePath = Uri.parse("$base/marketplace");
   static final Uri getMarketplacePath = Uri.parse("$marketplaceBasePath/get");
-  static final Uri addDeckToMarketplacePath = Uri.parse("$marketplaceBasePath/add");
-  static final Uri removeDeckFromMarketplacePath = Uri.parse("$marketplaceBasePath/delete");
-  static final Uri addDeckToCollectionPath = Uri.parse("$marketplaceBasePath/add-collection");
-  static final Uri removeDeckFromCollectionPath = Uri.parse("$marketplaceBasePath/delete-collection");
-  static final Uri getSavedDecksFromMarketplacePath = Uri.parse("$marketplaceBasePath/get-collection");
-
-
+  static final Uri addDeckToMarketplacePath =
+      Uri.parse("$marketplaceBasePath/add");
+  static final Uri removeDeckFromMarketplacePath =
+      Uri.parse("$marketplaceBasePath/delete");
+  static final Uri addDeckToCollectionPath =
+      Uri.parse("$marketplaceBasePath/add-collection");
+  static final Uri removeDeckFromCollectionPath =
+      Uri.parse("$marketplaceBasePath/delete-collection");
+  static final Uri getSavedDecksFromMarketplacePath =
+      Uri.parse("$marketplaceBasePath/get-collection");
 
   ServerPath._();
 }

@@ -40,7 +40,7 @@ public class TestScoreDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void addScore_NewScore_ScoreInDatabase() {
+    void addScore_NewScore_ScoreInDatabase() throws DatabaseException {
         String username = "hihi";
         userDAO.registerUser(username, "hoho");
         UUID userId = UUID.fromString(userDAO.getUserId("hihi"));
@@ -56,7 +56,7 @@ public class TestScoreDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void getScoreFromDeckId_DeckWithMultipleScore_ScoresAreOrdered() {
+    void getScoreFromDeckId_DeckWithMultipleScore_ScoresAreOrdered() throws DatabaseException{
         String username = "hihi";
         userDAO.registerUser(username, "hoho");
         UUID userId = UUID.fromString(userDAO.getUserId("hihi"));

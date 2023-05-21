@@ -154,7 +154,8 @@ public class DatabaseAccess {
             throw new DatabaseException("Database must be opened before use");
     }
 
-    private PreparedStatement createStatement(String sql, Object... args) throws SQLException {
+    private PreparedStatement createStatement(String sql, Object... args)
+            throws SQLException, DatabaseException {
         PreparedStatement statement = connection.prepareStatement(sql);
         for (int i = 0; i < args.length; ++i) {
             if (args[i] instanceof String arg)

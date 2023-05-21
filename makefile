@@ -13,3 +13,6 @@ run-client:
 
 run-server:
 	mvn compile exec:java -Dexec.mainClass="ulb.infof307.g01.server.LaunchServer"
+
+run-client-mobile:
+	flutter run mobile_deckz

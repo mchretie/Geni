@@ -57,12 +57,19 @@ public class UserAccountHandler extends Handler {
     }
 
     private Map<String, Boolean> registerUser(Request request, Response response) {
-        UserAuth userAuth = new Gson().fromJson(request.body(), UserAuth.class);
-        String username = userAuth.getUsername();
-        String password = userAuth.getPassword();
+        try {
+            UserAuth userAuth = new Gson().fromJson(request.body(), UserAuth.class);
+            String username = userAuth.getUsername();
+            String password = userAuth.getPassword();
 
-        boolean isRegistered = database.registerUser(username, password);
-        return isRegistered ? successfulResponse : failedResponse;
+            boolean isRegistered = database.registerUser(username, password);
+            return isRegistered ? successfulResponse : failedResponse;
+        } catch (Exception e) {
+            String message = "Failed to register user : " + e.getMessage();
+            logger.warning(message);
+            halt(500, message);
+            return failedResponse;
+        }
     }
 
     private Map<String, Boolean> isTokenValid(Request request, Response response) {

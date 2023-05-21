@@ -19,6 +19,16 @@ class Leaderboard {
     for (var json in json['leaderboardEntries']) {
       leaderboard.add(Score.fromJson(json));
     }
+    if (json['leaderboard'][username] == null) {
+      return Leaderboard(
+        leaderboard: leaderboard,
+        userScore: Score(
+          username: username,
+          score: 'N/A',
+          rank: 'N/A',
+        ),
+      );
+    }
     return Leaderboard(
       leaderboard: leaderboard,
       userScore: Score(

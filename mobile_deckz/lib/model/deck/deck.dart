@@ -1,4 +1,3 @@
-import 'package:flutter/src/material/card.dart';
 import 'package:mobile_deckz/model/card/flash_card.dart';
 import 'package:mobile_deckz/model/card/input_card.dart';
 import 'package:mobile_deckz/model/deck/tag.dart';

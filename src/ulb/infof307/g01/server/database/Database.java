@@ -42,11 +42,11 @@ public class Database {
         this.marketplaceDao.setDeckDAO(this.deckDao);
     }
 
-    public void open(File dbname) {
+    public void open(File dbname) throws DatabaseException {
         this.databaseAccess.open(dbname);
     }
 
-    public void initServerScheme() {
+    public void initServerScheme() throws DatabaseException {
         this.databaseAccess.initTables(DatabaseSchema.SERVER);
     }
 
@@ -81,10 +81,6 @@ public class Database {
         return deckDao.searchDecksMetadata(userSearch, userId);
     }
 
-    public boolean deckIdExists(UUID deckId) throws DatabaseException {
-        return deckDao.deckIdExists(deckId);
-    }
-
 
     /* ====================================================================== */
     /*                              User                                      */
@@ -94,11 +90,11 @@ public class Database {
         return userDao.loginUser(username, password);
     }
 
-    public boolean registerUser(String username, String password) {
+    public boolean registerUser(String username, String password) throws DatabaseException {
         return userDao.registerUser(username, password);
     }
 
-    public String getUserId(String username) {
+    public String getUserId(String username) throws DatabaseException {
         return userDao.getUserId(username);
     }
 
@@ -107,27 +103,27 @@ public class Database {
     /*                              Score/Leaderboard                         */
     /* ====================================================================== */
 
-    public void saveScore(Score score) {
+    public void saveScore(Score score) throws DatabaseException {
         scoreDao.addScore(score);
     }
 
-    public void deleteScoresForDeck(UUID deckId) {
+    public void deleteScoresForDeck(UUID deckId) throws DatabaseException {
         scoreDao.deleteScoresForDeck(deckId);
     }
 
-    public Score getBestScoreForDeck(UUID deckId) {
+    public Score getBestScoreForDeck(UUID deckId) throws DatabaseException {
         return scoreDao.getBestScoreForDeck(deckId);
     }
 
-    public GlobalLeaderboard getGlobalLeaderboard() {
+    public GlobalLeaderboard getGlobalLeaderboard() throws DatabaseException {
         return new GlobalLeaderboard(scoreDao.getAllUserDeckScore());
     }
 
-    public GameHistory getGameHistory(UUID userId) {
+    public GameHistory getGameHistory(UUID userId) throws DatabaseException {
         return new GameHistory(scoreDao.getGameHistory(userId));
     }
 
-    public GameHistory getGameHistory(UUID userId, UUID deckId) {
+    public GameHistory getGameHistory(UUID userId, UUID deckId) throws DatabaseException {
         return new GameHistory(scoreDao.getGameHistory(userId, deckId));
     }
 
@@ -164,15 +160,15 @@ public class Database {
         return marketplaceDao.getSavedDecks(userId);
     }
 
-    public int getNumberOfPublicPlayedDecks(UUID userId) {
+    public int getNumberOfPublicPlayedDecks(UUID userId) throws DatabaseException {
         return marketplaceDao.getNumberOfPublicPlayedDecks(userId);
     }
 
-    public void addRating(UserRating userRating) {
+    public void addRating(UserRating userRating) throws DatabaseException {
         marketplaceDao.addRating(userRating);
     }
 
-    public UserRating getUserRating(UUID deckId, UUID userId) {
+    public UserRating getUserRating(UUID deckId, UUID userId) throws DatabaseException {
         return marketplaceDao.getUserRating(deckId, userId);
     }
 }

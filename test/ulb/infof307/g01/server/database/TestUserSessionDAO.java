@@ -21,23 +21,23 @@ public class TestUserSessionDAO extends DatabaseUsingTest {
     }
 
     @Test
-    void registerUser_SingleRegister_Success() {
+    void registerUser_SingleRegister_Success() throws DatabaseException {
         assertTrue(userDAO.registerUser("name", "password"));
     }
 
     @Test
-    void registerUser_DoubleRegister_Fail() {
+    void registerUser_DoubleRegister_Fail() throws DatabaseException {
         userDAO.registerUser("name", "password");
         assertFalse(userDAO.registerUser("name", "password"));
     }
 
     @Test
-    void loginUser_BeforeRegister_Fail() {
+    void loginUser_BeforeRegister_Fail() throws DatabaseException {
         assertFalse(userDAO.loginUser("name", "password"));
     }
 
     @Test
-    void loginUser_AfterRegister_Success() {
+    void loginUser_AfterRegister_Success() throws DatabaseException {
         userDAO.registerUser("name", "password");
         assertTrue(userDAO.loginUser("name", "password"));
     }

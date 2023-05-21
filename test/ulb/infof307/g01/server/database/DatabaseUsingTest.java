@@ -20,7 +20,7 @@ public class DatabaseUsingTest {
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws DatabaseException {
         db.close();
         dbfile.delete();
     }

@@ -109,44 +109,44 @@ class _MCQCardViewState extends State<MCQCardView>
                   );
                 },
               ))
-          : Column(children: [
-              SizedBox(
-                  height: 150,
-                  child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 5.0,
-                      mainAxisSpacing: 5.0,
-                      childAspectRatio: 3.0,
-                    ),
-                    itemCount: widget.card.choices.length,
-                    itemBuilder: (context, index) {
-                      return ElevatedButton(
-                        onPressed: () {
-                          handleAnswer(index);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.purple,
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            side: const BorderSide(
-                                color: Colors.grey, width: 1.0),
-                          ),
-                          minimumSize: const Size(double.infinity, 50),
-                        ),
-                        child: Center(
-                          child: Text(
-                            widget.card.choices[index],
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      );
+          :Column(
+            children: [
+              GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 5.0,
+                  mainAxisSpacing: 5.0,
+                  childAspectRatio: 3.0,
+                ),
+                itemCount: widget.card.choices.length,
+                itemBuilder: (context, index) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      handleAnswer(index);
                     },
-                  )),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.purple,
+                      onPrimary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: const BorderSide(
+                            color: Colors.grey, width: 1.0),
+                      ),
+                      minimumSize: const Size(double.infinity, 50),
+                    ),
+                    child: Center(
+                      child: Text(
+                        widget.card.choices[index],
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
               CountdownView(
                 seconds: widget.card.countdownTime,
                 onCountdownUpdated: _updateRemainingTime,

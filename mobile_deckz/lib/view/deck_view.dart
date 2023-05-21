@@ -5,8 +5,11 @@ import 'package:mobile_deckz/view/playdeck/playdeck_view.dart';
 
 import '../../http_dao/deck_dao.dart';
 import '../../http_dao/server_path.dart';
+import '../http_dao/game_history_dao.dart';
 import '../model/deck/deck.dart';
 import '../model/deck/score.dart';
+import '../model/game_history/game.dart';
+import '../model/game_history/game_history.dart';
 
 class DeckView extends StatefulWidget {
   final Deck deck;
@@ -62,12 +65,94 @@ class _DeckViewState extends State<DeckView> {
     }
   }
 
-  void _onPlayDeckTap() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) =>
-            PlayDeckView(deck: widget.deck, score: Score(0, widget.deck.id)),
-      ),
+  Widget _buildHistory() {
+    return FutureBuilder<GameHistory>(
+      future: GameHistoryDao.getGameHistory(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final List<Game>? games = snapshot.data?.games
+              .where(
+                (element) => element.getDeckName() == widget.deck.name,
+              )
+              .toList();
+          return SizedBox(
+            height: 200,
+            width: 200,
+            child: Card(
+              elevation: 1,
+                child: ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: games?.length,
+              itemBuilder: (BuildContext context, int index) {
+                return SizedBox(
+                  height: 20,
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(games![index].getFormattedTimestamp()),
+                        const SizedBox(width: 20),
+                        Text(games[index].getScore().toString()),
+                        const Text(' Pts'),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            )),
+          );
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
+    );
+  }
+
+  Future<void> _onPlayDeckTap(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(widget.deck.name),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                _buildHistory(),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            ElevatedButton.icon(
+              icon: Icon(Icons.play_arrow),
+              label: const Text('Jouer'),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => PlayDeckView(
+                      deck: widget.deck,
+                      score: Score(0, widget.deck.id),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Row _displayRating() {
+    int rating = _marketplaceDeck.rating - 1;
+    return Row(
+      children: [
+        for (int i = 0; i < 5; i++)
+          Container(
+              child: i <= rating
+                  ? const Icon(Icons.star, color: Colors.yellow)
+                  : const Icon(Icons.star_border, color: Colors.yellow,))
+      ],
     );
   }
 
@@ -78,7 +163,7 @@ class _DeckViewState extends State<DeckView> {
         if (_isMarketplaceDeck) {
           _onMarketplaceDeckTap();
         } else {
-          _onPlayDeckTap();
+          _onPlayDeckTap(context);
         }
       },
       child: Card(
@@ -111,6 +196,16 @@ class _DeckViewState extends State<DeckView> {
                               ? const Icon(Icons.delete, color: Colors.white)
                               : const Icon(Icons.download, color: Colors.white),
                         ),
+                      ),
+                    ),
+                  if (_isMarketplaceDeck)
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        width: 140,
+                        padding: const EdgeInsets.all(8),
+                        color: Colors.black.withOpacity(0.3),
+                        child: _displayRating(),
                       ),
                     ),
                   Align(
