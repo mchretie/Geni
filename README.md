@@ -36,6 +36,10 @@ Vous pouvez aussi lancer le backend en créant une configuration de lancement co
 compile exec:java -Dexec.mainClass="ulb.infof307.g01.server.LaunchServer"
 ```
 
+## Variables d’environnement
+
+Vous pouvez modifier les variables d’environnement dans le fichier `.env` à la racine du projet.
+
 ## Librairies externes
 
 Les librairies suivantes sont utilisées :
