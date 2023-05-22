@@ -54,6 +54,18 @@ Les librairies suivantes sont utilisées :
 
 Voir le fichier `mobile_deckz/README.md`.
 
+## Docker
+
+Pour lancer le serveur dans un conteneur Docker, exécuter :
+
+```bash
+docker build -t genie-des-cartes .
+docker run -p 8080:8080 genie-des-cartes
+```
+
+L'application n'a pas de volume, donc les données sont perdues à chaque redémarrage du conteneur.
+Ceci n'est pas un problème pour le développement, mais il faudrait utiliser un volume pour la production.
+
 ## Contributions
 
 Voir le fichier `CONTRIBUTING.md`.
