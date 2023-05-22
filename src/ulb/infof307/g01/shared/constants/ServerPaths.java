@@ -1,5 +1,7 @@
 package ulb.infof307.g01.shared.constants;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 /**
  * This class contains all the paths used by the server.
  */
@@ -7,7 +9,7 @@ public final class ServerPaths {
 
     private ServerPaths() {}
 
-    public static final String BASE_URL = "http://localhost:8080";
+    public static final String BASE_URL = Dotenv.load().get("SERVER_URL");
 
     private static final String BASE = "/api";
 

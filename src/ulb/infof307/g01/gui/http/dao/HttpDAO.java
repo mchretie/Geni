@@ -2,6 +2,7 @@ package ulb.infof307.g01.gui.http.dao;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import io.github.cdimascio.dotenv.Dotenv;
 import ulb.infof307.g01.gui.http.exceptions.ServerRequestFailedException;
 import ulb.infof307.g01.model.deck.DeckMetadata;
 import ulb.infof307.g01.shared.constants.ServerPaths;
@@ -25,7 +26,7 @@ public abstract class HttpDAO {
 
     private final HttpClient httpClient = HttpClient.newBuilder().build();
 
-    private final String BASE_URL = "http://localhost:8080";
+    private final String BASE_URL = Dotenv.load().get("SERVER_URL");
     private final String AUTH_HEADER = "Authorization";
 
     /* ====================================================================== */
