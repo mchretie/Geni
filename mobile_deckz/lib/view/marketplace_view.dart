@@ -42,9 +42,9 @@ class MarketPlaceViewState extends State<MarketPlaceView> {
     reloadDecks();
   }
 
-
   void _defaultCallback() {
     // Empty function
+    return;
   }
 
   Future<void> _reloadDecks() async {
@@ -56,21 +56,29 @@ class MarketPlaceViewState extends State<MarketPlaceView> {
   Future<void> _sortDecks() async {
     List<MarketplaceDeck> decks = await _decksFuture;
     setState(() {
-      if (_marketplaceFilter == MarketplaceFilter.starASC) {
-        _decksFuture =
-            MarketPlaceDao.sortDecksByStars(decks, true, _showSavedDecks);
-      } else if (_marketplaceFilter == MarketplaceFilter.starDESC) {
-        _decksFuture =
-            MarketPlaceDao.sortDecksByStars(decks, false, _showSavedDecks);
-      } else if (_marketplaceFilter == MarketplaceFilter.alphabetASC) {
-        _decksFuture =
-            MarketPlaceDao.sortDecksByAlphabet(decks, true, _showSavedDecks);
-      } else if (_marketplaceFilter == MarketplaceFilter.alphabetDESC) {
-        _decksFuture =
-            MarketPlaceDao.sortDecksByAlphabet(decks, false, _showSavedDecks);
-      } else {
-        _decksFuture =
-            MarketPlaceDao.sortDecksByNothing(decks, _showSavedDecks);
+      switch (_marketplaceFilter) {
+        case MarketplaceFilter.starASC:
+          _decksFuture =
+              MarketPlaceDao.sortDecksByStars(decks, true, _showSavedDecks);
+          break;
+        case MarketplaceFilter.starDESC:
+          _decksFuture =
+              MarketPlaceDao.sortDecksByStars(decks, false, _showSavedDecks);
+          break;
+        case MarketplaceFilter.alphabetASC:
+          _decksFuture =
+              MarketPlaceDao.sortDecksByAlphabet(decks, true, _showSavedDecks);
+          break;
+        case MarketplaceFilter.alphabetDESC:
+          _decksFuture =
+              MarketPlaceDao.sortDecksByAlphabet(decks, false, _showSavedDecks);
+          break;
+        case MarketplaceFilter.none:
+          _decksFuture =
+              MarketPlaceDao.sortDecksByNothing(decks, _showSavedDecks);
+          break;
+        default:
+          break;
       }
     });
   }
@@ -127,8 +135,6 @@ class MarketPlaceViewState extends State<MarketPlaceView> {
                                 ),
                               ),
                             ),
-                            // ],
-                            // )),
                             IconButton(
                                 onPressed: () => showDialog<String>(
                                     context: context,
@@ -268,7 +274,8 @@ class MarketPlaceViewState extends State<MarketPlaceView> {
                               final MarketplaceDeck deck = deckList[index];
                               return Padding(
                                   padding: const EdgeInsets.all(4.0),
-                                  child: DeckView(deck: deck, callback: _defaultCallback));
+                                  child: DeckView(
+                                      deck: deck, callback: _reloadDecks));
                             }))
                   ])));
             }

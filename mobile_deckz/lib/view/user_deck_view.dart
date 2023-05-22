@@ -5,10 +5,7 @@ import '../http_dao/deck_dao.dart';
 import '../model/deck/deck.dart';
 
 class UserDeckView extends StatefulWidget {
-
-  //final VoidCallback function;
   const UserDeckView({Key? key}) : super(key: key);
-  //UserDeckView({Key? key, required this.function}) : super(key: key);
 
   @override
   State<UserDeckView> createState() => UserDeckViewState();
@@ -33,7 +30,6 @@ class UserDeckViewState extends State<UserDeckView> {
   }
 
   Future<void> _reloadDecks() async {
-    print("reloading decks");
     setState(() {
       _decksFuture = DeckDao.getAllDecks();
     });
@@ -101,7 +97,9 @@ class UserDeckViewState extends State<UserDeckView> {
                                     final Deck deck = deckList[index];
                                     return Padding(
                                         padding: const EdgeInsets.all(4.0),
-                                        child: DeckView(deck: deck, callback:_reloadDecks));
+                                        child: DeckView(
+                                            deck: deck,
+                                            callback: _reloadDecks));
                                   }))
                         ])));
                   }
