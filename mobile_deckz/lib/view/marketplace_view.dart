@@ -42,11 +42,6 @@ class MarketPlaceViewState extends State<MarketPlaceView> {
     reloadDecks();
   }
 
-  void _defaultCallback() {
-    // Empty function
-    return;
-  }
-
   Future<void> _reloadDecks() async {
     setState(() {
       _decksFuture = MarketPlaceDao.getAllMarketplaceDecks();
@@ -274,8 +269,7 @@ class MarketPlaceViewState extends State<MarketPlaceView> {
                               final MarketplaceDeck deck = deckList[index];
                               return Padding(
                                   padding: const EdgeInsets.all(4.0),
-                                  child: DeckView(
-                                      deck: deck, callback: _reloadDecks));
+                                  child: DeckView(deck: deck, callback: () {}));
                             }))
                   ])));
             }
