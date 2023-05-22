@@ -25,6 +25,7 @@ class MarketPlaceViewState extends State<MarketPlaceView> {
 
   Future<void> _onSearchTextChanged(String text) async {
     _decksFuture = MarketPlaceDao.getAllMarketplaceDecks();
+
     await _sortDecks();
     List<MarketplaceDeck> decks = await _decksFuture;
     setState(() {
