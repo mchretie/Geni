@@ -77,18 +77,12 @@ class DeckDao {
   static Future<void> addDeckToCollection(String deckID) async {
     final http.Response response = await HttpDao.post(
         Uri.parse('${ServerPath.addDeckToCollectionPath}?deck_id=$deckID'), "");
-    if (response.statusCode == 200) {
-      debugPrint('Deck added to collection');
-    }
   }
 
   static Future<void> removeDeckFromCollection(String deckID) async {
     final http.Response response = await HttpDao.delete(
         Uri.parse('${ServerPath.removeDeckFromCollectionPath}?deck_id=$deckID'),
         "");
-    if (response.statusCode == 200) {
-      debugPrint('Deck removed from collection');
-    }
   }
 
   static Future<List<Deck>> searchDecks(String query) async {
