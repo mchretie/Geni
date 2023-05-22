@@ -57,7 +57,7 @@ public class MainFxController extends Application implements
 
     private MainWindowViewController mainWindowViewController;
 
-    private ImageLoader imageLoader = new ImageLoader();
+    private final ImageLoader imageLoader = new ImageLoader();
 
     /* ====================================================================== */
     /*                              DAO Attributes                            */
@@ -83,14 +83,14 @@ public class MainFxController extends Application implements
         MARKETPLACE
     }
 
-    List<View> viewStack = new ArrayList<>();
+    private final List<View> viewStack = new ArrayList<>();
 
 
     /* ====================================================================== */
     /*                             Stage Attributes                           */
     /* ====================================================================== */
 
-    Stage stage;
+    private Stage stage;
 
 
     /* ====================================================================== */
@@ -171,7 +171,7 @@ public class MainFxController extends Application implements
         this.mainWindowViewController.setListener(this);
     }
 
-    private void initControllers(Stage stage) throws IOException, InterruptedException {
+    private void initControllers(Stage stage) {
 
         this.userAuthController
                 = new UserAuthController(stage,
@@ -239,6 +239,10 @@ public class MainFxController extends Application implements
                 case LEADERBOARD -> leaderboardController.show();
                 case STATISTICS -> statisticsController.show();
                 case MARKETPLACE -> marketplaceController.show();
+
+                default -> {
+
+                }
             }
 
         } catch (IOException | InterruptedException e) {
@@ -268,9 +272,6 @@ public class MainFxController extends Application implements
 
             editDeckController.show();
             viewStack.add(View.EDIT_DECK);
-
-        } catch (IOException e) {
-            errorHandler.failedLoading(e);
 
         } catch (ServerCommunicationFailedException e) {
             errorHandler.failedServerCommunication(e);
@@ -389,20 +390,15 @@ public class MainFxController extends Application implements
 
     @Override
     public void statisticsClicked() {
-        try {
-            statisticsController = new StatisticsController(
-                    stage,
-                    errorHandler,
-                    mainWindowViewController,
-                    serverCommunicator
-            );
+        statisticsController = new StatisticsController(
+                stage,
+                errorHandler,
+                mainWindowViewController,
+                serverCommunicator
+        );
 
-            viewStack.add(View.STATISTICS);
-            statisticsController.show();
-
-        } catch (IOException e) {
-            errorHandler.restartApplicationError(e);
-        }
+        viewStack.add(View.STATISTICS);
+        statisticsController.show();
     }
 
     @Override
@@ -455,7 +451,7 @@ public class MainFxController extends Application implements
             resetViewStack(View.MARKETPLACE);
             marketplaceController.show();
 
-        } catch (InterruptedException | IOException e) {
+        } catch (IOException e) {
             errorHandler.failedLoading(e);
         }
 
@@ -466,22 +462,16 @@ public class MainFxController extends Application implements
 
     @Override
     public void goToLeaderboardClicked() {
-        try {
-            if (leaderboardController == null) {
-                leaderboardController = new GlobalLeaderboardController(
-                        stage,
-                        mainWindowViewController,
-                        errorHandler,
-                        serverCommunicator);
-            }
-
-            resetViewStack(View.LEADERBOARD);
-            leaderboardController.show();
-
-
-        } catch (InterruptedException | IOException e) {
-            errorHandler.failedLoading(e);
+        if (leaderboardController == null) {
+            leaderboardController = new GlobalLeaderboardController(
+                    stage,
+                    mainWindowViewController,
+                    errorHandler,
+                    serverCommunicator);
         }
+
+        resetViewStack(View.LEADERBOARD);
+        leaderboardController.show();
     }
 
     private void resetViewStack(View prevView) {
@@ -491,13 +481,8 @@ public class MainFxController extends Application implements
 
     @Override
     public void goToProfileClicked() {
-        try {
-            profileController.show();
-            viewStack.add(View.LOGIN_PROFILE);
-
-        } catch (IOException e) {
-            errorHandler.failedLoading(e);
-        }
+        profileController.show();
+        viewStack.add(View.LOGIN_PROFILE);
     }
 
     @Override

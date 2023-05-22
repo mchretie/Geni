@@ -226,19 +226,19 @@ public class PlayDeckController implements PlayDeckViewController.Listener,
         if (isGoodChoice) {
             double x = (timeLeft - 0.5) * 4;
             int scoreToAdd = (int) (1000 / (1 + Math.exp(-2 * x)));
-
-            // double timeElapsed = 1.0 - timeLeft;
-            // int scoreToAddN = (int) (1000 / (1 + Math.exp(8*timeElapsed - 4)));
             
             score.increment(scoreToAdd);
-        } else { score.increment(0); }  // needed for score history
 
-        score.addTime(((TimedCard) currentCard).getCountdownTime()-timeLeft*10);
+        } else {
+            score.increment(0);
+        }
+
+        score.addTime(((TimedCard) currentCard).getCountdownTime() - timeLeft * 10);
     }
 
     @Override
     public void timerRanOut() {
-        score.increment(0); // needed for score history
+        score.increment(0);
         showCard();
     }
 

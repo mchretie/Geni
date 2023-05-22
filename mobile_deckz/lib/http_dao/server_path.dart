@@ -1,11 +1,8 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ServerPath {
-  static const String baseUrl = "http://10.0.2.2:8080";
-  // static const String baseUrl = "http://127.0.0.1:8080";
-  // static const String baseUrl = "http://localhost:8080";
-  // static const String baseUrl = "http://10.93.42.237:8080";
-  // static const String baseUrl = "http://192.168.0.191:8080";
-  // static const String baseUrl = "http://192.168.1.46:8080";
-  static const String base = "$baseUrl/api";
+  static final String baseUrl = dotenv.env['SERVER_URL']!;
+  static final String base = "$baseUrl/api";
 
 
   // Used by UserRequestHandler

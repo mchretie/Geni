@@ -98,7 +98,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
         stage.show();
     }
 
-    private void showDecks() throws ServerCommunicationFailedException, IOException, InterruptedException {
+    private void showDecks() throws ServerCommunicationFailedException, IOException {
         deckMenuViewController.setDecks(loadDecks(serverCommunicator.getAllDecksMetadata()));
     }
 
@@ -112,7 +112,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
      * @throws IOException if FXMLLoader.load() fails
      */
     private List<Node> loadDecks(List<DeckMetadata> decks)
-            throws ServerCommunicationFailedException, IOException, InterruptedException {
+            throws ServerCommunicationFailedException, IOException {
         List<Node> decksLoaded = new ArrayList<>();
 
         decks.sort(Comparator.comparing(DeckMetadata::name));
@@ -181,7 +181,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             serverCommunicator.saveDeck(deck);
             showDecks();
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             errorHandler.failedLoading(e);
 
         } catch (ServerCommunicationFailedException e) {
@@ -202,7 +202,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
             assert decks != null;
             deckMenuViewController.setDecks(loadDecks(decks));
 
-        } catch (InterruptedException | IOException e) {
+        } catch (IOException e) {
             errorHandler.failedLoading(e);
 
         } catch (ServerCommunicationFailedException e) {
@@ -254,7 +254,7 @@ public class DeckMenuController implements DeckMenuViewController.Listener,
 
             errorHandler.failedDeckImportError(e);
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             errorHandler.failedLoading(e);
 
         } catch (ServerCommunicationFailedException e) {

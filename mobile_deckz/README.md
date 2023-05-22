@@ -1,16 +1,26 @@
-# mobile_deckz
+# Mobile Deckz
 
-An incredible mobile app for playing deckz
+An incredible mobile app for playing decks.
 
-## Getting Started
+## Running on Android
 
-This project is a starting point for a Flutter application.
+1. Install [Android Studio](https://developer.android.com/studio/index.html)
+2. Install the Flutter plugin
+3. Define the server path in `.env`. By default it is set to `10.0.2.2` which is corresponds to your machine's localhost for the Android emulator.
+4. Launch an Android emulator
+5. Run `flutter run` in the root directory of the project
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Running on iOS
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Install [Xcode](https://developer.apple.com/xcode/)
+2. Define the server path in `.env`. For testing purposes, set it to `localhost` which is corresponds to your machine's localhost for the iOS emulator.
+3. Launch an iOS emulator
+4. Run `flutter run` in the root directory of the project
+
+
+## Running on Web
+
+1. Install [Chrome](https://www.google.com/chrome/)
+2. Define the server path in `.env`. For testing purposes, set it to `localhost`.
+3. Run `flutter run -d chrome` in the root directory of the project.

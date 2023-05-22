@@ -1,13 +1,12 @@
 package ulb.infof307.g01.server;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
-
-import java.sql.SQLException;
 
 public class LaunchServer {
     public static void main(String[] args) {
         try {
-            Server server = new Server(8080);
+            Server server = new Server(Integer.parseInt(Dotenv.load().get("PORT")));
             server.start();
 
         } catch (DatabaseException e) {

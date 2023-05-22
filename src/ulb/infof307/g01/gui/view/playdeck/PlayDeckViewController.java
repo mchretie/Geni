@@ -24,7 +24,8 @@ import java.util.Iterator;
 
 public class PlayDeckViewController {
 
-    ArrayList<String> colors = new ArrayList<>(Arrays.asList("#cb9172", "#b8b662", "#7b8bc9", "#c078be"));
+    private final ArrayList<String> colors
+            = new ArrayList<>(Arrays.asList("#cb9172", "#b8b662", "#7b8bc9", "#c078be"));
 
     /* ====================================================================== */
     /*                               FXML Attributes                          */

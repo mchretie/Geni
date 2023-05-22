@@ -5,7 +5,7 @@ import java.security.Key;
 
 public class JWTService {
 
-    Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String generateToken(String username) {
         return Jwts.builder()

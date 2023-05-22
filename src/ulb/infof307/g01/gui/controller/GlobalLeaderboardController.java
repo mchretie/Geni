@@ -47,7 +47,7 @@ public class GlobalLeaderboardController {
     /*                         Stage Manipulation                             */
     /* ====================================================================== */
 
-    public void show() throws IOException, InterruptedException {
+    public void show() {
         if (serverCommunicator.isUserLoggedIn()) {
             mainWindowViewController.setLeaderboardViewVisible();
             mainWindowViewController.makeGoBackIconInvisible();

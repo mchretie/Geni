@@ -3,7 +3,6 @@ package ulb.infof307.g01.gui.http.dao;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import ulb.infof307.g01.model.deck.DeckMetadata;
-import ulb.infof307.g01.model.deck.MarketplaceDeckMetadata;
 import ulb.infof307.g01.model.leaderboard.GlobalLeaderboard;
 import ulb.infof307.g01.model.deck.Score;
 import ulb.infof307.g01.shared.constants.ServerPaths;
@@ -41,12 +40,13 @@ public class ScoreDAO extends HttpDAO {
 
     public HashMap<UUID, Score> getBestScoreForDecks(List<DeckMetadata> decks)
             throws IOException, InterruptedException {
-        String path = ServerPaths.GET_BEST_SCORES_PATH + "?";
+
+        StringBuilder path = new StringBuilder(ServerPaths.GET_BEST_SCORES_PATH + "?");
         for (DeckMetadata deck : decks)
-            path += "deckId[]=" + deck.id() + "&";
+            path.append("deckId[]=").append(deck.id()).append("&");
 
         HttpResponse<String> response
-                = get(path);
+                = get(path.toString());
 
         checkResponseCode(response.statusCode());
 

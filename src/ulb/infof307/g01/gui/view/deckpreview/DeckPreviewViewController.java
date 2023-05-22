@@ -48,7 +48,6 @@ public class DeckPreviewViewController implements Initializable {
     private Label deckNameLabel;
     private FontIcon deckVisibilityIcon;
 
-    private Deck deck;
     private Listener listener;
 
     @Override
@@ -79,17 +78,9 @@ public class DeckPreviewViewController implements Initializable {
             starIcon.setIconSize(20);
 
             int finalStarIndex = starIndex;
-            starButton.setOnMouseClicked(event -> {
-                listener.starClicked(finalStarIndex);
-            });
-
-            starButton.setOnMouseEntered(event -> {
-                listener.starEntered(finalStarIndex);
-            });
-
-            starButton.setOnMouseExited(event -> {
-                listener.starExited(finalStarIndex);
-            });
+            starButton.setOnMouseClicked(event -> listener.starClicked(finalStarIndex));
+            starButton.setOnMouseEntered(event -> listener.starEntered(finalStarIndex));
+            starButton.setOnMouseExited(event -> listener.starExited());
 
             starButton.setGraphic(starIcon);
             starContainer.getChildren().add(starButton);
@@ -141,10 +132,7 @@ public class DeckPreviewViewController implements Initializable {
     }
 
     public void setDeck(Deck deck) {
-        this.deck = deck;
-
         deckNameLabel.setText(deck.getName());
-
         int cardCount = deck.cardCount();
         String text = cardCount + " carte" + (cardCount > 1 ? "s" : "");
         cardCountLabel.setText(text);
@@ -233,6 +221,6 @@ public class DeckPreviewViewController implements Initializable {
 
         void starClicked(int startIndex);
         void starEntered(int starIndex);
-        void starExited(int starIndex);
+        void starExited();
     }
 }

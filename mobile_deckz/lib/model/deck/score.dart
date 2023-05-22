@@ -99,7 +99,7 @@ class Score {
   int _scoreOf(Answer answer) {
     var score = 0;
     if (answer.correctlyAnswered) {
-      final unitRemainingTime = answer.totalTime / answer.remainingTime;
+      final unitRemainingTime =  answer.remainingTime / answer.totalTime ;
       final exponent = -8 * unitRemainingTime + 4;
       final toAdd = maxScore * (1 / (1 + exp(exponent)));
       score += toAdd.round();

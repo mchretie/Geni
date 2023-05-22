@@ -21,7 +21,6 @@ public class EditCardViewController {
 
     private Listener listener;
 
-    public void init() {} // PLEASE DO NOT DELETE
 
     /* ====================================================================== */
     /*                                   Setters                              */

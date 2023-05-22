@@ -72,11 +72,7 @@ class MarketPlaceDao {
       List<MarketplaceDeck> decks, bool showSavedDecks) async {
     List<Deck> savedDecks = await DeckDao.getAllDecks();
     if (showSavedDecks) {
-      return decks.where((deck) {
-        return savedDecks.any((savedDeck) {
-          return savedDeck.id == deck.id;
-        });
-      }).toList();
+      return decks;
     }
     return decks.where((deck) {
       return savedDecks.every((savedDeck) {

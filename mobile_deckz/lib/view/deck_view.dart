@@ -13,8 +13,9 @@ import '../model/game_history/game_history.dart';
 
 class DeckView extends StatefulWidget {
   final Deck deck;
+  final VoidCallback callback;
 
-  const DeckView({super.key, required this.deck});
+  const DeckView({super.key, required this.deck, required this.callback});
 
   @override
   State<DeckView> createState() => _DeckViewState();
@@ -79,28 +80,28 @@ class _DeckViewState extends State<DeckView> {
             height: 200,
             width: 200,
             child: Card(
-              elevation: 1,
+                elevation: 1,
                 child: ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: games?.length,
-              itemBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  height: 20,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(games![index].getFormattedTimestamp()),
-                        const SizedBox(width: 20),
-                        Text(games[index].getScore().toString()),
-                        const Text(' Pts'),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            )),
+                  padding: const EdgeInsets.all(8),
+                  itemCount: games?.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      height: 20,
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(games![index].getFormattedTimestamp()),
+                            const SizedBox(width: 20),
+                            Text(games[index].getScore().toString()),
+                            const Text(' Pts'),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                )),
           );
         } else {
           return const CircularProgressIndicator();
@@ -124,17 +125,22 @@ class _DeckViewState extends State<DeckView> {
           ),
           actions: <Widget>[
             ElevatedButton.icon(
-              icon: Icon(Icons.play_arrow),
+              icon: const Icon(Icons.play_arrow),
               label: const Text('Jouer'),
               onPressed: () {
-                Navigator.of(context).pushReplacement(
+                Navigator.of(context)
+                    .pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => PlayDeckView(
                       deck: widget.deck,
                       score: Score(0, widget.deck.id),
                     ),
                   ),
-                );
+                )
+                    .then((value) {
+                  // This block is executed when you navigate back from the child widget
+                  widget.callback();
+                });
               },
             ),
           ],
@@ -151,7 +157,10 @@ class _DeckViewState extends State<DeckView> {
           Container(
               child: i <= rating
                   ? const Icon(Icons.star, color: Colors.yellow)
-                  : const Icon(Icons.star_border, color: Colors.yellow,))
+                  : const Icon(
+                      Icons.star_border,
+                      color: Colors.yellow,
+                    ))
       ],
     );
   }

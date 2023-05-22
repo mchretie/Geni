@@ -2,7 +2,6 @@ package ulb.infof307.g01.model.gamehistory;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Spliterator;
 import java.util.function.Consumer;
 
 public class GameHistory implements Iterable<Game> {
@@ -32,10 +31,5 @@ public class GameHistory implements Iterable<Game> {
     @Override
     public void forEach(Consumer<? super Game> action) {
         Iterable.super.forEach(action);
-    }
-
-    @Override
-    public Spliterator<Game> spliterator() {
-        return Iterable.super.spliterator();
     }
 }

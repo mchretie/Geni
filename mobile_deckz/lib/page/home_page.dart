@@ -11,15 +11,47 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   final String title = 'Mobile Deckz 3000';
-
+  
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  int _currentWidgetIndex = 1;
+
+  late final MarketPlaceView _marketPlaceView ;
+  late final LeaderboardView _leaderboardView ;
+  late final UserDeckView _userDeckView  ;
 
   final Future<bool> isLoggedIn = AuthDao.isLoggedIn();
+
+  late StatefulWidget _currentWidget;
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    _marketPlaceView= const MarketPlaceView();
+    _userDeckView = const UserDeckView();
+    _leaderboardView =  const LeaderboardView();
+
+    _switchToCurrentWidget();
+  }
+
+  Future<void> _switchToCurrentWidget() async {
+    switch (_currentWidgetIndex) {
+      case 0:
+        _currentWidget = _marketPlaceView;
+        break;
+      case 1:
+        _currentWidget = _userDeckView;
+        break;
+      case 2:
+        _currentWidget = _leaderboardView;
+        break;
+      }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +84,9 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               body: Center(
-                  child: IndexedStack(
-                index: _selectedIndex,
-                children: const [
-                  MarketPlaceView(),
-                  UserDeckView(),
-                  LeaderboardView(),
-                ],
-              )),
+                  child: Container(
+                    child: _currentWidget
+                  )),
               bottomNavigationBar: BottomNavigationBar(
                 items: const <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
@@ -75,11 +102,12 @@ class _HomePageState extends State<HomePage> {
                     label: 'Leaderboard',
                   ),
                 ],
-                currentIndex: _selectedIndex,
+                currentIndex: _currentWidgetIndex,
                 selectedItemColor: Colors.purple[800],
                 onTap: (int index) {
                   setState(() {
-                    _selectedIndex = index;
+                    _currentWidgetIndex = index;
+                    _switchToCurrentWidget();
                   });
                 },
               ));
