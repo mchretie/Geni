@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class EditDeckController implements EditDeckViewController.Listener,
                                                     TagViewController.Listener,
@@ -263,7 +264,7 @@ public class EditDeckController implements EditDeckViewController.Listener,
     @Override
     public void deckImageModified(File image) {
         try {
-            String filename = "/backgrounds/" + deck.getId().toString() + ".jpg";
+            String filename = "/backgrounds/" + UUID.randomUUID().toString() + ".jpg";
             deck.setImage(filename);
             serverCommunicator.uploadImage(image, filename);
             saveChanges();
