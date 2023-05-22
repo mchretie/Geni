@@ -97,7 +97,7 @@ public class DeckIO {
             return baseName;
 
         var idx = 1;
-        String newName = baseName;
+        String newName;
         do {
             newName = "%s (%d)".formatted(baseName, idx);
             idx++;

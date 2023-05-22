@@ -4,7 +4,7 @@ import java.util.UUID;
 import com.google.gson.Gson;
 
 public record UserRating(UUID deckId, UUID userId, RatingValue value) {
-    public static RatingValue DEFAULT_VALUE = RatingValue.THREE;
+    public static final RatingValue DEFAULT_VALUE = RatingValue.THREE;
 
     public static UserRating fromJson(String jsonString) {
         return new Gson().fromJson(jsonString, UserRating.class);

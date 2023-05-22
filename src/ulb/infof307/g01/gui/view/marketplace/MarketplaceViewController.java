@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -23,9 +22,9 @@ public class MarketplaceViewController {
     }
 
     public enum SortType {
-        Nom,
-        Note,
-        Découvrir;
+        Name,
+        Rating,
+        Discover
     }
 
     /* ====================================================================== */
@@ -84,7 +83,7 @@ public class MarketplaceViewController {
 
     private void initSortChoiceBox() {
         this.sortChoiceBox.getItems().addAll(SortType.values());
-        this.sortChoiceBox.setValue(SortType.Nom);
+        this.sortChoiceBox.setValue(SortType.Name);
     }
 
 
@@ -95,12 +94,10 @@ public class MarketplaceViewController {
         SearchType searchType = null;
         String searchTypeText = comboBox.getValue();
 
-        if (searchTypeText.equals("Nom")) {
-            searchType = MarketplaceViewController.SearchType.Name;
-        } else if (searchTypeText.equals("Username")) {
-            searchType = MarketplaceViewController.SearchType.Creator;
-        } else if (searchTypeText.equals("Tag")) {
-            searchType = MarketplaceViewController.SearchType.Tag;
+        switch (searchTypeText) {
+            case "Nom" -> searchType = SearchType.Name;
+            case "Username" -> searchType = SearchType.Creator;
+            case "Tag" -> searchType = SearchType.Tag;
         }
 
         return searchType;

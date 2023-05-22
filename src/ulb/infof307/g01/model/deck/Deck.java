@@ -156,11 +156,6 @@ public class Deck implements Iterable<Card> {
         return getCard(0);
     }
 
-    public Card getLastCard() throws IndexOutOfBoundsException {
-        return getCard(cards.size() - 1);
-
-    }
-
     public List<Card> getCards() {
         return Collections.unmodifiableList(cards);
     }

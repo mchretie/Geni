@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ImageLoader {
-    Map<String, Image> cachedImages = new HashMap<>();
+    private final Map<String, Image> cachedImages = new HashMap<>();
 
     public Image get(String path) {
         if (!cachedImages.containsKey(path)) {

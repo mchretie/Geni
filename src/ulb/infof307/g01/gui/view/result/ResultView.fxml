@@ -9,10 +9,7 @@
 <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.result.ResultViewController">
 
    <FlowPane alignment="CENTER" prefHeight="186.0" prefWidth="800.0" prefWrapLength="100.0">
-      <children>
-
            <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="200.0">
-               <children>
                   <Label layoutX="14.0" layoutY="15.0" text="Temps total : ">
                       <font>
                           <Font size="16.0" />
@@ -23,10 +20,8 @@
                           <Font name="System Bold" size="35.0" />
                       </font>
                   </Label>
-                </children>
            </AnchorPane>
           <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="200.0">
-              <children>
                   <Label layoutX="8.0" layoutY="15.0" text="Temps moyen : ">
                       <font>
                           <Font size="16.0" />
@@ -37,13 +32,11 @@
                           <Font name="System Bold" size="35.0" />
                       </font>
                   </Label>
-              </children>
             <FlowPane.margin>
                <Insets left="50.0" right="50.0" />
             </FlowPane.margin>
           </AnchorPane>
          <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="200.0">
-            <children>
                 <Label layoutX="14.0" layoutY="15.0" text="Votre score : ">
                     <font>
                         <Font size="16.0" />
@@ -54,9 +47,7 @@
                         <Font name="System Bold" size="35.0" />
                     </font>
                 </Label>
-            </children>
          </AnchorPane>
-      </children>
    </FlowPane>
     <HBox alignment="TOP_CENTER">
         <AreaChart fx:id="areaChart" legendVisible="false" prefHeight="304.0" prefWidth="339.0" title="Evolution du score">
@@ -69,7 +60,7 @@
         </AreaChart>
         <PieChart fx:id="pieChart" legendVisible="false" opacity="0.8" prefHeight="240.0" prefWidth="278.0" title="Répartition des réponses" />
     </HBox>
-    <Button fx:id="goToMenuButton" mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Retour">
+    <Button mnemonicParsing="false" onMouseClicked="#onGoToMenuClicked" text="Retour">
         <VBox.margin>
             <Insets bottom="15.0" top="10.0" />
         </VBox.margin>

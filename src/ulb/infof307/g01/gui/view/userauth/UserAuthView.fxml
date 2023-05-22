@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane fx:id="root" style="-fx-background-color: #C3B1E1;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.userauth.UserAuthViewController">
+<StackPane style="-fx-background-color: #C3B1E1;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ulb.infof307.g01.gui.view.userauth.UserAuthViewController">
     <VBox fx:id="registerVBOX" alignment="CENTER" fillWidth="false" spacing="10.0">
         <Label alignment="CENTER" text="Créez un compte" textAlignment="CENTER">
             <font>
@@ -87,7 +87,7 @@
             <prefHeight>40.0</prefHeight>
         </PasswordField>
 
-              <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLoginButtonClicked" prefHeight="40.0" prefWidth="300.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: #CFE1B1;" text="Se connecter" textAlignment="CENTER">
+              <Button mnemonicParsing="false" onAction="#handleLoginButtonClicked" prefHeight="40.0" prefWidth="300.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-background-color: #CFE1B1;" text="Se connecter" textAlignment="CENTER">
 
             <VBox.margin>
                 <Insets />

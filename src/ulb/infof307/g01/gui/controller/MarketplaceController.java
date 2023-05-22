@@ -39,7 +39,7 @@ public class MarketplaceController implements
     public MarketplaceController(Stage stage,
                                  ErrorHandler errorHandler,
                                  MainWindowViewController mainWindowViewController,
-                                 ServerCommunicator serverCommunicator) throws IOException, InterruptedException {
+                                 ServerCommunicator serverCommunicator) {
 
         this.stage = stage;
         this.errorHandler = errorHandler;
@@ -60,7 +60,7 @@ public class MarketplaceController implements
     /*                         Stage Manipulation                             */
     /* ====================================================================== */
 
-    public void show() throws ServerCommunicationFailedException, IOException, InterruptedException {
+    public void show() throws ServerCommunicationFailedException, IOException {
         mainWindowViewController.setMarketplaceViewVisible();
 
         List<MarketplaceDeckMetadata> marketplaceDecks = sortMarketplaceDecks(
@@ -86,22 +86,25 @@ public class MarketplaceController implements
                 throws ServerCommunicationFailedException {
 
         switch (sortType) {
-            case Nom:
-                marketplaceDecks.sort((o1, o2) -> o1.name().compareToIgnoreCase(o2.name()));
-                break;
-            case Note:
-                marketplaceDecks.sort((o1, o2) -> {
-                    if (o1.rating() == o2.rating()) {
-                        return 0;
-                    }
-                    return o1.rating() > o2.rating() ? -1 : 1;
-                });
-                break;
-            case Découvrir:
+            case Name ->
+                    marketplaceDecks.sort((o1, o2) -> o1.name().compareToIgnoreCase(o2.name()));
+
+            case Rating -> marketplaceDecks.sort((o1, o2) -> {
+                if (o1.rating() == o2.rating()) {
+                    return 0;
+                }
+                return o1.rating() > o2.rating() ? -1 : 1;
+            });
+
+            case Discover -> {
                 List<MarketplaceDeckMetadata> decksSaved = serverCommunicator.getSavedDecks();
                 marketplaceDecks.removeAll(decksSaved);     // remove all the decks that are already saved
                 marketplaceDecks.addAll(decksSaved);        // add them back at the end
-                break;
+            }
+
+            default -> {
+
+            }
         }
 
         return marketplaceDecks;
@@ -229,9 +232,11 @@ public class MarketplaceController implements
     public void sortChoiceBoxChanged(MarketplaceViewController.SortType sortType) {
         try {
             this.show();
+
         } catch (IOException e) {
             errorHandler.failedLoading(e);
-        } catch (ServerCommunicationFailedException | InterruptedException e) {
+
+        } catch (ServerCommunicationFailedException e) {
             errorHandler.severConnectionError();
         }
     }

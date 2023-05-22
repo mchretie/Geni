@@ -13,7 +13,6 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -32,10 +31,10 @@ public class DeckDAO extends HttpDAO {
     /*                               Cache                                    */
     /* ====================================================================== */
 
-    DeckCache deckCache = null;
-    IndulgentValidator validator = new IndulgentValidator();
+    private DeckCache deckCache = null;
+    private final IndulgentValidator validator = new IndulgentValidator();
 
-    final String deckIdQuery = "?deck_id=";
+    private final String deckIdQuery = "?deck_id=";
 
     /**
      * Init and set up the cache with user’s deck collection
