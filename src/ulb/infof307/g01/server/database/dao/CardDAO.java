@@ -3,11 +3,11 @@ package ulb.infof307.g01.server.database.dao;
 import ulb.infof307.g01.model.card.FlashCard;
 import ulb.infof307.g01.model.card.InputCard;
 import ulb.infof307.g01.model.card.MCQCard;
-import ulb.infof307.g01.model.card.visitor.CardVisitor;
+import ulb.infof307.g01.model.card.visitor.ExceptionThrowingCardVisitor;
 import ulb.infof307.g01.server.database.DatabaseAccess;
 import ulb.infof307.g01.server.database.exceptions.DatabaseException;
 
-public class CardDAO extends DAO implements CardVisitor<DatabaseException> {
+public class CardDAO extends DAO implements ExceptionThrowingCardVisitor<DatabaseException> {
 
     private final DatabaseAccess database;
 

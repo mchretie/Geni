@@ -171,4 +171,8 @@ public class Database {
     public UserRating getUserRating(UUID deckId, UUID userId) throws DatabaseException {
         return marketplaceDao.getUserRating(deckId, userId);
     }
+
+    public boolean isDeckInUserCollection(UUID deckId, UUID userId) throws DatabaseException {
+        return marketplaceDao.isDeckInUserCollection(deckId, userId);
+    }
 }
